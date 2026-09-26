@@ -11,9 +11,11 @@ import {
   type CodeEditorLineDecoration,
 } from "../src/code-editor/model.ts"
 import {codeEditorPaintRuns, type CodeEditorPaintRun} from "../src/code-editor/paint-runs.ts"
+import {codeEditorVisualRows} from "../src/code-editor/visual-rows.ts"
 import {attachCodeEditorInteraction, createCodeEditorHandle, type CodeEditorInteraction} from "../src/code-editor/interaction.ts"
 
-function LineNumber(props: Readonly<{index: number; decoration: CodeEditorLineDecoration | undefined}>) {
+function LineNumber(props: Readonly<{index: number; continuation: boolean; decoration: CodeEditorLineDecoration | undefined}>) {
+  const label = props.continuation ? "" : String(props.index + 1)
   return <li
     data-line-index={String(props.index)}
     data-tone={props.decoration?.gutterTone}
@@ -44,7 +46,7 @@ function LineNumber(props: Readonly<{index: number; decoration: CodeEditorLineDe
       }
     `}
   >
-    {String(props.index + 1)}
+    {label}
   </li>
 }
 
@@ -72,12 +74,25 @@ function CodeRun(props: Readonly<{run: CodeEditorPaintRun}>) {
   </>
 }
 
-function CodeLine(props: Readonly<{index: number; separator: string; segments: readonly CodeEditorSegment[]; decoration: CodeEditorLineDecoration | undefined}>) {
+/** Хранит исходный escape в semantic Document для выделения и копирования без его отрисовки. */
+function FormattingCharacters(props: Readonly<{value: string}>) {
+  return <span
+    data-formatting-characters=""
+    style={css`
+      display: none;
+    `}
+  >
+    {props.value}
+  </span>
+}
+
+function CodeLine(props: Readonly<{index: number; continuation: boolean; separator: string; formatting: string; segments: readonly CodeEditorSegment[]; decoration: CodeEditorLineDecoration | undefined}>) {
   const runs = codeEditorPaintRuns(props.segments)
   return <>
     {props.separator}
     <span
       data-line-index={String(props.index)}
+      data-line-continuation={props.continuation ? "true" : undefined}
       data-line-tone={props.decoration?.lineTone}
       data-marker-tone={props.decoration?.markerTone}
       title={props.decoration?.title}
@@ -139,12 +154,15 @@ function CodeLine(props: Readonly<{index: number; separator: string; segments: r
         key={run.key}
         run={run}
       />)}
+      {props.formatting !== "" ? <FormattingCharacters value={props.formatting} /> : null}
     </span>
   </>
 }
 
 const MemoLineNumber = memo(LineNumber)
 const MemoCodeLine = memo(CodeLine, (previous, next) => previous.index === next.index &&
+  previous.continuation === next.continuation &&
+  previous.formatting === next.formatting &&
   previous.decoration?.lineTone === next.decoration?.lineTone && previous.decoration?.markerTone === next.decoration?.markerTone &&
   previous.decoration?.gutterTone === next.decoration?.gutterTone && previous.decoration?.title === next.decoration?.title &&
   previous.separator === next.separator && previous.segments.length === next.segments.length &&
@@ -212,11 +230,13 @@ export function CodeEditor(props: CodeEditorProps) {
   }, [model])
   // Supplied tokens describe props.value, not an unacknowledged local edit.
   const tokens = value === props.value ? props.tokens : undefined
+  const softBreaks = value === props.value ? props.softBreaks : undefined
   const highlighter = tokens === undefined ? resolveCodeEditorHighlighter(props.languageId, props.path) : null
   // Supplied token arrays can be mutable. Only automatic highlighting is memoized.
   const automatic = useMemo(() => tokens === undefined ? buildCodeEditorViewModel({...props, value, tokens}) : null,
     [value, props.languageId, props.path, highlighter, highlighter?.tokenize, tokens === undefined])
   const view = automatic ?? buildCodeEditorViewModel({...props, value, tokens})
+  const rows = codeEditorVisualRows(view, softBreaks, props.showFormattingCharacters !== false)
   const decorations = new Map<number, CodeEditorLineDecoration>()
   for (const decoration of props.lineDecorations ?? []) {
     if (!Number.isSafeInteger(decoration.line) || decoration.line < 0 || decorations.has(decoration.line)) {
@@ -283,10 +303,11 @@ export function CodeEditor(props: CodeEditorProps) {
         }
       `}
     >
-      {view.lines.map((_line, index) => <MemoLineNumber
-        key={String(index)}
-        index={index}
-        decoration={decorations.get(index)}
+      {rows.map(row => <MemoLineNumber
+        key={row.key}
+        index={row.line}
+        continuation={row.continuation}
+        decoration={decorations.get(row.line)}
       />)}
     </ul>
     <pre
@@ -315,12 +336,14 @@ export function CodeEditor(props: CodeEditorProps) {
           white-space: normal;
         `}
       >
-        {view.lines.map((_line, index) => <MemoCodeLine
-          key={String(index)}
-          index={index}
-          decoration={decorations.get(index)}
-          separator={index === 0 ? "" : view.lineEndings[index - 1] ?? ""}
-          segments={view.segments[index] ?? []}
+        {rows.map(row => <MemoCodeLine
+          key={row.key}
+          index={row.line}
+          continuation={row.continuation}
+          decoration={decorations.get(row.line)}
+          separator={row.separator}
+          formatting={row.formatting}
+          segments={row.segments}
         />)}
       </code>
     </pre>

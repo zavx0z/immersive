@@ -27,6 +27,16 @@ export type CodeEditorLineDecoration = Readonly<{
   title?: string | undefined
 }>
 
+/**
+Исходный текст, оформление и взаимодействие редактора.
+
+@property [softBreaks] - Возрастающие UTF-16 смещения визуальных переносов внутри
+текста. Применяются только при readOnly; исходные символы и копирование сохраняются.
+
+@property [showFormattingCharacters=true] - Показывать escape-последовательности
+переносов в местах softBreaks. При false они сохраняются в тексте и копировании,
+но не рисуются; буквальные экранированные обратные слеши остаются видимыми.
+*/
 export type CodeEditorProps = Readonly<{
   value: string
   readOnly: boolean
@@ -41,6 +51,8 @@ export type CodeEditorProps = Readonly<{
   path?: string | undefined
   tokens?: Tokens | undefined
   showLineNumbers?: boolean | undefined
+  softBreaks?: readonly number[] | undefined
+  showFormattingCharacters?: boolean | undefined
   title?: string | undefined
   style?: CssStyle | undefined
 }>
@@ -95,6 +107,12 @@ export function assertCodeEditorProps(props: CodeEditorProps): void {
   if (typeof props !== "object" || props === null) throw new TypeError("CodeEditor props must be an object")
   if (typeof props.value !== "string") throw new TypeError("CodeEditor value must be a string")
   if (typeof props.readOnly !== "boolean") throw new TypeError("CodeEditor readOnly must be a boolean")
+  if (props.softBreaks !== undefined && (!props.readOnly || !Array.isArray(props.softBreaks))) {
+    throw new TypeError("CodeEditor softBreaks доступны только для чтения и передаются массивом смещений")
+  }
+  if (props.showFormattingCharacters !== undefined && typeof props.showFormattingCharacters !== "boolean") {
+    throw new TypeError("CodeEditor showFormattingCharacters must be a boolean")
+  }
   if (props.model !== undefined && !(props.model instanceof CodeEditorModel)) throw new TypeError("CodeEditor model must be a CodeEditorModel")
   if (props.onChange !== undefined && typeof props.onChange !== "function") throw new TypeError("CodeEditor onChange must be a function")
   if (props.ref !== undefined && typeof props.ref !== "function") throw new TypeError("CodeEditor ref must be a function")

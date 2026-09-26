@@ -1,7 +1,41 @@
 import {expect, test} from "bun:test"
 import {buildCodeEditorViewModel} from "../src/code-editor/model.ts"
 import {codeEditorPaintRuns} from "../src/code-editor/paint-runs.ts"
+import {codeEditorVisualRows} from "../src/code-editor/visual-rows.ts"
 import {codeEditorSyntaxTheme, resolveCodeEditorSyntaxScopeColorHex} from "../src/code-editor/syntax-theme-runtime.ts"
+
+test("мягкие переносы сохраняют текст, подсветку и номера исходных строк", () => {
+  const value = "first\\nsecond\r\nthird"
+  const view = buildCodeEditorViewModel({value, readOnly: true, tokens: [
+    [{s: 0, e: 13, c: "s", fg: "#112233"}],
+    [{s: 0, e: 5, c: "k", fg: "#445566"}],
+  ]})
+  const rows = codeEditorVisualRows(view, [7])
+  expect(rows.map(row => row.segments.map(segment => segment.text).join(""))).toEqual(["first\\n", "second", "third"])
+  expect(rows.map(row => row.line)).toEqual([0, 0, 1])
+  expect(rows.map(row => row.continuation)).toEqual([false, true, false])
+  expect(rows.map(row => row.separator + row.segments.map(segment => segment.text).join("")).join("")).toBe(value)
+  expect(rows[1]?.segments[0]?.foreground).toBe("#112233")
+})
+
+test("мягкие переносы не меняют редактируемую модель и отклоняют неверные смещения", () => {
+  expect(() => buildCodeEditorViewModel({value: "abc", readOnly: false, softBreaks: [1]})).toThrow("только для чтения")
+  const view = buildCodeEditorViewModel({value: "abc", readOnly: true})
+  for (const breaks of [[0], [3], [1, 1], [2, 1], [0.5]]) {
+    expect(() => codeEditorVisualRows(view, breaks)).toThrow(RangeError)
+  }
+})
+
+test("флаг форматирования отделяет escape от видимого текста без потери исходных символов", () => {
+  const value = "first\\nsecond\\r\\nthird"
+  const view = buildCodeEditorViewModel({value, readOnly: true, languageId: "plaintext"})
+  const rows = codeEditorVisualRows(view, [7, 17], false)
+  expect(rows.map(row => row.segments.map(segment => segment.text).join(""))).toEqual(["first", "second", "third"])
+  expect(rows.map(row => row.formatting)).toEqual(["\\n", "\\r\\n", ""])
+  expect(rows.map(row => row.separator + row.segments.map(segment => segment.text).join("") + row.formatting).join("")).toBe(value)
+  const literal = buildCodeEditorViewModel({value: "a\\\\nb", readOnly: true, languageId: "plaintext"})
+  expect(codeEditorVisualRows(literal, [4], false)[0]?.formatting).toBe("")
+})
 
 test("presentation coalesces equal colors without merging or mutating lexical tokens", () => {
   const tokens = [[{s: 0, e: 3, c: "k", fg: "#ABC"}, {s: 3, e: 6, c: "d", fg: "#aabbcc"}]]
