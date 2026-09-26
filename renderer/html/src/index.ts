@@ -35,6 +35,7 @@ export type {
   RenderEdges,
   RenderFlexDirection,
   RenderFrame,
+  RenderTextHighlight,
   RenderJustifyContent,
   RenderMargin,
   RenderObjectFit,

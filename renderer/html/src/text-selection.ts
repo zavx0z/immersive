@@ -1,5 +1,7 @@
 import {Text, textOffsetAtPosition, type Node, type Range, type Selection} from "@zavx0z/dom"
-import type {RenderFrame, RenderTextMeasurer, RenderTextSource, TextDisplayItem, RenderClip, RenderTransform, RectDisplayItem} from "./types.ts"
+import type {RenderFrame, RenderTextMeasurer, RenderTextSource, TextDisplayItem, RenderClip, RenderTransform, RenderTextHighlight} from "./types.ts"
+import {buildTextHighlights} from "./text-highlight-geometry.ts"
+import {hitTestProjection} from "./projection-hit.ts"
 import {pointInClip} from "./interaction.ts"
 import {readCanonicalRenderFrameChanges} from "./frame-changes.ts"
 
@@ -313,8 +315,10 @@ export function caretPositionAtPoint(
   let localX = 0
   let bestY = 0
   let empty: Node | null = null
+  const pointerHit = hitTestProjection(frame, x, y)
   for (const box of emptyBoxCandidates(frame, y)) {
     if (options.root && !options.root.contains(box.node)) continue
+    if (pointerHit && !pointerHit.node.contains(box.node)) continue
     const px = (x - box.transform.translateX) / box.transform.scaleX
     const py = (y - box.transform.translateY) / box.transform.scaleY
     if (px >= box.contentX && px <= box.contentX + box.contentWidth && py >= box.contentY && py < box.contentY + box.contentHeight &&
@@ -333,6 +337,7 @@ export function caretPositionAtPoint(
   const near = textCandidates(frame, queryY - bandHeight, queryY + bandHeight)
   const consider = (item: TextDisplayItem): TextDisplayItem | undefined => {
     if (item.source?.userSelect === "none" || options.root && !options.root.contains(item.node)) return
+    if (pointerHit && (!options.root || options.root.contains(pointerHit.node)) && !pointerHit.node.contains(item.node)) return
     const transform = item.transform
     if (transform.scaleX === 0 || transform.scaleY === 0) return
     const px = (x - transform.translateX) / transform.scaleX
@@ -343,6 +348,8 @@ export function caretPositionAtPoint(
     if (!options.nearest && (!inside || clipped)) return
     const visible = nearestVisiblePoint(frame, transformedBounds(item.x, item.y, width, item.lineHeight, transform), item.clips, x, y)
     if (visible === null) return
+    const top = hitTestProjection(frame, visible.x, visible.y)
+    if (top && !top.node.contains(item.node)) return
     const dy = Math.abs(visible.y - y)
     const dx = Math.abs(visible.x - x)
     // Prefer the nearest visual line, then the nearest fragment within that line.
@@ -612,17 +619,35 @@ export function selectTextWordAtPoint(frame: RenderFrame, x: number, y: number):
   return true
 }
 
-const border = Object.freeze({widths: Object.freeze({top: 0, right: 0, bottom: 0, left: 0}),
-  colors: Object.freeze({top: "transparent", right: "transparent", bottom: "transparent", left: "transparent"}),
-  radii: Object.freeze({topLeft: 0, topRight: 0, bottomRight: 0, bottomLeft: 0})})
+type HighlightCache = Readonly<{
+  start: Node; startOffset: number; end: Node; endOffset: number
+  caret: boolean; color: string; value: readonly RenderTextHighlight[]
+}>
+const highlightCache = new WeakMap<RenderFrame, Map<string, HighlightCache>>()
 
-export function rangeHighlightItems(frame: RenderFrame, range: Range, key: string, color = "#6da4ff", caret = false): readonly RectDisplayItem[] {
-  return Object.freeze(getRangeClientRects(frame, range, {caret, visibleOnly: true}).filter(rect => {
-    const x = rect.x * rect.transform.scaleX + rect.transform.translateX
-    const y = rect.y * rect.transform.scaleY + rect.transform.translateY
-    const right = x + rect.width * rect.transform.scaleX
-    const bottom = y + rect.height * rect.transform.scaleY
-    return Math.max(x, right) >= 0 && Math.min(x, right) <= frame.viewport.width && Math.max(y, bottom) >= 0 && Math.min(y, bottom) <= frame.viewport.height
-  }).map((rect, index) => Object.freeze({...rect, kind: "rect" as const, key: `${key}:${index}`, color,
-    opacity: range.collapsed ? 1 : 0.35, border, shadow: null})))
+/** Объединяет фрагменты в непрерывный контур, сохраняя слой исходного текста. */
+export function rangeHighlightItems(frame: RenderFrame, range: Range, key: string, color = "#6da4ff", caret = false) {
+  const cache = highlightCache.get(frame) ?? new Map<string, HighlightCache>()
+  const previous = cache.get(key)
+  if (previous && previous.start === range.startContainer && previous.startOffset === range.startOffset &&
+    previous.end === range.endContainer && previous.endOffset === range.endOffset && previous.caret === caret && previous.color === color) return previous.value
+  const rects = [...getRangeClientRects(frame, range, {caret, visibleOnly: true})]
+  if (!range.collapsed) {
+    const visited = new Set<Node>()
+    for (let y = 0; y <= frame.viewport.height + bandHeight; y += bandHeight) {
+      for (const box of emptyBoxCandidates(frame, y)) {
+        if (visited.has(box.node) || !range.intersectsNode(box.node)) continue
+        visited.add(box.node)
+        const rect = clientRect({node: box.node, x: box.contentX, y: box.contentY,
+          width: Math.min(box.contentWidth, box.contentHeight / 2), height: box.contentHeight,
+          transform: box.transform, clips: frame.hits.get(box.node)?.clips ?? []})
+        if (rect.width > 0 && visibleRangeRect(frame, rect)) rects.push(rect)
+      }
+    }
+  }
+  const value = buildTextHighlights(frame, rects, range, key, color, node => textForNode(frame, node))
+  cache.set(key, {start: range.startContainer, startOffset: range.startOffset, end: range.endContainer,
+    endOffset: range.endOffset, caret, color, value})
+  highlightCache.set(frame, cache)
+  return value
 }

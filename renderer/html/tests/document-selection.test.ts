@@ -223,7 +223,9 @@ describe("ordinary document text selection", () => {
       expect(selected.displayList).toBe(scroll.displayList)
       expect(selected.textHighlights!.length).toBeLessThanOrEqual(6)
       expect(measurements).toBeLessThanOrEqual(6)
-      expect(selected.textHighlights?.some(item => item.node.textContent === "line 1000")).toBe(true)
+      const visible = getRangeClientRects(scroll, range, {visibleOnly: true})
+      expect(visible.some(item => item.node.textContent === "line 1000")).toBe(true)
+      expect(selected.textHighlights?.some(item => item.y <= 0 && item.y + item.height >= 14)).toBe(true)
       measurements = 0
       f.interaction.composeFrame(scroll)
       expect(measurements).toBe(0)

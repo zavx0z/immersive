@@ -163,6 +163,12 @@ export type RectDisplayItem = Readonly<{
   transform: RenderTransform
 }>
 
+/** Подсветка сохраняет границы, контур и место исходного текста в порядке рисования. */
+export type RenderTextHighlight = RectDisplayItem & Readonly<{
+  contour?: RenderPathGeometry
+  paintBefore?: Readonly<{node: Node; key: string}>
+}>
+
 export type TextDisplayItem = Readonly<{
   kind: "text"
   key: string
@@ -307,7 +313,7 @@ export interface RenderFrame {
   readonly boxByNode: ReadonlyMap<Node, RenderBox>
   readonly displayList: readonly DisplayItem[]
   /** Independent selection paint channel: changing it never rebuilds the document display list. */
-  readonly textHighlights?: readonly RectDisplayItem[]
+  readonly textHighlights?: readonly RenderTextHighlight[]
   readonly hits: ReadonlyMap<Node, HitMetadata>
   /** Exact paint-order hit records; adapters may omit it on synthetic frames. */
   readonly hitOrder?: readonly HitMetadata[]

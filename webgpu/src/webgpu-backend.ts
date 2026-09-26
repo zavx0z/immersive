@@ -38,6 +38,7 @@ import type {
   RectDisplayItem,
   RenderClip,
   RenderFrame,
+  RenderTextHighlight,
   RenderFontSelection,
   RenderTextMeasurer,
   RenderTransform,
@@ -373,8 +374,8 @@ export class RendererWebGpuBackend {
   readonly #pathGeometrySources = new Map<DisplayToken, PathDisplayItem["geometry"]>()
   readonly #pathRuns: PathRunEntry[] = []
   #entries = new Map<DisplayToken, RetainedEntry>()
-  #textHighlightRoot = new Object3D()
-  #textHighlightEntries: RectEntry[] = []
+  #textHighlightEntries: RetainedEntry[] = []
+  #textHighlightRoots: Object3D[] = []
   #preparedFrameCache: PreparedFrameCache | null = null
   #scrollPaintProjection: ScrollPaintProjection | null = null
   #frameDocument: RenderFrame["document"] | null = null
@@ -518,7 +519,13 @@ export class RendererWebGpuBackend {
     const prepared = highlights.map((item, index) => {
       if (item.kind !== "rect") throw new TypeError("Text highlights must be rectangle display items")
       this.#validateDisplayNode(item.node, frame, `frame.textHighlights[${index}].node`)
-      return this.#prepareRectAt(item, this.#tokenFor(item.node, `text-highlight:${index}`), index, frame)
+      if (!item.contour) return this.#prepareRectAt(item, this.#tokenFor(item.node, `text-highlight:${index}`), index, frame)
+      const node = item.node.nodeType === 1 ? item.node : item.node.parentElement
+      if (!node) throw new Error("Text highlight contour requires an Element owner")
+      const path: PathDisplayItem = Object.freeze({kind: "path", key: `text-highlight:${index}`, node: node as PathDisplayItem["node"],
+        x: item.x, y: item.y, geometry: item.contour, fill: item.color, fillRule: "nonzero", stroke: "transparent",
+        strokeWidth: 0, opacity: item.opacity, clips: item.clips, transform: item.transform, presentationOwner: null})
+      return this.#prepareFrame({...frame, displayList: [path]})[0]!
     })
     const cached = this.#preparedFrameCache
     const sameBase = cached !== null && cached.reusableSources && isRendererOwnedFrame(frame) &&
@@ -533,7 +540,7 @@ export class RendererWebGpuBackend {
       this.#pathPreparedItems = 0
       this.#resetPathWriteDiagnostics()
     } else this.#applyBaseFrame(frame)
-    this.#applyTextHighlights(prepared)
+    this.#applyTextHighlights(prepared, highlights)
     if (this.#preparedFrameCache !== null) {
       const cache = this.#preparedFrameCache
       this.#preparedFrameCache = Object.freeze({...cache, frame,
@@ -543,27 +550,41 @@ export class RendererWebGpuBackend {
     }
   }
 
-  #applyTextHighlights(prepared: readonly PreparedRectItem[]): void {
+  /** Подсветка рисуется перед своим текстом и под последующими окнами, без пересборки glyph geometry. */
+  #applyTextHighlights(prepared: readonly PreparedItem[], highlights: readonly RenderTextHighlight[]): void {
     const geometries = new Set<BufferGeometry>()
+    const previousRoots = new Set(this.#textHighlightRoots)
+    const base = this.root.children.filter(node => !previousRoots.has(node))
+    const before = new Map<Object3D, Object3D[]>()
+    const trailing: Object3D[] = []
     for (let index = 0; index < prepared.length; index++) {
       const value = prepared[index]!
       let entry = this.#textHighlightEntries[index]
-      if (entry === undefined) {
-        entry = this.#createRect(value)
-        this.#textHighlightEntries.push(entry)
-        this.#textHighlightRoot.add(entry.node)
+      if (entry?.kind !== value.kind) {
+        if (entry) this.#detachEntry(entry, geometries)
+        entry = this.#createEntry(value)
+        this.#textHighlightEntries[index] = entry
       } else this.#updateEntry(entry, value)
+      let group = this.#textHighlightRoots[index]
+      if (!group) {
+        group = new Object3D()
+        group.name = "text-highlights"
+        this.#textHighlightRoots[index] = group
+      }
+      if (entry.node.parent !== group) group.add(entry.node)
+      const anchor = highlights[index]!.paintBefore
+      const target = anchor ? this.#entries.get(this.#tokenFor(anchor.node, anchor.key))?.node : undefined
+      if (target && base.includes(target)) {
+        const entries = before.get(target) ?? []
+        entries.push(group)
+        before.set(target, entries)
+      } else trailing.push(group)
     }
     while (this.#textHighlightEntries.length > prepared.length) {
       this.#detachEntry(this.#textHighlightEntries.pop()!, geometries)
+      this.#textHighlightRoots.pop()!.parent = null
     }
-    this.#textHighlightRoot.visible = prepared.length > 0
-    if (prepared.length > 0 && this.#textHighlightRoot.parent !== this.root) {
-      this.#textHighlightRoot.name = "text-highlights"
-      // Object3D.add mutates children; retain the previous frame's topology snapshot.
-      this.root.children = [...this.root.children]
-      this.root.add(this.#textHighlightRoot)
-    }
+    this.#setRootChildren([...base.flatMap(node => [...before.get(node) ?? [], node]), ...trailing])
     for (const geometry of geometries) this.#invalidateGeometry(geometry)
   }
 
@@ -715,6 +736,7 @@ export class RendererWebGpuBackend {
     for (const entry of this.#entries.values()) this.#detachEntry(entry, geometries)
     for (const entry of this.#textHighlightEntries) this.#detachEntry(entry, geometries)
     this.#textHighlightEntries = []
+    this.#textHighlightRoots = []
     this.#entries.clear()
     this.#rectLayer.instances.clear()
     this.#rectHandles.clear()
@@ -2389,7 +2411,6 @@ export class RendererWebGpuBackend {
   }
 
   #setRootChildren(next: readonly Object3D[]): void {
-    if (this.#textHighlightRoot.parent === this.root && !next.includes(this.#textHighlightRoot)) next = [...next, this.#textHighlightRoot]
     const unchanged = this.root.children.length === next.length
       && this.root.children.every((child, index) => child === next[index])
     if (unchanged) return
