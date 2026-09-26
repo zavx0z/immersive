@@ -6,6 +6,7 @@ import {documentation, enclosingProperty} from "./documentation.ts"
 
 /**
 Строит JSON Schema по разрешённым типам checker и тем же TSDoc, что справочник.
+Описание description располагается перед остальными полями каждой схемы.
 Рекурсивные формы ссылаются на уже раскрытую схему через стандартный $ref.
 Не добавляет ограничений из свободного текста и не исполняет документируемый код.
 Функции и не поддержанные JSON-формы явно закрываются схемой not с пояснением.
@@ -20,11 +21,13 @@ export async function typeSchema(
   let remaining = 4096
   const pointer = (name: string) => encodeURIComponent(name.replace(/~/gu, "~0").replace(/\//gu, "~1"))
   const unavailable = async (value: Type, reason = "Тип не представим в JSON"): Promise<TypeDocSchema> => ({
-    not: {}, description: `${reason}: ${await project.checker.typeToString(value, declaration)}`,
+    description: `${reason}: ${await project.checker.typeToString(value, declaration)}`, not: {},
   })
-  const annotate = (schema: TypeDocSchema, description: string): TypeDocSchema => description
-    ? {...schema, description: schema.not && schema.description ? `${description}\n${schema.description}` : description}
-    : schema
+  const annotate = (schema: TypeDocSchema, description: string): TypeDocSchema => {
+    const {description: previous, ...shape} = schema
+    const text = description ? schema.not && previous ? `${description}\n${previous}` : description : previous
+    return text ? {description: text, ...shape} : shape
+  }
   const build = async (value: Type, path: string, depth: number, optional = false): Promise<TypeDocSchema> => {
     if (--remaining < 0 || depth > 48) return unavailable(value, "Превышен предел раскрытия JSON Schema")
     if (value.isStringLiteralType() || value.isNumberLiteralType() || value.isBooleanLiteralType()) {
