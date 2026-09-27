@@ -50,6 +50,7 @@ export type IconButtonProps = Readonly<{
   onClick?: ((event: ButtonPointerEvent) => void) | undefined
 }>
 
+/** Текстовая кнопка растёт по содержимому; size задаёт минимальную высоту. IconButton сохраняет квадратную форму. */
 export function Button(props: ButtonProps) {
   const variant = props.variant ?? "contained"
   const tone = props.tone ?? "neutral"
@@ -87,9 +88,10 @@ export function Button(props: ButtonProps) {
       align-items: center;
       justify-content: center;
       min-width: 22px;
-      height: var(--control-height-medium);
+      min-height: var(--control-height-medium);
       gap: var(--control-content-gap);
-      padding: 2px 6px;
+      padding-block: 2px;
+      padding-inline: 6px;
       border: var(--border-width-control) solid var(--widget-regular-outline);
       border-radius: 3px;
       background: var(--widget-regular-background);
@@ -133,20 +135,24 @@ export function Button(props: ButtonProps) {
       }
 
       &[data-size="small"] {
-        height: var(--control-height-small);
+        min-height: var(--control-height-small);
         min-width: 18px;
-        padding: 1px 5px;
+        padding-block: 1px;
+        padding-inline: 5px;
         font-size: var(--font-size-xs);
       }
 
       &[data-size="large"] {
-        height: var(--control-height-large);
+        min-height: var(--control-height-large);
         min-width: 28px;
-        padding: 3px 8px;
+        padding-block: 3px;
+        padding-inline: 8px;
         font-size: var(--font-size-sm);
       }
 
       &[data-icon-only="true"] {
+        height: var(--control-height-medium);
+        min-height: 0;
         width: var(--control-height-medium);
         min-width: var(--control-height-medium);
         padding: 0;
@@ -154,11 +160,13 @@ export function Button(props: ButtonProps) {
       }
 
       &[data-icon-only="true"][data-size="small"] {
+        height: var(--control-height-small);
         width: var(--control-height-small);
         min-width: var(--control-height-small);
       }
 
       &[data-icon-only="true"][data-size="large"] {
+        height: var(--control-height-large);
         width: var(--control-height-large);
         min-width: var(--control-height-large);
       }
