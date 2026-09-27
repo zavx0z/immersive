@@ -1810,6 +1810,10 @@ export class RendererWebGpuBackend {
         assertFiniteNonNegative(item.fontSize, `${label}.fontSize`)
         assertFiniteNonNegative(item.lineHeight, `${label}.lineHeight`)
         assertFinite(item.letterSpacing, `${label}.letterSpacing`)
+        if (item.orientation !== undefined) {
+          if (item.orientation !== "sideways-rl" && item.orientation !== "sideways-lr") throw new TypeError(`${label}.orientation is unsupported`)
+          assertFiniteNonNegative(item.inlineSize!, `${label}.inlineSize`)
+        }
         const opacity = assertUnitOpacity(item.opacity, `${label}.opacity`)
         const font = this.#resolveFont(item)
         let metrics = this.#fontMetrics.get(font)
@@ -2593,10 +2597,17 @@ function textPaintBounds(node: CachedText, value: PreparedTextItem): RectBounds 
   const minY = Math.min(stencil?.minY ?? Infinity, cover?.minY ?? Infinity)
   const maxX = Math.max(stencil?.maxX ?? -Infinity, cover?.maxX ?? -Infinity)
   const maxY = Math.max(stencil?.maxY ?? -Infinity, cover?.maxY ?? -Infinity)
-  const bounds = transformedBounds(value.item.transform,
-    value.item.x + (minX + maxX) / 2,
-    value.baselineY - (minY + maxY) / 2,
-    maxX - minX, maxY - minY)
+  const item = value.item
+  const cx = (minX + maxX) / 2
+  const cy = (minY + maxY) / 2
+  const baseline = value.baselineY - item.y
+  const clockwise = item.orientation === "sideways-rl"
+  const sideways = item.orientation !== undefined
+  const bounds = transformedBounds(item.transform,
+    sideways ? item.x + (clockwise ? item.lineHeight - baseline + cy : baseline - cy) : item.x + cx,
+    sideways ? item.y + (clockwise ? cx : item.inlineSize! - cx) : value.baselineY - cy,
+    sideways ? maxY - minY : maxX - minX,
+    sideways ? maxX - minX : maxY - minY)
   // Retain an antialias fringe; logical advances are not glyph ink bounds.
   return {minX: bounds.minX - 1, minY: bounds.minY - 1, maxX: bounds.maxX + 1, maxY: bounds.maxY + 1}
 }
@@ -3045,6 +3056,7 @@ function sameResolvedPresentationInputs(item: DisplayItem, previous: RenderFrame
 
 function sameTextPaint(left: TextDisplayItem, right: TextDisplayItem): boolean {
   return left.text === right.text && left.width === right.width &&
+    left.orientation === right.orientation && left.inlineSize === right.inlineSize &&
     left.color === right.color && left.opacity === right.opacity &&
     left.fontSize === right.fontSize && left.lineHeight === right.lineHeight &&
     left.letterSpacing === right.letterSpacing && left.fontFamily === right.fontFamily &&
@@ -3233,9 +3245,16 @@ function positionPlane(
 }
 
 function positionText(node: CachedText, item: TextDisplayItem, baselineY: number): void {
-  const origin = applyRenderTransform(item.transform, item.x, baselineY)
+  const sideways = item.orientation !== undefined
+  const baselineOffset = baselineY - item.y
+  const clockwise = item.orientation === "sideways-rl"
+  const origin = applyRenderTransform(item.transform,
+    sideways ? item.x + (clockwise ? item.lineHeight - baselineOffset : baselineOffset) : item.x,
+    sideways ? item.y + (clockwise ? 0 : item.inlineSize!) : baselineY)
   node.position.set(origin.x, -origin.y, 0)
-  node.scale.set(item.transform.scaleX, item.transform.scaleY, 1)
+  node.rotation.z = sideways ? (clockwise ? -Math.PI / 2 : Math.PI / 2) : 0
+  node.scale.set(sideways ? item.transform.scaleY : item.transform.scaleX,
+    sideways ? item.transform.scaleX : item.transform.scaleY, 1)
 }
 
 function applyRenderTransform(

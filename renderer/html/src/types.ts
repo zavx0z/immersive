@@ -185,6 +185,10 @@ export type TextDisplayItem = Readonly<{
   fontFamily?: string
   fontWeight?: number
   fontStyle?: "normal" | "italic"
+  /** Ориентация вертикального текстового run; отсутствие означает горизонтальные глифы. */
+  orientation?: "sideways-rl" | "sideways-lr"
+  /** Измеренная длина вертикального run вдоль строки. */
+  inlineSize?: number
   /** Resolved line-box height; `y` is the line-box top, not the alphabetic baseline. */
   lineHeight: number
   letterSpacing: number

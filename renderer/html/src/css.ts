@@ -124,6 +124,8 @@ export type ComputedStyle = Readonly<{
   scrollbarWidth: ComputedScrollbarWidth
   objectFit: RenderObjectFit
   textAlign: RenderTextAlign
+  writingMode: "horizontal-tb" | "vertical-rl" | "vertical-lr" | "sideways-rl" | "sideways-lr"
+  textOrientation: "mixed" | "upright" | "sideways"
   textOverflow: ComputedTextOverflow
   whiteSpace: RenderWhiteSpace
   userSelect: "text" | "none" | "all" | "contain"
@@ -240,6 +242,8 @@ const deferredVariablePropertySet: ReadonlySet<string> = new Set([
   "flex-wrap",
   "scrollbar-width",
   "text-align",
+  "writing-mode",
+  "text-orientation",
   "line-height",
   "letter-spacing",
   "font-family",
@@ -475,6 +479,8 @@ export const computeStyle = (
 
   const customProperties = createCustomPropertyEnvironment(element, parent, customValues)
   values = resolveCascadedVariables(values, customProperties)
+  const writingMode = (readValue(values, "writing-mode") ?? parent?.writingMode ?? "horizontal-tb") as ComputedStyle["writingMode"]
+  resolveLogicalPadding(values, writingMode)
 
   const inheritedColor = parent?.color ?? "#000000"
   const color = resolvedColor(readValue(values, "color"), inheritedColor) ?? inheritedColor
@@ -575,6 +581,8 @@ export const computeStyle = (
     overflowY: overflow.y,
     scrollbarWidth: parseScrollbarWidth(readValue(values, "scrollbar-width")),
     objectFit: parseObjectFit(readValue(values, "object-fit")),
+    writingMode,
+    textOrientation: (readValue(values, "text-orientation") ?? parent?.textOrientation ?? "mixed") as ComputedStyle["textOrientation"],
     textAlign: parseTextAlign(
       readValue(values, "text-align"),
       parent?.textAlign ?? "start",
@@ -791,6 +799,23 @@ const gaugeUaDeclarations = (): DeclarationMap => Object.freeze({
   background: "#ffffff",
   overflow: "clip",
 })
+
+/** Логические отступы сопоставляются с физическими после вычисления writing-mode, сохраняя приоритет каскада. */
+const resolveLogicalPadding = (values: Map<string, CascadedValue>, mode: ComputedStyle["writingMode"]): void => {
+  const horizontal = mode === "horizontal-tb"
+  const inlineReversed = mode === "sideways-lr"
+  const blockReversed = mode === "vertical-rl" || mode === "sideways-rl"
+  const sides = horizontal ? ["left", "right", "top", "bottom"]
+    : [inlineReversed ? "bottom" : "top", inlineReversed ? "top" : "bottom",
+      blockReversed ? "right" : "left", blockReversed ? "left" : "right"]
+  for (const [index, suffix] of ["inline-start", "inline-end", "block-start", "block-end"].entries()) {
+    const logical = values.get(`padding-${suffix}`)
+    if (!logical) continue
+    const physical = `padding-${sides[index]}`
+    const current = values.get(physical)
+    if (!current || comparePriority(current, logical) <= 0) values.set(physical, logical)
+  }
+}
 
 const readInlineStyle = (element: Element): string => {
   const attribute = element.getAttribute("style")
@@ -1178,6 +1203,12 @@ const expandDeclaration = (
       return validScrollbarWidth(value)
         ? [["scrollbar-width", value.trim().toLowerCase()]]
         : []
+    case "writing-mode":
+      return ["horizontal-tb", "vertical-rl", "vertical-lr", "sideways-rl", "sideways-lr"].includes(value.trim().toLowerCase())
+        ? [[property, value.trim().toLowerCase()]] : []
+    case "text-orientation":
+      return ["mixed", "upright", "sideways"].includes(value.trim().toLowerCase())
+        ? [[property, value.trim().toLowerCase()]] : []
     case "text-align":
       return validTextAlign(value)
         ? [["text-align", value.trim().toLowerCase()]]
@@ -1255,11 +1286,12 @@ const expandDeclaration = (
     case "border-color":
       return expandColorQuad(value)
     case "margin-inline":
-    case "padding-inline":
-      return expandPair(property.replace("-inline", ""), "left", "right", value)
+      return expandPair("margin", "left", "right", value)
     case "margin-block":
+      return expandPair("margin", "top", "bottom", value)
+    case "padding-inline":
     case "padding-block":
-      return expandPair(property.replace("-block", ""), "top", "bottom", value)
+      return expandPair(property, "start", "end", value)
     case "margin-inline-start":
       return [["margin-left", value]]
     case "margin-inline-end":
@@ -1269,13 +1301,10 @@ const expandDeclaration = (
     case "margin-block-end":
       return [["margin-bottom", value]]
     case "padding-inline-start":
-      return [["padding-left", value]]
     case "padding-inline-end":
-      return [["padding-right", value]]
     case "padding-block-start":
-      return [["padding-top", value]]
     case "padding-block-end":
-      return [["padding-bottom", value]]
+      return [[property, value]]
     case "border":
       return expandBorder(value)
     case "border-top":

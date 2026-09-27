@@ -418,6 +418,8 @@ const ROOT_STYLE: ComputedStyle = Object.freeze({
   scrollbarWidth: "auto",
   objectFit: "cover",
   textAlign: "start",
+  writingMode: "horizontal-tb",
+  textOrientation: "mixed",
   textOverflow: "clip",
   whiteSpace: "normal",
   userSelect: "text",
@@ -1220,7 +1222,7 @@ const tryBuildCharacterDataFrame = (
   revision: number,
 ): RenderFrame | null => {
   const layoutNode = layoutCache.get(target)
-  if (!layoutNode || layoutNode.text === null || layoutNode.transparent)
+  if (!layoutNode || layoutNode.text === null || layoutNode.transparent || layoutNode.style.writingMode !== "horizontal-tb")
     return null
   const parent = layoutNode.parent
   if (!isStableTextContainer(layoutNode, parent, target)) return null
@@ -2535,6 +2537,8 @@ const buildLayoutTree = (
         !sameLineHeight(cached.style.lineHeight, style.lineHeight) ||
         cached.style.letterSpacing !== style.letterSpacing ||
         cached.style.textAlign !== style.textAlign ||
+        cached.style.writingMode !== style.writingMode ||
+        cached.style.textOrientation !== style.textOrientation ||
         cached.style.whiteSpace !== style.whiteSpace ||
         cached.style.fill !== style.fill ||
         cached.style.fillRule !== style.fillRule ||
@@ -2659,7 +2663,7 @@ const inlineLayout = (
   height: number,
   state: BuildState,
 ): InlineLayout | null => {
-  if (owner.text !== null || owner.transparent || owner.style.display === "flex") return null
+  if (owner.text !== null || owner.transparent || owner.style.display === "flex" || owner.style.writingMode !== "horizontal-tb") return null
   const key = `${width}:${height}`
   let cached = state.inlinePlans.get(owner)
   if (cached?.has(key)) return cached.get(key) ?? null
@@ -3597,6 +3601,7 @@ const place = (
       x,
       y,
       layoutNode.parent?.style.display === "block" ? availableWidth : width,
+      height,
       clips,
       state,
     )
@@ -6793,6 +6798,10 @@ const measureText = (
 ): Size => {
   if (value === "") return Object.freeze({width: 0, height: 0})
   const lines = splitTextLines(value)
+  if (style.writingMode !== "horizontal-tb") return Object.freeze({
+    width: lines.length * resolveLineHeight(style),
+    height: Math.max(...lines.map(line => verticalRuns(line, style, textMeasurer).reduce((sum, run) => sum + run.advance, 0))),
+  })
   const width = lines.reduce(
     (maximum, line) => Math.max(maximum, textAdvance(line, style, textMeasurer)),
     0,
@@ -6885,12 +6894,17 @@ const emitTextItems = (
   x: number,
   y: number,
   alignmentWidth: number,
+  alignmentHeight: number,
   clips: readonly RenderClip[],
   state: BuildState,
 ): void => {
   if (layoutNode.style.visibility === "hidden") return
   const value = layoutNode.text
   if (!value) return
+  if (layoutNode.style.writingMode !== "horizontal-tb") {
+    emitVerticalTextItems(layoutNode, x, y, alignmentHeight, clips, state)
+    return
+  }
   const lines = splitTextLines(value)
   const sourceOffsets = normalizedSourceOffsets(layoutNode.node.textContent ?? "", layoutNode.style.whiteSpace)
   let valueOffset = 0
@@ -6965,6 +6979,61 @@ const normalizedSourceOffsets = (value: string, whiteSpace: ComputedStyle["white
   return offsets
 }
 
+/** Вертикальная строка сохраняет горизонтальное shaping для sideways runs и em-ячейки для upright. */
+const verticalSegments = new Intl.Segmenter(undefined, {granularity: "grapheme"})
+const verticalRuns = (value: string, style: ComputedStyle, measurer?: RenderTextMeasurer) => {
+  const sideways = style.writingMode.startsWith("sideways") || style.textOrientation === "sideways"
+  if (sideways) return [{text: value, upright: false, advance: textAdvance(value, style, measurer)}]
+  const runs: {text: string; upright: boolean; advance: number}[] = []
+  for (const {segment} of verticalSegments.segment(value)) {
+    const upright = style.textOrientation === "upright" || /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\p{Extended_Pictographic}]/u.test(segment)
+    const previous = runs.at(-1)
+    if (!upright && previous && !previous.upright) previous.text += segment
+    else runs.push({text: segment, upright, advance: 0})
+  }
+  for (const [index, run] of runs.entries()) {
+    run.advance = run.upright ? Math.max(0, style.fontSize + (index < runs.length - 1 ? style.letterSpacing : 0))
+      : textAdvance(run.text, style, measurer) + (index < runs.length - 1 ? style.letterSpacing : 0)
+  }
+  return runs
+}
+
+const emitVerticalTextItems = (
+  layoutNode: LayoutNode, x: number, y: number, alignmentHeight: number,
+  clips: readonly RenderClip[], state: BuildState,
+): void => {
+  const style = layoutNode.style
+  const lines = splitTextLines(layoutNode.text!)
+  const lineHeight = resolveLineHeight(style)
+  const reverseColumns = style.writingMode === "vertical-rl" || style.writingMode === "sideways-rl"
+  const reverseInline = style.writingMode === "sideways-lr"
+  lines.forEach((line, index) => {
+    const runs = verticalRuns(line, style, state.textMeasurer)
+    const advance = runs.reduce((sum, run) => sum + run.advance, 0)
+    const columnX = x + (reverseColumns ? lines.length - index - 1 : index) * lineHeight
+    const free = Math.max(0, alignmentHeight - advance)
+    const offset = style.textAlign === "center" ? free / 2
+      : style.textAlign === "end" || style.textAlign === "right" ? free : 0
+    let inline = reverseInline ? alignmentHeight - offset : offset
+    for (const [runIndex, run] of runs.entries()) {
+      if (reverseInline) inline -= run.advance
+      const top = y + inline
+      if (hasPaintableText(run.text)) state.displayList.push(Object.freeze({
+        kind: "text", key: runs.length === 1 ? (lines.length === 1 ? "text" : `text:${index}`) : `text:${index}:${runIndex}`,
+        node: layoutNode.node, text: run.text, width: textAdvance(run.text, style, state.textMeasurer),
+        x: run.upright ? columnX + (lineHeight - textAdvance(run.text, style, state.textMeasurer)) / 2 : columnX,
+        y: top,
+        ...(run.upright ? {} : {orientation: reverseInline ? "sideways-lr" as const : "sideways-rl" as const, inlineSize: run.advance}),
+        color: style.color, fontSize: style.fontSize,
+        fontFamily: style.fontFamily, fontWeight: style.fontWeight, fontStyle: style.fontStyle, lineHeight: run.upright ? style.fontSize : lineHeight,
+        letterSpacing: style.letterSpacing, opacity: layoutNode.effectiveOpacity, clips,
+        transform: presentationFor(layoutNode.node, state),
+      }))
+      if (!reverseInline) inline += run.advance
+    }
+  })
+}
+
 const splitTextLines = (value: string): readonly string[] =>
   value.split(/\r\n|\r|\n/)
 
@@ -7027,6 +7096,8 @@ const textStyle = (inherited: ComputedStyle): ComputedStyle =>
     scrollbarWidth: "auto",
     objectFit: "cover",
     textAlign: inherited.textAlign,
+    writingMode: inherited.writingMode,
+    textOrientation: inherited.textOrientation,
     textOverflow: inherited.textOverflow,
     whiteSpace: inherited.whiteSpace,
     userSelect: inherited.userSelect,

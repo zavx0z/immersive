@@ -72,6 +72,7 @@ records. Наследование и явный `visibility:visible` потом�
 
 - [Прокрутка и обновления кадра](scrolling.md).
 - [Inline-раскладка](inline-flow.md).
+- [Вертикальные текстовые строки](writing-mode.md).
 - [Размеры flex-строк и кэш измерений](flex-layout.md).
 - [Выделение текста](text-selection.md).
 - [Шрифты и изображения](font-images.md).
