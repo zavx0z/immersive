@@ -34,6 +34,8 @@ const expectedExports = Object.freeze([
   "./surfaces/panel",
   "./surfaces/window",
   "./surfaces/frame",
+  "./surfaces/tab",
+  "./surfaces/tab/contract/input",
   "./views/list",
   "./views/table",
   "./views/code-editor",

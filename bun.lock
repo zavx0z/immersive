@@ -284,6 +284,9 @@
       "dependencies": {
         "@zavx0z/highlighter": "link:@zavx0z/highlighter",
       },
+      "devDependencies": {
+        "@immersive/headless": "*",
+      },
       "peerDependencies": {
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",

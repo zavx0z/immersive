@@ -40,6 +40,8 @@
     "./surfaces/panel": "./surfaces/panel.tsx",
     "./surfaces/window": "./surfaces/window.tsx",
     "./surfaces/frame": "./surfaces/frame.tsx",
+    "./surfaces/tab": "./surfaces/tab/index.tsx",
+    "./surfaces/tab/contract/input": "./surfaces/tab/contract/input.ts",
     "./views/list": "./views/list.tsx",
     "./views/table": "./views/table.tsx",
     "./views/code-editor": "./views/code-editor.tsx",
@@ -56,8 +58,11 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
+    "test": "bun test --parallel tests && bun test --preload @immersive/headless/preload surfaces/tab/spec",
     "check": "bun run --parallel typecheck test"
+  },
+  "devDependencies": {
+    "@immersive/headless": "*"
   },
   "dependencies": {
     "@zavx0z/highlighter": "link:@zavx0z/highlighter"
