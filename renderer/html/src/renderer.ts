@@ -3505,6 +3505,7 @@ const place = (
     retained.fixedBoundaries.length === context.fixedBoundaries.length &&
     retained.fixedBoundaries.every((boundary, index) => boundary.root === context.fixedBoundaries[index]!.root &&
       boundary.containing === context.fixedBoundaries[index]!.containing)) {
+    retained = rebindRetainedTextClips(retained, clips)
     const dx = x - retained.coordinates[0]!
     const dy = y - retained.coordinates[1]!
     if (dx !== 0 || dy !== 0) {
@@ -3515,8 +3516,8 @@ const place = (
         hits: Object.freeze(retained.hits.map(hit => scrollHit(hit, clips.length - 1, -dx, -dy, context.presentation))),
         right: retained.right + dx, bottom: retained.bottom + dy,
       })
-      state.textPaint.set(layoutNode, retained)
     }
+    state.textPaint.set(layoutNode, retained)
     for (const box of retained.boxes) {
       state.boxes.push(box)
       state.boxByNode.set(box.node, box)
@@ -4062,6 +4063,25 @@ const canRetainTextPaint = (node: LayoutNode): boolean =>
   node.style.position === "static" && node.style.transform.length === 0 &&
   node.style.overflowX === "visible" && node.style.overflowY === "visible" &&
   !node.transparent && !["input", "img", "select", "textarea", "progress", "meter", "vector-path"].includes(node.tag ?? "")
+
+/**
+Связывает сохранённый текст с clip-объектами текущей раскладки.
+Равная геометрия разрешает повторное использование paint, но прокрутка ищет
+собственную границу по identity. Старые ссылки скрывают вложенный текст,
+когда одновременно с прокруткой обновляется соседнее поддерево.
+*/
+const rebindRetainedTextClips = (source: RetainedTextPaint, clips: readonly RenderClip[]): RetainedTextPaint => {
+  if (source.clips === clips) return source
+  /** Заменяет унаследованный префикс, сохраняя собственные границы потомков. */
+  const rebind = (current: readonly RenderClip[]): readonly RenderClip[] =>
+    current.length === clips.length ? clips : Object.freeze([...clips, ...current.slice(source.clips.length)])
+  return Object.freeze({
+    ...source,
+    clips,
+    display: Object.freeze(source.display.map(item => Object.freeze({...item, clips: rebind(item.clips)}))),
+    hits: Object.freeze(source.hits.map(hit => Object.freeze({...hit, clips: rebind(hit.clips)}))),
+  })
+}
 
 const textStreamChild = (node: LayoutNode): boolean =>
   node.text !== null || node.style.display === "none" ||
