@@ -1,7 +1,7 @@
 /**
 Пристыкованный Tab перемещается по периметру своей области и меняет сторону у углов.
-Подложка использует --widget-toolbar-background главной темы,
-наведение — --widget-hover-background. Родитель задаёт область обычным CSS. Один и тот же компонент используется в HUD,
+Подложка использует --widget-toolbar-background главной темы без подсветки
+при наведении. Со стороны примыкания рамка отсутствует. Родитель задаёт область обычным CSS. Один и тот же компонент используется в HUD,
 Display и вложенных контейнерах; окон, камер и отдельного рендера он не создаёт.
 
 @packageDocumentation
@@ -212,29 +212,29 @@ export function Tab(props: TabProps) {
         }
 
         &[data-edge="left"] {
+          border-left-width: 0;
           border-radius: 0 4px 4px 0;
           writing-mode: sideways-rl;
         }
 
         &[data-edge="right"] {
+          border-right-width: 0;
           border-radius: 4px 0 0 4px;
           writing-mode: sideways-lr;
         }
 
         &[data-edge="top"] {
+          border-top-width: 0;
           border-radius: 0 0 4px 4px;
         }
 
         &[data-edge="bottom"] {
+          border-bottom-width: 0;
           border-radius: 4px 4px 0 0;
         }
 
         &[data-dragging="true"] {
           cursor: grabbing;
-        }
-
-        &:hover {
-          background: var(--widget-hover-background);
         }
 
         &[aria-disabled="true"] {
