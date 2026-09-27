@@ -49,7 +49,9 @@ test("показывает переданный текст", async () => {
 JSX в spec/test автоматически преобразуется в Headless transport без файловой
 pragma и создаёт инертный `ComponentValue`; Document, Canvas, Renderer и
 DOM-элемент появляются только после `createHeadless()` и `render()`.
-Сессия Template compiler закрывается после обработки каждого production-модуля.
+Штатный persistent plugin Template сохраняет одну сессию компилятора на Git-корень
+в пределах тестового процесса. Production-модули используют её общий кэш и
+последовательную обработку; новый запуск Bun получает собственную сессию.
 Также поддерживается `headless.render(Component, props)` для компонента,
 скомпилированного до его импорта.
 

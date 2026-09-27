@@ -1,6 +1,6 @@
 import {existsSync} from "node:fs"
 import {dirname, relative, resolve, sep} from "node:path"
-import {JsxCompilerSession} from "@zavx0z/template/compiler"
+import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
 
 const registered = new Set<string>()
 
@@ -20,7 +20,8 @@ export function repositoryRoot(directory: string): string {
 Preload вызывает регистрацию до загрузки статического графа теста; `createHeadless`
 повторяет её идемпотентно для программных вызовов. Production TSX компилируется
 Template compiler, а JSX в spec/test автоматически использует инертный Headless transport.
-Сессия компиляции закрывается после обработки каждого модуля.
+Штатный persistent plugin сохраняет одну сессию и кэш компилятора на корень
+в пределах тестового процесса; последовательность преобразований принадлежит Template.
 */
 export function registerHeadlessCompiler(projectRoot: string): void {
   const root = resolve(projectRoot)
@@ -28,22 +29,15 @@ export function registerHeadlessCompiler(projectRoot: string): void {
   Bun.plugin({
     name: `headless-template:${root}`,
     setup(builder) {
-      builder.onLoad({filter: /\.tsx$/}, async ({path}) => {
+      builder.onLoad({filter: /\.(?:spec|test)\.tsx$/}, async ({path}) => {
         const local = relative(root, path)
         if (local.startsWith(`..${sep}`) || local === ".." || local.split(sep).includes("node_modules")) return undefined
-        if (/\.(?:spec|test)\.tsx$/.test(path)) {
-          return {
-            contents: `/** @jsxImportSource @immersive/headless */\n${await Bun.file(path).text()}`,
-            loader: "tsx",
-          }
-        }
-        const compiler = new JsxCompilerSession({cwd: root, sourceRoots: [root]})
-        try {
-          return {contents: await compiler.transformFile(path), loader: "ts"}
-        } finally {
-          await compiler.close()
+        return {
+          contents: `/** @jsxImportSource @immersive/headless */\n${await Bun.file(path).text()}`,
+          loader: "tsx",
         }
       })
+      createTemplateJsxBunPlugin({cwd: root, sourceRoots: [root], persistent: true}).setup(builder)
     },
   })
   registered.add(root)
