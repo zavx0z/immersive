@@ -10,11 +10,19 @@
 | DiagramNode           | Описание на всю ноду; прямоугольник, овал или круг         | `@nodes/node/diagram`   |
 | ParameterNode         | Шапка, готовые параметры и сокеты на основе Pane           | `@nodes/node/parameter` |
 | ContentNode           | ParameterNode плюс произвольный компонент содержимого      | `@nodes/node/content`   |
-| ContentImage          | Изображение с сохранением исходных пропорций               | `@nodes/node/image`     |
 | ContentSurface        | Произвольное содержимое или изображение квадратной области | `@nodes/node/surface`   |
 | ParameterNodeContents | Шапка, действия, параметры и сокеты внутри ParameterNode   | `@nodes/node/contents`  |
 
-Все шесть каталогов находятся непосредственно в корне `@nodes/node`.
+Варианты просмотра и проверки использования принадлежат каждому компоненту:
+[формы DiagramNode](diagram/spec/scenario.spec.tsx),
+[параметры и раскрытие ParameterNode](parameter/spec/scenario.spec.tsx),
+[области ContentNode](content/spec/scenario.spec.tsx),
+[выбор содержимого ContentSurface](surface/spec/scenario.spec.tsx) и
+[шапка и поля ParameterNodeContents](contents/spec/scenario.spec.tsx).
+Эти же сценарии открываются в Storybook; фикстуры содержат композицию примера,
+а варианты и проверки остаются в scenario.spec.tsx.
+
+Каталоги компонентов находятся непосредственно в корне `@nodes/node`.
 Входной тип DiagramNodeProps с описанием полей находится в
 [diagram/contract/input.ts](diagram/contract/input.ts) и импортируется через
 `@nodes/node/diagram/contract/input`. Сам DiagramNode остаётся в `diagram/index.tsx`.

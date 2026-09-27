@@ -12,7 +12,7 @@ import {planProjectedNodeGeometry, NODE_HEADER_HEIGHT, NODE_MINIMUM_WIDTH} from 
 
 export type {ParameterNodeProps} from "./contract/input.ts"
 
-/** Составляет ноду из Pane и готовых параметров. */
+/** Составляет ноду из Pane и готовых параметров. Выбранная нода подсвечивается цветом шапки; тень вложенной части принадлежит ContentNode. */
 export function ParameterNode(props: ParameterNodeProps) {
   const geometry = planProjectedNodeGeometry({id: props.id, parameters: props.parameters ?? [], sockets: props.sockets ?? []}, props.rect?.width,
     props.connectedSocketKeys, props.resolvedSocketSides, {collapsed: props.collapsed})
@@ -107,6 +107,7 @@ export function ParameterNode(props: ParameterNodeProps) {
         overflow: visible;
         border-radius: ${props.collapsed ? headerHeight / 2 : 6}px;
         background: #303030;
+        box-shadow: ${props.embedded ? "none" : props.selected ? `0 0 12px ${props.headerColor ?? "#5b466b"}` : "0 0 12px rgba(0, 0, 0, .5)"};
       `}
     >
       <ParameterNodeContents

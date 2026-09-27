@@ -35,12 +35,6 @@ test.each([
           "strong"
         ]
       },
-      "nodes/node/image/index.tsx#ContentImage": {
-        "uses": [],
-        "elements": [
-          "img"
-        ]
-      },
       "nodes/node/parameter/index.tsx#ParameterNode": {
         "uses": [
           "nodes/node/contents/index.tsx#ParameterNodeContents",
@@ -51,10 +45,9 @@ test.each([
         ]
       },
       "nodes/node/surface/index.tsx#ContentSurface": {
-        "uses": [
-          "nodes/node/image/index.tsx#ContentImage"
-        ],
+        "uses": [],
         "elements": [
+          "img",
           "section"
         ]
       },

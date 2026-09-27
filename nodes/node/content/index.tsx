@@ -14,7 +14,7 @@ import {planProjectedNodeGeometry} from "../shared/geometry.ts"
 export type {NodePreviewImage} from "../shared/contracts.ts"
 export type {ContentNodeProps} from "./contract/input.ts"
 
-/** Квадратная область содержимого и ParameterNode образуют одну ноду графа. */
+/** Квадратная область содержимого и ParameterNode образуют одну ноду графа с общей тенью; выбранная нода подсвечивается цветом шапки. */
 export function ContentNode(props: ContentNodeProps) {
   const visible = props.contentVisible !== false
   const geometry = planProjectedNodeGeometry({id: props.id, parameters: props.parameters ?? [], sockets: props.sockets ?? []}, props.rect?.width,
@@ -54,6 +54,8 @@ export function ContentNode(props: ContentNodeProps) {
       min-height: 0;
       overflow: visible;
       z-index: 3;
+      border-radius: ${!visible && props.collapsed ? geometry.height / 2 : 6}px;
+      box-shadow: 0 0 12px ${props.selected ? props.headerColor ?? "#5b466b" : "rgba(0, 0, 0, .5)"};
 
       &[hidden] {
         display: none;

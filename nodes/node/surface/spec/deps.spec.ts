@@ -10,17 +10,10 @@ test.each([
     "name": "ContentSurface",
     "file": "nodes/node/surface/index.tsx",
     "expected": {
-      "nodes/node/image/index.tsx#ContentImage": {
+      "nodes/node/surface/index.tsx#ContentSurface": {
         "uses": [],
         "elements": [
-          "img"
-        ]
-      },
-      "nodes/node/surface/index.tsx#ContentSurface": {
-        "uses": [
-          "nodes/node/image/index.tsx#ContentImage"
-        ],
-        "elements": [
+          "img",
           "section"
         ]
       }

@@ -14,8 +14,6 @@
     "./parameter/contract/input": "./parameter/contract/input.ts",
     "./content": "./content/index.tsx",
     "./content/contract/input": "./content/contract/input.ts",
-    "./image": "./image/index.tsx",
-    "./image/contract/input": "./image/contract/input.ts",
     "./surface": "./surface/index.tsx",
     "./surface/contract/input": "./surface/contract/input.ts",
     "./contents": "./contents/index.tsx",
@@ -26,7 +24,7 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests diagram/tests content/spec parameter/spec image/spec surface/spec contents/spec && bun test --preload @immersive/headless/preload --parallel diagram/spec",
+    "test": "bun test tests --max-concurrency=1 && bun test --preload @immersive/headless/preload diagram/spec content/spec parameter/spec surface/spec contents/spec --max-concurrency=1",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
