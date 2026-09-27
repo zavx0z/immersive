@@ -20,7 +20,7 @@ const cache = new Map<string, TextureEntry>()
 const callbacks = new Map<string, Set<() => void>>()
 const animationObservers = new Map<string, Set<() => void>>()
 const animations = new Map<string, GifAnimation>()
-let fallbackTexture: GPUTexture | null = null
+const fallbackTextures = new WeakMap<GPUDevice, GPUTexture>()
 
 export type PendingExternalSource = {
   source: GPUImageCopyExternalImage["source"]
@@ -90,11 +90,16 @@ export class TextureLoader {
     return cache.get(src)
   }
 
+  /**
+  Переиспользует изображение только в создавшем его GPUDevice.
+  При смене устройства создаёт новую запись и загружает ресурс заново;
+  прежняя запись остаётся у прежних потребителей и не меняет владельца.
+  */
   static load(device: GPUDevice, src: string, onChange?: () => void): TextureEntry {
     if (onChange) TextureLoader.addChangeListener(src, onChange)
 
     const existing = cache.get(src)
-    if (existing) {
+    if (existing && (existing.device === undefined || existing.device === device)) {
       existing.device = device
       if (existing.pendingExternalSource !== undefined) {
         replaceTextureFromExternalSource(device, existing, existing.pendingExternalSource)
@@ -104,18 +109,25 @@ export class TextureLoader {
       return existing
     }
 
+    animations.get(src)?.stop()
+    animations.delete(src)
+
     const entry: TextureEntry = {
       src,
       status: "loading",
-      width: 1,
-      height: 1,
+      width: existing?.width ?? 1,
+      height: existing?.height ?? 1,
       texture: null,
       error: null,
       device,
+      ...(existing?.externalTextureSource === undefined ? {} : {externalTextureSource: existing.externalTextureSource}),
+      ...(existing?.pendingExternalSource === undefined ? {} : {pendingExternalSource: existing.pendingExternalSource}),
     }
     cache.set(src, entry)
 
-    if (!isVirtualTextureSrc(src)) void loadTexture(device, entry)
+    if (entry.externalTextureSource !== undefined) entry.status = "ready"
+    else if (entry.pendingExternalSource !== undefined) replaceTextureFromExternalSource(device, entry, entry.pendingExternalSource)
+    else if (!isVirtualTextureSrc(src)) void loadTexture(device, entry)
     return entry
   }
 
@@ -214,9 +226,11 @@ export class TextureLoader {
     return true
   }
 
+  /** Возвращает прозрачную текстуру, принадлежащую именно запрошенному устройству. */
   static fallback(device: GPUDevice): GPUTexture {
-    if (fallbackTexture) return fallbackTexture
-    fallbackTexture = device.createTexture({
+    const existing = fallbackTextures.get(device)
+    if (existing) return existing
+    const fallbackTexture = device.createTexture({
       label: "TextureLoader.fallbackTransparent",
       size: { width: 1, height: 1 },
       format: "rgba8unorm",
@@ -228,6 +242,7 @@ export class TextureLoader {
       { bytesPerRow: 4, rowsPerImage: 1 },
       { width: 1, height: 1 },
     )
+    fallbackTextures.set(device, fallbackTexture)
     return fallbackTexture
   }
 }
@@ -254,6 +269,7 @@ async function loadTexture(device: GPUDevice, entry: TextureEntry): Promise<void
       const Decoder = (globalThis as unknown as {ImageDecoder?: GifDecoderConstructor}).ImageDecoder
       if (Decoder !== undefined && await Decoder.isTypeSupported("image/gif")) {
         const data = await blob.arrayBuffer()
+        if (cache.get(entry.src) !== entry) return
         const animation = new GifAnimation({
           createDecoder: () => new Decoder({type: "image/gif", data, preferAnimation: true}),
           observed: () => (animationObservers.get(entry.src)?.size ?? 0) > 0,
