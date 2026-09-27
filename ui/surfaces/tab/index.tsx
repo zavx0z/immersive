@@ -1,6 +1,7 @@
 /**
 Пристыкованный Tab перемещается по периметру своей области и меняет сторону у углов.
-Родитель задаёт область обычным CSS. Один и тот же компонент используется в HUD,
+Подложка использует --widget-toolbar-background главной темы,
+наведение — --widget-hover-background. Родитель задаёт область обычным CSS. Один и тот же компонент используется в HUD,
 Display и вложенных контейнерах; окон, камер и отдельного рендера он не создаёт.
 
 @packageDocumentation
@@ -200,7 +201,7 @@ export function Tab(props: TabProps) {
         user-select: none;
         cursor: grab;
         border: 1px solid var(--widget-regular-outline);
-        background: var(--widget-regular-background);
+        background: var(--widget-toolbar-background);
         color: var(--widget-regular-content);
         font-size: var(--font-size-xs);
         writing-mode: horizontal-tb;
