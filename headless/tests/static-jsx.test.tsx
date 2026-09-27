@@ -1,6 +1,6 @@
 import {afterEach, beforeEach, describe, expect, test} from "bun:test"
 import {createHeadless, type Headless} from "../index.ts"
-import {TextBox} from "../fixtures/elements.tsx"
+import {TextBox, FillBox} from "../fixtures/elements.tsx"
 
 describe("статический JSX", () => {
   let headless: Headless
@@ -25,5 +25,12 @@ describe("статический JSX", () => {
     expect(element.isConnected).toBe(true)
     expect(element.localName).toBe("article")
     expect(element.textContent).toBe("Статический JSX")
+  })
+
+  test("процентные размеры компонента разрешаются от рабочей области Headless", async () => {
+    const element = await headless.render(<FillBox />)
+    const frame = await headless.capture(element)
+    expect([frame.width, frame.height]).toEqual([320, 180])
+    expect([...frame.rgba.slice(0, 4)]).toEqual([36, 104, 172, 255])
   })
 })

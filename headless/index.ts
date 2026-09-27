@@ -4,9 +4,11 @@ import {component, createRoot, normalizeChildren, type ComponentValue} from "@za
 import {isCompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentRenderer} from "@renderer/html"
 import {Space, ViewPoint, TrueTypeFont} from "@zavx0z/engine"
-import {Renderer, RendererWebGpuBackend, RendererWebGpuScreenOverlay} from "@zavx0z/webgpu"
+import {Renderer, RendererWebGpuBackend, RendererWebGpuScreenOverlay, TextureLoader} from "@zavx0z/webgpu"
 import {NativeGpuCanvas, type CapturedFrame} from "./native-canvas.ts"
 import {installShaderCompilationDiagnostics} from "./shader-diagnostics.ts"
+import {createImageBitmap, ImageBitmap} from "./image-bitmap.ts"
+import {installExternalImageCopy} from "./external-image.ts"
 import {registerHeadlessCompiler, repositoryRoot} from "./compiler.ts"
 import type {HeadlessOptions} from "./contract/input.ts"
 import type {Headless} from "./contract/output.ts"
@@ -28,6 +30,8 @@ Test host заранее подключает `@immersive/headless/preload`, ч�
 TSX-импорты и JSX сценария компилировались Template. `createHeadless` идемпотентно
 регистрирует тот же compiler и создаёт отдельный host. GPU-операции разных host выполняются последовательно;
 глобальные WebGPU-объекты восстанавливаются после каждой операции.
+Браузерные ImageBitmap API предоставляет тот же host; снимок ожидает текстуры
+и повторный кадр после их загрузки.
 
 @param options - Размер native Canvas и источники ресурсов окружения.
 @returns Host с живым DOM, отдельным получением PNG и явным dispose.
@@ -53,6 +57,7 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
   const canvas = new NativeGpuCanvas(width, height)
   const document = createDocument()
   const host = document.createElement("div")
+  host.setAttribute("style", `width: ${width}px; height: ${height}px`)
   document.append(host)
   const componentRoot = createRoot(host)
   const renderer = new Renderer()
@@ -61,6 +66,7 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
   let layout: ReturnType<typeof createDocumentRenderer> | undefined
   let ready = false
   let disposed = false
+  let presentationRequested = false
   const space = new Space()
   const viewPoint = new ViewPoint({viewport: {left: 0, top: 0, width, height}, position: {x: 0, y: -600, z: 0}})
   let overlay: RendererWebGpuScreenOverlay | undefined
@@ -77,12 +83,13 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
         adapter.requestDevice = async descriptor => {
           const device = await requestDevice(descriptor)
           installShaderCompilationDiagnostics(device)
+          installExternalImageCopy(device)
           return device
         }
         return adapter
       }
     }
-    const globals = {...globalConstructors, navigator: {gpu}}
+    const globals = {...globalConstructors, navigator: {gpu}, createImageBitmap, ImageBitmap}
     const previous = new Map(Object.keys(globals).map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]))
     try {
       for (const [key, value] of Object.entries(globals)) {
@@ -103,7 +110,11 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
     const sources = options.styleSheetSources ?? [new URL(import.meta.resolve("@zavx0z/ui/themes/theme.css"))]
     const font = new TrueTypeFont(await Bun.file(fontSource).arrayBuffer())
     const styleSheets = await Promise.all(sources.map(source => Bun.file(source).text()))
-    backend = new RendererWebGpuBackend({font, invalidateGeometry: geometry => renderer.invalidateGeometry(geometry)})
+    backend = new RendererWebGpuBackend({
+      font,
+      invalidateGeometry: geometry => renderer.invalidateGeometry(geometry),
+      requestPresentation: () => { presentationRequested = true },
+    })
     layout = createDocumentRenderer({document, root: host, viewport: {width, height}, styleSheets, textMeasurer: backend.textMeasurer!})
     overlay = new RendererWebGpuScreenOverlay({content: backend.root, viewport: {width, height}})
     await renderer.init(canvas.asHtmlCanvas())
@@ -111,13 +122,41 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
   }
 
   async function draw(): Promise<void> {
+    presentationRequested = false
     componentRoot.flush()
-    backend!.applyFrame(layout!.flush())
+    const frame = layout!.flush()
+    backend!.applyFrame(frame)
     const device = canvas.getContext("webgpu")!.getConfiguration()!.device
     device.pushErrorScope("validation")
     renderer.renderFrame(space, overlay, viewPoint)
     const error = await device.popErrorScope()
     if (error !== null) throw new Error(`Ошибка GPU-кадра Headless: ${error.message}`)
+    const sources = new Set(frame.displayList.flatMap(item => item.kind === "image" ? [item.src] : []))
+    const textures = await Promise.allSettled([...sources].map(src => waitForTexture(src)))
+    const failed = textures.find(result => result.status === "rejected")
+    if (failed?.status === "rejected") throw failed.reason
+    if (presentationRequested) await draw()
+  }
+
+  /** Кадр готов только после загрузки его текстур; ошибка ресурса не превращается в пустой успешный снимок. */
+  function waitForTexture(src: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const signal = AbortSignal.timeout(15_000)
+      const finish = (error?: unknown) => {
+        TextureLoader.removeChangeListener(src, changed)
+        signal.removeEventListener("abort", aborted)
+        error === undefined ? resolve() : reject(error)
+      }
+      const changed = () => {
+        const entry = TextureLoader.peek(src)
+        if (entry?.status === "failed") finish(new Error("Headless не смог загрузить изображение", {cause: entry.error}))
+        else if (entry === undefined || entry.status === "ready") finish()
+      }
+      const aborted = () => finish(new Error("Headless не дождался загрузки изображения", {cause: signal.reason}))
+      signal.addEventListener("abort", aborted, {once: true})
+      TextureLoader.addChangeListener(src, changed, {animate: false})
+      changed()
+    })
   }
 
   const capture = (element: Element): Promise<CapturedFrame> => exclusive(() => withGpu(async () => {

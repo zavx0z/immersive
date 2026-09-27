@@ -1,4 +1,14 @@
 /** Простые DOM-элементы для проверки Headless без прикладных компонентов. */
+export function FillBox() {
+  return <section
+    style={css`
+      width: 100%;
+      height: 100%;
+      background: #2468ac;
+    `}
+  />
+}
+
 export function TextBox(props: Readonly<{text: string}>) {
   return (
     <article
@@ -41,4 +51,18 @@ export function InlineText(props: Readonly<{text: string}>) {
       {props.text}
     </span>
   )
+}
+
+/** Изображение занимает всю рабочую область для проверки реального GPU-кадра. */
+export function ImageBox(props: Readonly<{src: string}>) {
+  return <img
+    src={props.src}
+    alt="Цветовые образцы"
+    style={css`
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    `}
+  />
 }

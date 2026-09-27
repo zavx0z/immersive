@@ -59,9 +59,14 @@ DOM-элемент появляются только после `createHeadless(
 и ViewPoint до `dispose`. Повторный render того же template/key обновляет props
 с сохранением элемента. Снимок можно запросить и для потомка возвращённого
 элемента. Компонент должен иметь один внешний Element, а снимаемая область —
-полностью помещаться в настроенный viewport. Native DOM, сетевой загрузчик,
-CDP, браузерный ввод, декодирование изображений и полноценная поддержка
-пространственных приложений в этот host не входят.
+полностью помещаться в настроенный viewport.
+
+[Браузерный контракт Headless](notes/browser-api.md) определяет единое поведение
+API для компонентов и Renderer. Изображения проходят через
+[createImageBitmap](image-bitmap.ts) и
+[GPUQueue.copyExternalImageToTexture](external-image.ts) внутри Headless;
+общий загрузчик текстур и компоненты используют обычный браузерный API.
+[Проверки пикселей](tests/image-render.test.tsx) выполняют этот путь на нативном GPU.
 
 По умолчанию используются публичная тема UI и шрифт Inter из Engine.
 `styleSheetSources`, `fontSource`, `projectRoot`, `width` и `height` настраиваются
