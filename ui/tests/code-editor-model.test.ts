@@ -4,6 +4,20 @@ import {codeEditorPaintRuns} from "../src/code-editor/paint-runs.ts"
 import {codeEditorVisualRows} from "../src/code-editor/visual-rows.ts"
 import {codeEditorSyntaxTheme, resolveCodeEditorSyntaxScopeColorHex} from "../src/code-editor/syntax-theme-runtime.ts"
 
+test("JSX-компоненты получают цвет тегов через установленный highlighter", () => {
+  const value = '<Tab label={null}><Button label="Инструменты" /></Tab>'
+  for (const props of [{languageId: "jsx"}, {languageId: "tsx"}, {path: "example.tsx"}]) {
+    const view = buildCodeEditorViewModel({value, readOnly: true, ...props})
+    const segments = view.segments[0]!
+    const tags = segments.filter(segment => segment.text === "Tab" || segment.text === "Button")
+    expect(tags.map(segment => segment.text)).toEqual(["Tab", "Button", "Tab"])
+    expect(tags.every(segment => segment.foreground === "#d5b778")).toBe(true)
+    expect(segments.find(segment => segment.text === "null")?.foreground).toBe("#cf8e6d")
+    expect(segments.find(segment => segment.text === '"Инструменты"')?.foreground).toBe("#6aab73")
+    expect(segments.map(segment => segment.text).join("")).toBe(value)
+  }
+})
+
 test("мягкие переносы сохраняют текст, подсветку и номера исходных строк", () => {
   const value = "first\\nsecond\r\nthird"
   const view = buildCodeEditorViewModel({value, readOnly: true, tokens: [
