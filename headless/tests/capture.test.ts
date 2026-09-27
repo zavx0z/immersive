@@ -11,7 +11,7 @@ afterAll(() => headless.dispose())
 
 test("[HEADLESS-CAPTURE] снимок обрезается по смещённому DOM-элементу, обновление текста сохраняет элемент и меняет пиксели", async () => {
   await mkdir(directory, {recursive: true})
-  const element = await headless.render(TextBox, {text: "Headless DOM capture"})
+  const element = await headless.renderComponent(TextBox, {text: "Headless DOM capture"})
   expect(element.localName).toBe("article")
   expect(element.textContent).toBe("Headless DOM capture")
   const bounds = element.getBoundingClientRect()
@@ -20,7 +20,7 @@ test("[HEADLESS-CAPTURE] снимок обрезается по смещённо
   })
   const labelled = await headless.capture(element)
   await Bun.write(resolve(directory, "labelled.png"), labelled.png)
-  const updated = await headless.render(TextBox, {text: ""})
+  const updated = await headless.renderComponent(TextBox, {text: ""})
   expect(updated).toBe(element)
   expect(updated.isConnected).toBe(true)
   expect(updated.textContent).toBe("")
@@ -53,7 +53,7 @@ test("[HEADLESS-CAPTURE] снимок обрезается по смещённо
 
 test("[HEADLESS-SCREENSHOT] снимок другого DOM-корня округляет дробные границы наружу", async () => {
   await mkdir(directory, {recursive: true})
-  const element = await headless.render(InlineText, {text: "Дробные границы"})
+  const element = await headless.renderComponent(InlineText, {text: "Дробные границы"})
   expect(element.localName).toBe("span")
   expect(element.textContent).toBe("Дробные границы")
   const bounds = element.getBoundingClientRect()
@@ -67,7 +67,7 @@ test("[HEADLESS-SCREENSHOT] снимок другого DOM-корня окру�
 }, 25000)
 
 test("[HEADLESS-SCREENSHOT-IMAGE] формат image возвращает готовый Bun.Image", async () => {
-  const element = await headless.render(TextBox, {text: "Готовое изображение"})
+  const element = await headless.renderComponent(TextBox, {text: "Готовое изображение"})
   const image = await headless.screenshot(element, "image")
   const metadata = await image.metadata()
 

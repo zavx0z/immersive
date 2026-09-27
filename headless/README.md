@@ -52,8 +52,9 @@ DOM-элемент появляются только после `createHeadless(
 Штатный persistent plugin Template сохраняет одну сессию компилятора на Git-корень
 в пределах тестового процесса. Production-модули используют её общий кэш и
 последовательную обработку; новый запуск Bun получает собственную сессию.
-Также поддерживается `headless.render(Component, props)` для компонента,
-скомпилированного до его импорта.
+Для программной передачи компонента и props отдельно используется
+[`renderComponent`](contract/output.ts). Сценарии компонентов следуют
+[правилу render](../../storybook/archetypes/specs/scenarios/spec/scenario.spec.ts).
 
 Один host сохраняет Document, компонентный root, Canvas, Renderer, Space
 и ViewPoint до `dispose`. Повторный render того же template/key обновляет props

@@ -14,6 +14,9 @@ import type {CapturedFrame} from "../native-canvas.ts"
 Рабочая область имеет размеры Canvas. Отрисовка ожидает загрузку текстур;
 ошибка загрузки отклоняет операцию, не выдавая прозрачную заглушку за готовый кадр.
 
+@property renderComponent - Программно монтирует компонент с отдельно переданными props.
+Сценарий компонента использует render с JSX непосредственно в месте вызова.
+
 @property screenshot - Возвращает PNG по актуальному border-box элемента.
 Без второго аргумента результатом служит `Buffer`; формат `image` возвращает `Bun.Image` того же снимка.
 
@@ -37,7 +40,7 @@ await headless.dispose()
 */
 export interface Headless {
   render(value: JsxSourceElement | ComponentValue): Promise<Element>
-  render<Props>(type: ((props: Props) => JsxSourceElement) | CompiledTemplate<Props>, props: Props): Promise<Element>
+  renderComponent<Props>(type: ((props: Props) => JsxSourceElement) | CompiledTemplate<Props>, props: Props): Promise<Element>
   screenshot(element: Element): Promise<Buffer>
   screenshot(element: Element, format: "image"): Promise<Bun.Image>
   capture(element: Element): Promise<CapturedFrame>

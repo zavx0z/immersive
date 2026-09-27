@@ -177,18 +177,24 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
     return format === "image" ? new Bun.Image(png) : png
   }
 
+  async function render(value: unknown): Promise<Element> {
+    if (arguments.length !== 1) throw new TypeError("Headless.render принимает один JSX-аргумент")
+    const child = normalizeChildren(value as ComponentValue)
+    if (child === null) throw new TypeError("Headless.render принимает JSX скомпилированного компонента")
+    return exclusive(() => withGpu(async () => {
+      await initialize()
+      componentRoot.render(child)
+      await draw()
+      if (host.children.length !== 1) throw new Error("Компонент должен вернуть один внешний элемент")
+      return host.firstElementChild!
+    }))
+  }
+
   return {
-    render(value: unknown, props?: unknown): Promise<Element> {
-      return exclusive(() => withGpu(async () => {
-        await initialize()
-        if (isCompiledTemplate(value)) value = component(value, props ?? {})
-        const child = normalizeChildren(value as ComponentValue)
-        if (child === null) throw new Error("Headless.render ожидает JSX скомпилированного компонента либо компонент с props")
-        componentRoot.render(child)
-        await draw()
-        if (host.children.length !== 1) throw new Error("Компонент должен вернуть один внешний элемент")
-        return host.firstElementChild!
-      }))
+    render,
+    async renderComponent(type, props) {
+      if (!isCompiledTemplate(type)) throw new TypeError("Headless.renderComponent принимает скомпилированный компонент и props")
+      return render(component(type, props))
     },
     capture,
     screenshot,
