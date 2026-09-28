@@ -26,10 +26,12 @@ describe.each([
     expect({width: bounds.width, height: bounds.height}, "Поверхность занимает предоставленную родителем область").toEqual({width: 320, height: 240})
   })
   /** @remarks Изображение отсутствует в пустой области и при авторском children. */
-  test.skipIf(images === 0)("Свойства изображения", () => {
-    const image = surface.querySelector("img")!
-    const bounds = image.getBoundingClientRect()
-    expect({src: image.getAttribute("src"), width: image.getAttribute("width"), height: image.getAttribute("height"), alt: image.getAttribute("alt"), area: [bounds.width, bounds.height]},
-      "Обычный img сохраняет источник, исходные размеры и alt, занимая предоставленную область").toEqual({src: props.image!.src, width: String(props.image!.width), height: String(props.image!.height), alt, area: [320, 240]})
+  describe.skipIf(images === 0)("Свойства изображения", () => {
+    test("Атрибуты и размеры", () => {
+      const image = surface.querySelector("img")!
+      const bounds = image.getBoundingClientRect()
+      expect({src: image.getAttribute("src"), width: image.getAttribute("width"), height: image.getAttribute("height"), alt: image.getAttribute("alt"), area: [bounds.width, bounds.height]},
+        "Обычный img сохраняет источник, исходные размеры и alt, занимая предоставленную область").toEqual({src: props.image!.src, width: String(props.image!.width), height: String(props.image!.height), alt, area: [320, 240]})
+    })
   })
 })
