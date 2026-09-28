@@ -1,4 +1,5 @@
 import {useLayoutEffect, useRef, useState} from "@zavx0z/component"
+import {readElementLayoutRect} from "@zavx0z/dom/geometry"
 import {Button} from "../buttons/button.tsx"
 import {chevronDownIcon, chevronRightIcon} from "../src/shared/icon-assets.ts"
 import {WidgetHeader, WidgetActionButton, type WidgetHeaderProps, type WidgetAction} from "../src/shared/widget-header.tsx"
@@ -6,6 +7,7 @@ import type {BadgeTone} from "../badge.tsx"
 import {
   materializedTreeRows,
   retainedTreeBlocks,
+  treeScrollWindowStart,
   visibleTreeRows,
   windowedTreeBlocks,
   type WindowedTreeBlock,
@@ -581,10 +583,13 @@ export function Tree(props: TreeProps) {
       data-tree-window-start={props.windowing === undefined ? undefined : String(boundedStart)}
       onScroll={event => {
         if (props.windowing === undefined) return
-        const overscan = props.windowing.overscan ?? 12
-        setWindowStart(Math.min(maximumStart, Math.max(0,
-          Math.floor(event.currentTarget.scrollTop / props.windowing.rowHeight) - overscan,
-        )))
+        const height = readElementLayoutRect(event.currentTarget)?.height ?? 0
+        const viewRows = height > 0 ? Math.ceil(height / props.windowing.rowHeight) + 1 : props.windowing.viewRows ?? 20
+        const next = treeScrollWindowStart(
+          Math.floor(event.currentTarget.scrollTop / props.windowing.rowHeight),
+          viewRows, boundedStart, props.windowing.size, windowRows.length, props.windowing.overscan ?? 12,
+        )
+        if (next !== boundedStart) setWindowStart(next)
       }}
       style={css`
         display: flex;

@@ -11,6 +11,32 @@ export type WindowedTreeRow<T extends WindowedTreeItem> = Readonly<{
   depth: number
 }>
 
+/**
+Сохраняет окно материализации, пока viewport не приблизился к его краю.
+Новое окно оставляет большую часть запаса по направлению прокрутки,
+сохраняя небольшой запас для движения обратно без перестройки каждой строки.
+Все величины выражены в строках; результат ограничен началом и концом списка.
+*/
+export function treeScrollWindowStart(
+  firstVisible: number,
+  viewportRows: number,
+  start: number,
+  size: number,
+  total: number,
+  overscan: number,
+): number {
+  const maximum = Math.max(0, total - size)
+  const current = Math.min(maximum, Math.max(0, start))
+  const spare = Math.max(0, size - viewportRows)
+  const reserve = Math.min(Math.max(0, overscan), Math.floor(spare / 2))
+  const guard = Math.floor(reserve / 2)
+  const nearStart = current > 0 && firstVisible < current + guard
+  const nearEnd = current < maximum && firstVisible + viewportRows > current + size - guard
+  if (!nearStart && !nearEnd) return current
+  const leading = nearStart ? spare - reserve : reserve
+  return Math.min(maximum, Math.max(0, firstVisible - leading))
+}
+
 export type WindowedTreeBlock<T extends WindowedTreeItem> = Readonly<{
   kind: "item"
   item: T

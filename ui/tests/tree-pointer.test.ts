@@ -45,6 +45,8 @@ function mount(
   const interaction = createDocumentInteractionController({document})
   return {
     container,
+    component,
+    renderer,
     selections,
     document,
     ready,
@@ -66,6 +68,42 @@ function mount(
     },
   }
 }
+
+test("настоящая прокрутка в пределах готового окна не мутирует строки дерева", async () => {
+  const fixture = mount(Array.from({length: 300}, (_, index) => ({id: `row-${index}`, label: `Строка ${index}`})), [], {
+    windowing: {size: 80, rowHeight: 24, overscan: 12, viewRows: 20},
+  }, 1088)
+  try {
+    fixture.renderer.flush()
+    const tree = fixture.container.querySelector('[role="tree"]') as HTMLElement
+    let mutations = 0
+    const stop = fixture.document.subscribeMutations(batch => { mutations += batch.records.length })
+    try {
+      for (const top of [24, 48, 96, 192]) {
+        tree.scrollTop = top
+        fixture.renderer.flush()
+        await new Promise(resolve => setTimeout(resolve, 0))
+        fixture.component.flush()
+        fixture.renderer.flush()
+      }
+      expect(tree.getAttribute("data-tree-window-start")).toBe("0")
+      expect(mutations).toBe(0)
+      tree.scrollTop = 2400
+      fixture.renderer.flush()
+      await new Promise(resolve => setTimeout(resolve, 0))
+      fixture.component.flush()
+      fixture.renderer.flush()
+      expect(Number(tree.getAttribute("data-tree-window-start"))).toBeGreaterThan(0)
+      expect(mutations).toBeGreaterThan(0)
+      const first = fixture.container.querySelector('[data-tree-id="row-100"]') as HTMLElement
+      expect(first.hidden).toBeFalse()
+    } finally {
+      stop()
+    }
+  } finally {
+    fixture.dispose()
+  }
+})
 
 test("центр bounds leaf treeitem выбирает leaf через production pointer", () => {
   const fixture = mount([{id: "description", label: "Описание", children: []}], [])
