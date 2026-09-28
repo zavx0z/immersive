@@ -159,7 +159,7 @@ export function NumberField(props: NumberFieldProps) {
       border-radius: var(--radius-medium);
       background: var(--number-field-background, var(--widget-number-background));
       color: var(--widget-list-content);
-      box-shadow: 0 1px 0 var(--material-widget-emboss);
+      box-shadow: var(--shadow-2xs);
       overflow: clip;
 
       &[data-has-label="true"] {

@@ -38,7 +38,7 @@ export function Notification(props: NotificationProps) {
       border-radius: 3px;
       background: var(--widget-popup-background);
       color: var(--widget-regular-content);
-      box-shadow: 0 2px 8px var(--notification-shadow);
+      box-shadow: var(--shadow-md);
 
       &[data-tone="success"] {
         border-left-color: var(--state-success);

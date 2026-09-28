@@ -91,7 +91,7 @@ export function FieldGroup(props: FieldGroupProps) {
         border-radius: 4px;
         overflow: clip;
         background: var(--widget-regular-background);
-        box-shadow: 0 1px 0 var(--material-widget-emboss);
+        box-shadow: var(--shadow-2xs);
 
         &[data-labelled="true"] {
           width: 0;

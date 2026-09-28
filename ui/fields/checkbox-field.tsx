@@ -99,7 +99,7 @@ export function CheckboxField(props: CheckboxFieldProps) {
           border: var(--border-width-control) solid var(--widget-option-outline);
           border-radius: var(--radius-small);
           background: var(--widget-option-background);
-          box-shadow: 0 1px 0 var(--material-widget-emboss);
+          box-shadow: var(--shadow-2xs);
           color: var(--widget-option-content);
 
           &:checked {

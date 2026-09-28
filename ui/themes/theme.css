@@ -66,6 +66,17 @@
   --radius-large: 6px;
   --radius-round: 9999px;
 
+  /* Общая шкала внешних теней: один слой для текущего Renderer.
+   * Названия соответствуют шкале Tailwind, значения принадлежат нашей теме.
+   */
+  --shadow-2xs: 0 1px 0 rgb(var(--surface-black) / 0.149);
+  --shadow-xs: 0 1px 2px rgb(var(--surface-black) / 0.2);
+  --shadow-sm: 0 2px 4px rgb(var(--surface-black) / 0.25);
+  --shadow-md: 0 2px 8px rgb(var(--surface-black) / 0.35);
+  --shadow-lg: 0 4px 16px rgb(var(--surface-black) / 0.35);
+  --shadow-xl: 0 8px 24px rgb(var(--surface-black) / 0.4);
+  --shadow-2xl: 0 16px 48px rgb(var(--surface-black) / 0.5);
+
   --font-family: "JetBrains Mono", monospace;
   --font-size-2xs: 10px;
   --font-size-xs: 11px;
@@ -173,7 +184,6 @@
   --widget-popup-outline: rgb(var(--surface-815));
   --widget-popup-background: rgb(var(--surface-950));
 
-  --material-widget-emboss: rgb(var(--surface-black) / 0.149);
   --material-editor-border: rgb(var(--surface-975));
   --material-editor-outline: rgb(var(--surface-0) / 0.082);
   --material-editor-outline-active: rgb(var(--surface-0) / 0.165);
@@ -208,5 +218,4 @@
   --status-bar-content: rgb(var(--surface-450));
   --status-bar-content-highlight: rgb(var(--surface-0));
   --status-bar-content-shadow: rgb(var(--surface-black) / 0.749);
-  --notification-shadow: rgb(var(--surface-black) / 0.35);
 }

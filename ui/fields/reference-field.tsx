@@ -116,7 +116,7 @@ export function ReferenceField(props: ReferenceFieldProps) {
         border: var(--border-width-control) solid var(--widget-regular-outline);
         border-radius: 4px;
         background: var(--widget-regular-background);
-        box-shadow: 0 1px 0 var(--material-widget-emboss);
+        box-shadow: var(--shadow-2xs);
 
         &[data-labelled="true"] {
           width: 0;

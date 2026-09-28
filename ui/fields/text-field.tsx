@@ -98,7 +98,7 @@ export function TextField(props: TextFieldProps) {
         border-color: var(--text-field-outline, var(--widget-text-outline));
         border-radius: var(--text-field-radius, 3px);
         background: var(--text-field-background, var(--widget-text-background));
-        box-shadow: var(--text-field-shadow, 0 1px 0 var(--material-widget-emboss));
+        box-shadow: var(--text-field-shadow, var(--shadow-2xs));
         color: var(--text-field-content, var(--widget-text-content));
         font-size: var(--text-field-font-size, var(--font-size-xs));
         line-height: var(--line-height-control);

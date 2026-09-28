@@ -95,7 +95,7 @@ export function Button(props: ButtonProps) {
       border: var(--border-width-control) solid var(--widget-regular-outline);
       border-radius: 3px;
       background: var(--widget-regular-background);
-      box-shadow: 0 1px 0 var(--material-widget-emboss);
+      box-shadow: var(--shadow-2xs);
       color: var(--widget-regular-content);
       font-size: var(--font-size-xs);
       line-height: var(--line-height-control);

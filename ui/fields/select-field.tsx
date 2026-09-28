@@ -130,7 +130,7 @@ export function SelectField(props: SelectFieldProps) {
         border: var(--border-width-control) solid var(--widget-regular-outline);
         border-radius: var(--radius-medium);
         background: var(--select-field-surface);
-        box-shadow: 0 1px 0 var(--material-widget-emboss);
+        box-shadow: var(--shadow-2xs);
         color: var(--widget-regular-content);
         font-size: var(--font-size-sm);
         overflow: clip;
