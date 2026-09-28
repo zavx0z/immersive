@@ -11,7 +11,6 @@ export type LineProps = TransformProps & Readonly<{
   visible?: boolean
   name?: string
   factory?: XRObjectProjectionFactory | null
-  children?: JsxSourceElement | readonly JsxSourceElement[] | null | undefined
   ref?: SpaceRef<XRLineElement> | null
 }>
 
@@ -34,7 +33,7 @@ export function Line(props: LineProps): JsxSourceElement {
       factory={props.factory}
       ref={props.ref}
     >
-      {props.children}
+      <slot />
     </xr-line>
   )
 }

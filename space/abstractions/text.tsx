@@ -14,7 +14,6 @@ export type TextProps = TransformProps & Readonly<{
   visible?: boolean
   name?: string
   factory?: XRObjectProjectionFactory | null
-  children?: JsxSourceElement | null | undefined
   ref?: SpaceRef<XRTextElement> | null
 }>
 
@@ -40,7 +39,7 @@ export function Text(props: TextProps): JsxSourceElement {
       factory={props.factory}
       ref={props.ref}
     >
-      {props.children}
+      <slot />
     </xr-text>
   )
 }

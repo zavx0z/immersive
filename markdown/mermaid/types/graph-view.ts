@@ -1,8 +1,9 @@
 import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 
 /**
-Содержимое JSX-моста для {@link @webxr/nodes/view#GraphView | GraphView}.
-Форма {@link JsxSourceElement} допускает передачу через [внутренний адаптер children](../src/graph-view.tsx).
+Содержимое slot-моста для {@link @webxr/nodes/view#GraphView | GraphView}.
+Форма {@link JsxSourceElement} сохраняет авторский JSX-транспорт
+[адаптера направления Mermaid](../src/graph-view.tsx).
 Допускает пустой результат и несколько элементов без дополнительного DOM-контейнера.
 */
-export type GraphChildren = JsxSourceElement | readonly JsxSourceElement[] | null | undefined
+export type GraphContent = JsxSourceElement | readonly JsxSourceElement[] | null | undefined

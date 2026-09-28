@@ -11,7 +11,6 @@ export type AssetProps = TransformProps & Readonly<{
   factory: XRObjectProjectionFactory
   visible?: boolean
   name?: string
-  children?: JsxSourceElement | readonly JsxSourceElement[] | null | undefined
   ref?: SpaceRef<XRAssetElement> | null
 }>
 
@@ -34,7 +33,7 @@ export function Asset(props: AssetProps): JsxSourceElement {
       name={props.name}
       ref={props.ref}
     >
-      {props.children}
+      <slot />
     </xr-asset>
   )
 }

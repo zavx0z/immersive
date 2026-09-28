@@ -1,7 +1,5 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import type {
-  JsxSourceElement,
-} from "@zavx0z/template/jsx-runtime"
+import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import type {
   XRMeshElement,
   XRObjectProjectionFactory,
@@ -13,7 +11,6 @@ export type MeshProps = TransformProps & Readonly<{
   visible?: boolean
   name?: string
   factory?: XRObjectProjectionFactory | null
-  children?: JsxSourceElement | readonly JsxSourceElement[] | null | undefined
   ref?: SpaceRef<XRMeshElement> | null
 }>
 
@@ -36,7 +33,7 @@ export function Mesh(props: MeshProps): JsxSourceElement {
       factory={props.factory}
       ref={props.ref}
     >
-      {props.children}
+      <slot />
     </xr-mesh>
   )
 }

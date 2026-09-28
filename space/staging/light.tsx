@@ -15,7 +15,6 @@ export type LightProps = TransformProps & Readonly<{
   visible?: boolean
   name?: string
   factory?: XRObjectProjectionFactory | null
-  children?: JsxSourceElement | null | undefined
   ref?: SpaceRef<XRLightElement> | null
 }>
 
@@ -45,7 +44,7 @@ export function Light(props: LightProps): JsxSourceElement {
       factory={props.factory}
       ref={props.ref}
     >
-      {props.children}
+      <slot />
     </xr-light>
   )
 }

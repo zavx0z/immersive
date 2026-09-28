@@ -5,7 +5,7 @@ import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import type {LineSegmentsProps} from "../shapes/line-segments.tsx"
 import "../src/jsx.ts"
 
-export type GridProps = TransformProps & Omit<LineSegmentsProps, "factory" | "children"> & Readonly<{
+export type GridProps = TransformProps & Omit<LineSegmentsProps, "factory"> & Readonly<{
   /** Сторона квадратной сетки в мм; конечное число строго больше нуля. */
   size?: number
   /** Число ячеек вдоль стороны; целое число от 1. */

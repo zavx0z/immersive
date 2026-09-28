@@ -11,7 +11,6 @@ export type LineSegmentsProps = TransformProps & Readonly<{
   visible?: boolean
   name?: string
   factory?: XRObjectProjectionFactory | null
-  children?: JsxSourceElement | readonly JsxSourceElement[] | null | undefined
   ref?: SpaceRef<XRLineSegmentsElement> | null
 }>
 
@@ -34,7 +33,7 @@ export function LineSegments(props: LineSegmentsProps): JsxSourceElement {
       factory={props.factory}
       ref={props.ref}
     >
-      {props.children}
+      <slot />
     </xr-line-segments>
   )
 }

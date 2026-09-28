@@ -3,7 +3,7 @@ import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import {GraphView, type GraphViewProps} from "@webxr/nodes/view"
 import {MermaidHorizontal} from "./graph-context.ts"
-import type {GraphChildren} from "../types/graph-view.ts"
+import type {GraphContent} from "../types/graph-view.ts"
 
 /**
 Передаёт направление Mermaid через {@link MermaidHorizontal} в один {@link GraphView}.
@@ -15,8 +15,12 @@ import type {GraphChildren} from "../types/graph-view.ts"
 @returns JSX-мост через {@link MermaidGraphContent}, сохраняющий контекст потомков.
 */
 export function MermaidGraphView(props: GraphViewProps & Readonly<{horizontal: boolean}>) {
-  const content: GraphChildren = renderMermaidGraph(props)
-  return <MermaidGraphContent>{content}</MermaidGraphContent>
+  const content: GraphContent = renderMermaidGraph(props)
+  return (
+    <MermaidGraphContent>
+      {content}
+    </MermaidGraphContent>
+  )
 }
 
 /**
@@ -25,18 +29,16 @@ export function MermaidGraphView(props: GraphViewProps & Readonly<{horizontal: b
 
 @param props - {@link GraphViewProps} с дополнительным horizontal для {@link MermaidHorizontal}; остальные поля передаются GraphView.
 
-@returns {@link GraphChildren}, созданные внутри выбранного контекста направления.
+@returns {@link GraphContent}, созданное внутри выбранного контекста направления.
 */
-function renderMermaidGraph(props: GraphViewProps & Readonly<{horizontal: boolean}>): GraphChildren {
+function renderMermaidGraph(props: GraphViewProps & Readonly<{horizontal: boolean}>): GraphContent {
   return provideContext(MermaidHorizontal, props.horizontal,
     component(GraphView as unknown as CompiledTemplate<GraphViewProps>, props, "graph")) as unknown as JsxSourceElement
 }
 
 /**
-Передаёт подготовленный {@link GraphView} через JSX children без дополнительного DOM-элемента.
-
-@param props - Подготовленные {@link GraphChildren}; используется прямой children transport JSX runtime.
+Вставляет подготовленный {@link GraphView} через безымянный slot без дополнительного DOM-элемента.
 */
-function MermaidGraphContent(props: Readonly<{children: GraphChildren}>) {
-  return <>{props.children}</>
+function MermaidGraphContent() {
+  return <slot />
 }
