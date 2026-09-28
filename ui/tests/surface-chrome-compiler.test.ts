@@ -23,7 +23,7 @@ test("[UI-COMPILED-SURFACE-001] shared surface chrome is governed TSX rather tha
   const compiler = new JsxCompilerSession({cwd: root, sourceRoots: [uiRoot]})
   try {
     for (const relativePath of [
-      "surfaces/window.tsx",
+      "surfaces/window/index.tsx",
       "surfaces/frame.tsx",
       "views/timeline.tsx",
     ]) {

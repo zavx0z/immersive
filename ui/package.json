@@ -38,7 +38,10 @@
     "./navigation/breadcrumbs": "./navigation/breadcrumbs.tsx",
     "./surfaces/pane": "./surfaces/pane.tsx",
     "./surfaces/panel": "./surfaces/panel.tsx",
-    "./surfaces/window": "./surfaces/window.tsx",
+    "./surfaces/window": "./surfaces/window/index.tsx",
+    "./surfaces/window/contract/input": "./surfaces/window/contract/input.ts",
+    "./surfaces/window/control": "./surfaces/window/control/index.tsx",
+    "./surfaces/window/control/contract/input": "./surfaces/window/control/contract/input.ts",
     "./surfaces/frame": "./surfaces/frame.tsx",
     "./surfaces/tab": "./surfaces/tab/index.tsx",
     "./surfaces/tab/contract/input": "./surfaces/tab/contract/input.ts",
@@ -58,7 +61,7 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests && bun test --preload @immersive/headless/preload surfaces/tab/spec",
+    "test": "bun test --parallel tests && bun test --preload @immersive/headless/preload surfaces/tab/spec surfaces/window/spec surfaces/window/control/spec",
     "check": "bun run --parallel typecheck test"
   },
   "devDependencies": {

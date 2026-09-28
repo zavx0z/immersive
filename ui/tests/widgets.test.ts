@@ -11,7 +11,7 @@ import type {CodeEditorHandle} from "../views/code-editor.tsx"
 import type {EditorProps} from "../widgets/editor.tsx"
 import type {TerminalProps, TerminalHandle} from "../widgets/terminal.tsx"
 import type {TreeProps} from "../widgets/tree.tsx"
-import type {WindowProps} from "../surfaces/window.tsx"
+import type {WindowProps} from "../surfaces/window/index.tsx"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {textPositionAtOffset} from "@zavx0z/dom/text-position"
 
@@ -20,7 +20,7 @@ Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceR
 const {Editor} = await import("../widgets/editor.tsx")
 const {Terminal} = await import("../widgets/terminal.tsx")
 const {Tree} = await import("../widgets/tree.tsx")
-const {Window} = await import("../surfaces/window.tsx")
+const {Window} = await import("../surfaces/window/index.tsx")
 
 function fixture() {
   const document = createDocument()
@@ -269,11 +269,11 @@ test("embedded Tree keeps focus separate from selection and bounds a large hiera
 test("Window fill is structural while floating defaults remain unchanged", () => {
   const f = fixture()
   const renderer = createDocumentRenderer({document: f.document, root: f.root, viewport: {width: 720, height: 300}})
-  const props: WindowProps = {title: "Window", subtitle: "", active: true, minimized: false, actions: []}
+  const props: WindowProps = {id: "test-window", title: "Window", open: true, onOpenChange() {}}
   try {
     f.component.render(Window as unknown as CompiledTemplate<WindowProps>, props)
     const owner = f.root.firstElementChild!
-    expect(renderer.flush().boxByNode.get(owner)?.width).toBe(320)
+    expect(renderer.flush().boxByNode.get(owner.querySelector("[data-window]")!)?.width).toBe(320)
     f.component.render(Window as unknown as CompiledTemplate<WindowProps>, {...props, layout: "fill"})
     expect(f.root.firstElementChild).toBe(owner)
     expect(renderer.flush().boxByNode.get(owner)?.width).toBe(720)

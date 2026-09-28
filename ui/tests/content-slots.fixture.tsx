@@ -5,7 +5,7 @@ import {Frame} from "../surfaces/frame.tsx"
 import {Pane, type PaneTextContent} from "../surfaces/pane.tsx"
 import {Panel} from "../surfaces/panel.tsx"
 import {Tab} from "../surfaces/tab/index.tsx"
-import {Window} from "../surfaces/window.tsx"
+import {Window} from "../surfaces/window/index.tsx"
 
 /** Обновление вложенности отдельно от primitive content проверяет прежний конфликт Pane. */
 export function PaneSlotFixture(props: Readonly<{supplied: boolean; content?: PaneTextContent}>) {
@@ -51,9 +51,9 @@ export function SurfaceSlotFixture() {
   return (
     <Window
       title="Окно"
-      subtitle=""
-      active={true}
-      minimized={false}
+      id="slot-window"
+      open={true}
+      onOpenChange={() => {}}
       actions={[]}
     >
       <Frame

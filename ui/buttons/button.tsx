@@ -100,6 +100,7 @@ export function Button(props: ButtonProps) {
       font-size: var(--font-size-xs);
       line-height: var(--line-height-control);
       overflow: clip;
+      cursor: pointer;
 
       &:hover {
         background: var(--widget-hover-background);
@@ -115,6 +116,7 @@ export function Button(props: ButtonProps) {
       }
 
       &:disabled {
+        cursor: not-allowed;
         opacity: 0.5;
         box-shadow: none;
       }

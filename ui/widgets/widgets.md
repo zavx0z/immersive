@@ -8,7 +8,7 @@ Renderer, сервер, файловую модель или debugger session. I
 Все три виджета по умолчанию заполняют размеры родителя, имеют `min-width: 0` и
 `min-height: 0`. Приложение задаёт только структурный Flex и размеры области;
 отдельный app stylesheet или appearance overrides для работы не требуются.
-`Window layout="fill"` также заполняет родителя, сохраняя прежний floating default.
+`Window layout="fill"` заполняет родителя. Оболочка и независимый `WindowControl` используют общее состояние `open`; сворачивание скрывает окно целиком, сохраняя содержимое. Контракт и сценарии принадлежат [Window](../surfaces/window/index.tsx).
 
 Общая шапка принимает `title`, `subtitle`, `status`, `statusTone`, `actions`.
 Действие содержит `id`, `label`, необязательные `iconSrc`, `badge`, `disabled`,
