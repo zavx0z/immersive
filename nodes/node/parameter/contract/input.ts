@@ -30,10 +30,11 @@ import type {NodeAction, NodeRect} from "../../shared/contracts.ts"
 @property [actions] - Кнопки действий в шапке. Нажатие вызывает обработчик действия
 без всплытия к активации самой ноды.
 
-@property [rect] - Положение и доступная ширина в CSS-пикселях графа.
+@property [rect] - Положение в CSS-пикселях графа.
 Высота раскрытой ноды определяется её содержимым, свёрнутой — шапкой и сокетами.
 
-@property [intrinsic=false] - Сохраняет естественные CSS-размеры для измерения.
+@property [style] - CSS ноды, включая width, min-width и max-width.
+Базовая ширина — 180px, минимальная — 100px. Встроенная нода заполняет родителя.
 
 @property [parameters] - Снимки параметров из принятого снимка {@link NodeTreeNodeSnapshot}.
 
@@ -65,8 +66,7 @@ export interface ParameterNodeProps {
   readonly id: string
   readonly frameId?: string | undefined
   readonly label: string
-  readonly rect?: Pick<NodeRect, "x" | "y" | "width"> | undefined
-  readonly intrinsic?: boolean | undefined
+  readonly rect?: Pick<NodeRect, "x" | "y"> | undefined
   readonly elementRef?: CallbackRef<HTMLElement> | undefined
   readonly title?: string | undefined
   readonly category?: string | undefined

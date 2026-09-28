@@ -14,10 +14,10 @@ import {planProjectedNodeGeometry} from "../shared/geometry.ts"
 export type {NodePreviewImage} from "../shared/contracts.ts"
 export type {ContentNodeProps} from "./contract/input.ts"
 
-/** Квадратная область содержимого и ParameterNode образуют одну ноду графа с общей тенью; выбранная нода подсвечивается цветом шапки. */
+/** Квадратная область содержимого и ParameterNode образуют одну ноду графа с общей тенью из темы. */
 export function ContentNode(props: ContentNodeProps) {
   const visible = props.contentVisible !== false
-  const geometry = planProjectedNodeGeometry({id: props.id, parameters: props.parameters ?? [], sockets: props.sockets ?? []}, props.rect?.width,
+  const geometry = planProjectedNodeGeometry({id: props.id, parameters: props.parameters ?? [], sockets: props.sockets ?? []}, undefined,
     props.connectedSocketKeys, props.resolvedSocketSides, {collapsed: props.collapsed, contentVisible: visible})
   const actions = [...(props.actions ?? []), {
     id: "content-toggle",
@@ -47,14 +47,14 @@ export function ContentNode(props: ContentNodeProps) {
       flex-direction: column;
       left: ${props.rect?.x ?? 0}px;
       top: ${props.rect?.y ?? 0}px;
-      width: ${props.intrinsic ? "auto" : `${geometry.width}px`};
-      height: ${props.intrinsic ? "auto" : `${geometry.height}px`};
-      min-width: 0;
+      width: 180px;
+      height: auto;
+      min-width: 100px;
       min-height: 0;
       overflow: visible;
       z-index: 3;
       border-radius: ${!visible && props.collapsed ? geometry.height / 2 : 6}px;
-      box-shadow: 0 0 12px ${props.selected ? props.headerColor ?? "#5b466b" : "rgba(0, 0, 0, .5)"};
+      box-shadow: var(--shadow-md);
 
       &[hidden] {
         display: none;
@@ -68,8 +68,7 @@ export function ContentNode(props: ContentNodeProps) {
       data-node-content=""
       style={css`
         width: 100%;
-        height: ${geometry.width}px;
-        min-height: ${geometry.width}px;
+        aspect-ratio: 1;
         flex-shrink: 0;
 
         &[hidden] {
@@ -113,8 +112,6 @@ export function ContentNode(props: ContentNodeProps) {
       onParameterChange={props.onParameterChange}
       onSocketActivate={props.onSocketActivate}
       embedded
-      intrinsic={props.intrinsic}
-      rect={{x: 0, y: 0, width: geometry.width}}
       actions={actions}
     />
   </article>

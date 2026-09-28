@@ -109,7 +109,10 @@ function NodeFixture(props: NodeStoryProps) {
       {!content && !diagram ? <ParameterNode
         id={node.id}
         label="Нода с параметрами"
-        rect={{x: 0, y: 0, width: geometry.width}}
+        rect={{x: 0, y: 0}}
+        style={css`
+          width: ${width}px;
+        `}
         parameters={displayed.parameters}
         sockets={displayed.sockets}
         parameterStore={id => props.store.parameter(node.id, id)}
@@ -124,7 +127,10 @@ function NodeFixture(props: NodeStoryProps) {
       {content ? <ContentNode
         id={node.id}
         label="Нода с содержимым"
-        rect={{x: 0, y: 0, width: geometry.width}}
+        rect={{x: 0, y: 0}}
+        style={css`
+          width: ${width}px;
+        `}
         parameters={displayed.parameters}
         sockets={displayed.sockets}
         parameterStore={id => props.store.parameter(node.id, id)}

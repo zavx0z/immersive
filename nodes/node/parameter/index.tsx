@@ -19,7 +19,7 @@ import {planProjectedNodeGeometry, NODE_HEADER_HEIGHT, NODE_MINIMUM_WIDTH} from 
 
 export type {ParameterNodeProps} from "./contract/input.ts"
 
-/** Объединяет корпус, шапку, действия, параметры и сокеты в одной ноде. Выбранная нода подсвечивается цветом шапки; тень вложенной части принадлежит ContentNode. */
+/** Объединяет корпус, шапку, действия, параметры и сокеты. Ширина задаётся CSS, тень принадлежит общей теме или составной ContentNode. */
 export function ParameterNode(props: ParameterNodeProps) {
   const {parameters, sockets, left, right} = prepareParameterNode(props, hasSlot())
   const collapseLabel = props.collapsed === true ? `Развернуть ${props.label}` : `Свернуть ${props.label}`
@@ -30,7 +30,7 @@ export function ParameterNode(props: ParameterNodeProps) {
   }
   const change = (value: ParameterInput, event: Event) => { if (!props.collapsed) props.onParameterInput?.(value, event) }
   const commit = (value: ParameterInput, event: Event) => { if (!props.collapsed) props.onParameterChange?.(value, event) }
-  const geometry = planProjectedNodeGeometry({id: props.id, parameters, sockets}, props.rect?.width,
+  const geometry = planProjectedNodeGeometry({id: props.id, parameters, sockets}, undefined,
     props.connectedSocketKeys, props.resolvedSocketSides, {collapsed: props.collapsed})
   const headerHeight = props.collapsed ? geometry.height - 2 * NODE_BORDER_WIDTH : NODE_HEADER_HEIGHT
   return <article
@@ -52,7 +52,7 @@ export function ParameterNode(props: ParameterNodeProps) {
       display: block;
       left: ${props.embedded ? 0 : props.rect?.x ?? 0}px;
       top: ${props.embedded ? 0 : props.rect?.y ?? 0}px;
-      width: ${props.intrinsic || props.rect === undefined ? "auto" : `${props.rect.width}px`};
+      width: ${props.embedded ? "100%" : "180px"};
       height: ${props.collapsed ? `${geometry.height}px` : "auto"};
       min-width: ${NODE_MINIMUM_WIDTH}px;
       min-height: 0;
@@ -62,7 +62,7 @@ export function ParameterNode(props: ParameterNodeProps) {
       border-radius: ${props.collapsed ? headerHeight / 2 : 6}px;
       background: #303030;
       color: var(--widget-box-content);
-      box-shadow: ${props.embedded ? "none" : props.selected ? `0 0 12px ${props.headerColor ?? "#5b466b"}` : "0 0 12px rgba(0, 0, 0, .5)"};
+      box-shadow: ${props.embedded ? "none" : "var(--shadow-md)"};
       --node-header-height: ${headerHeight}px;
 
       &[data-active="true"] {
@@ -208,9 +208,9 @@ export function ParameterNode(props: ParameterNodeProps) {
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        width: ${props.intrinsic || props.rect === undefined ? "auto" : `${props.rect.width}px`};
+        width: auto;
         margin-left: ${-NODE_BORDER_WIDTH}px;
-        margin-right: ${props.intrinsic ? -NODE_BORDER_WIDTH : 0}px;
+        margin-right: ${-NODE_BORDER_WIDTH}px;
         min-width: 0;
         gap: ${NODE_ROW_GAP}px;
         padding: ${NODE_BODY_PADDING_TOP}px 0 ${NODE_BODY_PADDING_BOTTOM}px;

@@ -27,8 +27,11 @@ import type {
 
 @property label - Видимая подпись и доступное имя ноды.
 
-@property [rect] - Положение и доступная ширина. Высоту составной ноды определяют
+@property [rect] - Положение ноды. Высоту составной ноды определяют
 область содержимого, параметры и состояния их раскрытия.
+
+@property [style] - CSS ноды: базовая ширина 180px, минимальная 100px.
+Ширина по содержимому задаётся width: max-content либо fit-content.
 
 @property [image] - Изображение, используемое при пустом безымянном слоте.
 
@@ -57,8 +60,7 @@ export interface ContentNodeProps {
   readonly id: string
   readonly frameId?: string | undefined
   readonly label: string
-  readonly rect?: Pick<NodeRect, "x" | "y" | "width"> | undefined
-  readonly intrinsic?: boolean | undefined
+  readonly rect?: Pick<NodeRect, "x" | "y"> | undefined
   readonly elementRef?: CallbackRef<HTMLElement> | undefined
   readonly title?: string | undefined
   readonly category?: string | undefined

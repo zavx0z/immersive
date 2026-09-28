@@ -34,7 +34,7 @@ export function ModelNode(input: GraphNodeProps) {
     title: metadataString(node.metadata, "description", "") || undefined,
     category: metadataString(node.metadata, "category", "") || undefined,
     headerColor: metadataString(node.metadata, "headerColor", "") || undefined,
-      rect: input.rect, intrinsic: input.intrinsic, elementRef: input.elementRef, selected: props.selection?.kind === "node" && props.selection.id === node.id,
+      rect: input.rect, elementRef: input.elementRef, selected: props.selection?.kind === "node" && props.selection.id === node.id,
     hidden: input.hidden, collapsed, parameters: node.parameters, sockets: node.sockets,
     snapshot: node, shape: props.nodeShapes?.get(node.id),
     parameterStore: actions.parameterStore(node.id), connectedSocketKeys: projection.connectedSocketKeys,
@@ -55,7 +55,11 @@ export function ModelNode(input: GraphNodeProps) {
       category={metadataString(node.metadata, "category", "") || undefined}
       headerColor={metadataString(node.metadata, "headerColor", "") || undefined}
       rect={input.rect}
-      intrinsic={input.intrinsic}
+      style={css`
+        ${!input.intrinsic && input.rect !== undefined && css`
+          width: ${input.rect.width}px;
+        `}
+      `}
       elementRef={input.elementRef}
       selected={props.selection?.kind === "node" && props.selection.id === node.id}
       hidden={input.hidden}
@@ -79,7 +83,11 @@ export function ModelNode(input: GraphNodeProps) {
       category={metadataString(node.metadata, "category", "") || undefined}
       headerColor={metadataString(node.metadata, "headerColor", "") || undefined}
       rect={input.rect}
-      intrinsic={input.intrinsic}
+      style={css`
+        ${!input.intrinsic && input.rect !== undefined && css`
+          width: ${input.rect.width}px;
+        `}
+      `}
       elementRef={input.elementRef}
       selected={props.selection?.kind === "node" && props.selection.id === node.id}
       hidden={input.hidden}
