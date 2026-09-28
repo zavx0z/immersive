@@ -98,3 +98,31 @@ for (const [ratio, height] of [["1", 200], ["auto 1", 120]] as const) {
     finally { renderer.dispose() }
   })
 }
+
+for (const mode of ["vertical-rl", "vertical-lr", "sideways-rl", "sideways-lr"]) {
+  for (const keyword of ["max-content", "min-content", "fit-content"]) {
+    test(`${keyword} учитывает физическую ширину вложенного текста ${mode}`, () => {
+      const f = fixture(`display:flex;position:absolute;width:${keyword};writing-mode:${mode};text-orientation:sideways`, "")
+      const button = f.document.createElement("button")
+      button.setAttribute("style", "display:flex;padding-inline:5px;padding-block:1px;border:1px solid gray")
+      const span = f.document.createElement("span")
+      const text = f.document.createTextNode("Minimap")
+      span.append(text)
+      button.append(span)
+      f.element.append(button)
+      try {
+        expect(span.getBoundingClientRect().width).toBe(24)
+        expect(button.getBoundingClientRect().width).toBe(28)
+        expect(f.element.getBoundingClientRect().width).toBe(28)
+        text.data = "Longer caption"
+        expect(f.element.getBoundingClientRect().width).toBe(28)
+        expect(button.getBoundingClientRect().height).toBe(152)
+        span.setAttribute("style", "white-space:pre")
+        text.data = "First\nSecond"
+        expect(f.element.getBoundingClientRect().width).toBe(52)
+        expect(button.getBoundingClientRect().width).toBe(52)
+        expect(span.firstChild).toBe(text)
+      } finally { f.renderer.dispose() }
+    })
+  }
+}

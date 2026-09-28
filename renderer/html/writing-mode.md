@@ -4,6 +4,9 @@
 `vertical-rl`, `vertical-lr`, `sideways-rl` и `sideways-lr`. Вертикальная строка
 использует длину текста как высоту, а `line-height` — как ширину колонки.
 Явные переводы строки создают колонки в направлении выбранного writing-mode.
+`width: min-content`, `max-content` и `fit-content` используют ту же физическую
+ширину вертикальных строк, включая текст во вложенных flex/inline-элементах.
+Удлинение строки увеличивает её высоту; явный перевод строки добавляет ширину колонки.
 
 `text-orientation: sideways` сохраняет строку целиком и передаёт её поворот
 в список рисования. `upright` размещает графемы в em-ячейках без поворота.
@@ -34,6 +37,7 @@ block/flex-раскладка, переносы и фрагментация см
 
 ## Проверки
 
+- [CPU: intrinsic-ширина вложенного вертикального текста](tests/intrinsic-sizing.test.ts).
 - [CPU: размеры, направления, наследование и изменения текста](tests/writing-mode.test.ts).
 - [WebGPU: TTF-геометрия, baseline, retained identity и culling](../../webgpu/tests/writing-mode.test.ts).
 - [Tab в HUD и Display](../../ui/tests/tab.test.ts).

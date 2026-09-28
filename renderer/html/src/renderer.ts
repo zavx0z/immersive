@@ -4550,6 +4550,9 @@ const intrinsicContentWidth = (node: LayoutNode, minimum: boolean, availableHeig
   const children = node.style.display === "flex" ? flexFlowChildren(node) : flowChildren(node)
   const widths = children.map(child => {
     if (child.text !== null) {
+      if (child.style.writingMode !== "horizontal-tb") {
+        return measureText(child.text, child.style, state.textMeasurer).width
+      }
       return layoutInlineFlow([{owner: child, kind: "text", text: child.text, whiteSpace: child.style.whiteSpace,
         width: 0, height: resolveLineHeight(child.style)}], constraint, resolveLineHeight(child.style), "left",
         (owner, text) => textAdvance(text, owner.style, state.textMeasurer)).width
