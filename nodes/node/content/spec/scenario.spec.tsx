@@ -90,8 +90,14 @@ describe.each([
       "Содержимое и параметры образуют одну ноду графа").toEqual({id: props.id, nested: 0})
   })
   test("Независимые области", () => {
-    expect({content: node.getAttribute("data-content-visible"), parameters: node.getAttribute("data-parameters-collapsed")},
-      "Область компонента и поля параметров раскрываются независимо").toEqual({content: String(props.contentVisible), parameters: String(props.collapsed)})
+    expect({
+        content: node.getAttribute("data-content-visible"),
+        parameters: node.getAttribute("data-parameters-collapsed")
+      },
+      "Область компонента и поля параметров раскрываются независимо").toEqual({
+      content: String(props.contentVisible),
+      parameters: String(props.collapsed)
+    })
   })
   test("Авторское содержимое", () => {
     const area = node.querySelector("[data-node-content]")!

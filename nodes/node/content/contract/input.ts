@@ -10,15 +10,15 @@ import type {ParameterInput} from "@nodes/parameters/shared"
 import type {CallbackRef} from "@zavx0z/template/jsx-runtime"
 import type {
   NodeAction,
-  NodePreviewImage,
   NodeRect,
 } from "../../shared/contracts.ts"
 
 /**
 Входные данные составной ноды с независимыми областями содержимого и параметров.
 
-Авторское содержимое безымянного слота имеет приоритет над `image`.
-Содержимое передаётся вложенной разметкой между тегами ContentNode.
+Содержимое передаётся вложенной разметкой между тегами ContentNode
+в безымянный слот. Пустой слот оставляет область пустой;
+содержимое за границами области обрезается.
 Изменение `contentVisible`
 скрывает квадратную область без размонтирования, а `collapsed` независимо
 управляет полями параметров.
@@ -32,8 +32,6 @@ import type {
 
 @property [style] - CSS ноды: базовая ширина 180px, минимальная 100px.
 Ширина по содержимому задаётся width: max-content либо fit-content.
-
-@property [image] - Изображение, используемое при пустом безымянном слоте.
 
 @property [contentVisible=true] - Управляет видимостью области содержимого.
 
@@ -74,7 +72,6 @@ export interface ContentNodeProps {
   readonly parameterStore?: ((parameterId: string) => ExternalStore<ParameterSnapshot>) | undefined
   readonly connectedSocketKeys?: ReadonlySet<string> | undefined
   readonly resolvedSocketSides?: ReadonlyMap<string, "left" | "right"> | undefined
-  readonly image?: NodePreviewImage | undefined
   readonly contentVisible?: boolean | undefined
   readonly style?: CssStyle | undefined
   readonly onActivate?: ((event: Event) => void) | undefined

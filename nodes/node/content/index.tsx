@@ -7,11 +7,9 @@
 import {Pane} from "@zavx0z/ui/surfaces/pane"
 import {visibilityOnIcon} from "@zavx0z/ui/themes/icons"
 import {ParameterNode} from "../parameter/index.tsx"
-import {ContentSurface} from "../surface/index.tsx"
 import type {ContentNodeProps} from "./contract/input.ts"
 import {planProjectedNodeGeometry} from "../shared/geometry.ts"
 
-export type {NodePreviewImage} from "../shared/contracts.ts"
 export type {ContentNodeProps} from "./contract/input.ts"
 
 /** Квадратная область содержимого и ParameterNode образуют одну ноду графа с общей тенью из темы. */
@@ -66,6 +64,7 @@ export function ContentNode(props: ContentNodeProps) {
     <div
       hidden={!visible}
       data-node-content=""
+      aria-label={`${props.label}: содержимое`}
       style={css`
         width: 100%;
         aspect-ratio: 1;
@@ -79,18 +78,16 @@ export function ContentNode(props: ContentNodeProps) {
       <Pane
         active={props.selected}
         style={css`
+          display: flex;
+          flex-direction: column;
           width: 100%;
           height: 100%;
+          min-height: 0;
           padding: 0;
           border-radius: 6px 6px 0 0;
         `}
       >
-        <ContentSurface
-          image={props.image}
-          label={`${props.label}: содержимое`}
-        >
-          <slot />
-        </ContentSurface>
+        <slot />
       </Pane>
     </div>
     <ParameterNode

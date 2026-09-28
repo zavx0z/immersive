@@ -10,13 +10,11 @@
 | DiagramNode           | Описание на всю ноду; прямоугольник, овал или круг         | `@nodes/node/diagram`   |
 | ParameterNode         | Корпус, шапка, действия, параметры и сокеты           | `@nodes/node/parameter` |
 | ContentNode           | ParameterNode плюс произвольный компонент содержимого      | `@nodes/node/content`   |
-| ContentSurface        | Произвольное содержимое или изображение квадратной области | `@nodes/node/surface`   |
 
 Варианты просмотра и проверки использования принадлежат каждому компоненту:
 [формы DiagramNode](diagram/spec/scenario.spec.tsx),
 [параметры и раскрытие ParameterNode](parameter/spec/scenario.spec.tsx),
-[области ContentNode](content/spec/scenario.spec.tsx) и
-[выбор содержимого ContentSurface](surface/spec/scenario.spec.tsx).
+[области и слот ContentNode](content/spec/scenario.spec.tsx).
 Эти же сценарии открываются в Storybook. Публичный компонент объявляется JSX
 непосредственно в единственном аргументе headless.render; варианты и проверки
 находятся рядом в scenario.spec.tsx.
@@ -35,8 +33,8 @@
 
 Универсальной визуальной Node нет. DiagramNode подходит разным диаграммам,
 его название и реализация не привязаны к Mermaid. ContentNode принимает вложенный
-JSX через безымянный `<slot>` и передаёт его ContentSurface:
-назначение содержимого определяет приложение. Содержимое не ограничено картинкой.
+JSX через безымянный `<slot>` непосредственно в собственной области:
+назначение содержимого определяет приложение. Пустой слот оставляет область пустой.
 
 Ширина ParameterNode и ContentNode задаётся обычным CSS через `style`:
 `width`, `min-width`, `max-width`, `max-content` и `fit-content`.
@@ -63,9 +61,8 @@ ContentNode задаётся `aspect-ratio: 1`. Обе ноды использу
 Геометрия не является визуальным компонентом. Общий план находится в
 [shared/geometry.ts](shared/geometry.ts), числовые метрики — в
 [shared/metrics.ts](shared/metrics.ts). Публичные импорты `./geometry` и `./metrics`
-сохранены. Общие `NodeRect`, `NodePreviewImage` и договоры props принадлежат
-[shared/contracts.ts](shared/contracts.ts); прежний экспорт `NodePreviewImage`
-из `@nodes/node/content` также сохранён. Числовой план и ParameterNode
+сохранены. Общие `NodeRect` и договоры props принадлежат
+[shared/contracts.ts](shared/contracts.ts). Числовой план и ParameterNode
 используют одни [правила отступов и сторон сокетов](shared/parameter-presentation.ts).
 
 Компоненты используют общую UI-тему текущего Experience. Подключение темы

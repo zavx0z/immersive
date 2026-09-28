@@ -13,7 +13,6 @@ test.each([
       "nodes/node/content/index.tsx#ContentNode": {
         "uses": [
           "nodes/node/parameter/index.tsx#ParameterNode",
-          "nodes/node/surface/index.tsx#ContentSurface",
           "ui/surfaces/pane.tsx#Pane"
         ],
         "elements": [
@@ -34,13 +33,6 @@ test.each([
           "section",
           "small",
           "strong"
-        ]
-      },
-      "nodes/node/surface/index.tsx#ContentSurface": {
-        "uses": [],
-        "elements": [
-          "img",
-          "section"
         ]
       },
       "nodes/parameters/boolean/checkbox/index.tsx#CheckboxParameter": {

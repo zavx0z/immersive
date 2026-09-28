@@ -103,7 +103,6 @@ export function ModelNode(input: GraphNodeProps) {
       onParameterChange={actions.parameterChange}
       onSocketActivate={actions.socket(node.id)}
       contentVisible={props.previewNodeIds?.has(node.id) ?? preview?.enabled ?? true}
-      image={preview?.image}
       onContentVisibleChange={props.onNodePreviewChange === undefined ? undefined : actions.previewNode(node.id)}
     >
       {props.nodeContent?.get(node.id)}
