@@ -96,6 +96,7 @@ import type {
   TextAreaStateChange
 } from "./state-change.ts"
 import {sameTextSelection} from "./internal/text-selection.ts"
+import {queueDocumentScrollEvent} from "./internal/scroll-events.ts"
 import {Text} from "./text.ts"
 import {Range} from "../range.ts"
 import {Selection} from "../selection.ts"
@@ -867,6 +868,9 @@ export class Document extends Node {
           version: state.version,
           records
         })
+        for (const record of records) {
+          if (record.type === "scroll") queueDocumentScrollEvent(this, record.target)
+        }
         for (const subscriber of [...state.subscribers]) subscriber(batch)
       }
     } finally {
