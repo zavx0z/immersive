@@ -1,5 +1,5 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRGroupElement,
   XRObjectProjectionFactory,
@@ -14,7 +14,7 @@ export type GroupProps = TransformProps & Readonly<{
   ref?: SpaceRef<XRGroupElement> | null
 }>
 
-export function Group(props: GroupProps): JsxSourceElement {
+export function Group(props: GroupProps): JSX.Element {
   const quaternion = resolveTransform(props)
   return (
     <xr-group

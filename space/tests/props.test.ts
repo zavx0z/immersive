@@ -5,7 +5,7 @@ import {pathToFileURL} from "node:url"
 import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import {Object3D, Quaternion, Vector3} from "@zavx0z/engine"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createSpaceElementFactories, type XRObjectElement} from "../src/index.ts"
 import type {GroupProps} from "../abstractions/group.tsx"
@@ -27,7 +27,7 @@ beforeAll(async () => {
     outdir: directory,
     target: "bun",
     external: ["@zavx0z/component", "@zavx0z/dom", "@zavx0z/engine", "@zavx0z/template/compiled"],
-    plugins: [createTemplateJsxBunPlugin({cwd: resolve(space, ".."), sourceRoots: [space]})],
+    plugins: [createJsxBunPlugin({cwd: resolve(space, ".."), sourceRoots: [space]})],
   })
   if (!result.success) throw new AggregateError(result.logs, "Space props compilation failed")
   for (const output of result.outputs.filter(output => output.kind === "entry-point")) {

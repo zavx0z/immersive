@@ -6,7 +6,7 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import type {GridHelper} from "@zavx0z/engine"
 import {createSpaceElementFactories, XRLineSegmentsElement} from "@zavx0z/space"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {GridProps} from "../gizmos/grid.tsx"
 
@@ -21,7 +21,7 @@ beforeAll(async () => {
     outdir: directory,
     target: "bun",
     external: ["@zavx0z/component", "@zavx0z/dom", "@zavx0z/engine", "@zavx0z/template/compiled"],
-    plugins: [createTemplateJsxBunPlugin({cwd: resolve(space, ".."), sourceRoots: [space]})],
+    plugins: [createJsxBunPlugin({cwd: resolve(space, ".."), sourceRoots: [space]})],
   })
   if (!result.success) throw new AggregateError(result.logs, "Grid compilation failed")
   const entry = result.outputs.find(output => output.kind === "entry-point")!

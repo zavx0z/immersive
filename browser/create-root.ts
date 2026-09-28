@@ -1,7 +1,7 @@
 import {createDocument} from "@zavx0z/dom"
 import {createRoot as createComponentRoot, provideContext, component, type ComponentValue} from "@zavx0z/component"
 import {defineCompiledTemplate} from "@zavx0z/template/compiled"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import {createSpaceElementFactories, readSpaceTree} from "@zavx0z/space"
 import {loadDocumentDefaultFont} from "@zavx0z/engine/default-font"
 import type {TrueTypeFont} from "@zavx0z/engine"
@@ -20,7 +20,7 @@ export interface RootOptions {
 /** Один корень приложения. Получение кадров и диагностика доступны через browser/diagnostics. */
 export interface Root {
   /** Обновляет существующее дерево; null очищает содержимое, сохраняя возможность render. */
-  render(app: JsxSourceElement | ComponentValue | null): void
+  render(app: JSX.Element | ComponentValue | null): void
   /**
   Освобождает приложение. Незавершённая GPU-подготовка удерживает Canvas до cleanup.
   Повторный вызов безопасен; render после unmount запрещён.
@@ -101,7 +101,7 @@ export function createRootWithSeams(
   let driving = false
   let preparingPresentation = false
   let pending = false
-  let next: JsxSourceElement | ComponentValue | null = null
+  let next: JSX.Element | ComponentValue | null = null
   let presentation: Presentation | null = null
   let font: TrueTypeFont | null = null
   let revision = 0
@@ -208,7 +208,7 @@ export function createRootWithSeams(
     queueMicrotask(() => { void drive() })
   }
   const root: Root = Object.freeze({
-    render(app: JsxSourceElement | ComponentValue | null) {
+    render(app: JSX.Element | ComponentValue | null) {
       if (!active) throw new Error("Cannot update an unmounted root")
       next = app
       pending = true

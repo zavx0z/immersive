@@ -1,6 +1,6 @@
 import {component, provideContext} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import {GraphView, type GraphViewProps} from "@webxr/nodes/view"
 import {MermaidHorizontal} from "./graph-context.ts"
 import type {GraphContent} from "../types/graph-view.ts"
@@ -33,7 +33,7 @@ export function MermaidGraphView(props: GraphViewProps & Readonly<{horizontal: b
 */
 function renderMermaidGraph(props: GraphViewProps & Readonly<{horizontal: boolean}>): GraphContent {
   return provideContext(MermaidHorizontal, props.horizontal,
-    component(GraphView as unknown as CompiledTemplate<GraphViewProps>, props, "graph")) as unknown as JsxSourceElement
+    component(GraphView as unknown as CompiledTemplate<GraphViewProps>, props, "graph")) as unknown as JSX.Element
 }
 
 /**

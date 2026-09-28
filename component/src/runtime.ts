@@ -22,7 +22,7 @@ import {
   type CompiledTemplate,
   type HostBinding
 } from "@zavx0z/template/compiled"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import {
   isComponentValue,
   isContext,
@@ -75,7 +75,7 @@ export type RenderOptions = Readonly<{
 export interface ComponentRoot {
   batch<Result>(callback: () => Result): Result
   flush(): number
-  render(element: JsxSourceElement | ComponentValue): void
+  render(element: JSX.Element | ComponentValue): void
   render<Props>(
     template: CompiledTemplate<Props>,
     props: Readonly<Props>,
@@ -1901,7 +1901,7 @@ export function createRoot(container: RootContainer, options: RootOptions = {}):
     },
 
     render<Props>(
-      template: CompiledTemplate<Props> | JsxSourceElement | ComponentValue<Props>,
+      template: CompiledTemplate<Props> | JSX.Element | ComponentValue<Props>,
       props?: Readonly<Props>,
       renderOptions: RenderOptions = {}
     ): void {
@@ -1914,7 +1914,7 @@ export function createRoot(container: RootContainer, options: RootOptions = {}):
       }
       if (!isCompiledTemplate(template)) {
         throw new TypeError(
-          "JSX reached @zavx0z/component at runtime; enable @zavx0z/template/compiler",
+          "JSX reached @zavx0z/component at runtime; enable @jsx/compiler",
         )
       }
       const key = normalizeKey(renderOptions.key)

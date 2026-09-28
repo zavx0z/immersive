@@ -4,12 +4,12 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@renderer/html"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {TabProps} from "../surfaces/tab/contract/input.ts"
 
 const workspace = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {Tab} = await import("../surfaces/tab/index.tsx")
 const {TabChildrenFixture, TabVerticalLabelFixture} = await import("./tab.fixture.tsx")
 const theme = await Bun.file(resolve(workspace, "ui/themes/theme.css")).text()

@@ -1,0 +1,27 @@
+{
+  "name": "@jsx/types",
+  "label": "Типы JSX",
+  "version": "0.0.0",
+  "description": "Авторский namespace JSX и контракт вложенности",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --parallel ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx/events": "*",
+    "@zavx0z/dom": "*",
+    "@zavx0z/template": "*"
+  },
+  "devDependencies": {
+    "@zavx0z/jsx": "*",
+    "@zavx0z/component": "*"
+  }
+}

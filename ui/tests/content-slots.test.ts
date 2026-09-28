@@ -2,13 +2,13 @@ import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, MouseEvent} from "@zavx0z/dom"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {PaneTextContent} from "../surfaces/pane.tsx"
 import type {TabProps} from "../surfaces/tab/contract/input.ts"
 
 const workspace = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({
+Bun.plugin(createJsxBunPlugin({
   cwd: workspace,
   persistent: true,
   sourceRoots: [resolve(workspace, "ui")],

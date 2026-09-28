@@ -3,7 +3,7 @@ import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, type HTMLElement} from "@zavx0z/dom"
 import {DataTransfer} from "@zavx0z/dom/data-transfer"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {createDocumentNativeInputHostWithSeams} from "../../browser/src/native-input-host.ts"
@@ -12,7 +12,7 @@ import type {CodeEditorProps} from "../src/code-editor/model.ts"
 import type {ClipboardMenuController} from "../menus/clipboard-menu.tsx"
 
 const workspace = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {CodeEditor} = await import("../views/code-editor.tsx")
 const {ClipboardMenu} = await import("../menus/clipboard-menu.tsx")
 

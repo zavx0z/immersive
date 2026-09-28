@@ -1,4 +1,4 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRAnimationElement,
   XRAnimationProjectionFactory,
@@ -14,7 +14,7 @@ export type AnimationProps = Readonly<{
   ref?: SpaceRef<XRAnimationElement> | null
 }>
 
-export function Animation(props: AnimationProps): JsxSourceElement {
+export function Animation(props: AnimationProps): JSX.Element {
   return (
     <xr-animation
       factory={props.factory}

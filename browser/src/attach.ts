@@ -39,7 +39,7 @@ import {
 } from "@zavx0z/dom"
 import {createRoot, provideContext, type ComponentRoot, type ComponentValue} from "@zavx0z/component"
 import {createRootEnvironment, rootContext, type RootEnvironment, type RootSize, type FrameLoop} from "./root-context.ts"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import {loadDocumentDefaultFont} from "@zavx0z/engine/default-font"
 import {claimBrowserPresentationHost, type PresentationHostClaim} from "./presentation-host.ts"
 import type {
@@ -82,7 +82,7 @@ import {readRenderedSelectionText} from "@renderer/html"
 
 export type PresentationOptions = Readonly<{
   canvas: HTMLCanvasElement
-  app: JsxSourceElement | ComponentValue
+  app: JSX.Element | ComponentValue
   font?: TrueTypeFont
   fontFaces?: readonly RendererFontFace[] | undefined
   fontSources?: readonly BrowserFontFaceSource[] | undefined

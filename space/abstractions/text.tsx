@@ -1,5 +1,5 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRObjectProjectionFactory,
   XRTextElement,
@@ -17,7 +17,7 @@ export type TextProps = TransformProps & Readonly<{
   ref?: SpaceRef<XRTextElement> | null
 }>
 
-export function Text(props: TextProps): JsxSourceElement {
+export function Text(props: TextProps): JSX.Element {
   const quaternion = resolveTransform(props)
   return (
     <xr-text

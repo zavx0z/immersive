@@ -1,5 +1,5 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRAssetElement,
   XRObjectProjectionFactory,
@@ -14,7 +14,7 @@ export type AssetProps = TransformProps & Readonly<{
   ref?: SpaceRef<XRAssetElement> | null
 }>
 
-export function Asset(props: AssetProps): JsxSourceElement {
+export function Asset(props: AssetProps): JSX.Element {
   const quaternion = resolveTransform(props)
   return (
     <xr-asset

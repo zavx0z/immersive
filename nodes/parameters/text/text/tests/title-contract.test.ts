@@ -2,12 +2,12 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, type Element} from "@zavx0z/dom"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {Parameter as ParameterModel, type NodeJsonValue} from "@nodes/tree"
 
 const root = resolve(import.meta.dir, "../../../../..")
-Bun.plugin(createTemplateJsxBunPlugin({
+Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
   sourceRoots: [resolve(root, "nodes/parameters"), resolve(root, "nodes/sockets"), resolve(root, "ui")],

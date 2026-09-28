@@ -7,7 +7,7 @@ import type {
   Socket,
 } from "@nodes/tree"
 import type {ParameterInput} from "@nodes/parameters/shared"
-import type {CallbackRef} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   NodeAction,
   NodeRect,
@@ -59,7 +59,7 @@ export interface ContentNodeProps {
   readonly frameId?: string | undefined
   readonly label: string
   readonly rect?: Pick<NodeRect, "x" | "y"> | undefined
-  readonly elementRef?: CallbackRef<HTMLElement> | undefined
+  readonly elementRef?: JSX.Ref<HTMLElement> | undefined
   readonly title?: string | undefined
   readonly category?: string | undefined
   readonly headerColor?: string | undefined

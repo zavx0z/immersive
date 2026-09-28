@@ -37,11 +37,14 @@
     "@zavx0z/ui": "*",
     "@nodes/node": "*",
     "@nodes/layout": "*",
-    "@webxr/nodes": "*"
+    "@webxr/nodes": "*",
+    "@jsx/types": "*",
+    "@zavx0z/jsx": "*"
   },
   "devDependencies": {
     "@renderer/html": "*",
-    "@zavx0z/highlighter": "link:@zavx0z/highlighter"
+    "@zavx0z/highlighter": "link:@zavx0z/highlighter",
+    "@jsx/bun": "*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {

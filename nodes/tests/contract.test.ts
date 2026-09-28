@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
-import {JsxCompilerSession} from "@zavx0z/template/compiler"
+import {JsxCompilerSession} from "@jsx/compiler"
 
 const root = resolve(import.meta.dir, "../..")
 const packageRoot = resolve(root, "nodes")

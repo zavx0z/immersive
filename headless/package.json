@@ -8,9 +8,7 @@
   "packageManager": "bun@1.4.0",
   "exports": {
     ".": "./index.ts",
-    "./preload": "./preload.ts",
-    "./jsx-runtime": "./jsx-runtime.ts",
-    "./jsx-dev-runtime": "./jsx-dev-runtime.ts"
+    "./preload": "./preload.ts"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
@@ -27,15 +25,34 @@
     "@zavx0z/engine": "*",
     "@zavx0z/template": "*",
     "@zavx0z/ui": "*",
-    "@zavx0z/webgpu": "*"
+    "@zavx0z/webgpu": "*",
+    "@jsx/bun": "*",
+    "@jsx/compiler": "*",
+    "@jsx/types": "*",
+    "@zavx0z/jsx": "*",
+    "@jsx/slot-child": "*"
   },
   "peerDependenciesMeta": {
-    "@renderer/html": {"optional": true},
-    "@zavx0z/component": {"optional": true},
-    "@zavx0z/dom": {"optional": true},
-    "@zavx0z/engine": {"optional": true},
-    "@zavx0z/template": {"optional": true},
-    "@zavx0z/ui": {"optional": true},
-    "@zavx0z/webgpu": {"optional": true}
+    "@renderer/html": {
+      "optional": true
+    },
+    "@zavx0z/component": {
+      "optional": true
+    },
+    "@zavx0z/dom": {
+      "optional": true
+    },
+    "@zavx0z/engine": {
+      "optional": true
+    },
+    "@zavx0z/template": {
+      "optional": true
+    },
+    "@zavx0z/ui": {
+      "optional": true
+    },
+    "@zavx0z/webgpu": {
+      "optional": true
+    }
   }
 }

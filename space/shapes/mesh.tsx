@@ -1,5 +1,5 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRMeshElement,
   XRObjectProjectionFactory,
@@ -14,7 +14,7 @@ export type MeshProps = TransformProps & Readonly<{
   ref?: SpaceRef<XRMeshElement> | null
 }>
 
-export function Mesh(props: MeshProps): JsxSourceElement {
+export function Mesh(props: MeshProps): JSX.Element {
   const quaternion = resolveTransform(props)
   return (
     <xr-mesh

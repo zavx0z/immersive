@@ -4,16 +4,14 @@
     "allowJs": true,
     "exactOptionalPropertyTypes": false,
     "jsx": "preserve",
-    "jsxImportSource": "@zavx0z/template"
+    "jsxImportSource": "@zavx0z/jsx"
   },
   "include": [
     "*.ts",
     "attribute/**/*.ts",
-    "compiler/**/*.ts",
     "node/**/*.ts",
-    "slot/**/*.ts",
-    "slot/**/*.tsx",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "tests/**/*.tsx",
+    "css-shape/**/*.ts"
   ]
 }

@@ -2,7 +2,7 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {component, createRoot} from "@zavx0z/component"
 import {createDocument, type HTMLElement, textOffsetAtPosition} from "@zavx0z/dom"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/engine"
 import type {Renderer} from "@zavx0z/webgpu"
@@ -18,7 +18,7 @@ import {inspectRoot} from "../diagnostics.ts"
 import type {DisplayElement} from "@zavx0z/dom/display"
 
 const workspace = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui"), resolve(workspace, "space"), import.meta.dir]}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui"), resolve(workspace, "space"), import.meta.dir]}))
 const {CodeEditor} = await import("@zavx0z/ui/views/code-editor")
 const {Editor} = await import("@zavx0z/ui/widgets/editor")
 const {NativeEditorSelectionFixture} = await import("./native-editor-selection.fixture.tsx")

@@ -13,6 +13,8 @@ values for the JSX compiler. It is not a global stylesheet registration API.
 @packageDocumentation
 */
 
+import type {} from "./css-global.d.ts"
+
 import { createNode } from "./node"
 import type { Node } from "./node/index.t"
 import { extractHtmlElements } from "./parser"

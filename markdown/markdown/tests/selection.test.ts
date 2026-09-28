@@ -2,11 +2,11 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, type HTMLElement} from "@zavx0z/dom"
 import {createRoot} from "@zavx0z/component"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import {createDocumentRenderer, readRenderedSelectionText} from "@renderer/html"
 
 const workspace = resolve(import.meta.dir, "../../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "markdown"), resolve(workspace, "ui"), resolve(workspace, "nodes")]}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "markdown"), resolve(workspace, "ui"), resolve(workspace, "nodes")]}))
 const {CrossBlockSelectionFixture} = await import("./selection.fixture.tsx")
 
 // Компиляция тестового TSX на Intel Mac может занимать больше 5 секунд.

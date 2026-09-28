@@ -3,13 +3,13 @@ import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElement} from "@zavx0z/dom"
 import {Parameter as ParameterModel, type ParameterSnapshot} from "@nodes/tree"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {ParameterEndpoint, ParameterInput, ParameterProps} from "@nodes/parameters/shared"
 import {PARAMETER_EXAMPLES, parameterFixture, type ParameterMechanism} from "./parameter.fixture.ts"
 
 const root = resolve(import.meta.dir, "../../../..")
-Bun.plugin(createTemplateJsxBunPlugin({
+Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
   sourceRoots: [resolve(root, "nodes/parameters"), resolve(root, "nodes/sockets"), resolve(root, "ui")],

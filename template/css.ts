@@ -1,4 +1,6 @@
-import {getCssTemplateShape} from "./css-shape.ts"
+import {parseCssTemplateShape} from "./css-shape/index.ts"
+import {getTaggedTemplateShape} from "./tagged-template.ts"
+const cssShapeFrontend = Symbol("@zavx0z/template/css-shape")
 
 const cssTemplateResultType = Symbol("@zavx0z/template/css-result")
 const cssRuntimeGuard = "@zavx0z/template/css-runtime-guard"
@@ -28,7 +30,7 @@ export function css(
   strings: TemplateStringsArray,
   ...values: readonly CssTemplateValue[]
 ): CssTemplateResult {
-  const shape = getCssTemplateShape(strings)
+  const shape = getTaggedTemplateShape(strings, cssShapeFrontend, parseCssTemplateShape)
   if (values.length !== shape.slotCount) throw new Error("CSS template value count does not match its shape")
   const fragmentSlots = new Set(shape.fragmentSlots)
   for (let index = 0; index < values.length; index += 1) {

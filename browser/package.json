@@ -28,16 +28,36 @@
     "@zavx0z/engine": "*",
     "@renderer/html": "*",
     "@zavx0z/space": "*",
-    "@zavx0z/webgpu": "*"
+    "@zavx0z/webgpu": "*",
+    "@jsx/types": "*"
   },
   "peerDependenciesMeta": {
-    "@zavx0z/component": {"optional": true},
-    "@zavx0z/template": {"optional": true},
-    "@zavx0z/dom": {"optional": true},
-    "@zavx0z/engine": {"optional": true},
-    "@renderer/html": {"optional": true},
-    "@zavx0z/space": {"optional": true},
-    "@zavx0z/webgpu": {"optional": true}
+    "@zavx0z/component": {
+      "optional": true
+    },
+    "@zavx0z/template": {
+      "optional": true
+    },
+    "@zavx0z/dom": {
+      "optional": true
+    },
+    "@zavx0z/engine": {
+      "optional": true
+    },
+    "@renderer/html": {
+      "optional": true
+    },
+    "@zavx0z/space": {
+      "optional": true
+    },
+    "@zavx0z/webgpu": {
+      "optional": true
+    }
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@jsx/bun": "*",
+    "@jsx/compiler": "*",
+    "@zavx0z/jsx": "*"
+  }
 }

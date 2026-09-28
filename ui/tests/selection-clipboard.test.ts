@@ -3,11 +3,11 @@ import {resolve} from "node:path"
 import {createDocument, MouseEvent, readDocumentTextHighlights, type HTMLElement} from "@zavx0z/dom"
 import {createRoot} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 
 const workspace = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {EditableSelectionFixture} = await import("./selection.fixture.tsx")
 
 test("несколько выделений выполняют настоящее копирование и распределённую вставку", async () => {

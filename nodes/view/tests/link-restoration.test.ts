@@ -6,12 +6,12 @@ import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer, type RenderFrame} from "@renderer/html"
 import {InstancedStrokedPath, TrueTypeFont} from "@zavx0z/engine"
 import {RendererWebGpuBackend} from "../../../webgpu/src/webgpu-backend.ts"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {GraphViewProps, GraphLayoutComputer} from "@webxr/nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(workspace, path))}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(workspace, path))}))
 const {createCubicLinkRoute} = await import("@webxr/nodes/routing/link-path")
 const {GraphView} = await import("@webxr/nodes/view")
 const {graphInput} = await import("./measured.fixture.tsx")

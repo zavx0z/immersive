@@ -20,7 +20,7 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test tests --max-concurrency=1 && bun test --preload @immersive/headless/preload diagram/spec content/spec parameter/spec --max-concurrency=1",
+    "test": "bun test --parallel tests && bun test --preload @immersive/headless/preload --parallel diagram/spec content/spec parameter/spec",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
@@ -29,7 +29,9 @@
     "@nodes/sockets": "*",
     "@zavx0z/component": "*",
     "@zavx0z/template": "*",
-    "@zavx0z/ui": "*"
+    "@zavx0z/ui": "*",
+    "@jsx/types": "*",
+    "@zavx0z/jsx": "*"
   },
   "peerDependenciesMeta": {
     "@nodes/tree": {
@@ -52,6 +54,7 @@
     }
   },
   "devDependencies": {
-    "@immersive/headless": "*"
+    "@immersive/headless": "*",
+    "@jsx/bun": "*"
   }
 }

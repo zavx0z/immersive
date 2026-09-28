@@ -8,7 +8,7 @@ import {
   Text,
   createDocument,
 } from "@zavx0z/dom"
-import {JsxCompilerSession} from "@zavx0z/template/compiler"
+import {JsxCompilerSession} from "@jsx/compiler"
 import {
   bindEvent,
   bindProperty,
@@ -64,7 +64,7 @@ describe("Compiled Template contract", () => {
       compilerOptions: {
         exactOptionalPropertyTypes: true,
         jsx: "preserve",
-        jsxImportSource: "@zavx0z/template",
+        jsxImportSource: "@zavx0z/jsx",
         lib: ["ESNext", "DOM"],
         module: "Preserve",
         moduleResolution: "bundler",

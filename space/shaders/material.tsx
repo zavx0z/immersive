@@ -1,4 +1,4 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRMaterialElement,
   XRMaterialProjectionFactory,
@@ -13,7 +13,7 @@ export type MaterialProps = Readonly<{
   ref?: SpaceRef<XRMaterialElement> | null
 }>
 
-export function Material(props: MaterialProps): JsxSourceElement {
+export function Material(props: MaterialProps): JSX.Element {
   return (
     <xr-material
       kind={props.kind}

@@ -7,7 +7,7 @@ const root = join(import.meta.dir, "../..")
 const packages = Object.freeze([
   ["engine", "@zavx0z/engine", "Объекты сцены, геометрия, материалы, математика и анимация без WebGPU"],
   ["dom", "@zavx0z/dom", "Семантический документ, элементы, атрибуты, события, фокус и состояние полей"],
-  ["template", "@zavx0z/template", "Компилятор TSX и формат готового шаблона"],
+  ["template", "@zavx0z/template", "HTML, CSS и общий формат готового шаблона"],
   ["component", "@zavx0z/component", "Состояние компонентов, хуки, контекст, эффекты и освобождение ресурсов"],
   ["renderer", "@webxr/renderer", "Независимые пакеты рендеринга документов"],
   ["renderer/html", "@renderer/html", "CSS, размеры, раскладка, прокрутка, список рисования и проверка попаданий без GPU"],
@@ -22,9 +22,21 @@ const packages = Object.freeze([
   ["nodes/layout", "@nodes/layout", "Алгоритмы расположения нод и Worker"],
   ["nodes/parameters", "@nodes/parameters", "Представления параметров нод и проекция Parameter Store"],
   ["nodes/sockets", "@nodes/sockets", "Адресуемый Socket и его визуальные предустановки"],
-  ["nodes/node", "@nodes/node", "DiagramNode, ParameterNode и ContentNode на основе Pane"],
+  ["nodes/node", "@nodes/node", "Ноды диаграмм, параметров и произвольного содержимого"],
   ["headless", "@immersive/headless", "Без браузера: нативная отрисовка компонентов в живой DOM и PNG"],
   ["devtools", "@zavx0z/devtools", "Диагностика Document, состояния элементов и результатов Renderer"],
+  ["jsx", "@zavx0z/jsx", "Авторский JSX, автоматический protocol, слоты и компиляция"],
+  ["jsx/types", "@jsx/types", "Авторский namespace JSX и контракт вложенности"],
+  ["jsx/runtime", "@jsx/runtime", "Автоматический JSX protocol для подготовленных компонентов"],
+  ["jsx/development", "@jsx/development", "Development protocol JSX с общей Fragment identity"],
+  ["jsx/slot", "@jsx/slot", "Распределение JSX содержимого по точкам вставки"],
+  ["jsx/events", "@jsx/events", "Соответствие JSX event props и нативных DOM событий"],
+  ["jsx/compiler", "@jsx/compiler", "Семантическая компиляция JSX в готовые шаблоны"],
+  ["jsx/bun", "@jsx/bun", "Интеграция компилятора JSX со сборкой Bun"],
+  ["jsx/compiler/slot-contract", "@jsx/slot-contract", "Статическая проверка типов, наличия и количества содержимого слотов"],
+  ["jsx/authoring", "@jsx/authoring", "Синтаксис точек вставки и назначений JSX-слотов"],
+  ["jsx/error", "@jsx/error", "Ошибки компиляции JSX с исходным файлом"],
+  ["jsx/slot-child", "@jsx/slot-child", "Статическое назначение условной позиции и keyed JSX expression"],
 ] as const)
 
 describe("Конечный состав пакетов", () => {
@@ -77,7 +89,7 @@ describe("Конечный состав пакетов", () => {
 
   test("[PKG-002] состав пакетов совпадает с принятыми владельцами без ограничения их числа", async () => {
     const actual: string[] = []
-    for (const pattern of ["*", "nodes/*", "renderer/*"]) for await (const entry of new Bun.Glob(pattern).scan({cwd: root, onlyFiles: false})) {
+    for (const pattern of ["*", "nodes/*", "renderer/*", "jsx/*", "jsx/compiler/*"]) for await (const entry of new Bun.Glob(pattern).scan({cwd: root, onlyFiles: false})) {
       if (entry === "projects" || entry === "tests") continue
       if (await Bun.file(join(root, entry, "package.json")).exists()) actual.push(entry)
     }

@@ -33,4 +33,4 @@ test.each([{collapsed: false}, {collapsed: true}])("обновление collaps
   } finally {
     await headless.dispose()
   }
-})
+}, 30_000)

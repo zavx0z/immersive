@@ -1,11 +1,11 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 
 const uiRoot = resolve(import.meta.dir, "..")
 const root = resolve(uiRoot, "..")
 
-Bun.plugin(createTemplateJsxBunPlugin({
+Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
   sourceRoots: [uiRoot],

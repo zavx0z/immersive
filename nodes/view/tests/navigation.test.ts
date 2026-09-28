@@ -4,12 +4,12 @@ import {createDocument, MouseEvent, WheelEvent} from "@zavx0z/dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
 import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer, createDocumentInteractionController} from "@renderer/html"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {GraphScene, GraphTransform, GraphViewProps} from "@webxr/nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(workspace, path))}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(workspace, path))}))
 const {GraphView} = await import("@webxr/nodes/view")
 const {CounterNode} = await import("./graph.fixture.tsx")
 const scene: GraphScene = {

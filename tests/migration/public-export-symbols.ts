@@ -31,7 +31,7 @@ export async function readPublicExportSymbols(
     compilerOptions: {
       allowImportingTsExtensions: true,
       jsx: "preserve",
-      jsxImportSource: "@zavx0z/template",
+      jsxImportSource: "@zavx0z/jsx",
       lib: ["ESNext", "DOM"],
       module: "Preserve",
       moduleDetection: "force",

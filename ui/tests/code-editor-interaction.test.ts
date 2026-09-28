@@ -12,14 +12,14 @@ import {DataTransfer} from "@zavx0z/dom/data-transfer"
 import {textPositionAtOffset} from "@zavx0z/dom/text-position"
 import {registerLanguageHighlighter} from "@zavx0z/highlighter"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import {createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "@renderer/html"
 import {createCodeEditorModel} from "../code-editor-model.ts"
 import type {CodeEditorProps} from "../src/code-editor/model.ts"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 
 const root = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "ui")]}))
 const {CodeEditor} = await import("../views/code-editor.tsx")
 const template = CodeEditor as unknown as CompiledTemplate<CodeEditorProps>
 

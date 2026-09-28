@@ -1,0 +1,26 @@
+{
+  "name": "@jsx/authoring",
+  "label": "Авторство слотов",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --pretty false",
+    "test": "bun test --parallel ./spec",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx/slot": "*",
+    "@jsx/error": "*",
+    "typescript": "7.0.2"
+  },
+  "packageManager": "bun@1.4.0",
+  "description": "Синтаксис точек вставки и назначений JSX-слотов",
+  "sideEffects": false,
+  "devDependencies": {
+    "@zavx0z/jsx": "*"
+  }
+}

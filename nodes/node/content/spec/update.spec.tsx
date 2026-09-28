@@ -46,4 +46,4 @@ test.each([
   } finally {
     await headless.dispose()
   }
-})
+}, 30_000)

@@ -4,11 +4,11 @@ import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElem
 import type {LayoutResult} from "@nodes/layout/types"
 import type {NodeTreeSnapshot} from "@nodes/tree"
 import {createSpaceElementFactories} from "@zavx0z/space"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 
 const root = resolve(import.meta.dir, "../../..")
 setDefaultTimeout(60_000)
-Bun.plugin(createTemplateJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
 
 const {createNodeTreeLayout, StaleNodeTreeLayoutError} = await import("@webxr/nodes/view/tree")
 const {createLayoutGraph, graphLayout, mountLayoutFixture, textParameter} = await import("./layout-coherence.fixture.tsx")

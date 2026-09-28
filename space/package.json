@@ -29,7 +29,9 @@
     "@zavx0z/component": "*",
     "@zavx0z/dom": "*",
     "@zavx0z/engine": "*",
-    "@zavx0z/template": "*"
+    "@zavx0z/template": "*",
+    "@jsx/types": "*",
+    "@zavx0z/jsx": "*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {
@@ -44,5 +46,9 @@
     "@zavx0z/template": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "@jsx/bun": "*",
+    "@jsx/compiler": "*"
   }
 }

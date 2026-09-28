@@ -1,7 +1,7 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
 import {useMemo} from "@zavx0z/component"
 import {GridHelper} from "@zavx0z/engine"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {LineSegmentsProps} from "../shapes/line-segments.tsx"
 import "../src/jsx.ts"
 
@@ -28,7 +28,7 @@ export type GridProps = TransformProps & Omit<LineSegmentsProps, "factory"> & Re
 <Grid size={2400} divisions={24} />
 ```
 */
-export function Grid(props: GridProps): JsxSourceElement {
+export function Grid(props: GridProps): JSX.Element {
   const quaternion = resolveTransform(props)
   const size = props.size ?? 10
   const divisions = props.divisions ?? 10

@@ -4,7 +4,7 @@
 компоненты разных пакетов.
 
 `@immersive/headless` монтирует компоненты пакетов проекта через настоящий
-Template compiler, Component, DOM, HTML Renderer и нативный WebGPU/Dawn.
+JSX compiler, Component, DOM, HTML Renderer и нативный WebGPU/Dawn.
 `render` возвращает живой внешний элемент компонента, `screenshot` — PNG
 по его актуальному border-box без внешних полей. По умолчанию `screenshot`
 возвращает `Buffer`; второй аргумент `"image"` возвращает `Bun.Image` того же снимка.
@@ -22,7 +22,7 @@ BMP V5 с альфа-каналом. Этот путь проверен на mac
 bun test --preload @immersive/headless/preload
 ```
 
-Preload регистрирует Template compiler от Git-корня текущего рабочего каталога.
+Preload регистрирует JSX compiler от Git-корня текущего рабочего каталога.
 `createHeadless()` повторяет регистрацию идемпотентно и создаёт живой host.
 
 ```tsx
@@ -45,11 +45,11 @@ test("показывает переданный текст", async () => {
 })
 ```
 
-Загрузчик компилирует production TSX через Template в пределах Git-корня test host.
-JSX в spec/test автоматически преобразуется в Headless transport без файловой
+Загрузчик компилирует production TSX через `@jsx/compiler` в пределах Git-корня test host.
+JSX в spec/test использует общий `@zavx0z/jsx` automatic protocol без авторской файловой
 pragma и создаёт инертный `ComponentValue`; Document, Canvas, Renderer и
 DOM-элемент появляются только после `createHeadless()` и `render()`.
-Штатный persistent plugin Template сохраняет одну сессию компилятора на Git-корень
+Headless не владеет отдельным JSX runtime. Штатный persistent plugin `@jsx/bun` сохраняет одну сессию компилятора на Git-корень
 в пределах тестового процесса. Production-модули используют её общий кэш и
 последовательную обработку; новый запуск Bun получает собственную сессию.
 Для программной передачи компонента и props отдельно используется

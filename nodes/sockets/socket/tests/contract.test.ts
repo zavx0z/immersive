@@ -1,11 +1,11 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, MouseEvent, type Element} from "@zavx0z/dom"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import {SOCKET_KINDS, SOCKET_SHAPES} from "@nodes/sockets/presets"
 
 const root = resolve(import.meta.dir, "../../../..")
-Bun.plugin(createTemplateJsxBunPlugin({
+Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
   sourceRoots: [resolve(root, "nodes/sockets")],

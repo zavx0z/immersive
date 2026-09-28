@@ -4,14 +4,14 @@ import {createDocument, acquireDocumentAuthorStyleSheetOwner, MouseEvent} from "
 import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
 import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {GraphViewProps, GraphMeasuredLayout, GraphMeasurement} from "@webxr/nodes/view"
 import type {NodeTreeStore} from "@webxr/nodes/view/tree"
 import {createNodeTree, createNodeTreeExternalStore, Parameter} from "@nodes/tree"
 
 const root = resolve(import.meta.dir, "../../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
 const {GraphView} = await import("@webxr/nodes/view")
 const {graphInput, measuredLayout, MeasuredEditor, MeasuredCircle} = await import("./measured.fixture.tsx")
 const theme = await Bun.file(resolve(root, "ui/themes/theme.css")).text()

@@ -3,14 +3,14 @@ import {resolve} from "node:path"
 import {createDocument, MouseEvent, type Element} from "@zavx0z/dom"
 import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {LinkProps} from "@webxr/nodes/link"
 import type {LinkDefinition} from "@webxr/nodes/link/types"
 import {SOCKET_KINDS, socketPreset} from "@nodes/sockets/presets"
 
 const root = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
 const {Link} = await import("@webxr/nodes/link")
 const route: LinkDefinition["route"] = {kind: "orthogonal", points: [{x: 20, y: 20}, {x: 180, y: 20}]}
 

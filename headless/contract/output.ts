@@ -1,7 +1,7 @@
 import type {Element} from "@zavx0z/dom"
 import type {ComponentValue} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {CapturedFrame} from "../native-canvas.ts"
 
 /**
@@ -39,8 +39,8 @@ await headless.dispose()
 ```
 */
 export interface Headless {
-  render(value: JsxSourceElement | ComponentValue): Promise<Element>
-  renderComponent<Props>(type: ((props: Props) => JsxSourceElement) | CompiledTemplate<Props>, props: Props): Promise<Element>
+  render(value: JSX.Element | ComponentValue): Promise<Element>
+  renderComponent<Props>(type: ((props: Props) => JSX.Element) | CompiledTemplate<Props>, props: Props): Promise<Element>
   screenshot(element: Element): Promise<Buffer>
   screenshot(element: Element, format: "image"): Promise<Bun.Image>
   capture(element: Element): Promise<CapturedFrame>

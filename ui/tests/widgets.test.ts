@@ -2,7 +2,7 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, Event, InputEvent, KeyboardEvent, MouseEvent, CompositionEvent, readDocumentScrollIntoViewRequests, type HTMLInputElement, type HTMLElement} from "@zavx0z/dom"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentRenderer} from "@renderer/html"
 import {createCodeEditorModel} from "../code-editor-model.ts"
@@ -16,7 +16,7 @@ import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {textPositionAtOffset} from "@zavx0z/dom/text-position"
 
 const workspace = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {Editor} = await import("../widgets/editor.tsx")
 const {Terminal} = await import("../widgets/terminal.tsx")
 const {Tree} = await import("../widgets/tree.tsx")

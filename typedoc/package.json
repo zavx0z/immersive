@@ -29,7 +29,8 @@
     "@zavx0z/component": "*",
     "@zavx0z/template": "*",
     "@webxr/markdown": "*",
-    "@zavx0z/ui": "*"
+    "@zavx0z/ui": "*",
+    "@zavx0z/jsx": "*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {
@@ -44,5 +45,8 @@
     "@zavx0z/ui": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "@jsx/bun": "*"
   }
 }

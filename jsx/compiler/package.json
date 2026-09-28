@@ -1,0 +1,38 @@
+{
+  "name": "@jsx/compiler",
+  "label": "Компилятор JSX",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --pretty false",
+    "test": "bun test --parallel ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx/events": "*",
+    "@jsx/slot": "*",
+    "@jsx/slot-contract": "*",
+    "@zavx0z/template": "*",
+    "typescript": "7.0.2",
+    "@jsx/authoring": "*",
+    "@jsx/error": "*"
+  },
+  "devDependencies": {
+    "@zavx0z/jsx": "*",
+    "@jsx/types": "*",
+    "@zavx0z/dom": "*",
+    "@zavx0z/component": "*",
+    "@zavx0z/space": "*",
+    "@zavx0z/browser": "*"
+  },
+  "packageManager": "bun@1.4.0",
+  "description": "Семантическая компиляция JSX в готовые шаблоны",
+  "sideEffects": false,
+  "workspaces": [
+    "slot-contract"
+  ]
+}

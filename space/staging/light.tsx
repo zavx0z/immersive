@@ -1,5 +1,5 @@
 import {resolveTransform, validateVector, type TransformProps, type SpatialVector} from "../src/props.ts"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRLightElement,
   XRObjectProjectionFactory,
@@ -18,7 +18,7 @@ export type LightProps = TransformProps & Readonly<{
   ref?: SpaceRef<XRLightElement> | null
 }>
 
-export function Light(props: LightProps): JsxSourceElement {
+export function Light(props: LightProps): JSX.Element {
   const quaternion = resolveTransform(props)
   validateVector(props.target, "target")
   return (

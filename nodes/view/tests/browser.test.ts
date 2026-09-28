@@ -10,13 +10,13 @@ import {createDocumentPlaneRuntime} from "../../../browser/src/plane-runtime.ts"
 import {createDocumentOverlayRuntime} from "../../../browser/src/overlay-runtime.ts"
 import {createRootWithSeams} from "../../../browser/create-root.ts"
 import {inspectRoot} from "../../../browser/diagnostics.ts"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {GraphMeasuredLayout, GraphMeasurement, GraphViewProps} from "@webxr/nodes/view"
 import type {BrowserGraphControls} from "./browser.fixture.tsx"
 
 const workspace = resolve(import.meta.dir, "../../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui", "markdown"].map(path => resolve(workspace, path))}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui", "markdown"].map(path => resolve(workspace, path))}))
 const {BrowserMeasuredGraph} = await import("./browser.fixture.tsx")
 const {graphInput, measuredLayout} = await import("./measured.fixture.tsx")
 const {GraphView} = await import("@webxr/nodes/view")

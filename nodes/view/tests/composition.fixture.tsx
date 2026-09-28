@@ -1,6 +1,6 @@
 import {createRoot, component} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {Document} from "@zavx0z/dom"
 import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeTreeSnapshot} from "@nodes/tree"
 import {DiagramNode} from "@nodes/node/diagram"
@@ -50,7 +50,7 @@ export function mountMixedNodes(document: Document, custom = false) {
     {id: "target", metadata: {description: "Диаграммная нода"}, sockets: [{id: "in", direction: "input"}]},
   ], links: [{id: "connection", from: {nodeId: "source", socketId: "out"}, to: {nodeId: "target", socketId: "in"}}]})
   const store = createNodeTreeExternalStore(tree)
-  const content = component(InteractiveContent as unknown as CompiledTemplate<{}>, {}) as unknown as JsxSourceElement
+  const content = component(InteractiveContent as unknown as CompiledTemplate<{}>, {}) as unknown as JSX.Element
   const contents = new Map([["source", content]])
   const views: ReadonlyMap<string, NodeView> | undefined = custom ? new Map([["target", ApplicationNode]]) : undefined
   const owner = document.createElement("div")

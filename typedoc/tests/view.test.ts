@@ -3,13 +3,13 @@ import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, DOMRect, HTMLElement} from "@zavx0z/dom"
 import {createDocumentRenderer} from "@renderer/html"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {TypeDocProps} from "../typedoc/index.tsx"
 import {contractDocument, proseDocument} from "./view.fixture.ts"
 
 const root = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({
+Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
   sourceRoots: ["typedoc", "markdown", "ui", "nodes"].map(path => resolve(root, path)),

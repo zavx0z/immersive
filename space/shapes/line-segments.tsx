@@ -1,5 +1,5 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRLineSegmentsElement,
   XRObjectProjectionFactory,
@@ -14,7 +14,7 @@ export type LineSegmentsProps = TransformProps & Readonly<{
   ref?: SpaceRef<XRLineSegmentsElement> | null
 }>
 
-export function LineSegments(props: LineSegmentsProps): JsxSourceElement {
+export function LineSegments(props: LineSegmentsProps): JSX.Element {
   const quaternion = resolveTransform(props)
   return (
     <xr-line-segments

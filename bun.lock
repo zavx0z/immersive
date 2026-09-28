@@ -8,13 +8,20 @@
         "@types/bun": "1.4.0",
         "@webgpu/types": "0.1.68",
         "@zavx0z/browser": "workspace:*",
+        "@zavx0z/jsx": "workspace:*",
         "typescript": "7.0.2",
       },
     },
     "browser": {
       "name": "@zavx0z/browser",
       "version": "0.0.0",
+      "devDependencies": {
+        "@jsx/bun": "*",
+        "@jsx/compiler": "*",
+        "@zavx0z/jsx": "*",
+      },
       "peerDependencies": {
+        "@jsx/types": "*",
         "@renderer/html": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
@@ -37,6 +44,7 @@
       "name": "@zavx0z/component",
       "version": "0.0.0",
       "peerDependencies": {
+        "@jsx/types": "*",
         "@zavx0z/dom": "*",
         "@zavx0z/template": "*",
       },
@@ -60,6 +68,10 @@
     "dom": {
       "name": "@zavx0z/dom",
       "version": "0.0.0",
+      "devDependencies": {
+        "@jsx/bun": "*",
+        "@zavx0z/jsx": "*",
+      },
       "peerDependencies": {
         "typescript": "7.0.2",
       },
@@ -75,10 +87,15 @@
         "bun-webgpu": "0.1.7",
       },
       "peerDependencies": {
+        "@jsx/bun": "*",
+        "@jsx/compiler": "*",
+        "@jsx/slot-child": "*",
+        "@jsx/types": "*",
         "@renderer/html": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
         "@zavx0z/engine": "*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
         "@zavx0z/webgpu": "*",
@@ -93,6 +110,128 @@
         "@zavx0z/webgpu",
       ],
     },
+    "jsx": {
+      "name": "@zavx0z/jsx",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx/development": "*",
+        "@jsx/runtime": "*",
+      },
+    },
+    "jsx/authoring": {
+      "name": "@jsx/authoring",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx/error": "*",
+        "@jsx/slot": "*",
+        "typescript": "7.0.2",
+      },
+      "devDependencies": {
+        "@zavx0z/jsx": "*",
+      },
+    },
+    "jsx/bun": {
+      "name": "@jsx/bun",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx/compiler": "*",
+      },
+      "devDependencies": {
+        "@zavx0z/jsx": "*",
+      },
+    },
+    "jsx/compiler": {
+      "name": "@jsx/compiler",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx/authoring": "*",
+        "@jsx/error": "*",
+        "@jsx/events": "*",
+        "@jsx/slot": "*",
+        "@jsx/slot-contract": "*",
+        "@zavx0z/template": "*",
+        "typescript": "7.0.2",
+      },
+      "devDependencies": {
+        "@jsx/types": "*",
+        "@zavx0z/browser": "*",
+        "@zavx0z/component": "*",
+        "@zavx0z/dom": "*",
+        "@zavx0z/jsx": "*",
+        "@zavx0z/space": "*",
+      },
+    },
+    "jsx/compiler/slot-contract": {
+      "name": "@jsx/slot-contract",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx/authoring": "*",
+        "@jsx/error": "*",
+      },
+      "devDependencies": {
+        "@jsx/types": "*",
+        "@zavx0z/component": "*",
+        "@zavx0z/jsx": "*",
+      },
+      "peerDependencies": {
+        "typescript": "7.0.2",
+      },
+    },
+    "jsx/development": {
+      "name": "@jsx/development",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx/runtime": "*",
+        "@jsx/types": "*",
+        "@zavx0z/component": "*",
+      },
+      "devDependencies": {
+        "@zavx0z/template": "*",
+      },
+    },
+    "jsx/error": {
+      "name": "@jsx/error",
+      "version": "0.0.0",
+    },
+    "jsx/events": {
+      "name": "@jsx/events",
+      "version": "0.0.0",
+    },
+    "jsx/runtime": {
+      "name": "@jsx/runtime",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx/slot": "*",
+        "@jsx/slot-child": "*",
+        "@jsx/types": "*",
+        "@zavx0z/component": "*",
+        "@zavx0z/template": "*",
+      },
+      "devDependencies": {
+        "@zavx0z/dom": "*",
+      },
+    },
+    "jsx/slot": {
+      "name": "@jsx/slot",
+      "version": "0.0.0",
+    },
+    "jsx/slot-child": {
+      "name": "@jsx/slot-child",
+      "version": "0.0.0",
+    },
+    "jsx/types": {
+      "name": "@jsx/types",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx/events": "*",
+        "@zavx0z/dom": "*",
+        "@zavx0z/template": "*",
+      },
+      "devDependencies": {
+        "@zavx0z/component": "*",
+        "@zavx0z/jsx": "*",
+      },
+    },
     "markdown": {
       "name": "@webxr/markdown",
       "version": "0.0.0",
@@ -102,15 +241,18 @@
         "parse5": "8.0.1",
       },
       "devDependencies": {
+        "@jsx/bun": "workspace:*",
         "@renderer/html": "*",
         "@zavx0z/highlighter": "link:@zavx0z/highlighter",
       },
       "peerDependencies": {
+        "@jsx/types": "workspace:*",
         "@nodes/layout": "*",
         "@nodes/node": "*",
         "@webxr/nodes": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
+        "@zavx0z/jsx": "workspace:*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -127,7 +269,12 @@
     "nodes": {
       "name": "@webxr/nodes",
       "version": "0.0.0",
+      "devDependencies": {
+        "@jsx/bun": "workspace:*",
+        "@jsx/compiler": "workspace:*",
+      },
       "peerDependencies": {
+        "@jsx/types": "workspace:*",
         "@nodes/layout": "*",
         "@nodes/node": "*",
         "@nodes/parameters": "*",
@@ -135,6 +282,7 @@
         "@nodes/tree": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
+        "@zavx0z/jsx": "workspace:*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -163,12 +311,15 @@
       "version": "0.0.0",
       "devDependencies": {
         "@immersive/headless": "*",
+        "@jsx/bun": "workspace:*",
       },
       "peerDependencies": {
+        "@jsx/types": "workspace:*",
         "@nodes/parameters": "*",
         "@nodes/sockets": "*",
         "@nodes/tree": "*",
         "@zavx0z/component": "*",
+        "@zavx0z/jsx": "workspace:*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -184,10 +335,14 @@
     "nodes/parameters": {
       "name": "@nodes/parameters",
       "version": "0.0.0",
+      "devDependencies": {
+        "@jsx/bun": "workspace:*",
+      },
       "peerDependencies": {
         "@nodes/sockets": "*",
         "@nodes/tree": "*",
         "@zavx0z/component": "*",
+        "@zavx0z/jsx": "workspace:*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -202,9 +357,13 @@
     "nodes/sockets": {
       "name": "@nodes/sockets",
       "version": "0.0.0",
+      "devDependencies": {
+        "@jsx/bun": "workspace:*",
+      },
       "peerDependencies": {
         "@nodes/tree": "*",
         "@zavx0z/component": "*",
+        "@zavx0z/jsx": "workspace:*",
         "@zavx0z/template": "*",
       },
       "optionalPeers": [
@@ -234,10 +393,16 @@
     "space": {
       "name": "@zavx0z/space",
       "version": "0.0.0",
+      "devDependencies": {
+        "@jsx/bun": "*",
+        "@jsx/compiler": "*",
+      },
       "peerDependencies": {
+        "@jsx/types": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
         "@zavx0z/engine": "*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
       },
       "optionalPeers": [
@@ -250,6 +415,10 @@
     "template": {
       "name": "@zavx0z/template",
       "version": "0.0.0",
+      "devDependencies": {
+        "@jsx/compiler": "*",
+        "@zavx0z/jsx": "*",
+      },
       "peerDependencies": {
         "@zavx0z/dom": "*",
         "typescript": "7.0.2",
@@ -265,9 +434,13 @@
       "dependencies": {
         "typescript": "7.0.2",
       },
+      "devDependencies": {
+        "@jsx/bun": "workspace:*",
+      },
       "peerDependencies": {
         "@webxr/markdown": "*",
         "@zavx0z/component": "*",
+        "@zavx0z/jsx": "workspace:*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -286,10 +459,13 @@
       },
       "devDependencies": {
         "@immersive/headless": "*",
+        "@jsx/bun": "workspace:*",
+        "@jsx/compiler": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
+        "@zavx0z/jsx": "workspace:*",
         "@zavx0z/template": "*",
       },
       "optionalPeers": [
@@ -302,6 +478,7 @@
       "name": "@zavx0z/webgpu",
       "version": "0.0.0",
       "devDependencies": {
+        "@jsx/bun": "workspace:*",
         "@webgpu/types": "0.1.72",
       },
       "peerDependencies": {
@@ -330,6 +507,28 @@
     "@iconify/utils": ["@iconify/utils@3.1.7", "", { "dependencies": { "@antfu/install-pkg": "^2.0.1", "@iconify/types": "^2.0.0", "import-meta-resolve": "^4.2.0" } }, "sha512-JZHlwdID+dy+lTgbYC8NEC4zeugqeYsc6jewvzb4c58kHauJn+X7rNwQjxz5p2qSjqaEeQoLkCIQ9v/H4PK0/w=="],
 
     "@immersive/headless": ["@immersive/headless@workspace:headless"],
+
+    "@jsx/authoring": ["@jsx/authoring@workspace:jsx/authoring"],
+
+    "@jsx/bun": ["@jsx/bun@workspace:jsx/bun"],
+
+    "@jsx/compiler": ["@jsx/compiler@workspace:jsx/compiler"],
+
+    "@jsx/development": ["@jsx/development@workspace:jsx/development"],
+
+    "@jsx/error": ["@jsx/error@workspace:jsx/error"],
+
+    "@jsx/events": ["@jsx/events@workspace:jsx/events"],
+
+    "@jsx/runtime": ["@jsx/runtime@workspace:jsx/runtime"],
+
+    "@jsx/slot": ["@jsx/slot@workspace:jsx/slot"],
+
+    "@jsx/slot-child": ["@jsx/slot-child@workspace:jsx/slot-child"],
+
+    "@jsx/slot-contract": ["@jsx/slot-contract@workspace:jsx/compiler/slot-contract"],
+
+    "@jsx/types": ["@jsx/types@workspace:jsx/types"],
 
     "@mermaid-js/parser": ["@mermaid-js/parser@1.2.1", "", { "dependencies": { "@chevrotain/types": "~11.1.2" } }, "sha512-n12NohV3mrUyUL2o93IgG/ifeW9FTyeJn3zDxkhwa8MJ9Fxg3HQMlA3RiGmD/3UnJvheztkjjQAjA2T4LmUcpw=="],
 
@@ -478,6 +677,8 @@
     "@zavx0z/engine": ["@zavx0z/engine@workspace:engine"],
 
     "@zavx0z/highlighter": ["@zavx0z/highlighter@link:@zavx0z/highlighter", {}],
+
+    "@zavx0z/jsx": ["@zavx0z/jsx@workspace:jsx"],
 
     "@zavx0z/space": ["@zavx0z/space@workspace:space"],
 

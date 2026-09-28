@@ -1,24 +1,20 @@
 {
   "name": "@zavx0z/template",
-  "label": "Шаблоны TSX",
+  "label": "Шаблоны",
   "version": "0.0.0",
-  "description": "Компилятор TSX и формат готового шаблона",
+  "description": "HTML, CSS и общий формат готового шаблона",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.4.0",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./slot": "./slot/index.ts",
     "./compiled": "./compiled.ts",
-    "./compiler": "./compiler/index.ts",
-    "./bun": "./compiler/bun.ts",
-    "./jsx-runtime": "./jsx-runtime.ts",
-    "./jsx-dev-runtime": "./jsx-dev-runtime.ts"
+    "./css-shape": "./css-shape/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests slot/spec slot/test",
+    "test": "bun test --parallel tests css-shape/spec",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
@@ -32,5 +28,9 @@
     "typescript": {
       "optional": true
     }
+  },
+  "devDependencies": {
+    "@jsx/compiler": "*",
+    "@zavx0z/jsx": "*"
   }
 }

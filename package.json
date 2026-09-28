@@ -29,7 +29,19 @@
     "nodes/sockets",
     "nodes/node",
     "headless",
-    "devtools"
+    "devtools",
+    "jsx",
+    "jsx/types",
+    "jsx/runtime",
+    "jsx/development",
+    "jsx/slot",
+    "jsx/events",
+    "jsx/compiler",
+    "jsx/bun",
+    "jsx/compiler/slot-contract",
+    "jsx/authoring",
+    "jsx/error",
+    "jsx/slot-child"
   ],
   "scripts": {
     "typecheck": "bun run --parallel typecheck:root typecheck:packages",
@@ -44,6 +56,7 @@
     "@zavx0z/browser": "workspace:*",
     "@types/bun": "1.4.0",
     "@webgpu/types": "0.1.68",
-    "typescript": "7.0.2"
+    "typescript": "7.0.2",
+    "@zavx0z/jsx": "workspace:*"
   }
 }

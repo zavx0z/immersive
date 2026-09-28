@@ -5,7 +5,7 @@ import {pathToFileURL} from "node:url"
 import {createDocument} from "../../src/index.ts"
 import type {ViewPointElement} from "../index.ts"
 import {createRoot} from "../../../component/src/index.ts"
-import {createTemplateJsxBunPlugin} from "../../../template/compiler/bun.ts"
+import {createJsxBunPlugin} from "@jsx/bun"
 
 test("Повторный JSX render сохраняет команды камеры и ref, изменение атрибута обновляет тот же элемент", async () => {
   const output = await mkdtemp(join(import.meta.dir, ".authoring-"))
@@ -16,7 +16,7 @@ test("Повторный JSX render сохраняет команды камер
       outdir: output,
       target: "bun",
       external: ["@zavx0z/component", "@zavx0z/dom", "@zavx0z/template/compiled"],
-      plugins: [createTemplateJsxBunPlugin({cwd: resolve(import.meta.dir, "../../.."), sourceRoots: [import.meta.dir]})],
+      plugins: [createJsxBunPlugin({cwd: resolve(import.meta.dir, "../../.."), sourceRoots: [import.meta.dir]})],
     })
     expect(result.success, "Базовый тег viewpoint должен компилироваться без компонента Space").toBe(true)
     const entry = result.outputs.find(value => value.kind === "entry-point")!

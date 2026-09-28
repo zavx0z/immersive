@@ -46,17 +46,31 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependenciesMeta": {
-    "@nodes/tree": {"optional": true},
-    "@nodes/sockets": {"optional": true},
-    "@zavx0z/component": {"optional": true},
-    "@zavx0z/template": {"optional": true},
-    "@zavx0z/ui": {"optional": true}
+    "@nodes/tree": {
+      "optional": true
+    },
+    "@nodes/sockets": {
+      "optional": true
+    },
+    "@zavx0z/component": {
+      "optional": true
+    },
+    "@zavx0z/template": {
+      "optional": true
+    },
+    "@zavx0z/ui": {
+      "optional": true
+    }
   },
   "peerDependencies": {
     "@nodes/tree": "*",
     "@nodes/sockets": "*",
     "@zavx0z/component": "*",
     "@zavx0z/template": "*",
-    "@zavx0z/ui": "*"
+    "@zavx0z/ui": "*",
+    "@zavx0z/jsx": "*"
+  },
+  "devDependencies": {
+    "@jsx/bun": "*"
   }
 }

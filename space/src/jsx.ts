@@ -1,4 +1,4 @@
-import type {JsxChild} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {Ref} from "@zavx0z/component"
 import type {
   XRAnimationElement,
@@ -21,7 +21,7 @@ import type {
 export type SpaceRef<Target> = Ref<Target>
 
 type SpatialChildren<Target> = Readonly<{
-  children?: JsxChild | undefined
+  children?: JSX.Child | undefined
   ref?: SpaceRef<Target> | null | undefined
 }>
 
@@ -108,7 +108,7 @@ declare module "@zavx0z/dom" {
   }
 }
 
-declare module "@zavx0z/template/jsx-runtime" {
+declare module "@jsx/types" {
   namespace JSX {
     interface IntrinsicElements {
       "xr-asset": XRAssetIntrinsicProperties

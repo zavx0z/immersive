@@ -4,12 +4,12 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument, MouseEvent, KeyboardEvent, type HTMLInputElement} from "@zavx0z/dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, type RenderCursor} from "@renderer/html"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {WindowProps} from "../surfaces/window/contract/input.ts"
 
 const workspace = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {Window} = await import("../surfaces/window/index.tsx")
 const {WindowPairFixture} = await import("./window.fixture.tsx")
 const theme = await Bun.file(resolve(workspace, "ui/themes/theme.css")).text()

@@ -3,13 +3,13 @@ import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import {createDocumentInteractionState, createDocumentRenderer} from "@renderer/html"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import {chevronRightIcon, homeIcon} from "../themes/icons.ts"
 
 const root = resolve(import.meta.dir, "../..")
 const uiRoot = resolve(root, "ui")
 
-Bun.plugin(createTemplateJsxBunPlugin({
+Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
   sourceRoots: [uiRoot],

@@ -1,4 +1,4 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {
   XRGeometryElement,
   XRGeometryProjectionFactory,
@@ -22,7 +22,7 @@ export type GeometryProps = Readonly<{
   ref?: SpaceRef<XRGeometryElement> | null
 }>
 
-export function Geometry(props: GeometryProps): JsxSourceElement {
+export function Geometry(props: GeometryProps): JSX.Element {
   return (
     <xr-geometry
       kind={props.kind}

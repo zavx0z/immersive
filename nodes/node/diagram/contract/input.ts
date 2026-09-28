@@ -1,5 +1,5 @@
 import type {NodeRect, NodeShape} from "../../shared/contracts.ts"
-import type {CallbackRef} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 
 /**
 Данные отображения диаграммной ноды. Компонент показывает описание внутри Pane,
@@ -52,7 +52,7 @@ export interface DiagramNodeProps {
   readonly description: string
   readonly rect?: NodeRect | undefined
   readonly intrinsic?: boolean | undefined
-  readonly elementRef?: CallbackRef<HTMLElement> | undefined
+  readonly elementRef?: JSX.Ref<HTMLElement> | undefined
   readonly shape?: NodeShape | undefined
   readonly selected?: boolean | undefined
   readonly hidden?: boolean | undefined

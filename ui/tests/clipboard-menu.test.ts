@@ -2,12 +2,12 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, MouseEvent, KeyboardEvent, HTMLElement, getPopoverVisibilityState} from "@zavx0z/dom"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 
 const workspace = resolve(import.meta.dir, "../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {ClipboardMenu} = await import("../menus/clipboard-menu.tsx")
 
 test("global clipboard menu uses existing commands and retains the original selection target", async () => {

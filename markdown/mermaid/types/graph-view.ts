@@ -1,9 +1,9 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 
 /**
 Содержимое slot-моста для {@link @webxr/nodes/view#GraphView | GraphView}.
-Форма {@link JsxSourceElement} сохраняет авторский JSX-транспорт
+Форма {@link JSX.Element} сохраняет авторский JSX-транспорт
 [адаптера направления Mermaid](../src/graph-view.tsx).
 Допускает пустой результат и несколько элементов без дополнительного DOM-контейнера.
 */
-export type GraphContent = JsxSourceElement | readonly JsxSourceElement[] | null | undefined
+export type GraphContent = JSX.Element | readonly JSX.Element[] | null | undefined

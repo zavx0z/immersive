@@ -3,11 +3,11 @@ import {resolve} from "node:path"
 import {createDocument} from "@zavx0z/dom"
 import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 
 const root = resolve(import.meta.dir, "../../..")
-Bun.plugin(createTemplateJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes")]}))
 const {FilledMarkerFixture} = await import("./filled-marker.fixture.tsx")
 
 test("[NODES-MARKER-FILL-GAP] fill-only замкнутый vector-path должен создать paint", () => {

@@ -1,6 +1,6 @@
 import type {GraphNodeProps} from "../graph/contracts.ts"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {JSX} from "@jsx/types"
 import type {NodeChildren} from "@nodes/node/contracts"
 import type {NodeView, NodeViewProps} from "../node-tree/contracts.ts"
 import {CustomNodeView} from "./custom/index.tsx"
@@ -125,5 +125,5 @@ export function ModelNode(input: GraphNodeProps) {
 }
 
 function renderNodeView(view: NodeView, props: NodeViewProps): NodeChildren {
-  return component(view as unknown as CompiledTemplate<NodeViewProps>, props, props.id) as unknown as JsxSourceElement
+  return component(view as unknown as CompiledTemplate<NodeViewProps>, props, props.id) as unknown as JSX.Element
 }

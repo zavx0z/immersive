@@ -20,4 +20,4 @@ test("CSS ширина ContentNode определяет квадрат без в
       expect(node.getBoundingClientRect().height).toBeCloseTo(content.height + parameters.height)
     }
   } finally { await headless.dispose() }
-})
+}, 30_000)

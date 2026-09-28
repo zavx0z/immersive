@@ -1,0 +1,30 @@
+{
+  "name": "@zavx0z/jsx",
+  "label": "JSX",
+  "version": "0.0.0",
+  "description": "Авторский JSX, автоматический protocol, слоты и компиляция",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "sideEffects": false,
+  "workspaces": [
+    "types",
+    "runtime",
+    "development",
+    "slot",
+    "events",
+    "compiler",
+    "bun",
+    "authoring",
+    "error",
+    "slot-child"
+  ],
+  "exports": {
+    "./jsx-runtime": "./runtime/index.ts",
+    "./jsx-dev-runtime": "./development/index.ts"
+  },
+  "dependencies": {
+    "@jsx/runtime": "*",
+    "@jsx/development": "*"
+  }
+}

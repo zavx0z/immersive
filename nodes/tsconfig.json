@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "@zavx0z/template"
+    "jsxImportSource": "@zavx0z/jsx"
   },
   "include": [
     "index.ts",

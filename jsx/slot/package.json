@@ -1,0 +1,18 @@
+{
+  "name": "@jsx/slot",
+  "label": "Слоты JSX",
+  "version": "0.0.0",
+  "description": "Распределение JSX содержимого по точкам вставки",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --parallel spec",
+    "check": "bun run --parallel typecheck test"
+  }
+}

@@ -73,5 +73,9 @@
   },
   "peerDependencies": {
     "typescript": "7.0.2"
+  },
+  "devDependencies": {
+    "@jsx/bun": "*",
+    "@zavx0z/jsx": "*"
   }
 }

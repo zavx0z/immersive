@@ -3,12 +3,12 @@ import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, MouseEvent} from "@zavx0z/dom"
 import {createSpaceElementFactories} from "@zavx0z/space"
-import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {createJsxBunPlugin} from "@jsx/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {PARAMETER_EXAMPLES, parameterFixture, type ParameterMechanism} from "./parameter.fixture.ts"
 
 const workspace = resolve(import.meta.dir, "../../../..")
-Bun.plugin(createTemplateJsxBunPlugin({
+Bun.plugin(createJsxBunPlugin({
   cwd: workspace,
   persistent: true,
   sourceRoots: [resolve(workspace, "nodes/parameters"), resolve(workspace, "nodes/sockets"), resolve(workspace, "ui")],
