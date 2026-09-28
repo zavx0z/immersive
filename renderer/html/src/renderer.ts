@@ -372,6 +372,7 @@ const ROOT_STYLE: ComputedStyle = Object.freeze({
   justifyContent: "flex-start",
   width: null,
   height: null,
+  aspectRatio: null,
   minWidth: null,
   minHeight: null,
   maxWidth: null,
@@ -2860,12 +2861,18 @@ const measure = (
       const edgeHeight = verticalBoxEdges(style)
       const declaredWidth = resolveLength(style.width, availableWidth)
       const declaredHeight = resolveLength(style.height, availableHeight)
+      const authorRatio = style.aspectRatio !== null && !style.aspectRatio.auto
+      const preferredRatio = authorRatio ? style.aspectRatio!.ratio : natural.width / natural.height
+      const ratioBorderBox = authorRatio && style.boxSizing === "border-box"
       const contentHeight = declaredHeight === null ? null : Math.max(0, declaredHeight - (style.boxSizing === "border-box" ? edgeHeight : 0))
       const contentWidth = usedWidth !== undefined ? Math.max(0, usedWidth - edgeWidth) : declaredWidth === null
-        ? contentHeight === null ? natural.width : contentHeight * natural.width / natural.height
+        ? contentHeight === null ? natural.width : ratioBorderBox
+          ? Math.max(0, (contentHeight + edgeHeight) * preferredRatio - edgeWidth)
+          : contentHeight * preferredRatio
         : Math.max(0, declaredWidth - (style.boxSizing === "border-box" ? edgeWidth : 0))
       const width = usedWidth ?? clampAxis(contentWidth + edgeWidth, style.minWidth, style.maxWidth, availableWidth, edgeWidth, style.boxSizing)
-      const height = clampAxis((contentHeight ?? Math.max(0, width - edgeWidth) * natural.height / natural.width) + edgeHeight,
+      const ratioHeight = ratioBorderBox ? width / preferredRatio : Math.max(0, width - edgeWidth) / preferredRatio + edgeHeight
+      const height = clampAxis(contentHeight === null ? ratioHeight : contentHeight + edgeHeight,
         style.minHeight, style.maxHeight, availableHeight, edgeHeight, style.boxSizing)
       return rememberSize(layoutNode, availableWidth, availableHeight, width, height, state, usedWidth)
     }
@@ -2899,15 +2906,17 @@ const measure = (
     horizontal(layoutNode.style.borderWidths)
   const edgeHeight = vertical(layoutNode.style.padding) +
     vertical(layoutNode.style.borderWidths)
-  const explicitWidth = resolveLength(layoutNode.style.width, availableWidth)
+  const explicitWidth = resolvePreferredWidth(layoutNode, availableWidth, availableHeight, state)
   const explicitHeight = resolveLength(layoutNode.style.height, availableHeight)
+  const ratioWidth = explicitWidth === null && explicitHeight !== null && layoutNode.style.aspectRatio !== null
+    ? explicitHeight * layoutNode.style.aspectRatio.ratio : explicitWidth
   const contentConstraintWidth = Math.max(
     0,
-    usedWidth !== undefined ? usedWidth - edgeWidth : explicitWidth === null
+    usedWidth !== undefined ? usedWidth - edgeWidth : ratioWidth === null
       ? availableWidth - edgeWidth
       : layoutNode.style.boxSizing === "content-box"
-        ? explicitWidth
-        : explicitWidth - edgeWidth,
+        ? ratioWidth
+        : ratioWidth - edgeWidth,
   )
   const contentConstraintHeight = Math.max(
     0,
@@ -2938,7 +2947,7 @@ const measure = (
         rowFlex,
         availableWidth,
         availableHeight,
-        explicitWidth,
+        ratioWidth,
         explicitHeight,
         edgeWidth,
         edgeHeight,
@@ -3029,9 +3038,9 @@ const measure = (
 
   const fillsAvailableWidth =
     layoutNode.style.display === "block" || layoutNode.style.display === "flex"
-  const naturalBorderWidth = explicitWidth === null && fillsAvailableWidth
+  const naturalBorderWidth = ratioWidth === null && fillsAvailableWidth
     ? availableWidth
-    : borderBoxSize(explicitWidth, naturalContentWidth, edgeWidth, layoutNode.style.boxSizing)
+    : borderBoxSize(ratioWidth, naturalContentWidth, edgeWidth, layoutNode.style.boxSizing)
   const naturalBorderHeight = borderBoxSize(
     explicitHeight,
     naturalContentHeight,
@@ -3046,8 +3055,12 @@ const measure = (
     edgeWidth,
     layoutNode.style.boxSizing,
   )
+  const ratio = layoutNode.style.aspectRatio?.ratio ?? null
+  const ratioHeight = explicitHeight === null && ratio !== null
+    ? layoutNode.style.boxSizing === "border-box" ? width / ratio : Math.max(0, width - edgeWidth) / ratio + edgeHeight
+    : naturalBorderHeight
   const height = clampAxis(
-    naturalBorderHeight,
+    ratioHeight,
     layoutNode.style.minHeight,
     layoutNode.style.maxHeight,
     availableHeight,
@@ -4525,6 +4538,46 @@ const automaticMainMinimum = (
     : intrinsicHeight(node, availableWidth, availableHeight, state)
 }
 
+/** Размер по содержимому использует общие метрики потомков и правила переноса inline-текста. */
+const intrinsicContentWidth = (node: LayoutNode, minimum: boolean, availableHeight: number, state: BuildState): number => {
+  if (node.node instanceof HTMLImageElement && state.imageMeasurer !== undefined) {
+    const natural = state.imageMeasurer.measureImage(node.node.src)
+    if (natural !== null) return natural.width
+  }
+  const constraint = minimum ? 0 : Number.POSITIVE_INFINITY
+  const inline = inlineLayout(node, constraint, availableHeight, state)
+  if (inline !== null) return inline.plan.width
+  const children = node.style.display === "flex" ? flexFlowChildren(node) : flowChildren(node)
+  const widths = children.map(child => {
+    if (child.text !== null) {
+      return layoutInlineFlow([{owner: child, kind: "text", text: child.text, whiteSpace: child.style.whiteSpace,
+        width: 0, height: resolveLineHeight(child.style)}], constraint, resolveLineHeight(child.style), "left",
+        (owner, text) => textAdvance(text, owner.style, state.textMeasurer)).width
+    }
+    const explicit = resolveLength(child.style.width, 0)
+    const edge = horizontalBoxEdges(child.style)
+    const content = explicit === null || child.style.width?.unit === "percent"
+      ? intrinsicContentWidth(child, minimum, availableHeight, state) + edge
+      : borderBoxSize(explicit, 0, edge, child.style.boxSizing)
+    return clampAxis(content, child.style.minWidth, child.style.maxWidth, 0, edge, child.style.boxSizing) + horizontal(child.style.margin)
+  })
+  const row = node.style.display === "inline" || node.style.display === "flex" && node.style.flexDirection === "row"
+  return row && !(minimum && node.style.display === "flex" && node.style.flexWrap !== "nowrap")
+    ? widths.reduce((sum, width) => sum + width, 0) + Math.max(0, widths.length - 1) * node.style.columnGap
+    : Math.max(0, ...widths)
+}
+
+const resolvePreferredWidth = (node: LayoutNode, availableWidth: number, availableHeight: number, state: BuildState): number | null => {
+  const declared = node.style.width
+  if (declared?.unit !== "intrinsic") return resolveLength(declared, availableWidth)
+  const maximum = intrinsicContentWidth(node, false, availableHeight, state)
+  const edge = horizontalBoxEdges(node.style)
+  const content = declared.value === "max-content" ? maximum
+    : declared.value === "min-content" ? intrinsicContentWidth(node, true, availableHeight, state)
+    : Math.min(maximum, Math.max(intrinsicContentWidth(node, true, availableHeight, state), availableWidth - edge))
+  return content + (node.style.boxSizing === "border-box" ? edge : 0)
+}
+
 const intrinsicWidth = (
   node: LayoutNode,
   availableWidth: number,
@@ -4547,7 +4600,7 @@ const intrinsicWidth = (
     )
   }
 
-  const explicit = resolveLength(node.style.width, availableWidth)
+  const explicit = resolvePreferredWidth(node, availableWidth, availableHeight, state)
   const edge = horizontalBoxEdges(node.style)
   if (explicit !== null) {
     const borderSize = node.style.boxSizing === "content-box" ? explicit + edge : explicit
@@ -4620,6 +4673,9 @@ const intrinsicHeight = (
       0,
     )
   }
+
+  if (node.style.aspectRatio !== null)
+    return measure(node, availableWidth, availableHeight, state).height
 
   const declared = node.style.height
   const explicit = declared?.unit === "percent"
@@ -7061,6 +7117,7 @@ const textStyle = (inherited: ComputedStyle): ComputedStyle =>
     justifyContent: "flex-start",
     width: null,
     height: null,
+    aspectRatio: null,
     minWidth: null,
     minHeight: null,
     maxWidth: null,

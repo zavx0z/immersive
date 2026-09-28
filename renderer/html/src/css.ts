@@ -29,6 +29,8 @@ export type CSSLength =
   | Readonly<{ unit: "px"; value: number }>
   | Readonly<{ unit: "percent"; value: number }>
 
+export type CSSSize = CSSLength | Readonly<{unit: "intrinsic"; value: "min-content" | "max-content" | "fit-content"}>
+
 export type ComputedCornerRadii = Readonly<{
   topLeft: CSSLength | null
   topRight: CSSLength | null
@@ -86,8 +88,9 @@ export type ComputedStyle = Readonly<{
   alignContent: RenderAlignContent
   alignItems: RenderAlignItems
   justifyContent: RenderJustifyContent
-  width: CSSLength | null
+  width: CSSSize | null
   height: CSSLength | null
+  aspectRatio: Readonly<{ratio: number; auto: boolean}> | null
   minWidth: CSSLength | null
   minHeight: CSSLength | null
   maxWidth: CSSLength | null
@@ -524,8 +527,9 @@ export const computeStyle = (
     alignContent: parseAlignContent(readValue(values, "align-content")),
     alignItems: parseAlignItems(readValue(values, "align-items")),
     justifyContent: parseJustifyContent(readValue(values, "justify-content")),
-    width: parseLength(readValue(values, "width"), fontSize),
+    width: parseSize(readValue(values, "width"), fontSize),
     height: parseLength(readValue(values, "height"), fontSize),
+    aspectRatio: parseAspectRatio(readValue(values, "aspect-ratio")),
     minWidth: parseLength(readValue(values, "min-width"), fontSize),
     minHeight: parseLength(readValue(values, "min-height"), fontSize),
     maxWidth: parseLength(readValue(values, "max-width"), fontSize),
@@ -608,7 +612,7 @@ export const computeStyle = (
 }
 
 export const resolveLength = (
-  length: CSSLength | null,
+  length: CSSSize | null,
   available: number,
 ): number | null => {
   const value = resolveSignedLength(length, available)
@@ -617,10 +621,10 @@ export const resolveLength = (
 
 /** Перенос CSS сохраняет знак; процент относится к соответствующей стороне собственного бокса. */
 export const resolveSignedLength = (
-  length: CSSLength | null,
+  length: CSSSize | null,
   available: number,
 ): number | null => {
-  if (!length) return null
+  if (!length || length.unit === "intrinsic") return null
   return length.unit === "percent" ? available * length.value * 0.01 : length.value
 }
 
@@ -2368,6 +2372,24 @@ const normalizeOverflowAxis = (value: RenderOverflow): RenderOverflow => {
   if (value === "visible") return "auto"
   if (value === "clip") return "hidden"
   return value
+}
+
+const parseSize = (value: string | undefined, emBase?: number): CSSSize | null => {
+  const source = value?.trim().toLowerCase()
+  if (source === "min-content" || source === "max-content" || source === "fit-content")
+    return Object.freeze({unit: "intrinsic", value: source})
+  return parseLength(value, emBase)
+}
+
+const parseAspectRatio = (value: string | undefined): ComputedStyle["aspectRatio"] => {
+  const tokens = (value?.trim().toLowerCase() ?? "").split(/\s+/)
+  const auto = tokens.includes("auto")
+  if (tokens.filter(token => token === "auto").length > 1) return null
+  const source = tokens.filter(token => token !== "auto").join(" ")
+  const match = /^(\d+(?:\.\d*)?|\.\d+)(?:\s*\/\s*(\d+(?:\.\d*)?|\.\d+))?$/.exec(source)
+  if (match === null) return null
+  const ratio = Number(match[1]) / Number(match[2] ?? 1)
+  return Number.isFinite(ratio) && ratio > 0 ? Object.freeze({ratio, auto}) : null
 }
 
 const parseLength = (value: string | undefined, emBase?: number): CSSLength | null => {
