@@ -1,7 +1,6 @@
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
 import {ParameterNode} from "@nodes/node/parameter"
-import {planProjectedNodeGeometry} from "@nodes/node/geometry"
 import {parameters, sockets} from "../../spec/fixture/parameters"
 
 describe.each([
@@ -19,22 +18,10 @@ describe.each([
       label={props.label}
       category={props.category}
       selected={props.selected}
-      rect={{
-        x: 16,
-        y: 16,
-        width: 320,
-        height: planProjectedNodeGeometry(
-          {id: props.id, parameters: props.parameters, sockets: props.sockets},
-          320,
-          undefined,
-          undefined,
-          {collapsed: props.collapsed},
-        ).height,
-      }}
       parameters={props.parameters}
       sockets={props.sockets}
       collapsed={props.collapsed}
-    />,
+    />
   )
 
   test("Представление", () => {

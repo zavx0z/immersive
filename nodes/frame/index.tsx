@@ -73,6 +73,6 @@ export function Frame(props: FrameProps) {
     >
       {props.label}
     </header>
-    {props.children}
+    <slot />
   </section>
 }

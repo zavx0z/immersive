@@ -10,7 +10,6 @@ import type {ParameterInput} from "@nodes/parameters/shared"
 import type {CallbackRef} from "@zavx0z/template/jsx-runtime"
 import type {
   NodeAction,
-  NodeChildren,
   NodePreviewImage,
   NodeRect,
 } from "../../shared/contracts.ts"
@@ -18,7 +17,9 @@ import type {
 /**
 Входные данные составной ноды с независимыми областями содержимого и параметров.
 
-Авторское `children` имеет приоритет над `image`. Изменение `contentVisible`
+Авторское содержимое безымянного слота имеет приоритет над `image`.
+Содержимое передаётся вложенной разметкой между тегами ContentNode.
+Изменение `contentVisible`
 скрывает квадратную область без размонтирования, а `collapsed` независимо
 управляет полями параметров.
 
@@ -26,9 +27,10 @@ import type {
 
 @property label - Видимая подпись и доступное имя ноды.
 
-@property [children] - Авторское содержимое квадратной области.
+@property [rect] - Положение и доступная ширина. Высоту составной ноды определяют
+область содержимого, параметры и состояния их раскрытия.
 
-@property [image] - Изображение, используемое при отсутствии `children`.
+@property [image] - Изображение, используемое при пустом безымянном слоте.
 
 @property [contentVisible=true] - Управляет видимостью области содержимого.
 
@@ -40,12 +42,14 @@ import type {
 
 @example
 ```tsx
+import {Typography} from "@zavx0z/ui/typography"
+
 <ContentNode
   id="preview"
   label="Предпросмотр"
   contentVisible={true}
 >
-  <video src="preview.mp4" />
+  <Typography text="Содержимое предпросмотра" />
 </ContentNode>
 ```
 */
@@ -53,7 +57,7 @@ export interface ContentNodeProps {
   readonly id: string
   readonly frameId?: string | undefined
   readonly label: string
-  readonly rect?: NodeRect | undefined
+  readonly rect?: Pick<NodeRect, "x" | "y" | "width"> | undefined
   readonly intrinsic?: boolean | undefined
   readonly elementRef?: CallbackRef<HTMLElement> | undefined
   readonly title?: string | undefined
@@ -68,7 +72,6 @@ export interface ContentNodeProps {
   readonly parameterStore?: ((parameterId: string) => ExternalStore<ParameterSnapshot>) | undefined
   readonly connectedSocketKeys?: ReadonlySet<string> | undefined
   readonly resolvedSocketSides?: ReadonlyMap<string, "left" | "right"> | undefined
-  readonly children?: NodeChildren
   readonly image?: NodePreviewImage | undefined
   readonly contentVisible?: boolean | undefined
   readonly style?: CssStyle | undefined

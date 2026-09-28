@@ -1,13 +1,12 @@
-import type {NodeChildren, NodePreviewImage} from "../../shared/contracts.ts"
+import type {NodePreviewImage} from "../../shared/contracts.ts"
 
 /**
 Вход {@link @nodes/node/surface#ContentSurface | ContentSurface} для области содержимого ноды.
 Размеры задаёт родитель; содержимое за границами области обрезается.
+Авторский JSX передаётся между тегами в безымянный слот того же semantic Document.
+Непустое назначение имеет приоритет над изображением.
 
-@property [children] - Авторский JSX той же semantic Document. При ненулевом значении
-имеет приоритет над image, включая пустой массив элементов.
-
-@property [image] - Предпросмотр, показываемый только при null или undefined в children.
+@property [image] - Предпросмотр, показываемый только при пустом безымянном слоте.
 Обычный img сохраняет исходные размеры и вписывает изображение через object-fit: contain.
 Явное пустое alt сохраняется. Отсутствие обоих значений оставляет пустую область.
 
@@ -22,7 +21,6 @@ import type {NodeChildren, NodePreviewImage} from "../../shared/contracts.ts"
 ```
 */
 export interface ContentSurfaceProps {
-  readonly children?: NodeChildren
   readonly image?: NodePreviewImage | undefined
   readonly label: string
 }

@@ -1,81 +1,46 @@
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless, type Headless} from "@immersive/headless"
-import type {DiagramNodeProps} from "@nodes/node/diagram"
-import {DiagramFixture} from "./fixture"
-
-type Scenario = Readonly<{
-  name: string
-  props: DiagramNodeProps
-  expected: Readonly<{
-    size: Readonly<{
-      width: number
-      height: number
-    }>
-  }>
-}>
+import {createHeadless} from "@immersive/headless"
+import {DiagramNode, type DiagramNodeProps} from "@nodes/node/diagram"
 
 describe.each([
   {
     name: "Прямоугольник",
-    props: {
-      id: "rectangle",
-      description: "Описание занимает всю ноду",
-      rect: {x: 40, y: 20, width: 240, height: 100},
-      shape: "rectangle",
-    },
-    expected: {size: {width: 240, height: 100}},
+    props: {id: "rectangle", description: "Описание занимает всю ноду", rect: {x: 40, y: 20, width: 240, height: 100}, shape: "rectangle"},
+    size: {width: 240, height: 100},
   },
   {
     name: "Овал",
-    props: {
-      id: "oval",
-      description: "Описание занимает всю ноду",
-      rect: {x: 40, y: 20, width: 240, height: 100},
-      shape: "oval",
-    },
-    expected: {size: {width: 240, height: 100}},
+    props: {id: "oval", description: "Описание занимает всю ноду", rect: {x: 40, y: 20, width: 240, height: 100}, shape: "oval"},
+    size: {width: 240, height: 100},
   },
   {
     name: "Круг",
-    props: {
-      id: "circle",
-      description: "Описание занимает всю ноду",
-      rect: {x: 40, y: 20, width: 240, height: 100},
-      shape: "circle",
-    },
-    expected: {size: {width: 240, height: 240}},
+    props: {id: "circle", description: "Описание занимает всю ноду", rect: {x: 40, y: 20, width: 240, height: 100}, shape: "circle"},
+    size: {width: 240, height: 240},
   },
-] satisfies Scenario[])("$name", async ({props, expected}) => {
-    const headless: Headless = createHeadless({width: 320, height: 280})
+] satisfies {name: string, props: DiagramNodeProps, size: {width: number, height: number}}[])("$name", async ({props, size}) => {
+  const headless = createHeadless({width: 320, height: 280})
+  afterAll(() => headless.dispose())
+  const node = await headless.render(
+    <DiagramNode
+      id={props.id}
+      description={props.description}
+      rect={props.rect}
+      shape={props.shape}
+    />,
+  )
 
-    afterAll(() => headless.dispose())
-
-    const element = await headless.render(DiagramFixture, props)
-
-    test("использует семантический article", () =>
-      expect(element.localName, "Внешний элемент должен сохранять семантику article").toBe("article")
-    )
-
-    test("применяет форму варианта", () =>
-      expect(element.getAttribute("data-node-shape"), "Атрибут data-node-shape должен отражать форму варианта").toBe(props.shape)
-    )
-
-    test("отображает описание варианта", () =>
-      expect(element.textContent, "Компонент должен отображать переданное описание без подмены").toBe(props.description)
-    )
-
-    test("соблюдает размеры выбранной формы", () => {
-      const bounds = element.getBoundingClientRect()
-      expect({
-        width: bounds.width,
-        height: bounds.height
-      }, "Границы должны соответствовать размерам выбранной формы").toEqual(expected.size)
-    })
-
-    test("снимок соответствует собственным границам", async () => {
-      const image = await headless.screenshot(element, "image")
-      const metadata = await image.metadata()
-      expect(metadata, "Размер снимка должен совпадать с границами компонента").toMatchObject(expected.size)
-    })
-  },
-)
+  test("Представление", () => {
+    expect({tag: node.localName, shape: node.getAttribute("data-node-shape"), text: node.textContent},
+      "Форма и описание принадлежат одной семантической ноде").toEqual({tag: "article", shape: props.shape, text: props.description})
+  })
+  test("Размеры", () => {
+    const bounds = node.getBoundingClientRect()
+    expect({width: bounds.width, height: bounds.height},
+      "Прямоугольник и овал сохраняют размеры; у круга диаметр равен большей стороне").toEqual(size)
+  })
+  test("Снимок", async () => {
+    const image = await headless.screenshot(node, "image")
+    expect(await image.metadata(), "Снимок охватывает собственные границы ноды").toMatchObject(size)
+  })
+})

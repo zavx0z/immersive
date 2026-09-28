@@ -7,7 +7,7 @@ import type {
   Socket,
 } from "@nodes/tree"
 import type {ParameterInput} from "@nodes/parameters/shared"
-import type {CallbackRef, JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import type {CallbackRef} from "@zavx0z/template/jsx-runtime"
 import type {NodeAction, NodeRect} from "../../shared/contracts.ts"
 
 /**
@@ -16,12 +16,22 @@ import type {NodeAction, NodeRect} from "../../shared/contracts.ts"
 Компонент заимствует снимки и Store параметров, а запросы изменения возвращает
 владельцу через callbacks. Сворачивание скрывает поля, сохраняя сокеты и их
 связи в той же ноде.
+Корпус, заголовок, действия и поля принадлежат самому ParameterNode;
+высота заголовка вычисляется внутри компонента.
+Авторское содержимое передаётся между тегами в безымянный слот; оно не может
+использоваться одновременно с непустым списком `parameters`.
 
 @property id - Стабильный идентификатор ноды и адрес её сокетов.
 
 @property label - Видимая подпись и доступное имя ноды.
 
-@property [rect] - Положение и размеры в CSS-пикселях графа.
+@property [category] - Подпись категории рядом с названием.
+
+@property [actions] - Кнопки действий в шапке. Нажатие вызывает обработчик действия
+без всплытия к активации самой ноды.
+
+@property [rect] - Положение и доступная ширина в CSS-пикселях графа.
+Высота раскрытой ноды определяется её содержимым, свёрнутой — шапкой и сокетами.
 
 @property [intrinsic=false] - Сохраняет естественные CSS-размеры для измерения.
 
@@ -55,7 +65,7 @@ export interface ParameterNodeProps {
   readonly id: string
   readonly frameId?: string | undefined
   readonly label: string
-  readonly rect?: NodeRect | undefined
+  readonly rect?: Pick<NodeRect, "x" | "y" | "width"> | undefined
   readonly intrinsic?: boolean | undefined
   readonly elementRef?: CallbackRef<HTMLElement> | undefined
   readonly title?: string | undefined
@@ -71,7 +81,6 @@ export interface ParameterNodeProps {
   readonly parameterStore?: ((parameterId: string) => ExternalStore<ParameterSnapshot>) | undefined
   readonly connectedSocketKeys?: ReadonlySet<string> | undefined
   readonly resolvedSocketSides?: ReadonlyMap<string, "left" | "right"> | undefined
-  readonly children?: JsxSourceElement | null | undefined
   readonly style?: CssStyle | undefined
   readonly onActivate?: ((event: Event) => void) | undefined
   readonly onCollapseChange?: ((collapsed: boolean, event: Event) => void) | undefined

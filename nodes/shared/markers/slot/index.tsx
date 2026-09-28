@@ -1,12 +1,21 @@
-import type {MarkerComponent, MarkerContext} from "../contracts.ts"
-import {renderMarker, type MarkerChildren} from "../render.ts"
+/**
+Композиция представления маркера на одном конце существующего маршрута.
 
-/** Сохраняет компонент маркера через публичный children transport без DOM-контейнера. */
+@packageDocumentation
+*/
+
+import type {MarkerComponent, MarkerContext} from "../contracts.ts"
+import {renderMarker} from "../render.ts"
+
+/** Сохраняет компонент маркера в безымянном слоте без DOM-контейнера. */
 export function MarkerSlot(props: Readonly<{marker: MarkerComponent; context: MarkerContext}>) {
   const content = renderMarker(props.marker, props.context)
-  return <MarkerContent>{content}</MarkerContent>
+  return <MarkerContent>
+    {content}
+  </MarkerContent>
 }
 
-function MarkerContent(props: Readonly<{children: MarkerChildren}>) {
-  return <>{props.children}</>
+/** Принимает подготовленный компонент маркера через обычную вложенность JSX. */
+function MarkerContent() {
+  return <slot />
 }

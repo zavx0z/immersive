@@ -19,7 +19,6 @@ export function ContentNode(props: ContentNodeProps) {
   const visible = props.contentVisible !== false
   const geometry = planProjectedNodeGeometry({id: props.id, parameters: props.parameters ?? [], sockets: props.sockets ?? []}, props.rect?.width,
     props.connectedSocketKeys, props.resolvedSocketSides, {collapsed: props.collapsed, contentVisible: visible})
-  const parameterHeight = geometry.height - (visible ? geometry.width : 0)
   const actions = [...(props.actions ?? []), {
     id: "content-toggle",
     label: visible ? "Скрыть содержимое" : "Показать содержимое",
@@ -91,7 +90,7 @@ export function ContentNode(props: ContentNodeProps) {
           image={props.image}
           label={`${props.label}: содержимое`}
         >
-          {props.children}
+          <slot />
         </ContentSurface>
       </Pane>
     </div>
@@ -115,7 +114,7 @@ export function ContentNode(props: ContentNodeProps) {
       onSocketActivate={props.onSocketActivate}
       embedded
       intrinsic={props.intrinsic}
-      rect={{x: 0, y: 0, width: geometry.width, height: parameterHeight}}
+      rect={{x: 0, y: 0, width: geometry.width}}
       actions={actions}
     />
   </article>

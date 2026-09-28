@@ -9,7 +9,7 @@ test.each([
     name: "DiagramNode",
     file: "nodes/node/diagram/index.tsx",
     expected: {
-      // Typography передаётся в children компонента Pane, но используется в JSX DiagramNode.
+      // Typography назначается в безымянный слот Pane, но используется в JSX DiagramNode.
       "nodes/node/diagram/index.tsx#DiagramNode": {
         uses: ["ui/surfaces/pane.tsx#Pane", "ui/typography.tsx#Typography"],
         elements: ["article"],

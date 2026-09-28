@@ -1,12 +1,17 @@
-import type {ParameterNodeProps} from "../../parameter/contract/input.ts"
+import type {ParameterNodeProps} from "../contract/input.ts"
 import {projectedSocketSide} from "../../shared/parameter-presentation.ts"
 
-/** Проверяет данные ноды и выделяет самостоятельные сокеты по сторонам. */
-export function prepareNodeContents(props: ParameterNodeProps) {
+/**
+Проверяет данные ноды и выделяет самостоятельные сокеты по сторонам.
+
+@param authoredContent - Результат проверки наличия безымянного слота в получателе.
+Непустой слот и projected Parameters взаимно исключают друг друга.
+*/
+export function prepareParameterNode(props: ParameterNodeProps, authoredContent: boolean) {
   validateParameterNodeProps(props)
   const parameters = props.parameters ?? []
-  if (props.children != null && parameters.length > 0) {
-    throw new Error(`Node ${props.id} accepts either authored Component children or projected Parameters`)
+  if (authoredContent && parameters.length > 0) {
+    throw new Error(`Node ${props.id} accepts either authored slot content or projected Parameters`)
   }
   const sockets = props.sockets ?? []
   const parameterIds = new Set(parameters.map(parameter => parameter.id))

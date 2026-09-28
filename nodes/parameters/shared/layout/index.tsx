@@ -5,20 +5,31 @@
 @packageDocumentation
 */
 
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import {NODE_ROW_HEIGHT} from "@nodes/sockets/metrics"
 import {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} from "../src/metrics.ts"
 import type {ParameterBaseProps} from "../src/contracts.ts"
 import {ParameterEndpoints} from "../endpoints/index.tsx"
 import {ParameterLabel} from "../label/index.tsx"
 
+/**
+Составная строка параметра с готовым полем в безымянном слоте.
+
+@property kind - Вид готового поля, публикуемый в `data-field-kind` для проекции.
+
+@property [fieldOwnsLabel] - Поле показывает собственную подпись, поэтому внешняя скрывается.
+
+@property [fieldBeforeLabel] - Поле располагается перед видимой внешней подписью.
+*/
 type ParameterLayoutProps = ParameterBaseProps & Readonly<{
   kind: string
   fieldOwnsLabel?: boolean | undefined
   fieldBeforeLabel?: boolean | undefined
-  children: JsxSourceElement
 }>
 
+/**
+Компонует подпись и сокеты вокруг поля, назначенного безымянному слоту.
+При подключении скрывает область поля, сохраняя его экземпляр и семантические узлы.
+*/
 export function ParameterLayout(props: ParameterLayoutProps) {
   validateBaseProps(props)
   const left = (props.sockets ?? []).filter(socket => socket.side === "left")
@@ -111,7 +122,7 @@ export function ParameterLayout(props: ParameterLayoutProps) {
         }
       `}
     >
-      {props.children}
+      <slot />
     </span>
     {leadingField ? <ParameterLabel
       label={props.label}

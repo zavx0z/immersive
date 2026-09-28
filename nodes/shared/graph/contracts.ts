@@ -30,7 +30,7 @@ export type GraphNode = Readonly<{
   hidden?: boolean | undefined
 }>
 
-export type GraphFrame = Omit<FrameProps, "selected" | "onActivate" | "children" | "style">
+export type GraphFrame = Omit<FrameProps, "selected" | "onActivate" | "style">
 export type GraphLink = Omit<LinkDefinition, "selected">
 
 /** Один согласованный результат адаптации данных и числовой раскладки. */

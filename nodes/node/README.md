@@ -8,19 +8,18 @@
 | Компонент             | Назначение                                                 | Импорт                  |
 |-----------------------|------------------------------------------------------------|-------------------------|
 | DiagramNode           | Описание на всю ноду; прямоугольник, овал или круг         | `@nodes/node/diagram`   |
-| ParameterNode         | Шапка, готовые параметры и сокеты на основе Pane           | `@nodes/node/parameter` |
+| ParameterNode         | Корпус, шапка, действия, параметры и сокеты           | `@nodes/node/parameter` |
 | ContentNode           | ParameterNode плюс произвольный компонент содержимого      | `@nodes/node/content`   |
 | ContentSurface        | Произвольное содержимое или изображение квадратной области | `@nodes/node/surface`   |
-| ParameterNodeContents | Шапка, действия, параметры и сокеты внутри ParameterNode   | `@nodes/node/contents`  |
 
 Варианты просмотра и проверки использования принадлежат каждому компоненту:
 [формы DiagramNode](diagram/spec/scenario.spec.tsx),
 [параметры и раскрытие ParameterNode](parameter/spec/scenario.spec.tsx),
-[области ContentNode](content/spec/scenario.spec.tsx),
-[выбор содержимого ContentSurface](surface/spec/scenario.spec.tsx) и
-[шапка и поля ParameterNodeContents](contents/spec/scenario.spec.tsx).
-Эти же сценарии открываются в Storybook; фикстуры содержат композицию примера,
-а варианты и проверки остаются в scenario.spec.tsx.
+[области ContentNode](content/spec/scenario.spec.tsx) и
+[выбор содержимого ContentSurface](surface/spec/scenario.spec.tsx).
+Эти же сценарии открываются в Storybook. Публичный компонент объявляется JSX
+непосредственно в единственном аргументе headless.render; варианты и проверки
+находятся рядом в scenario.spec.tsx.
 
 Каталоги компонентов находятся непосредственно в корне `@nodes/node`.
 Входной тип DiagramNodeProps с описанием полей находится в
@@ -30,12 +29,13 @@
 статический граф компонентов и нативных JSX-тегов через общий
 [dependency fixture](../../fixtures/dependency-graph.ts). Он включает все ветви
 исходников и транзитивные зависимости UI, а не только ближайших соседей.
-Проверка входных данных и группировка самостоятельных сокетов ParameterNodeContents
-находятся в [contents/src/prepare.ts](contents/src/prepare.ts). Разметка и обработчики
-компонента остаются в [contents/index.tsx](contents/index.tsx).
+Проверка входных данных и группировка самостоятельных сокетов ParameterNode
+находятся в [parameter/src/prepare.ts](parameter/src/prepare.ts). Разметка и обработчики
+компонента остаются в [parameter/index.tsx](parameter/index.tsx).
 
 Универсальной визуальной Node нет. DiagramNode подходит разным диаграммам,
-его название и реализация не привязаны к Mermaid. ContentNode принимает JSX:
+его название и реализация не привязаны к Mermaid. ContentNode принимает вложенный
+JSX через безымянный `<slot>` и передаёт его ContentSurface:
 назначение содержимого определяет приложение. Содержимое не ограничено картинкой.
 
 `collapsed` скрывает параметры, `contentVisible` управляет содержимым независимо.
@@ -57,7 +57,7 @@
 [shared/metrics.ts](shared/metrics.ts). Публичные импорты `./geometry` и `./metrics`
 сохранены. Общие `NodeRect`, `NodePreviewImage` и договоры props принадлежат
 [shared/contracts.ts](shared/contracts.ts); прежний экспорт `NodePreviewImage`
-из `@nodes/node/content` также сохранён. Числовой план и ParameterNodeContents
+из `@nodes/node/content` также сохранён. Числовой план и ParameterNode
 используют одни [правила отступов и сторон сокетов](shared/parameter-presentation.ts).
 
 Компоненты используют общую UI-тему текущего Experience. Подключение темы

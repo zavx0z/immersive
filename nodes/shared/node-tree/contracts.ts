@@ -40,8 +40,13 @@ export type NodePresentationState = Readonly<{
 }>
 export type NodeTreeLayoutComputer = (snapshot: NodeTreeSnapshot, presentation: NodePresentationState) => LayoutResult
 
-/** A supplied compiled node receives the same accepted snapshot, geometry and guarded actions as built-in nodes. */
-export type NodeViewProps = ParameterNodeProps & Readonly<{
+/**
+Подключённое представление получает принятый снимок, геометрию графа и адресные действия.
+Вычисленный rect содержит полную геометрию, включая height; сокращённый вход
+ParameterNode для естественного размера не сужает данные адаптера графа.
+*/
+export type NodeViewProps = Omit<ParameterNodeProps, "rect"> & Readonly<{
+  rect?: NodeRect | undefined
   snapshot: NodeTreeSnapshot["nodes"][number]
   contentVisible: boolean
   shape?: NodeShape | undefined

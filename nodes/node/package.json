@@ -2,7 +2,7 @@
   "name": "@nodes/node",
   "label": "Ноды",
   "version": "0.0.0",
-  "description": "DiagramNode, ParameterNode и ContentNode на основе Pane",
+  "description": "Ноды диаграмм, параметров и произвольного содержимого",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -16,15 +16,13 @@
     "./content/contract/input": "./content/contract/input.ts",
     "./surface": "./surface/index.tsx",
     "./surface/contract/input": "./surface/contract/input.ts",
-    "./contents": "./contents/index.tsx",
-    "./contents/contract/input": "./contents/contract/input.ts",
     "./geometry": "./shared/geometry.ts",
     "./contracts": "./shared/contracts.ts",
     "./metrics": "./shared/metrics.ts"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test tests --max-concurrency=1 && bun test --preload @immersive/headless/preload diagram/spec content/spec parameter/spec surface/spec contents/spec --max-concurrency=1",
+    "test": "bun test tests --max-concurrency=1 && bun test --preload @immersive/headless/preload diagram/spec content/spec parameter/spec surface/spec --max-concurrency=1",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {

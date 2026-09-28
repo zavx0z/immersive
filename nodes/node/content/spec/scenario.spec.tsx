@@ -1,7 +1,6 @@
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
 import {ContentNode} from "@nodes/node/content"
-import {planProjectedNodeGeometry} from "@nodes/node/geometry"
 import {Typography} from "@zavx0z/ui/typography"
 import {parameters, sockets} from "../../spec/fixture/parameters"
 
@@ -17,18 +16,6 @@ describe.each([
     <ContentNode
       id={props.id}
       label={props.label}
-      rect={{
-        x: 16,
-        y: 16,
-        width: 320,
-        height: planProjectedNodeGeometry(
-          {id: props.id, parameters: props.parameters, sockets: props.sockets},
-          320,
-          undefined,
-          undefined,
-          {kind: "content", collapsed: props.collapsed, contentVisible: props.contentVisible},
-        ).height,
-      }}
       parameters={props.parameters}
       sockets={props.sockets}
       collapsed={props.collapsed}

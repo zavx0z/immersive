@@ -5,7 +5,7 @@ import {buildComponentDependencyGraph, type ComponentDependencyGraph} from "../.
 const root = resolve(import.meta.dir, "../../../../..")
 
 // Статический эталон включает все ветви собственного JSX и транзитивные компоненты.
-// JSX, переданный потребителем через children, принадлежит графу его автора.
+// JSX, назначенный потребителем в слот, принадлежит графу его автора.
 test.each([
   {
     name: "SwitchParameter",

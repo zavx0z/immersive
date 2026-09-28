@@ -5,11 +5,13 @@
 */
 
 import type {ContentSurfaceProps} from "./contract/input.ts"
+import {hasSlot} from "@zavx0z/component/slot-presence"
 export type {ContentSurfaceProps} from "./contract/input.ts"
 
 /** Показывает авторское содержимое либо изображение в границах предоставленной области. */
 
 export function ContentSurface(props: ContentSurfaceProps) {
+  const authoredContent = hasSlot()
   return <section
     aria-label={props.label}
     style={css`
@@ -22,10 +24,10 @@ export function ContentSurface(props: ContentSurfaceProps) {
       overflow: hidden;
     `}
   >
-    {props.children}
+    <slot />
     <img
-      hidden={props.children != null || props.image === undefined}
-      src={props.children == null ? props.image?.src : undefined}
+      hidden={authoredContent || props.image === undefined}
+      src={authoredContent ? undefined : props.image?.src}
       width={props.image?.width}
       height={props.image?.height}
       alt={props.image?.alt ?? props.label}

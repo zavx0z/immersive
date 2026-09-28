@@ -5,16 +5,32 @@
 */
 
 import {NODE_BORDER_WIDTH} from "@nodes/sockets/metrics"
-import {Pane} from "@zavx0z/ui/surfaces/pane"
-import {ParameterNodeContents} from "../contents/index.tsx"
+import {hasSlot} from "@zavx0z/component/slot-presence"
+import {Button, IconButton} from "@zavx0z/ui/buttons/button"
+import {chevronDownIcon, chevronRightIcon} from "@zavx0z/ui/themes/icons"
+import {metadataBoolean, metadataString, Parameter, type ParameterInput} from "@nodes/parameters/shared"
+import {parameterSpacingBefore} from "../shared/parameter-presentation.ts"
+import {Socket} from "@nodes/sockets/socket"
+import {resolveSocketKind, resolveSocketShape} from "@nodes/sockets/presets"
+import {NODE_BODY_PADDING_TOP, NODE_BODY_PADDING_BOTTOM, NODE_ROW_GAP} from "../shared/metrics.ts"
+import {prepareParameterNode} from "./src/prepare.ts"
 import type {ParameterNodeProps} from "./contract/input.ts"
 import {planProjectedNodeGeometry, NODE_HEADER_HEIGHT, NODE_MINIMUM_WIDTH} from "../shared/geometry.ts"
 
 export type {ParameterNodeProps} from "./contract/input.ts"
 
-/** Составляет ноду из Pane и готовых параметров. Выбранная нода подсвечивается цветом шапки; тень вложенной части принадлежит ContentNode. */
+/** Объединяет корпус, шапку, действия, параметры и сокеты в одной ноде. Выбранная нода подсвечивается цветом шапки; тень вложенной части принадлежит ContentNode. */
 export function ParameterNode(props: ParameterNodeProps) {
-  const geometry = planProjectedNodeGeometry({id: props.id, parameters: props.parameters ?? [], sockets: props.sockets ?? []}, props.rect?.width,
+  const {parameters, sockets, left, right} = prepareParameterNode(props, hasSlot())
+  const collapseLabel = props.collapsed === true ? `Развернуть ${props.label}` : `Свернуть ${props.label}`
+  const collapseIcon = props.collapsed === true ? chevronRightIcon : chevronDownIcon
+  const toggleCollapse = (event: Event) => {
+    event.stopPropagation()
+    props.onCollapseChange?.(props.collapsed !== true, event)
+  }
+  const change = (value: ParameterInput, event: Event) => { if (!props.collapsed) props.onParameterInput?.(value, event) }
+  const commit = (value: ParameterInput, event: Event) => { if (!props.collapsed) props.onParameterChange?.(value, event) }
+  const geometry = planProjectedNodeGeometry({id: props.id, parameters, sockets}, props.rect?.width,
     props.connectedSocketKeys, props.resolvedSocketSides, {collapsed: props.collapsed})
   const headerHeight = props.collapsed ? geometry.height - 2 * NODE_BORDER_WIDTH : NODE_HEADER_HEIGHT
   return <article
@@ -26,23 +42,32 @@ export function ParameterNode(props: ParameterNodeProps) {
     hidden={props.hidden === true}
     data-node-id={props.embedded ? undefined : props.id}
     data-frame-id={props.embedded ? undefined : props.frameId}
+    data-active={props.selected === true ? "true" : undefined}
     data-node-kind="parameter"
     data-collapsed={props.collapsed ? "true" : undefined}
     onClick={props.embedded ? undefined : props.onActivate}
     style={css`
       box-sizing: border-box;
       position: ${props.embedded ? "relative" : "absolute"};
-      display: flex;
-      flex-direction: column;
+      display: block;
       left: ${props.embedded ? 0 : props.rect?.x ?? 0}px;
       top: ${props.embedded ? 0 : props.rect?.y ?? 0}px;
       width: ${props.intrinsic || props.rect === undefined ? "auto" : `${props.rect.width}px`};
-      height: ${props.collapsed ? `${geometry.height}px` : props.intrinsic || props.rect === undefined ? "auto" : `${props.rect.height}px`};
+      height: ${props.collapsed ? `${geometry.height}px` : "auto"};
       min-width: ${NODE_MINIMUM_WIDTH}px;
       min-height: 0;
       z-index: 3;
       overflow: visible;
+      border: 1px solid var(--widget-box-outline);
+      border-radius: ${props.collapsed ? headerHeight / 2 : 6}px;
+      background: #303030;
+      color: var(--widget-box-content);
+      box-shadow: ${props.embedded ? "none" : props.selected ? `0 0 12px ${props.headerColor ?? "#5b466b"}` : "0 0 12px rgba(0, 0, 0, .5)"};
       --node-header-height: ${headerHeight}px;
+
+      &[data-active="true"] {
+        border-color: var(--material-editor-outline-active);
+      }
 
       &[hidden] {
         display: none;
@@ -96,47 +121,171 @@ export function ParameterNode(props: ParameterNodeProps) {
       ${props.style}
     `}
   >
-    <Pane
-      active={props.selected}
+    <header
+      data-collapsed={props.collapsed === true ? "true" : undefined}
       style={css`
-        position: relative;
         box-sizing: border-box;
-        width: ${props.intrinsic ? "auto" : "100%"};
-        height: ${props.intrinsic ? "auto" : "100%"};
-        padding: 0;
-        overflow: visible;
-        border-radius: ${props.collapsed ? headerHeight / 2 : 6}px;
-        background: #303030;
-        box-shadow: ${props.embedded ? "none" : props.selected ? `0 0 12px ${props.headerColor ?? "#5b466b"}` : "0 0 12px rgba(0, 0, 0, .5)"};
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        height: ${headerHeight}px;
+        min-height: ${headerHeight}px;
+        gap: 4px;
+        padding: 0 5px;
+        overflow: hidden;
+        border-radius: var(--radius-large) var(--radius-large) 0 0;
+        background: ${props.headerColor ?? "#5b466b"};
+        color: #dedede;
+
+        &[data-collapsed="true"] {
+          border-radius: var(--radius-large);
+        }
       `}
     >
-      <ParameterNodeContents
-        id={props.id}
-        frameId={props.frameId}
-        label={props.label}
-        rect={props.rect}
-        intrinsic={props.intrinsic}
+      <Button
+        label={collapseLabel}
+        iconSrc={collapseIcon}
+        iconOnly={true}
+        variant="text"
+        size="small"
+        aria-label={collapseLabel}
+        aria-expanded={String(props.collapsed !== true)}
+        title={collapseLabel}
+        disabled={props.onCollapseChange === undefined}
+        onClick={toggleCollapse}
+      />
+      <strong
+        data-node-label=""
         title={props.title}
-        category={props.category}
-        headerColor={props.headerColor}
-        selected={props.selected}
-        hidden={props.hidden}
-        collapsed={props.collapsed}
-        parameters={props.parameters}
-        sockets={props.sockets}
-        parameterStore={props.parameterStore}
+        style={css`
+          display: block;
+          min-width: 0;
+          flex-grow: 1;
+          overflow: hidden;
+          color: #dedede;
+          font-size: var(--font-size-sm);
+          font-weight: 600;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        `}
+      >
+        {props.label}
+      </strong>
+      <small
+        hidden={props.category === undefined}
+        style={css`
+          display: block;
+          flex-shrink: 0;
+          color: rgba(255, 255, 255, .68);
+          font-size: 9px;
+          white-space: nowrap;
+
+          &[hidden] {
+            display: none;
+          }
+        `}
+      >
+        {props.category ?? ""}
+      </small>
+      {(props.actions ?? []).map(action => <IconButton
+        key={action.id}
+        label={action.label}
+        iconSrc={action.iconSrc}
+        selected={action.selected}
+        disabled={action.disabled}
+        size="small"
+        onClick={event => {
+          event.stopPropagation()
+          action.onClick?.(event)
+        }}
+      />)}
+    </header>
+    <section
+      aria-label={`${props.label} body`}
+      data-node-body=""
+      style={css`
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        width: ${props.intrinsic || props.rect === undefined ? "auto" : `${props.rect.width}px`};
+        margin-left: ${-NODE_BORDER_WIDTH}px;
+        margin-right: ${props.intrinsic ? -NODE_BORDER_WIDTH : 0}px;
+        min-width: 0;
+        gap: ${NODE_ROW_GAP}px;
+        padding: ${NODE_BODY_PADDING_TOP}px 0 ${NODE_BODY_PADDING_BOTTOM}px;
+
+        &[hidden] {
+          display: none;
+        }
+      `}
+    >
+      {right.map(socket => <Socket
+        key={socket.id}
+        id={socket.id}
+        nodeId={props.id}
+        kind={resolveSocketKind(socket.valueType?.id ?? metadataString(socket.metadata, "kind", "custom"))}
+        direction={socket.direction}
+        side="right"
+        label={metadataString(socket.metadata, "label", socket.id)}
+        shape={resolveSocketShape(metadataString(socket.metadata, "shape", ""))}
+        connected={props.connectedSocketKeys?.has(`${props.id}\u0000${socket.id}`) === true}
+        disabled={metadataBoolean(socket.metadata, "disabled", false)}
+        presentation="row"
+        style={css`
+          width: auto;
+          align-self: stretch;
+          margin-left: ${NODE_BORDER_WIDTH}px;
+          margin-right: ${NODE_BORDER_WIDTH}px;
+
+          ${props.collapsed && css`
+            height: 0;
+            min-height: 0;
+            flex-grow: 1;
+          `}
+        `}
+        onActivate={event => props.onSocketActivate?.(socket.id, event)}
+      />)}
+      {parameters.map(parameter => <Parameter
+        key={parameter.id}
+        nodeId={props.id}
+        snapshot={parameter}
+        sockets={sockets.filter(socket => socket.parameterId === parameter.id)}
+        store={props.parameterStore?.(parameter.id)}
         connectedSocketKeys={props.connectedSocketKeys}
         resolvedSocketSides={props.resolvedSocketSides}
-        actions={props.actions}
-        onActivate={props.onActivate}
-        onCollapseChange={props.onCollapseChange}
-        onParameterInput={props.onParameterInput}
-        onParameterChange={props.onParameterChange}
+        spacingBefore={parameterSpacingBefore(parameter)}
+        onInput={change}
+        onChange={commit}
         onSocketActivate={props.onSocketActivate}
-        headerHeight={headerHeight}
-      >
-        {props.children}
-      </ParameterNodeContents>
-    </Pane>
+      />)}
+      <slot />
+      {left.map(socket => <Socket
+        key={socket.id}
+        id={socket.id}
+        nodeId={props.id}
+        kind={resolveSocketKind(socket.valueType?.id ?? metadataString(socket.metadata, "kind", "custom"))}
+        direction={socket.direction}
+        side="left"
+        label={metadataString(socket.metadata, "label", socket.id)}
+        shape={resolveSocketShape(metadataString(socket.metadata, "shape", ""))}
+        connected={props.connectedSocketKeys?.has(`${props.id}\u0000${socket.id}`) === true}
+        disabled={metadataBoolean(socket.metadata, "disabled", false)}
+        presentation="row"
+        style={css`
+          width: auto;
+          align-self: stretch;
+          margin-left: ${NODE_BORDER_WIDTH}px;
+          margin-right: ${NODE_BORDER_WIDTH}px;
+
+          ${props.collapsed && css`
+            height: 0;
+            min-height: 0;
+            flex-grow: 1;
+          `}
+        `}
+        onActivate={event => props.onSocketActivate?.(socket.id, event)}
+      />)}
+    </section>
   </article>
 }

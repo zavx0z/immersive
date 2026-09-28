@@ -1,4 +1,3 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import type {NodeRect} from "../../shared/projection/geometry.ts"
 
 /**
@@ -6,14 +5,13 @@ import type {NodeRect} from "../../shared/projection/geometry.ts"
 
 Рамка получает готовую геометрию от Layout. `parentFrameId` выражает отношение
 в модели и не создаёт отдельный DOM, проекцию или жизненный цикл.
+Уже спроецированное содержимое группы передаётся между тегами в безымянный слот.
 
 @property id - Непустой идентификатор рамки.
 
 @property label - Непустая видимая подпись и доступное имя.
 
 @property rect - Готовые координаты и размеры в CSS-пикселях графа.
-
-@property [children] - Уже спроецированное содержимое группы.
 
 @property [onActivate] - Получает событие активации без изменения модели.
 
@@ -35,7 +33,6 @@ export interface FrameProps {
   readonly color?: string | undefined
   readonly selected?: boolean | undefined
   readonly hidden?: boolean | undefined
-  readonly children?: JsxSourceElement | null | undefined
   readonly style?: CssStyle | undefined
   readonly onActivate?: ((event: Event) => void) | undefined
 }

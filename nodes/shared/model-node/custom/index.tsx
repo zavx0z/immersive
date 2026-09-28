@@ -1,6 +1,10 @@
-import type {NodeChildren} from "@nodes/node/contracts"
+/**
+Вставка подключаемого представления ноды в ту же проекцию графа.
+
+@packageDocumentation
+*/
 
 /** Вставляет переданную ноду без дополнительного контейнера или модели. */
-export function CustomNodeView(props: Readonly<{children: NodeChildren}>) {
-  return <>{props.children}</>
+export function CustomNodeView() {
+  return <slot />
 }

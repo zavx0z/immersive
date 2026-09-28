@@ -10,7 +10,7 @@ test.each([
     "name": "ParameterNode",
     "file": "nodes/node/parameter/index.tsx",
     "expected": {
-      "nodes/node/contents/index.tsx#ParameterNodeContents": {
+      "nodes/node/parameter/index.tsx#ParameterNode": {
         "uses": [
           "nodes/parameters/shared/parameter/index.tsx#Parameter",
           "nodes/sockets/socket/index.tsx#Socket",
@@ -18,19 +18,11 @@ test.each([
           "ui/buttons/button.tsx#IconButton"
         ],
         "elements": [
+          "article",
           "header",
           "section",
           "small",
           "strong"
-        ]
-      },
-      "nodes/node/parameter/index.tsx#ParameterNode": {
-        "uses": [
-          "nodes/node/contents/index.tsx#ParameterNodeContents",
-          "ui/surfaces/pane.tsx#Pane"
-        ],
-        "elements": [
-          "article"
         ]
       },
       "nodes/parameters/boolean/checkbox/index.tsx#CheckboxParameter": {
@@ -398,12 +390,6 @@ test.each([
           "ui/fields/number-field.tsx#NumberField"
         ],
         "elements": []
-      },
-      "ui/surfaces/pane.tsx#Pane": {
-        "uses": [],
-        "elements": [
-          "section"
-        ]
       },
       "ui/views/list.tsx#EmptyListRow": {
         "uses": [],

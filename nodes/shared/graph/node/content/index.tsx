@@ -1,6 +1,10 @@
-import type {NodeChildren} from "@nodes/node/contracts"
+/**
+Приём готового представления ноды без дополнительного semantic Element.
 
-/** Принимает обычный компонентный children transport без второго DOM-контейнера. */
-export function GraphNodeSlot(props: Readonly<{children: NodeChildren}>) {
-  return <>{props.children}</>
+@packageDocumentation
+*/
+
+/** Принимает содержимое безымянного слота без второго DOM-контейнера. */
+export function GraphNodeSlot() {
+  return <slot />
 }
