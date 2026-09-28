@@ -1,7 +1,7 @@
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
 import {Button} from "@zavx0z/ui/buttons/button"
-import {TabFixture} from "./fixture"
+import {Tab} from "@zavx0z/ui/surfaces/tab"
 import type {TabProps} from "../contract/input.ts"
 
 /** Контент параметризуется снаружи; положение — во вложенной таблице того же примера. */
@@ -31,7 +31,14 @@ describe.each([
   ] satisfies Scenario[])("$name", async ({props}: Scenario) => {
     const headless = createHeadless({width: 600, height: 320})
     afterAll(() => headless.dispose())
-    const element = await headless.render(TabFixture, props)
+    const element = await headless.render(
+      <Tab
+        label={props.label}
+        position={props.position}
+      >
+        {props.children}
+      </Tab>,
+    )
     await headless.capture(element)
     const tab = element.querySelector("[data-tab]")!
 
