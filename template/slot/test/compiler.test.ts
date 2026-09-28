@@ -21,6 +21,12 @@ test("слоты: размещение, forwarding, fallback, keyed identity и 
     expect(compiled.capabilityUsages.some(usage => usage.kind === "intrinsic-attribute" && usage.tagName === "slot")).toBeFalse()
     await Bun.write(join(directory, "compiled.ts"), compiled.code)
     const module = await import(pathToFileURL(join(directory, "compiled.ts")).href)
+    root.render(module.MissingChild, {})
+    expect(host.querySelector("header")?.textContent).toBe("Пусто")
+    root.render(module.EmptyElement, {})
+    expect(host.querySelector("div")!.childNodes).toHaveLength(0)
+    root.render(module.ShadowedUndefined, {label: "Текст"})
+    expect(host.textContent).toBe("Текст")
     const disposed: string[] = []
     const onDispose = (id: string) => { disposed.push(id) }
     root.render(module.SlotsDemo, {title: "Первый", rows: [{id: "a", label: "A"}, {id: "b", label: "B"}], showFooter: true, onDispose})

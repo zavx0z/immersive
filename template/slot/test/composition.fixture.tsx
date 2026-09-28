@@ -129,3 +129,29 @@ export function EvaluationOrder(props: {record(name: string): string; onDispose(
     </Panel>
   )
 }
+
+/** Отсутствующий ребёнок не требует безымянной области и не создаёт текст. */
+export function MissingChild() {
+  return (
+    <NamedOnly>
+      {undefined}
+      <Fallback slot="header" />
+      {undefined}
+    </NamedOnly>
+  )
+}
+
+function NamedOnly() {
+  return <header><slot name="header" /></header>
+}
+
+/** Статический undefined в обычной разметке не создаёт даже пустой Text. */
+export function EmptyElement() {
+  return <div>{undefined}</div>
+}
+
+/** Локальное имя undefined со строковым значением остаётся обычным текстом. */
+export function ShadowedUndefined(props: {label: string}) {
+  const undefined = props.label
+  return <div>{undefined}</div>
+}

@@ -1,6 +1,6 @@
 import type {Expression, FunctionDeclaration, JsxChild, JsxElement, JsxSelfClosingElement, Node, SourceFile} from "typescript/unstable/ast"
 import {skipOuterExpressions} from "typescript/unstable/ast"
-import {isArrowFunction, isBlock, isCallExpression, isConditionalExpression, isFunctionDeclaration, isJsxAttribute, isJsxElement, isJsxExpression, isJsxSelfClosingElement, isJsxSpreadAttribute, isNullLiteral, isPropertyAccessExpression, isStringLiteral} from "typescript/unstable/ast/is"
+import {isArrowFunction, isBlock, isCallExpression, isConditionalExpression, isFunctionDeclaration, isIdentifier, isJsxAttribute, isJsxElement, isJsxExpression, isJsxSelfClosingElement, isJsxSpreadAttribute, isNullLiteral, isPropertyAccessExpression, isStringLiteral} from "typescript/unstable/ast/is"
 import {planSlots} from "../index.ts"
 import {JsxCompileError} from "../../compiler/errors.ts"
 
@@ -78,7 +78,7 @@ export function readSlotOutlets(declaration: FunctionDeclaration, source: Source
 export function readSlotChildName(child: JsxChild, source: SourceFile): string {
   const assignment = (value: Expression): string | null => {
     const expression = skipOuterExpressions(value)
-    if (isNullLiteral(expression)) return null
+    if (isNullLiteral(expression) || (isIdentifier(expression) && expression.text === "undefined")) return null
     if (isJsxElement(expression) || isJsxSelfClosingElement(expression)) {
       return slotAttribute(expression, "slot", source) ?? ""
     }

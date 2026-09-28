@@ -1,7 +1,7 @@
 /**
 Распределение вложенного содержимого по точкам вставки Template.
 Общий план связывает имена областей с исходными индексами детей,
-сохраняя порядок и пустые области. Он не создаёт DOM и не управляет
+сохраняя порядок и пустые области. undefined среди детей пропускается. Он не создаёт DOM и не управляет
 экземплярами компонентов.
 
 В авторском JSX получатель объявляет `<slot name="header" />` и `<slot />`.
@@ -72,6 +72,7 @@ export function planSlots(input: PlanSlotsInput): PlanSlotsOutput {
   }
 
   for (const [index, child] of input.children.entries()) {
+    if (child === undefined) continue
     const name = readChildSlot(child, index)
     const slot = byName.get(name)
     if (!slot) {

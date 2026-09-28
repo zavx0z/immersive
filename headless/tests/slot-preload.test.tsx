@@ -4,6 +4,23 @@ import {Document, Event} from "@zavx0z/dom"
 import {ContentReceiver, SlotCounter, SlotNamedPanel, SlotPanel, SlotText} from "./fixtures/slot-panel.tsx"
 
 describe("Headless preload со скомпилированными слотами", () => {
+  test("undefined пропускается до распределения по именованным слотам", () => {
+    const document = new Document()
+    const container = document.createElement("main")
+    const root = createRoot(container)
+    try {
+      root.render(
+        <SlotNamedPanel>
+          {undefined}
+          <SlotText slot="header" text="Заголовок" />
+          {undefined}
+        </SlotNamedPanel>,
+      )
+      expect(container.textContent).toBe("Заголовок")
+    } finally {
+      root.unmount()
+    }
+  })
   test("вложенный JSX распределяется в именованный и безымянный слот", () => {
     const document = new Document()
     const container = document.createElement("main")

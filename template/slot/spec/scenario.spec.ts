@@ -3,6 +3,11 @@ import {planSlots, type PlanSlotsInput, type PlanSlotsOutput} from "@zavx0z/temp
 
 describe.each([
   {
+    name: "Отсутствующие дети",
+    props: {outlets: ["header"], children: [undefined, {slot: "header"}, undefined]},
+    expected: {slots: [{name: "header", children: [1]}]},
+  },
+  {
     name: "Нет точек вставки и детей",
     props: {outlets: [], children: []},
     expected: {slots: []},
@@ -69,7 +74,7 @@ describe.each([
 ])("$name", ({props, expected}: {props: PlanSlotsInput; expected: PlanSlotsOutput}) => {
   const original = {
     outlets: props.outlets.slice(),
-    children: props.children.map(child => ({...child})),
+    children: props.children.map(child => child === undefined ? undefined : {...child}),
   }
   const actual = planSlots(props)
 
@@ -90,8 +95,8 @@ describe.each([
   test("Каждый ребёнок назначен один раз", () => {
     expect(
       actual.slots.flatMap(slot => slot.children).toSorted((left, right) => left - right),
-      "Каждый исходный индекс присутствует в одной области; дети не теряются и не дублируются.",
-    ).toEqual(props.children.map((_, index) => index))
+      "Индекс каждого существующего ребёнка присутствует в одной области; undefined пропускается без назначения.",
+    ).toEqual(props.children.flatMap((child, index) => child === undefined ? [] : [index]))
   })
 
   test("Сохранение входных данных", () => {

@@ -80,8 +80,9 @@ export function jsx(type: unknown, props: Record<string, unknown> | null, key: C
   return value
 }
 
-/** Разворачивает authored siblings, сохраняя nullable позиции и явную keyed границу. */
+/** Пропускает undefined и разворачивает authored siblings, сохраняя условные позиции и явную keyed границу. */
 function authoredChildren(value: unknown): PreparedChild[] {
+  if (value === undefined) return []
   if (Array.isArray(value)) return value.flatMap(authoredChildren)
   if (isAuthoredSlotChild(value)) {
     if (value.kind === "keyed") {

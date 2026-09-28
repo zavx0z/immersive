@@ -232,6 +232,7 @@ export type JsxTransformSymbols = Readonly<{
 }>
 
 export type JsxChildrenExpressionKind =
+  | "empty"
   | "component-children"
   | "component"
   | "keyed-components"
@@ -1071,6 +1072,7 @@ function compileChild(child: JsxChild, context: CompileContext): string[] {
   }
   if (!isJsxExpression(child) || !child.expression) return []
   const expression = skipParentheses(child.expression)
+  if (isIdentifier(expression) && context.childrenExpressionKinds.get(expression) === "empty") return []
   if (isJsxFragment(expression)) return compileJsx(expression, context)
   const childrenKind = context.childrenExpressionKinds.get(expression)
   if (isPropsFieldExpression(expression, "children", context)) {
@@ -1186,9 +1188,9 @@ function conditionalComponentValueExpression(
 
 function conditionalBranch(expression: Expression, context: ComponentExpressionContext, assigned = false): string {
   const branch = skipParentheses(expression)
-  if (isNullLiteral(branch)) return "null"
+  if (isNullLiteral(branch) || (isIdentifier(branch) && branch.text === "undefined")) return "null"
   if (!isJsxElement(branch) && !isJsxSelfClosingElement(branch)) {
-    throw compileError(context.sourcePath, "conditional JSX branches must be components or null")
+    throw compileError(context.sourcePath, "conditional JSX branches must be components, null or undefined")
   }
   return componentExpression(branch, context, assigned).expression
 }
@@ -1300,7 +1302,7 @@ function componentProps(
   }
   const outlets = context.componentSlots.get(symbolId(context.symbols, opening.tagName) ?? -1)
   if (outlets) {
-    const children = isJsxElement(expression) ? expression.children.filter(child => !isEmptyJsxChild(child)) : []
+    const children = isJsxElement(expression) ? expression.children.filter(child => !isEmptyJsxChild(child, context)) : []
     let plan: ReturnType<typeof planSlots>
     try {
       plan = planSlots({outlets, children: children.map(child => ({slot: readSlotChildName(child, context.sourceFile)}))})
@@ -1343,7 +1345,7 @@ function componentChildrenValue(
   context: ComponentExpressionContext,
 ): string | null {
   if (!isJsxElement(expression)) return null
-  const children = expression.children.filter(child => !isEmptyJsxChild(child))
+  const children = expression.children.filter(child => !isEmptyJsxChild(child, context))
   if (children.length === 0) return null
   if (children.length === 1) return componentChildValue(children[0]!, context)
 
@@ -1390,6 +1392,7 @@ function componentChildValue(child: JsxChild, context: ComponentExpressionContex
     return componentElementChildValue(value, context, assigned)
   }
   if (isNullLiteral(value)) return "null"
+  if (isIdentifier(value) && context.childrenExpressionKinds.get(value) === "empty") return "undefined"
   const keyed = keyedMapValueExpression(value, context, assigned)
   if (keyed !== null) return keyed
   const kind = context.childrenExpressionKinds.get(value)
@@ -1447,7 +1450,7 @@ function slotValueExpression(
   const name = slotAttribute(element, "name", context.sourceFile) ?? ""
   const content = `${context.slotProps}[${context.helper}SlotsKey]?.[${JSON.stringify(name)}]`
   const value = `${context.helper}Slot({content: ${content}})`
-  const fallback = isJsxElement(element) ? element.children.filter(child => !isEmptyJsxChild(child)) : []
+  const fallback = isJsxElement(element) ? element.children.filter(child => !isEmptyJsxChild(child, context)) : []
   if (fallback.length === 0) return value
   return `(${value} ?? ${context.helper}Slot({content: [${fallback.map(child => componentChildValue(child, context)).join(", ")}]}))`
 }
@@ -1774,9 +1777,12 @@ function isChildrenNamedExpression(expression: Expression): boolean {
     : isPropertyAccessExpression(expression) && expression.name.text === "children"
 }
 
-function isEmptyJsxChild(child: JsxChild): boolean {
+function isEmptyJsxChild(child: JsxChild, context: ComponentExpressionContext): boolean {
   if (isJsxText(child)) return normalizeJsxText(child.text) === ""
-  return isJsxExpression(child) && child.expression === undefined
+  if (!isJsxExpression(child)) return false
+  if (child.expression === undefined) return true
+  const value = skipParentheses(child.expression)
+  return isIdentifier(value) && context.childrenExpressionKinds.get(value) === "empty"
 }
 
 function skipParentheses(expression: Expression): Expression {

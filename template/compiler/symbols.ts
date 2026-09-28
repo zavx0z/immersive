@@ -399,6 +399,7 @@ async function classifyChildrenExpressionType(
   }
   const activeKinds = Number(component) + Number(keyed) + Number(text)
   if (!text && keyed) return "component-children"
+  if (activeKinds === 0 && nullable) return "empty"
   if (activeKinds !== 1) return "unsupported"
   if (keyed) return nullable ? "unsupported" : "keyed-components"
   if (component) return nullable ? "nullable-component" : "component"
