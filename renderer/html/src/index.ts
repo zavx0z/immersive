@@ -1,3 +1,4 @@
+export type {RenderCursor} from "./cursor.ts"
 export { createDocumentRenderer } from "./renderer.ts"
 export {hitTestProjection} from "./projection-hit.ts"
 export {createDocumentInteractionState} from "./pseudo-state.ts"

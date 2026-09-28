@@ -14,7 +14,7 @@ afterEach(() => {
 
 // Only GPU submission, native text proxies and scheduling are substituted.
 // CPU layout, hit testing, projection geometry, dispatch and scrolling are real.
-const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: readonly string[] = [], clientRect = {left: 0, top: 0, width: 200, height: 200}) => {
+const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: readonly string[] = [], clientRect = {left: 0, top: 0, width: 200, height: 200}, initialCursor = "") => {
   const document = createDocument()
   const root = document.createElement("div")
   document.append(root)
@@ -23,7 +23,7 @@ const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: r
   const canvas = {
     width: 200,
     height: 200,
-    style: {touchAction: "auto"},
+    style: {touchAction: "auto", cursor: initialCursor},
     getBoundingClientRect: () => clientRect,
     addEventListener(type: string, listener: EventListenerOrEventListenerObject) { listeners.set(type, listener) },
     removeEventListener(type: string) { listeners.delete(type) },
@@ -129,7 +129,7 @@ const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: r
     }
     return events
   }
-  return {runtime, document, captured, cameraInputs, camera, engineRenderer, element, projection, projections, emit, observe}
+  return {runtime, canvas, document, captured, cameraInputs, camera, engineRenderer, element, projection, projections, emit, observe}
 }
 
 test.each(["overlay", "plane"] as const)("%s title uses the loaded backend font for its background bounds", async kind => {
@@ -517,4 +517,73 @@ test("[BRW-CLIENT-RECT] Element rectangles use native client coordinates for HUD
   expect(node.getBoundingClientRect().width).toBeCloseTo(60)
   f.runtime.dispose()
   expect(node.getBoundingClientRect().width).toBe(0)
+})
+
+
+test.each(["overlay", "plane"] as const)("%s передаёт CSS cursor на Canvas для native и программного ввода", async kind => {
+  const f = await fixture(undefined, ["button:hover {cursor: ew-resize}"])
+  const owner = f.projection(kind, "cursor")
+  const button = f.element("width:80px;height:40px;cursor:ns-resize", owner, "button")
+  f.runtime.render()
+  f.emit("pointermove", 10, 10)
+  expect(f.canvas.style.cursor).toBe("ns-resize")
+  button.setAttribute("style", "width:80px;height:40px")
+  f.runtime.render()
+  expect(f.canvas.style.cursor).toBe("ew-resize")
+  f.emit("pointerleave", 220, 220)
+  expect(f.canvas.style.cursor).toBe("")
+  f.runtime.dispatchPointer("pointermove", {clientX: 10, clientY: 10, pointerId: 1})
+  expect(f.canvas.style.cursor).toBe("ew-resize")
+  f.runtime.dispose()
+  expect(f.canvas.style.cursor).toBe("")
+})
+
+test.each(["overlay", "plane"] as const)("%s сохраняет cursor resize при capture предка и сбрасывает после выхода", async kind => {
+  const f = await fixture(undefined, [], {left: 0, top: 0, width: 200, height: 200}, "crosshair")
+  const owner = f.projection(kind, "capture-cursor")
+  const handle = f.element("width:80px;height:40px;cursor:nwse-resize", owner, "button")
+  handle.addEventListener("pointerdown", event => owner.setPointerCapture((event as unknown as PointerEvent).pointerId))
+  f.runtime.render()
+  f.emit("pointerdown", 10, 10)
+  f.emit("pointermove", 160, 160, {buttons: 1})
+  expect(f.canvas.style.cursor).toBe("nwse-resize")
+  f.emit("pointerleave", 220, 220, {buttons: 1})
+  expect(f.canvas.style.cursor).toBe("nwse-resize")
+  handle.setAttribute("style", "width:80px;height:40px;cursor:grabbing")
+  f.runtime.render()
+  expect(f.canvas.style.cursor).toBe("grabbing")
+  f.emit("pointerup", 220, 220)
+  expect(f.canvas.style.cursor).toBe("crosshair")
+})
+
+test("HUD cursor перекрывает Display, удаление проекции и unmount восстанавливают host", async () => {
+  const f = await fixture(undefined, [], {left: 0, top: 0, width: 200, height: 200}, "crosshair")
+  const display = f.projection("plane", "display-cursor")
+  f.element("width:80px;height:40px;cursor:ew-resize", display, "button")
+  const hud = f.projection("overlay", "hud-cursor")
+  f.element("width:80px;height:40px;cursor:ns-resize", hud, "button")
+  f.runtime.render()
+  f.emit("pointermove", 10, 10)
+  expect(f.canvas.style.cursor).toBe("ns-resize")
+  f.runtime.removeOverlay(hud)
+  f.runtime.render()
+  expect(f.canvas.style.cursor).toBe("ew-resize")
+  f.runtime.dispose()
+  expect(f.canvas.style.cursor).toBe("crosshair")
+})
+
+
+test("touch не заменяет курсор мыши, pointercancel завершает курсор жеста", async () => {
+  const f = await fixture()
+  const hud = f.projection("overlay", "touch-cursor")
+  const handle = f.element("width:80px;height:40px;cursor:grab", hud, "button")
+  handle.addEventListener("pointerdown", event => hud.setPointerCapture((event as unknown as PointerEvent).pointerId))
+  f.runtime.render()
+  f.emit("pointermove", 10, 10)
+  expect(f.canvas.style.cursor).toBe("grab")
+  f.emit("pointermove", 160, 160, {pointerType: "touch", pointerId: 2})
+  expect(f.canvas.style.cursor).toBe("grab")
+  f.emit("pointerdown", 10, 10)
+  f.emit("pointercancel", 10, 10)
+  expect(f.canvas.style.cursor).toBe("")
 })

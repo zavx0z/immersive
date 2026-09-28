@@ -20,6 +20,7 @@ import {
   type HitMetadata,
   type PointerInput,
   type RenderFrame,
+  type RenderCursor,
   type RenderViewport,
   type WheelInput,
 } from "@renderer/html"
@@ -453,6 +454,15 @@ const createClaimedDocumentSpaceRuntime = async (
   const worlds = new Map<Space, WorldRecord>()
   const projectionRoots = new Set<Node>()
   const captures = new Map<number, CapturedPointer>()
+  const initialCursor = options.canvas.style?.cursor ?? ""
+  let cursorPointer: {x: number; y: number; id: number; inside: boolean} | null = null
+  let pressedCursor: {id: number; node: DomElement; value: RenderCursor} | null = null
+
+  /** Единственный владелец нативного cursor этого Canvas; auto возвращает исходное оформление host. */
+  const applyCursor = (value: RenderCursor = "auto"): void => {
+    const next = value === "auto" ? initialCursor : value
+    if (options.canvas.style !== undefined && options.canvas.style.cursor !== next) options.canvas.style.cursor = next
+  }
   const beforeRenderListeners = new Set<() => void>()
   const presentedListeners = new Set<(frame: number) => void>()
   let nextPlaneOrder = 0
@@ -620,12 +630,16 @@ const createClaimedDocumentSpaceRuntime = async (
             viewport: record.backingViewport!,
           })),
       })
+      syncPointerCursor()
       presentedFrames += 1
       preparing = false
       for (const listener of [...presentedListeners]) listener(presentedFrames)
     } catch (error) {
       renderError = error instanceof Error ? error : new Error("WebXR frame failed", {cause: error})
       renderRequestedDuringFrame = false
+      cursorPointer = null
+      pressedCursor = null
+      applyCursor()
       lastSelectionFrameTime = null
       selectionInput.clearPointer()
       if (requestedFrame !== null) seams.cancelFrame(requestedFrame)
@@ -1476,7 +1490,7 @@ const createClaimedDocumentSpaceRuntime = async (
     return true
   }
 
-  const onPointerMove = (event: PointerEvent): void => {
+  const routePointerMove = (event: PointerEvent): void => {
     if (renderError !== null) return
     if (disposed) return
     const capture = captures.get(event.pointerId)
@@ -1580,7 +1594,7 @@ const createClaimedDocumentSpaceRuntime = async (
     scheduleTooltipFrame({kind: "plane", owner: hit.record.owner}, hit.record.tooltipDelayMs)
   }
 
-  const onPointerDown = (event: PointerEvent): void => {
+  const routePointerDown = (event: PointerEvent): void => {
     if (renderError !== null) {
       resumeRendering()
       return
@@ -1689,7 +1703,7 @@ const createClaimedDocumentSpaceRuntime = async (
     activeWorldSpace = null
   }
 
-  const onPointerUp = (event: PointerEvent): void => {
+  const routePointerUp = (event: PointerEvent): void => {
     if (renderError !== null) return
     if (disposed) return
     selectionInput.clearPointer(event.pointerId)
@@ -1725,14 +1739,14 @@ const createClaimedDocumentSpaceRuntime = async (
     releasePointer(event.pointerId)
   }
 
-  const onPointerCancel = (event: PointerEvent): void => {
+  const routePointerCancel = (event: PointerEvent): void => {
     if (renderError !== null) return
     if (disposed) return
     selectionInput.clearPointer(event.pointerId)
     cancelCapturedPointer(event.pointerId)
   }
 
-  const onPointerLeave = (event: PointerEvent): void => {
+  const routePointerLeave = (event: PointerEvent): void => {
     if (renderError !== null) return
     if (disposed || captures.has(event.pointerId)) return
     clearHoveredOverlay(event)
@@ -1818,6 +1832,67 @@ const createClaimedDocumentSpaceRuntime = async (
     selectionInput.keyDown(event)
   }
   options.canvas.ownerDocument?.addEventListener("keydown", onDocumentKeyDown)
+
+  /** CSS берётся из того же hit/projection результата, который владеет вводом. */
+  function syncPointerCursor(): void {
+    if (disposed || renderError !== null || cursorPointer === null) {
+      applyCursor()
+      return
+    }
+    const capture = captures.get(cursorPointer.id)
+    const runtime = capture?.kind === "overlay" ? overlays.get(capture.overlayRoot)?.runtime
+      : capture?.kind === "plane" ? records.get(capture.planeRoot)?.runtime : undefined
+    const target = options.document.readPointerCaptureTarget(cursorPointer.id)
+    if (runtime !== undefined && target !== null) {
+      const frame = runtime.renderer.flush()
+      const captured = frame.hits.get(target)
+      if (captured !== undefined) {
+        const pressed = pressedCursor?.id === cursorPointer.id ? pressedCursor : null
+        // Capture предка с auto сохраняет cursor исходной зоны resize; явный cursor владельца имеет приоритет.
+        const cursor = captured.cursor !== "auto" ? captured.cursor
+          : pressed === null ? "auto" : frame.hits.get(pressed.node)?.cursor ?? pressed.value
+        applyCursor(cursor)
+        return
+      }
+    }
+    if (!cursorPointer.inside) {
+      applyCursor()
+      return
+    }
+    const hit = pickInput(cursorPointer.x, cursorPointer.y)
+    applyCursor((hit.overlay?.hit ?? hit.plane?.hit)?.cursor ?? "auto")
+  }
+
+  /** Наблюдает мышь/перо вокруг штатного dispatch; touch не заменяет видимый курсор. */
+  const withPointerCursor = (phase: "move" | "down" | "up" | "cancel" | "leave", route: (event: PointerEvent) => void) =>
+    (event: PointerEvent): void => {
+      if (disposed) return
+      const track = event.pointerType !== "touch" && event.isPrimary !== false
+      if (track) {
+        const rect = seams.readCanvasRect(options.canvas)
+        cursorPointer = {x: event.clientX, y: event.clientY, id: event.pointerId,
+          inside: phase !== "leave" && event.clientX >= rect.left && event.clientY >= rect.top && event.clientX < rect.left + rect.width && event.clientY < rect.top + rect.height}
+        if (phase === "down" && renderError === null) {
+          const picked = pickInput(event.clientX, event.clientY)
+          const hit = picked.overlay?.hit ?? picked.plane?.hit
+          pressedCursor = hit === undefined ? null : {id: event.pointerId, node: hit.node, value: hit.cursor}
+        }
+      }
+      try {
+        route(event)
+      } finally {
+        if (track) {
+          if (phase === "up" || phase === "cancel") pressedCursor = null
+          if (phase === "cancel") cursorPointer = null
+          syncPointerCursor()
+        }
+      }
+    }
+  const onPointerMove = withPointerCursor("move", routePointerMove)
+  const onPointerDown = withPointerCursor("down", routePointerDown)
+  const onPointerUp = withPointerCursor("up", routePointerUp)
+  const onPointerCancel = withPointerCursor("cancel", routePointerCancel)
+  const onPointerLeave = withPointerCursor("leave", routePointerLeave)
 
   options.canvas.addEventListener("pointermove", onPointerMove)
   options.canvas.addEventListener("pointerdown", onPointerDown)
@@ -1918,6 +1993,9 @@ const createClaimedDocumentSpaceRuntime = async (
     dispose() {
       if (disposed) return
       disposed = true
+      cursorPointer = null
+      pressedCursor = null
+      applyCursor()
       if (requestedFrame !== null) seams.cancelFrame(requestedFrame)
       requestedFrame = null
       cancelTooltipFrame()

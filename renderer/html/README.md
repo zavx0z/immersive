@@ -70,6 +70,7 @@ records. Наследование и явный `visibility:visible` потом�
 
 ## Документация и проверки
 
+- [CSS cursor и метаданные попаданий](cursor.md).
 - [Прокрутка и обновления кадра](scrolling.md).
 - [Inline-раскладка](inline-flow.md).
 - [Вертикальные текстовые строки](writing-mode.md).

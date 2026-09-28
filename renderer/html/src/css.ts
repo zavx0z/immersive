@@ -1,3 +1,4 @@
+import {acceptsCursor, computeCursor, type RenderCursor} from "./cursor.ts"
 import {ABSOLUTE_LENGTH_FACTORS, displaySurfaceStyle} from "./spatial-css.ts"
 import type {DisplayStyle} from "./display-style.ts"
 import type {Element, Node} from "@zavx0z/dom"
@@ -73,6 +74,7 @@ export type ComputedTextOverflow = "clip" | "ellipsis"
 export type ComputedStyle = Readonly<{
   displaySurface: DisplayStyle | null
   visibility: "visible" | "hidden"
+  cursor: RenderCursor
   customProperties: ComputedCustomProperties
   display: RenderDisplay
   boxSizing: RenderBoxSizing
@@ -600,6 +602,7 @@ export const computeStyle = (
       : parent?.userSelect === "none" || parent?.userSelect === "all" ? parent.userSelect : "text",
     selectionBoundary: readValue(values, "user-select") === "all" ? "all"
       : readValue(values, "user-select") === "contain" ? "contain" : null,
+    cursor: computeCursor(readValue(values, "cursor"), parent?.cursor),
     zIndex: parseZIndex(readValue(values, "z-index")),
   })
 }
@@ -1117,6 +1120,7 @@ const applyDeclarations = (
     ? declarations as readonly DeclarationEntry[]
     : Object.entries(declarations)
   for (const [property, value] of entries) {
+    if (property === "cursor" && !acceptsCursor(value)) continue
     if (property.startsWith("--")) {
       const next = Object.freeze({
         specificity,

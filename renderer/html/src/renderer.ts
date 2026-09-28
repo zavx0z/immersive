@@ -406,6 +406,7 @@ const ROOT_STYLE: ComputedStyle = Object.freeze({
   stroke: "#000000",
   strokeWidth: 1,
   pointerHitWidth: 0,
+  cursor: "auto",
   fontSize: 16,
   fontFamily: "sans-serif",
   fontWeight: 400,
@@ -6060,6 +6061,7 @@ const emitSelectPicker = (
       y,
       width: box.width,
       height: rowHeight,
+      cursor: layoutNode.style.cursor,
       interactive: !option.disabled,
       disabled: option.disabled,
       role: "option",
@@ -6674,6 +6676,7 @@ const createHit = (
     y,
     width,
     height,
+    cursor: style.cursor,
     interactive: !disabled &&
       (tag === "button" ||
         tag === "input" ||
@@ -7084,6 +7087,7 @@ const textStyle = (inherited: ComputedStyle): ComputedStyle =>
     stroke: inherited.stroke,
     strokeWidth: inherited.strokeWidth,
     pointerHitWidth: 0,
+    cursor: inherited.cursor,
     fontSize: inherited.fontSize,
     fontFamily: inherited.fontFamily,
     fontWeight: inherited.fontWeight,

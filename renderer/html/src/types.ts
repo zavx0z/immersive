@@ -1,3 +1,4 @@
+import type {RenderCursor} from "./cursor.ts"
 import type { Document, Element, Node } from "@zavx0z/dom"
 import type {DocumentInteractionState} from "./pseudo-state.ts"
 
@@ -271,6 +272,8 @@ export type HitMetadata = Readonly<{
   y: number
   width: number
   height: number
+  /** Вычисленный cursor целевого элемента с учётом cascade и наследования. */
+  cursor: RenderCursor
   interactive: boolean
   disabled: boolean
   role: string | null
