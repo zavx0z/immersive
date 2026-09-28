@@ -128,7 +128,7 @@ export async function buildComponentDependencyGraph(root: string, entry: Compone
           if (!isIdentifier(node.tagName)) throw new Error(`Неподдерживаемая форма ссылки на JSX-компонент в ${id}`)
           const tag = node.tagName.text
           if (/^[a-z]/.test(tag)) {
-            elements.add(tag)
+            if (tag !== "slot") elements.add(tag)
           } else {
             const local = source.statements.some(statement => isFunctionDeclaration(statement) && statement.name?.text === tag)
             const dependency = imports.get(tag) ?? (local ? {file, name: tag} : undefined)

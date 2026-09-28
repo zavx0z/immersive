@@ -11,6 +11,8 @@
     "attribute/**/*.ts",
     "compiler/**/*.ts",
     "node/**/*.ts",
+    "slot/**/*.ts",
+    "slot/**/*.tsx",
     "tests/**/*.ts",
     "tests/**/*.tsx"
   ]

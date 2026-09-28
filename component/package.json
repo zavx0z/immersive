@@ -9,12 +9,14 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
+    "./slot": "./slot/index.ts",
+    "./slot-presence": "./slot-presence/index.ts",
     "./compatibility": "./src/compatibility.ts",
     "./compatibility.json": "./compatibility.json"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
+    "test": "bun test --parallel tests slot/test slot-presence/test",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {

@@ -17,6 +17,7 @@ import {
 import {
   isCompiledTemplate,
   isHostBinding,
+  slotContents,
   type CompiledStyleSheet,
   type CompiledTemplate,
   type HostBinding
@@ -1003,6 +1004,7 @@ class ComponentInstance<Props> {
       }
       this.values.fill(unset)
       currentInstance = this as ComponentInstance<unknown>
+      currentRenderProps = nextProps
       currentHookSlots = workHooks
       currentContextFrame = nextContextFrame
       currentHookIndex = 0
@@ -1011,6 +1013,7 @@ class ComponentInstance<Props> {
         this.template.render(nextProps, this.values)
       } finally {
         currentInstance = null
+        currentRenderProps = null
         currentHookSlots = null
         currentContextFrame = null
       }
@@ -1171,6 +1174,7 @@ class ComponentInstance<Props> {
   }
 }
 
+// TODO(slot-transfer): перенос экземпляра между областями — ../notes/slot-transfer.md.
 function prepareSingleRange(
   owner: ComponentInstance<unknown>,
   binding: RuntimeChildBinding | RuntimeConditionalBinding,
@@ -1854,6 +1858,17 @@ function precedes(start: Node, end: Node): boolean {
 }
 
 let currentInstance: ComponentInstance<unknown> | null = null
+let currentRenderProps: unknown = null
+
+/** Читает назначение из текущего render, включая ещё не принятые nextProps; доступно только внутри Component. */
+export function readRenderingSlotContent(name: string): unknown {
+  if (currentInstance === null) throw new HookContractError("hasSlot called outside component render")
+  if (!currentInstance.template.slots?.includes(name)) {
+    throw new TypeError(`Unknown slot ${JSON.stringify(name)} in ${currentInstance.template.displayName}`)
+  }
+  const props = currentRenderProps as Readonly<Record<symbol, Readonly<Record<string, unknown>> | undefined>>
+  return props[slotContents]?.[name]
+}
 let currentHookSlots: HookSlot[] | null = null
 let currentContextFrame: ContextFrame | null = null
 let currentHookIndex = 0

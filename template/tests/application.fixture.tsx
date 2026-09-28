@@ -2,10 +2,13 @@ import type {} from "../../space/src/jsx.ts"
 import {createRoot, useFrame, useSpace} from "@zavx0z/browser"
 import {createRoot as createHostRoot} from "@zavx0z/browser/integration"
 import {useDocument, useLayoutEffect, useRef, useState} from "@zavx0z/component"
-import type {JsxSourceElement} from "../jsx-runtime.ts"
 
-function Container(props: {children?: JsxSourceElement | readonly JsxSourceElement[] | null}) {
-  return <div>{props.children}</div>
+function Container() {
+  return (
+    <div>
+      <slot />
+    </div>
+  )
 }
 
 function Counter(props: {label: string}) {

@@ -1,6 +1,7 @@
 import {existsSync} from "node:fs"
 import {dirname, relative, resolve, sep} from "node:path"
 import {createTemplateJsxBunPlugin} from "@zavx0z/template/bun"
+import {JsxCompilerSession} from "@zavx0z/template/compiler"
 
 const registered = new Set<string>()
 
@@ -26,18 +27,20 @@ Template compiler, а JSX в spec/test автоматически использ
 export function registerHeadlessCompiler(projectRoot: string): void {
   const root = resolve(projectRoot)
   if (registered.has(root)) return
+  const session = new JsxCompilerSession({cwd: root, sourceRoots: [root]})
   Bun.plugin({
     name: `headless-template:${root}`,
     setup(builder) {
       builder.onLoad({filter: /\.(?:spec|test)\.tsx$/}, async ({path}) => {
         const local = relative(root, path)
         if (local.startsWith(`..${sep}`) || local === ".." || local.split(sep).includes("node_modules")) return undefined
+        const contents = await session.prepareSlotAuthoringFile(path, "@immersive/headless/jsx-runtime")
         return {
-          contents: `/** @jsxImportSource @immersive/headless */\n${await Bun.file(path).text()}`,
+          contents: `/** @jsxImportSource @immersive/headless */\n${contents}`,
           loader: "tsx",
         }
       })
-      createTemplateJsxBunPlugin({cwd: root, sourceRoots: [root], persistent: true}).setup(builder)
+      createTemplateJsxBunPlugin({cwd: root, sourceRoots: [root], persistent: true, session}).setup(builder)
     },
   })
   registered.add(root)

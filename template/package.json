@@ -9,6 +9,7 @@
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
+    "./slot": "./slot/index.ts",
     "./compiled": "./compiled.ts",
     "./compiler": "./compiler/index.ts",
     "./bun": "./compiler/bun.ts",
@@ -17,7 +18,7 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
+    "test": "bun test --parallel tests slot/spec slot/test",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {

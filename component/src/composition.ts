@@ -5,6 +5,7 @@ import {
   writeBinding,
   defineCompiledTemplate,
   isCompiledTemplate,
+  slotContents,
   type CompiledTemplate
 } from "@zavx0z/template/compiled"
 import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
@@ -101,6 +102,7 @@ export function memo<Props>(
     bindingCount: template.bindingCount,
     displayName: `Memo(${template.displayName})`,
     styleSheets: template.styleSheets,
+    ...(template.slots === undefined ? {} : {slots: template.slots}),
     mount: template.mount,
     render: template.render
   })
@@ -229,6 +231,10 @@ export function memoPropsEqual<Props>(
   previous: Readonly<Props>,
   next: Readonly<Props>
 ): boolean {
+  if (template.slots && !Object.is(
+    (previous as Record<symbol, unknown>)[slotContents],
+    (next as Record<symbol, unknown>)[slotContents],
+  )) return false
   const comparator = memoComparators.get(template as CompiledTemplate<unknown>)
   return comparator
     ? Boolean(comparator(previous as Readonly<unknown>, next as Readonly<unknown>))

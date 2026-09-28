@@ -80,6 +80,8 @@ import {
   type JsxStylePrimitiveKind,
 } from "./style.ts"
 import {parseCssTemplateShape} from "../css-shape.ts"
+import {planSlots} from "../slot/index.ts"
+import {readSlotChildName, readSlotOutlets, slotAttribute} from "../slot/src/authoring.ts"
 
 type Edit = Readonly<{start: number; end: number; text: string}>
 
@@ -89,6 +91,8 @@ type PropsBindings = Readonly<{
 }>
 
 type CompileContext = {
+  readonly componentSlots: ReadonlyMap<number, readonly string[]>
+  readonly slotProps: string | null
   readonly componentName: string
   readonly components: ReadonlySet<number>
   readonly consumedCss: Set<Node>
@@ -124,6 +128,8 @@ type ComponentExpression = Readonly<{
 }>
 
 type ComponentExpressionContext = Readonly<{
+  componentSlots: ReadonlyMap<number, readonly string[]>
+  slotProps: string | null
   arrayExpressions: ReadonlySet<Node>
   childrenExpressionKinds: ReadonlyMap<Node, JsxChildrenExpressionKind>
   components: ReadonlySet<number>
@@ -212,6 +218,7 @@ export const jsxAuthoringProfile = Object.freeze({
 const supportedHookNames: ReadonlySet<string> = new Set(supportedHooks)
 
 export type JsxTransformSymbols = Readonly<{
+  componentSlots: ReadonlyMap<number, readonly string[]>
   arrayExpressions: ReadonlySet<Node>
   byNode: ReadonlyMap<Node, number>
   childrenExpressionKinds: ReadonlyMap<Node, JsxChildrenExpressionKind>
@@ -311,6 +318,7 @@ export function transformJsxSourceFile(
   const consumedJsx = new Set<Node>()
   let needsCompiledRuntime = false
   const componentSymbols = new Set(symbols.importedComponents)
+  const componentSlots = new Map(symbols.componentSlots)
   const customHookSymbols = new Set(symbols.importedCustomHooks)
   for (const declaration of componentDeclarations) {
     const id = symbolId(symbols.byNode, declaration.name!)
@@ -345,7 +353,11 @@ export function transformJsxSourceFile(
         componentSymbols.has(symbolId(symbols.byNode, initializer.arguments[0]!) ?? -1)
       ) {
         const id = symbolId(symbols.byNode, declaration.name)
-        if (id !== null) componentSymbols.add(id)
+        if (id !== null) {
+          componentSymbols.add(id)
+          const slots = componentSlots.get(symbolId(symbols.byNode, initializer.arguments[0]!) ?? -1)
+          if (slots) componentSlots.set(id, slots)
+        }
       }
     }
   }
@@ -391,6 +403,7 @@ export function transformJsxSourceFile(
         consumedCss,
         consumedJsx,
         documentOwners.has(declaration),
+        componentSlots,
       ),
     })
   }
@@ -428,6 +441,8 @@ export function transformJsxSourceFile(
     const argument = skipParentheses(node.arguments[0]!)
     if (!isJsxElement(argument) && !isJsxSelfClosingElement(argument)) return
     const compiled = componentExpression(argument, {
+      componentSlots,
+      slotProps: null,
       arrayExpressions: symbols.arrayExpressions,
       childrenExpressionKinds: symbols.childrenExpressionKinds,
       components: componentSymbols,
@@ -500,6 +515,7 @@ export function transformJsxSourceFile(
         `  compiledStyleSheet as ${helper}StyleSheet,`,
         `  defineCompiledTemplate as ${helper}Define,`,
         `  encodeCompiledStyleText as ${helper}EncodeStyle,`,
+        `  slotContents as ${helper}SlotsKey,`,
         `  writeBinding as ${helper}Write`,
         `} from "@zavx0z/template/compiled"`,
         `import {`,
@@ -508,6 +524,7 @@ export function transformJsxSourceFile(
         `  normalizeChildren as ${helper}Children,`,
         `  keyedComponents as ${helper}Keyed`,
         `} from "@zavx0z/component"`,
+        ...(componentSlots.size > 0 ? [`import {composeSlot as ${helper}Slot} from "@zavx0z/component/slot"`] : []),
         "",
       ].join("\n"),
     })
@@ -534,6 +551,7 @@ function compileComponent(
   consumedCss: Set<Node>,
   consumedJsx: Set<Node>,
   ownsDocument: boolean,
+  componentSlots: ReadonlyMap<number, readonly string[]>,
 ): string {
   const name = declaration.name!.text
   const body = declaration.body
@@ -559,8 +577,16 @@ function compileComponent(
   if (!returned?.expression) throw compileError(sourceFile.fileName, `${name} requires one final JSX return`)
   assertSingleReturnPath(declaration, returned, sourceFile.fileName)
   const parameter = declaration.parameters[0]?.getText(sourceFile) ?? "_props: Record<string, never>"
+  const slots = readSlotOutlets(declaration, sourceFile)
+  const slotProps = slots.length > 0 ? `${helper}SlotProps` : null
+  const authoredParameter = declaration.parameters[0]
+  const slotBinding = slotProps && authoredParameter
+    ? `\n    const ${authoredParameter.name.getText(sourceFile)}${authoredParameter.type ? `: ${authoredParameter.type.getText(sourceFile)}` : ""} = ${slotProps}${authoredParameter.initializer ? ` ?? (${authoredParameter.initializer.getText(sourceFile)})` : ""}\n`
+    : ""
   const prelude = sourceFile.text.slice(body.getStart(sourceFile) + 1, returned.getStart(sourceFile))
   const context: CompileContext = {
+    componentSlots,
+    slotProps,
     arrayExpressions,
     childrenExpressionKinds,
     componentName: name,
@@ -596,6 +622,7 @@ function compileComponent(
     `${exported}const ${name} = ${helper}Define({`,
     `  displayName: ${JSON.stringify(name)},`,
     `  bindingCount: ${context.bindings.length},`,
+    ...(slots.length > 0 ? [`  slots: ${JSON.stringify(slots)},`] : []),
     `  styleSheets: ${styleSheets},`,
     `  mount(document) {`,
     ...context.mount.map((line) => `    ${line}`),
@@ -604,7 +631,7 @@ function compileComponent(
     `      bindings: [${context.bindings.join(", ")}]`,
     `    }`,
     `  },`,
-    `  render(${parameter}, ${helper}Values) {${ownsDocument ? `\n    const document = ${helper}Document()\n` : ""}${prelude}`,
+    `  render(${slotProps ?? parameter}, ${helper}Values) {${slotBinding}${ownsDocument ? `\n    const document = ${helper}Document()\n` : ""}${prelude}`,
     ...context.writes.map((line) => `    ${line}`),
     `  }`,
     `})`,
@@ -621,6 +648,7 @@ function compileJsx(expression: Expression, context: CompileContext): string[] {
   }
   const opening = isJsxElement(expression) ? expression.openingElement : expression
   const tag = opening.tagName.getText(context.sourceFile)
+  if (tag === "slot") return compileSlotRange(expression as JsxElement | JsxSelfClosingElement, context)
   if (/^[a-z]/.test(tag)) return [compileIntrinsic(expression, opening, tag, context)]
   if (
     !isIdentifier(opening.tagName) ||
@@ -1037,6 +1065,7 @@ function compileChild(child: JsxChild, context: CompileContext): string[] {
   if (isJsxElement(child) || isJsxSelfClosingElement(child)) {
     const opening = isJsxElement(child) ? child.openingElement : child
     const tag = opening.tagName.getText(context.sourceFile)
+    if (tag === "slot") return compileSlotRange(child, context)
     if (/^[a-z]/.test(tag)) return [compileIntrinsic(child, opening, tag, context)]
     return compileComponentRange(child, "child", context)
   }
@@ -1148,19 +1177,20 @@ function compileConditional(expression: ReturnType<typeof asConditional>, contex
 function conditionalComponentValueExpression(
   expression: ReturnType<typeof asConditional>,
   context: ComponentExpressionContext,
+  assigned = false,
 ): string {
-  const whenTrue = conditionalBranch(expression.whenTrue, context)
-  const whenFalse = conditionalBranch(expression.whenFalse, context)
+  const whenTrue = conditionalBranch(expression.whenTrue, context, assigned)
+  const whenFalse = conditionalBranch(expression.whenFalse, context, assigned)
   return `${expression.condition.getText(context.sourceFile)} ? ${whenTrue} : ${whenFalse}`
 }
 
-function conditionalBranch(expression: Expression, context: ComponentExpressionContext): string {
+function conditionalBranch(expression: Expression, context: ComponentExpressionContext, assigned = false): string {
   const branch = skipParentheses(expression)
   if (isNullLiteral(branch)) return "null"
   if (!isJsxElement(branch) && !isJsxSelfClosingElement(branch)) {
     throw compileError(context.sourcePath, "conditional JSX branches must be components or null")
   }
-  return componentExpression(branch, context).expression
+  return componentExpression(branch, context, assigned).expression
 }
 
 function keyedMapExpression(expression: Expression, context: CompileContext): string[] | null {
@@ -1179,6 +1209,7 @@ function keyedMapExpression(expression: Expression, context: CompileContext): st
 function keyedMapValueExpression(
   expression: Expression,
   context: ComponentExpressionContext,
+  assigned = false,
 ): string | null {
   if (!isCallExpression(expression) || !isPropertyAccessExpression(expression.expression)) return null
   if (expression.expression.name.text !== "map" || expression.arguments.length !== 1) return null
@@ -1194,7 +1225,7 @@ function keyedMapValueExpression(
   if (!isJsxElement(body) && !isJsxSelfClosingElement(body)) {
     throw compileError(context.sourcePath, "keyed JSX map body must be one component")
   }
-  const compiled = componentExpression(body, context)
+  const compiled = componentExpression(body, context, assigned)
   if (compiled.key === "null") throw compileError(context.sourcePath, "dynamic JSX map components require key")
   const parameters = callback.parameters.map((parameter) => parameter.getText(context.sourceFile)).join(", ")
   return `${context.helper}Keyed(${expression.expression.expression.getText(context.sourceFile)}.map((${parameters}) => ${compiled.expression}))`
@@ -1203,6 +1234,7 @@ function keyedMapValueExpression(
 function componentExpression(
   expression: JsxElement | JsxSelfClosingElement,
   context: ComponentExpressionContext,
+  assigned = false,
 ): ComponentExpression {
   context.consumedJsx.add(expression)
   const opening = isJsxElement(expression) ? expression.openingElement : expression
@@ -1213,7 +1245,7 @@ function componentExpression(
   if (!context.components.has(symbolId(context.symbols, opening.tagName) ?? -1)) {
     throw compileError(context.sourcePath, `unknown component ${template}`)
   }
-  const {props, key} = componentProps(expression, context)
+  const {props, key} = componentProps(expression, context, assigned)
   return {
     expression: `__COMPONENT_HELPER__(${template}, ${props}, ${key})`,
     key,
@@ -1225,6 +1257,7 @@ function componentExpression(
 function componentProps(
   expression: JsxElement | JsxSelfClosingElement,
   context: ComponentExpressionContext,
+  assigned: boolean,
 ): Readonly<{props: string; key: string}> {
   const opening = isJsxElement(expression) ? expression.openingElement : expression
   const properties: string[] = []
@@ -1235,6 +1268,10 @@ function componentProps(
     }
     if (!isJsxAttribute(attribute)) continue
     const name = attribute.name.getText(context.sourceFile)
+    if (name === "slot") {
+      if (!assigned) throw compileError(context.sourcePath, "Назначение slot допустимо только внутри компонента с объявленными слотами")
+      continue
+    }
     if (name === "children") {
       throw compileError(
         context.sourcePath,
@@ -1261,8 +1298,25 @@ function componentProps(
     if (name === "key") key = expressionValue
     else properties.push(`${JSON.stringify(name)}: ${expressionValue}`)
   }
-  const children = componentChildrenValue(expression, context)
-  if (children !== null) properties.push(`${JSON.stringify("children")}: ${children}`)
+  const outlets = context.componentSlots.get(symbolId(context.symbols, opening.tagName) ?? -1)
+  if (outlets) {
+    const children = isJsxElement(expression) ? expression.children.filter(child => !isEmptyJsxChild(child)) : []
+    let plan: ReturnType<typeof planSlots>
+    try {
+      plan = planSlots({outlets, children: children.map(child => ({slot: readSlotChildName(child, context.sourceFile)}))})
+    } catch (error) {
+      throw compileError(context.sourcePath, error instanceof Error ? error.message : String(error))
+    }
+    const values = children.map(child => componentChildValue(child, context, true))
+    const input = `${context.helper}SlotChildren`
+    const groups = plan.slots.map(group =>
+      `[${JSON.stringify(group.name)}]: [${group.children.map(index => `${input}[${index}]`).join(", ")}]`)
+    // Сначала вычисляются авторские выражения в исходном порядке, затем их адреса распределяются по областям.
+    properties.push(`[${context.helper}SlotsKey]: ((${input}) => ({${groups.join(", ")}}))([${values.join(", ")}])`)
+  } else {
+    const children = componentChildrenValue(expression, context)
+    if (children !== null) properties.push(`${JSON.stringify("children")}: ${children}`)
+  }
   return Object.freeze({props: `{${properties.join(", ")}}`, key})
 }
 
@@ -1317,13 +1371,13 @@ function componentChildrenValue(
   return `${context.helper}FixedChildren([${values.join(", ")}])`
 }
 
-function componentChildValue(child: JsxChild, context: ComponentExpressionContext): string {
+function componentChildValue(child: JsxChild, context: ComponentExpressionContext, assigned = false): string {
   if (isJsxFragment(child)) {
     throw compileError(context.sourcePath, "component children do not support JSX fragments")
   }
   if (isJsxText(child)) return JSON.stringify(normalizeJsxText(child.text))
   if (isJsxElement(child) || isJsxSelfClosingElement(child)) {
-    return componentElementChildValue(child, context)
+    return componentElementChildValue(child, context, assigned)
   }
   if (!isJsxExpression(child) || !child.expression) {
     throw compileError(context.sourcePath, "empty component child is unsupported")
@@ -1333,16 +1387,16 @@ function componentChildValue(child: JsxChild, context: ComponentExpressionContex
     throw compileError(context.sourcePath, "component children do not support JSX fragments")
   }
   if (isJsxElement(value) || isJsxSelfClosingElement(value)) {
-    return componentElementChildValue(value, context)
+    return componentElementChildValue(value, context, assigned)
   }
   if (isNullLiteral(value)) return "null"
-  const keyed = keyedMapValueExpression(value, context)
+  const keyed = keyedMapValueExpression(value, context, assigned)
   if (keyed !== null) return keyed
   const kind = context.childrenExpressionKinds.get(value)
   if (kind === "component-children") return value.getText(context.sourceFile)
   if (isConditionalExpression(value)) {
     if (kind === "text") return value.getText(context.sourceFile)
-    return conditionalComponentValueExpression(asConditional(value), context)
+    return conditionalComponentValueExpression(asConditional(value), context, assigned)
   }
   if (context.arrayExpressions.has(value) || kind === "keyed-components") {
     if (isPropsFieldExpression(value, "children", context)) return value.getText(context.sourceFile)
@@ -1365,15 +1419,53 @@ function componentChildValue(child: JsxChild, context: ComponentExpressionContex
 function componentElementChildValue(
   child: JsxElement | JsxSelfClosingElement,
   context: ComponentExpressionContext,
+  assigned = false,
 ): string {
   const opening = isJsxElement(child) ? child.openingElement : child
+  if (opening.tagName.getText(context.sourceFile) === "slot") {
+    if (!assigned && slotAttribute(child, "slot", context.sourceFile) !== undefined) {
+      throw compileError(context.sourcePath, "Назначение slot допустимо только внутри компонента с объявленными слотами")
+    }
+    return slotValueExpression(child, context)
+  }
   if (/^[a-z]/.test(opening.tagName.getText(context.sourceFile))) {
     throw compileError(
       context.sourcePath,
       "intrinsic elements cannot cross a component children boundary",
     )
   }
-  return componentExpression(child, context).expression
+  return componentExpression(child, context, assigned).expression
+}
+
+/** Читает содержимое текущего получателя; fallback создаётся только для пустого слота. */
+function slotValueExpression(
+  element: JsxElement | JsxSelfClosingElement,
+  context: ComponentExpressionContext,
+): string {
+  context.consumedJsx.add(element)
+  if (!context.slotProps) throw compileError(context.sourcePath, "slot требует компонент-получатель")
+  const name = slotAttribute(element, "name", context.sourceFile) ?? ""
+  const content = `${context.slotProps}[${context.helper}SlotsKey]?.[${JSON.stringify(name)}]`
+  const value = `${context.helper}Slot({content: ${content}})`
+  const fallback = isJsxElement(element) ? element.children.filter(child => !isEmptyJsxChild(child)) : []
+  if (fallback.length === 0) return value
+  return `(${value} ?? ${context.helper}Slot({content: [${fallback.map(child => componentChildValue(child, context)).join(", ")}]}))`
+}
+
+/** Выпускает обычный conditional range вместо semantic Element slot. */
+function compileSlotRange(element: JsxElement | JsxSelfClosingElement, context: CompileContext): string[] {
+  if (slotAttribute(element, "slot", context.sourceFile) !== undefined) {
+    throw compileError(context.sourcePath, "Передача slot допустима только между тегами другого компонента")
+  }
+  const value = slotValueExpression(element, context)
+  const start = nextNode(context)
+  const end = nextNode(context)
+  context.mount.push(`const ${start} = document.createComment("slot:start")`)
+  context.mount.push(`const ${end} = document.createComment("slot:end")`)
+  const index = context.bindings.length
+  context.bindings.push(`${context.helper}BindConditional(${start}, ${end})`)
+  context.writes.push(`${context.helper}Write(${context.helper}Values, ${index}, ${value})`)
+  return [start, end]
 }
 
 function componentReturn(declaration: FunctionDeclaration): ReturnStatement | null {

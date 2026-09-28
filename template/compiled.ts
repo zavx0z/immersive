@@ -15,6 +15,9 @@ import {decodeCompiledStyleText} from "./style-codec.ts"
 const templateBrand = Symbol.for("@zavx0z/template/compiled-template")
 const bindingBrand = Symbol.for("@zavx0z/template/compiled-binding")
 
+/** Внутренний канал именованной композиции; авторский JSX не передаёт его через props. */
+export const slotContents = Symbol.for("@zavx0z/template/slot-contents")
+
 export type BindingValues = unknown[]
 
 export type CompiledMount = Readonly<{
@@ -39,6 +42,8 @@ export type CompiledTemplateDefinition<Props> = Readonly<{
   bindingCount: number
   displayName?: string
   styleSheets?: readonly CompiledStyleSheet[]
+  /** Статические имена точек вставки; пустое имя обозначает безымянный слот. */
+  slots?: readonly string[]
   mount(document: Document): CompiledMount
   render(props: Readonly<Props>, values: BindingValues): void
 }>
@@ -47,6 +52,7 @@ export interface CompiledTemplate<Props = unknown> {
   readonly bindingCount: number
   readonly displayName: string
   readonly styleSheets: readonly CompiledStyleSheet[]
+  readonly slots?: readonly string[]
   mount(document: Document): CompiledMount
   render(props: Readonly<Props>, values: BindingValues): void
 }
@@ -131,11 +137,17 @@ export function defineCompiledTemplate<Props>(
     throw new TypeError("Compiled template requires mount and render functions")
   }
   const styleSheets = compiledStyleSheets(definition.styleSheets ?? [])
+  if (definition.slots !== undefined && (
+    !Array.isArray(definition.slots) ||
+    definition.slots.some(name => typeof name !== "string") ||
+    new Set(definition.slots).size !== definition.slots.length
+  )) throw new TypeError("Compiled template slots require unique static names")
   return Object.freeze({
     [templateBrand]: true as const,
     bindingCount,
     displayName: definition.displayName ?? "CompiledTemplate",
     styleSheets,
+    ...(definition.slots === undefined ? {} : {slots: Object.freeze([...definition.slots])}),
     mount: definition.mount,
     render: definition.render
   })

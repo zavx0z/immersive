@@ -18,7 +18,7 @@ listeners и фокус. Живые узлы не отправляются во 
 DocumentFragment. Staging новых компонентов остаётся прежним.
 
 Остальные ограничения первого профиля не расширяются: fragment-значения
-через `props.children` и fragment вместо keyed component в `.map()` пока
+через границу слота и fragment вместо keyed component в `.map()` пока
 не принимаются. Существующие governed component children остаются доступны.
 
 Проверка: `tests/fragments.test.ts` и `tests/fragments.fixture.tsx` — вложенность,

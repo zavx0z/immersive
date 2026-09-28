@@ -188,10 +188,12 @@ function collectIntrinsicUsages(
   if (!/^[a-z]/.test(tagName)) return
   usages.push(Object.freeze({
     kind: "intrinsic-element",
-    profile: tagName.includes("-") ? "template-extension" : "html",
+    profile: tagName === "slot" || tagName.includes("-") ? "template-extension" : "html",
     source: sourceRange(sourceFile, opening.tagName),
     tagName,
   }))
+  // Атрибуты slot задают компиляторную композицию и не превращаются в DOM-операции.
+  if (tagName === "slot") return
   for (const property of opening.attributes.properties) {
     if (!isJsxAttribute(property)) continue
     const propName = property.name.getText(sourceFile)

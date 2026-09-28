@@ -20,6 +20,8 @@ export type CreateTemplateJsxPluginOptions = Readonly<{
   capabilityManifestPath?: string
   /** Keep the TypeScript session across incremental dev-server rebuilds. */
   persistent?: boolean
+  /** Общая сессия компиляции и проверки авторства у интеграции. */
+  session?: JsxCompilerSession
   sourceRoots: readonly string[]
   /** Opt-in public root ids for authored CSS source provenance. */
   styleSourceRootIds?: readonly string[]
@@ -39,7 +41,7 @@ export function createTemplateJsxBunPlugin(
   const roots = options.sourceRoots.map((root) => resolve(configuredCwd, root))
   if (roots.length === 0) throw new TypeError("Template JSX plugin requires at least one source root")
   const governedFiles = new GovernedFiles(roots)
-  const session = new JsxCompilerSession({
+  const session = options.session ?? new JsxCompilerSession({
     cwd: options.cwd === undefined ? commonCwd(roots) : configuredCwd,
     sourceRoots: roots,
     ...(options.styleSourceRootIds === undefined

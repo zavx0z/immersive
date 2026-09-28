@@ -40,6 +40,7 @@ import {
 } from "typescript/unstable/ast/is"
 import {skipOuterExpressions, SyntaxKind} from "typescript/unstable/ast"
 import {JsxCompileError} from "./errors.ts"
+import {readSlotOutlets} from "../slot/src/authoring.ts"
 import {GovernedFiles, sameRegularFile} from "./governed-paths.ts"
 import type {
   JsxChildrenExpressionKind,
@@ -81,6 +82,7 @@ export async function buildJsxTransformSymbols(
   }
 
   const importedComponents = new Set<number>()
+  const componentSlots = new Map<number, readonly string[]>()
   const importedCustomHooks = new Set<number>()
   const documentSymbols = new Set<number>()
   for (const symbol of new Set(identifiers
@@ -226,6 +228,11 @@ export async function buildJsxTransformSymbols(
         }
         importedComponents.add(alias.id)
         importedComponents.add(target.id)
+        const slots = await resolveComponentSlots(target, project, governedFiles, dependencyPaths, new Set())
+        if (slots.length > 0) {
+          componentSlots.set(alias.id, slots)
+          componentSlots.set(target.id, slots)
+        }
       }
       if (usedAsHook) {
         const valid = await hasGovernedCustomHookDeclaration(
@@ -246,6 +253,13 @@ export async function buildJsxTransformSymbols(
     }
   }
 
+  for (const statement of sourceFile.statements) {
+    if (isFunctionDeclaration(statement) && statement.name) {
+      const id = byNode.get(statement.name)
+      const slots = readSlotOutlets(statement, sourceFile)
+      if (id !== undefined && slots.length > 0) componentSlots.set(id, slots)
+    }
+  }
   for (const dependencyPath of dependencyPaths) {
     if (sameRegularFile(dependencyPath, sourceFile.fileName)) {
       dependencyPaths.delete(dependencyPath)
@@ -255,6 +269,7 @@ export async function buildJsxTransformSymbols(
     arrayExpressions,
     byNode,
     childrenExpressionKinds,
+    componentSlots,
     cssIntrinsicSymbols,
     dependencyPaths,
     documentSymbols,
@@ -263,6 +278,36 @@ export async function buildJsxTransformSymbols(
     sourceIdentity: jsxSourceIdentity(sourceFile.fileName, governedFiles),
     stylePrimitiveKinds,
   })
+}
+
+/** Раскрывает слоты импортированного компонента и memo через исходник их владельца. */
+async function resolveComponentSlots(
+  symbol: TypeScriptSymbol,
+  project: Project,
+  files: GovernedFiles,
+  dependencies: Set<string>,
+  visited: Set<number>,
+): Promise<readonly string[]> {
+  if (visited.has(symbol.id)) return []
+  visited.add(symbol.id)
+  for (const handle of symbol.declarations) {
+    if (files.matchFile(handle.path) === null) continue
+    dependencies.add(resolve(handle.path))
+    const declaration = await handle.resolve(project)
+    if (declaration && isFunctionDeclaration(declaration)) {
+      return readSlotOutlets(declaration, declaration.getSourceFile())
+    }
+    if (!declaration || !isVariableDeclaration(declaration)) continue
+    const value = declaration.initializer
+    if (!value || !isCallExpression(value) || !isIdentifier(value.expression) ||
+      !await isExactRuntimeMemo(value.expression, project) || !value.arguments[0] ||
+      !isIdentifier(value.arguments[0])) continue
+    const target = await project.checker.getSymbolAtLocation(value.arguments[0])
+    if (!target) continue
+    return resolveComponentSlots((target.flags & SymbolFlags.Alias) !== 0
+      ? await project.checker.getAliasedSymbol(target) : target, project, files, dependencies, visited)
+  }
+  return []
 }
 
 async function isBrandedCssCompilerIntrinsic(

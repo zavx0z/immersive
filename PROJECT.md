@@ -69,6 +69,12 @@ semantic capture и bubbling остаются у того же Document.
 
 ## Авторство и подключение приложения
 
+Авторская композиция передаёт содержимое между JSX-тегами и размещает его через
+[слоты Template](template/slot/index.ts), без поля `children` в props компонента.
+Для проверок наличия содержимого используется
+[hasSlot](component/slot-presence/index.ts) в текущем render.
+Поля `children` в данных деревьев и служебном JSX-транспорте сохраняют своё назначение.
+
 Публичный запуск Browser следует привычной семантике React:
 `const root = createRoot(canvas)` и `root.render(<App />)`. Повторный render
 обновляет существующий component root, сохраняя состояние и identity по

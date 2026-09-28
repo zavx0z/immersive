@@ -1,12 +1,10 @@
 import {useEffect, useState} from "@zavx0z/component"
-import type {JsxSourceElement} from "../jsx-runtime.ts"
 
 type SlotProps = Readonly<{
-  children?: JsxSourceElement | readonly JsxSourceElement[] | null | undefined
   style?: CssStyle | undefined
 }>
 
-function Slot({children = null, style}: SlotProps) {
+function Slot({style}: SlotProps) {
   return (
     <section
       data-slot=""
@@ -16,31 +14,41 @@ function Slot({children = null, style}: SlotProps) {
         ${style}
       `}
     >
-      {children}
+      <slot />
     </section>
   )
 }
 
-function ForwardingSlot({"children": content = null, style: appearance}: SlotProps) {
+function ForwardingSlot({style: appearance}: SlotProps) {
   return (
     <Slot style={appearance}>
-      {content}
+      <slot />
     </Slot>
   )
 }
 
-function SingleSlot({children: content}: Readonly<{children: JsxSourceElement}>) {
-  return <article>{content}</article>
+function SingleSlot() {
+  return (
+    <article>
+      <slot />
+    </article>
+  )
 }
 
-function OptionalSlot({children: content = null}: Readonly<{
-  children?: JsxSourceElement | null | undefined
-}>) {
-  return <aside>{content}</aside>
+function OptionalSlot() {
+  return (
+    <aside>
+      <slot />
+    </aside>
+  )
 }
 
-function PrimitiveSlot({children = "default"}: Readonly<{children?: string}>) {
-  return <p>{children}</p>
+function PrimitiveSlot() {
+  return (
+    <p>
+      <slot>default</slot>
+    </p>
+  )
 }
 
 function Caption({value}: Readonly<{value: string}>) {

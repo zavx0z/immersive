@@ -6,6 +6,7 @@ import {JsxCompileError} from "./errors.ts"
 import {GovernedFiles} from "./governed-paths.ts"
 import {transformJsxSourceFile} from "./transform.ts"
 import {buildJsxTransformSymbols} from "./symbols.ts"
+import {prepareSlotAuthoring, validateSlotAuthoring} from "../slot/src/authoring.ts"
 import {
   collectCapabilityUsages,
   type CapabilityUsage,
@@ -108,6 +109,29 @@ export class JsxCompilerSession {
     return this.exclusive(() => this.compileFileLocked(sourcePath))
   }
 
+  /**
+  Проверяет слоты в сценариях без компиляции тестовых callbacks.
+
+  При заданном transportModule сохраняет статические назначения условных детей
+  и keyed map до JSX-трансляции среды исполнения. Исходный файл не изменяется.
+
+  @param transportModule - Модуль JSX-среды с экспортом slotChild; без него возвращается проверенный исходник.
+  @returns Исходник с необходимыми вызовами транспорта либо исходный текст.
+  */
+  async prepareSlotAuthoringFile(sourcePath: string, transportModule?: string): Promise<string> {
+    return this.exclusive(async () => {
+      if (this.closed) throw new Error("JSX compiler session is closed")
+      const absolute = this.requireGoverned(resolve(sourcePath))
+      await this.refreshFilesLocked([absolute])
+      const project = await this.snapshot!.getDefaultProjectForFile(absolute)
+      if (!project) throw new JsxCompileError("TypeScript 7 found no project", absolute)
+      assertConfiguredProject(project, absolute)
+      const source = await project?.program.getSourceFile(absolute)
+      if (!source) throw new JsxCompileError("TypeScript 7 returned no source AST", absolute)
+      return prepareSlotAuthoring(source, transportModule)
+    })
+  }
+
   private async compileFileLocked(sourcePath: string): Promise<JsxCompileResult> {
     if (this.closed) throw new Error("JSX compiler session is closed")
     const absolute = this.requireGoverned(resolve(sourcePath))
@@ -159,6 +183,7 @@ export class JsxCompilerSession {
         absolute,
       )
     }
+    validateSlotAuthoring(sourceFile)
     const symbols = await buildJsxTransformSymbols(sourceFile, project, this.governedFiles)
     const capabilityUsages = await collectCapabilityUsages(sourceFile, project, symbols)
     const styleSourceModuleId = this.styleSourceModuleId(absolute)

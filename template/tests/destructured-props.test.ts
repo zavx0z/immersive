@@ -7,7 +7,7 @@ import {createRoot} from "@zavx0z/component"
 import type {CompiledTemplate} from "../compiled.ts"
 import {JsxCompilerSession} from "../compiler/index.ts"
 
-test("destructured and renamed children/style preserve DOM identity, focus, state and cleanup", async () => {
+test("слоты и деструктурированный style сохраняют DOM identity, focus, state и cleanup", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".destructured-props-"))
   const compiler = new JsxCompilerSession({
     cwd: resolve(import.meta.dir, "../.."),

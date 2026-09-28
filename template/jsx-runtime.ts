@@ -16,7 +16,7 @@ import type {
   CssSourceValue,
   CssTemplateValue
 } from "./css.ts"
-import type {TemplateIntrinsicElements} from "./jsx-dom.ts"
+import type {JsxChild, TemplateIntrinsicElements} from "./jsx-dom.ts"
 
 export type {
   CallbackRef,
@@ -47,7 +47,10 @@ export namespace JSX {
   }
   export interface IntrinsicAttributes {
     key?: string | number
+    slot?: string
   }
+  /** Вложенность проверяется компилятором по точкам slot и контракту children. */
+  export type LibraryManagedAttributes<Component, Props> = Props & {children?: JsxChild}
   export interface IntrinsicElements extends TemplateIntrinsicElements {}
 }
 

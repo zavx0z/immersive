@@ -106,7 +106,8 @@ export type StandardIntrinsicElements = Readonly<{
       : IntrinsicElementProperties<HTMLElementTagNameMap[TagName]>
 }>
 
-export type TemplateIntrinsicElements = StandardIntrinsicElements & Readonly<{
+export type TemplateIntrinsicElements = Omit<StandardIntrinsicElements, "slot"> & Readonly<{
+  slot: Readonly<{name?: string; slot?: string; children?: JsxChild}>
   hud: IntrinsicElementProperties<HUDElement>
   space: IntrinsicElementProperties<SpaceElement>
   viewpoint: IntrinsicElementProperties<ViewPointElement>

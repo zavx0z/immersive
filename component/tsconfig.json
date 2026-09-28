@@ -4,5 +4,5 @@
     "jsx": "preserve",
     "jsxImportSource": "@zavx0z/template"
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"]
+  "include": ["src/**/*.ts", "tests/**/*.ts", "slot/**/*.ts", "slot-presence/**/*.ts"]
 }
