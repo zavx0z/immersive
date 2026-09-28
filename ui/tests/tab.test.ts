@@ -79,7 +79,7 @@ describe.each(["hud", "display"] as const)("Tab в %s", projection => {
       let boxes = f.flush().boxByNode
       const firstHeight = boxes.get(f.button)!.height
       const firstWidth = boxes.get(f.button)!.width
-      expect(firstWidth).toBeCloseTo(boxes.get(label)!.width + 2)
+      expect(firstWidth, "Справа у Tab остаётся только левая рамка толщиной 1 px").toBeCloseTo(boxes.get(label)!.width + 1)
       expect(boxes.get(f.button)!.height).toBeCloseTo(boxes.get(label)!.height + 14)
       f.render({label: "Более длинная подпись", length: undefined, thickness: undefined})
       boxes = f.flush().boxByNode
@@ -99,7 +99,7 @@ describe.each(["hud", "display"] as const)("Tab в %s", projection => {
       const body = tab.querySelector("div")!
       const boxes = f.flush().boxByNode
       expect(boxes.get(tab)!.width).toBeCloseTo(boxes.get(body)!.width + 2)
-      expect(boxes.get(tab)!.height).toBeCloseTo(boxes.get(body)!.height + 2)
+      expect(boxes.get(tab)!.height, "Сверху у Tab остаётся только нижняя рамка толщиной 1 px").toBeCloseTo(boxes.get(body)!.height + 1)
       expect(boxes.get(child)!.padding).toEqual({top: 2, bottom: 2, left: 6, right: 6})
       const point = (node: typeof child) => {
         const box = f.flush().boxByNode.get(node)!
