@@ -1,4 +1,4 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import {hasSlot} from "@zavx0z/component/slot-presence"
 import {
   fieldDensityHeight,
   labelledFieldHeight,
@@ -9,7 +9,6 @@ export type FieldGroupDensity = "regular" | "compact"
 
 export type FieldGroupProps = Readonly<{
   label?: string | undefined
-  children: readonly JsxSourceElement[]
   density?: FieldGroupDensity | undefined
   title?: string | undefined
   style?: CssStyle | undefined
@@ -28,8 +27,8 @@ export const fieldGroupLayout = Object.freeze({
 })
 
 export function FieldGroup(props: FieldGroupProps) {
-  if (props.children.length === 0) {
-    throw new TypeError("FieldGroup children must be a non-empty array")
+  if (!hasSlot()) {
+    throw new TypeError("FieldGroup requires non-empty slot content")
   }
   const density = resolveFieldDensity(props.density, "regular", "FieldGroup")
   const hasLabel = props.label !== undefined
@@ -109,7 +108,7 @@ export function FieldGroup(props: FieldGroupProps) {
         }
       `}
     >
-      {props.children}
+      <slot />
     </div>
   </div>
 }

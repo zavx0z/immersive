@@ -1,4 +1,4 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import {hasSlot} from "@zavx0z/component/slot-presence"
 
 export type StatusBarItem = Readonly<{
   id: string
@@ -11,7 +11,6 @@ export type StatusBarProps = Readonly<{
   end?: readonly StatusBarItem[] | undefined
   separator?: string | undefined
   title?: string | undefined
-  children?: JsxSourceElement | null | undefined
   style?: CssStyle | undefined
 }>
 
@@ -101,6 +100,7 @@ export function StatusBar(props: StatusBarProps) {
   const end = normalizeStatusBarItems(props.end ?? [])
   const separator = props.separator ?? " | "
   if (typeof separator !== "string") throw new TypeError("StatusBar separator must be a string")
+  const supplied = hasSlot()
   return <footer
     role="status"
     aria-label={props.title ?? "Status"}
@@ -131,11 +131,11 @@ export function StatusBar(props: StatusBarProps) {
       items={start}
       separator={separator}
       alignment="start"
-      hidden={props.children != null}
+      hidden={supplied}
     />
     <span
       data-status-content=""
-      hidden={props.children == null}
+      hidden={!supplied}
       style={css`
         display: flex;
         align-items: center;
@@ -149,7 +149,7 @@ export function StatusBar(props: StatusBarProps) {
         }
       `}
     >
-      {props.children}
+      <slot />
     </span>
     <StatusBarItems items={end} separator={separator} alignment="end" />
   </footer>

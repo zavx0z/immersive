@@ -269,7 +269,7 @@ test("embedded Tree keeps focus separate from selection and bounds a large hiera
 test("Window fill is structural while floating defaults remain unchanged", () => {
   const f = fixture()
   const renderer = createDocumentRenderer({document: f.document, root: f.root, viewport: {width: 720, height: 300}})
-  const props: WindowProps = {title: "Window", subtitle: "", active: true, minimized: false, actions: [], children: null}
+  const props: WindowProps = {title: "Window", subtitle: "", active: true, minimized: false, actions: []}
   try {
     f.component.render(Window as unknown as CompiledTemplate<WindowProps>, props)
     const owner = f.root.firstElementChild!

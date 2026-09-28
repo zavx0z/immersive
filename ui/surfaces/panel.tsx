@@ -1,5 +1,4 @@
 import {useId} from "@zavx0z/component"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import {Button, IconButton} from "../buttons/button.tsx"
 import {chevronDownIcon, chevronRightIcon} from "../src/shared/icon-assets.ts"
 
@@ -19,7 +18,6 @@ export type PanelProps = Readonly<{
   expanded: boolean
   hidden?: boolean | undefined
   actions?: readonly PanelAction[] | undefined
-  children: JsxSourceElement
   style?: CssStyle | undefined
   onToggle?: ((expanded: boolean, event: Event) => void) | undefined
 }>
@@ -129,7 +127,7 @@ export function Panel(props: PanelProps) {
         }
       `}
     >
-      {props.children}
+      <slot />
     </div>
   </section>
 }

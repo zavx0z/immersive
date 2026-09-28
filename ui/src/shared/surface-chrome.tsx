@@ -1,4 +1,3 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import {Button, type ButtonProps} from "../../buttons/button.tsx"
 
 export type SurfaceOwnerProps = Readonly<{
@@ -8,7 +7,6 @@ export type SurfaceOwnerProps = Readonly<{
   frameStart?: number | undefined
   frameEnd?: number | undefined
   frameCurrent?: number | undefined
-  children: readonly JsxSourceElement[]
   style?: CssStyle | undefined
 }>
 
@@ -38,12 +36,11 @@ export function SurfaceOwner(props: SurfaceOwnerProps) {
       ${props.style}
     `}
   >
-    {props.children}
+    <slot />
   </section>
 }
 
 export type SurfaceHeaderProps = Readonly<{
-  children: readonly JsxSourceElement[]
   style?: CssStyle | undefined
 }>
 
@@ -62,7 +59,7 @@ export function SurfaceHeader(props: SurfaceHeaderProps) {
       ${props.style}
     `}
   >
-    {props.children}
+    <slot />
   </header>
 }
 
@@ -101,7 +98,6 @@ export function SurfaceTitle(props: SurfaceTitleProps) {
 
 export type SurfaceNavigationProps = Readonly<{
   label: string
-  children: readonly JsxSourceElement[]
   style?: CssStyle | undefined
 }>
 
@@ -116,14 +112,13 @@ export function SurfaceNavigation(props: SurfaceNavigationProps) {
       ${props.style}
     `}
   >
-    {props.children}
+    <slot />
   </nav>
 }
 
 export type SurfaceBodyProps = Readonly<{
   id?: string | undefined
   hidden?: boolean | undefined
-  children: JsxSourceElement | null
   style?: CssStyle | undefined
 }>
 
@@ -140,7 +135,7 @@ export function SurfaceBody(props: SurfaceBodyProps) {
       ${props.style}
     `}
   >
-    {props.children}
+    <slot />
   </section>
 }
 

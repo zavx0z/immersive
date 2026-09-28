@@ -1,16 +1,14 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
-
 /**
 Вход пристыкованного Tab. Компонент занимает область своего позиционированного
 родителя; сам таб остаётся на её периметре. Родитель задаёт размеры области
 обычным CSS как в HUD, так и в Display или вложенной поверхности.
 
-@property [label] - Текст таба, если children не заданы. При children подпись не требуется.
+@property [label] - Текст таба, если безымянный слот пуст. При вложенном содержимом подпись не требуется.
 Слева текст идёт сверху вниз, справа снизу вверх: низ букв обращён к краю области.
 Сверху и снизу текст горизонтальный.
 Вдоль подписи по 6 CSS px: слева и справа в горизонтальном виде,
 сверху и снизу в вертикальном. Поперечные отступы нулевые.
-@property [children] - Авторские дочерние компоненты вместо подписи label.
+Вложенные компоненты между тегами Tab попадают в безымянный слот вместо подписи label.
 Направление текста наследуется от стороны Tab так же, как для label.
 Короткое нажатие на кнопку или ссылку сохраняет её действие; движение от 4 CSS px
 начинает drag Tab. Поля и редактируемый текст сохраняют собственный ввод.
@@ -24,13 +22,12 @@ import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 Размеры ограничиваются текущей областью при её уменьшении.
 @property [disabled=false] - Запрещает перетаскивание таба и отменяет активный жест.
 @property [style] - Финальное оформление таба через branded CSS document.
-По умолчанию CSS рассчитывает размер по label или children; положение принадлежит перетаскиванию.
+По умолчанию CSS рассчитывает размер по label или содержимому слота; положение принадлежит перетаскиванию.
 @property [onPositionChange] - Получает сторону и долю пути при движении и завершении.
 Отмена возвращает начальное положение жеста и phase cancel. Resize не считается жестом.
 */
 export interface TabProps {
   readonly label?: string | null | undefined
-  readonly children?: JsxSourceElement | null | undefined
   readonly position?: Readonly<{edge: "left" | "right" | "top" | "bottom"; offset: number}> | undefined
   readonly length?: number | undefined
   readonly thickness?: number | undefined

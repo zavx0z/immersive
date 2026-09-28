@@ -1,11 +1,10 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
+import {hasSlot} from "@zavx0z/component/slot-presence"
 
 export type PaneVariant = "filled" | "outlined" | "transparent"
 export type PaneTextContent = string | number | bigint | boolean | null | undefined
 
 export type PaneProps = Readonly<{
   content?: PaneTextContent
-  children?: JsxSourceElement | null | undefined
   variant?: PaneVariant | undefined
   title?: string | undefined
   active?: boolean | undefined
@@ -13,8 +12,8 @@ export type PaneProps = Readonly<{
 }>
 
 export function Pane(props: PaneProps) {
-  if (props.children != null && props.content != null) {
-    throw new Error("Pane accepts either authored children or primitive content, not both")
+  if (hasSlot() && props.content != null) {
+    throw new Error("Pane accepts either slot content or primitive content, not both")
   }
   const variant = props.variant ?? "filled"
   return <section
@@ -48,6 +47,8 @@ export function Pane(props: PaneProps) {
       ${props.style}
     `}
   >
-    {props.children}{props.content}
+    <slot>
+      {props.content}
+    </slot>
   </section>
 }

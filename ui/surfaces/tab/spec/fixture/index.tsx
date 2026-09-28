@@ -7,6 +7,6 @@ export function TabFixture(props: TabProps) {
     label={props.label}
     position={props.position}
   >
-    {props.children}
+    <slot />
   </Tab>
 }

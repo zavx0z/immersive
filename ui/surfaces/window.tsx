@@ -1,5 +1,4 @@
 import {useId} from "@zavx0z/component"
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import {closeIcon, minusIcon, pinIcon, plusIcon} from "../src/shared/icon-assets.ts"
 import {
   assertSurfaceActions,
@@ -24,7 +23,6 @@ export type WindowProps = Readonly<{
   active: boolean
   minimized: boolean
   actions: readonly WindowAction[]
-  children: JsxSourceElement | null
   layout?: "floating" | "fill" | undefined
   style?: CssStyle | undefined
   onMinimizedChange?: ((minimized: boolean, event: Event) => void) | undefined
@@ -131,7 +129,7 @@ export function Window(props: WindowProps) {
         `}
       `}
     >
-      {props.children}
+      <slot />
     </SurfaceBody>
   </SurfaceOwner>
 }

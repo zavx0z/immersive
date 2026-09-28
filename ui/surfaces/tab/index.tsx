@@ -8,14 +8,15 @@ Display и вложенных контейнерах; окон, камер и о
 */
 import {useLayoutEffect, useRef, useState} from "@zavx0z/component"
 import {observeElementLayout, readElementLayoutRect} from "@zavx0z/dom/geometry"
+import {hasSlot} from "@zavx0z/component/slot-presence"
 import type {TabProps} from "./contract/input.ts"
 import {dockTab, readTabPosition, tabRect, type TabArea, type TabPosition} from "./src/placement.ts"
 
 /** Перетаскивание использует штатный pointer capture; отмена возвращает положение начала жеста. */
 export function Tab(props: TabProps) {
-  const hasChildren = props.children != null
-  if (!hasChildren && !props.label?.trim()) throw new TypeError("Tab requires label or children")
-  const caption = hasChildren ? "" : props.label
+  const supplied = hasSlot()
+  if (!supplied && !props.label?.trim()) throw new TypeError("Tab requires label or slot content")
+  const caption = supplied ? "" : props.label
   if (![props.length, props.thickness].every(value => value === undefined || Number.isFinite(value) && value > 0)) {
     throw new RangeError("Tab dimensions must be positive finite CSS pixels")
   }
@@ -176,7 +177,7 @@ export function Tab(props: TabProps) {
         --tab-y: ${rect.y}px;
         --tab-width: ${authoredWidth === undefined ? "max-content" : `${authoredWidth}px`};
         --tab-height: ${authoredHeight === undefined ? "max-content" : `${authoredHeight}px`};
-        --tab-padding-inline: ${hasChildren ? 0 : 6}px;
+        --tab-padding-inline: ${supplied ? 0 : 6}px;
 
         position: absolute;
         left: var(--tab-x);
@@ -245,7 +246,7 @@ export function Tab(props: TabProps) {
       `}
     >
       <span
-        hidden={hasChildren}
+        hidden={supplied}
         style={css`
           min-width: 0;
           white-space: nowrap;
@@ -259,7 +260,7 @@ export function Tab(props: TabProps) {
       >
         {caption}
       </span>
-      {props.children}
+      <slot />
     </div>
   </div>
 }

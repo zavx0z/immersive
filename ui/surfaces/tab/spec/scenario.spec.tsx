@@ -5,21 +5,19 @@ import {Tab} from "@zavx0z/ui/surfaces/tab"
 import type {TabProps} from "../contract/input.ts"
 
 /** Контент параметризуется снаружи; положение — во вложенной таблице того же примера. */
-type Content = Readonly<{name: string; props: TabProps}>
+type Content = Readonly<{name: string; props: TabProps & {button: boolean}}>
 type Scenario = Readonly<{
   name: string
-  props: TabProps & {position: NonNullable<TabProps["position"]>}
+  props: TabProps & {position: NonNullable<TabProps["position"]>; button: boolean}
 }>
 
 describe.each([
-  {name: "label", props: {label: "Tab", children: null}},
+  {name: "label", props: {label: "Tab", button: false}},
   {
-    name: "children",
+    name: "slot",
     props: {
       label: null,
-      children: <Button
-        label="Инструменты"
-      />,
+      button: true,
     },
   },
 ] satisfies Content[])("$name", ({props: content}: Content) => {
@@ -36,7 +34,11 @@ describe.each([
         label={props.label}
         position={props.position}
       >
-        {props.children}
+        {props.button ? (
+          <Button
+            label="Инструменты"
+          />
+        ) : null}
       </Tab>,
     )
     await headless.capture(element)
@@ -54,7 +56,7 @@ describe.each([
     })
 
     test("Контент", () => {
-      if (props.children == null) {
+      if (!props.button) {
         expect(tab.textContent, "Текст label отображается внутри Tab").toBe(props.label!)
         expect(tab.querySelector("button"), "Текстовая подпись не создаёт дочернюю кнопку").toBeNull()
         const bounds = tab.querySelector("span")!.getLayoutRect(element)!

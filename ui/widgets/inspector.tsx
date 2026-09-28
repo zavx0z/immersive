@@ -1,4 +1,3 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import {Button, IconButton} from "../buttons/button.tsx"
 import {TextField} from "../fields/text-field.tsx"
 import {searchIcon} from "../src/shared/icon-assets.ts"
@@ -45,7 +44,6 @@ export type InspectorProps = Readonly<{
   toolbarLeadingActions?: readonly InspectorAction[] | undefined
   toolbarActions?: readonly InspectorAction[] | undefined
   context?: InspectorContext | undefined
-  children: JsxSourceElement | readonly JsxSourceElement[]
   style?: CssStyle | undefined
   onCategoryChange?: ((id: string, event: Event) => void) | undefined
   onQueryChange?: ((query: string, event: Event) => void) | undefined
@@ -369,7 +367,7 @@ export function Inspector(props: InspectorProps) {
             background: var(--widget-number-background-readonly);
           `}
         >
-          {props.children}
+          <slot />
         </div>
       </div>
     </div>

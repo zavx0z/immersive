@@ -1,4 +1,3 @@
-import type {JsxSourceElement} from "@zavx0z/template/jsx-runtime"
 import {
   assertSurfaceActions,
   SurfaceBody,
@@ -22,7 +21,6 @@ export type FrameProps = Readonly<{
   title: string
   edge: FrameEdge
   handles: readonly FrameHandle[]
-  children: JsxSourceElement | null
   style?: CssStyle | undefined
   onHandle?: ((key: string, event: Event) => void) | undefined
 }>
@@ -127,7 +125,9 @@ export function Frame(props: FrameProps) {
         />)}
       </SurfaceNavigation>
     </SurfaceHeader>
-    <SurfaceBody key="body">{props.children}</SurfaceBody>
+    <SurfaceBody key="body">
+      <slot />
+    </SurfaceBody>
   </SurfaceOwner>
 }
 
