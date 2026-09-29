@@ -1,5 +1,5 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {
   XRLineSegmentsElement,
   XRObjectProjectionFactory,

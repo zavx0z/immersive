@@ -8,7 +8,7 @@ import {
   Text,
   createDocument,
 } from "@zavx0z/dom"
-import {JsxCompilerSession} from "@jsx/compiler"
+import JsxCompilerSession from "@jsx-compiler/session"
 import {
   bindEvent,
   bindProperty,

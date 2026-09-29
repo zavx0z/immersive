@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 
 const uiRoot = resolve(import.meta.dir, "..")
 const root = resolve(uiRoot, "..")

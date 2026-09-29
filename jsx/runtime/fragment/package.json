@@ -1,0 +1,18 @@
+{
+  "name": "@jsx-runtime/fragment",
+  "label": "Фрагмент JSX",
+  "version": "0.0.0",
+  "description": "Единая identity группы соседних JSX-значений",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --parallel ./spec",
+    "check": "bun run --parallel typecheck test"
+  }
+}

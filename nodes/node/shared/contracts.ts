@@ -1,4 +1,4 @@
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 
 export type NodeRect = Readonly<{x: number; y: number; width: number; height: number}>
 

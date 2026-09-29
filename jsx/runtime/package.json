@@ -1,8 +1,8 @@
 {
   "name": "@jsx/runtime",
-  "label": "JSX runtime",
+  "label": "Исполнение JSX",
   "version": "0.0.0",
-  "description": "Автоматический JSX protocol для подготовленных компонентов",
+  "description": "Автоматический JSX protocol и identity фрагментов",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.4.0",
@@ -10,19 +10,8 @@
   "exports": {
     ".": "./index.ts"
   },
-  "scripts": {
-    "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel spec test",
-    "check": "bun run --parallel typecheck test"
-  },
   "dependencies": {
-    "@jsx/types": "*",
-    "@jsx/slot": "*",
-    "@zavx0z/component": "*",
-    "@zavx0z/template": "*",
-    "@jsx/slot-child": "*"
-  },
-  "devDependencies": {
-    "@zavx0z/dom": "*"
+    "@jsx-runtime/create": "*",
+    "@jsx-runtime/fragment": "*"
   }
 }

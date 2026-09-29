@@ -1,0 +1,26 @@
+{
+  "name": "@jsx-development/create",
+  "label": "JSX development",
+  "version": "0.0.0",
+  "description": "Development protocol JSX с общей Fragment identity",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.0",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --parallel spec test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-runtime/create": "*",
+    "@zavx0z/component": "*",
+    "@jsx-compiler/session": "*"
+  },
+  "devDependencies": {
+    "@zavx0z/template": "*"
+  }
+}

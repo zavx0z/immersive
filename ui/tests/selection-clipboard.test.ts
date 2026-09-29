@@ -3,7 +3,7 @@ import {resolve} from "node:path"
 import {createDocument, MouseEvent, readDocumentTextHighlights, type HTMLElement} from "@zavx0z/dom"
 import {createRoot} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 
 const workspace = resolve(import.meta.dir, "../..")

@@ -6,7 +6,7 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import type {GridHelper} from "@zavx0z/engine"
 import {createSpaceElementFactories, XRLineSegmentsElement} from "@zavx0z/space"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {GridProps} from "../gizmos/grid.tsx"
 

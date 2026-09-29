@@ -4,7 +4,7 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import {registerLanguageHighlighter} from "@zavx0z/highlighter"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {MarkdownProps} from "../contract/input.ts"
 import {createDocumentRenderer} from "@renderer/html"
 

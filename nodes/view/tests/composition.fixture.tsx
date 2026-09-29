@@ -1,6 +1,6 @@
 import {createRoot, component} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {Document} from "@zavx0z/dom"
 import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeTreeSnapshot} from "@nodes/tree"
 import {DiagramNode} from "@nodes/node/diagram"

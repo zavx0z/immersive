@@ -3,7 +3,7 @@ import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import {createDocumentInteractionState, createDocumentRenderer} from "@renderer/html"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 import {chevronRightIcon, homeIcon} from "../themes/icons.ts"
 
 const root = resolve(import.meta.dir, "../..")

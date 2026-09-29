@@ -22,7 +22,7 @@ import {
   type CompiledTemplate,
   type HostBinding
 } from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import {
   isComponentValue,
   isContext,
@@ -1914,7 +1914,7 @@ export function createRoot(container: RootContainer, options: RootOptions = {}):
       }
       if (!isCompiledTemplate(template)) {
         throw new TypeError(
-          "JSX reached @zavx0z/component at runtime; enable @jsx/compiler",
+          "JSX reached @zavx0z/component at runtime; enable @jsx-compiler/session",
         )
       }
       const key = normalizeKey(renderOptions.key)

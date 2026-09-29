@@ -7,24 +7,31 @@
   "type": "module",
   "packageManager": "bun@1.4.0",
   "sideEffects": false,
-  "workspaces": [
-    "types",
-    "runtime",
-    "development",
-    "slot",
-    "events",
-    "compiler",
-    "bun",
-    "authoring",
-    "error",
-    "slot-child"
-  ],
   "exports": {
+    ".": {
+      "bun": "./index.ts",
+      "node": "./index.ts"
+    },
     "./jsx-runtime": "./runtime/index.ts",
     "./jsx-dev-runtime": "./development/index.ts"
   },
   "dependencies": {
     "@jsx/runtime": "*",
-    "@jsx/development": "*"
+    "@jsx/development": "*",
+    "@jsx/slot": "*",
+    "@jsx/events": "*",
+    "@jsx/compiler": "*"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --parallel ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "devDependencies": {
+    "@jsx-runtime/create": "*",
+    "@jsx-runtime/fragment": "*",
+    "@jsx-slot/plan": "*",
+    "@jsx-compiler/session": "*",
+    "@jsx-compiler/bun": "*"
   }
 }

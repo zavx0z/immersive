@@ -71,6 +71,6 @@
     "@zavx0z/jsx": "*"
   },
   "devDependencies": {
-    "@jsx/bun": "*"
+    "@jsx-compiler/bun": "*"
   }
 }

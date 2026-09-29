@@ -39,7 +39,7 @@ import {
 } from "@zavx0z/dom"
 import {createRoot, provideContext, type ComponentRoot, type ComponentValue} from "@zavx0z/component"
 import {createRootEnvironment, rootContext, type RootEnvironment, type RootSize, type FrameLoop} from "./root-context.ts"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import {loadDocumentDefaultFont} from "@zavx0z/engine/default-font"
 import {claimBrowserPresentationHost, type PresentationHostClaim} from "./presentation-host.ts"
 import type {

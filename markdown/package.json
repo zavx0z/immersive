@@ -38,13 +38,13 @@
     "@nodes/node": "*",
     "@nodes/layout": "*",
     "@webxr/nodes": "*",
-    "@jsx/types": "*",
-    "@zavx0z/jsx": "*"
+    "@zavx0z/jsx": "*",
+    "@jsx-compiler/session": "*"
   },
   "devDependencies": {
     "@renderer/html": "*",
     "@zavx0z/highlighter": "link:@zavx0z/highlighter",
-    "@jsx/bun": "*"
+    "@jsx-compiler/bun": "*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {

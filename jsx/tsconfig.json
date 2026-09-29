@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig.json",
+  "include": [
+    "*.ts",
+    "test/**/*.ts"
+  ],
+  "compilerOptions": {
+    "customConditions": [
+      "bun"
+    ]
+  }
+}

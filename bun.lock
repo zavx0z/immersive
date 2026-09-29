@@ -16,12 +16,11 @@
       "name": "@zavx0z/browser",
       "version": "0.0.0",
       "devDependencies": {
-        "@jsx/bun": "*",
-        "@jsx/compiler": "*",
+        "@jsx-compiler/bun": "*",
+        "@jsx-compiler/session": "*",
         "@zavx0z/jsx": "*",
       },
       "peerDependencies": {
-        "@jsx/types": "*",
         "@renderer/html": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
@@ -44,7 +43,7 @@
       "name": "@zavx0z/component",
       "version": "0.0.0",
       "peerDependencies": {
-        "@jsx/types": "*",
+        "@jsx-compiler/session": "*",
         "@zavx0z/dom": "*",
         "@zavx0z/template": "*",
       },
@@ -69,7 +68,7 @@
       "name": "@zavx0z/dom",
       "version": "0.0.0",
       "devDependencies": {
-        "@jsx/bun": "*",
+        "@jsx-compiler/bun": "*",
         "@zavx0z/jsx": "*",
       },
       "peerDependencies": {
@@ -87,10 +86,9 @@
         "bun-webgpu": "0.1.7",
       },
       "peerDependencies": {
-        "@jsx/bun": "*",
-        "@jsx/compiler": "*",
-        "@jsx/slot-child": "*",
-        "@jsx/types": "*",
+        "@jsx-compiler/bun": "*",
+        "@jsx-compiler/session": "*",
+        "@jsx-slot/child": "*",
         "@renderer/html": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
@@ -114,62 +112,153 @@
       "name": "@zavx0z/jsx",
       "version": "0.0.0",
       "dependencies": {
-        "@jsx/development": "*",
-        "@jsx/runtime": "*",
-      },
-    },
-    "jsx/authoring": {
-      "name": "@jsx/authoring",
-      "version": "0.0.0",
-      "dependencies": {
-        "@jsx/error": "*",
-        "@jsx/slot": "*",
-        "typescript": "7.0.2",
-      },
-      "devDependencies": {
-        "@zavx0z/jsx": "*",
-      },
-    },
-    "jsx/bun": {
-      "name": "@jsx/bun",
-      "version": "0.0.0",
-      "dependencies": {
         "@jsx/compiler": "*",
+        "@jsx/development": "*",
+        "@jsx/events": "*",
+        "@jsx/runtime": "*",
+        "@jsx/slot": "*",
       },
       "devDependencies": {
-        "@zavx0z/jsx": "*",
+        "@jsx-compiler/bun": "*",
+        "@jsx-compiler/session": "*",
+        "@jsx-runtime/create": "*",
+        "@jsx-runtime/fragment": "*",
+        "@jsx-slot/plan": "*",
       },
     },
     "jsx/compiler": {
       "name": "@jsx/compiler",
       "version": "0.0.0",
       "dependencies": {
-        "@jsx/authoring": "*",
-        "@jsx/error": "*",
+        "@jsx-compiler/bun": "*",
+        "@jsx-compiler/error": "*",
+        "@jsx-compiler/session": "*",
+      },
+    },
+    "jsx/compiler/bun": {
+      "name": "@jsx-compiler/bun",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "*",
+      },
+      "devDependencies": {
+        "@zavx0z/jsx": "*",
+      },
+    },
+    "jsx/compiler/error": {
+      "name": "@jsx-compiler/error",
+      "version": "0.0.0",
+    },
+    "jsx/compiler/session": {
+      "name": "@jsx-compiler/session",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/error": "*",
+        "@jsx-slot/authoring": "*",
+        "@jsx-slot/contract": "*",
+        "@jsx-slot/plan": "*",
         "@jsx/events": "*",
-        "@jsx/slot": "*",
-        "@jsx/slot-contract": "*",
+        "@zavx0z/dom": "*",
         "@zavx0z/template": "*",
         "typescript": "7.0.2",
       },
       "devDependencies": {
-        "@jsx/types": "*",
+        "@jsx-compiler/bun": "*",
         "@zavx0z/browser": "*",
         "@zavx0z/component": "*",
-        "@zavx0z/dom": "*",
         "@zavx0z/jsx": "*",
         "@zavx0z/space": "*",
       },
     },
-    "jsx/compiler/slot-contract": {
-      "name": "@jsx/slot-contract",
+    "jsx/development": {
+      "name": "@jsx/development",
       "version": "0.0.0",
       "dependencies": {
-        "@jsx/authoring": "*",
-        "@jsx/error": "*",
+        "@jsx-development/create": "*",
+        "@jsx-runtime/fragment": "*",
+      },
+    },
+    "jsx/development/create": {
+      "name": "@jsx-development/create",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "*",
+        "@jsx-runtime/create": "*",
+        "@zavx0z/component": "*",
       },
       "devDependencies": {
-        "@jsx/types": "*",
+        "@zavx0z/template": "*",
+      },
+    },
+    "jsx/events": {
+      "name": "@jsx/events",
+      "version": "0.0.0",
+      "dependencies": {
+        "@zavx0z/dom": "*",
+      },
+    },
+    "jsx/runtime": {
+      "name": "@jsx/runtime",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-runtime/create": "*",
+        "@jsx-runtime/fragment": "*",
+      },
+    },
+    "jsx/runtime/create": {
+      "name": "@jsx-runtime/create",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "*",
+        "@jsx-runtime/fragment": "*",
+        "@jsx-slot/child": "*",
+        "@jsx-slot/plan": "*",
+        "@zavx0z/component": "*",
+        "@zavx0z/template": "*",
+      },
+      "devDependencies": {
+        "@zavx0z/dom": "*",
+      },
+    },
+    "jsx/runtime/fragment": {
+      "name": "@jsx-runtime/fragment",
+      "version": "0.0.0",
+    },
+    "jsx/slot": {
+      "name": "@jsx/slot",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-slot/authoring": "*",
+        "@jsx-slot/child": "*",
+        "@jsx-slot/contract": "*",
+        "@jsx-slot/plan": "*",
+      },
+    },
+    "jsx/slot/authoring": {
+      "name": "@jsx-slot/authoring",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/error": "*",
+        "@jsx-slot/plan": "*",
+        "typescript": "7.0.2",
+      },
+      "devDependencies": {
+        "@zavx0z/jsx": "*",
+      },
+    },
+    "jsx/slot/child": {
+      "name": "@jsx-slot/child",
+      "version": "0.0.0",
+    },
+    "jsx/slot/contract": {
+      "name": "@jsx-slot/contract",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/error": "*",
+        "@jsx-slot/authoring": "*",
+      },
+      "devDependencies": {
+        "@jsx-compiler/session": "*",
         "@zavx0z/component": "*",
         "@zavx0z/jsx": "*",
       },
@@ -177,60 +266,9 @@
         "typescript": "7.0.2",
       },
     },
-    "jsx/development": {
-      "name": "@jsx/development",
+    "jsx/slot/plan": {
+      "name": "@jsx-slot/plan",
       "version": "0.0.0",
-      "dependencies": {
-        "@jsx/runtime": "*",
-        "@jsx/types": "*",
-        "@zavx0z/component": "*",
-      },
-      "devDependencies": {
-        "@zavx0z/template": "*",
-      },
-    },
-    "jsx/error": {
-      "name": "@jsx/error",
-      "version": "0.0.0",
-    },
-    "jsx/events": {
-      "name": "@jsx/events",
-      "version": "0.0.0",
-    },
-    "jsx/runtime": {
-      "name": "@jsx/runtime",
-      "version": "0.0.0",
-      "dependencies": {
-        "@jsx/slot": "*",
-        "@jsx/slot-child": "*",
-        "@jsx/types": "*",
-        "@zavx0z/component": "*",
-        "@zavx0z/template": "*",
-      },
-      "devDependencies": {
-        "@zavx0z/dom": "*",
-      },
-    },
-    "jsx/slot": {
-      "name": "@jsx/slot",
-      "version": "0.0.0",
-    },
-    "jsx/slot-child": {
-      "name": "@jsx/slot-child",
-      "version": "0.0.0",
-    },
-    "jsx/types": {
-      "name": "@jsx/types",
-      "version": "0.0.0",
-      "dependencies": {
-        "@jsx/events": "*",
-        "@zavx0z/dom": "*",
-        "@zavx0z/template": "*",
-      },
-      "devDependencies": {
-        "@zavx0z/component": "*",
-        "@zavx0z/jsx": "*",
-      },
     },
     "markdown": {
       "name": "@webxr/markdown",
@@ -241,18 +279,18 @@
         "parse5": "8.0.1",
       },
       "devDependencies": {
-        "@jsx/bun": "workspace:*",
+        "@jsx-compiler/bun": "*",
         "@renderer/html": "*",
         "@zavx0z/highlighter": "link:@zavx0z/highlighter",
       },
       "peerDependencies": {
-        "@jsx/types": "workspace:*",
+        "@jsx-compiler/session": "*",
         "@nodes/layout": "*",
         "@nodes/node": "*",
         "@webxr/nodes": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
-        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -270,11 +308,10 @@
       "name": "@webxr/nodes",
       "version": "0.0.0",
       "devDependencies": {
-        "@jsx/bun": "workspace:*",
-        "@jsx/compiler": "workspace:*",
+        "@jsx-compiler/bun": "*",
+        "@jsx-compiler/session": "*",
       },
       "peerDependencies": {
-        "@jsx/types": "workspace:*",
         "@nodes/layout": "*",
         "@nodes/node": "*",
         "@nodes/parameters": "*",
@@ -282,7 +319,7 @@
         "@nodes/tree": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
-        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -311,15 +348,15 @@
       "version": "0.0.0",
       "devDependencies": {
         "@immersive/headless": "*",
-        "@jsx/bun": "workspace:*",
+        "@jsx-compiler/bun": "*",
       },
       "peerDependencies": {
-        "@jsx/types": "workspace:*",
+        "@jsx-compiler/session": "*",
         "@nodes/parameters": "*",
         "@nodes/sockets": "*",
         "@nodes/tree": "*",
         "@zavx0z/component": "*",
-        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -336,13 +373,13 @@
       "name": "@nodes/parameters",
       "version": "0.0.0",
       "devDependencies": {
-        "@jsx/bun": "workspace:*",
+        "@jsx-compiler/bun": "*",
       },
       "peerDependencies": {
         "@nodes/sockets": "*",
         "@nodes/tree": "*",
         "@zavx0z/component": "*",
-        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -358,12 +395,12 @@
       "name": "@nodes/sockets",
       "version": "0.0.0",
       "devDependencies": {
-        "@jsx/bun": "workspace:*",
+        "@jsx-compiler/bun": "*",
       },
       "peerDependencies": {
         "@nodes/tree": "*",
         "@zavx0z/component": "*",
-        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
       },
       "optionalPeers": [
@@ -394,11 +431,10 @@
       "name": "@zavx0z/space",
       "version": "0.0.0",
       "devDependencies": {
-        "@jsx/bun": "*",
-        "@jsx/compiler": "*",
+        "@jsx-compiler/bun": "*",
+        "@jsx-compiler/session": "*",
       },
       "peerDependencies": {
-        "@jsx/types": "*",
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
         "@zavx0z/engine": "*",
@@ -416,7 +452,7 @@
       "name": "@zavx0z/template",
       "version": "0.0.0",
       "devDependencies": {
-        "@jsx/compiler": "*",
+        "@jsx-compiler/session": "*",
         "@zavx0z/jsx": "*",
       },
       "peerDependencies": {
@@ -435,12 +471,12 @@
         "typescript": "7.0.2",
       },
       "devDependencies": {
-        "@jsx/bun": "workspace:*",
+        "@jsx-compiler/bun": "*",
       },
       "peerDependencies": {
         "@webxr/markdown": "*",
         "@zavx0z/component": "*",
-        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
         "@zavx0z/ui": "*",
       },
@@ -459,13 +495,13 @@
       },
       "devDependencies": {
         "@immersive/headless": "*",
-        "@jsx/bun": "workspace:*",
-        "@jsx/compiler": "workspace:*",
+        "@jsx-compiler/bun": "*",
+        "@jsx-compiler/session": "*",
       },
       "peerDependencies": {
         "@zavx0z/component": "*",
         "@zavx0z/dom": "*",
-        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/jsx": "*",
         "@zavx0z/template": "*",
       },
       "optionalPeers": [
@@ -478,7 +514,7 @@
       "name": "@zavx0z/webgpu",
       "version": "0.0.0",
       "devDependencies": {
-        "@jsx/bun": "workspace:*",
+        "@jsx-compiler/bun": "*",
         "@webgpu/types": "0.1.72",
       },
       "peerDependencies": {
@@ -508,27 +544,35 @@
 
     "@immersive/headless": ["@immersive/headless@workspace:headless"],
 
-    "@jsx/authoring": ["@jsx/authoring@workspace:jsx/authoring"],
+    "@jsx-compiler/bun": ["@jsx-compiler/bun@workspace:jsx/compiler/bun"],
 
-    "@jsx/bun": ["@jsx/bun@workspace:jsx/bun"],
+    "@jsx-compiler/error": ["@jsx-compiler/error@workspace:jsx/compiler/error"],
+
+    "@jsx-compiler/session": ["@jsx-compiler/session@workspace:jsx/compiler/session"],
+
+    "@jsx-development/create": ["@jsx-development/create@workspace:jsx/development/create"],
+
+    "@jsx-runtime/create": ["@jsx-runtime/create@workspace:jsx/runtime/create"],
+
+    "@jsx-runtime/fragment": ["@jsx-runtime/fragment@workspace:jsx/runtime/fragment"],
+
+    "@jsx-slot/authoring": ["@jsx-slot/authoring@workspace:jsx/slot/authoring"],
+
+    "@jsx-slot/child": ["@jsx-slot/child@workspace:jsx/slot/child"],
+
+    "@jsx-slot/contract": ["@jsx-slot/contract@workspace:jsx/slot/contract"],
+
+    "@jsx-slot/plan": ["@jsx-slot/plan@workspace:jsx/slot/plan"],
 
     "@jsx/compiler": ["@jsx/compiler@workspace:jsx/compiler"],
 
     "@jsx/development": ["@jsx/development@workspace:jsx/development"],
-
-    "@jsx/error": ["@jsx/error@workspace:jsx/error"],
 
     "@jsx/events": ["@jsx/events@workspace:jsx/events"],
 
     "@jsx/runtime": ["@jsx/runtime@workspace:jsx/runtime"],
 
     "@jsx/slot": ["@jsx/slot@workspace:jsx/slot"],
-
-    "@jsx/slot-child": ["@jsx/slot-child@workspace:jsx/slot-child"],
-
-    "@jsx/slot-contract": ["@jsx/slot-contract@workspace:jsx/compiler/slot-contract"],
-
-    "@jsx/types": ["@jsx/types@workspace:jsx/types"],
 
     "@mermaid-js/parser": ["@mermaid-js/parser@1.2.1", "", { "dependencies": { "@chevrotain/types": "~11.1.2" } }, "sha512-n12NohV3mrUyUL2o93IgG/ifeW9FTyeJn3zDxkhwa8MJ9Fxg3HQMlA3RiGmD/3UnJvheztkjjQAjA2T4LmUcpw=="],
 

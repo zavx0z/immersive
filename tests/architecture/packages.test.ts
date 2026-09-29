@@ -26,17 +26,21 @@ const packages = Object.freeze([
   ["headless", "@immersive/headless", "Без браузера: нативная отрисовка компонентов в живой DOM и PNG"],
   ["devtools", "@zavx0z/devtools", "Диагностика Document, состояния элементов и результатов Renderer"],
   ["jsx", "@zavx0z/jsx", "Авторский JSX, автоматический protocol, слоты и компиляция"],
-  ["jsx/types", "@jsx/types", "Авторский namespace JSX и контракт вложенности"],
-  ["jsx/runtime", "@jsx/runtime", "Автоматический JSX protocol для подготовленных компонентов"],
-  ["jsx/development", "@jsx/development", "Development protocol JSX с общей Fragment identity"],
-  ["jsx/slot", "@jsx/slot", "Распределение JSX содержимого по точкам вставки"],
+  ["jsx/runtime", "@jsx/runtime", "Автоматический JSX protocol и identity фрагментов"],
+  ["jsx/runtime/fragment", "@jsx-runtime/fragment", "Единая identity группы соседних JSX-значений"],
+  ["jsx/runtime/create", "@jsx-runtime/create", "Автоматический JSX protocol для подготовленных компонентов"],
+  ["jsx/development", "@jsx/development", "Отладочный automatic JSX protocol"],
+  ["jsx/development/create", "@jsx-development/create", "Development protocol JSX с общей Fragment identity"],
+  ["jsx/slot", "@jsx/slot", "Авторство, контракты и распределение содержимого JSX-слотов"],
+  ["jsx/slot/plan", "@jsx-slot/plan", "Распределение JSX содержимого по точкам вставки"],
   ["jsx/events", "@jsx/events", "Соответствие JSX event props и нативных DOM событий"],
-  ["jsx/compiler", "@jsx/compiler", "Семантическая компиляция JSX в готовые шаблоны"],
-  ["jsx/bun", "@jsx/bun", "Интеграция компилятора JSX со сборкой Bun"],
-  ["jsx/compiler/slot-contract", "@jsx/slot-contract", "Статическая проверка типов, наличия и количества содержимого слотов"],
-  ["jsx/authoring", "@jsx/authoring", "Синтаксис точек вставки и назначений JSX-слотов"],
-  ["jsx/error", "@jsx/error", "Ошибки компиляции JSX с исходным файлом"],
-  ["jsx/slot-child", "@jsx/slot-child", "Статическое назначение условной позиции и keyed JSX expression"],
+  ["jsx/compiler", "@jsx/compiler", "Сессия компиляции, интеграция Bun и диагностика JSX"],
+  ["jsx/compiler/session", "@jsx-compiler/session", "Семантическая компиляция JSX в готовые шаблоны"],
+  ["jsx/compiler/bun", "@jsx-compiler/bun", "Интеграция компилятора JSX со сборкой Bun"],
+  ["jsx/slot/contract", "@jsx-slot/contract", "Статическая проверка типов, наличия и количества содержимого слотов"],
+  ["jsx/slot/authoring", "@jsx-slot/authoring", "Синтаксис точек вставки и назначений JSX-слотов"],
+  ["jsx/compiler/error", "@jsx-compiler/error", "Ошибки компиляции JSX с исходным файлом"],
+  ["jsx/slot/child", "@jsx-slot/child", "Статическое назначение условной позиции и keyed JSX expression"],
 ] as const)
 
 describe("Конечный состав пакетов", () => {
@@ -89,7 +93,7 @@ describe("Конечный состав пакетов", () => {
 
   test("[PKG-002] состав пакетов совпадает с принятыми владельцами без ограничения их числа", async () => {
     const actual: string[] = []
-    for (const pattern of ["*", "nodes/*", "renderer/*", "jsx/*", "jsx/compiler/*"]) for await (const entry of new Bun.Glob(pattern).scan({cwd: root, onlyFiles: false})) {
+    for (const pattern of ["*", "nodes/*", "renderer/*", "jsx/*", "jsx/*/*"]) for await (const entry of new Bun.Glob(pattern).scan({cwd: root, onlyFiles: false})) {
       if (entry === "projects" || entry === "tests") continue
       if (await Bun.file(join(root, entry, "package.json")).exists()) actual.push(entry)
     }
@@ -103,20 +107,21 @@ describe("Конечный состав пакетов", () => {
     )
   })
 
-  test("[PKG-003] package.json объявляет каждый пакет в порядке рабочего пространства", async () => {
-    const rootManifest = await Bun.file(join(root, "package.json")).json() as {
-      workspaces?: readonly string[]
+  test("[PKG-003] корневые glob охватывают каждый пакет один раз", async () => {
+    const rootManifest = await Bun.file(join(root, "package.json")).json() as {workspaces: string[]}
+    const include = rootManifest.workspaces.filter(pattern => !pattern.startsWith("!"))
+    const exclude = rootManifest.workspaces.filter(pattern => pattern.startsWith("!")).map(pattern => new Bun.Glob(pattern.slice(1)))
+    assertRequirement(include.length > 0 && include.every(pattern => pattern.includes("*")),
+      "PKG-003", "Repo объявляет glob вместо перечня пакетов")
+    for (const [directory] of packages) {
+      const selected = include.filter(pattern => new Bun.Glob(pattern).match(directory))
+      assertRequirement(selected.length === 1 && !exclude.some(pattern => pattern.match(directory) || pattern.match(`${directory}/`)),
+        "PKG-003", `${directory} должен входить ровно в один положительный glob и не исключаться`)
+      const manifest = await Bun.file(join(root, directory, "package.json")).json()
+      assertRequirement(manifest.workspaces === undefined, "PKG-003", `${directory} не повторяет workspaces Repo`)
     }
-    const acceptedDirectories = packages.map(([directory]) => directory)
-
-    assertRequirement(
-      JSON.stringify(rootManifest.workspaces) === JSON.stringify(acceptedDirectories),
-      "PKG-003",
-      `корневой package.json должен объявлять рабочие пространства в принятом порядке: ${acceptedDirectories.join(", ")}`,
-    )
-
-
   })
+
 
   test("[PKG-010] пакеты подключаются извне без протокола workspace", async () => {
     for (const [directory, name] of packages) {

@@ -7,7 +7,7 @@ import type {
   Socket,
 } from "@nodes/tree"
 import type {ParameterInput} from "@nodes/parameters/shared"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {NodeAction, NodeRect} from "../../shared/contracts.ts"
 
 /**

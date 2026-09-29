@@ -208,9 +208,8 @@ Nodes.
 | `dom` | `@zavx0z/dom` | `Document`, `SpaceElement`, `ViewPointElement`, `DisplayElement`, `HUDElement`, остальные элементы, атрибуты, события, фокус и состояние полей |
 | `template` | `@zavx0z/template` | HTML, CSS и общий формат готового шаблона |
 | `jsx` | `@zavx0z/jsx` | Авторский JSX и обязательные automatic protocol exports |
-| `jsx/types` | `@jsx/types` | Namespace `JSX`, DOM props, refs, события и типовые контракты слотов |
-| `jsx/compiler` | `@jsx/compiler` | Семантическая компиляция TSX в generic compiled ABI Template |
-| `jsx/bun` | `@jsx/bun` | Штатная интеграция JSX compiler со сборкой Bun |
+| `jsx/compiler/session` | `@jsx-compiler/session` | Контракт авторского JSX и семантическая компиляция TSX в generic compiled ABI Template |
+| `jsx/compiler/bun` | `@jsx-compiler/bun` | Штатная интеграция JSX compiler со сборкой Bun |
 | `component` | `@zavx0z/component` | Состояние компонентов, хуки, контекст, эффекты и очистка |
 | `renderer` | `@webxr/renderer` | Семейство рендереров документов |
 | `renderer/html` | `@renderer/html` | CSS, размеры, раскладка, прокрутка, список рисования и определение попаданий без GPU |

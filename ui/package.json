@@ -66,8 +66,8 @@
   },
   "devDependencies": {
     "@immersive/headless": "*",
-    "@jsx/bun": "*",
-    "@jsx/compiler": "*"
+    "@jsx-compiler/bun": "*",
+    "@jsx-compiler/session": "*"
   },
   "dependencies": {
     "@zavx0z/highlighter": "link:@zavx0z/highlighter"

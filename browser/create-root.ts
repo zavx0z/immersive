@@ -1,7 +1,7 @@
 import {createDocument} from "@zavx0z/dom"
 import {createRoot as createComponentRoot, provideContext, component, type ComponentValue} from "@zavx0z/component"
 import {defineCompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import {createSpaceElementFactories, readSpaceTree} from "@zavx0z/space"
 import {loadDocumentDefaultFont} from "@zavx0z/engine/default-font"
 import type {TrueTypeFont} from "@zavx0z/engine"

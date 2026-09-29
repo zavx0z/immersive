@@ -8,7 +8,7 @@ import {
   slotContents,
   type CompiledTemplate
 } from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {CompiledStyleValue} from "./style.ts"
 
 const componentValueBrand = Symbol("@zavx0z/component/component-value")
@@ -94,7 +94,7 @@ export function memo<Props>(
 ): CompiledTemplate<Props> | FunctionComponent<Props> {
   if (!isCompiledTemplate(template)) {
     throw new TypeError(
-      "JSX component reached memo at runtime; enable @jsx/compiler",
+      "JSX component reached memo at runtime; enable @jsx-compiler/session",
     )
   }
   if (typeof comparator !== "function") throw new TypeError("memo comparator must be a function")

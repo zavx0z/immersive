@@ -1,6 +1,7 @@
 /**
 Соответствие авторских обработчиков JSX и стандартных DOM-событий.
 Компилятор и namespace JSX используют одну таблицу имён.
+Типы обработчиков и event props выводятся здесь из той же таблицы и DOM-событий.
 
 @packageDocumentation
 */
@@ -8,7 +9,7 @@ import type {EventNamesOutput} from "./contract/output.ts"
 export type {EventNamesOutput} from "./contract/output.ts"
 
 /** Имена event props и соответствующие им нативные типы событий; таблица неизменяема. */
-export const jsxEventNames = Object.freeze({
+const jsxEventNames = Object.freeze({
   onAbort: "abort",
   onAnimationCancel: "animationcancel",
   onAnimationEnd: "animationend",
@@ -119,3 +120,7 @@ export const jsxEventNames = Object.freeze({
 
 /** Допустимые авторские имена обработчиков из единственной таблицы protocol. */
 export type JsxEventName = keyof typeof jsxEventNames
+
+export default jsxEventNames
+
+export type {DomEventFor, DomEventHandler, EventProperties, EventTargetValue} from "./contract/handler.ts"

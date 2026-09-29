@@ -1,0 +1,24 @@
+{
+  "name": "@jsx-compiler/bun",
+  "label": "JSX в Bun",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --pretty false",
+    "test": "bun test --parallel ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "*"
+  },
+  "packageManager": "bun@1.4.0",
+  "description": "Интеграция компилятора JSX со сборкой Bun",
+  "sideEffects": false,
+  "devDependencies": {
+    "@zavx0z/jsx": "*"
+  }
+}

@@ -1,4 +1,4 @@
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 
 /**
 Содержимое slot-моста для {@link @webxr/nodes/view#GraphView | GraphView}.

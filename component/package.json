@@ -22,7 +22,7 @@
   "peerDependencies": {
     "@zavx0z/dom": "*",
     "@zavx0z/template": "*",
-    "@jsx/types": "*"
+    "@jsx-compiler/session": "*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/dom": {

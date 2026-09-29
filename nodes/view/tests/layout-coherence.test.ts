@@ -4,7 +4,7 @@ import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElem
 import type {LayoutResult} from "@nodes/layout/types"
 import type {NodeTreeSnapshot} from "@nodes/tree"
 import {createSpaceElementFactories} from "@zavx0z/space"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 
 const root = resolve(import.meta.dir, "../../..")
 setDefaultTimeout(60_000)

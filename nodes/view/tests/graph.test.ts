@@ -3,7 +3,7 @@ import {dirname, resolve} from "node:path"
 import {createDocument, MouseEvent, PointerEvent, WheelEvent} from "@zavx0z/dom"
 import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {GraphViewProps, GraphSelection} from "@webxr/nodes/view"
 

@@ -30,7 +30,7 @@
     }
   },
   "devDependencies": {
-    "@jsx/compiler": "*",
+    "@jsx-compiler/session": "*",
     "@zavx0z/jsx": "*"
   }
 }

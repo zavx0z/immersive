@@ -1,4 +1,4 @@
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {Ref} from "@zavx0z/component"
 import type {
   XRAnimationElement,
@@ -108,7 +108,7 @@ declare module "@zavx0z/dom" {
   }
 }
 
-declare module "@jsx/types" {
+declare module "@jsx-compiler/session" {
   namespace JSX {
     interface IntrinsicElements {
       "xr-asset": XRAssetIntrinsicProperties

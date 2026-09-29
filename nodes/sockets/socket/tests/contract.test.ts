@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, MouseEvent, type Element} from "@zavx0z/dom"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 import {SOCKET_KINDS, SOCKET_SHAPES} from "@nodes/sockets/presets"
 
 const root = resolve(import.meta.dir, "../../../..")

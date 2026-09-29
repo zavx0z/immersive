@@ -2,7 +2,7 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
 import {createDocument, MouseEvent, KeyboardEvent, HTMLElement, getPopoverVisibilityState} from "@zavx0z/dom"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 

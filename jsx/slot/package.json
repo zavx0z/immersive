@@ -2,17 +2,21 @@
   "name": "@jsx/slot",
   "label": "Слоты JSX",
   "version": "0.0.0",
-  "description": "Распределение JSX содержимого по точкам вставки",
+  "description": "Авторство, контракты и распределение содержимого JSX-слотов",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.4.0",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "bun": "./index.ts",
+      "node": "./index.ts"
+    }
   },
-  "scripts": {
-    "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel spec",
-    "check": "bun run --parallel typecheck test"
+  "dependencies": {
+    "@jsx-slot/plan": "*",
+    "@jsx-slot/child": "*",
+    "@jsx-slot/authoring": "*",
+    "@jsx-slot/contract": "*"
   }
 }

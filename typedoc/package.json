@@ -47,6 +47,6 @@
     }
   },
   "devDependencies": {
-    "@jsx/bun": "*"
+    "@jsx-compiler/bun": "*"
   }
 }

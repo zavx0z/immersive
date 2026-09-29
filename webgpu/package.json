@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@webgpu/types": "0.1.72",
-    "@jsx/bun": "*"
+    "@jsx-compiler/bun": "*"
   },
   "license": "MIT"
 }

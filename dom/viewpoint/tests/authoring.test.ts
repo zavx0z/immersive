@@ -5,7 +5,7 @@ import {pathToFileURL} from "node:url"
 import {createDocument} from "../../src/index.ts"
 import type {ViewPointElement} from "../index.ts"
 import {createRoot} from "../../../component/src/index.ts"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 
 test("Повторный JSX render сохраняет команды камеры и ref, изменение атрибута обновляет тот же элемент", async () => {
   const output = await mkdtemp(join(import.meta.dir, ".authoring-"))

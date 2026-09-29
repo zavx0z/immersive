@@ -45,11 +45,11 @@ test("показывает переданный текст", async () => {
 })
 ```
 
-Загрузчик компилирует production TSX через `@jsx/compiler` в пределах Git-корня test host.
+Загрузчик компилирует production TSX через `@jsx-compiler/session` в пределах Git-корня test host.
 JSX в spec/test использует общий `@zavx0z/jsx` automatic protocol без авторской файловой
 pragma и создаёт инертный `ComponentValue`; Document, Canvas, Renderer и
 DOM-элемент появляются только после `createHeadless()` и `render()`.
-Headless не владеет отдельным JSX runtime. Штатный persistent plugin `@jsx/bun` сохраняет одну сессию компилятора на Git-корень
+Headless не владеет отдельным JSX runtime. Штатный persistent plugin `@jsx-compiler/bun` сохраняет одну сессию компилятора на Git-корень
 в пределах тестового процесса. Production-модули используют её общий кэш и
 последовательную обработку; новый запуск Bun получает собственную сессию.
 Для программной передачи компонента и props отдельно используется

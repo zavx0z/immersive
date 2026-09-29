@@ -1,6 +1,6 @@
 import type {GraphNodeProps} from "../graph/contracts.ts"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {NodeChildren} from "@nodes/node/contracts"
 import type {NodeView, NodeViewProps} from "../node-tree/contracts.ts"
 import {CustomNodeView} from "./custom/index.tsx"

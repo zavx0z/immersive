@@ -1,6 +1,6 @@
 import {component} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {MarkerComponent, MarkerContext, MarkerProps} from "./contracts.ts"
 
 export type MarkerChildren = JSX.Element | readonly JSX.Element[] | null | undefined

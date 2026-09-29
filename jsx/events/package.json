@@ -14,5 +14,8 @@
     "typecheck": "tsc --project tsconfig.json --pretty false",
     "test": "bun test --parallel spec test",
     "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@zavx0z/dom": "*"
   }
 }

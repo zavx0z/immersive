@@ -26,11 +26,10 @@
     "@zavx0z/template": "*",
     "@zavx0z/ui": "*",
     "@zavx0z/webgpu": "*",
-    "@jsx/bun": "*",
-    "@jsx/compiler": "*",
-    "@jsx/types": "*",
+    "@jsx-compiler/bun": "*",
+    "@jsx-compiler/session": "*",
     "@zavx0z/jsx": "*",
-    "@jsx/slot-child": "*"
+    "@jsx-slot/child": "*"
   },
   "peerDependenciesMeta": {
     "@renderer/html": {

@@ -1,38 +1,21 @@
 {
   "name": "@jsx/compiler",
-  "label": "Компилятор JSX",
+  "label": "Компиляция JSX",
+  "description": "Сессия компиляции, интеграция Bun и диагностика JSX",
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "bun@1.4.0",
+  "sideEffects": false,
   "exports": {
-    ".": "./index.ts"
-  },
-  "scripts": {
-    "typecheck": "tsc -p tsconfig.json --pretty false",
-    "test": "bun test --parallel ./spec ./test",
-    "check": "bun run --parallel typecheck test"
+    ".": {
+      "bun": "./index.ts",
+      "node": "./index.ts"
+    }
   },
   "dependencies": {
-    "@jsx/events": "*",
-    "@jsx/slot": "*",
-    "@jsx/slot-contract": "*",
-    "@zavx0z/template": "*",
-    "typescript": "7.0.2",
-    "@jsx/authoring": "*",
-    "@jsx/error": "*"
-  },
-  "devDependencies": {
-    "@zavx0z/jsx": "*",
-    "@jsx/types": "*",
-    "@zavx0z/dom": "*",
-    "@zavx0z/component": "*",
-    "@zavx0z/space": "*",
-    "@zavx0z/browser": "*"
-  },
-  "packageManager": "bun@1.4.0",
-  "description": "Семантическая компиляция JSX в готовые шаблоны",
-  "sideEffects": false,
-  "workspaces": [
-    "slot-contract"
-  ]
+    "@jsx-compiler/session": "*",
+    "@jsx-compiler/bun": "*",
+    "@jsx-compiler/error": "*"
+  }
 }

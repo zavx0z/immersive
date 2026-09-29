@@ -1,4 +1,4 @@
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {Element as SemanticElement} from "@zavx0z/dom"
 import type {DiagramNodeProps} from "@nodes/node/diagram/contract/input"
 

@@ -1,7 +1,7 @@
 import {existsSync} from "node:fs"
 import {dirname, relative, resolve, sep} from "node:path"
-import {createJsxBunPlugin} from "@jsx/bun"
-import {JsxCompilerSession} from "@jsx/compiler"
+import createJsxBunPlugin from "@jsx-compiler/bun"
+import JsxCompilerSession from "@jsx-compiler/session"
 
 const registered = new Set<string>()
 
@@ -34,7 +34,7 @@ export function registerHeadlessCompiler(projectRoot: string): void {
       builder.onLoad({filter: /\.(?:spec|test)\.tsx$/}, async ({path}) => {
         const local = relative(root, path)
         if (local.startsWith(`..${sep}`) || local === ".." || local.split(sep).includes("node_modules")) return undefined
-        const contents = await session.prepareSlotAuthoringFile(path, Bun.resolveSync("@jsx/slot-child", import.meta.dir))
+        const contents = await session.prepareSlotAuthoringFile(path, Bun.resolveSync("@jsx-slot/child", import.meta.dir))
         return {
           contents: `/** @jsxImportSource @zavx0z/jsx */\n${contents}`,
           loader: "tsx",

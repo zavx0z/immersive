@@ -30,7 +30,6 @@
     "@zavx0z/dom": "*",
     "@zavx0z/engine": "*",
     "@zavx0z/template": "*",
-    "@jsx/types": "*",
     "@zavx0z/jsx": "*"
   },
   "peerDependenciesMeta": {
@@ -48,7 +47,7 @@
     }
   },
   "devDependencies": {
-    "@jsx/bun": "*",
-    "@jsx/compiler": "*"
+    "@jsx-compiler/bun": "*",
+    "@jsx-compiler/session": "*"
   }
 }

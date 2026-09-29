@@ -1,7 +1,7 @@
 import type {Element} from "@zavx0z/dom"
 import type {ComponentValue} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import type {CapturedFrame} from "../native-canvas.ts"
 
 /**

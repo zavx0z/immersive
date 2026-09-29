@@ -4,7 +4,7 @@ import {createDocument, MouseEvent, type HTMLElement} from "@zavx0z/dom"
 import {createRoot} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentRenderer} from "@renderer/html"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))

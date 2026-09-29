@@ -2,7 +2,7 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, MouseEvent, type Element} from "@zavx0z/dom"
 import {createDocumentRenderer} from "@renderer/html"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))

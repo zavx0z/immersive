@@ -1,6 +1,6 @@
 import {component, provideContext} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 import {GraphView, type GraphViewProps} from "@webxr/nodes/view"
 import {MermaidHorizontal} from "./graph-context.ts"
 import type {GraphContent} from "../types/graph-view.ts"

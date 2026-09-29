@@ -1,5 +1,5 @@
 import type {NodeRect, NodeShape} from "../../shared/contracts.ts"
-import type {JSX} from "@jsx/types"
+import type {JSX} from "@jsx-compiler/session"
 
 /**
 Данные отображения диаграммной ноды. Компонент показывает описание внутри Pane,

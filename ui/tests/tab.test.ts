@@ -4,7 +4,7 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@renderer/html"
-import {createJsxBunPlugin} from "@jsx/bun"
+import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {TabProps} from "../surfaces/tab/contract/input.ts"
 

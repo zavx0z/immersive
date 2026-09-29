@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import {jsxEventNames, type JsxEventName} from "@jsx/events"
+import jsxEventNames, {type JsxEventName} from "@jsx/events"
 
 describe.each([
   {name: "Указатель", props: ["onClick", "onPointerDown", "onDoubleClick"], expected: ["click", "pointerdown", "dblclick"]},
