@@ -5,13 +5,12 @@
   "description": "Отладочный automatic JSX protocol",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.4.0",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts"
   },
   "dependencies": {
-    "@jsx-development/create": "*",
-    "@jsx-runtime/fragment": "*"
+    "@jsx-development/create": "workspace:*",
+    "@jsx-runtime/fragment": "workspace:*"
   }
 }

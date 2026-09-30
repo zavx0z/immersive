@@ -5,13 +5,12 @@
   "description": "Автоматический JSX protocol и identity фрагментов",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.4.0",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts"
   },
   "dependencies": {
-    "@jsx-runtime/create": "*",
-    "@jsx-runtime/fragment": "*"
+    "@jsx-runtime/create": "workspace:*",
+    "@jsx-runtime/fragment": "workspace:*"
   }
 }

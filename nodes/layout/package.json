@@ -6,7 +6,6 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
-  "packageManager": "bun@1.4.0",
   "exports": {
     ".": "./index.ts",
     "./fixed": "./algorithms/fixed/index.ts",
@@ -47,7 +46,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@dagrejs/dagre": "3.1.1",
-    "d3-dag": "0.9.1"
+    "@dagrejs/dagre": "^3.1.1",
+    "d3-dag": "^0.9.1"
   }
 }

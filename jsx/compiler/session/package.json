@@ -13,23 +13,22 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx/events": "*",
-    "@jsx-slot/plan": "*",
-    "@jsx-slot/contract": "*",
-    "@zavx0z/template": "*",
-    "typescript": "7.0.2",
-    "@jsx-slot/authoring": "*",
-    "@jsx-compiler/error": "*",
-    "@zavx0z/dom": "*"
+    "@jsx/events": "workspace:*",
+    "@jsx-slot/plan": "workspace:*",
+    "@jsx-slot/contract": "workspace:*",
+    "@zavx0z/template": "workspace:*",
+    "typescript": "^7.0.2",
+    "@jsx-slot/authoring": "workspace:*",
+    "@jsx-compiler/error": "workspace:*",
+    "@zavx0z/dom": "workspace:*"
   },
   "devDependencies": {
-    "@zavx0z/jsx": "*",
-    "@zavx0z/component": "*",
-    "@zavx0z/space": "*",
-    "@zavx0z/browser": "*",
-    "@jsx-compiler/bun": "*"
+    "@zavx0z/jsx": "workspace:*",
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/space": "workspace:*",
+    "@zavx0z/browser": "workspace:*",
+    "@jsx-compiler/bun": "workspace:*"
   },
-  "packageManager": "bun@1.4.0",
   "description": "Семантическая компиляция JSX в готовые шаблоны",
   "sideEffects": false
 }

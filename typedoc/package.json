@@ -6,7 +6,6 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
-  "packageManager": "bun@1.4.0",
   "exports": {
     ".": "./typedoc/index.tsx",
     "./parser": "./parser/index.ts",
@@ -23,14 +22,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "typescript": "7.0.2"
+    "typescript": "^7.0.2"
   },
   "peerDependencies": {
-    "@zavx0z/component": "*",
-    "@zavx0z/template": "*",
-    "@immersive/markdown": "*",
-    "@zavx0z/ui": "*",
-    "@zavx0z/jsx": "*"
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/template": "workspace:*",
+    "@immersive/markdown": "workspace:*",
+    "@zavx0z/ui": "workspace:*",
+    "@zavx0z/jsx": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {
@@ -47,6 +46,6 @@
     }
   },
   "devDependencies": {
-    "@jsx-compiler/bun": "*"
+    "@jsx-compiler/bun": "workspace:*"
   }
 }

@@ -6,7 +6,6 @@
   "description": "Шейдеры, буферы, текстуры, загрузка данных и рисование",
   "type": "module",
   "sideEffects": false,
-  "packageManager": "bun@1.4.0",
   "exports": {
     ".": "./src/index.ts"
   },
@@ -19,8 +18,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@zavx0z/engine": "*",
-    "@renderer/html": "*"
+    "@zavx0z/engine": "workspace:*",
+    "@renderer/html": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/engine": {
@@ -31,8 +30,8 @@
     }
   },
   "devDependencies": {
-    "@webgpu/types": "0.1.72",
-    "@jsx-compiler/bun": "*"
+    "@webgpu/types": "^0.1.72",
+    "@jsx-compiler/bun": "workspace:*"
   },
   "license": "MIT"
 }

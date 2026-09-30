@@ -5,7 +5,6 @@
   "description": "Авторство, контракты и распределение содержимого JSX-слотов",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.4.0",
   "sideEffects": false,
   "exports": {
     ".": {
@@ -14,9 +13,9 @@
     }
   },
   "dependencies": {
-    "@jsx-slot/plan": "*",
-    "@jsx-slot/child": "*",
-    "@jsx-slot/authoring": "*",
-    "@jsx-slot/contract": "*"
+    "@jsx-slot/plan": "workspace:*",
+    "@jsx-slot/child": "workspace:*",
+    "@jsx-slot/authoring": "workspace:*",
+    "@jsx-slot/contract": "workspace:*"
   }
 }

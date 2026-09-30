@@ -13,14 +13,13 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-slot/plan": "*",
-    "@jsx-compiler/error": "*",
-    "typescript": "7.0.2"
+    "@jsx-slot/plan": "workspace:*",
+    "@jsx-compiler/error": "workspace:*",
+    "typescript": "^7.0.2"
   },
-  "packageManager": "bun@1.4.0",
   "description": "Синтаксис точек вставки и назначений JSX-слотов",
   "sideEffects": false,
   "devDependencies": {
-    "@zavx0z/jsx": "*"
+    "@zavx0z/jsx": "workspace:*"
   }
 }

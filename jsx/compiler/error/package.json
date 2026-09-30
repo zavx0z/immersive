@@ -13,7 +13,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {},
-  "packageManager": "bun@1.4.0",
   "description": "Ошибки компиляции JSX с исходным файлом",
   "sideEffects": false
 }

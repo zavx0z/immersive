@@ -6,7 +6,6 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
-  "packageManager": "bun@1.4.0",
   "exports": {
     ".": "./index.ts"
   },
@@ -16,15 +15,15 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-slot/authoring": "*",
-    "@jsx-compiler/error": "*"
+    "@jsx-slot/authoring": "workspace:*",
+    "@jsx-compiler/error": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "7.0.2"
   },
   "devDependencies": {
-    "@zavx0z/jsx": "*",
-    "@zavx0z/component": "*",
-    "@jsx-compiler/session": "*"
+    "@zavx0z/jsx": "workspace:*",
+    "@zavx0z/component": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
   }
 }

@@ -8,7 +8,6 @@
   "sideEffects": [
     "./themes/theme.css"
   ],
-  "packageManager": "bun@1.4.0",
   "exports": {
     "./code-editor-model": "./code-editor-model.ts",
     "./terminal-model": "./terminal-model.ts",
@@ -65,18 +64,18 @@
     "check": "bun run --parallel typecheck test"
   },
   "devDependencies": {
-    "@immersive/headless": "*",
-    "@jsx-compiler/bun": "*",
-    "@jsx-compiler/session": "*"
+    "@immersive/headless": "workspace:*",
+    "@jsx-compiler/bun": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
   },
   "dependencies": {
-    "@zavx0z/highlighter": "link:@zavx0z/highlighter"
+    "@zavx0z/highlighter": "^0.1.0"
   },
   "peerDependencies": {
-    "@zavx0z/component": "*",
-    "@zavx0z/dom": "*",
-    "@zavx0z/template": "*",
-    "@zavx0z/jsx": "*"
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/dom": "workspace:*",
+    "@zavx0z/template": "workspace:*",
+    "@zavx0z/jsx": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {

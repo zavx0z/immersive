@@ -6,7 +6,6 @@
   "description": "Диагностика Document, состояния элементов и результатов Renderer",
   "type": "module",
   "sideEffects": false,
-  "packageManager": "bun@1.4.0",
   "exports": {
     ".": "./inspector.ts"
   },
@@ -19,8 +18,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@zavx0z/dom": "*",
-    "@renderer/html": "*"
+    "@zavx0z/dom": "workspace:*",
+    "@renderer/html": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/dom": {

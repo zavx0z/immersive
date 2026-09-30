@@ -6,7 +6,6 @@
   "private": true,
   "type": "module",
   "sideEffects": false,
-  "packageManager": "bun@1.4.0",
   "exports": {
     "./text": "./text/text/index.tsx",
     "./text/contract/input": "./text/text/contract/input.ts",
@@ -63,14 +62,14 @@
     }
   },
   "peerDependencies": {
-    "@nodes/tree": "*",
-    "@nodes/sockets": "*",
-    "@zavx0z/component": "*",
-    "@zavx0z/template": "*",
-    "@zavx0z/ui": "*",
-    "@zavx0z/jsx": "*"
+    "@nodes/tree": "workspace:*",
+    "@nodes/sockets": "workspace:*",
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/template": "workspace:*",
+    "@zavx0z/ui": "workspace:*",
+    "@zavx0z/jsx": "workspace:*"
   },
   "devDependencies": {
-    "@jsx-compiler/bun": "*"
+    "@jsx-compiler/bun": "workspace:*"
   }
 }

@@ -5,7 +5,6 @@
   "description": "Авторский JSX, автоматический protocol, слоты и компиляция",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.4.0",
   "sideEffects": false,
   "exports": {
     ".": {
@@ -16,11 +15,11 @@
     "./jsx-dev-runtime": "./development/index.ts"
   },
   "dependencies": {
-    "@jsx/runtime": "*",
-    "@jsx/development": "*",
-    "@jsx/slot": "*",
-    "@jsx/events": "*",
-    "@jsx/compiler": "*"
+    "@jsx/runtime": "workspace:*",
+    "@jsx/development": "workspace:*",
+    "@jsx/slot": "workspace:*",
+    "@jsx/events": "workspace:*",
+    "@jsx/compiler": "workspace:*"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
@@ -28,10 +27,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "devDependencies": {
-    "@jsx-runtime/create": "*",
-    "@jsx-runtime/fragment": "*",
-    "@jsx-slot/plan": "*",
-    "@jsx-compiler/session": "*",
-    "@jsx-compiler/bun": "*"
+    "@jsx-runtime/create": "workspace:*",
+    "@jsx-runtime/fragment": "workspace:*",
+    "@jsx-slot/plan": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@jsx-compiler/bun": "workspace:*"
   }
 }

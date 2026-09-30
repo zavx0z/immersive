@@ -5,7 +5,6 @@
   "description": "Без браузера: нативная отрисовка компонентов в живой DOM и PNG",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.4.0",
   "exports": {
     ".": "./index.ts",
     "./preload": "./preload.ts"
@@ -16,20 +15,20 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "bun-webgpu": "0.1.7"
+    "bun-webgpu": "^0.1.7"
   },
   "peerDependencies": {
-    "@renderer/html": "*",
-    "@zavx0z/component": "*",
-    "@zavx0z/dom": "*",
-    "@zavx0z/engine": "*",
-    "@zavx0z/template": "*",
-    "@zavx0z/ui": "*",
-    "@zavx0z/webgpu": "*",
-    "@jsx-compiler/bun": "*",
-    "@jsx-compiler/session": "*",
-    "@zavx0z/jsx": "*",
-    "@jsx-slot/child": "*"
+    "@renderer/html": "workspace:*",
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/dom": "workspace:*",
+    "@zavx0z/engine": "workspace:*",
+    "@zavx0z/template": "workspace:*",
+    "@zavx0z/ui": "workspace:*",
+    "@zavx0z/webgpu": "workspace:*",
+    "@jsx-compiler/bun": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@zavx0z/jsx": "workspace:*",
+    "@jsx-slot/child": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@renderer/html": {

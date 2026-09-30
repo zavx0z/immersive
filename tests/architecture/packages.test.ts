@@ -51,6 +51,14 @@ describe("Конечный состав пакетов", () => {
       "PKG-000",
       "корневой package.json должен объявлять имя @zavx0z/immersive",
     )
+    const engines = manifest.engines as {bun?: string} | undefined
+    assertRequirement(
+      manifest.packageManager === undefined && typeof engines?.bun === "string"
+        && /^\d+\.\d+\.x$/u.test(engines.bun)
+        && Bun.semver.satisfies(Bun.version, engines.bun),
+      "PKG-000",
+      "Repo объявляет совместимую линию Bun в engines без фиксации патча и повторного packageManager",
+    )
   })
 
   for (const [directory, name, description] of packages) {
@@ -79,9 +87,9 @@ describe("Конечный состав пакетов", () => {
         `${name} должен быть модулем ESM`,
       )
       assertRequirement(
-        manifest.packageManager === "bun@1.4.0",
+        manifest.packageManager === undefined && manifest.engines === undefined,
         "PKG-001",
-        `${name} должен использовать Bun 1.4.0`,
+        `${name} использует среду своего Repo без повторного объявления менеджера и engines`,
       )
       assertRequirement(
         manifest.description === description,
@@ -123,22 +131,39 @@ describe("Конечный состав пакетов", () => {
   })
 
 
-  test("[PKG-010] пакеты подключаются извне без протокола workspace", async () => {
-    for (const [directory, name] of packages) {
+  test("[PKG-010] зависимости различают собственные пакеты Repo и внешних владельцев", async () => {
+    const localNames = new Set(await Promise.all(packages.map(async ([directory]) => {
+      const manifest = await Bun.file(join(root, directory, "package.json")).json() as {name: string}
+      return manifest.name
+    })))
+    const rootManifest = await Bun.file(join(root, "package.json")).json() as {name: string}
+    localNames.add(rootManifest.name)
+    for (const directory of ["", ...packages.map(([directory]) => directory)]) {
       const manifest = await Bun.file(join(root, directory, "package.json")).json() as {
+        name: string
         dependencies?: Readonly<Record<string, string>>
         devDependencies?: Readonly<Record<string, string>>
+        optionalDependencies?: Readonly<Record<string, string>>
         peerDependencies?: Readonly<Record<string, string>>
       }
       for (const [dependency, version] of Object.entries({
         ...manifest.dependencies,
         ...manifest.devDependencies,
-        ...manifest.peerDependencies,
+        ...manifest.optionalDependencies,
       })) {
+        const local = localNames.has(dependency)
         assertRequirement(
-          !version.startsWith("workspace:"),
+          local ? version === "workspace:*" : version.startsWith("^"),
           "PKG-010",
-          `${name} должен объявлять переносимую версию ${dependency}, получено ${version}`,
+          `${manifest.name}: ${dependency} ${local ? "принадлежит Repo и подключается через workspace:*" : "имеет внешнего владельца и объявляет диапазон с ^"}, получено ${version}`,
+        )
+      }
+      for (const [dependency, version] of Object.entries(manifest.peerDependencies ?? {})) {
+        const local = localNames.has(dependency)
+        assertRequirement(
+          local ? version === "workspace:*" : !version.startsWith("workspace:") && !version.startsWith("link:"),
+          "PKG-010",
+          `${manifest.name}: peer dependency ${dependency} ${local ? "принадлежит Repo и использует workspace:*" : "выражает совместимость с внешним окружением обычным диапазоном версий"}`,
         )
       }
     }

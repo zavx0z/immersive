@@ -13,12 +13,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "*"
+    "@jsx-compiler/session": "workspace:*"
   },
-  "packageManager": "bun@1.4.0",
   "description": "Интеграция компилятора JSX со сборкой Bun",
   "sideEffects": false,
   "devDependencies": {
-    "@zavx0z/jsx": "*"
+    "@zavx0z/jsx": "workspace:*"
   }
 }

@@ -5,7 +5,6 @@
   "description": "Состояние компонентов, хуки, контекст, эффекты и освобождение ресурсов",
   "private": true,
   "type": "module",
-  "packageManager": "bun@1.4.0",
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
@@ -20,9 +19,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@zavx0z/dom": "*",
-    "@zavx0z/template": "*",
-    "@jsx-compiler/session": "*"
+    "@zavx0z/dom": "workspace:*",
+    "@zavx0z/template": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/dom": {
