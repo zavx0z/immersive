@@ -123,7 +123,7 @@ export const publicSymbolDispositions: readonly PublicSymbolDisposition[] = Obje
   Object.freeze({
     decisionMarker: "node-component-type-aliases",
     kind: "retired" as const,
-    ownerPackages: Object.freeze(["@webxr/nodes"]),
+    ownerPackages: Object.freeze(["@immersive/nodes"]),
     requirementIds: Object.freeze(["NODES-001"]),
     sourceId: "old-nodes-ui",
     symbols: Object.freeze(["FrameComponent", "LinkComponent"]),
@@ -163,7 +163,7 @@ export const publicSymbolDispositions: readonly PublicSymbolDisposition[] = Obje
   Object.freeze({
     decisionMarker: "graph-view-composition",
     kind: "retired" as const,
-    ownerPackages: Object.freeze(["@webxr/nodes"]),
+    ownerPackages: Object.freeze(["@immersive/nodes"]),
     requirementIds: Object.freeze(["GRAPH-VIEW-001", "NODES-LAYOUT-COHERENCE-001", "NODES-LAYOUT-COHERENCE-002"]),
     sourceId: "old-nodes-ui",
     symbols: Object.freeze(["NodeTree", "NodeTreeComponent", "NodeEditor", "NodeEditorComponent", "NodeEditorProps"]),

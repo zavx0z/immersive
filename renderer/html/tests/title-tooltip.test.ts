@@ -26,7 +26,7 @@ function fixture(title: string, width = 320, height = 160) {
 }
 
 test("title uses measured proportional text with equal padding and opaque rounded background", () => {
-  for (const title of ["iiii", "WWWW", "WebXR", "External Storybook", "Компоненты"]) {
+  for (const title of ["iiii", "WWWW", "Immersive", "External Storybook", "Компоненты"]) {
     const f = fixture(title)
     try {
       expect(f.interaction.composeFrame(f.frame, 499)).toBe(f.frame)
@@ -76,7 +76,7 @@ test("title keeps narrow glyphs on one line and does not split Unicode code poin
 })
 
 test("title does not emit invalid geometry when the viewport cannot fit its padding", () => {
-  const f = fixture("WebXR", 16, 16)
+  const f = fixture("Immersive", 16, 16)
   try {
     expect(f.interaction.composeFrame(f.frame, 500)).toBe(f.frame)
     expect(f.interaction.tooltip).toBeNull()

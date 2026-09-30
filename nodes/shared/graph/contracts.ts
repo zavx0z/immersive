@@ -1,6 +1,6 @@
 import type {FunctionComponent} from "@zavx0z/component"
-import type {FrameProps} from "@webxr/nodes/frame"
-import type {LinkDefinition} from "@webxr/nodes/link/types"
+import type {FrameProps} from "@immersive/nodes/frame"
+import type {LinkDefinition} from "@immersive/nodes/link/types"
 
 /** Геометрия в CSS-пикселях графа до масштаба и пространственной проекции. */
 export type GraphRect = Readonly<{x: number; y: number; width: number; height: number}>

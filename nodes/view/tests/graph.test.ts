@@ -5,11 +5,11 @@ import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {GraphViewProps, GraphSelection} from "@webxr/nodes/view"
+import type {GraphViewProps, GraphSelection} from "@immersive/nodes/view"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(root, path))}))
-const {GraphView} = await import("@webxr/nodes/view")
+const {GraphView} = await import("@immersive/nodes/view")
 const {scene, MeasurementNode} = await import("./graph.fixture.tsx")
 
 test("[GRAPH-VIEW-001] просмотр самостоятельно выполняет навигацию и сохраняет состояние при pending и смене режима", async () => {

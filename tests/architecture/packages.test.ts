@@ -9,15 +9,15 @@ const packages = Object.freeze([
   ["dom", "@zavx0z/dom", "Семантический документ, элементы, атрибуты, события, фокус и состояние полей"],
   ["template", "@zavx0z/template", "HTML, CSS и общий формат готового шаблона"],
   ["component", "@zavx0z/component", "Состояние компонентов, хуки, контекст, эффекты и освобождение ресурсов"],
-  ["renderer", "@webxr/renderer", "Независимые пакеты рендеринга документов"],
+  ["renderer", "@immersive/renderer", "Независимые пакеты рендеринга документов"],
   ["renderer/html", "@renderer/html", "CSS, размеры, раскладка, прокрутка, список рисования и проверка попаданий без GPU"],
-  ["markdown", "@webxr/markdown", "Разбор и отображение Markdown через готовые UI-компоненты"],
-  ["typedoc", "@webxr/typedoc", "Разбор TypeScript 7 и отображение документации типов"],
+  ["markdown", "@immersive/markdown", "Разбор и отображение Markdown через готовые UI-компоненты"],
+  ["typedoc", "@immersive/typedoc", "Разбор TypeScript 7 и отображение документации типов"],
   ["webgpu", "@zavx0z/webgpu", "Шейдеры, буферы, текстуры, загрузка данных и рисование"],
   ["browser", "@zavx0z/browser", "Canvas, обработка изменения размеров и ввода, общий цикл кадров браузера"],
   ["space", "@zavx0z/space", "Объекты сцены, ресурсы, группы, сетки, линии, текст, свет, анимация, геометрия и материалы"],
   ["ui", "@zavx0z/ui", "Универсальные компоненты интерфейса, тема и значки"],
-  ["nodes", "@webxr/nodes", "Общее представление GraphView, GraphEditor, Frame и Link"],
+  ["nodes", "@immersive/nodes", "Общее представление GraphView, GraphEditor, Frame и Link"],
   ["nodes/tree", "@nodes/tree", "Живая модель NodeTree, хранилища параметров, снимки и сохранение"],
   ["nodes/layout", "@nodes/layout", "Алгоритмы расположения нод и Worker"],
   ["nodes/parameters", "@nodes/parameters", "Представления параметров нод и проекция Parameter Store"],
@@ -44,12 +44,12 @@ const packages = Object.freeze([
 ] as const)
 
 describe("Конечный состав пакетов", () => {
-  test("[PKG-000] корневое рабочее пространство называется @zavx0z/webxr", async () => {
+  test("[PKG-000] корневое рабочее пространство называется @zavx0z/immersive", async () => {
     const manifest = await Bun.file(join(root, "package.json")).json() as Record<string, unknown>
     assertRequirement(
-      manifest.name === "@zavx0z/webxr",
+      manifest.name === "@zavx0z/immersive",
       "PKG-000",
-      "корневой package.json должен объявлять имя @zavx0z/webxr",
+      "корневой package.json должен объявлять имя @zavx0z/immersive",
     )
   })
 

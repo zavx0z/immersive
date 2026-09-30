@@ -94,7 +94,7 @@ batch overlap, painter order, transform batches и lazy tooltip concatenation.
 ограничением проверки, а не новым измерением browser performance.
 
 По прямому поручению пользователя изменения фиксируются локальными коммитами:
-Highlighter отдельно; в WebXR — fragments/Component, Renderer,
+Highlighter отдельно; в Immersive — fragments/Component, Renderer,
 Engine/WebGPU/Browser, UI и benchmark evidence. Push/deploy не выполнялись.
 Существующий untracked `template/tests/.compiler-contract-ApOHjJ/` не удалялся
 и не добавлялся в Git; бинарный capture остаётся локальным ignored artifact.

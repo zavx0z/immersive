@@ -12,7 +12,7 @@ Bun.plugin(createJsxBunPlugin({
   sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")],
 }))
 
-const {Frame} = await import("@webxr/nodes/frame")
+const {Frame} = await import("@immersive/nodes/frame")
 
 test("[NODES-TITLE-001-FRAME] Frame не распространяет tooltip на всю поверхность", () => {
   const frame = mount(Frame, {

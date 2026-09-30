@@ -32,7 +32,7 @@ geometry API. Оно добавляет только `getLayoutRect`; сущес
 авторской системы типов. Внутри того же модуля `requireGeometryElement` проверяет
 реальный semantic Element до чтения его полей или обращения к provider.
 
-Расширение действует в авторском профиле WebXR: правильно типизированный ref
+Расширение действует в авторском профиле Immersive: правильно типизированный ref
 этого профиля в runtime получает semantic Element текущего Experience. Это не
 установка метода в настоящий native DOM: `window.document` и его prototypes
 не меняются. Переданный в helper настоящий native Element или поддельный объект
@@ -66,7 +66,7 @@ geometry API. Оно добавляет только `getLayoutRect`; сущес
   `getBoundingClientRect()` сохраняет свою viewport-relative семантику с
   transforms и пространственной проекцией.
 
-Это явное расширение WebXR DOM, а не заявление поддержки стандартного метода
+Это явное расширение Immersive DOM, а не заявление поддержки стандартного метода
 с таким именем. [CSSOM View offsetWidth](https://drafts.csswg.org/cssom-view/#dom-htmlelement-offsetwidth)
 имеет тип `long` и не сохраняет дробную геометрию.
 [Resize Observer](https://drafts.csswg.org/resize-observer/#resize-observer-entry-interface)
@@ -113,7 +113,7 @@ owner. При равной итоговой рамке смена текста/�
 
 Рекурсивная доставка запрещена. Более 32 изменяющих geometry проходов одного
 кадра завершаются ошибкой до GPU submission, чтобы бесконечная обратная связь
-не показывала промежуточный результат. Это договор WebXR, не алгоритм loop
+не показывала промежуточный результат. Это договор Immersive, не алгоритм loop
 handling стандартного ResizeObserver.
 
 Headless host сам вызывает `flushDocumentLayoutObservers(document)` и завершает

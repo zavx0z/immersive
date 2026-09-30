@@ -1,5 +1,5 @@
-import {Arrow} from "@webxr/nodes/markers/arrow"
-import type {MarkerProps} from "@webxr/nodes/markers"
+import {Arrow} from "@immersive/nodes/markers/arrow"
+import type {MarkerProps} from "@immersive/nodes/markers"
 
 export function FilledMarker(props: MarkerProps) {
   return <Arrow

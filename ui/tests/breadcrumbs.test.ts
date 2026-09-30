@@ -23,7 +23,7 @@ test("иконка, разделители и подписи выровнены 
   document.append(container)
   const component = createRoot(container)
   component.render(Breadcrumbs as any, {
-    items: [{id: "home", label: "Главная", iconSrc: homeIcon}, {id: "project", label: "WebXR"}, {id: "package", label: "Пространство"}],
+    items: [{id: "home", label: "Главная", iconSrc: homeIcon}, {id: "project", label: "Immersive"}, {id: "package", label: "Пространство"}],
     onNavigate() {},
   })
   const interactionState = createDocumentInteractionState(document)
@@ -80,7 +80,7 @@ test("[UI-BREADCRUMBS-001] путь является ordered navigation с те�
   document.append(container)
   const component = createRoot(container)
   const items = Object.freeze([
-    Object.freeze({id: "package", label: "@webxr/nodes"}),
+    Object.freeze({id: "package", label: "@immersive/nodes"}),
     Object.freeze({id: "layout", label: "Раскладка"}),
     Object.freeze({id: "adaptive", label: "Адаптивная"}),
   ])

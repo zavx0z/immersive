@@ -12,7 +12,7 @@
       "height": 2048,
       "bytes": 51563,
       "sha256": "a79dc8205d9e2bb05a1261b3df2fef47208cc3bf53e3a4f20ab41c278faddcb2",
-      "packageId": "@webxr/markdown",
+      "packageId": "@immersive/markdown",
       "route": "components/data/markdown/mermaid/flowchart",
       "graphDigest": "37eb752626f01a14e9e6642556a04049aad9918ac4500583a70fc0c4d0e12ef8",
       "revision": "71aa3fcaefa7d518ae083b5d",

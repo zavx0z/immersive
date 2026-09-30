@@ -1,5 +1,5 @@
 /**
-Набор исходников одного project root для {@link @webxr/typedoc/batch#analyzeTypeDocs | analyzeTypeDocs}.
+Набор исходников одного project root для {@link @immersive/typedoc/batch#analyzeTypeDocs | analyzeTypeDocs}.
 
 @property root - Рабочий каталог, в котором TypeScript разрешает проекты и импорты.
 

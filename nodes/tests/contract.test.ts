@@ -147,7 +147,7 @@ async function productionSource(): Promise<string> {
     sources.push(source)
     const imports = new Bun.Transpiler({loader: file.endsWith(".tsx") ? "tsx" : "ts"}).scan(source).imports
     for (const entry of imports) {
-      if (!entry.path.startsWith(".") && !entry.path.startsWith("@webxr/nodes/") && !/^@nodes\/(node|parameters|sockets)(?:\/|$)/u.test(entry.path)) continue
+      if (!entry.path.startsWith(".") && !entry.path.startsWith("@immersive/nodes/") && !/^@nodes\/(node|parameters|sockets)(?:\/|$)/u.test(entry.path)) continue
       const target = Bun.resolveSync(entry.path, dirname(file))
       if (target.startsWith(`${packageRoot}/`) && /\.[jt]sx?$/u.test(target)) await visit(target)
     }

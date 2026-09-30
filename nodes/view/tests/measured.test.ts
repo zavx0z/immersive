@@ -6,13 +6,13 @@ import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {GraphViewProps, GraphMeasuredLayout, GraphMeasurement} from "@webxr/nodes/view"
-import type {NodeTreeStore} from "@webxr/nodes/view/tree"
+import type {GraphViewProps, GraphMeasuredLayout, GraphMeasurement} from "@immersive/nodes/view"
+import type {NodeTreeStore} from "@immersive/nodes/view/tree"
 import {createNodeTree, createNodeTreeExternalStore, Parameter} from "@nodes/tree"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
-const {GraphView} = await import("@webxr/nodes/view")
+const {GraphView} = await import("@immersive/nodes/view")
 const {graphInput, measuredLayout, MeasuredEditor, MeasuredCircle} = await import("./measured.fixture.tsx")
 const theme = await Bun.file(resolve(root, "ui/themes/theme.css")).text()
 

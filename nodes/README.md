@@ -66,9 +66,9 @@ Store параметра и соединение при изменении об�
 
 | Импорт | Договор |
 | --- | --- |
-| `@webxr/nodes/view` | GraphView, GraphScene, GraphNodeProps; общий показ нод/связей/рамок и навигация |
-| `@webxr/nodes/view/tree` | useNodeTreePresentation, createNodeTreeLayout и типы адаптации существующего Store |
-| `@webxr/nodes/editor` | GraphEditor; использует тот же просмотр, передаёт Parameter/Socket callbacks приложению |
+| `@immersive/nodes/view` | GraphView, GraphScene, GraphNodeProps; общий показ нод/связей/рамок и навигация |
+| `@immersive/nodes/view/tree` | useNodeTreePresentation, createNodeTreeLayout и типы адаптации существующего Store |
+| `@immersive/nodes/editor` | GraphEditor; использует тот же просмотр, передаёт Parameter/Socket callbacks приложению |
 
 GraphView не импортирует GraphEditor, адаптер модели или набор параметризованных
 нод. Вариант `navigation="scroll"` не монтирует toolbar и сетку. `pan-zoom`

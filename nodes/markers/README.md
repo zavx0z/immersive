@@ -5,9 +5,9 @@
 не создаются. Arrow имеет варианты `open` и `filled`.
 
 ```tsx
-import {Link} from "@webxr/nodes/link"
-import {Arrow} from "@webxr/nodes/markers/arrow"
-import type {MarkerProps} from "@webxr/nodes/markers"
+import {Link} from "@immersive/nodes/link"
+import {Arrow} from "@immersive/nodes/markers/arrow"
+import type {MarkerProps} from "@immersive/nodes/markers"
 
 function FilledArrow(props: MarkerProps) {
   return <Arrow

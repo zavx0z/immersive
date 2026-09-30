@@ -7,14 +7,14 @@ export type ElementGeometryTarget = Element | globalThis.Element
 
 declare global {
   interface Element {
-    /** Расширение WebXR: локальная дробная рамка. Реализовано только на semantic Element. */
+    /** Расширение Immersive: локальная дробная рамка. Реализовано только на semantic Element. */
     getLayoutRect(relativeTo?: ElementGeometryTarget): DOMRectReadOnly | null
   }
 }
 
 /** Проверка выполняется в DOM один раз на входе, независимо от авторского типа ref. */
 function requireGeometryElement(target: ElementGeometryTarget): Element {
-  if (!(target instanceof Element)) throw new TypeError("Geometry requires a WebXR semantic Element")
+  if (!(target instanceof Element)) throw new TypeError("Geometry requires a Immersive semantic Element")
   return target
 }
 
@@ -134,7 +134,7 @@ function geometryOwner(element: Element): GeometryOwner | undefined {
 /**
 Читает актуальную дробную border-box рамку в CSS px до transforms и проекции.
 
-Это расширение WebXR DOM, не метод CSSOM View. По умолчанию координаты относятся
+Это расширение Immersive DOM, не метод CSSOM View. По умолчанию координаты относятся
 к локальному viewport поставщика. Прокрутка учитывается, clipping — нет.
 `relativeTo` вычитает начало border-box в той же системе координат.
 Без бокса или готового поставщика возвращает null; visibility:hidden измеряется.

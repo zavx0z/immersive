@@ -22,15 +22,15 @@ export const finalPackageDirectories = Object.freeze({
   "@zavx0z/dom": "dom",
   "@zavx0z/template": "template",
   "@zavx0z/component": "component",
-  "@webxr/renderer": "renderer",
+  "@immersive/renderer": "renderer",
   "@renderer/html": "renderer/html",
-  "@webxr/markdown": "markdown",
-  "@webxr/typedoc": "typedoc",
+  "@immersive/markdown": "markdown",
+  "@immersive/typedoc": "typedoc",
   "@zavx0z/webgpu": "webgpu",
   "@zavx0z/browser": "browser",
   "@zavx0z/space": "space",
   "@zavx0z/ui": "ui",
-  "@webxr/nodes": "nodes",
+  "@immersive/nodes": "nodes",
   "@nodes/node": "nodes/node",
   "@nodes/tree": "nodes/tree",
   "@nodes/layout": "nodes/layout",
@@ -297,7 +297,7 @@ export const exportDispositions: readonly ExportDisposition[] = Object.freeze([
     sourceSubpath: ".",
     targets: Object.freeze([
       ...["./frame", "./link", "./editor", "./view", "./view/tree"]
-        .map(subpath => target("@webxr/nodes", subpath)),
+        .map(subpath => target("@immersive/nodes", subpath)),
       ...[
         "./text", "./number", "./slider", "./checkbox", "./switch", "./select",
         "./cycle", "./option-group", "./color", "./vector", "./matrix", "./path",
@@ -311,12 +311,12 @@ export const exportDispositions: readonly ExportDisposition[] = Object.freeze([
     ]),
   }),
   moved("@nodes/ui", "./node", "@nodes/node", "./parameter"),
-  ...sameSubpaths("@nodes/ui", "@webxr/nodes", [
+  ...sameSubpaths("@nodes/ui", "@immersive/nodes", [
     "./frame",
     "./link",
   ]),
-  moved("@nodes/ui", "./node-editor", "@webxr/nodes", "./editor"),
-  moved("@nodes/ui", "./node-tree", "@webxr/nodes", "./view"),
+  moved("@nodes/ui", "./node-editor", "@immersive/nodes", "./editor"),
+  moved("@nodes/ui", "./node-tree", "@immersive/nodes", "./view"),
   moved("@nodes/ui", "./parameter", "@nodes/parameters", "./shared"),
   moved("@nodes/ui", "./socket", "@nodes/sockets", "./socket"),
   deferred(

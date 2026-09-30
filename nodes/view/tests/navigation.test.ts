@@ -6,11 +6,11 @@ import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer, createDocumentInteractionController} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {GraphScene, GraphTransform, GraphViewProps} from "@webxr/nodes/view"
+import type {GraphScene, GraphTransform, GraphViewProps} from "@immersive/nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(workspace, path))}))
-const {GraphView} = await import("@webxr/nodes/view")
+const {GraphView} = await import("@immersive/nodes/view")
 const {CounterNode} = await import("./graph.fixture.tsx")
 const scene: GraphScene = {
   bounds: {x: 0, y: 0, width: 20000, height: 10000},

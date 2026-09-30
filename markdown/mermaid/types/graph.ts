@@ -1,7 +1,7 @@
 import type {NodeShape} from "@nodes/node/contracts"
 
 /**
-Нормализованная модель flowchart между Mermaid parser, раскладкой и {@link @webxr/nodes/view#GraphView | GraphView}.
+Нормализованная модель flowchart между Mermaid parser, раскладкой и {@link @immersive/nodes/view#GraphView | GraphView}.
 Parser замораживает граф, массивы и записи; геометрия добавляется отдельным планом.
 
 @property direction - Направление потока; исходное TD нормализуется в TB.

@@ -1,9 +1,9 @@
 import {DiagramNode} from "@nodes/node/diagram"
-import type {GraphNodeProps, GraphInput, GraphLayoutComputer} from "@webxr/nodes/view"
+import type {GraphNodeProps, GraphInput, GraphLayoutComputer} from "@immersive/nodes/view"
 import {layoutTopDown} from "@nodes/layout/top-down"
-import {createCubicLinkRoute} from "@webxr/nodes/routing/link-path"
-import {GraphEditor, type GraphEditorProps} from "@webxr/nodes/editor"
-import type {NodeTreeStore} from "@webxr/nodes/view/tree"
+import {createCubicLinkRoute} from "@immersive/nodes/routing/link-path"
+import {GraphEditor, type GraphEditorProps} from "@immersive/nodes/editor"
+import type {NodeTreeStore} from "@immersive/nodes/view/tree"
 import {layoutFixed} from "@nodes/layout/fixed"
 
 export function MeasuredDiagram(props: GraphNodeProps) {

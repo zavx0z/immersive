@@ -85,10 +85,10 @@ test("[DOM-LAYOUT-RECT-004] geometry boundary отвергает чужой об
     reads++
     return document
   }})
-  expect(() => readElementLayoutRect(foreign)).toThrow("WebXR semantic Element")
-  expect(() => readElementLayoutRect(element, foreign)).toThrow("WebXR semantic Element")
-  expect(() => observeElementLayout(foreign, () => {})).toThrow("WebXR semantic Element")
-  expect(() => observeElementLayout(element, () => {}, {relativeTo: foreign})).toThrow("WebXR semantic Element")
-  expect(() => element.getLayoutRect(foreign)).toThrow("WebXR semantic Element")
+  expect(() => readElementLayoutRect(foreign)).toThrow("Immersive semantic Element")
+  expect(() => readElementLayoutRect(element, foreign)).toThrow("Immersive semantic Element")
+  expect(() => observeElementLayout(foreign, () => {})).toThrow("Immersive semantic Element")
+  expect(() => observeElementLayout(element, () => {}, {relativeTo: foreign})).toThrow("Immersive semantic Element")
+  expect(() => element.getLayoutRect(foreign)).toThrow("Immersive semantic Element")
   expect(reads).toBe(0)
 })

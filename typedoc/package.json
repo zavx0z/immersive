@@ -1,5 +1,5 @@
 {
-  "name": "@webxr/typedoc",
+  "name": "@immersive/typedoc",
   "label": "TypeDoc",
   "version": "0.0.0",
   "description": "Разбор TypeScript 7 и отображение документации типов",
@@ -28,7 +28,7 @@
   "peerDependencies": {
     "@zavx0z/component": "*",
     "@zavx0z/template": "*",
-    "@webxr/markdown": "*",
+    "@immersive/markdown": "*",
     "@zavx0z/ui": "*",
     "@zavx0z/jsx": "*"
   },
@@ -39,7 +39,7 @@
     "@zavx0z/template": {
       "optional": true
     },
-    "@webxr/markdown": {
+    "@immersive/markdown": {
       "optional": true
     },
     "@zavx0z/ui": {

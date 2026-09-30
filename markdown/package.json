@@ -1,5 +1,5 @@
 {
-  "name": "@webxr/markdown",
+  "name": "@immersive/markdown",
   "label": "Markdown",
   "version": "0.0.0",
   "description": "Разбор и отображение Markdown через готовые UI-компоненты",
@@ -37,7 +37,7 @@
     "@zavx0z/ui": "*",
     "@nodes/node": "*",
     "@nodes/layout": "*",
-    "@webxr/nodes": "*",
+    "@immersive/nodes": "*",
     "@zavx0z/jsx": "*",
     "@jsx-compiler/session": "*"
   },
@@ -65,7 +65,7 @@
     "@nodes/layout": {
       "optional": true
     },
-    "@webxr/nodes": {
+    "@immersive/nodes": {
       "optional": true
     }
   }

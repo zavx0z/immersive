@@ -1,11 +1,11 @@
-import {createCubicLinkRoute, type LinkPathPoint, type LinkRoute} from "@webxr/nodes/routing/link-path"
+import {createCubicLinkRoute, type LinkPathPoint, type LinkRoute} from "@immersive/nodes/routing/link-path"
 import {layoutFixed} from "@nodes/layout/fixed"
 import {layoutTopDown} from "@nodes/layout/top-down"
 import type {MermaidGraph} from "../types/graph.ts"
-import type {GraphMeasurement} from "@webxr/nodes/view"
+import type {GraphMeasurement} from "@immersive/nodes/view"
 
 /**
-Строит план {@link @webxr/nodes/view#GraphView | GraphView} из разобранного графа и фактических измерений нод.
+Строит план {@link @immersive/nodes/view#GraphView | GraphView} из разобранного графа и фактических измерений нод.
 Горизонтальные схемы используют fixed layout, вертикальные — contour TopDown;
 RL/BT отражают координаты, сохраняя идентификаторы графа.
 

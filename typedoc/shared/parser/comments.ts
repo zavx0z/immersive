@@ -1,5 +1,5 @@
 /**
-Разбирает текст авторских doc-блоков для {@link @webxr/typedoc/parser#analyzeTypeDoc | analyzeTypeDoc}.
+Разбирает текст авторских doc-блоков для {@link @immersive/typedoc/parser#analyzeTypeDoc | analyzeTypeDoc}.
 Сохраняет Markdown, ограждения кода и порядок примеров. Повторное `@property`
 с тем же именем заменяет запись; неизвестный block tag не попадает в описание.
 Inline-ссылки сохраняются текстом, без разрешения их целей.

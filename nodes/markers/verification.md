@@ -1,14 +1,14 @@
 # Проверка маркеров и общих defaults
 
-10 сентября 2026, canonical checkout webxr-space, текущая ветка main.
+10 сентября 2026, canonical checkout immersive, текущая ветка main.
 
 ## Автоматические проверки
 
 | Владелец | Проверка | Результат |
 | --- | --- | --- |
-| @webxr/nodes | bun run --cwd nodes check | 53 теста, 4105 assertions, typecheck PASS |
+| @immersive/nodes | bun run --cwd nodes check | 53 теста, 4105 assertions, typecheck PASS |
 | @nodes/node, до удаления устаревших историй | bun run --cwd nodes/node check | 27 тестов, 316 assertions, typecheck PASS |
-| @webxr/markdown | bun run --cwd markdown check | 25 тестов, 328 assertions, typecheck PASS |
+| @immersive/markdown | bun run --cwd markdown check | 25 тестов, 328 assertions, typecheck PASS |
 | @nodes/node, после удаления устаревших историй | bun run --cwd nodes/node check | 25 тестов, 209 assertions, typecheck PASS |
 
 Проверены отсутствие неявного kind, все 19 явных Socket kinds, приоритет color,
@@ -22,7 +22,7 @@ DiagramNode проверяют fill/border/padding/typography и измерен�
 Использованы только инструменты Storybook MCP. Проверенные кандидаты были
 ready/presented, diagnostics и consoleErrors пусты.
 
-- @webxr/nodes, b24ad300edaa280475b0b140: components/link/orthogonal,
+- @immersive/nodes, b24ad300edaa280475b0b140: components/link/orthogonal,
   arrows, filled-arrows, mixed-markers, types, color; markers/arrow/open и filled.
   На preview видны нейтральная связь без стрелок, отдельные start/end/both,
   смешанные фигуры, 20 строк default+явные типы и приоритет color.
@@ -31,7 +31,7 @@ ready/presented, diagnostics и consoleErrors пусты.
 - @nodes/node, fac58f4d97dcd512085240fe: обзор diagram → кнопка «Зависимости».
   Runtime viewer показывает шесть DiagramNode и пять нейтральных связей
   с открытыми Arrow. Capture: capture_jF9Eune5Zl2ZrfVdluaJvBXp.
-- @webxr/markdown, ad063b17b3b3d913e7ccc7db: components/data/markdown/mermaid/flowchart.
+- @immersive/markdown, ad063b17b3b3d913e7ccc7db: components/data/markdown/mermaid/flowchart.
   После стабилизации layout кнопка «Граф из обсуждения» показывает семь нод
   с заполненными Arrow, прежними асимметричными размерами и shared defaults.
 
@@ -85,7 +85,7 @@ failed/built/candidate/activating=null; незавершённых MCP опер�
 runtime/dependency-view.test.ts сохранялись вместе с первоначальным блоком
 структурных зависимостей. По последующему поручению пользователя закоммитить
 все оставшиеся изменения этот блок полностью закреплён в Storybook: 5e73092.
-Оставшиеся переносы fixture/spec в WebXR закреплены коммитом 3edcde1.
+Оставшиеся переносы fixture/spec в Immersive закреплены коммитом 3edcde1.
 Перед фиксацией повторно прошли 25 тестов нод, 30 целевых тестов Storybook
 и проверки типов обоих пакетов.
 

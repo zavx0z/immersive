@@ -1,8 +1,8 @@
 {
-  "name": "@zavx0z/webxr",
-  "label": "WebXR",
+  "name": "@zavx0z/immersive",
+  "label": "Immersive",
   "version": "0.0.0",
-  "description": "Единая WebXR-платформа MetaFor",
+  "description": "Единая Immersive-платформа MetaFor",
   "private": true,
   "type": "module",
   "packageManager": "bun@1.4.0",

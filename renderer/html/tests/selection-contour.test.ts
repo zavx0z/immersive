@@ -109,7 +109,7 @@ test("plain Text между цветными span не разрывает под
     property.textContent = '"path"'
     const value = f.document.createElement("span")
     value.setAttribute("style", "display:inline;color:#00ff00")
-    value.textContent = '"webxr/nodes/node/diagram"'
+    value.textContent = '"immersive/nodes/node/diagram"'
     row.append("  ", property, ": ", value)
     const range = f.document.createRange()
     range.selectNodeContents(row)

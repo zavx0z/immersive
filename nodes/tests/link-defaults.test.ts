@@ -5,13 +5,13 @@ import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {LinkProps} from "@webxr/nodes/link"
-import type {LinkDefinition} from "@webxr/nodes/link/types"
+import type {LinkProps} from "@immersive/nodes/link"
+import type {LinkDefinition} from "@immersive/nodes/link/types"
 import {SOCKET_KINDS, socketPreset} from "@nodes/sockets/presets"
 
 const root = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
-const {Link} = await import("@webxr/nodes/link")
+const {Link} = await import("@immersive/nodes/link")
 const route: LinkDefinition["route"] = {kind: "orthogonal", points: [{x: 20, y: 20}, {x: 180, y: 20}]}
 
 function host() {

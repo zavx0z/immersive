@@ -5,7 +5,7 @@
   "totalVariants": 314,
   "packages": [
     {
-      "packageId": "@webxr/nodes",
+      "packageId": "@immersive/nodes",
       "variants": 27,
       "tests": 38,
       "activeRevision": "33500a93ee17d0448aed1f46"
@@ -36,7 +36,7 @@
     }
   ],
   "checks": {
-    "webxr": {
+    "immersive": {
       "passed": 763,
       "failed": 0,
       "typecheck": true

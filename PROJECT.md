@@ -1,4 +1,4 @@
-# @zavx0z/webxr
+# @zavx0z/immersive
 
 ## Цель
 
@@ -211,15 +211,15 @@ Nodes.
 | `jsx/compiler/session` | `@jsx-compiler/session` | Контракт авторского JSX и семантическая компиляция TSX в generic compiled ABI Template |
 | `jsx/compiler/bun` | `@jsx-compiler/bun` | Штатная интеграция JSX compiler со сборкой Bun |
 | `component` | `@zavx0z/component` | Состояние компонентов, хуки, контекст, эффекты и очистка |
-| `renderer` | `@webxr/renderer` | Семейство рендереров документов |
+| `renderer` | `@immersive/renderer` | Семейство рендереров документов |
 | `renderer/html` | `@renderer/html` | CSS, размеры, раскладка, прокрутка, список рисования и определение попаданий без GPU |
-| `markdown` | `@webxr/markdown` | Разбор Markdown и компоненты документа |
-| `typedoc` | `@webxr/typedoc` | Разбор TypeScript 7 и представление документации типов |
+| `markdown` | `@immersive/markdown` | Разбор Markdown и компоненты документа |
+| `typedoc` | `@immersive/typedoc` | Разбор TypeScript 7 и представление документации типов |
 | `webgpu` | `@zavx0z/webgpu` | Шейдеры, буферы, текстуры, загрузка данных и рисование |
 | `browser` | `@zavx0z/browser` | Canvas, изменение размера, ввод, RAF и общий цикл кадров |
 | `space` | `@zavx0z/space` | `Object`, `Asset`, `Group`, `Mesh`, `Line`, `Text`, `Light`, `Animation`, `Geometry`, `Material` |
 | `ui` | `@zavx0z/ui` | Универсальные UI-компоненты, тема и иконки |
-| `nodes` | `@webxr/nodes` | Композиция графа: GraphView, GraphEditor, Frame и Link |
+| `nodes` | `@immersive/nodes` | Композиция графа: GraphView, GraphEditor, Frame и Link |
 | `nodes/tree` | `@nodes/tree` | Живая модель `NodeTree`, хранилища Parameter, снимки и сохранение |
 | `nodes/layout` | `@nodes/layout` | Алгоритмы расположения нод и Worker |
 | `nodes/parameters` | `@nodes/parameters` | Представления параметров и проекция внешнего Parameter Store |
@@ -240,7 +240,7 @@ Nodes.
 
 `node-component-type-aliases`: старые типы `FrameComponent`, `LinkComponent` и
 `*ParameterComponent` дублировали типы функций с соответствующими `*Props`.
-Публичными остаются сами компоненты и их props в пакетах `@webxr/nodes` и
+Публичными остаются сами компоненты и их props в пакетах `@immersive/nodes` и
 `@nodes/parameters`; отдельные alias типов компонентов сняты. Проверки
 компиляции публичных TSX и проекции всех готовых параметров сохраняют
 наблюдаемое поведение.
@@ -287,7 +287,7 @@ ui/
 становится внутренней строкой `StatusBar` или `Inspector`.
 
 `markdown/markdown/src/markdown.tsx` владеет самостоятельным Markdown с корневым `<article>`.
-Один общий parser находится в публичном `@webxr/markdown/parser` и использует markdown-it
+Один общий parser находится в публичном `@immersive/markdown/parser` и использует markdown-it
 и parse5; код отображается через существующий CodeEditor. Потребители
 используют публичный компонент и отдельно компонуют свои действия. Поддерживаемый синтаксис
 и воспроизведения ограничений платформы описаны в [Markdown](markdown/README.md).
@@ -310,7 +310,7 @@ Field. Конечный потребитель получает готовую �
 
 ```text
 nodes/
-├── package.json               # @webxr/nodes и дочерние workspaces
+├── package.json               # @immersive/nodes и дочерние workspaces
 ├── node-tree/src/
 ├── node-editor/src/
 ├── frame/src/
@@ -371,7 +371,7 @@ ParameterNode использует Pane и готовые Parameters; ContentNod
 Путь `nodes` выражает принадлежность подсистеме и не переносит состояние
 между пакетами: `tree` владеет моделью, `layout` — числовой геометрией,
 `parameters` и `sockets` — готовыми компонентами, `node` — конкретными нодами,
-`@webxr/nodes` — отображением и взаимодействием всего графа.
+`@immersive/nodes` — отображением и взаимодействием всего графа.
 У NodeTree и NodeEditor сохраняется одна принятая пара snapshot/layout;
 pending блокирует старый ввод с сохранением Element и Parameter Store identity.
 NodeType остаётся отдельным проектом договора, без новой материализации типов.
@@ -535,7 +535,7 @@ ParameterNode использует Pane и готовые параметры. Co
 
 
 Markdown распознаёт fenced Mermaid flowchart и загружает официальный parser
-по требованию. Владелец композиции — `@webxr/markdown`; он использует DiagramNode,
+по требованию. Владелец композиции — `@immersive/markdown`; он использует DiagramNode,
 Link и Layout, не создавая отдельный Canvas/Document и не преобразуя диаграмму
 в SVG-картинку. Mermaid-поддержка не переносится в UI.
 

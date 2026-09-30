@@ -518,7 +518,7 @@ const createClaimedDocumentSpaceRuntime = async (
       } catch (error) {
         if (!reportedRenderError) {
           reportedRenderError = true
-          console.error("WebXR rendering suspended after a failed frame. Automatic retries are stopped; repair the source, then resume rendering or resize the viewport.", error)
+          console.error("Immersive rendering suspended after a failed frame. Automatic retries are stopped; repair the source, then resume rendering or resize the viewport.", error)
         }
       }
     })
@@ -635,7 +635,7 @@ const createClaimedDocumentSpaceRuntime = async (
       preparing = false
       for (const listener of [...presentedListeners]) listener(presentedFrames)
     } catch (error) {
-      renderError = error instanceof Error ? error : new Error("WebXR frame failed", {cause: error})
+      renderError = error instanceof Error ? error : new Error("Immersive frame failed", {cause: error})
       renderRequestedDuringFrame = false
       cursorPointer = null
       pressedCursor = null
@@ -654,7 +654,7 @@ const createClaimedDocumentSpaceRuntime = async (
         }
       }
       if (cleanupErrors.length > 0) {
-        renderError = new AggregateError([renderError, ...cleanupErrors], "WebXR frame failed and pointer cancellation also failed")
+        renderError = new AggregateError([renderError, ...cleanupErrors], "Immersive frame failed and pointer cancellation also failed")
       }
       for (const record of records.values()) record.dirty = true
       for (const record of overlays.values()) record.dirty = true

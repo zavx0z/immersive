@@ -5,7 +5,7 @@
 
 ## Условия
 
-- Checkout: `webxr-space/main`, HEAD `158f27a`, с существующим незакоммиченным
+- Checkout: `immersive/main`, HEAD `158f27a`, с существующим незакоммиченным
   срезом оптимизации Renderer/WebGPU/CodeEditor/Template.
 - Страница: `@zavx0z/nodes/layout/fixed/baseline/down`.
 - Загруженная ревизия Storybook: `2d5a188c4af78d087bad545b`.

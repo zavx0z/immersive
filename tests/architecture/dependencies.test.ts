@@ -25,10 +25,10 @@ const packageDirectories = Object.freeze({
   "@jsx-compiler/error": "jsx/compiler/error",
   "@jsx-slot/contract": "jsx/slot/contract",
   "@zavx0z/component": "component",
-  "@webxr/renderer": "renderer",
+  "@immersive/renderer": "renderer",
   "@renderer/html": "renderer/html",
-  "@webxr/markdown": "markdown",
-  "@webxr/typedoc": "typedoc",
+  "@immersive/markdown": "markdown",
+  "@immersive/typedoc": "typedoc",
   "@zavx0z/webgpu": "webgpu",
   "@zavx0z/browser": "browser",
   "@zavx0z/space": "space",
@@ -39,7 +39,7 @@ const packageDirectories = Object.freeze({
   "@nodes/sockets": "nodes/sockets",
   "@nodes/tree": "nodes/tree",
   "@nodes/layout": "nodes/layout",
-  "@webxr/nodes": "nodes",
+  "@immersive/nodes": "nodes",
   "@zavx0z/devtools": "devtools",
 } as const)
 
@@ -69,10 +69,10 @@ const allowedInternalDependencies: Readonly<Record<PackageName, readonly Package
     "@jsx-compiler/error": [],
     "@jsx-slot/contract": ["@jsx-slot/authoring", "@jsx-compiler/error"],
     "@zavx0z/component": ["@zavx0z/dom", "@zavx0z/template", "@jsx-compiler/session"],
-    "@webxr/renderer": [],
+    "@immersive/renderer": [],
     "@renderer/html": ["@zavx0z/dom"],
-    "@webxr/typedoc": ["@zavx0z/component", "@zavx0z/template", "@zavx0z/ui", "@webxr/markdown", "@zavx0z/jsx"],
-    "@webxr/markdown": ["@zavx0z/component", "@zavx0z/dom", "@zavx0z/template", "@zavx0z/ui", "@nodes/node", "@nodes/layout", "@webxr/nodes", "@zavx0z/jsx", "@jsx-compiler/session"],
+    "@immersive/typedoc": ["@zavx0z/component", "@zavx0z/template", "@zavx0z/ui", "@immersive/markdown", "@zavx0z/jsx"],
+    "@immersive/markdown": ["@zavx0z/component", "@zavx0z/dom", "@zavx0z/template", "@zavx0z/ui", "@nodes/node", "@nodes/layout", "@immersive/nodes", "@zavx0z/jsx", "@jsx-compiler/session"],
     "@zavx0z/devtools": ["@zavx0z/dom", "@renderer/html"],
     "@zavx0z/webgpu": ["@zavx0z/engine", "@renderer/html"],
     "@zavx0z/browser": [
@@ -100,7 +100,7 @@ const allowedInternalDependencies: Readonly<Record<PackageName, readonly Package
     "@nodes/sockets": ["@nodes/tree", "@zavx0z/component", "@zavx0z/template", "@zavx0z/jsx"],
     "@nodes/tree": [],
     "@nodes/layout": [],
-    "@webxr/nodes": [
+    "@immersive/nodes": [
       "@nodes/node",
       "@nodes/parameters",
       "@nodes/sockets",
@@ -287,7 +287,7 @@ describe("Направление производственных зависим
       "@zavx0z/dom",
       "@zavx0z/ui",
       "@nodes/tree",
-      "@webxr/nodes",
+      "@immersive/nodes",
       "@zavx0z/webgpu",
     ]) {
       assertRequirement(
@@ -304,7 +304,7 @@ describe("Направление производственных зависим
       "@zavx0z/engine",
       "@renderer/html",
       "@zavx0z/webgpu",
-      "@webxr/nodes",
+      "@immersive/nodes",
     ]) {
       assertRequirement(
         !dependencies.has(forbidden),
@@ -322,7 +322,7 @@ describe("Направление производственных зависим
       ["Space", /(?:<space(?:\s|>)|\b(?:createSpace|new\s+Space)\s*\()/u],
     ] as const
 
-    for (const packageName of packageNames.filter(name => name === "@webxr/nodes" || name.startsWith("@nodes/"))) {
+    for (const packageName of packageNames.filter(name => name === "@immersive/nodes" || name.startsWith("@nodes/"))) {
       const packageRoot = join(root, packageDirectories[packageName])
       for await (const file of sourceGlob.scan({cwd: packageRoot, onlyFiles: true})) {
         if (!isProductionSource(file) || !belongsToPackage(packageName, file)) continue

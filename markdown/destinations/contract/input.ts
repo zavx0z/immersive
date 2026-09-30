@@ -1,5 +1,5 @@
 /**
-Вход {@link @webxr/markdown/destinations#markdownDestinations | markdownDestinations}
+Вход {@link @immersive/markdown/destinations#markdownDestinations | markdownDestinations}
 для поиска ссылок и изображений по правилам общего Markdown parser.
 
 @property source - Исходный Markdown; HTML не исполняется.

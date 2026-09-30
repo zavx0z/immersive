@@ -1,10 +1,10 @@
 import {DiagramNode} from "@nodes/node/diagram"
-import type {GraphNodeProps} from "@webxr/nodes/view"
+import type {GraphNodeProps} from "@immersive/nodes/view"
 import type {MermaidGraph} from "../types/graph.ts"
 
 /**
 Адаптирует узел {@link MermaidGraph} к {@link DiagramNode}.
-Измерение, положение и lifecycle ноды остаются у {@link @webxr/nodes/view#GraphView | GraphView}.
+Измерение, положение и lifecycle ноды остаются у {@link @immersive/nodes/view#GraphView | GraphView}.
 
 @param props - Вход {@link GraphNodeProps}, у которого `data` является элементом
 {@link MermaidGraph}.nodes`; `id` соответствует этой записи. Приведение типа внутри

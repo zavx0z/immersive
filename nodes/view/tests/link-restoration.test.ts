@@ -8,12 +8,12 @@ import {InstancedStrokedPath, TrueTypeFont} from "@zavx0z/engine"
 import {RendererWebGpuBackend} from "../../../webgpu/src/webgpu-backend.ts"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {GraphViewProps, GraphLayoutComputer} from "@webxr/nodes/view"
+import type {GraphViewProps, GraphLayoutComputer} from "@immersive/nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(workspace, path))}))
-const {createCubicLinkRoute} = await import("@webxr/nodes/routing/link-path")
-const {GraphView} = await import("@webxr/nodes/view")
+const {createCubicLinkRoute} = await import("@immersive/nodes/routing/link-path")
+const {GraphView} = await import("@immersive/nodes/view")
 const {graphInput} = await import("./measured.fixture.tsx")
 const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/fonts/inter-regular.ttf")).arrayBuffer())
 

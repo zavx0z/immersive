@@ -12,15 +12,15 @@ import {createRootWithSeams} from "../../../browser/create-root.ts"
 import {inspectRoot} from "../../../browser/diagnostics.ts"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {GraphMeasuredLayout, GraphMeasurement, GraphViewProps} from "@webxr/nodes/view"
+import type {GraphMeasuredLayout, GraphMeasurement, GraphViewProps} from "@immersive/nodes/view"
 import type {BrowserGraphControls} from "./browser.fixture.tsx"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui", "markdown"].map(path => resolve(workspace, path))}))
 const {BrowserMeasuredGraph} = await import("./browser.fixture.tsx")
 const {graphInput, measuredLayout} = await import("./measured.fixture.tsx")
-const {GraphView} = await import("@webxr/nodes/view")
-const {Markdown} = await import("@webxr/markdown")
+const {GraphView} = await import("@immersive/nodes/view")
+const {Markdown} = await import("@immersive/markdown")
 
 test.each(([
   {kind: "hud", async: false, borrowed: false}, {kind: "display", async: false, borrowed: false},

@@ -1,5 +1,5 @@
 /**
-Вход {@link @webxr/markdown#Markdown | Markdown} для Document вызывающего приложения.
+Вход {@link @immersive/markdown#Markdown | Markdown} для Document вызывающего приложения.
 Изменение source или baseUrl обновляет разбор с сохранением корневого article.
 
 @property source - Исходный CommonMark с таблицами и безопасным подмножеством HTML.

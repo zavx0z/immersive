@@ -14,7 +14,7 @@ GraphView теперь поддерживает полный цикл реаль
 - `GraphEditor.measureLayout(snapshot, presentation, measurements)` передаёт
   реальные размеры и Socket anchors выбранной числовой политике. Прежний
   `layout` с готовой геометрией или функцией сохраняет совместимость.
-- Для собственного просмотра модели `@webxr/nodes/view/tree` экспортирует
+- Для собственного просмотра модели `@immersive/nodes/view/tree` экспортирует
   `useMeasuredNodeTreePresentation`; он составляет тот же GraphView, не второй renderer.
 
 ## Один lifecycle

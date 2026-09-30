@@ -5,14 +5,14 @@ import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {LinkProps} from "@webxr/nodes/link"
-import type {LinkRoute} from "@webxr/nodes/routing/link-path"
+import type {LinkProps} from "@immersive/nodes/link"
+import type {LinkRoute} from "@immersive/nodes/routing/link-path"
 
 const rootPath = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: rootPath, persistent: true, sourceRoots: [resolve(rootPath, "nodes"), resolve(rootPath, "ui")]}))
-const {Link} = await import("@webxr/nodes/link")
-const {projectLinkMarkers} = await import("@webxr/nodes/routing/link-path")
-const {Arrow} = await import("@webxr/nodes/markers/arrow")
+const {Link} = await import("@immersive/nodes/link")
+const {projectLinkMarkers} = await import("@immersive/nodes/routing/link-path")
+const {Arrow} = await import("@immersive/nodes/markers/arrow")
 const {FilledMarker} = await import("./marker-slots.fixture.tsx")
 
 const route = (y: number): LinkRoute => ({kind: "orthogonal", points: [{x: 20, y}, {x: 180, y}]})

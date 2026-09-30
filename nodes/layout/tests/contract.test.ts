@@ -28,7 +28,7 @@ test("[LAYOUT-001] layout остаётся чистым numeric owner без UI/
       "@zavx0z/browser",
       "@zavx0z/dom",
       "@zavx0z/engine",
-      "@webxr/nodes",
+      "@immersive/nodes",
       "@nodes/parameters",
       "@nodes/sockets",
       "@nodes/tree",

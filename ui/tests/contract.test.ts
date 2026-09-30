@@ -81,7 +81,7 @@ test("[UI-002] UI остаётся target-neutral production package", async () 
     "@zavx0z/browser",
     "@zavx0z/engine",
     "@nodes/layout",
-    "@webxr/nodes",
+    "@immersive/nodes",
     "@nodes/tree",
     "@renderer/html",
     "@zavx0z/space",

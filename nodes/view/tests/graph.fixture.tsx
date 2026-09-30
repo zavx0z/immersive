@@ -1,5 +1,5 @@
 import {useState} from "@zavx0z/component"
-import type {GraphNodeProps, GraphScene} from "@webxr/nodes/view"
+import type {GraphNodeProps, GraphScene} from "@immersive/nodes/view"
 
 /** Состояние принадлежит настоящему компоненту, чтобы обнаруживать remount. */
 export function CounterNode(props: GraphNodeProps) {

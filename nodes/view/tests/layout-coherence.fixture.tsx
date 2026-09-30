@@ -4,9 +4,9 @@ import type {Document, Element} from "@zavx0z/dom"
 import {layoutFixed} from "@nodes/layout/fixed"
 import type {LayoutResult} from "@nodes/layout/types"
 import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeJsonValue, type NodeTreeSnapshot} from "@nodes/tree"
-import {GraphEditor} from "@webxr/nodes/editor"
+import {GraphEditor} from "@immersive/nodes/editor"
 import {planProjectedNodeGeometry} from "@nodes/node/geometry"
-import {nodeSocketLayoutPortId, socketKey, type NodeTreeLayout, type NodeTreeSelection, type NodeTreeTransform} from "@webxr/nodes/view/tree"
+import {nodeSocketLayoutPortId, socketKey, type NodeTreeLayout, type NodeTreeSelection, type NodeTreeTransform} from "@immersive/nodes/view/tree"
 import type {ParameterInput} from "@nodes/parameters/shared"
 
 export function textParameter(value: string) {

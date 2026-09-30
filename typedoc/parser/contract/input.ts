@@ -1,5 +1,5 @@
 /**
-Рабочий контекст и исходник для {@link @webxr/typedoc/parser#analyzeTypeDoc | analyzeTypeDoc}.
+Рабочий контекст и исходник для {@link @immersive/typedoc/parser#analyzeTypeDoc | analyzeTypeDoc}.
 
 @property root - Рабочий каталог проекта для разрешения исходника и конфигурации TypeScript.
 Относительный root разрешается от текущего рабочего каталога процесса.

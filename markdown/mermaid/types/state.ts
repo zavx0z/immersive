@@ -1,7 +1,7 @@
 import type {MermaidGraph} from "./graph.ts"
 
 /**
-Результат асинхронного разбора, хранимый {@link @webxr/markdown/mermaid#Mermaid | компонентом Mermaid}.
+Результат асинхронного разбора, хранимый {@link @immersive/markdown/mermaid#Mermaid | компонентом Mermaid}.
 Готовность измерений и раскладки отслеживается отдельно по ссылке `readyGraph`.
 
 @property source - Исходник, для которого сохранён результат или ошибка.

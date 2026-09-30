@@ -1,5 +1,5 @@
 /**
-Результат {@link @webxr/markdown/destinations#markdownDestinations | markdownDestinations}.
+Результат {@link @immersive/markdown/destinations#markdownDestinations | markdownDestinations}.
 Объект и массив адресов заморожены; файловые и сетевые ресурсы не загружаются.
 
 @property destinations - Уникальные разрешённые href/src в порядке первого обнаружения.

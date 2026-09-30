@@ -106,7 +106,7 @@ test("[NODETREE-004] NodeTree остаётся headless и предметно-н
     "@zavx0z/dom",
     "@zavx0z/engine",
     "@nodes/layout",
-    "@webxr/nodes",
+    "@immersive/nodes",
     "@nodes/parameters",
     "@nodes/sockets",
     "@renderer/html",

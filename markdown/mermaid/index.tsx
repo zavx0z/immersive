@@ -7,7 +7,7 @@
 import {useEffect, useMemo, useState} from "@zavx0z/component"
 import {parseMermaidFlowchart} from "./src/parser.ts"
 import {layoutMermaidGraph} from "./src/layout.ts"
-import type {GraphInput, GraphLayoutComputer} from "@webxr/nodes/view"
+import type {GraphInput, GraphLayoutComputer} from "@immersive/nodes/view"
 import {MermaidNode} from "./src/node.tsx"
 import type {MermaidInput} from "./contract/input.ts"
 import type {MermaidGraph} from "./types/graph.ts"

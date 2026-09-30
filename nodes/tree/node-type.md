@@ -16,7 +16,7 @@ Parameter Store и развёрнутые Socket; его значения изм
 | --- | --- |
 | Декларация типа, создание экземпляров и проверка их структуры | `@nodes/tree` |
 | Значения, revisions, подписки, topology и сериализация | Существующие `Parameter` и `NodeTree` |
-| Production TSX-представление ноды, сокетов и параметров | `@webxr/nodes`, `@nodes/sockets`, `@nodes/parameters` |
+| Production TSX-представление ноды, сокетов и параметров | `@immersive/nodes`, `@nodes/sockets`, `@nodes/parameters` |
 | Универсальные поля и их взаимодействия | `@zavx0z/ui` |
 | Связь прикладного типа с прикладным компонентом | Приложение через публичную точку расширения Nodes |
 | Раскладка по готовой числовой геометрии | `@nodes/layout` |
