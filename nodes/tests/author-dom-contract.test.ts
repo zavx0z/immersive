@@ -11,7 +11,7 @@ test("[NODES-AUTHOR-DOM] авторские компоненты не импор
     ...Object.values(manifest.exports).filter((entry): entry is string => typeof entry === "string" && entry.endsWith(".tsx")).map(entry => resolve(root, "nodes", entry)),
     resolve(root, "nodes/node/diagram/index.tsx"),
     resolve(root, "markdown/mermaid/index.tsx"),
-    resolve(root, "markdown/mermaid/node/index.tsx"),
+    resolve(root, "markdown/mermaid/src/node.tsx"),
   ]
   const standard = new Set(["Node", "Element", "HTMLElement", "Document", "Event", "MouseEvent", "PointerEvent", "KeyboardEvent", "InputEvent", "WheelEvent", "DOMRect", "DOMRectReadOnly"])
   const api = new API({cwd: root})

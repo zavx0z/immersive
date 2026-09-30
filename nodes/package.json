@@ -69,6 +69,7 @@
     }
   },
   "devDependencies": {
+    "@immersive/markdown": "workspace:*",
     "@jsx-compiler/bun": "workspace:*",
     "@jsx-compiler/session": "workspace:*"
   }
