@@ -6,12 +6,12 @@ import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, readCanonicalRenderFrameChanges} from "@renderer/html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
-import type {CodeEditorProps} from "@zavx0z/ui/views/code-editor"
+import type {CodeEditorProps} from "@ui-views/code-editor"
 
 // A CPU-only diagnostic using the actual compiled production component.
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {CodeEditor} = await import("@zavx0z/ui/views/code-editor")
+const {default: CodeEditor} = await import("@ui-views/code-editor")
 const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
 const theme = await Bun.file(new URL("../../ui/themes/theme.css", import.meta.url)).text()
 const source = Array.from({length: 420}, (_, index) =>

@@ -1,6 +1,6 @@
 import {useState} from "@zavx0z/component"
-import {Window} from "../surfaces/window/index.tsx"
-import {WindowControl} from "../surfaces/window/control/index.tsx"
+import Window from "@ui-surfaces/window"
+import WindowControl from "@ui-surfaces-window/control"
 
 /** Независимая кнопка и оболочка разделяют только controlled-видимость. */
 export function WindowPairFixture() {

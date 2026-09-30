@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/collections/collection/index.tsx",
     expected: {
       "nodes/parameters/collections/collection/index.tsx#CollectionParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/collection-field.tsx#CollectionField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/collection-field/index.tsx#CollectionField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,27 +31,31 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/buttons/button.tsx#Button": {
+      "ui/buttons/button/index.tsx#Button": {
         uses: [],
         elements: ["button","img","span"],
       },
-      "ui/buttons/button.tsx#IconButton": {
-        uses: ["ui/buttons/button.tsx#Button"],
+      "ui/buttons/icon-button/index.tsx#IconButton": {
+        uses: ["ui/buttons/button/index.tsx#Button"],
         elements: [],
       },
-      "ui/fields/collection-field.tsx#CollectionField": {
-        uses: ["ui/buttons/button.tsx#IconButton","ui/views/list.tsx#List"],
+      "ui/fields/collection-field/index.tsx#CollectionField": {
+        uses: ["ui/fields/collection-field/src/action-button.tsx#CollectionActionButton","ui/views/list/index.tsx#List"],
         elements: ["div","span"],
       },
-      "ui/views/list.tsx#EmptyListRow": {
+      "ui/fields/collection-field/src/action-button.tsx#CollectionActionButton": {
+        uses: ["ui/buttons/icon-button/index.tsx#IconButton"],
+        elements: [],
+      },
+      "ui/views/list/src/helpers.tsx#EmptyListRow": {
         uses: [],
         elements: ["li"],
       },
-      "ui/views/list.tsx#List": {
-        uses: ["ui/views/list.tsx#EmptyListRow","ui/views/list.tsx#ListRow"],
+      "ui/views/list/index.tsx#List": {
+        uses: ["ui/views/list/src/helpers.tsx#EmptyListRow","ui/views/list/src/helpers.tsx#ListRow"],
         elements: ["ul"],
       },
-      "ui/views/list.tsx#ListRow": {
+      "ui/views/list/src/helpers.tsx#ListRow": {
         uses: [],
         elements: ["img","li","span"],
       },

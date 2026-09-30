@@ -1,6 +1,6 @@
-import {SurfaceButton} from "../../../src/shared/surface-chrome.tsx"
-import type {WindowProps} from "../contract/input.ts"
-import type {WindowAction} from "../types.ts"
+import SurfaceButton from "@ui-surfaces-chrome/button"
+import type {WindowProps} from "../contract/input"
+import type {WindowAction} from "../contract/types"
 
 /** Кнопка правой группы сохраняет обычный ввод и не начинает перемещение окна. */
 export function WindowActionButton(props: Readonly<{action: WindowAction; onAction: WindowProps["onAction"]}>) {

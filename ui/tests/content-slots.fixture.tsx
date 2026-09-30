@@ -1,11 +1,12 @@
-import {Button} from "../buttons/button.tsx"
-import {StatusBar} from "../feedback/status-bar.tsx"
-import {FieldGroup} from "../fields/field-group.tsx"
-import {Frame} from "../surfaces/frame.tsx"
-import {Pane, type PaneTextContent} from "../surfaces/pane.tsx"
-import {Panel} from "../surfaces/panel.tsx"
-import {Tab} from "../surfaces/tab/index.tsx"
-import {Window} from "../surfaces/window/index.tsx"
+import Button from "@ui-buttons/button"
+import StatusBar from "@ui-feedback/status-bar"
+import FieldGroup from "@ui-fields/field-group"
+import Frame from "@ui-surfaces/frame"
+import Pane from "@ui-surfaces/pane"
+import type {PaneTextContent} from "@ui-surfaces/pane"
+import Panel from "@ui-surfaces/panel"
+import Tab from "@ui-surfaces/tab"
+import Window from "@ui-surfaces/window"
 
 /** Обновление вложенности отдельно от primitive content проверяет прежний конфликт Pane. */
 export function PaneSlotFixture(props: Readonly<{supplied: boolean; content?: PaneTextContent}>) {

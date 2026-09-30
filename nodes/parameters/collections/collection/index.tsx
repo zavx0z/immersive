@@ -6,7 +6,7 @@ CollectionParameter соединяет публичный CollectionField с к�
 @packageDocumentation
 */
 
-import {CollectionField} from "@zavx0z/ui/fields/collection-field"
+import CollectionField from "@ui-fields/collection-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {CollectionParameterProps} from "./contract/input.ts"
 

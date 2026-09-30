@@ -6,7 +6,7 @@ SliderParameter соединяет публичный SliderField с компо�
 @packageDocumentation
 */
 
-import {SliderField} from "@zavx0z/ui/fields/slider-field"
+import SliderField from "@ui-fields/slider-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {SliderParameterProps} from "./contract/input.ts"
 

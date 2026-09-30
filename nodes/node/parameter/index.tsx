@@ -6,8 +6,10 @@
 
 import {NODE_BORDER_WIDTH} from "@nodes/sockets/metrics"
 import {hasSlot} from "@zavx0z/component/slot-presence"
-import {Button, IconButton} from "@zavx0z/ui/buttons/button"
-import {chevronDownIcon, chevronRightIcon} from "@zavx0z/ui/themes/icons"
+import Button from "@ui-buttons/button"
+import IconButton from "@ui-buttons/icon-button"
+import chevronDownIcon from "@ui-themes-icons/chevron-down"
+import chevronRightIcon from "@ui-themes-icons/chevron-right"
 import {metadataBoolean, metadataString, Parameter, type ParameterInput} from "@nodes/parameters/shared"
 import {parameterSpacingBefore} from "../shared/parameter-presentation.ts"
 import {Socket} from "@nodes/sockets/socket"

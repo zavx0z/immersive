@@ -1,0 +1,26 @@
+{
+  "name": "@ui-views/timeline",
+  "label": "Timeline",
+  "version": "0.0.0",
+  "description": "Временная шкала дорожек, ключевых кадров и маркеров",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-surfaces-chrome/header": "workspace:*",
+    "@ui-surfaces-chrome/owner": "workspace:*",
+    "@ui-surfaces-chrome/title": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

@@ -1,7 +1,7 @@
 import {useState} from "@zavx0z/component"
 import {TabContent} from "../surfaces/tab/spec/fixture/src/content.tsx"
-import {Tab} from "../surfaces/tab/index.tsx"
-import type {TabProps} from "../surfaces/tab/contract/input.ts"
+import Tab from "@ui-surfaces/tab"
+import type {TabProps} from "@ui-surfaces/tab"
 
 /** Дочерняя кнопка сохраняет собственное состояние и ввод внутри перемещаемого таба. */
 export function TabChildrenFixture(props: Pick<TabProps, "position">) {

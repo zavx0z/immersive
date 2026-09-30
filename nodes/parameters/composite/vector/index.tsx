@@ -6,7 +6,7 @@ VectorParameter соединяет публичный VectorField с компо�
 @packageDocumentation
 */
 
-import {VectorField} from "@zavx0z/ui/fields/vector-field"
+import VectorField from "@ui-fields/vector-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {VectorParameterProps} from "./contract/input.ts"
 

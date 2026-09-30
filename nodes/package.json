@@ -37,7 +37,8 @@
     "@zavx0z/template": "workspace:*",
     "@zavx0z/ui": "workspace:*",
     "@nodes/node": "workspace:*",
-    "@zavx0z/jsx": "workspace:*"
+    "@zavx0z/jsx": "workspace:*",
+    "@ui-buttons/button": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@nodes/parameters": {
@@ -71,6 +72,10 @@
   "devDependencies": {
     "@immersive/markdown": "workspace:*",
     "@jsx-compiler/bun": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@jsx-compiler/session": "workspace:*",
+    "@renderer/html": "workspace:*",
+    "@zavx0z/engine": "workspace:*",
+    "@zavx0z/webgpu": "workspace:*",
+    "@zavx0z/space": "workspace:*"
   }
 }

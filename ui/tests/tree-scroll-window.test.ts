@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {treeScrollWindowStart} from "../widgets/tree/windowing.ts"
+import {treeScrollWindowStart} from "../widgets/tree/src/windowing.ts"
 
 test("не сдвигает материализацию внутри запаса и покрывает viewport при движении в обе стороны", () => {
   let start = 0

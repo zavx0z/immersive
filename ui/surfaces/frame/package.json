@@ -1,0 +1,31 @@
+{
+  "name": "@ui-surfaces/frame",
+  "label": "Frame",
+  "version": "0.0.0",
+  "description": "Рамка рабочей области с заголовком и элементами управления",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-surfaces-chrome/assert-surface-actions": "workspace:*",
+    "@ui-surfaces-chrome/body": "workspace:*",
+    "@ui-surfaces-chrome/button": "workspace:*",
+    "@ui-surfaces-chrome/header": "workspace:*",
+    "@ui-surfaces-chrome/navigation": "workspace:*",
+    "@ui-surfaces-chrome/owner": "workspace:*",
+    "@ui-surfaces-chrome/title": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*",
+    "@ui/typography": "workspace:*"
+  }
+}

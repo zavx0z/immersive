@@ -7,52 +7,24 @@ Node использует тот же выбор перед Layout. Адапте
 @packageDocumentation
 */
 
-import {
-  checkboxFieldLayout,
-} from "@zavx0z/ui/fields/checkbox-field"
-import {
-  collectionFieldLayout,
-  type CollectionFieldProps,
-} from "@zavx0z/ui/fields/collection-field"
-import {
-  colorFieldLayout,
-  type ColorFieldValue,
-} from "@zavx0z/ui/fields/color-field"
-import {
-  cycleFieldLayout,
-} from "@zavx0z/ui/fields/cycle-field"
-import {
-  matrixFieldLayout,
-} from "@zavx0z/ui/fields/matrix-field"
-import {
-  numberFieldLayout,
-} from "@zavx0z/ui/fields/number-field"
-import {
-  toggleButtonGroupLayout,
-} from "@zavx0z/ui/buttons/toggle-button-group"
-import {
-  pathFieldLayout,
-} from "@zavx0z/ui/fields/path-field"
-import {
-  referenceFieldLayout,
-  type ReferenceFieldValue,
-} from "@zavx0z/ui/fields/reference-field"
-import {
-  selectFieldLayout,
-  type SelectFieldOption,
-} from "@zavx0z/ui/fields/select-field"
-import {
-  sliderFieldLayout,
-} from "@zavx0z/ui/fields/slider-field"
-import {
-  switchFieldLayout,
-} from "@zavx0z/ui/fields/switch-field"
-import {
-  textFieldLayout,
-} from "@zavx0z/ui/fields/text-field"
-import {
-  vectorFieldLayout,
-} from "@zavx0z/ui/fields/vector-field"
+import checkboxFieldLayout from "@ui-fields-checkbox-field/layout"
+import collectionFieldLayout from "@ui-fields-collection-field/layout"
+import type {CollectionFieldProps} from "@ui-fields/collection-field"
+import colorFieldLayout from "@ui-fields-color-field/layout"
+import type {ColorFieldValue} from "@ui-fields/color-field"
+import cycleFieldLayout from "@ui-fields-cycle-field/layout"
+import matrixFieldLayout from "@ui-fields-matrix-field/layout"
+import numberFieldLayout from "@ui-fields-number-field/layout"
+import toggleButtonGroupLayout from "@ui-buttons-toggle-button-group/layout"
+import pathFieldLayout from "@ui-fields-path-field/layout"
+import referenceFieldLayout from "@ui-fields-reference-field/layout"
+import type {ReferenceFieldValue} from "@ui-fields/reference-field"
+import selectFieldLayout from "@ui-fields-select-field/layout"
+import type {SelectFieldOption} from "@ui-fields/select-field"
+import sliderFieldLayout from "@ui-fields-slider-field/layout"
+import switchFieldLayout from "@ui-fields-switch-field/layout"
+import textFieldLayout from "@ui-fields-text-field/layout"
+import vectorFieldLayout from "@ui-fields-vector-field/layout"
 import type {
   NodeJsonObject,
   NodeJsonValue,

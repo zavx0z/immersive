@@ -1,0 +1,25 @@
+{
+  "name": "@ui-fields-select-field/layout",
+  "label": "selectFieldLayout",
+  "version": "0.0.0",
+  "description": "Числовой договор размеров selectField",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-fields-metrics/field-density-height": "workspace:*",
+    "@ui-fields-metrics/labelled-field-height": "workspace:*",
+    "@ui-fields/select-field": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

@@ -12,39 +12,39 @@ Bun.plugin(createJsxBunPlugin({
 }))
 
 const [
-  {checkboxFieldLayout},
-  {collectionFieldLayout},
-  {colorFieldLayout},
-  {colorPickerFieldLayout},
-  {cycleFieldLayout},
-  {fieldGroupLayout},
-  {matrixFieldLayout},
-  {numberFieldLayout},
-  {pathFieldLayout},
-  {referenceFieldLayout},
-  {selectFieldLayout},
-  {sliderFieldLayout},
-  {switchFieldLayout},
-  {textFieldLayout},
-  {vectorFieldLayout},
-  {toggleButtonGroupLayout},
+  {default: checkboxFieldLayout},
+  {default: collectionFieldLayout},
+  {default: colorFieldLayout},
+  {default: colorPickerFieldLayout},
+  {default: cycleFieldLayout},
+  {default: fieldGroupLayout},
+  {default: matrixFieldLayout},
+  {default: numberFieldLayout},
+  {default: pathFieldLayout},
+  {default: referenceFieldLayout},
+  {default: selectFieldLayout},
+  {default: sliderFieldLayout},
+  {default: switchFieldLayout},
+  {default: textFieldLayout},
+  {default: vectorFieldLayout},
+  {default: toggleButtonGroupLayout},
 ] = await Promise.all([
-  import("../fields/checkbox-field.tsx"),
-  import("../fields/collection-field.tsx"),
-  import("../fields/color-field.tsx"),
-  import("../fields/color-picker-field.tsx"),
-  import("../fields/cycle-field.tsx"),
-  import("../fields/field-group.tsx"),
-  import("../fields/matrix-field.tsx"),
-  import("../fields/number-field.tsx"),
-  import("../fields/path-field.tsx"),
-  import("../fields/reference-field.tsx"),
-  import("../fields/select-field.tsx"),
-  import("../fields/slider-field.tsx"),
-  import("../fields/switch-field.tsx"),
-  import("../fields/text-field.tsx"),
-  import("../fields/vector-field.tsx"),
-  import("../buttons/toggle-button-group.tsx"),
+  import("@ui-fields-checkbox-field/layout"),
+  import("@ui-fields-collection-field/layout"),
+  import("@ui-fields-color-field/layout"),
+  import("@ui-fields-color-picker-field/layout"),
+  import("@ui-fields-cycle-field/layout"),
+  import("@ui-fields-field-group/layout"),
+  import("@ui-fields-matrix-field/layout"),
+  import("@ui-fields-number-field/layout"),
+  import("@ui-fields-path-field/layout"),
+  import("@ui-fields-reference-field/layout"),
+  import("@ui-fields-select-field/layout"),
+  import("@ui-fields-slider-field/layout"),
+  import("@ui-fields-switch-field/layout"),
+  import("@ui-fields-text-field/layout"),
+  import("@ui-fields-vector-field/layout"),
+  import("@ui-buttons-toggle-button-group/layout"),
 ])
 
 test("[UI-005] числовая тема полей и CSS содержат один набор точных метрик", async () => {
@@ -139,26 +139,30 @@ test("[UI-009] ColorPickerField учитывает образец, четыре 
 
 test("[UI-010] каждый владелец Field связывает публичный план со своими переменными темы", async () => {
   const owners = Object.freeze({
-    "fields/checkbox-field.tsx": ["checkboxFieldLayout", "var(--field-checkbox-height)"],
-    "fields/collection-field.tsx": ["collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
-    "fields/color-field.tsx": ["colorFieldLayout", "var(--field-height-regular)"],
-    "fields/color-picker-field.tsx": ["colorPickerFieldLayout", "height: var(--field-color-picker-height)"],
-    "fields/cycle-field.tsx": ["cycleFieldLayout", "var(--control-height-medium)"],
-    "fields/field-group.tsx": ["fieldGroupLayout", "var(--field-height-compact)"],
-    "fields/matrix-field.tsx": ["matrixFieldLayout", "var(--field-matrix-row-gap)"],
-    "fields/number-field.tsx": ["numberFieldLayout", "var(--control-height-medium)"],
-    "fields/path-field.tsx": ["pathFieldLayout", "var(--field-path-height-compact)"],
-    "fields/reference-field.tsx": ["referenceFieldLayout", "var(--field-reference-height-compact)"],
-    "fields/select-field.tsx": ["selectFieldLayout", "var(--control-height-medium)"],
-    "fields/slider-field.tsx": ["sliderFieldLayout", "var(--field-height-compact)"],
-    "fields/switch-field.tsx": ["switchFieldLayout", "var(--field-switch-height)"],
-    "fields/text-field.tsx": ["textFieldLayout", "var(--control-height-medium)"],
-    "fields/vector-field.tsx": ["vectorFieldLayout", "var(--field-group-content-height)"],
-    "buttons/toggle-button-group.tsx": ["toggleButtonGroupLayout", "var(--control-height-medium)"],
+    "fields/checkbox-field/index.tsx": ["checkboxFieldLayout", "var(--field-checkbox-height)"],
+    "fields/collection-field/index.tsx": ["collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
+    "fields/color-field/index.tsx": ["colorFieldLayout", "var(--field-height-regular)"],
+    "fields/color-picker-field/index.tsx": ["colorPickerFieldLayout", "height: var(--field-color-picker-height)"],
+    "fields/cycle-field/index.tsx": ["cycleFieldLayout", "var(--control-height-medium)"],
+    "fields/field-group/index.tsx": ["fieldGroupLayout", "var(--field-height-compact)"],
+    "fields/matrix-field/index.tsx": ["matrixFieldLayout", "var(--field-matrix-row-gap)"],
+    "fields/number-field/index.tsx": ["numberFieldLayout", "var(--control-height-medium)"],
+    "fields/path-field/index.tsx": ["pathFieldLayout", "var(--field-path-height-compact)"],
+    "fields/reference-field/index.tsx": ["referenceFieldLayout", "var(--field-reference-height-compact)"],
+    "fields/select-field/index.tsx": ["selectFieldLayout", "var(--control-height-medium)"],
+    "fields/slider-field/index.tsx": ["sliderFieldLayout", "var(--field-height-compact)"],
+    "fields/switch-field/index.tsx": ["switchFieldLayout", "var(--field-switch-height)"],
+    "fields/text-field/index.tsx": ["textFieldLayout", "var(--control-height-medium)"],
+    "fields/vector-field/index.tsx": ["vectorFieldLayout", "var(--field-group-content-height)"],
+    "buttons/toggle-button-group/index.tsx": ["toggleButtonGroupLayout", "var(--control-height-medium)"],
   })
 
   for (const [relativePath, requiredFragments] of Object.entries(owners)) {
-    const source = await Bun.file(resolve(uiRoot, relativePath)).text()
-    for (const fragment of requiredFragments) expect(source).toContain(fragment)
+    let source = await Bun.file(resolve(uiRoot, relativePath)).text()
+    for await (const child of new Bun.Glob("src/**/*.{ts,tsx}").scan({cwd: resolve(uiRoot, relativePath, "..")})) source += await Bun.file(resolve(uiRoot, relativePath, "..", child)).text()
+    const layoutName = requiredFragments[0]!
+    const layoutPath = resolve(uiRoot, relativePath.replace("/index.tsx", "/layout/index.tsx"))
+    expect(await Bun.file(layoutPath).text()).toContain(`const ${layoutName}`)
+    for (const fragment of requiredFragments.slice(1)) expect(source).toContain(fragment)
   }
 })

@@ -1,4 +1,4 @@
-import type {TextFieldProps} from "@zavx0z/ui/fields/text-field"
+import type {TextFieldProps} from "@ui-fields/text-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные строкового параметра, связанного с нодой и её сокетами.

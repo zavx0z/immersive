@@ -5,8 +5,8 @@ import type {
   MarkdownTableRow,
   MarkdownTableCell,
 } from "../../shared/types/model.ts"
-import {Divider} from "@zavx0z/ui/divider"
-import {CodeEditor} from "@zavx0z/ui/views/code-editor"
+import Divider from "@ui/divider"
+import CodeEditor from "@ui-views/code-editor"
 import type {InlineListProps, ListProps} from "../types/blocks.ts"
 
 const headingStyle = css`

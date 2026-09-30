@@ -1,0 +1,18 @@
+{
+  "name": "@ui-views-code-editor/syntax-theme",
+  "label": "syntax-theme",
+  "version": "0.0.0",
+  "description": "Публичные возможности области views/code-editor/syntax-theme",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./code-editor-syntax-theme": "./code-editor-syntax-theme/index.ts",
+    "./resolve-code-editor-syntax-scope-color-hex": "./resolve-code-editor-syntax-scope-color-hex/index.ts"
+  },
+  "dependencies": {
+    "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*",
+    "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": "workspace:*"
+  }
+}

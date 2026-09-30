@@ -1,0 +1,20 @@
+{
+  "name": "@ui-fields-number-scrub/scrub-number-raw-value",
+  "label": "scrubNumberRawValue",
+  "version": "0.0.0",
+  "description": "Изменение при перетаскивании числового значения при перетаскивании",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-fields-number-value/resolve-number-soft-range": "workspace:*"
+  }
+}

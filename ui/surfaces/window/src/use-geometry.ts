@@ -1,7 +1,7 @@
 import {useLayoutEffect, useRef, useState} from "@zavx0z/component"
 import {observeElementLayout, readElementLayoutRect} from "@zavx0z/dom/geometry"
-import type {WindowProps} from "../contract/input.ts"
-import type {WindowGeometry} from "../types.ts"
+import type {WindowProps} from "../contract/input"
+import type {WindowGeometry} from "../contract/types"
 import {dragWindow, fitWindow, type WindowGesture} from "./geometry.ts"
 
 /** Владеет одним pointer capture; отмена и скрытие возвращают геометрию начала жеста. */

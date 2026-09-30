@@ -1,149 +1,77 @@
 import {expect, test} from "bun:test"
-import {resolve} from "node:path"
+import {dirname, resolve} from "node:path"
 
 const packageRoot = resolve(import.meta.dir, "..")
 
-const expectedExports = Object.freeze([
-  "./code-editor-model",
-  "./terminal-model",
-  "./menus/menu",
-  "./menus/menu-item",
-  "./menus/clipboard-menu",
-  "./badge",
-  "./divider",
-  "./typography",
-  "./buttons/button",
-  "./buttons/toggle-button-group",
-  "./fields/checkbox-field",
-  "./fields/collection-field",
-  "./fields/color-field",
-  "./fields/color-picker-field",
-  "./fields/cycle-field",
-  "./fields/field-group",
-  "./fields/matrix-field",
-  "./fields/number-field",
-  "./fields/path-field",
-  "./fields/reference-field",
-  "./fields/select-field",
-  "./fields/slider-field",
-  "./fields/switch-field",
-  "./fields/text-field",
-  "./fields/vector-field",
-  "./navigation/breadcrumbs",
-  "./surfaces/pane",
-  "./surfaces/panel",
-  "./surfaces/window",
-  "./surfaces/window/contract/input",
-  "./surfaces/window/control",
-  "./surfaces/window/control/contract/input",
-  "./surfaces/frame",
-  "./surfaces/tab",
-  "./surfaces/tab/contract/input",
-  "./views/list",
-  "./views/table",
-  "./views/code-editor",
-  "./views/timeline",
-  "./feedback/notification",
-  "./feedback/status-bar",
-  "./widgets/inspector",
-  "./widgets/editor",
-  "./widgets/terminal",
-  "./widgets/tree",
-  "./themes/icons",
-  "./themes/syntax-theme",
-  "./themes/theme.css",
-] as const)
-
-test("[UI-001] публичные UI-компоненты распределены по принятой taxonomy", async () => {
-  const packageJson = await readPackageJson()
-  expect(Object.keys(packageJson.exports)).toEqual([...expectedExports])
-  expect(Object.keys(packageJson.exports).filter(key => key.startsWith("./menus/"))).toEqual([
-    "./menus/menu", "./menus/menu-item", "./menus/clipboard-menu",
-  ])
-
-  for (const [subpath, target] of Object.entries(packageJson.exports)) {
-    expect(await Bun.file(resolve(packageRoot, target)).exists()).toBe(true)
-    if (subpath.startsWith("./buttons/")) expect(target).toStartWith("./buttons/")
-    if (subpath.startsWith("./menus/")) expect(target).toStartWith("./menus/")
-    if (subpath.startsWith("./fields/")) expect(target).toStartWith("./fields/")
-    if (subpath.startsWith("./navigation/")) expect(target).toStartWith("./navigation/")
-    if (subpath.startsWith("./surfaces/")) expect(target).toStartWith("./surfaces/")
-    if (subpath.startsWith("./views/")) expect(target).toStartWith("./views/")
-    if (subpath.startsWith("./feedback/")) expect(target).toStartWith("./feedback/")
-    if (subpath.startsWith("./widgets/")) expect(target).toStartWith("./widgets/")
-    if (subpath.startsWith("./themes/")) expect(target).toStartWith("./themes/")
+async function manifests() {
+  const result: Array<{directory: string; manifest: Record<string, any>}> = []
+  for await (const file of new Bun.Glob("**/package.json").scan({cwd: packageRoot})) {
+    if (/(?:^|\/)(?:node_modules|spec|test|tests|fixture|fixtures)(?:\/|$)/u.test(file)) continue
+    result.push({directory: dirname(file), manifest: await Bun.file(resolve(packageRoot, file)).json()})
   }
-})
-
-test("[UI-002] UI остаётся target-neutral production package", async () => {
-  const packageJson = await readPackageJson()
-  const forbiddenPackages = [
-    "@zavx0z/browser",
-    "@zavx0z/engine",
-    "@nodes/layout",
-    "@immersive/nodes",
-    "@nodes/tree",
-    "@renderer/html",
-    "@zavx0z/space",
-    "@zavx0z/webgpu",
-  ]
-  for (const packageName of forbiddenPackages) {
-    expect(packageJson.dependencies?.[packageName]).toBeUndefined()
-  }
-
-  const specifiers = importSpecifiers(await productionSource())
-  for (const specifier of specifiers) {
-    expect(forbiddenPackages.some(packageName =>
-      specifier === packageName || specifier.startsWith(`${packageName}/`),
-    )).toBe(false)
-  }
-})
-
-test("[UI-003] FieldGroup принадлежит fields, а ToggleButtonGroup — buttons", async () => {
-  const packageJson = await readPackageJson()
-  expect(packageJson.exports["./fields/field-group"]).toBe("./fields/field-group.tsx")
-  expect(packageJson.exports["./buttons/toggle-button-group"]).toBe("./buttons/toggle-button-group.tsx")
-  expect(packageJson.exports["./fields/toggle-button-group"]).toBeUndefined()
-  expect(packageJson.exports["./fields/option-group-field"]).toBeUndefined()
-
-  const fieldGroup = await Bun.file(resolve(packageRoot, "fields/field-group.tsx")).text()
-  const toggleButtonGroup = await Bun.file(resolve(packageRoot, "buttons/toggle-button-group.tsx")).text()
-  expect(fieldGroup).toContain("export function FieldGroup(")
-  expect(toggleButtonGroup).toContain("export function ToggleButtonGroup(")
-  expect(toggleButtonGroup).not.toContain("OptionGroupField")
-})
-
-test("[UI-004] widgets содержит самостоятельные универсальные владельцы", async () => {
-  const packageJson = await readPackageJson()
-  expect(Object.keys(packageJson.exports).filter(key => key.startsWith("./widgets/"))).toEqual([
-    "./widgets/inspector",
-    "./widgets/editor",
-    "./widgets/terminal",
-    "./widgets/tree",
-  ])
-  const source = await Bun.file(resolve(packageRoot, "widgets/inspector.tsx")).text()
-  expect(source).toContain("export function Inspector(")
-  expect(source).not.toMatch(/^export\s+\{[^}]+\}\s+from/mu)
-  expect(source).not.toMatch(/^export\s+\*\s+from/mu)
-})
-
-async function readPackageJson(): Promise<Readonly<{
-  dependencies?: Readonly<Record<string, string>>
-  exports: Readonly<Record<string, string>>
-}>> {
-  return Bun.file(resolve(packageRoot, "package.json")).json()
+  return result
 }
 
-async function productionSource(): Promise<string> {
-  const sources: string[] = []
-  for await (const relativePath of new Bun.Glob("**/*.{ts,tsx}").scan({cwd: packageRoot})) {
-    if (relativePath.startsWith("tests/")) continue
-    sources.push(await Bun.file(resolve(packageRoot, relativePath)).text())
+test("UI предоставляет общий доменный вход и физические входы владельцев", async () => {
+  const manifest = await Bun.file(resolve(packageRoot, "package.json")).json()
+  expect(manifest.name).toBe("@zavx0z/ui")
+  expect(manifest.exports["."]).toBe("./index.ts")
+  for (const area of ["buttons", "fields", "menus", "navigation", "surfaces", "views", "feedback", "widgets", "themes"]) {
+    expect(manifest.exports[`./${area}`]).toBe(`./${area}/index.ts`)
+    expect(await Bun.file(resolve(packageRoot, area, "package.json")).exists()).toBe(true)
   }
-  return sources.join("\n")
-}
+  expect(manifest.exports["./buttons/button"]).toBe("./buttons/button/index.tsx")
+  expect(manifest.exports["./surfaces/window/control"]).toBe("./surfaces/window/control/index.tsx")
+  expect(manifest.exports["./surfaces/window/contract/input"]).toBeUndefined()
+})
 
-function importSpecifiers(source: string): readonly string[] {
-  return [...source.matchAll(/(?:from\s+|import\()\s*["']([^"']+)["']/gu)]
-    .map(match => match[1]!)
-}
+test("пакеты UI имеют собственные публичные входы и единый workspace Repo", async () => {
+  const packages = await manifests()
+  const names = packages.map(item => item.manifest.name)
+  expect(new Set(names).size).toBe(names.length)
+  for (const {directory, manifest} of packages) {
+    expect(manifest.workspaces, directory).toBeUndefined()
+    expect(manifest.packageManager, directory).toBeUndefined()
+    expect(manifest.engines, directory).toBeUndefined()
+    expect(manifest.description, directory).toMatch(/\S/u)
+    const entry = manifest.exports["."]
+    expect(entry, directory).toMatch(/^\.\/index\.tsx?$/u)
+    const source = await Bun.file(resolve(packageRoot, directory, entry)).text()
+    expect(source, directory).toContain("@packageDocumentation")
+    if (/^export default\b/mu.test(source)) {
+      expect(Object.keys(manifest.exports), directory).toEqual(["."])
+      expect(source.match(/^export default\b/gmu), directory).toHaveLength(1)
+      expect(source, directory).not.toMatch(/^export (?:function|class|const|let|var)\b/mu)
+    } else {
+      expect(source, directory).not.toMatch(/^(?:export )?(?:function|class|const|let|var)\b/mu)
+    }
+    for (const target of Object.values(manifest.exports)) {
+      expect(typeof target, directory).toBe("string")
+      expect(await Bun.file(resolve(packageRoot, directory, target as string)).exists(), `${directory}: ${target}`).toBe(true)
+    }
+  }
+})
+
+test("UI сохраняет границу платформы во всех производственных пакетах", async () => {
+  const forbidden = ["@zavx0z/browser", "@zavx0z/engine", "@nodes/layout", "@immersive/nodes", "@nodes/tree", "@renderer/html", "@zavx0z/space", "@zavx0z/webgpu"]
+  for (const {directory, manifest} of await manifests()) {
+    for (const name of forbidden) {
+      expect(manifest.dependencies?.[name], directory).toBeUndefined()
+      expect(manifest.peerDependencies?.[name], directory).toBeUndefined()
+    }
+  }
+  for await (const file of new Bun.Glob("**/*.{ts,tsx}").scan({cwd: packageRoot})) {
+    if (/(?:^|\/)(?:node_modules|spec|test|tests|fixture|fixtures)(?:\/|$)/u.test(file) || file.includes(".fixture.")) continue
+    const source = await Bun.file(resolve(packageRoot, file)).text()
+    for (const [, module] of source.matchAll(/(?:from\s+|import\()\s*["']([^"']+)["']/gu)) {
+      expect(forbidden.some(name => module === name || module!.startsWith(`${name}/`)), `${file}: ${module}`).toBe(false)
+    }
+  }
+})
+
+test("FieldGroup, ToggleButtonGroup и виджеты сохраняют предметных владельцев", async () => {
+  for (const [directory, name] of [["fields/field-group", "FieldGroup"], ["buttons/toggle-button-group", "ToggleButtonGroup"], ["widgets/inspector", "Inspector"], ["widgets/editor", "Editor"], ["widgets/terminal", "Terminal"], ["widgets/tree", "Tree"]]) {
+    const source = await Bun.file(resolve(packageRoot, directory!, "index.tsx")).text()
+    expect(source).toContain(`export default function ${name}(`)
+  }
+})

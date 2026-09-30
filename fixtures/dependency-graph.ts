@@ -34,17 +34,17 @@ const graph: ComponentDependencyGraph = {
   // До # — путь от корня проекта, после # — имя функции компонента.
   "nodes/node/diagram/index.tsx#DiagramNode": {
     // DiagramNode использует в своём JSX два компонента: Pane и Typography.
-    uses: ["ui/surfaces/pane.tsx#Pane", "ui/typography.tsx#Typography"],
+    uses: ["ui/surfaces/pane/index.tsx#Pane", "ui/typography/index.tsx#Typography"],
     // Сам DiagramNode создаёт нативный элемент <article>.
     elements: ["article"],
   },
-  "ui/surfaces/pane.tsx#Pane": {
+  "ui/surfaces/pane/index.tsx#Pane": {
     // В собственном JSX Pane нет других компонентов.
     // Переданный снаружи Typography остаётся зависимостью DiagramNode.
     uses: [],
     elements: ["section"],
   },
-  "ui/typography.tsx#Typography": {
+  "ui/typography/index.tsx#Typography": {
     // Typography создаёт только нативный <span>.
     uses: [],
     elements: ["span"],
@@ -61,8 +61,9 @@ export type ComponentDependencyGraph = Record<string, {uses: string[], elements:
 переданный через `children`, относится к автору этого JSX, а не к получателю.
 Обход учитывает все ветви исходника независимо от значений props.
 
-Поддерживаются объявления функций в том же файле и именованные импорты,
-включая псевдонимы. Реэкспорты, default-импорты, составные JSX-имена и компоненты,
+Поддерживаются объявления функций в том же файле, именованные и default-импорты,
+включая псевдонимы. Default разрешается к имени функции у владельца, независимо
+от локального имени импорта. Реэкспорты, составные JSX-имена и компоненты,
 объявленные через переменные, не разрешаются. Импорты типов пропускаются.
 Повторно достигнутые компоненты не обходятся, поэтому циклы не зацикливают поиск.
 
@@ -110,6 +111,16 @@ export async function buildComponentDependencyGraph(root: string, entry: Compone
         if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier)) continue
         const clause = statement.importClause
         if (clause === undefined || clause.phaseModifier === SyntaxKind.TypeKeyword) continue
+        if (clause.name) {
+          const importedFile = Bun.resolveSync(statement.moduleSpecifier.text, dirname(file))
+          const importedSource = await project.program.getSourceFile(importedFile)
+          const implementation = importedSource?.statements.find(statement =>
+            isFunctionDeclaration(statement) && statement.name !== undefined &&
+            statement.modifiers?.some(modifier => modifier.kind === SyntaxKind.DefaultKeyword))
+          if (implementation && isFunctionDeclaration(implementation) && implementation.name) {
+            imports.set(clause.name.text, {file: importedFile, name: implementation.name.text})
+          }
+        }
         const bindings = clause.namedBindings
         if (bindings === undefined || !isNamedImports(bindings)) continue
         for (const binding of bindings.elements) {

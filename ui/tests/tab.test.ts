@@ -6,11 +6,11 @@ import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {TabProps} from "../surfaces/tab/contract/input.ts"
+import type {TabProps} from "@ui-surfaces/tab"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {Tab} = await import("../surfaces/tab/index.tsx")
+const {default: Tab} = await import("@ui-surfaces/tab")
 const {TabChildrenFixture, TabVerticalLabelFixture} = await import("./tab.fixture.tsx")
 const theme = await Bun.file(resolve(workspace, "ui/themes/theme.css")).text()
 

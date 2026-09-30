@@ -6,7 +6,7 @@ ReferenceParameter соединяет публичный ReferenceField с ко�
 @packageDocumentation
 */
 
-import {ReferenceField} from "@zavx0z/ui/fields/reference-field"
+import ReferenceField from "@ui-fields/reference-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {ReferenceParameterProps} from "./contract/input.ts"
 

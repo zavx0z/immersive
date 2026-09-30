@@ -1,0 +1,26 @@
+{
+  "name": "@ui-widgets/header",
+  "label": "WidgetHeader",
+  "version": "0.0.0",
+  "description": "Общий заголовок составного виджета со статусом и действиями",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-buttons/button": "workspace:*",
+    "@ui-widgets-header/action": "workspace:*",
+    "@ui/badge": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

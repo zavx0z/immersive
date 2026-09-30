@@ -7,14 +7,14 @@ import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {createDocumentNativeInputHostWithSeams} from "../../browser/src/native-input-host.ts"
-import {createCodeEditorModel} from "../code-editor-model.ts"
-import type {CodeEditorProps} from "../src/code-editor/model.ts"
-import type {ClipboardMenuController} from "../menus/clipboard-menu.tsx"
+import createCodeEditorModel from "@ui-code-editor-model/create"
+import type {CodeEditorProps} from "@ui-views/code-editor"
+import type {ClipboardMenuController} from "@ui-menus/clipboard-menu"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {CodeEditor} = await import("../views/code-editor.tsx")
-const {ClipboardMenu} = await import("../menus/clipboard-menu.tsx")
+const {default: CodeEditor} = await import("@ui-views/code-editor")
+const {default: ClipboardMenu} = await import("@ui-menus/clipboard-menu")
 
 class NativeProxy extends EventTarget {
   value = ""

@@ -1,0 +1,16 @@
+{
+  "name": "@ui/navigation",
+  "label": "navigation",
+  "version": "0.0.0",
+  "description": "Публичные возможности области navigation",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./breadcrumbs": "./breadcrumbs/index.tsx"
+  },
+  "dependencies": {
+    "@ui-navigation/breadcrumbs": "workspace:*"
+  }
+}

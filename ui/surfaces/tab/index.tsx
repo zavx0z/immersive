@@ -6,14 +6,24 @@ Display и вложенных контейнерах; окон, камер и о
 
 @packageDocumentation
 */
-import {useLayoutEffect, useRef, useState} from "@zavx0z/component"
-import {observeElementLayout, readElementLayoutRect} from "@zavx0z/dom/geometry"
+import {useLayoutEffect} from "@zavx0z/component"
+import {useRef} from "@zavx0z/component"
+import {useState} from "@zavx0z/component"
+import {observeElementLayout} from "@zavx0z/dom/geometry"
+import {readElementLayoutRect} from "@zavx0z/dom/geometry"
 import {hasSlot} from "@zavx0z/component/slot-presence"
 import type {TabProps} from "./contract/input.ts"
-import {dockTab, readTabPosition, tabRect, type TabArea, type TabPosition} from "./src/placement.ts"
+import {dockTab} from "./src/placement.ts"
+import {readTabPosition} from "./src/placement.ts"
+import {tabRect} from "./src/placement.ts"
+import type {TabArea} from "./src/placement.ts"
+import type {TabPosition} from "./src/placement.ts"
 
-/** Перетаскивание использует штатный pointer capture; отмена возвращает положение начала жеста. */
-export function Tab(props: TabProps) {
+export type {TabProps} from "./contract/input"
+
+import type {JSX} from "@jsx-compiler/session"
+
+export default function Tab(props: TabProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
   const supplied = hasSlot()
   if (!supplied && !props.label?.trim()) throw new TypeError("Tab requires label or slot content")
   const caption = supplied ? "" : props.label

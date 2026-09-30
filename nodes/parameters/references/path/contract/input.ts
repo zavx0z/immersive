@@ -1,4 +1,4 @@
-import type {PathFieldProps} from "@zavx0z/ui/fields/path-field"
+import type {PathFieldProps} from "@ui-fields/path-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные параметра пути, связанного с нодой и её сокетами.

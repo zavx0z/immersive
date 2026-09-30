@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import {Pane} from "@zavx0z/ui/surfaces/pane"
-import {Typography} from "@zavx0z/ui/typography"
+import Pane from "@ui-surfaces/pane"
+import Typography from "@ui/typography"
 import type {DiagramNodeProps} from "./contract/input.ts"
 export type {DiagramNodeProps} from "./contract/input.ts"
 

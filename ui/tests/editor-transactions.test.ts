@@ -1,5 +1,5 @@
 import {expect, spyOn, test} from "bun:test"
-import {createCodeEditorModel} from "../code-editor-model.ts"
+import createCodeEditorModel from "@ui-code-editor-model/create"
 
 test("normalization merges overlap and duplicate carets, preserving primary direction", () => {
   const model = createCodeEditorModel({value: "0123456789", selections: [

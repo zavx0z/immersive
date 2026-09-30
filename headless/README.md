@@ -28,7 +28,7 @@ Preload регистрирует JSX compiler от Git-корня текущег
 ```tsx
 import {afterAll, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import {Typography} from "@zavx0z/ui/typography"
+import Typography from "@ui/typography"
 
 const headless = createHeadless({width: 320, height: 180})
 afterAll(() => headless.dispose())

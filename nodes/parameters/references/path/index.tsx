@@ -6,7 +6,7 @@ PathParameter соединяет публичный PathField с компози�
 @packageDocumentation
 */
 
-import {PathField} from "@zavx0z/ui/fields/path-field"
+import PathField from "@ui-fields/path-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {PathParameterProps} from "./contract/input.ts"
 

@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/references/path/index.tsx",
     expected: {
       "nodes/parameters/references/path/index.tsx#PathParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/path-field.tsx#PathField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/path-field/index.tsx#PathField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,19 +31,19 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/buttons/button.tsx#Button": {
+      "ui/buttons/button/index.tsx#Button": {
         uses: [],
         elements: ["button","img","span"],
       },
-      "ui/buttons/button.tsx#IconButton": {
-        uses: ["ui/buttons/button.tsx#Button"],
+      "ui/buttons/icon-button/index.tsx#IconButton": {
+        uses: ["ui/buttons/button/index.tsx#Button"],
         elements: [],
       },
-      "ui/fields/path-field.tsx#PathField": {
-        uses: ["ui/buttons/button.tsx#IconButton","ui/fields/text-field.tsx#TextField"],
+      "ui/fields/path-field/index.tsx#PathField": {
+        uses: ["ui/buttons/icon-button/index.tsx#IconButton","ui/fields/text-field/index.tsx#TextField"],
         elements: ["div","span"],
       },
-      "ui/fields/text-field.tsx#TextField": {
+      "ui/fields/text-field/index.tsx#TextField": {
         uses: [],
         elements: ["input","label","span"],
       },

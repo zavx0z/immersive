@@ -1,0 +1,30 @@
+{
+  "name": "@ui-fields/cycle-field",
+  "label": "CycleField",
+  "version": "0.0.0",
+  "description": "Поле интерфейса: циклический выбор",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-buttons/button": "workspace:*",
+    "@ui-selection/find-selection-option": "workspace:*",
+    "@ui-selection/validate-selection-options": "workspace:*",
+    "@ui-themes-icons/chevron-down": "workspace:*"
+  },
+  "peerDependencies": {
+    "@zavx0z/component": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

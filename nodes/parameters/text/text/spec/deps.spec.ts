@@ -24,14 +24,14 @@ test.each([
         elements: ["div","span"],
       },
       "nodes/parameters/text/text/index.tsx#TextParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/text-field.tsx#TextField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/text-field/index.tsx#TextField"],
         elements: [],
       },
       "nodes/sockets/socket/index.tsx#Socket": {
         uses: [],
         elements: ["button","span"],
       },
-      "ui/fields/text-field.tsx#TextField": {
+      "ui/fields/text-field/index.tsx#TextField": {
         uses: [],
         elements: ["input","label","span"],
       },

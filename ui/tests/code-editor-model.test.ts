@@ -1,8 +1,9 @@
 import {expect, test} from "bun:test"
-import {buildCodeEditorViewModel} from "../src/code-editor/model.ts"
-import {codeEditorPaintRuns} from "../src/code-editor/paint-runs.ts"
-import {codeEditorVisualRows} from "../src/code-editor/visual-rows.ts"
-import {codeEditorSyntaxTheme, resolveCodeEditorSyntaxScopeColorHex} from "../src/code-editor/syntax-theme-runtime.ts"
+import buildCodeEditorViewModel from "@ui-views-code-editor/view-model"
+import {codeEditorPaintRuns} from "../views/code-editor/src/paint-runs.ts"
+import {codeEditorVisualRows} from "../views/code-editor/src/visual-rows.ts"
+import codeEditorSyntaxTheme from "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme"
+import resolveCodeEditorSyntaxScopeColorHex from "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex"
 
 test("JSX-компоненты получают цвет тегов через установленный highlighter", () => {
   const value = '<Tab label={null}><Button label="Инструменты" /></Tab>'

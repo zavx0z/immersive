@@ -1,0 +1,33 @@
+{
+  "name": "@ui-widgets/tree",
+  "label": "Tree",
+  "version": "0.0.0",
+  "description": "Дерево с выбором, навигацией и ограниченным окном материализованных строк",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-buttons/button": "workspace:*",
+    "@ui-themes-icons/chevron-down": "workspace:*",
+    "@ui-themes-icons/chevron-right": "workspace:*",
+    "@ui-widgets-header/action": "workspace:*",
+    "@ui-widgets/header": "workspace:*",
+    "@ui/badge": "workspace:*"
+  },
+  "peerDependencies": {
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/dom": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

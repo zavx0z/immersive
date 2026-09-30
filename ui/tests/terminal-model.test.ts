@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createTerminalModel} from "../terminal-model.ts"
+import createTerminalModel from "@ui-terminal-model/create"
 
 test("generic terminal preserves streaming ANSI colors, cursor replies and UTF-8 chunks", () => {
   const replies: string[] = []

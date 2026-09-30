@@ -38,7 +38,7 @@ TSX-импорты и JSX сценария компилировались Templa
 
 @example
 ```tsx
-import {Typography} from "@zavx0z/ui/typography"
+import Typography from "@ui/typography"
 
 const headless = createHeadless()
 const element = await headless.render(

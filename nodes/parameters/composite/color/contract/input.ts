@@ -1,4 +1,4 @@
-import type {ColorFieldProps} from "@zavx0z/ui/fields/color-field"
+import type {ColorFieldProps} from "@ui-fields/color-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные цветового параметра, связанного с нодой и её сокетами.

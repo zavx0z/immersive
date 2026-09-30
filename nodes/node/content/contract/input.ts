@@ -43,7 +43,7 @@ import type {
 
 @example
 ```tsx
-import {Typography} from "@zavx0z/ui/typography"
+import Typography from "@ui/typography"
 
 <ContentNode
   id="preview"

@@ -1,0 +1,10 @@
+/** parseColorValue показывает публичное использование своего владельца. */
+import {describe, expect, test} from "bun:test"
+import operation from "@ui-fields-color-value/parse-color-value"
+
+describe.each([{name: "Публичный вызов", props: {args: ["#FF0000"] as const}}])("$name", ({props}) => {
+  const result = operation(...props.args)
+  test("Результат", () => {
+    expect(result, "Результат соответствует входному примеру и публичному назначению операции").toEqual({r: 1, g: 0, b: 0, a: 1})
+  })
+})

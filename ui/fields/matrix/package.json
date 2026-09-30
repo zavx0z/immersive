@@ -1,0 +1,18 @@
+{
+  "name": "@ui-fields/matrix",
+  "label": "matrix",
+  "version": "0.0.0",
+  "description": "Публичные возможности области fields/matrix",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./value": "./value/index.ts",
+    "./value/normalize-matrix-value": "./value/normalize-matrix-value/index.ts",
+    "./value/update-matrix-value": "./value/update-matrix-value/index.ts"
+  },
+  "dependencies": {
+    "@ui-fields-matrix/value": "workspace:*"
+  }
+}

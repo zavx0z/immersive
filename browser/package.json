@@ -56,6 +56,12 @@
   "devDependencies": {
     "@jsx-compiler/bun": "workspace:*",
     "@jsx-compiler/session": "workspace:*",
-    "@zavx0z/jsx": "workspace:*"
+    "@zavx0z/jsx": "workspace:*",
+    "@ui-menus/clipboard-menu": "workspace:*",
+    "@ui-views/code-editor": "workspace:*",
+    "@zavx0z/ui": "workspace:*",
+    "@ui-code-editor-model/create": "workspace:*",
+    "@ui/code-editor-model": "workspace:*",
+    "@ui-widgets/editor": "workspace:*"
   }
 }

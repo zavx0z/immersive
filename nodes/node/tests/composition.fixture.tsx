@@ -5,8 +5,8 @@ import {ParameterNode} from "@nodes/node/parameter"
 import {ContentNode} from "@nodes/node/content"
 import {DiagramNode} from "@nodes/node/diagram"
 import {planProjectedNodeGeometry} from "@nodes/node/geometry"
-import {Button} from "@zavx0z/ui/buttons/button"
-import {Typography} from "@zavx0z/ui/typography"
+import Button from "@ui-buttons/button"
+import Typography from "@ui/typography"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 
 export function InteractiveContent() {

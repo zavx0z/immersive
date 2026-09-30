@@ -1,4 +1,4 @@
-import type {CheckboxFieldProps} from "@zavx0z/ui/fields/checkbox-field"
+import type {CheckboxFieldProps} from "@ui-fields/checkbox-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные логического параметра-флажка, связанного с нодой и её сокетами.

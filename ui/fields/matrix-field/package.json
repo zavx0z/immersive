@@ -1,0 +1,27 @@
+{
+  "name": "@ui-fields/matrix-field",
+  "label": "MatrixField",
+  "version": "0.0.0",
+  "description": "Поле интерфейса: матрица чисел",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-fields-matrix-value/normalize-matrix-value": "workspace:*",
+    "@ui-fields-matrix-value/update-matrix-value": "workspace:*",
+    "@ui-fields/field-group": "workspace:*",
+    "@ui-fields/number-field": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

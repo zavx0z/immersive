@@ -4,7 +4,8 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument} from "@zavx0z/dom"
 import {createDocumentInteractionState, createDocumentRenderer} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
-import {chevronRightIcon, homeIcon} from "../themes/icons.ts"
+import chevronRightIcon from "@ui-themes-icons/chevron-right"
+import homeIcon from "@ui-themes-icons/home"
 
 const root = resolve(import.meta.dir, "../..")
 const uiRoot = resolve(root, "ui")
@@ -15,7 +16,7 @@ Bun.plugin(createJsxBunPlugin({
   sourceRoots: [uiRoot],
 }))
 
-const {Breadcrumbs} = await import("../navigation/breadcrumbs.tsx")
+const {default: Breadcrumbs} = await import("@ui-navigation/breadcrumbs")
 
 test("иконка, разделители и подписи выровнены по центру одной строки", () => {
   const document = createDocument()

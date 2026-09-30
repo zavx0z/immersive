@@ -1,0 +1,306 @@
+/**
+Поле интерфейса: числовое значение.
+Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
+
+@packageDocumentation
+*/
+import type {ActiveScrub} from "./contract/types.ts"
+import type {NumberFieldProps} from "./contract/input.ts"
+import {releaseScrubCapture} from "./src/helpers.tsx"
+import {useRef} from "@zavx0z/component"
+import resolveNumberDragRange from "@ui-fields-number-scrub/resolve-number-drag-range"
+import scrubNumberRawValue from "@ui-fields-number-scrub/scrub-number-raw-value"
+import snapNumberValue from "@ui-fields-number-scrub/snap-number-value"
+import formatNumberValue from "@ui-fields-number-value/format-number-value"
+import normalizeNumberValue from "@ui-fields-number-value/normalize-number-value"
+import numberFillPercentage from "@ui-fields-number-value/number-fill-percentage"
+import numberPointerStep from "@ui-fields-number-value/number-pointer-step"
+import stepNumberValue from "@ui-fields-number-value/step-number-value"
+
+export type {NumberFieldProps} from "./contract/input"
+
+import type {JSX} from "@jsx-compiler/session"
+
+export default function NumberField(props: NumberFieldProps): JSX.Element {
+  const scrub = useRef<ActiveScrub | null>(null)
+  const editBaseline = useRef(props.value)
+  const hasLabel = props.label !== undefined
+  const step = numberPointerStep(props)
+  const locked = props.disabled === true || props.readOnly === true
+  const fillPercentage = numberFillPercentage(props.value, props.min, props.max)
+  const displayedValue = formatNumberValue(props.value, props.precision)
+
+  const propose = (value: number, event: Event) => {
+    if (!locked && Number.isFinite(value)) props.onInput?.(normalizeNumberValue(value, props), event)
+  }
+  const onInput = (input: HTMLInputElement, event: InputEvent) => {
+    const value = input.valueAsNumber
+    if (Number.isFinite(value)) propose(value, event)
+  }
+  const onChange = (input: HTMLInputElement, event: Event) => {
+    const value = input.valueAsNumber
+    if (!locked && Number.isFinite(value)) props.onChange?.(normalizeNumberValue(value, props), event)
+  }
+  const onFocus = () => {
+    editBaseline.current = props.value
+  }
+  const onKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== "Escape" || locked) return
+    event.preventDefault()
+    releaseScrubCapture(scrub.current)
+    scrub.current = null
+    props.onInput?.(editBaseline.current, event)
+  }
+  const onPointerDown = (target: HTMLInputElement, event: PointerEvent) => {
+    if (locked) return
+    target.setPointerCapture(event.pointerId)
+    const origin = normalizeNumberValue(props.value, props)
+    editBaseline.current = origin
+    scrub.current = Object.freeze({
+      target,
+      pointerId: event.pointerId,
+      origin,
+      current: origin,
+      rawCurrent: origin,
+      startX: event.clientX,
+      lastX: event.clientX,
+      changed: false,
+      dragRange: resolveNumberDragRange(origin, props)
+    })
+  }
+  const onPointerMove = (event: PointerEvent) => {
+    const active = scrub.current
+    if (!active || locked) return
+    const rawCurrent = scrubNumberRawValue(
+      active.rawCurrent,
+      event.clientX - active.lastX,
+      event.clientX - active.startX,
+      active.dragRange,
+      event.shiftKey
+    )
+    const projected = event.ctrlKey
+      ? snapNumberValue(rawCurrent, active.dragRange, event.shiftKey)
+      : rawCurrent
+    const current = normalizeNumberValue(projected, props)
+    scrub.current = Object.freeze({
+      ...active,
+      current,
+      rawCurrent,
+      lastX: event.clientX,
+      changed: active.changed || current !== active.current
+    })
+    if (current !== active.current) props.onInput?.(current, event)
+  }
+  const endScrub = (event: PointerEvent) => {
+    const active = scrub.current
+    releaseScrubCapture(active)
+    scrub.current = null
+    if (!locked && active?.changed === true) props.onChange?.(active.current, event)
+  }
+  const cancelScrub = (event: PointerEvent) => {
+    const active = scrub.current
+    releaseScrubCapture(active)
+    scrub.current = null
+    if (!locked && active?.changed === true) props.onInput?.(active.origin, event)
+  }
+  const stepAtEdge = (direction: -1 | 1, event: Event) => {
+    if (locked) return
+    const next = stepNumberValue(props.value, direction, props)
+    props.onInput?.(next, event)
+    props.onChange?.(next, event)
+  }
+  const decrease = (event: PointerEvent) => stepAtEdge(-1, event)
+  const increase = (event: PointerEvent) => stepAtEdge(1, event)
+
+  return <div
+    data-number-field=""
+    data-has-label={hasLabel ? "true" : undefined}
+    data-readonly={props.readOnly === true ? "true" : undefined}
+    title={props.title}
+    style={css`
+      box-sizing: border-box;
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: var(--number-field-width, 120px);
+      height: var(--control-height-medium);
+      min-width: 0;
+      padding: 0;
+      border: var(--border-width-control) solid var(--widget-number-outline);
+      border-radius: var(--radius-medium);
+      background: var(--number-field-background, var(--widget-number-background));
+      color: var(--widget-list-content);
+      box-shadow: var(--shadow-2xs);
+      overflow: clip;
+
+      &[data-has-label="true"] {
+        width: 100%;
+        height: var(--control-height-medium);
+      }
+
+      &:hover {
+        background: var(--widget-hover-background);
+      }
+
+      &:focus-within {
+        border-color: var(--widget-focus-outline);
+        background: var(--widget-number-background-focus);
+      }
+
+      &[data-readonly="true"] {
+        color: var(--widget-number-content-readonly);
+      }
+
+      ${props.disabled === true && css`
+        opacity: 0.5;
+        box-shadow: none;
+      `}
+
+      ${props.style}
+    `}
+  >
+    <span
+      data-number-fill=""
+      hidden={fillPercentage === null}
+      style={css`
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: block;
+        width: ${fillPercentage ?? 0}%;
+        height: 100%;
+        background: var(--widget-number-fill);
+
+        &[hidden] {
+          display: none;
+        }
+      `}
+    >
+    </span>
+    <span
+      hidden={!hasLabel}
+      style={css`
+        box-sizing: border-box;
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        width: var(--field-label-width, 63%);
+        min-width: 0;
+        height: 100%;
+        padding: 0 0 0 18px;
+        overflow: hidden;
+        color: var(--field-label-content, var(--widget-list-content));
+        font-size: var(--font-size-xs);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+        &[hidden] {
+          display: none;
+        }
+      `}
+    >
+      {props.label ?? ""}
+    </span>
+    <div
+      data-number-field-value=""
+      data-labelled={hasLabel ? "true" : undefined}
+      style={css`
+        box-sizing: border-box;
+        position: relative;
+        display: block;
+        width: 0;
+        height: 100%;
+        min-width: 0;
+        padding: 0;
+        flex-grow: 1;
+      `}
+    >
+      <input
+        type="number"
+        value={displayedValue}
+        min={props.min}
+        max={props.max}
+        step={step}
+        disabled={props.disabled === true}
+        readOnly={props.readOnly === true}
+        onInput={event => onInput(event.currentTarget, event)}
+        onChange={event => onChange(event.currentTarget, event)}
+        onFocus={onFocus}
+        onKeyDown={onKeyDown}
+        onPointerDown={event => onPointerDown(event.currentTarget, event)}
+        onPointerMove={onPointerMove}
+        onPointerUp={endScrub}
+        onPointerCancel={cancelScrub}
+        style={css`
+          box-sizing: border-box;
+          position: relative;
+          z-index: 1;
+          display: block;
+          width: 100%;
+          height: 100%;
+          min-width: 0;
+          padding-top: var(--number-field-padding-y, 0px);
+          padding-right: var(--number-field-padding-x, 16px);
+          padding-bottom: var(--number-field-padding-y, 0px);
+          padding-left: var(--number-field-padding-x, 16px);
+          border: 0 solid transparent;
+          border-radius: 0;
+          background: transparent;
+          color: var(--widget-number-content);
+          font-size: var(--number-field-font-size, var(--font-size-xs));
+          line-height: var(--line-height-control);
+          text-align: var(--number-field-text-align, right);
+          overflow: clip;
+          cursor: ew-resize;
+
+          &[readonly] {
+            color: var(--widget-number-content-readonly);
+            cursor: default;
+          }
+        `}
+      />
+      <button
+        type="button"
+        disabled={locked}
+        onClick={decrease}
+        style={css`
+          position: absolute;
+          left: 0;
+          top: 0;
+          z-index: 2;
+          display: block;
+          width: 16px;
+          height: 100%;
+          padding: 0;
+          border: 0 solid transparent;
+          background: transparent;
+          color: transparent;
+          box-shadow: none;
+        `}
+      >
+      </button>
+      <button
+        type="button"
+        disabled={locked}
+        onClick={increase}
+        style={css`
+          position: absolute;
+          right: 0;
+          top: 0;
+          z-index: 2;
+          display: block;
+          width: 16px;
+          height: 100%;
+          padding: 0;
+          border: 0 solid transparent;
+          background: transparent;
+          color: transparent;
+          box-shadow: none;
+        `}
+      >
+      </button>
+    </div>
+  </div>
+}

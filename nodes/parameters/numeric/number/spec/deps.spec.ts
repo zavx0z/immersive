@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/numeric/number/index.tsx",
     expected: {
       "nodes/parameters/numeric/number/index.tsx#NumberParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/number-field.tsx#NumberField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/number-field/index.tsx#NumberField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,7 +31,7 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/fields/number-field.tsx#NumberField": {
+      "ui/fields/number-field/index.tsx#NumberField": {
         uses: [],
         elements: ["button","div","input","span"],
       },

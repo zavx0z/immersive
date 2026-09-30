@@ -1,0 +1,17 @@
+{
+  "name": "@ui-fields-collection-model/collection-min-visible-rows",
+  "label": "COLLECTION_MIN_VISIBLE_ROWS",
+  "version": "0.0.0",
+  "description": "Обработка collection-min-visible-rows",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  }
+}

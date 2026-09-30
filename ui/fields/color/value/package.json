@@ -1,0 +1,32 @@
+{
+  "name": "@ui-fields-color/value",
+  "label": "value",
+  "version": "0.0.0",
+  "description": "Публичные возможности области fields/color/value",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./clamp-unit": "./clamp-unit/index.ts",
+    "./color-channel-display-value": "./color-channel-display-value/index.ts",
+    "./color-hsva-to-value": "./color-hsva-to-value/index.ts",
+    "./color-value-to-hsva": "./color-value-to-hsva/index.ts",
+    "./format-color-value": "./format-color-value/index.ts",
+    "./normalize-color-value": "./normalize-color-value/index.ts",
+    "./parse-color-value": "./parse-color-value/index.ts",
+    "./rgba-css": "./rgba-css/index.ts",
+    "./wrap-unit": "./wrap-unit/index.ts"
+  },
+  "dependencies": {
+    "@ui-fields-color-value/clamp-unit": "workspace:*",
+    "@ui-fields-color-value/color-channel-display-value": "workspace:*",
+    "@ui-fields-color-value/color-hsva-to-value": "workspace:*",
+    "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
+    "@ui-fields-color-value/format-color-value": "workspace:*",
+    "@ui-fields-color-value/normalize-color-value": "workspace:*",
+    "@ui-fields-color-value/parse-color-value": "workspace:*",
+    "@ui-fields-color-value/rgba-css": "workspace:*",
+    "@ui-fields-color-value/wrap-unit": "workspace:*"
+  }
+}

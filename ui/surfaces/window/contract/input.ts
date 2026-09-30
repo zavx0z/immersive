@@ -1,4 +1,5 @@
-import type {WindowAction, WindowGeometry} from "../types.ts"
+import type {WindowAction} from "./types.ts"
+import type {WindowGeometry} from "./types.ts"
 
 /**
 Оболочка окна в позиционированной области HUD, Display или обычного контейнера.

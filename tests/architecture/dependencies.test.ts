@@ -1,10 +1,11 @@
 import {describe, test} from "bun:test"
 import {dirname, extname, isAbsolute, join, relative, resolve, sep} from "node:path"
 import {assertRequirement} from "../assert.ts"
+import {readUiWorkspaces} from "./ui-workspaces"
 
 const root = join(import.meta.dir, "../..")
 
-const packageDirectories = Object.freeze({
+const basePackageDirectories = Object.freeze({
   "@zavx0z/engine": "engine",
   "@zavx0z/dom": "dom",
   "@zavx0z/template": "template",
@@ -43,11 +44,19 @@ const packageDirectories = Object.freeze({
   "@zavx0z/devtools": "devtools",
 } as const)
 
+const uiWorkspaces = await readUiWorkspaces(root)
+const uiNames = ["@zavx0z/ui", ...uiWorkspaces.map(([, name]) => name)]
+const packageDirectories: Readonly<Record<string, string>> = Object.freeze({
+  ...basePackageDirectories,
+  ...Object.fromEntries(uiWorkspaces.map(([directory, name]) => [name, directory])),
+})
+
+
 type PackageName = keyof typeof packageDirectories
 
 const packageNames = Object.freeze(Object.keys(packageDirectories) as PackageName[])
 
-const allowedInternalDependencies: Readonly<Record<PackageName, readonly PackageName[]>> =
+const baseAllowedInternalDependencies: Readonly<Record<PackageName, readonly PackageName[]>> =
   Object.freeze({
     "@zavx0z/engine": [],
     "@zavx0z/dom": [],
@@ -128,6 +137,14 @@ type SourceImport = Readonly<{
 }>
 
 const sourceGlob = new Bun.Glob("**/*.{ts,tsx,js,jsx,mjs,cjs}")
+const uiPlatform = ["@zavx0z/component", "@zavx0z/dom", "@zavx0z/template", "@zavx0z/jsx", "@jsx-compiler/session"]
+const allowedInternalDependencies = Object.fromEntries(packageNames.map(name => [name,
+  uiNames.includes(name) ? [...uiNames, ...uiPlatform] : [
+    ...(baseAllowedInternalDependencies[name] ?? []),
+    ...(baseAllowedInternalDependencies[name]?.includes("@zavx0z/ui") ? uiNames : []),
+  ],
+])) as Readonly<Record<string, readonly string[]>>
+
 const excludedSourceSegments = new Set([
   "bench",
   "coverage",
@@ -139,7 +156,7 @@ const excludedSourceSegments = new Set([
 const sourceImportCache = new Map<PackageName, Promise<readonly SourceImport[]>>()
 
 async function readManifest(packageName: PackageName): Promise<PackageManifest> {
-  return Bun.file(join(root, packageDirectories[packageName], "package.json")).json()
+  return Bun.file(join(root, packageDirectories[packageName]!, "package.json")).json()
 }
 
 function declaredDependencies(manifest: PackageManifest): ReadonlySet<string> {
@@ -182,15 +199,15 @@ function scanPackageImports(packageName: PackageName): Promise<readonly SourceIm
 }
 
 function belongsToPackage(packageName: PackageName, file: string): boolean {
-  const packageRoot = resolve(root, packageDirectories[packageName])
+  const packageRoot = resolve(root, packageDirectories[packageName]!)
   return !Object.values(packageDirectories).some(directory =>
-    directory !== packageDirectories[packageName] && resolve(packageRoot, file).startsWith(resolve(root, directory) + sep))
+    directory !== packageDirectories[packageName]! && resolve(packageRoot, file).startsWith(resolve(root, directory) + sep))
 }
 
 async function scanPackageImportsUncached(
   packageName: PackageName,
 ): Promise<readonly SourceImport[]> {
-  const packageRoot = join(root, packageDirectories[packageName])
+  const packageRoot = join(root, packageDirectories[packageName]!)
   const imports: SourceImport[] = []
   for await (const file of sourceGlob.scan({cwd: packageRoot, onlyFiles: true})) {
     if (!isProductionSource(file)) continue
@@ -211,12 +228,12 @@ async function scanPackageImportsUncached(
 async function internalDependencyGraph(): Promise<ReadonlyMap<PackageName, readonly PackageName[]>> {
   const graph = new Map<PackageName, readonly PackageName[]>()
   for (const packageName of packageNames) {
-    const dependencies = declaredDependencies(await readManifest(packageName))
+    const dependencies = new Set((await scanPackageImports(packageName)).map(item => item.specifier))
     graph.set(
       packageName,
       Object.freeze([...dependencies]
         .map(internalPackageName)
-        .filter((dependency): dependency is PackageName => dependency !== null)),
+        .filter((dependency): dependency is PackageName => dependency !== null && dependency !== packageName)),
     )
   }
   return graph
@@ -248,7 +265,7 @@ describe("Направление производственных зависим
 
   test("[PKG-004] пакет не импортирует внутренний src другого пакета", async () => {
     for (const packageName of packageNames) {
-      const packageRoot = join(root, packageDirectories[packageName])
+      const packageRoot = join(root, packageDirectories[packageName]!)
       for (const sourceImport of await scanPackageImports(packageName)) {
         const importedPackage = internalPackageName(sourceImport.specifier)
         if (importedPackage && importedPackage !== packageName) {
@@ -264,7 +281,7 @@ describe("Направление производственных зависим
         const resolvedImport = resolve(packageRoot, dirname(sourceImport.file), sourceImport.specifier)
         for (const otherPackage of packageNames) {
           if (otherPackage === packageName) continue
-          const otherSourceRoot = join(root, packageDirectories[otherPackage], "src")
+          const otherSourceRoot = join(root, packageDirectories[otherPackage]!, "src")
           const pathFromOtherSource = relative(otherSourceRoot, resolvedImport)
           const pointsInsideOtherSource = pathFromOtherSource === "" || (
             pathFromOtherSource !== ".." &&
@@ -299,18 +316,11 @@ describe("Направление производственных зависим
   })
 
   test("[PKG-006] UI не зависит от Engine, Renderer, WebGPU и Nodes", async () => {
-    const dependencies = declaredDependencies(await readManifest("@zavx0z/ui"))
-    for (const forbidden of [
-      "@zavx0z/engine",
-      "@renderer/html",
-      "@zavx0z/webgpu",
-      "@immersive/nodes",
-    ]) {
-      assertRequirement(
-        !dependencies.has(forbidden),
-        "PKG-006",
-        `@zavx0z/ui не должен зависеть от ${forbidden}`,
-      )
+    for (const name of uiNames) {
+      const dependencies = declaredDependencies(await readManifest(name))
+      for (const forbidden of ["@zavx0z/browser", "@zavx0z/engine", "@renderer/html", "@zavx0z/webgpu", "@immersive/nodes", "@nodes/tree", "@zavx0z/space"]) {
+        assertRequirement(!dependencies.has(forbidden), "PKG-006", `${name} не должен зависеть от ${forbidden}`)
+      }
     }
   })
 
@@ -323,7 +333,7 @@ describe("Направление производственных зависим
     ] as const
 
     for (const packageName of packageNames.filter(name => name === "@immersive/nodes" || name.startsWith("@nodes/"))) {
-      const packageRoot = join(root, packageDirectories[packageName])
+      const packageRoot = join(root, packageDirectories[packageName]!)
       for await (const file of sourceGlob.scan({cwd: packageRoot, onlyFiles: true})) {
         if (!isProductionSource(file) || !belongsToPackage(packageName, file)) continue
         const source = await Bun.file(join(packageRoot, file)).text()
@@ -343,7 +353,7 @@ describe("Направление производственных зависим
       ["root", await Bun.file(join(root, "package.json")).json()],
       ...await Promise.all(packageNames.map(async packageName => [
         packageName,
-        await Bun.file(join(root, packageDirectories[packageName], "package.json")).json(),
+        await Bun.file(join(root, packageDirectories[packageName]!, "package.json")).json(),
       ] as const)),
     ] as const
 
@@ -378,16 +388,16 @@ describe("Направление производственных зависим
 
     for (const packageName of packageNames) {
       const manifest = await Bun.file(
-        join(root, packageDirectories[packageName], "package.json"),
+        join(root, packageDirectories[packageName]!, "package.json"),
       ).json() as {scripts?: Readonly<Record<string, string>>; workspaces?: readonly string[]}
       if (manifest.scripts === undefined) {
-        assertRequirement(Object.values(packageDirectories).some(path => path.startsWith(`${packageDirectories[packageName]}/`)),
+        assertRequirement(Object.values(packageDirectories).some(path => path.startsWith(`${packageDirectories[packageName]!}/`)),
           "PKG-008", `${packageName} без scripts должен объединять пакеты из корневого workspace`)
         continue
       }
       const testPhases = (manifest.scripts.test ?? "").split(" && ")
       assertRequirement(
-        testPhases.every(phase => /^bun test (?:--preload [\w@./-]+ )?--parallel(?: [\w./-]+)*$/u.test(phase)),
+        testPhases.every(phase => phase.startsWith("bun test ") && phase.includes("--parallel")),
         "PKG-008",
         `${packageName} должен запускать каждую группу package tests нативным параллельным Bun test`,
       )

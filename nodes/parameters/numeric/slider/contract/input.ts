@@ -1,4 +1,4 @@
-import type {SliderFieldProps} from "@zavx0z/ui/fields/slider-field"
+import type {SliderFieldProps} from "@ui-fields/slider-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные параметра-ползунка, связанного с нодой и её сокетами.

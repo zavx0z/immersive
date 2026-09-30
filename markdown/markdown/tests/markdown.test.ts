@@ -86,7 +86,7 @@ describe("Markdown production owner", () => {
     }
   })
   test("CodeEditor memoizes automatic syntax but observes replacement of its language definition", async () => {
-    const {CodeEditor} = await import("@zavx0z/ui/views/code-editor")
+    const {default: CodeEditor} = await import("@ui-views/code-editor")
     const languageId = "code-editor-memo-test"
     let calls = 0
     const language = (increment: number) => ({id: languageId, name: languageId, tokenize(lines: readonly string[]) {
@@ -288,7 +288,7 @@ describe("Markdown production owner", () => {
   })
 
   test("the shared editor retains fixed viewports and real overflow on both axes", async () => {
-    const {CodeEditor} = await import("@zavx0z/ui/views/code-editor")
+    const {default: CodeEditor} = await import("@ui-views/code-editor")
     const document = createDocument()
     const container = document.createElement("div")
     document.append(container)

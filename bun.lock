@@ -8,6 +8,7 @@
         "@types/bun": "^1.4.2",
         "@webgpu/types": "^0.1.74",
         "@zavx0z/browser": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
         "@zavx0z/jsx": "workspace:*",
         "typescript": "^7.0.2",
       },
@@ -18,7 +19,13 @@
       "devDependencies": {
         "@jsx-compiler/bun": "workspace:*",
         "@jsx-compiler/session": "workspace:*",
+        "@ui-code-editor-model/create": "workspace:*",
+        "@ui-menus/clipboard-menu": "workspace:*",
+        "@ui-views/code-editor": "workspace:*",
+        "@ui-widgets/editor": "workspace:*",
+        "@ui/code-editor-model": "workspace:*",
         "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
       "peerDependencies": {
         "@renderer/html": "workspace:*",
@@ -86,17 +93,18 @@
         "bun-webgpu": "^0.1.7",
       },
       "peerDependencies": {
-        "@jsx-compiler/bun": "*",
-        "@jsx-compiler/session": "*",
-        "@jsx-slot/child": "*",
-        "@renderer/html": "*",
-        "@zavx0z/component": "*",
-        "@zavx0z/dom": "*",
-        "@zavx0z/engine": "*",
-        "@zavx0z/jsx": "*",
-        "@zavx0z/template": "*",
-        "@zavx0z/ui": "*",
-        "@zavx0z/webgpu": "*",
+        "@jsx-compiler/bun": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@jsx-slot/child": "workspace:*",
+        "@renderer/html": "workspace:*",
+        "@ui/typography": "workspace:*",
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+        "@zavx0z/engine": "workspace:*",
+        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/template": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
+        "@zavx0z/webgpu": "workspace:*",
       },
       "optionalPeers": [
         "@renderer/html",
@@ -282,12 +290,15 @@
         "@jsx-compiler/bun": "workspace:*",
         "@renderer/html": "workspace:*",
         "@zavx0z/highlighter": "^0.1.0",
+        "@zavx0z/ui": "workspace:*",
       },
       "peerDependencies": {
         "@immersive/nodes": "workspace:*",
         "@jsx-compiler/session": "workspace:*",
         "@nodes/layout": "workspace:*",
         "@nodes/node": "workspace:*",
+        "@ui-views/code-editor": "workspace:*",
+        "@ui/divider": "workspace:*",
         "@zavx0z/component": "workspace:*",
         "@zavx0z/dom": "workspace:*",
         "@zavx0z/jsx": "workspace:*",
@@ -311,6 +322,10 @@
         "@immersive/markdown": "workspace:*",
         "@jsx-compiler/bun": "workspace:*",
         "@jsx-compiler/session": "workspace:*",
+        "@renderer/html": "workspace:*",
+        "@zavx0z/engine": "workspace:*",
+        "@zavx0z/space": "workspace:*",
+        "@zavx0z/webgpu": "workspace:*",
       },
       "peerDependencies": {
         "@nodes/layout": "workspace:*",
@@ -318,6 +333,7 @@
         "@nodes/parameters": "workspace:*",
         "@nodes/sockets": "workspace:*",
         "@nodes/tree": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
         "@zavx0z/component": "workspace:*",
         "@zavx0z/dom": "workspace:*",
         "@zavx0z/jsx": "workspace:*",
@@ -352,14 +368,21 @@
         "@jsx-compiler/bun": "workspace:*",
       },
       "peerDependencies": {
-        "@jsx-compiler/session": "*",
-        "@nodes/parameters": "*",
-        "@nodes/sockets": "*",
-        "@nodes/tree": "*",
-        "@zavx0z/component": "*",
-        "@zavx0z/jsx": "*",
-        "@zavx0z/template": "*",
-        "@zavx0z/ui": "*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+        "@nodes/sockets": "workspace:*",
+        "@nodes/tree": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-buttons/icon-button": "workspace:*",
+        "@ui-surfaces/pane": "workspace:*",
+        "@ui-themes-icons/chevron-down": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+        "@ui-themes-icons/visibility-on": "workspace:*",
+        "@ui/typography": "workspace:*",
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/template": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
       "optionalPeers": [
         "@nodes/parameters",
@@ -377,12 +400,40 @@
         "@jsx-compiler/bun": "workspace:*",
       },
       "peerDependencies": {
-        "@nodes/sockets": "*",
-        "@nodes/tree": "*",
-        "@zavx0z/component": "*",
-        "@zavx0z/jsx": "*",
-        "@zavx0z/template": "*",
-        "@zavx0z/ui": "*",
+        "@nodes/sockets": "workspace:*",
+        "@nodes/tree": "workspace:*",
+        "@ui-buttons-toggle-button-group/layout": "workspace:*",
+        "@ui-buttons/toggle-button-group": "workspace:*",
+        "@ui-fields-checkbox-field/layout": "workspace:*",
+        "@ui-fields-collection-field/layout": "workspace:*",
+        "@ui-fields-color-field/layout": "workspace:*",
+        "@ui-fields-cycle-field/layout": "workspace:*",
+        "@ui-fields-matrix-field/layout": "workspace:*",
+        "@ui-fields-number-field/layout": "workspace:*",
+        "@ui-fields-path-field/layout": "workspace:*",
+        "@ui-fields-reference-field/layout": "workspace:*",
+        "@ui-fields-select-field/layout": "workspace:*",
+        "@ui-fields-slider-field/layout": "workspace:*",
+        "@ui-fields-switch-field/layout": "workspace:*",
+        "@ui-fields-text-field/layout": "workspace:*",
+        "@ui-fields-vector-field/layout": "workspace:*",
+        "@ui-fields/checkbox-field": "workspace:*",
+        "@ui-fields/collection-field": "workspace:*",
+        "@ui-fields/color-field": "workspace:*",
+        "@ui-fields/cycle-field": "workspace:*",
+        "@ui-fields/matrix-field": "workspace:*",
+        "@ui-fields/number-field": "workspace:*",
+        "@ui-fields/path-field": "workspace:*",
+        "@ui-fields/reference-field": "workspace:*",
+        "@ui-fields/select-field": "workspace:*",
+        "@ui-fields/slider-field": "workspace:*",
+        "@ui-fields/switch-field": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+        "@ui-fields/vector-field": "workspace:*",
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/template": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
       "optionalPeers": [
         "@nodes/sockets",
@@ -473,13 +524,18 @@
       },
       "devDependencies": {
         "@jsx-compiler/bun": "workspace:*",
+        "@renderer/html": "workspace:*",
+        "@ui-views-code-editor/palette": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
       "peerDependencies": {
-        "@immersive/markdown": "*",
-        "@zavx0z/component": "*",
-        "@zavx0z/jsx": "*",
-        "@zavx0z/template": "*",
-        "@zavx0z/ui": "*",
+        "@immersive/markdown": "workspace:*",
+        "@ui-views/code-editor": "workspace:*",
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/jsx": "workspace:*",
+        "@zavx0z/template": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
       "optionalPeers": [
         "@immersive/markdown",
@@ -492,35 +548,1947 @@
       "name": "@zavx0z/ui",
       "version": "0.0.0",
       "dependencies": {
-        "@zavx0z/highlighter": "^0.1.0",
+        "@ui/badge": "workspace:*",
+        "@ui/buttons": "workspace:*",
+        "@ui/code-editor-model": "workspace:*",
+        "@ui/divider": "workspace:*",
+        "@ui/feedback": "workspace:*",
+        "@ui/fields": "workspace:*",
+        "@ui/menus": "workspace:*",
+        "@ui/navigation": "workspace:*",
+        "@ui/selection": "workspace:*",
+        "@ui/surfaces": "workspace:*",
+        "@ui/terminal-model": "workspace:*",
+        "@ui/themes": "workspace:*",
+        "@ui/typography": "workspace:*",
+        "@ui/views": "workspace:*",
+        "@ui/widgets": "workspace:*",
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
         "@jsx-compiler/bun": "workspace:*",
         "@jsx-compiler/session": "workspace:*",
+        "@renderer/html": "workspace:*",
+        "@ui-buttons-toggle-button-group/layout": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-code-editor-model/create": "workspace:*",
+        "@ui-feedback/status-bar": "workspace:*",
+        "@ui-fields-checkbox-field/layout": "workspace:*",
+        "@ui-fields-collection-field/layout": "workspace:*",
+        "@ui-fields-color-field/layout": "workspace:*",
+        "@ui-fields-color-picker-field/layout": "workspace:*",
+        "@ui-fields-cycle-field/layout": "workspace:*",
+        "@ui-fields-field-group/layout": "workspace:*",
+        "@ui-fields-matrix-field/layout": "workspace:*",
+        "@ui-fields-number-field/layout": "workspace:*",
+        "@ui-fields-path-field/layout": "workspace:*",
+        "@ui-fields-reference-field/layout": "workspace:*",
+        "@ui-fields-select-field/layout": "workspace:*",
+        "@ui-fields-slider-field/layout": "workspace:*",
+        "@ui-fields-switch-field/layout": "workspace:*",
+        "@ui-fields-text-field/layout": "workspace:*",
+        "@ui-fields-vector-field/layout": "workspace:*",
+        "@ui-fields/field-group": "workspace:*",
+        "@ui-menus/clipboard-menu": "workspace:*",
+        "@ui-navigation/breadcrumbs": "workspace:*",
+        "@ui-surfaces-window/control": "workspace:*",
+        "@ui-surfaces/frame": "workspace:*",
+        "@ui-surfaces/pane": "workspace:*",
+        "@ui-surfaces/panel": "workspace:*",
+        "@ui-surfaces/tab": "workspace:*",
+        "@ui-surfaces/window": "workspace:*",
+        "@ui-terminal-model/create": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+        "@ui-themes-icons/collection": "workspace:*",
+        "@ui-themes-icons/home": "workspace:*",
+        "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*",
+        "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": "workspace:*",
+        "@ui-views-code-editor/view-model": "workspace:*",
+        "@ui-views/code-editor": "workspace:*",
+        "@ui-widgets/editor": "workspace:*",
+        "@ui-widgets/inspector": "workspace:*",
+        "@ui-widgets/terminal": "workspace:*",
+        "@ui-widgets/tree": "workspace:*",
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+        "@zavx0z/template": "workspace:*",
+      },
+    },
+    "ui/badge": {
+      "name": "@ui/badge",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/buttons": {
+      "name": "@ui/buttons",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-buttons/button": "workspace:*",
+        "@ui-buttons/icon-button": "workspace:*",
+        "@ui-buttons/toggle-button-group": "workspace:*",
+      },
+    },
+    "ui/buttons/button": {
+      "name": "@ui-buttons/button",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/buttons/icon-button": {
+      "name": "@ui-buttons/icon-button",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui-themes-icons/run": "workspace:*",
+      },
+    },
+    "ui/buttons/toggle-button-group": {
+      "name": "@ui-buttons/toggle-button-group",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-selection/validate-selection-options": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/buttons/toggle-button-group/layout": {
+      "name": "@ui-buttons-toggle-button-group/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-buttons/toggle-button-group": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/code-editor-model": {
+      "name": "@ui/code-editor-model",
+      "version": "0.0.0",
+    },
+    "ui/code-editor-model/create": {
+      "name": "@ui-code-editor-model/create",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui/code-editor-model": "workspace:*",
+      },
+    },
+    "ui/divider": {
+      "name": "@ui/divider",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/feedback": {
+      "name": "@ui/feedback",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-feedback/notification": "workspace:*",
+        "@ui-feedback/status-bar": "workspace:*",
+      },
+    },
+    "ui/feedback/notification": {
+      "name": "@ui-feedback/notification",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/icon-button": "workspace:*",
+        "@ui-themes-icons/close": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/feedback/status-bar": {
+      "name": "@ui-feedback/status-bar",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
       },
       "peerDependencies": {
-        "@zavx0z/component": "*",
-        "@zavx0z/dom": "*",
-        "@zavx0z/jsx": "*",
-        "@zavx0z/template": "*",
+        "@zavx0z/component": "workspace:*",
       },
-      "optionalPeers": [
-        "@zavx0z/component",
-        "@zavx0z/dom",
-        "@zavx0z/template",
-      ],
+    },
+    "ui/feedback/status-bar/status-bar-text": {
+      "name": "@ui-feedback-status-bar/status-bar-text",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-feedback/status-bar": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields": {
+      "name": "@ui/fields",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields/checkbox-field": "workspace:*",
+        "@ui-fields/collection": "workspace:*",
+        "@ui-fields/collection-field": "workspace:*",
+        "@ui-fields/color": "workspace:*",
+        "@ui-fields/color-field": "workspace:*",
+        "@ui-fields/color-picker-field": "workspace:*",
+        "@ui-fields/cycle-field": "workspace:*",
+        "@ui-fields/field-group": "workspace:*",
+        "@ui-fields/matrix": "workspace:*",
+        "@ui-fields/matrix-field": "workspace:*",
+        "@ui-fields/metrics": "workspace:*",
+        "@ui-fields/number": "workspace:*",
+        "@ui-fields/number-field": "workspace:*",
+        "@ui-fields/path-field": "workspace:*",
+        "@ui-fields/reference-field": "workspace:*",
+        "@ui-fields/select-field": "workspace:*",
+        "@ui-fields/slider-field": "workspace:*",
+        "@ui-fields/switch-field": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+        "@ui-fields/vector": "workspace:*",
+        "@ui-fields/vector-field": "workspace:*",
+      },
+    },
+    "ui/fields/checkbox-field": {
+      "name": "@ui-fields/checkbox-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/checkbox-field/layout": {
+      "name": "@ui-fields-checkbox-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/collection": {
+      "name": "@ui-fields/collection",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-collection/model": "workspace:*",
+      },
+    },
+    "ui/fields/collection-field": {
+      "name": "@ui-fields/collection-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/icon-button": "workspace:*",
+        "@ui-fields-collection-model/collection-visible-rows-height": "workspace:*",
+        "@ui-fields-collection-model/normalize-collection-items": "workspace:*",
+        "@ui-fields-collection-model/normalize-collection-visible-rows": "workspace:*",
+        "@ui-themes-icons/arrow-down": "workspace:*",
+        "@ui-themes-icons/arrow-up": "workspace:*",
+        "@ui-themes-icons/minus": "workspace:*",
+        "@ui-themes-icons/plus": "workspace:*",
+        "@ui-views/list": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/collection-field/layout": {
+      "name": "@ui-fields-collection-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-collection-model/normalize-collection-visible-rows": "workspace:*",
+        "@ui-fields-metrics/collection-field-height": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/collection/model": {
+      "name": "@ui-fields-collection/model",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-collection-model/collection-default-visible-rows": "workspace:*",
+        "@ui-fields-collection-model/collection-max-visible-rows": "workspace:*",
+        "@ui-fields-collection-model/collection-min-visible-rows": "workspace:*",
+        "@ui-fields-collection-model/collection-visible-rows-height": "workspace:*",
+        "@ui-fields-collection-model/normalize-collection-items": "workspace:*",
+        "@ui-fields-collection-model/normalize-collection-visible-rows": "workspace:*",
+      },
+    },
+    "ui/fields/collection/model/collection-default-visible-rows": {
+      "name": "@ui-fields-collection-model/collection-default-visible-rows",
+      "version": "0.0.0",
+    },
+    "ui/fields/collection/model/collection-max-visible-rows": {
+      "name": "@ui-fields-collection-model/collection-max-visible-rows",
+      "version": "0.0.0",
+    },
+    "ui/fields/collection/model/collection-min-visible-rows": {
+      "name": "@ui-fields-collection-model/collection-min-visible-rows",
+      "version": "0.0.0",
+    },
+    "ui/fields/collection/model/collection-visible-rows-height": {
+      "name": "@ui-fields-collection-model/collection-visible-rows-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
+      },
+    },
+    "ui/fields/collection/model/normalize-collection-items": {
+      "name": "@ui-fields-collection-model/normalize-collection-items",
+      "version": "0.0.0",
+    },
+    "ui/fields/collection/model/normalize-collection-visible-rows": {
+      "name": "@ui-fields-collection-model/normalize-collection-visible-rows",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-collection-model/collection-default-visible-rows": "workspace:*",
+        "@ui-fields-collection-model/collection-max-visible-rows": "workspace:*",
+        "@ui-fields-collection-model/collection-min-visible-rows": "workspace:*",
+      },
+    },
+    "ui/fields/color": {
+      "name": "@ui-fields/color",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color/value": "workspace:*",
+      },
+    },
+    "ui/fields/color-field": {
+      "name": "@ui-fields/color-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-fields-color-value/format-color-value": "workspace:*",
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+        "@ui-fields/color-picker-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/fields/color-field/layout": {
+      "name": "@ui-fields-color-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/color-picker-field": {
+      "name": "@ui-fields/color-picker-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-fields-color-value/clamp-unit": "workspace:*",
+        "@ui-fields-color-value/color-channel-display-value": "workspace:*",
+        "@ui-fields-color-value/color-hsva-to-value": "workspace:*",
+        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
+        "@ui-fields-color-value/format-color-value": "workspace:*",
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+        "@ui-fields-color-value/parse-color-value": "workspace:*",
+        "@ui-fields-color-value/rgba-css": "workspace:*",
+        "@ui-fields-color-value/wrap-unit": "workspace:*",
+        "@ui-fields/number-field": "workspace:*",
+        "@ui-fields/slider-field": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/color-picker-field/layout": {
+      "name": "@ui-fields-color-picker-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/color-picker-field-height": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/color/value": {
+      "name": "@ui-fields-color/value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/clamp-unit": "workspace:*",
+        "@ui-fields-color-value/color-channel-display-value": "workspace:*",
+        "@ui-fields-color-value/color-hsva-to-value": "workspace:*",
+        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
+        "@ui-fields-color-value/format-color-value": "workspace:*",
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+        "@ui-fields-color-value/parse-color-value": "workspace:*",
+        "@ui-fields-color-value/rgba-css": "workspace:*",
+        "@ui-fields-color-value/wrap-unit": "workspace:*",
+      },
+    },
+    "ui/fields/color/value/clamp-unit": {
+      "name": "@ui-fields-color-value/clamp-unit",
+      "version": "0.0.0",
+    },
+    "ui/fields/color/value/color-channel-display-value": {
+      "name": "@ui-fields-color-value/color-channel-display-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+      },
+    },
+    "ui/fields/color/value/color-hsva-to-value": {
+      "name": "@ui-fields-color-value/color-hsva-to-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/clamp-unit": "workspace:*",
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+        "@ui-fields-color-value/wrap-unit": "workspace:*",
+      },
+    },
+    "ui/fields/color/value/color-value-to-hsva": {
+      "name": "@ui-fields-color-value/color-value-to-hsva",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+        "@ui-fields-color-value/wrap-unit": "workspace:*",
+      },
+    },
+    "ui/fields/color/value/format-color-value": {
+      "name": "@ui-fields-color-value/format-color-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+      },
+    },
+    "ui/fields/color/value/normalize-color-value": {
+      "name": "@ui-fields-color-value/normalize-color-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/clamp-unit": "workspace:*",
+      },
+    },
+    "ui/fields/color/value/parse-color-value": {
+      "name": "@ui-fields-color-value/parse-color-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+      },
+    },
+    "ui/fields/color/value/rgba-css": {
+      "name": "@ui-fields-color-value/rgba-css",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+      },
+    },
+    "ui/fields/color/value/wrap-unit": {
+      "name": "@ui-fields-color-value/wrap-unit",
+      "version": "0.0.0",
+    },
+    "ui/fields/cycle-field": {
+      "name": "@ui-fields/cycle-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-selection/find-selection-option": "workspace:*",
+        "@ui-selection/validate-selection-options": "workspace:*",
+        "@ui-themes-icons/chevron-down": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/fields/cycle-field/layout": {
+      "name": "@ui-fields-cycle-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/cycle-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/field-group": {
+      "name": "@ui-fields/field-group",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/fields/field-group/layout": {
+      "name": "@ui-fields-field-group/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/field-group": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/matrix": {
+      "name": "@ui-fields/matrix",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-matrix/value": "workspace:*",
+      },
+    },
+    "ui/fields/matrix-field": {
+      "name": "@ui-fields/matrix-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-fields-matrix-value/normalize-matrix-value": "workspace:*",
+        "@ui-fields-matrix-value/update-matrix-value": "workspace:*",
+        "@ui-fields/field-group": "workspace:*",
+        "@ui-fields/number-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/matrix-field/layout": {
+      "name": "@ui-fields-matrix-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/matrix-field-height": "workspace:*",
+        "@ui-fields/matrix-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/matrix/value": {
+      "name": "@ui-fields-matrix/value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-matrix-value/normalize-matrix-value": "workspace:*",
+        "@ui-fields-matrix-value/update-matrix-value": "workspace:*",
+      },
+    },
+    "ui/fields/matrix/value/normalize-matrix-value": {
+      "name": "@ui-fields-matrix-value/normalize-matrix-value",
+      "version": "0.0.0",
+    },
+    "ui/fields/matrix/value/update-matrix-value": {
+      "name": "@ui-fields-matrix-value/update-matrix-value",
+      "version": "0.0.0",
+    },
+    "ui/fields/metrics": {
+      "name": "@ui-fields/metrics",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/collection-field-height": "workspace:*",
+        "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
+        "@ui-fields-metrics/color-picker-field-height": "workspace:*",
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields-metrics/matrix-field-height": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+      },
+    },
+    "ui/fields/metrics/collection-field-height": {
+      "name": "@ui-fields-metrics/collection-field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+      },
+    },
+    "ui/fields/metrics/collection-visible-rows-height": {
+      "name": "@ui-fields-metrics/collection-visible-rows-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+      },
+    },
+    "ui/fields/metrics/color-picker-field-height": {
+      "name": "@ui-fields-metrics/color-picker-field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+      },
+    },
+    "ui/fields/metrics/field-density-height": {
+      "name": "@ui-fields-metrics/field-density-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+      },
+    },
+    "ui/fields/metrics/field-metric": {
+      "name": "@ui-fields-metrics/field-metric",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui/themes": "workspace:*",
+      },
+    },
+    "ui/fields/metrics/labelled-field-height": {
+      "name": "@ui-fields-metrics/labelled-field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+      },
+    },
+    "ui/fields/metrics/matrix-field-height": {
+      "name": "@ui-fields-metrics/matrix-field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+      },
+    },
+    "ui/fields/metrics/resolve-field-density": {
+      "name": "@ui-fields-metrics/resolve-field-density",
+      "version": "0.0.0",
+    },
+    "ui/fields/number": {
+      "name": "@ui-fields/number",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number/scrub": "workspace:*",
+        "@ui-fields-number/value": "workspace:*",
+      },
+    },
+    "ui/fields/number-field": {
+      "name": "@ui-fields/number-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-fields-number-scrub/resolve-number-drag-range": "workspace:*",
+        "@ui-fields-number-scrub/scrub-number-raw-value": "workspace:*",
+        "@ui-fields-number-scrub/snap-number-value": "workspace:*",
+        "@ui-fields-number-value/format-number-value": "workspace:*",
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-fill-percentage": "workspace:*",
+        "@ui-fields-number-value/number-pointer-step": "workspace:*",
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+        "@ui-fields-number-value/step-number-value": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/fields/number-field/layout": {
+      "name": "@ui-fields-number-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/number/scrub": {
+      "name": "@ui-fields-number/scrub",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-scrub/resolve-number-drag-range": "workspace:*",
+        "@ui-fields-number-scrub/scrub-number-raw-value": "workspace:*",
+        "@ui-fields-number-scrub/scrub-number-value": "workspace:*",
+        "@ui-fields-number-scrub/snap-number-value": "workspace:*",
+      },
+    },
+    "ui/fields/number/scrub/resolve-number-drag-range": {
+      "name": "@ui-fields-number-scrub/resolve-number-drag-range",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+      },
+    },
+    "ui/fields/number/scrub/scrub-number-raw-value": {
+      "name": "@ui-fields-number-scrub/scrub-number-raw-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+      },
+    },
+    "ui/fields/number/scrub/scrub-number-value": {
+      "name": "@ui-fields-number-scrub/scrub-number-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-scrub/resolve-number-drag-range": "workspace:*",
+        "@ui-fields-number-scrub/scrub-number-raw-value": "workspace:*",
+        "@ui-fields-number-scrub/snap-number-value": "workspace:*",
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+      },
+    },
+    "ui/fields/number/scrub/snap-number-value": {
+      "name": "@ui-fields-number-scrub/snap-number-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+        "@ui-fields-number-value/rounded-number": "workspace:*",
+      },
+    },
+    "ui/fields/number/value": {
+      "name": "@ui-fields-number/value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/finite-bound": "workspace:*",
+        "@ui-fields-number-value/format-number-value": "workspace:*",
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-fill-percentage": "workspace:*",
+        "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
+        "@ui-fields-number-value/number-pointer-step": "workspace:*",
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+        "@ui-fields-number-value/rounded-number": "workspace:*",
+        "@ui-fields-number-value/step-number-value": "workspace:*",
+        "@ui-fields-number-value/valid-number-step": "workspace:*",
+      },
+    },
+    "ui/fields/number/value/finite-bound": {
+      "name": "@ui-fields-number-value/finite-bound",
+      "version": "0.0.0",
+    },
+    "ui/fields/number/value/format-number-value": {
+      "name": "@ui-fields-number-value/format-number-value",
+      "version": "0.0.0",
+    },
+    "ui/fields/number/value/normalize-number-value": {
+      "name": "@ui-fields-number-value/normalize-number-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/finite-bound": "workspace:*",
+        "@ui-fields-number-value/rounded-number": "workspace:*",
+        "@ui-fields-number-value/valid-number-step": "workspace:*",
+      },
+    },
+    "ui/fields/number/value/number-fill-percentage": {
+      "name": "@ui-fields-number-value/number-fill-percentage",
+      "version": "0.0.0",
+    },
+    "ui/fields/number/value/number-pointer-adaptive-span": {
+      "name": "@ui-fields-number-value/number-pointer-adaptive-span",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-pointer-step": "workspace:*",
+      },
+    },
+    "ui/fields/number/value/number-pointer-step": {
+      "name": "@ui-fields-number-value/number-pointer-step",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/valid-number-step": "workspace:*",
+      },
+    },
+    "ui/fields/number/value/resolve-number-soft-range": {
+      "name": "@ui-fields-number-value/resolve-number-soft-range",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/finite-bound": "workspace:*",
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
+        "@ui-fields-number-value/number-pointer-step": "workspace:*",
+      },
+    },
+    "ui/fields/number/value/rounded-number": {
+      "name": "@ui-fields-number-value/rounded-number",
+      "version": "0.0.0",
+    },
+    "ui/fields/number/value/step-number-value": {
+      "name": "@ui-fields-number-value/step-number-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-pointer-step": "workspace:*",
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+      },
+    },
+    "ui/fields/number/value/valid-number-step": {
+      "name": "@ui-fields-number-value/valid-number-step",
+      "version": "0.0.0",
+    },
+    "ui/fields/path-field": {
+      "name": "@ui-fields/path-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/icon-button": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+        "@ui-themes-icons/folder": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/path-field/layout": {
+      "name": "@ui-fields-path-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/path-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/reference-field": {
+      "name": "@ui-fields/reference-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-buttons/icon-button": "workspace:*",
+        "@ui-themes-icons/close": "workspace:*",
+        "@ui-themes-icons/picker": "workspace:*",
+        "@ui-themes-icons/resource": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/reference-field/layout": {
+      "name": "@ui-fields-reference-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/reference-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/select-field": {
+      "name": "@ui-fields/select-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-selection/find-selection-option": "workspace:*",
+        "@ui-selection/selection-exceptional-label": "workspace:*",
+        "@ui-selection/validate-selection-options": "workspace:*",
+        "@ui-selection/validate-selection-state": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/select-field/layout": {
+      "name": "@ui-fields-select-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/select-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/slider-field": {
+      "name": "@ui-fields/slider-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/slider-field/layout": {
+      "name": "@ui-fields-slider-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/slider-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/switch-field": {
+      "name": "@ui-fields/switch-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/switch-field/layout": {
+      "name": "@ui-fields-switch-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/text-field": {
+      "name": "@ui-fields/text-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/text-field/layout": {
+      "name": "@ui-fields-text-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/vector": {
+      "name": "@ui-fields/vector",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-vector/value": "workspace:*",
+      },
+    },
+    "ui/fields/vector-field": {
+      "name": "@ui-fields/vector-field",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-fields-vector-value/normalize-vector-value": "workspace:*",
+        "@ui-fields-vector-value/update-vector-value": "workspace:*",
+        "@ui-fields/field-group": "workspace:*",
+        "@ui-fields/number-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/vector-field/layout": {
+      "name": "@ui-fields-vector-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/vector-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/fields/vector/value": {
+      "name": "@ui-fields-vector/value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-vector-value/normalize-vector-value": "workspace:*",
+        "@ui-fields-vector-value/update-vector-value": "workspace:*",
+      },
+    },
+    "ui/fields/vector/value/normalize-vector-value": {
+      "name": "@ui-fields-vector-value/normalize-vector-value",
+      "version": "0.0.0",
+    },
+    "ui/fields/vector/value/update-vector-value": {
+      "name": "@ui-fields-vector-value/update-vector-value",
+      "version": "0.0.0",
+    },
+    "ui/menus": {
+      "name": "@ui/menus",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-menus/clipboard-menu": "workspace:*",
+        "@ui-menus/menu": "workspace:*",
+        "@ui-menus/menu-item": "workspace:*",
+      },
+    },
+    "ui/menus/clipboard-menu": {
+      "name": "@ui-menus/clipboard-menu",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-menus/menu": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/menus/menu": {
+      "name": "@ui-menus/menu",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-menus/menu-item": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/menus/menu-item": {
+      "name": "@ui-menus/menu-item",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/navigation": {
+      "name": "@ui/navigation",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-navigation/breadcrumbs": "workspace:*",
+      },
+    },
+    "ui/navigation/breadcrumbs": {
+      "name": "@ui-navigation/breadcrumbs",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/selection": {
+      "name": "@ui/selection",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-selection/find-selection-option": "workspace:*",
+        "@ui-selection/selection-exceptional-label": "workspace:*",
+        "@ui-selection/validate-selection-options": "workspace:*",
+        "@ui-selection/validate-selection-state": "workspace:*",
+      },
+    },
+    "ui/selection/find-selection-option": {
+      "name": "@ui-selection/find-selection-option",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-selection/validate-selection-options": "workspace:*",
+      },
+    },
+    "ui/selection/selection-exceptional-label": {
+      "name": "@ui-selection/selection-exceptional-label",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-selection/validate-selection-options": "workspace:*",
+      },
+    },
+    "ui/selection/validate-selection-options": {
+      "name": "@ui-selection/validate-selection-options",
+      "version": "0.0.0",
+    },
+    "ui/selection/validate-selection-state": {
+      "name": "@ui-selection/validate-selection-state",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-selection/validate-selection-options": "workspace:*",
+      },
+    },
+    "ui/surfaces": {
+      "name": "@ui/surfaces",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-surfaces/chrome": "workspace:*",
+        "@ui-surfaces/frame": "workspace:*",
+        "@ui-surfaces/pane": "workspace:*",
+        "@ui-surfaces/panel": "workspace:*",
+        "@ui-surfaces/tab": "workspace:*",
+        "@ui-surfaces/window": "workspace:*",
+      },
+    },
+    "ui/surfaces/chrome": {
+      "name": "@ui-surfaces/chrome",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-surfaces-chrome/assert-surface-actions": "workspace:*",
+        "@ui-surfaces-chrome/body": "workspace:*",
+        "@ui-surfaces-chrome/button": "workspace:*",
+        "@ui-surfaces-chrome/header": "workspace:*",
+        "@ui-surfaces-chrome/navigation": "workspace:*",
+        "@ui-surfaces-chrome/owner": "workspace:*",
+        "@ui-surfaces-chrome/title": "workspace:*",
+      },
+    },
+    "ui/surfaces/chrome/assert-surface-actions": {
+      "name": "@ui-surfaces-chrome/assert-surface-actions",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/surfaces/chrome/body": {
+      "name": "@ui-surfaces-chrome/body",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+    },
+    "ui/surfaces/chrome/button": {
+      "name": "@ui-surfaces-chrome/button",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/surfaces/chrome/header": {
+      "name": "@ui-surfaces-chrome/header",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+    },
+    "ui/surfaces/chrome/navigation": {
+      "name": "@ui-surfaces-chrome/navigation",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+    },
+    "ui/surfaces/chrome/owner": {
+      "name": "@ui-surfaces-chrome/owner",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+    },
+    "ui/surfaces/chrome/title": {
+      "name": "@ui-surfaces-chrome/title",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/surfaces/frame": {
+      "name": "@ui-surfaces/frame",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-surfaces-chrome/assert-surface-actions": "workspace:*",
+        "@ui-surfaces-chrome/body": "workspace:*",
+        "@ui-surfaces-chrome/button": "workspace:*",
+        "@ui-surfaces-chrome/header": "workspace:*",
+        "@ui-surfaces-chrome/navigation": "workspace:*",
+        "@ui-surfaces-chrome/owner": "workspace:*",
+        "@ui-surfaces-chrome/title": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+    },
+    "ui/surfaces/frame/defaults": {
+      "name": "@ui-surfaces-frame/defaults",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-surfaces/frame": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/surfaces/pane": {
+      "name": "@ui-surfaces/pane",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/surfaces/panel": {
+      "name": "@ui-surfaces/panel",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-buttons/icon-button": "workspace:*",
+        "@ui-themes-icons/chevron-down": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/surfaces/tab": {
+      "name": "@ui-surfaces/tab",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+      },
+    },
+    "ui/surfaces/window": {
+      "name": "@ui-surfaces/window",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-surfaces-chrome/button": "workspace:*",
+        "@ui-themes-icons/minus": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+      },
+    },
+    "ui/surfaces/window/control": {
+      "name": "@ui-surfaces-window/control",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+      },
+    },
+    "ui/terminal-model": {
+      "name": "@ui/terminal-model",
+      "version": "0.0.0",
+    },
+    "ui/terminal-model/create": {
+      "name": "@ui-terminal-model/create",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui/terminal-model": "workspace:*",
+      },
+    },
+    "ui/themes": {
+      "name": "@ui/themes",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes/icons": "workspace:*",
+        "@ui-themes/syntax-theme": "workspace:*",
+      },
+    },
+    "ui/themes/icons": {
+      "name": "@ui-themes/icons",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/apply": "workspace:*",
+        "@ui-themes-icons/arrow-down": "workspace:*",
+        "@ui-themes-icons/arrow-up": "workspace:*",
+        "@ui-themes-icons/breakpoint": "workspace:*",
+        "@ui-themes-icons/chevron-down": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+        "@ui-themes-icons/clear": "workspace:*",
+        "@ui-themes-icons/close": "workspace:*",
+        "@ui-themes-icons/collapse-all": "workspace:*",
+        "@ui-themes-icons/collection": "workspace:*",
+        "@ui-themes-icons/compose": "workspace:*",
+        "@ui-themes-icons/database": "workspace:*",
+        "@ui-themes-icons/encode": "workspace:*",
+        "@ui-themes-icons/execution-point": "workspace:*",
+        "@ui-themes-icons/expand": "workspace:*",
+        "@ui-themes-icons/expand-all": "workspace:*",
+        "@ui-themes-icons/folder": "workspace:*",
+        "@ui-themes-icons/home": "workspace:*",
+        "@ui-themes-icons/image": "workspace:*",
+        "@ui-themes-icons/language": "workspace:*",
+        "@ui-themes-icons/minus": "workspace:*",
+        "@ui-themes-icons/picker": "workspace:*",
+        "@ui-themes-icons/pin": "workspace:*",
+        "@ui-themes-icons/plus": "workspace:*",
+        "@ui-themes-icons/resource": "workspace:*",
+        "@ui-themes-icons/run": "workspace:*",
+        "@ui-themes-icons/search": "workspace:*",
+        "@ui-themes-icons/select-opened-item": "workspace:*",
+        "@ui-themes-icons/settings": "workspace:*",
+        "@ui-themes-icons/visibility-on": "workspace:*",
+      },
+    },
+    "ui/themes/icons/apply": {
+      "name": "@ui-themes-icons/apply",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/arrow-down": {
+      "name": "@ui-themes-icons/arrow-down",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/arrow-up": {
+      "name": "@ui-themes-icons/arrow-up",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/breakpoint": {
+      "name": "@ui-themes-icons/breakpoint",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/chevron-down": {
+      "name": "@ui-themes-icons/chevron-down",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/chevron-right": {
+      "name": "@ui-themes-icons/chevron-right",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/clear": {
+      "name": "@ui-themes-icons/clear",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/close": {
+      "name": "@ui-themes-icons/close",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/collapse-all": {
+      "name": "@ui-themes-icons/collapse-all",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/collection": {
+      "name": "@ui-themes-icons/collection",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/apply": "workspace:*",
+        "@ui-themes-icons/arrow-down": "workspace:*",
+        "@ui-themes-icons/arrow-up": "workspace:*",
+        "@ui-themes-icons/breakpoint": "workspace:*",
+        "@ui-themes-icons/chevron-down": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+        "@ui-themes-icons/clear": "workspace:*",
+        "@ui-themes-icons/close": "workspace:*",
+        "@ui-themes-icons/compose": "workspace:*",
+        "@ui-themes-icons/database": "workspace:*",
+        "@ui-themes-icons/encode": "workspace:*",
+        "@ui-themes-icons/execution-point": "workspace:*",
+        "@ui-themes-icons/expand": "workspace:*",
+        "@ui-themes-icons/folder": "workspace:*",
+        "@ui-themes-icons/image": "workspace:*",
+        "@ui-themes-icons/language": "workspace:*",
+        "@ui-themes-icons/minus": "workspace:*",
+        "@ui-themes-icons/picker": "workspace:*",
+        "@ui-themes-icons/pin": "workspace:*",
+        "@ui-themes-icons/plus": "workspace:*",
+        "@ui-themes-icons/resource": "workspace:*",
+        "@ui-themes-icons/run": "workspace:*",
+        "@ui-themes-icons/search": "workspace:*",
+        "@ui-themes-icons/settings": "workspace:*",
+        "@ui-themes-icons/visibility-on": "workspace:*",
+      },
+    },
+    "ui/themes/icons/compose": {
+      "name": "@ui-themes-icons/compose",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/encode": "workspace:*",
+      },
+    },
+    "ui/themes/icons/database": {
+      "name": "@ui-themes-icons/database",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/encode": {
+      "name": "@ui-themes-icons/encode",
+      "version": "0.0.0",
+    },
+    "ui/themes/icons/execution-point": {
+      "name": "@ui-themes-icons/execution-point",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/expand": {
+      "name": "@ui-themes-icons/expand",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/expand-all": {
+      "name": "@ui-themes-icons/expand-all",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/folder": {
+      "name": "@ui-themes-icons/folder",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/home": {
+      "name": "@ui-themes-icons/home",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/image": {
+      "name": "@ui-themes-icons/image",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/language": {
+      "name": "@ui-themes-icons/language",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/minus": {
+      "name": "@ui-themes-icons/minus",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/picker": {
+      "name": "@ui-themes-icons/picker",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/pin": {
+      "name": "@ui-themes-icons/pin",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/plus": {
+      "name": "@ui-themes-icons/plus",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/resource": {
+      "name": "@ui-themes-icons/resource",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/run": {
+      "name": "@ui-themes-icons/run",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/search": {
+      "name": "@ui-themes-icons/search",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/select-opened-item": {
+      "name": "@ui-themes-icons/select-opened-item",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/collection": "workspace:*",
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/settings": {
+      "name": "@ui-themes-icons/settings",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/icons/visibility-on": {
+      "name": "@ui-themes-icons/visibility-on",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+    },
+    "ui/themes/syntax-theme": {
+      "name": "@ui-themes/syntax-theme",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-syntax-theme/active": "workspace:*",
+        "@ui-themes-syntax-theme/name": "workspace:*",
+        "@ui-themes-syntax-theme/resolve": "workspace:*",
+      },
+    },
+    "ui/themes/syntax-theme/active": {
+      "name": "@ui-themes-syntax-theme/active",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui/themes": "workspace:*",
+      },
+    },
+    "ui/themes/syntax-theme/name": {
+      "name": "@ui-themes-syntax-theme/name",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-syntax-theme/active": "workspace:*",
+      },
+    },
+    "ui/themes/syntax-theme/resolve": {
+      "name": "@ui-themes-syntax-theme/resolve",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-syntax-theme/active": "workspace:*",
+      },
+    },
+    "ui/typography": {
+      "name": "@ui/typography",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/views": {
+      "name": "@ui/views",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views/code-editor": "workspace:*",
+        "@ui-views/list": "workspace:*",
+        "@ui-views/table": "workspace:*",
+        "@ui-views/timeline": "workspace:*",
+      },
+    },
+    "ui/views/code-editor": {
+      "name": "@ui-views/code-editor",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-code-editor-model/create": "workspace:*",
+        "@ui-views-code-editor/highlighter": "workspace:*",
+        "@ui-views-code-editor/validate": "workspace:*",
+        "@ui-views-code-editor/view-model": "workspace:*",
+        "@ui/badge": "workspace:*",
+        "@ui/code-editor-model": "workspace:*",
+        "@zavx0z/highlighter": "^0.1.0",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+      },
+    },
+    "ui/views/code-editor/assert-non-empty": {
+      "name": "@ui-views-code-editor/assert-non-empty",
+      "version": "0.0.0",
+    },
+    "ui/views/code-editor/editor-foreground": {
+      "name": "@ui-views-code-editor/editor-foreground",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-code-editor/theme-color": "workspace:*",
+      },
+    },
+    "ui/views/code-editor/highlighter": {
+      "name": "@ui-views-code-editor/highlighter",
+      "version": "0.0.0",
+      "dependencies": {
+        "@zavx0z/highlighter": "^0.1.0",
+      },
+    },
+    "ui/views/code-editor/is-hex-color": {
+      "name": "@ui-views-code-editor/is-hex-color",
+      "version": "0.0.0",
+    },
+    "ui/views/code-editor/normalize-hex-color": {
+      "name": "@ui-views-code-editor/normalize-hex-color",
+      "version": "0.0.0",
+    },
+    "ui/views/code-editor/palette": {
+      "name": "@ui-views-code-editor/palette",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-code-editor/editor-foreground": "workspace:*",
+        "@ui-views-code-editor/theme-color": "workspace:*",
+      },
+    },
+    "ui/views/code-editor/syntax-theme": {
+      "name": "@ui-views-code-editor/syntax-theme",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*",
+        "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": "workspace:*",
+      },
+    },
+    "ui/views/code-editor/syntax-theme/code-editor-syntax-theme": {
+      "name": "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme",
+      "version": "0.0.0",
+    },
+    "ui/views/code-editor/syntax-theme/resolve-code-editor-syntax-scope-color-hex": {
+      "name": "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*",
+      },
+    },
+    "ui/views/code-editor/theme-color": {
+      "name": "@ui-views-code-editor/theme-color",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*",
+        "@ui-views-code-editor/is-hex-color": "workspace:*",
+        "@ui-views-code-editor/normalize-hex-color": "workspace:*",
+      },
+    },
+    "ui/views/code-editor/validate": {
+      "name": "@ui-views-code-editor/validate",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-code-editor/assert-non-empty": "workspace:*",
+        "@ui-views/code-editor": "workspace:*",
+        "@ui/code-editor-model": "workspace:*",
+      },
+    },
+    "ui/views/code-editor/view-model": {
+      "name": "@ui-views-code-editor/view-model",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": "workspace:*",
+        "@ui-views-code-editor/assert-non-empty": "workspace:*",
+        "@ui-views-code-editor/editor-foreground": "workspace:*",
+        "@ui-views-code-editor/highlighter": "workspace:*",
+        "@ui-views-code-editor/is-hex-color": "workspace:*",
+        "@ui-views-code-editor/normalize-hex-color": "workspace:*",
+        "@ui-views-code-editor/validate": "workspace:*",
+        "@ui-views/code-editor": "workspace:*",
+        "@ui/badge": "workspace:*",
+        "@ui/code-editor-model": "workspace:*",
+        "@zavx0z/highlighter": "^0.1.0",
+      },
+    },
+    "ui/views/list": {
+      "name": "@ui-views/list",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/views/table": {
+      "name": "@ui-views/table",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-views-table/normalize-table-selection": "workspace:*",
+        "@ui-views-table/table-selection-after-click": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/views/table/normalize-table-selection": {
+      "name": "@ui-views-table/normalize-table-selection",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/views/table/table-selection-after-click": {
+      "name": "@ui-views-table/table-selection-after-click",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-table/normalize-table-selection": "workspace:*",
+        "@ui-views/table": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/views/timeline": {
+      "name": "@ui-views/timeline",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-surfaces-chrome/header": "workspace:*",
+        "@ui-surfaces-chrome/owner": "workspace:*",
+        "@ui-surfaces-chrome/title": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/views/timeline/defaults": {
+      "name": "@ui-views-timeline/defaults",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views/timeline": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/widgets": {
+      "name": "@ui/widgets",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-widgets/editor": "workspace:*",
+        "@ui-widgets/header": "workspace:*",
+        "@ui-widgets/inspector": "workspace:*",
+        "@ui-widgets/terminal": "workspace:*",
+        "@ui-widgets/tree": "workspace:*",
+      },
+    },
+    "ui/widgets/editor": {
+      "name": "@ui-widgets/editor",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-code-editor-model/create": "workspace:*",
+        "@ui-views/code-editor": "workspace:*",
+        "@ui-widgets/header": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+      },
+    },
+    "ui/widgets/header": {
+      "name": "@ui-widgets/header",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-widgets-header/action": "workspace:*",
+        "@ui/badge": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/widgets/header/action": {
+      "name": "@ui-widgets-header/action",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-widgets/header": "workspace:*",
+        "@ui/badge": "workspace:*",
+        "@ui/divider": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/widgets/inspector": {
+      "name": "@ui-widgets/inspector",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-buttons/icon-button": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+        "@ui-themes-icons/search": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui-themes-icons/run": "workspace:*",
+        "@ui/typography": "workspace:*",
+      },
+    },
+    "ui/widgets/inspector/is-inspector-panel-visible": {
+      "name": "@ui-widgets-inspector/is-inspector-panel-visible",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-widgets/inspector": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+    },
+    "ui/widgets/terminal": {
+      "name": "@ui-widgets/terminal",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+        "@ui-widgets/header": "workspace:*",
+        "@ui/terminal-model": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+      },
+    },
+    "ui/widgets/tree": {
+      "name": "@ui-widgets/tree",
+      "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@ui-buttons/button": "workspace:*",
+        "@ui-themes-icons/chevron-down": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+        "@ui-widgets-header/action": "workspace:*",
+        "@ui-widgets/header": "workspace:*",
+        "@ui/badge": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+      },
     },
     "webgpu": {
       "name": "@zavx0z/webgpu",
       "version": "0.0.0",
       "devDependencies": {
         "@jsx-compiler/bun": "workspace:*",
+        "@ui-views/code-editor": "workspace:*",
         "@webgpu/types": "^0.1.72",
+        "@zavx0z/component": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+        "@zavx0z/template": "workspace:*",
       },
       "peerDependencies": {
-        "@renderer/html": "*",
-        "@zavx0z/engine": "*",
+        "@renderer/html": "workspace:*",
+        "@zavx0z/engine": "workspace:*",
       },
       "optionalPeers": [
         "@renderer/html",
@@ -709,6 +2677,388 @@
     "@typescript/typescript-win32-arm64": ["@typescript/typescript-win32-arm64@7.0.2", "", { "os": "win32", "cpu": "arm64" }, "sha512-Gyl1Vy6OsWesLzmq+EP0Fb7b4Nid5232AvcA2SFcdYreldpNtYFFofPjnt62y9hQy7VTaZp65ICJjuAQRaVcIQ=="],
 
     "@typescript/typescript-win32-x64": ["@typescript/typescript-win32-x64@7.0.2", "", { "os": "win32", "cpu": "x64" }, "sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g=="],
+
+    "@ui-buttons-toggle-button-group/layout": ["@ui-buttons-toggle-button-group/layout@workspace:ui/buttons/toggle-button-group/layout"],
+
+    "@ui-buttons/button": ["@ui-buttons/button@workspace:ui/buttons/button"],
+
+    "@ui-buttons/icon-button": ["@ui-buttons/icon-button@workspace:ui/buttons/icon-button"],
+
+    "@ui-buttons/toggle-button-group": ["@ui-buttons/toggle-button-group@workspace:ui/buttons/toggle-button-group"],
+
+    "@ui-code-editor-model/create": ["@ui-code-editor-model/create@workspace:ui/code-editor-model/create"],
+
+    "@ui-feedback-status-bar/status-bar-text": ["@ui-feedback-status-bar/status-bar-text@workspace:ui/feedback/status-bar/status-bar-text"],
+
+    "@ui-feedback/notification": ["@ui-feedback/notification@workspace:ui/feedback/notification"],
+
+    "@ui-feedback/status-bar": ["@ui-feedback/status-bar@workspace:ui/feedback/status-bar"],
+
+    "@ui-fields-checkbox-field/layout": ["@ui-fields-checkbox-field/layout@workspace:ui/fields/checkbox-field/layout"],
+
+    "@ui-fields-collection-field/layout": ["@ui-fields-collection-field/layout@workspace:ui/fields/collection-field/layout"],
+
+    "@ui-fields-collection-model/collection-default-visible-rows": ["@ui-fields-collection-model/collection-default-visible-rows@workspace:ui/fields/collection/model/collection-default-visible-rows"],
+
+    "@ui-fields-collection-model/collection-max-visible-rows": ["@ui-fields-collection-model/collection-max-visible-rows@workspace:ui/fields/collection/model/collection-max-visible-rows"],
+
+    "@ui-fields-collection-model/collection-min-visible-rows": ["@ui-fields-collection-model/collection-min-visible-rows@workspace:ui/fields/collection/model/collection-min-visible-rows"],
+
+    "@ui-fields-collection-model/collection-visible-rows-height": ["@ui-fields-collection-model/collection-visible-rows-height@workspace:ui/fields/collection/model/collection-visible-rows-height"],
+
+    "@ui-fields-collection-model/normalize-collection-items": ["@ui-fields-collection-model/normalize-collection-items@workspace:ui/fields/collection/model/normalize-collection-items"],
+
+    "@ui-fields-collection-model/normalize-collection-visible-rows": ["@ui-fields-collection-model/normalize-collection-visible-rows@workspace:ui/fields/collection/model/normalize-collection-visible-rows"],
+
+    "@ui-fields-collection/model": ["@ui-fields-collection/model@workspace:ui/fields/collection/model"],
+
+    "@ui-fields-color-field/layout": ["@ui-fields-color-field/layout@workspace:ui/fields/color-field/layout"],
+
+    "@ui-fields-color-picker-field/layout": ["@ui-fields-color-picker-field/layout@workspace:ui/fields/color-picker-field/layout"],
+
+    "@ui-fields-color-value/clamp-unit": ["@ui-fields-color-value/clamp-unit@workspace:ui/fields/color/value/clamp-unit"],
+
+    "@ui-fields-color-value/color-channel-display-value": ["@ui-fields-color-value/color-channel-display-value@workspace:ui/fields/color/value/color-channel-display-value"],
+
+    "@ui-fields-color-value/color-hsva-to-value": ["@ui-fields-color-value/color-hsva-to-value@workspace:ui/fields/color/value/color-hsva-to-value"],
+
+    "@ui-fields-color-value/color-value-to-hsva": ["@ui-fields-color-value/color-value-to-hsva@workspace:ui/fields/color/value/color-value-to-hsva"],
+
+    "@ui-fields-color-value/format-color-value": ["@ui-fields-color-value/format-color-value@workspace:ui/fields/color/value/format-color-value"],
+
+    "@ui-fields-color-value/normalize-color-value": ["@ui-fields-color-value/normalize-color-value@workspace:ui/fields/color/value/normalize-color-value"],
+
+    "@ui-fields-color-value/parse-color-value": ["@ui-fields-color-value/parse-color-value@workspace:ui/fields/color/value/parse-color-value"],
+
+    "@ui-fields-color-value/rgba-css": ["@ui-fields-color-value/rgba-css@workspace:ui/fields/color/value/rgba-css"],
+
+    "@ui-fields-color-value/wrap-unit": ["@ui-fields-color-value/wrap-unit@workspace:ui/fields/color/value/wrap-unit"],
+
+    "@ui-fields-color/value": ["@ui-fields-color/value@workspace:ui/fields/color/value"],
+
+    "@ui-fields-cycle-field/layout": ["@ui-fields-cycle-field/layout@workspace:ui/fields/cycle-field/layout"],
+
+    "@ui-fields-field-group/layout": ["@ui-fields-field-group/layout@workspace:ui/fields/field-group/layout"],
+
+    "@ui-fields-matrix-field/layout": ["@ui-fields-matrix-field/layout@workspace:ui/fields/matrix-field/layout"],
+
+    "@ui-fields-matrix-value/normalize-matrix-value": ["@ui-fields-matrix-value/normalize-matrix-value@workspace:ui/fields/matrix/value/normalize-matrix-value"],
+
+    "@ui-fields-matrix-value/update-matrix-value": ["@ui-fields-matrix-value/update-matrix-value@workspace:ui/fields/matrix/value/update-matrix-value"],
+
+    "@ui-fields-matrix/value": ["@ui-fields-matrix/value@workspace:ui/fields/matrix/value"],
+
+    "@ui-fields-metrics/collection-field-height": ["@ui-fields-metrics/collection-field-height@workspace:ui/fields/metrics/collection-field-height"],
+
+    "@ui-fields-metrics/collection-visible-rows-height": ["@ui-fields-metrics/collection-visible-rows-height@workspace:ui/fields/metrics/collection-visible-rows-height"],
+
+    "@ui-fields-metrics/color-picker-field-height": ["@ui-fields-metrics/color-picker-field-height@workspace:ui/fields/metrics/color-picker-field-height"],
+
+    "@ui-fields-metrics/field-density-height": ["@ui-fields-metrics/field-density-height@workspace:ui/fields/metrics/field-density-height"],
+
+    "@ui-fields-metrics/field-metric": ["@ui-fields-metrics/field-metric@workspace:ui/fields/metrics/field-metric"],
+
+    "@ui-fields-metrics/labelled-field-height": ["@ui-fields-metrics/labelled-field-height@workspace:ui/fields/metrics/labelled-field-height"],
+
+    "@ui-fields-metrics/matrix-field-height": ["@ui-fields-metrics/matrix-field-height@workspace:ui/fields/metrics/matrix-field-height"],
+
+    "@ui-fields-metrics/resolve-field-density": ["@ui-fields-metrics/resolve-field-density@workspace:ui/fields/metrics/resolve-field-density"],
+
+    "@ui-fields-number-field/layout": ["@ui-fields-number-field/layout@workspace:ui/fields/number-field/layout"],
+
+    "@ui-fields-number-scrub/resolve-number-drag-range": ["@ui-fields-number-scrub/resolve-number-drag-range@workspace:ui/fields/number/scrub/resolve-number-drag-range"],
+
+    "@ui-fields-number-scrub/scrub-number-raw-value": ["@ui-fields-number-scrub/scrub-number-raw-value@workspace:ui/fields/number/scrub/scrub-number-raw-value"],
+
+    "@ui-fields-number-scrub/scrub-number-value": ["@ui-fields-number-scrub/scrub-number-value@workspace:ui/fields/number/scrub/scrub-number-value"],
+
+    "@ui-fields-number-scrub/snap-number-value": ["@ui-fields-number-scrub/snap-number-value@workspace:ui/fields/number/scrub/snap-number-value"],
+
+    "@ui-fields-number-value/finite-bound": ["@ui-fields-number-value/finite-bound@workspace:ui/fields/number/value/finite-bound"],
+
+    "@ui-fields-number-value/format-number-value": ["@ui-fields-number-value/format-number-value@workspace:ui/fields/number/value/format-number-value"],
+
+    "@ui-fields-number-value/normalize-number-value": ["@ui-fields-number-value/normalize-number-value@workspace:ui/fields/number/value/normalize-number-value"],
+
+    "@ui-fields-number-value/number-fill-percentage": ["@ui-fields-number-value/number-fill-percentage@workspace:ui/fields/number/value/number-fill-percentage"],
+
+    "@ui-fields-number-value/number-pointer-adaptive-span": ["@ui-fields-number-value/number-pointer-adaptive-span@workspace:ui/fields/number/value/number-pointer-adaptive-span"],
+
+    "@ui-fields-number-value/number-pointer-step": ["@ui-fields-number-value/number-pointer-step@workspace:ui/fields/number/value/number-pointer-step"],
+
+    "@ui-fields-number-value/resolve-number-soft-range": ["@ui-fields-number-value/resolve-number-soft-range@workspace:ui/fields/number/value/resolve-number-soft-range"],
+
+    "@ui-fields-number-value/rounded-number": ["@ui-fields-number-value/rounded-number@workspace:ui/fields/number/value/rounded-number"],
+
+    "@ui-fields-number-value/step-number-value": ["@ui-fields-number-value/step-number-value@workspace:ui/fields/number/value/step-number-value"],
+
+    "@ui-fields-number-value/valid-number-step": ["@ui-fields-number-value/valid-number-step@workspace:ui/fields/number/value/valid-number-step"],
+
+    "@ui-fields-number/scrub": ["@ui-fields-number/scrub@workspace:ui/fields/number/scrub"],
+
+    "@ui-fields-number/value": ["@ui-fields-number/value@workspace:ui/fields/number/value"],
+
+    "@ui-fields-path-field/layout": ["@ui-fields-path-field/layout@workspace:ui/fields/path-field/layout"],
+
+    "@ui-fields-reference-field/layout": ["@ui-fields-reference-field/layout@workspace:ui/fields/reference-field/layout"],
+
+    "@ui-fields-select-field/layout": ["@ui-fields-select-field/layout@workspace:ui/fields/select-field/layout"],
+
+    "@ui-fields-slider-field/layout": ["@ui-fields-slider-field/layout@workspace:ui/fields/slider-field/layout"],
+
+    "@ui-fields-switch-field/layout": ["@ui-fields-switch-field/layout@workspace:ui/fields/switch-field/layout"],
+
+    "@ui-fields-text-field/layout": ["@ui-fields-text-field/layout@workspace:ui/fields/text-field/layout"],
+
+    "@ui-fields-vector-field/layout": ["@ui-fields-vector-field/layout@workspace:ui/fields/vector-field/layout"],
+
+    "@ui-fields-vector-value/normalize-vector-value": ["@ui-fields-vector-value/normalize-vector-value@workspace:ui/fields/vector/value/normalize-vector-value"],
+
+    "@ui-fields-vector-value/update-vector-value": ["@ui-fields-vector-value/update-vector-value@workspace:ui/fields/vector/value/update-vector-value"],
+
+    "@ui-fields-vector/value": ["@ui-fields-vector/value@workspace:ui/fields/vector/value"],
+
+    "@ui-fields/checkbox-field": ["@ui-fields/checkbox-field@workspace:ui/fields/checkbox-field"],
+
+    "@ui-fields/collection": ["@ui-fields/collection@workspace:ui/fields/collection"],
+
+    "@ui-fields/collection-field": ["@ui-fields/collection-field@workspace:ui/fields/collection-field"],
+
+    "@ui-fields/color": ["@ui-fields/color@workspace:ui/fields/color"],
+
+    "@ui-fields/color-field": ["@ui-fields/color-field@workspace:ui/fields/color-field"],
+
+    "@ui-fields/color-picker-field": ["@ui-fields/color-picker-field@workspace:ui/fields/color-picker-field"],
+
+    "@ui-fields/cycle-field": ["@ui-fields/cycle-field@workspace:ui/fields/cycle-field"],
+
+    "@ui-fields/field-group": ["@ui-fields/field-group@workspace:ui/fields/field-group"],
+
+    "@ui-fields/matrix": ["@ui-fields/matrix@workspace:ui/fields/matrix"],
+
+    "@ui-fields/matrix-field": ["@ui-fields/matrix-field@workspace:ui/fields/matrix-field"],
+
+    "@ui-fields/metrics": ["@ui-fields/metrics@workspace:ui/fields/metrics"],
+
+    "@ui-fields/number": ["@ui-fields/number@workspace:ui/fields/number"],
+
+    "@ui-fields/number-field": ["@ui-fields/number-field@workspace:ui/fields/number-field"],
+
+    "@ui-fields/path-field": ["@ui-fields/path-field@workspace:ui/fields/path-field"],
+
+    "@ui-fields/reference-field": ["@ui-fields/reference-field@workspace:ui/fields/reference-field"],
+
+    "@ui-fields/select-field": ["@ui-fields/select-field@workspace:ui/fields/select-field"],
+
+    "@ui-fields/slider-field": ["@ui-fields/slider-field@workspace:ui/fields/slider-field"],
+
+    "@ui-fields/switch-field": ["@ui-fields/switch-field@workspace:ui/fields/switch-field"],
+
+    "@ui-fields/text-field": ["@ui-fields/text-field@workspace:ui/fields/text-field"],
+
+    "@ui-fields/vector": ["@ui-fields/vector@workspace:ui/fields/vector"],
+
+    "@ui-fields/vector-field": ["@ui-fields/vector-field@workspace:ui/fields/vector-field"],
+
+    "@ui-menus/clipboard-menu": ["@ui-menus/clipboard-menu@workspace:ui/menus/clipboard-menu"],
+
+    "@ui-menus/menu": ["@ui-menus/menu@workspace:ui/menus/menu"],
+
+    "@ui-menus/menu-item": ["@ui-menus/menu-item@workspace:ui/menus/menu-item"],
+
+    "@ui-navigation/breadcrumbs": ["@ui-navigation/breadcrumbs@workspace:ui/navigation/breadcrumbs"],
+
+    "@ui-selection/find-selection-option": ["@ui-selection/find-selection-option@workspace:ui/selection/find-selection-option"],
+
+    "@ui-selection/selection-exceptional-label": ["@ui-selection/selection-exceptional-label@workspace:ui/selection/selection-exceptional-label"],
+
+    "@ui-selection/validate-selection-options": ["@ui-selection/validate-selection-options@workspace:ui/selection/validate-selection-options"],
+
+    "@ui-selection/validate-selection-state": ["@ui-selection/validate-selection-state@workspace:ui/selection/validate-selection-state"],
+
+    "@ui-surfaces-chrome/assert-surface-actions": ["@ui-surfaces-chrome/assert-surface-actions@workspace:ui/surfaces/chrome/assert-surface-actions"],
+
+    "@ui-surfaces-chrome/body": ["@ui-surfaces-chrome/body@workspace:ui/surfaces/chrome/body"],
+
+    "@ui-surfaces-chrome/button": ["@ui-surfaces-chrome/button@workspace:ui/surfaces/chrome/button"],
+
+    "@ui-surfaces-chrome/header": ["@ui-surfaces-chrome/header@workspace:ui/surfaces/chrome/header"],
+
+    "@ui-surfaces-chrome/navigation": ["@ui-surfaces-chrome/navigation@workspace:ui/surfaces/chrome/navigation"],
+
+    "@ui-surfaces-chrome/owner": ["@ui-surfaces-chrome/owner@workspace:ui/surfaces/chrome/owner"],
+
+    "@ui-surfaces-chrome/title": ["@ui-surfaces-chrome/title@workspace:ui/surfaces/chrome/title"],
+
+    "@ui-surfaces-frame/defaults": ["@ui-surfaces-frame/defaults@workspace:ui/surfaces/frame/defaults"],
+
+    "@ui-surfaces-window/control": ["@ui-surfaces-window/control@workspace:ui/surfaces/window/control"],
+
+    "@ui-surfaces/chrome": ["@ui-surfaces/chrome@workspace:ui/surfaces/chrome"],
+
+    "@ui-surfaces/frame": ["@ui-surfaces/frame@workspace:ui/surfaces/frame"],
+
+    "@ui-surfaces/pane": ["@ui-surfaces/pane@workspace:ui/surfaces/pane"],
+
+    "@ui-surfaces/panel": ["@ui-surfaces/panel@workspace:ui/surfaces/panel"],
+
+    "@ui-surfaces/tab": ["@ui-surfaces/tab@workspace:ui/surfaces/tab"],
+
+    "@ui-surfaces/window": ["@ui-surfaces/window@workspace:ui/surfaces/window"],
+
+    "@ui-terminal-model/create": ["@ui-terminal-model/create@workspace:ui/terminal-model/create"],
+
+    "@ui-themes-icons/apply": ["@ui-themes-icons/apply@workspace:ui/themes/icons/apply"],
+
+    "@ui-themes-icons/arrow-down": ["@ui-themes-icons/arrow-down@workspace:ui/themes/icons/arrow-down"],
+
+    "@ui-themes-icons/arrow-up": ["@ui-themes-icons/arrow-up@workspace:ui/themes/icons/arrow-up"],
+
+    "@ui-themes-icons/breakpoint": ["@ui-themes-icons/breakpoint@workspace:ui/themes/icons/breakpoint"],
+
+    "@ui-themes-icons/chevron-down": ["@ui-themes-icons/chevron-down@workspace:ui/themes/icons/chevron-down"],
+
+    "@ui-themes-icons/chevron-right": ["@ui-themes-icons/chevron-right@workspace:ui/themes/icons/chevron-right"],
+
+    "@ui-themes-icons/clear": ["@ui-themes-icons/clear@workspace:ui/themes/icons/clear"],
+
+    "@ui-themes-icons/close": ["@ui-themes-icons/close@workspace:ui/themes/icons/close"],
+
+    "@ui-themes-icons/collapse-all": ["@ui-themes-icons/collapse-all@workspace:ui/themes/icons/collapse-all"],
+
+    "@ui-themes-icons/collection": ["@ui-themes-icons/collection@workspace:ui/themes/icons/collection"],
+
+    "@ui-themes-icons/compose": ["@ui-themes-icons/compose@workspace:ui/themes/icons/compose"],
+
+    "@ui-themes-icons/database": ["@ui-themes-icons/database@workspace:ui/themes/icons/database"],
+
+    "@ui-themes-icons/encode": ["@ui-themes-icons/encode@workspace:ui/themes/icons/encode"],
+
+    "@ui-themes-icons/execution-point": ["@ui-themes-icons/execution-point@workspace:ui/themes/icons/execution-point"],
+
+    "@ui-themes-icons/expand": ["@ui-themes-icons/expand@workspace:ui/themes/icons/expand"],
+
+    "@ui-themes-icons/expand-all": ["@ui-themes-icons/expand-all@workspace:ui/themes/icons/expand-all"],
+
+    "@ui-themes-icons/folder": ["@ui-themes-icons/folder@workspace:ui/themes/icons/folder"],
+
+    "@ui-themes-icons/home": ["@ui-themes-icons/home@workspace:ui/themes/icons/home"],
+
+    "@ui-themes-icons/image": ["@ui-themes-icons/image@workspace:ui/themes/icons/image"],
+
+    "@ui-themes-icons/language": ["@ui-themes-icons/language@workspace:ui/themes/icons/language"],
+
+    "@ui-themes-icons/minus": ["@ui-themes-icons/minus@workspace:ui/themes/icons/minus"],
+
+    "@ui-themes-icons/picker": ["@ui-themes-icons/picker@workspace:ui/themes/icons/picker"],
+
+    "@ui-themes-icons/pin": ["@ui-themes-icons/pin@workspace:ui/themes/icons/pin"],
+
+    "@ui-themes-icons/plus": ["@ui-themes-icons/plus@workspace:ui/themes/icons/plus"],
+
+    "@ui-themes-icons/resource": ["@ui-themes-icons/resource@workspace:ui/themes/icons/resource"],
+
+    "@ui-themes-icons/run": ["@ui-themes-icons/run@workspace:ui/themes/icons/run"],
+
+    "@ui-themes-icons/search": ["@ui-themes-icons/search@workspace:ui/themes/icons/search"],
+
+    "@ui-themes-icons/select-opened-item": ["@ui-themes-icons/select-opened-item@workspace:ui/themes/icons/select-opened-item"],
+
+    "@ui-themes-icons/settings": ["@ui-themes-icons/settings@workspace:ui/themes/icons/settings"],
+
+    "@ui-themes-icons/visibility-on": ["@ui-themes-icons/visibility-on@workspace:ui/themes/icons/visibility-on"],
+
+    "@ui-themes-syntax-theme/active": ["@ui-themes-syntax-theme/active@workspace:ui/themes/syntax-theme/active"],
+
+    "@ui-themes-syntax-theme/name": ["@ui-themes-syntax-theme/name@workspace:ui/themes/syntax-theme/name"],
+
+    "@ui-themes-syntax-theme/resolve": ["@ui-themes-syntax-theme/resolve@workspace:ui/themes/syntax-theme/resolve"],
+
+    "@ui-themes/icons": ["@ui-themes/icons@workspace:ui/themes/icons"],
+
+    "@ui-themes/syntax-theme": ["@ui-themes/syntax-theme@workspace:ui/themes/syntax-theme"],
+
+    "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": ["@ui-views-code-editor-syntax-theme/code-editor-syntax-theme@workspace:ui/views/code-editor/syntax-theme/code-editor-syntax-theme"],
+
+    "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": ["@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex@workspace:ui/views/code-editor/syntax-theme/resolve-code-editor-syntax-scope-color-hex"],
+
+    "@ui-views-code-editor/assert-non-empty": ["@ui-views-code-editor/assert-non-empty@workspace:ui/views/code-editor/assert-non-empty"],
+
+    "@ui-views-code-editor/editor-foreground": ["@ui-views-code-editor/editor-foreground@workspace:ui/views/code-editor/editor-foreground"],
+
+    "@ui-views-code-editor/highlighter": ["@ui-views-code-editor/highlighter@workspace:ui/views/code-editor/highlighter"],
+
+    "@ui-views-code-editor/is-hex-color": ["@ui-views-code-editor/is-hex-color@workspace:ui/views/code-editor/is-hex-color"],
+
+    "@ui-views-code-editor/normalize-hex-color": ["@ui-views-code-editor/normalize-hex-color@workspace:ui/views/code-editor/normalize-hex-color"],
+
+    "@ui-views-code-editor/palette": ["@ui-views-code-editor/palette@workspace:ui/views/code-editor/palette"],
+
+    "@ui-views-code-editor/syntax-theme": ["@ui-views-code-editor/syntax-theme@workspace:ui/views/code-editor/syntax-theme"],
+
+    "@ui-views-code-editor/theme-color": ["@ui-views-code-editor/theme-color@workspace:ui/views/code-editor/theme-color"],
+
+    "@ui-views-code-editor/validate": ["@ui-views-code-editor/validate@workspace:ui/views/code-editor/validate"],
+
+    "@ui-views-code-editor/view-model": ["@ui-views-code-editor/view-model@workspace:ui/views/code-editor/view-model"],
+
+    "@ui-views-table/normalize-table-selection": ["@ui-views-table/normalize-table-selection@workspace:ui/views/table/normalize-table-selection"],
+
+    "@ui-views-table/table-selection-after-click": ["@ui-views-table/table-selection-after-click@workspace:ui/views/table/table-selection-after-click"],
+
+    "@ui-views-timeline/defaults": ["@ui-views-timeline/defaults@workspace:ui/views/timeline/defaults"],
+
+    "@ui-views/code-editor": ["@ui-views/code-editor@workspace:ui/views/code-editor"],
+
+    "@ui-views/list": ["@ui-views/list@workspace:ui/views/list"],
+
+    "@ui-views/table": ["@ui-views/table@workspace:ui/views/table"],
+
+    "@ui-views/timeline": ["@ui-views/timeline@workspace:ui/views/timeline"],
+
+    "@ui-widgets-header/action": ["@ui-widgets-header/action@workspace:ui/widgets/header/action"],
+
+    "@ui-widgets-inspector/is-inspector-panel-visible": ["@ui-widgets-inspector/is-inspector-panel-visible@workspace:ui/widgets/inspector/is-inspector-panel-visible"],
+
+    "@ui-widgets/editor": ["@ui-widgets/editor@workspace:ui/widgets/editor"],
+
+    "@ui-widgets/header": ["@ui-widgets/header@workspace:ui/widgets/header"],
+
+    "@ui-widgets/inspector": ["@ui-widgets/inspector@workspace:ui/widgets/inspector"],
+
+    "@ui-widgets/terminal": ["@ui-widgets/terminal@workspace:ui/widgets/terminal"],
+
+    "@ui-widgets/tree": ["@ui-widgets/tree@workspace:ui/widgets/tree"],
+
+    "@ui/badge": ["@ui/badge@workspace:ui/badge"],
+
+    "@ui/buttons": ["@ui/buttons@workspace:ui/buttons"],
+
+    "@ui/code-editor-model": ["@ui/code-editor-model@workspace:ui/code-editor-model"],
+
+    "@ui/divider": ["@ui/divider@workspace:ui/divider"],
+
+    "@ui/feedback": ["@ui/feedback@workspace:ui/feedback"],
+
+    "@ui/fields": ["@ui/fields@workspace:ui/fields"],
+
+    "@ui/menus": ["@ui/menus@workspace:ui/menus"],
+
+    "@ui/navigation": ["@ui/navigation@workspace:ui/navigation"],
+
+    "@ui/selection": ["@ui/selection@workspace:ui/selection"],
+
+    "@ui/surfaces": ["@ui/surfaces@workspace:ui/surfaces"],
+
+    "@ui/terminal-model": ["@ui/terminal-model@workspace:ui/terminal-model"],
+
+    "@ui/themes": ["@ui/themes@workspace:ui/themes"],
+
+    "@ui/typography": ["@ui/typography@workspace:ui/typography"],
+
+    "@ui/views": ["@ui/views@workspace:ui/views"],
+
+    "@ui/widgets": ["@ui/widgets@workspace:ui/widgets"],
 
     "@upsetjs/venn.js": ["@upsetjs/venn.js@2.0.0", "", { "optionalDependencies": { "d3-selection": "^3.0.0", "d3-transition": "^3.0.1" } }, "sha512-WbBhLrooyePuQ1VZxrJjtLvTc4NVfpOyKx0sKqioq9bX1C1m7Jgykkn8gLrtwumBioXIqam8DLxp88Adbue6Hw=="],
 

@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/boolean/switch/index.tsx",
     expected: {
       "nodes/parameters/boolean/switch/index.tsx#SwitchParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/switch-field.tsx#SwitchField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/switch-field/index.tsx#SwitchField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,7 +31,7 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/fields/switch-field.tsx#SwitchField": {
+      "ui/fields/switch-field/index.tsx#SwitchField": {
         uses: [],
         elements: ["button","div","span"],
       },

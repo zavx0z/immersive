@@ -1,0 +1,30 @@
+{
+  "name": "@ui-widgets/terminal",
+  "label": "Terminal",
+  "version": "0.0.0",
+  "description": "Представление терминального вывода и ввода команд",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-fields/text-field": "workspace:*",
+    "@ui-widgets/header": "workspace:*",
+    "@ui/terminal-model": "workspace:*"
+  },
+  "peerDependencies": {
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/dom": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

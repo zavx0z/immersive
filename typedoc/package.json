@@ -29,7 +29,8 @@
     "@zavx0z/template": "workspace:*",
     "@immersive/markdown": "workspace:*",
     "@zavx0z/ui": "workspace:*",
-    "@zavx0z/jsx": "workspace:*"
+    "@zavx0z/jsx": "workspace:*",
+    "@ui-views/code-editor": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {
@@ -46,6 +47,10 @@
     }
   },
   "devDependencies": {
-    "@jsx-compiler/bun": "workspace:*"
+    "@jsx-compiler/bun": "workspace:*",
+    "@zavx0z/ui": "workspace:*",
+    "@ui-views-code-editor/palette": "workspace:*",
+    "@zavx0z/dom": "workspace:*",
+    "@renderer/html": "workspace:*"
   }
 }

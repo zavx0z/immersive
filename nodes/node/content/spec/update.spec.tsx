@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
 import {ContentNode} from "@nodes/node/content"
-import {Typography} from "@zavx0z/ui/typography"
+import Typography from "@ui/typography"
 import {parameters, sockets} from "../../spec/fixture/parameters"
 
 test.each([

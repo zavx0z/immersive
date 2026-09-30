@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/choice/select/index.tsx",
     expected: {
       "nodes/parameters/choice/select/index.tsx#SelectParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/select-field.tsx#SelectField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/select-field/index.tsx#SelectField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,11 +31,11 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/fields/select-field.tsx#SelectField": {
-        uses: ["ui/fields/select-field.tsx#SelectOption"],
+      "ui/fields/select-field/index.tsx#SelectField": {
+        uses: ["ui/fields/select-field/src/helpers.tsx#SelectOption"],
         elements: ["label","optgroup","option","select","span"],
       },
-      "ui/fields/select-field.tsx#SelectOption": {
+      "ui/fields/select-field/src/helpers.tsx#SelectOption": {
         uses: [],
         elements: ["option"],
       },

@@ -1,4 +1,4 @@
-import type {CollectionFieldProps} from "@zavx0z/ui/fields/collection-field"
+import type {CollectionFieldProps} from "@ui-fields/collection-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные параметра-коллекции, связанного с нодой и её сокетами.

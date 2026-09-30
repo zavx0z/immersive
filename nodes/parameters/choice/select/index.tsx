@@ -6,7 +6,7 @@ SelectParameter соединяет публичный SelectField с компо�
 @packageDocumentation
 */
 
-import {SelectField} from "@zavx0z/ui/fields/select-field"
+import SelectField from "@ui-fields/select-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {SelectParameterProps} from "./contract/input.ts"
 

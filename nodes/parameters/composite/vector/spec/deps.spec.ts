@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/composite/vector/index.tsx",
     expected: {
       "nodes/parameters/composite/vector/index.tsx#VectorParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/vector-field.tsx#VectorField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/vector-field/index.tsx#VectorField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,16 +31,16 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/fields/field-group.tsx#FieldGroup": {
+      "ui/fields/field-group/index.tsx#FieldGroup": {
         uses: [],
         elements: ["div","span"],
       },
-      "ui/fields/number-field.tsx#NumberField": {
+      "ui/fields/number-field/index.tsx#NumberField": {
         uses: [],
         elements: ["button","div","input","span"],
       },
-      "ui/fields/vector-field.tsx#VectorField": {
-        uses: ["ui/fields/field-group.tsx#FieldGroup","ui/fields/number-field.tsx#NumberField"],
+      "ui/fields/vector-field/index.tsx#VectorField": {
+        uses: ["ui/fields/field-group/index.tsx#FieldGroup","ui/fields/number-field/index.tsx#NumberField"],
         elements: [],
       },
     },

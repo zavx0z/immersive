@@ -1,0 +1,28 @@
+{
+  "name": "@ui-surfaces/chrome",
+  "label": "chrome",
+  "version": "0.0.0",
+  "description": "Публичные возможности области surfaces/chrome",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./assert-surface-actions": "./assert-surface-actions/index.tsx",
+    "./body": "./body/index.tsx",
+    "./button": "./button/index.tsx",
+    "./header": "./header/index.tsx",
+    "./navigation": "./navigation/index.tsx",
+    "./owner": "./owner/index.tsx",
+    "./title": "./title/index.tsx"
+  },
+  "dependencies": {
+    "@ui-surfaces-chrome/assert-surface-actions": "workspace:*",
+    "@ui-surfaces-chrome/body": "workspace:*",
+    "@ui-surfaces-chrome/button": "workspace:*",
+    "@ui-surfaces-chrome/header": "workspace:*",
+    "@ui-surfaces-chrome/navigation": "workspace:*",
+    "@ui-surfaces-chrome/owner": "workspace:*",
+    "@ui-surfaces-chrome/title": "workspace:*"
+  }
+}

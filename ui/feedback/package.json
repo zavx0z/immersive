@@ -1,0 +1,19 @@
+{
+  "name": "@ui/feedback",
+  "label": "feedback",
+  "version": "0.0.0",
+  "description": "Публичные возможности области feedback",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./notification": "./notification/index.tsx",
+    "./status-bar": "./status-bar/index.tsx",
+    "./status-bar/status-bar-text": "./status-bar/status-bar-text/index.tsx"
+  },
+  "dependencies": {
+    "@ui-feedback/notification": "workspace:*",
+    "@ui-feedback/status-bar": "workspace:*"
+  }
+}

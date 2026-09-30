@@ -5,22 +5,23 @@ import {createDocument, Event, InputEvent, KeyboardEvent, MouseEvent, Compositio
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentRenderer} from "@renderer/html"
-import {createCodeEditorModel} from "../code-editor-model.ts"
-import {createTerminalModel} from "../terminal-model.ts"
-import type {CodeEditorHandle} from "../views/code-editor.tsx"
-import type {EditorProps} from "../widgets/editor.tsx"
-import type {TerminalProps, TerminalHandle} from "../widgets/terminal.tsx"
-import type {TreeProps} from "../widgets/tree.tsx"
-import type {WindowProps} from "../surfaces/window/index.tsx"
+import createCodeEditorModel from "@ui-code-editor-model/create"
+import createTerminalModel from "@ui-terminal-model/create"
+import type {CodeEditorHandle} from "@ui-views/code-editor"
+import type {EditorProps} from "@ui-widgets/editor"
+import type {TerminalProps} from "@ui-widgets/terminal"
+import type {TerminalHandle} from "@ui-widgets/terminal"
+import type {TreeProps} from "@ui-widgets/tree"
+import type {WindowProps} from "@ui-surfaces/window"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {textPositionAtOffset} from "@zavx0z/dom/text-position"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {Editor} = await import("../widgets/editor.tsx")
-const {Terminal} = await import("../widgets/terminal.tsx")
-const {Tree} = await import("../widgets/tree.tsx")
-const {Window} = await import("../surfaces/window/index.tsx")
+const {default: Editor} = await import("@ui-widgets/editor")
+const {default: Terminal} = await import("@ui-widgets/terminal")
+const {default: Tree} = await import("@ui-widgets/tree")
+const {default: Window} = await import("@ui-surfaces/window")
 
 function fixture() {
   const document = createDocument()

@@ -38,12 +38,15 @@
     "@nodes/layout": "workspace:*",
     "@immersive/nodes": "workspace:*",
     "@zavx0z/jsx": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@jsx-compiler/session": "workspace:*",
+    "@ui/divider": "workspace:*",
+    "@ui-views/code-editor": "workspace:*"
   },
   "devDependencies": {
     "@renderer/html": "workspace:*",
     "@zavx0z/highlighter": "^0.1.0",
-    "@jsx-compiler/bun": "workspace:*"
+    "@jsx-compiler/bun": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {

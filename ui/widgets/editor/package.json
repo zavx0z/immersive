@@ -1,0 +1,29 @@
+{
+  "name": "@ui-widgets/editor",
+  "label": "Editor",
+  "version": "0.0.0",
+  "description": "Составной редактор с заголовком и командами приложения",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-code-editor-model/create": "workspace:*",
+    "@ui-views/code-editor": "workspace:*",
+    "@ui-widgets/header": "workspace:*"
+  },
+  "peerDependencies": {
+    "@zavx0z/component": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

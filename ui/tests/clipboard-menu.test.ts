@@ -8,7 +8,7 @@ import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {ClipboardMenu} = await import("../menus/clipboard-menu.tsx")
+const {default: ClipboardMenu} = await import("@ui-menus/clipboard-menu")
 
 test("global clipboard menu uses existing commands and retains the original selection target", async () => {
   const document = createDocument()

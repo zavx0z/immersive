@@ -14,13 +14,13 @@ import {registerLanguageHighlighter} from "@zavx0z/highlighter"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import {createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "@renderer/html"
-import {createCodeEditorModel} from "../code-editor-model.ts"
-import type {CodeEditorProps} from "../src/code-editor/model.ts"
+import createCodeEditorModel from "@ui-code-editor-model/create"
+import type {CodeEditorProps} from "@ui-views/code-editor"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 
 const root = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "ui")]}))
-const {CodeEditor} = await import("../views/code-editor.tsx")
+const {default: CodeEditor} = await import("@ui-views/code-editor")
 const template = CodeEditor as unknown as CompiledTemplate<CodeEditorProps>
 
 function mount(value: string, options: Partial<CodeEditorProps> = {}) {

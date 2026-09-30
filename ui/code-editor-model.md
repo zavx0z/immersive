@@ -8,7 +8,7 @@ CodeEditor и Interpreter используют одну и ту же модел�
 ## Состояние и выделения
 
 `createCodeEditorModel({value, readOnly?, selections?, primary?, historyLimit?})`
-возвращает `CodeEditorModel`. `snapshot` и содержащиеся в нём диапазоны заморожены.
+из `@zavx0z/ui/code-editor-model/create` возвращает `CodeEditorModel`. `snapshot` и содержащиеся в нём диапазоны заморожены.
 `subscribe` сообщает только последующие изменения, возвращает функцию отписки.
 `revision` монотонно увеличивается только при изменении текста, включая preview IME,
 undo, redo и отмену composition. Изменение выделения сообщает новый snapshot,

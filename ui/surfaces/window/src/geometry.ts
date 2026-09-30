@@ -1,4 +1,4 @@
-import type {WindowGeometry} from "../types.ts"
+import type {WindowGeometry} from "../contract/types"
 
 /** Сторона resize или перемещение за шапку. */
 export type WindowGesture = "move" | "n" | "s" | "e" | "w" | "ne" | "nw" | "se" | "sw"

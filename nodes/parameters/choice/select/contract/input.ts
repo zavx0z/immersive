@@ -1,4 +1,4 @@
-import type {SelectFieldProps} from "@zavx0z/ui/fields/select-field"
+import type {SelectFieldProps} from "@ui-fields/select-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные параметра выбора, связанного с нодой и её сокетами.

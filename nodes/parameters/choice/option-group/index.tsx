@@ -6,7 +6,7 @@ OptionGroupParameter соединяет публичный ToggleButtonGroup с 
 @packageDocumentation
 */
 
-import {ToggleButtonGroup} from "@zavx0z/ui/buttons/toggle-button-group"
+import ToggleButtonGroup from "@ui-buttons/toggle-button-group"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {OptionGroupParameterProps} from "./contract/input.ts"
 

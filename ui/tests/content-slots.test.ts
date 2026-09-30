@@ -4,8 +4,8 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument, MouseEvent} from "@zavx0z/dom"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {PaneTextContent} from "../surfaces/pane.tsx"
-import type {TabProps} from "../surfaces/tab/contract/input.ts"
+import type {PaneTextContent} from "@ui-surfaces/pane"
+import type {TabProps} from "@ui-surfaces/tab"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({

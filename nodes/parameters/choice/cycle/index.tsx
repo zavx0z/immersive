@@ -6,7 +6,7 @@ CycleParameter соединяет публичный CycleField с композ�
 @packageDocumentation
 */
 
-import {CycleField} from "@zavx0z/ui/fields/cycle-field"
+import CycleField from "@ui-fields/cycle-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {CycleParameterProps} from "./contract/input.ts"
 

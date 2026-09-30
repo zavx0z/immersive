@@ -1,0 +1,21 @@
+{
+  "name": "@ui-fields-metrics/field-density-height",
+  "label": "fieldDensityHeight",
+  "version": "0.0.0",
+  "description": "Высота поля для выбранной плотности",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-fields-metrics/field-metric": "workspace:*",
+    "@ui-fields-metrics/resolve-field-density": "workspace:*"
+  }
+}

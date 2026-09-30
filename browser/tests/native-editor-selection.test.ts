@@ -7,8 +7,8 @@ import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/engine"
 import type {Renderer} from "@zavx0z/webgpu"
 import {caretPositionAtPoint} from "@renderer/html"
-import {createCodeEditorModel} from "@zavx0z/ui/code-editor-model"
-import type {CodeEditorProps} from "@zavx0z/ui/views/code-editor"
+import createCodeEditorModel from "@ui-code-editor-model/create"
+import type {CodeEditorProps} from "@ui-views/code-editor"
 import {createDocumentNativeInputHostWithSeams} from "../src/native-input-host.ts"
 import {createDocumentSpaceRuntimeWithSeams} from "../src/space-runtime.ts"
 import {createDocumentPlaneRuntime} from "../src/plane-runtime.ts"
@@ -19,8 +19,8 @@ import type {DisplayElement} from "@zavx0z/dom/display"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui"), resolve(workspace, "space"), import.meta.dir]}))
-const {CodeEditor} = await import("@zavx0z/ui/views/code-editor")
-const {Editor} = await import("@zavx0z/ui/widgets/editor")
+const {default: CodeEditor} = await import("@ui-views/code-editor")
+const {default: Editor} = await import("@ui-widgets/editor")
 const {NativeEditorSelectionFixture} = await import("./native-editor-selection.fixture.tsx")
 
 class NativeProxy extends EventTarget {

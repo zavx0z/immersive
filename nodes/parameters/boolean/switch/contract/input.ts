@@ -1,4 +1,4 @@
-import type {SwitchFieldProps} from "@zavx0z/ui/fields/switch-field"
+import type {SwitchFieldProps} from "@ui-fields/switch-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные логического параметра-переключателя, связанного с нодой и её сокетами.

@@ -1,4 +1,4 @@
-import {CodeEditor} from "@zavx0z/ui/views/code-editor"
+import CodeEditor from "@ui-views/code-editor"
 
 /**
 Показывает TypeScript-сигнатуру, тип или default в общем {@link CodeEditor} только для чтения.

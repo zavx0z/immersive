@@ -1,6 +1,6 @@
-import {Inspector} from "@zavx0z/ui/widgets/inspector"
-import {Panel} from "@zavx0z/ui/surfaces/panel"
-import {uiIcons} from "@zavx0z/ui/themes/icons"
+import Inspector from "@ui-widgets/inspector"
+import Panel from "@ui-surfaces/panel"
+import uiIcons from "@ui-themes-icons/collection"
 
 export function InspectorFixture() {
   return <Inspector

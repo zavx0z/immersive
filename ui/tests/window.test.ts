@@ -6,11 +6,11 @@ import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, type RenderCursor} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {WindowProps} from "../surfaces/window/contract/input.ts"
+import type {WindowProps} from "@ui-surfaces/window"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {Window} = await import("../surfaces/window/index.tsx")
+const {default: Window} = await import("@ui-surfaces/window")
 const {WindowPairFixture} = await import("./window.fixture.tsx")
 const theme = await Bun.file(resolve(workspace, "ui/themes/theme.css")).text()
 

@@ -1,7 +1,7 @@
 import {useMemo, useRef} from "@zavx0z/component"
-import {Button} from "@zavx0z/ui/buttons/button"
-import {createCodeEditorModel} from "@zavx0z/ui/code-editor-model"
-import {CodeEditor} from "@zavx0z/ui/views/code-editor"
+import Button from "@ui-buttons/button"
+import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditor from "@ui-views/code-editor"
 
 const editableSource = [
   'const first = "Привет"',

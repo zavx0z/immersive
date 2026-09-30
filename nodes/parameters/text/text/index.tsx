@@ -6,7 +6,7 @@ TextParameter соединяет публичный TextField с компози�
 @packageDocumentation
 */
 
-import {TextField} from "@zavx0z/ui/fields/text-field"
+import TextField from "@ui-fields/text-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {TextParameterProps} from "./contract/input.ts"
 

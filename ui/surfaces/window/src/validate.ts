@@ -1,4 +1,4 @@
-import type {WindowProps} from "../contract/input.ts"
+import type {WindowProps} from "../contract/input"
 
 /** Отклоняет неоднозначный адрес, неконечную геометрию и повторяющиеся ключи действий. */
 export function validateWindow(props: WindowProps): void {

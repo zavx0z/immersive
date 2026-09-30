@@ -1,4 +1,4 @@
-import type {ToggleButtonGroupProps} from "@zavx0z/ui/buttons/toggle-button-group"
+import type {ToggleButtonGroupProps} from "@ui-buttons/toggle-button-group"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные группы вариантов, связанного с нодой и её сокетами.

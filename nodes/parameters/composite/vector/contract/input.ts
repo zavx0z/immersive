@@ -1,4 +1,4 @@
-import type {VectorFieldProps} from "@zavx0z/ui/fields/vector-field"
+import type {VectorFieldProps} from "@ui-fields/vector-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные векторного параметра, связанного с нодой и её сокетами.

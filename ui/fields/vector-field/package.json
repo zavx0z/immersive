@@ -1,0 +1,27 @@
+{
+  "name": "@ui-fields/vector-field",
+  "label": "VectorField",
+  "version": "0.0.0",
+  "description": "Поле интерфейса: вектор чисел",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-fields-vector-value/normalize-vector-value": "workspace:*",
+    "@ui-fields-vector-value/update-vector-value": "workspace:*",
+    "@ui-fields/field-group": "workspace:*",
+    "@ui-fields/number-field": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

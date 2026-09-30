@@ -1,0 +1,22 @@
+{
+  "name": "@ui/selection",
+  "label": "selection",
+  "version": "0.0.0",
+  "description": "Публичные возможности области selection",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./find-selection-option": "./find-selection-option/index.ts",
+    "./selection-exceptional-label": "./selection-exceptional-label/index.ts",
+    "./validate-selection-options": "./validate-selection-options/index.ts",
+    "./validate-selection-state": "./validate-selection-state/index.ts"
+  },
+  "dependencies": {
+    "@ui-selection/find-selection-option": "workspace:*",
+    "@ui-selection/selection-exceptional-label": "workspace:*",
+    "@ui-selection/validate-selection-options": "workspace:*",
+    "@ui-selection/validate-selection-state": "workspace:*"
+  }
+}

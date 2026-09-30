@@ -1,0 +1,30 @@
+{
+  "name": "@ui-surfaces/window",
+  "label": "Window",
+  "version": "0.0.0",
+  "description": "Сохраняемое окно с перемещением, изменением размера и общим состоянием видимости",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-surfaces-chrome/button": "workspace:*",
+    "@ui-themes-icons/minus": "workspace:*"
+  },
+  "peerDependencies": {
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/dom": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*",
+    "@ui-fields/text-field": "workspace:*"
+  }
+}

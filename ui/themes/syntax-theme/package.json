@@ -1,0 +1,20 @@
+{
+  "name": "@ui-themes/syntax-theme",
+  "label": "syntax-theme",
+  "version": "0.0.0",
+  "description": "Публичные возможности области themes/syntax-theme",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./active": "./active/index.ts",
+    "./name": "./name/index.ts",
+    "./resolve": "./resolve/index.ts"
+  },
+  "dependencies": {
+    "@ui-themes-syntax-theme/active": "workspace:*",
+    "@ui-themes-syntax-theme/name": "workspace:*",
+    "@ui-themes-syntax-theme/resolve": "workspace:*"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "@ui-views-table/table-selection-after-click",
+  "label": "tableSelectionAfterClick",
+  "version": "0.0.0",
+  "description": "Изменение выбора строк таблицы после пользовательского жеста",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-views-table/normalize-table-selection": "workspace:*",
+    "@ui-views/table": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  }
+}

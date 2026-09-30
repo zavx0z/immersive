@@ -1,0 +1,28 @@
+{
+  "name": "@ui-fields/field-group",
+  "label": "FieldGroup",
+  "version": "0.0.0",
+  "description": "Поле интерфейса: группа полей",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-fields-metrics/resolve-field-density": "workspace:*"
+  },
+  "peerDependencies": {
+    "@zavx0z/component": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*",
+    "@ui/typography": "workspace:*"
+  }
+}

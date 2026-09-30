@@ -1,0 +1,30 @@
+{
+  "name": "@ui-views-code-editor/view-model",
+  "label": "buildCodeEditorViewModel",
+  "version": "0.0.0",
+  "description": "Подготовка строк, токенов и оформления редактора",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": "workspace:*",
+    "@ui-views-code-editor/assert-non-empty": "workspace:*",
+    "@ui-views-code-editor/editor-foreground": "workspace:*",
+    "@ui-views-code-editor/highlighter": "workspace:*",
+    "@ui-views-code-editor/is-hex-color": "workspace:*",
+    "@ui-views-code-editor/normalize-hex-color": "workspace:*",
+    "@ui-views-code-editor/validate": "workspace:*",
+    "@ui-views/code-editor": "workspace:*",
+    "@ui/badge": "workspace:*",
+    "@ui/code-editor-model": "workspace:*",
+    "@zavx0z/highlighter": "^0.1.0"
+  }
+}

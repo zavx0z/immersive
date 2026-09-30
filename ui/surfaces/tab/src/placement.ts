@@ -1,4 +1,4 @@
-import type {TabProps} from "../contract/input.ts"
+import type {TabProps} from "@ui-surfaces/tab"
 
 /** Сторона и нормализованное положение не зависят от HUD, Display или масштаба камеры. */
 export type TabPosition = NonNullable<TabProps["position"]>

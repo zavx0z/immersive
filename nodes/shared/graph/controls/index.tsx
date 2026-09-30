@@ -1,4 +1,4 @@
-import {Button} from "@zavx0z/ui/buttons/button"
+import Button from "@ui-buttons/button"
 
 /** Необязательные кнопки навигации; в просмотре Markdown не монтируются. */
 export function GraphControls(props: Readonly<{

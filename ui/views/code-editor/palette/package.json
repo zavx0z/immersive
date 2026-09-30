@@ -1,0 +1,21 @@
+{
+  "name": "@ui-views-code-editor/palette",
+  "label": "codeEditorPalette",
+  "version": "0.0.0",
+  "description": "Палитра редактора и его поля номеров строк",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-views-code-editor/editor-foreground": "workspace:*",
+    "@ui-views-code-editor/theme-color": "workspace:*"
+  }
+}

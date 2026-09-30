@@ -1,0 +1,17 @@
+{
+  "name": "@ui-fields-collection-model/normalize-collection-items",
+  "label": "normalizeCollectionItems",
+  "version": "0.0.0",
+  "description": "Нормализация элементов коллекции",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  }
+}

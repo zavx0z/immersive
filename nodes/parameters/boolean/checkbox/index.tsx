@@ -6,7 +6,7 @@ CheckboxParameter соединяет публичный CheckboxField с ком�
 @packageDocumentation
 */
 
-import {CheckboxField} from "@zavx0z/ui/fields/checkbox-field"
+import CheckboxField from "@ui-fields/checkbox-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {CheckboxParameterProps} from "./contract/input.ts"
 

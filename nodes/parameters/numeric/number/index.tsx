@@ -6,7 +6,7 @@ NumberParameter соединяет публичный NumberField с компо�
 @packageDocumentation
 */
 
-import {NumberField} from "@zavx0z/ui/fields/number-field"
+import NumberField from "@ui-fields/number-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {NumberParameterProps} from "./contract/input.ts"
 

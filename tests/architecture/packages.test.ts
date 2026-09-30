@@ -1,10 +1,11 @@
 import {describe, test} from "bun:test"
 import {join} from "node:path"
 import {assertRequirement} from "../assert.ts"
+import {readUiWorkspaces} from "./ui-workspaces"
 
 const root = join(import.meta.dir, "../..")
 
-const packages = Object.freeze([
+const basePackages = Object.freeze([
   ["engine", "@zavx0z/engine", "Объекты сцены, геометрия, материалы, математика и анимация без WebGPU"],
   ["dom", "@zavx0z/dom", "Семантический документ, элементы, атрибуты, события, фокус и состояние полей"],
   ["template", "@zavx0z/template", "HTML, CSS и общий формат готового шаблона"],
@@ -42,6 +43,8 @@ const packages = Object.freeze([
   ["jsx/compiler/error", "@jsx-compiler/error", "Ошибки компиляции JSX с исходным файлом"],
   ["jsx/slot/child", "@jsx-slot/child", "Статическое назначение условной позиции и keyed JSX expression"],
 ] as const)
+
+const packages = Object.freeze([...basePackages, ...await readUiWorkspaces(root)])
 
 describe("Конечный состав пакетов", () => {
   test("[PKG-000] корневое рабочее пространство называется @zavx0z/immersive", async () => {
@@ -101,8 +104,8 @@ describe("Конечный состав пакетов", () => {
 
   test("[PKG-002] состав пакетов совпадает с принятыми владельцами без ограничения их числа", async () => {
     const actual: string[] = []
-    for (const pattern of ["*", "nodes/*", "renderer/*", "jsx/*", "jsx/*/*"]) for await (const entry of new Bun.Glob(pattern).scan({cwd: root, onlyFiles: false})) {
-      if (entry === "projects" || entry === "tests") continue
+    for (const pattern of ["*", "nodes/*", "renderer/*", "jsx/*", "jsx/*/*", "ui/**"]) for await (const entry of new Bun.Glob(pattern).scan({cwd: root, onlyFiles: false})) {
+      if (entry === "projects" || entry === "tests" || /(?:^|\/)(?:node_modules|spec|test|tests|fixture|fixtures)(?:\/|$)/u.test(entry)) continue
       if (await Bun.file(join(root, entry, "package.json")).exists()) actual.push(entry)
     }
 

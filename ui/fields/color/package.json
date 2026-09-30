@@ -1,0 +1,25 @@
+{
+  "name": "@ui-fields/color",
+  "label": "color",
+  "version": "0.0.0",
+  "description": "Публичные возможности области fields/color",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./value": "./value/index.ts",
+    "./value/clamp-unit": "./value/clamp-unit/index.ts",
+    "./value/color-channel-display-value": "./value/color-channel-display-value/index.ts",
+    "./value/color-hsva-to-value": "./value/color-hsva-to-value/index.ts",
+    "./value/color-value-to-hsva": "./value/color-value-to-hsva/index.ts",
+    "./value/format-color-value": "./value/format-color-value/index.ts",
+    "./value/normalize-color-value": "./value/normalize-color-value/index.ts",
+    "./value/parse-color-value": "./value/parse-color-value/index.ts",
+    "./value/rgba-css": "./value/rgba-css/index.ts",
+    "./value/wrap-unit": "./value/wrap-unit/index.ts"
+  },
+  "dependencies": {
+    "@ui-fields-color/value": "workspace:*"
+  }
+}

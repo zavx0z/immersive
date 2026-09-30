@@ -6,7 +6,7 @@ MatrixParameter соединяет публичный MatrixField с компо�
 @packageDocumentation
 */
 
-import {MatrixField} from "@zavx0z/ui/fields/matrix-field"
+import MatrixField from "@ui-fields/matrix-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {MatrixParameterProps} from "./contract/input.ts"
 

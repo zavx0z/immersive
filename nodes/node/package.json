@@ -30,7 +30,14 @@
     "@zavx0z/template": "workspace:*",
     "@zavx0z/ui": "workspace:*",
     "@zavx0z/jsx": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@jsx-compiler/session": "workspace:*",
+    "@ui-surfaces/pane": "workspace:*",
+    "@ui-themes-icons/chevron-right": "workspace:*",
+    "@ui-buttons/button": "workspace:*",
+    "@ui/typography": "workspace:*",
+    "@ui-themes-icons/visibility-on": "workspace:*",
+    "@ui-buttons/icon-button": "workspace:*",
+    "@ui-themes-icons/chevron-down": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@nodes/tree": {

@@ -1,7 +1,7 @@
 import {useSpace} from "@zavx0z/browser"
-import {ClipboardMenu} from "@zavx0z/ui/menus/clipboard-menu"
-import {Editor} from "@zavx0z/ui/widgets/editor"
-import type {CodeEditorModel} from "@zavx0z/ui/code-editor-model"
+import ClipboardMenu from "@ui-menus/clipboard-menu"
+import Editor from "@ui-widgets/editor"
+import type CodeEditorModel from "@ui/code-editor-model"
 
 function ClipboardHud() {
   const clipboard = useSpace(state => state.clipboard)

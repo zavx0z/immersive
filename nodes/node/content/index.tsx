@@ -4,8 +4,8 @@
 @packageDocumentation
 */
 
-import {Pane} from "@zavx0z/ui/surfaces/pane"
-import {visibilityOnIcon} from "@zavx0z/ui/themes/icons"
+import Pane from "@ui-surfaces/pane"
+import visibilityOnIcon from "@ui-themes-icons/visibility-on"
 import {ParameterNode} from "../parameter/index.tsx"
 import type {ContentNodeProps} from "./contract/input.ts"
 import {planProjectedNodeGeometry} from "../shared/geometry.ts"

@@ -28,7 +28,8 @@
     "@jsx-compiler/bun": "workspace:*",
     "@jsx-compiler/session": "workspace:*",
     "@zavx0z/jsx": "workspace:*",
-    "@jsx-slot/child": "workspace:*"
+    "@jsx-slot/child": "workspace:*",
+    "@ui/typography": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@renderer/html": {

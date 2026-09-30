@@ -1,7 +1,7 @@
 import {afterAll, describe, expect, mock, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
 import {MouseEvent} from "@zavx0z/dom"
-import {WindowControl} from "../index.tsx"
+import WindowControl from "@ui-surfaces-window/control"
 
 describe.each([
   {name: "Открыть окно", props: {open: false}},

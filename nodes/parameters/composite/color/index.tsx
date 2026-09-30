@@ -6,7 +6,7 @@ ColorParameter соединяет публичный ColorField с композ�
 @packageDocumentation
 */
 
-import {ColorField} from "@zavx0z/ui/fields/color-field"
+import ColorField from "@ui-fields/color-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {ColorParameterProps} from "./contract/input.ts"
 

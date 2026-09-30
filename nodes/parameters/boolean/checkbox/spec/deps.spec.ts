@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/boolean/checkbox/index.tsx",
     expected: {
       "nodes/parameters/boolean/checkbox/index.tsx#CheckboxParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/checkbox-field.tsx#CheckboxField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/checkbox-field/index.tsx#CheckboxField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,7 +31,7 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/fields/checkbox-field.tsx#CheckboxField": {
+      "ui/fields/checkbox-field/index.tsx#CheckboxField": {
         uses: [],
         elements: ["input","label","span"],
       },

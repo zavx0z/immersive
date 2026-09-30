@@ -6,7 +6,7 @@ SwitchParameter соединяет публичный SwitchField с компо�
 @packageDocumentation
 */
 
-import {SwitchField} from "@zavx0z/ui/fields/switch-field"
+import SwitchField from "@ui-fields/switch-field"
 import {ParameterLayout} from "../../shared/layout/index.tsx"
 import type {SwitchParameterProps} from "./contract/input.ts"
 

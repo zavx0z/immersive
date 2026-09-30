@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/references/reference/index.tsx",
     expected: {
       "nodes/parameters/references/reference/index.tsx#ReferenceParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/reference-field.tsx#ReferenceField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/reference-field/index.tsx#ReferenceField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,16 +31,16 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/buttons/button.tsx#Button": {
+      "ui/buttons/button/index.tsx#Button": {
         uses: [],
         elements: ["button","img","span"],
       },
-      "ui/buttons/button.tsx#IconButton": {
-        uses: ["ui/buttons/button.tsx#Button"],
+      "ui/buttons/icon-button/index.tsx#IconButton": {
+        uses: ["ui/buttons/button/index.tsx#Button"],
         elements: [],
       },
-      "ui/fields/reference-field.tsx#ReferenceField": {
-        uses: ["ui/buttons/button.tsx#Button","ui/buttons/button.tsx#IconButton"],
+      "ui/fields/reference-field/index.tsx#ReferenceField": {
+        uses: ["ui/buttons/button/index.tsx#Button","ui/buttons/icon-button/index.tsx#IconButton"],
         elements: ["div","span"],
       },
     },

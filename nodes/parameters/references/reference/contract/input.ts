@@ -1,4 +1,4 @@
-import type {ReferenceFieldProps} from "@zavx0z/ui/fields/reference-field"
+import type {ReferenceFieldProps} from "@ui-fields/reference-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные ссылочного параметра, связанного с нодой и её сокетами.

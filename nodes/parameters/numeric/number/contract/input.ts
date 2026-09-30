@@ -1,4 +1,4 @@
-import type {NumberFieldProps} from "@zavx0z/ui/fields/number-field"
+import type {NumberFieldProps} from "@ui-fields/number-field"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные числового параметра, связанного с нодой и её сокетами.

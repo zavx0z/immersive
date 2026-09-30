@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/choice/option-group/index.tsx",
     expected: {
       "nodes/parameters/choice/option-group/index.tsx#OptionGroupParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/buttons/toggle-button-group.tsx#ToggleButtonGroup"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/buttons/toggle-button-group/index.tsx#ToggleButtonGroup"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,12 +31,12 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/buttons/button.tsx#Button": {
+      "ui/buttons/button/index.tsx#Button": {
         uses: [],
         elements: ["button","img","span"],
       },
-      "ui/buttons/toggle-button-group.tsx#ToggleButtonGroup": {
-        uses: ["ui/buttons/button.tsx#Button"],
+      "ui/buttons/toggle-button-group/index.tsx#ToggleButtonGroup": {
+        uses: ["ui/buttons/button/index.tsx#Button"],
         elements: ["div","span"],
       },
     },

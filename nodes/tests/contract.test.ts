@@ -98,7 +98,7 @@ test("[NODES-005] domain imports resolve only through public package contracts",
   const manifests = new Map([
     ["@nodes/tree", await readPackageJson(resolve(root, "nodes/tree"))],
     ["@nodes/layout", await readPackageJson(resolve(root, "nodes/layout"))],
-    ["@zavx0z/ui", await readPackageJson(resolve(root, "ui"))],
+    ["@ui-buttons/button", await readPackageJson(resolve(root, "ui/buttons/button"))],
   ])
   const specifiers = importSpecifiers(await productionSource())
     .filter(specifier => [...manifests.keys()].some(name =>

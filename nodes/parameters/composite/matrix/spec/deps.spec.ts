@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameters/composite/matrix/index.tsx",
     expected: {
       "nodes/parameters/composite/matrix/index.tsx#MatrixParameter": {
-        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/matrix-field.tsx#MatrixField"],
+        uses: ["nodes/parameters/shared/layout/index.tsx#ParameterLayout","ui/fields/matrix-field/index.tsx#MatrixField"],
         elements: [],
       },
       "nodes/parameters/shared/endpoints/index.tsx#ParameterEndpoints": {
@@ -31,19 +31,19 @@ test.each([
         uses: [],
         elements: ["button","span"],
       },
-      "ui/fields/field-group.tsx#FieldGroup": {
+      "ui/fields/field-group/index.tsx#FieldGroup": {
         uses: [],
         elements: ["div","span"],
       },
-      "ui/fields/matrix-field.tsx#MatrixField": {
-        uses: ["ui/fields/matrix-field.tsx#MatrixRow"],
+      "ui/fields/matrix-field/index.tsx#MatrixField": {
+        uses: ["ui/fields/matrix-field/src/helpers.tsx#MatrixRow"],
         elements: ["div","span"],
       },
-      "ui/fields/matrix-field.tsx#MatrixRow": {
-        uses: ["ui/fields/field-group.tsx#FieldGroup","ui/fields/number-field.tsx#NumberField"],
+      "ui/fields/matrix-field/src/helpers.tsx#MatrixRow": {
+        uses: ["ui/fields/field-group/index.tsx#FieldGroup","ui/fields/number-field/index.tsx#NumberField"],
         elements: [],
       },
-      "ui/fields/number-field.tsx#NumberField": {
+      "ui/fields/number-field/index.tsx#NumberField": {
         uses: [],
         elements: ["button","div","input","span"],
       },

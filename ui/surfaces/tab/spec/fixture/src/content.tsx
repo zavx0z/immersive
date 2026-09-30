@@ -1,4 +1,4 @@
-import {Button} from "@zavx0z/ui/buttons/button"
+import Button from "@ui-buttons/button"
 
 /** Авторская композиция: за подпись можно перемещать Tab, кнопка принимает собственный ввод. */
 export function TabContent(props: Readonly<{count: number; onIncrement(): void}>) {

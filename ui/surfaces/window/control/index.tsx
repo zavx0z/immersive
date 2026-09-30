@@ -5,12 +5,14 @@ WindowControl — элемент управления видимостью Windo
 
 @packageDocumentation
 */
-import {Button} from "../../../buttons/button.tsx"
+import Button from "@ui-buttons/button"
 import type {WindowControlProps} from "./contract/input.ts"
-export type {WindowControlProps} from "./contract/input.ts"
 
-/** Переключает видимость и связывает доступное управление с id оболочки. */
-export function WindowControl(props: WindowControlProps) {
+export type {WindowControlProps} from "./contract/input"
+
+import type {JSX} from "@jsx-compiler/session"
+
+export default function WindowControl(props: WindowControlProps): JSX.Element {
   return <Button
     label={props.label}
     aria-label={props.label}

@@ -1,0 +1,10 @@
+/** textFieldLayout показывает публичное использование своего владельца. */
+import {describe, expect, test} from "bun:test"
+import layout from "@ui-fields-text-field/layout"
+
+describe.each([{name: "Базовый размер", props: {}}])("$name", () => {
+  const height = layout.height()
+  test("Высота", () => {
+    expect(height, "Числовой договор задаёт высоту в CSS px до отрисовки").toBe(22)
+  })
+})

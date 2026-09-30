@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 
-const buttonPath = resolve(import.meta.dir, "../buttons/button.tsx")
+const buttonPath = resolve(import.meta.dir, "../buttons/button/index.tsx")
 
 test("[UI-BUTTON-001] text Button leaves width to its content while IconButton remains size-owned square", async () => {
   const source = await Bun.file(buttonPath).text()
