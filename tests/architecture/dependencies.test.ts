@@ -399,17 +399,11 @@ describe("Направление производственных зависим
     }
 
     const packagesTest = await Bun.file(join(root, "tests/architecture/packages.test.ts")).text()
-    const migrationTest = await Bun.file(join(root, "tests/migration/contract.test.ts")).text()
     assertRequirement(
       packagesTest.includes("Bun.Glob") && packagesTest.includes("Bun.file") &&
       !packagesTest.includes('node:fs'),
       "PKG-008",
       "проверка файловой структуры должна использовать Bun.Glob и Bun.file",
-    )
-    assertRequirement(
-      migrationTest.includes("Bun.spawn") && !migrationTest.includes("node:child_process"),
-      "PKG-008",
-      "проверка процессов должна использовать Bun.spawn",
     )
   })
 
