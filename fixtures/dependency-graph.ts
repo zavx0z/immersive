@@ -102,7 +102,7 @@ export async function buildComponentDependencyGraph(root: string, entry: Compone
       const snapshot = await api.updateSnapshot({openFiles: [file]})
       const project = await snapshot.getDefaultProjectForFile(file)
       const source = await project?.program.getSourceFile(file)
-      if (source === undefined) throw new Error(`Не найден исходный файл компонента: ${id}`)
+      if (project === undefined || source === undefined) throw new Error(`Не найден исходный файл компонента: ${id}`)
       const declaration = source.statements.find(statement => isFunctionDeclaration(statement) && statement.name?.text === name)
       if (declaration === undefined) throw new Error(`Не найдено объявление компонента: ${id}`)
 
