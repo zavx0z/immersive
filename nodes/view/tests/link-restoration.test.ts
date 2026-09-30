@@ -15,7 +15,7 @@ Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["
 const {createCubicLinkRoute} = await import("@immersive/nodes/routing/link-path")
 const {GraphView} = await import("@immersive/nodes/view")
 const {graphInput} = await import("./measured.fixture.tsx")
-const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/fonts/inter-regular.ttf")).arrayBuffer())
+const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/font/inter-regular.ttf")).arrayBuffer())
 
 /** Сравниваем смысл записей, не физические slots, которые вправе переиспользоваться. */
 function pathRecords(backend: RendererWebGpuBackend) {

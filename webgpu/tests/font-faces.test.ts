@@ -5,8 +5,8 @@ import {createDocumentRenderer} from "../../renderer/html/src/index.ts"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 
 test("measurement and retained paint resolve the same real font face", async () => {
-  const regular = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
-  const bold = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-bold.ttf", import.meta.url)).arrayBuffer())
+  const regular = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const bold = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-bold.ttf", import.meta.url)).arrayBuffer())
   const backend = new RendererWebGpuBackend({font: regular, fontFaces: [
     {family: "sans-serif", weight: 400, style: "normal", font: regular},
     {family: "sans-serif", weight: 700, style: "normal", font: bold},

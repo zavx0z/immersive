@@ -19,7 +19,7 @@ test("glyph-bound interval queries agree with exhaustive intersection", () => {
 })
 
 test("large text scroll updates the visible window and matches the complete backend", async () => {
-  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
   const document = createDocument()
   const root = document.createElement("div")
   root.setAttribute("style", "width:220px;height:120px;overflow:auto;border:3px solid #333;border-radius:12px")

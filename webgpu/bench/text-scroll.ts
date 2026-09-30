@@ -5,7 +5,7 @@ import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 import {collectSpaceObjects, type RenderItem} from "../src/renderer/utils/render-list.ts"
 
 // CPU-only equal-work benchmark. No browser, device, GPU submission or source tokenization.
-const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
 const sampleCount = 30
 const warmup = 5
 const summarize = (values: number[]) => {

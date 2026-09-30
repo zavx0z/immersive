@@ -8,15 +8,15 @@ import {Object3D, Quaternion, Vector3} from "@zavx0z/engine"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createSpaceElementFactories, type XRObjectElement} from "../src/index.ts"
-import type {GroupProps} from "../abstractions/group.tsx"
+import type {GroupProps} from "../abstraction/group.tsx"
 
 let directory = ""
 const templates = new Map<string, CompiledTemplate<any>>()
 const entries = [
-  ["abstractions/asset", "Asset"], ["abstractions/group", "Group"],
-  ["abstractions/text", "Text"], ["shapes/mesh", "Mesh"],
-  ["shapes/line", "Line"], ["shapes/line-segments", "LineSegments"],
-  ["staging/light", "Light"], ["gizmos/grid", "Grid"],
+  ["abstraction/asset", "Asset"], ["abstraction/group", "Group"],
+  ["abstraction/text", "Text"], ["shape/mesh", "Mesh"],
+  ["shape/line", "Line"], ["shape/line-segments", "LineSegments"],
+  ["staging/light", "Light"], ["gizmo/grid", "Grid"],
 ] as const
 
 beforeAll(async () => {

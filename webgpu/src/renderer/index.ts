@@ -17,13 +17,13 @@ import {Matrix4, Vector3, Frustum} from "@zavx0z/engine"
 import {LineSegments} from "@zavx0z/engine"
 import {Text} from "@zavx0z/engine"
 import {Object3D} from "@zavx0z/engine"
-import thinFilmWGSL from "./shaders/thin-film.wgsl" with {type: "text"}
-import holographicWGSL from "./shaders/holographic.wgsl" with {type: "text"}
-import meshStaticWGSL from "./shaders/mesh-static.wgsl" with {type: "text"}
-import meshSkinnedWGSL from "./shaders/mesh-skinned.wgsl" with {type: "text"}
-import meshInstancedWGSL from "./shaders/mesh-instanced.wgsl" with {type: "text"}
+import thinFilmWGSL from "./shader/thin-film.wgsl" with {type: "text"}
+import holographicWGSL from "./shader/holographic.wgsl" with {type: "text"}
+import meshStaticWGSL from "./shader/mesh-static.wgsl" with {type: "text"}
+import meshSkinnedWGSL from "./shader/mesh-skinned.wgsl" with {type: "text"}
+import meshInstancedWGSL from "./shader/mesh-instanced.wgsl" with {type: "text"}
 
-import lineShaderCode from "./shaders/line.wgsl" with {type: "text"}
+import lineShaderCode from "./shader/line.wgsl" with {type: "text"}
 import {
   colorPickerShader as colorPickerShaderCode,
   imageExternalShader as imageExternalShaderCode,
@@ -34,7 +34,7 @@ import {
   roundedInstancedShader as roundedInstancedShaderCode,
   strokedPathInstancedShader as strokedPathInstancedShaderCode,
   textShader as textShaderCode,
-} from "./shaders/ui-shaders"
+} from "./shader/ui-shaders"
 import {TEXT_COVER_FACE_STATE, TEXT_STENCIL_BACK_FACE_STATE, TEXT_STENCIL_FACE_STATE} from "./text-stencil"
 import {
   LINE_OVERLAY_BLEND_STATE,
@@ -95,20 +95,20 @@ export type {
 
 if (import.meta.hot) {
   (import.meta.hot.accept as unknown as (dependencies: string[], callback: () => void) => void)([
-    "./shaders/mesh-basic.wgsl",
-    "./shaders/thin-film.wgsl",
-    "./shaders/holographic.wgsl",
-    "./shaders/mesh-static.wgsl",
-    "./shaders/mesh-skinned.wgsl",
-    "./shaders/mesh-instanced.wgsl",
-    "./shaders/line.wgsl",
-    "./shaders/text.wgsl",
-    "./shaders/image.wgsl",
-    "./shaders/image-external.wgsl",
-    "./shaders/rounded.wgsl",
-    "./shaders/rounded-instanced.wgsl",
-    "./shaders/stroked-path-instanced.wgsl",
-    "./shaders/color-picker.wgsl",
+    "./shader/mesh-basic.wgsl",
+    "./shader/thin-film.wgsl",
+    "./shader/holographic.wgsl",
+    "./shader/mesh-static.wgsl",
+    "./shader/mesh-skinned.wgsl",
+    "./shader/mesh-instanced.wgsl",
+    "./shader/line.wgsl",
+    "./shader/text.wgsl",
+    "./shader/image.wgsl",
+    "./shader/image-external.wgsl",
+    "./shader/rounded.wgsl",
+    "./shader/rounded-instanced.wgsl",
+    "./shader/stroked-path-instanced.wgsl",
+    "./shader/color-picker.wgsl",
   ], () => {
     if (typeof location !== "undefined") location.reload()
   })

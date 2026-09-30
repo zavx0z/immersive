@@ -357,7 +357,7 @@ function UnorderedList(props: ListProps) {
 Язык приходит из parser; {@link Mermaid}-ветку выбирает {@link Block} до вызова этого компонента.
 
 Высота auto определяется строками и отступами готового редактора; колонка номеров
-и прокрутка следуют [правилам CodeEditor](../../../ui/views/code-editor.md).
+и прокрутка следуют [правилам CodeEditor](../../../ui/view/code-editor.md).
 Исходные пробелы и переводы строк сохраняются в общем текстовом пути.
 
 @param props - `value` сохраняет текст кода, `languageId` выбирает подсветку {@link CodeEditor}; редактирование отключено.

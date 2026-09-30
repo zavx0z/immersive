@@ -1,6 +1,6 @@
-import {MarkerSlot} from "../shared/markers/slot/index.tsx"
-import {Arrow} from "../markers/arrow/index.tsx"
-import type {MarkerContext} from "../shared/markers/contracts.ts"
+import {MarkerSlot} from "../shared/marker/slot/index.tsx"
+import {Arrow} from "../marker/arrow/index.tsx"
+import type {MarkerContext} from "../shared/marker/contracts.ts"
 /**
 Link отображает маршрут владельца Layout через семантический vector-path.
 Подписка на переданный Store сохраняет идентичность элемента пути; преобразование маршрута разделяется со всеми проекциями.

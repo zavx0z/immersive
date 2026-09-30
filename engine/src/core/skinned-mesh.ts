@@ -1,5 +1,5 @@
 import {BufferGeometry} from "./buffer-geometry"
-import {Material} from "../materials"
+import {Material} from "../material"
 import {Mesh} from "./mesh"
 import {Skeleton} from "../animation"
 

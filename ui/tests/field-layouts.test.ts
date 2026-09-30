@@ -48,8 +48,8 @@ const [
 ])
 
 test("[UI-005] числовая тема полей и CSS содержат один набор точных метрик", async () => {
-  const metrics = await Bun.file(resolve(uiRoot, "themes/field-metrics.json")).json() as Record<string, number>
-  const theme = await Bun.file(resolve(uiRoot, "themes/theme.css")).text()
+  const metrics = await Bun.file(resolve(uiRoot, "theme/field-metrics.json")).json() as Record<string, number>
+  const theme = await Bun.file(resolve(uiRoot, "theme/theme.css")).text()
   const cssMetrics = new Map(
     [...theme.matchAll(/--(field-[a-z0-9-]+):\s*([0-9]+)(px)?;/gu)].map(match => [
       match[1]!,
@@ -139,22 +139,22 @@ test("[UI-009] ColorPickerField учитывает образец, четыре 
 
 test("[UI-010] каждый владелец Field связывает публичный план со своими переменными темы", async () => {
   const owners = Object.freeze({
-    "fields/checkbox-field/index.tsx": ["checkboxFieldLayout", "var(--field-checkbox-height)"],
-    "fields/collection-field/index.tsx": ["collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
-    "fields/color-field/index.tsx": ["colorFieldLayout", "var(--field-height-regular)"],
-    "fields/color-picker-field/index.tsx": ["colorPickerFieldLayout", "height: var(--field-color-picker-height)"],
-    "fields/cycle-field/index.tsx": ["cycleFieldLayout", "var(--control-height-medium)"],
-    "fields/field-group/index.tsx": ["fieldGroupLayout", "var(--field-height-compact)"],
-    "fields/matrix-field/index.tsx": ["matrixFieldLayout", "var(--field-matrix-row-gap)"],
-    "fields/number-field/index.tsx": ["numberFieldLayout", "var(--control-height-medium)"],
-    "fields/path-field/index.tsx": ["pathFieldLayout", "var(--field-path-height-compact)"],
-    "fields/reference-field/index.tsx": ["referenceFieldLayout", "var(--field-reference-height-compact)"],
-    "fields/select-field/index.tsx": ["selectFieldLayout", "var(--control-height-medium)"],
-    "fields/slider-field/index.tsx": ["sliderFieldLayout", "var(--field-height-compact)"],
-    "fields/switch-field/index.tsx": ["switchFieldLayout", "var(--field-switch-height)"],
-    "fields/text-field/index.tsx": ["textFieldLayout", "var(--control-height-medium)"],
-    "fields/vector-field/index.tsx": ["vectorFieldLayout", "var(--field-group-content-height)"],
-    "buttons/toggle-button-group/index.tsx": ["toggleButtonGroupLayout", "var(--control-height-medium)"],
+    "field/checkbox-field/index.tsx": ["checkboxFieldLayout", "var(--field-checkbox-height)"],
+    "field/collection-field/index.tsx": ["collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
+    "field/color-field/index.tsx": ["colorFieldLayout", "var(--field-height-regular)"],
+    "field/color-picker-field/index.tsx": ["colorPickerFieldLayout", "height: var(--field-color-picker-height)"],
+    "field/cycle-field/index.tsx": ["cycleFieldLayout", "var(--control-height-medium)"],
+    "field/field-group/index.tsx": ["fieldGroupLayout", "var(--field-height-compact)"],
+    "field/matrix-field/index.tsx": ["matrixFieldLayout", "var(--field-matrix-row-gap)"],
+    "field/number-field/index.tsx": ["numberFieldLayout", "var(--control-height-medium)"],
+    "field/path-field/index.tsx": ["pathFieldLayout", "var(--field-path-height-compact)"],
+    "field/reference-field/index.tsx": ["referenceFieldLayout", "var(--field-reference-height-compact)"],
+    "field/select-field/index.tsx": ["selectFieldLayout", "var(--control-height-medium)"],
+    "field/slider-field/index.tsx": ["sliderFieldLayout", "var(--field-height-compact)"],
+    "field/switch-field/index.tsx": ["switchFieldLayout", "var(--field-switch-height)"],
+    "field/text-field/index.tsx": ["textFieldLayout", "var(--control-height-medium)"],
+    "field/vector-field/index.tsx": ["vectorFieldLayout", "var(--field-group-content-height)"],
+    "button/toggle-button-group/index.tsx": ["toggleButtonGroupLayout", "var(--control-height-medium)"],
   })
 
   for (const [relativePath, requiredFragments] of Object.entries(owners)) {

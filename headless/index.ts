@@ -107,7 +107,7 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
   async function initialize(): Promise<void> {
     if (ready) return
     const fontSource = options.fontSource ?? new URL(import.meta.resolve("@zavx0z/engine/fonts/inter-regular.ttf"))
-    const sources = options.styleSheetSources ?? [new URL(import.meta.resolve("@zavx0z/ui/themes/theme.css"))]
+    const sources = options.styleSheetSources ?? [new URL(import.meta.resolve("@zavx0z/ui/theme/theme.css"))]
     const font = new TrueTypeFont(await Bun.file(fontSource).arrayBuffer())
     const styleSheets = await Promise.all(sources.map(source => Bun.file(source).text()))
     backend = new RendererWebGpuBackend({

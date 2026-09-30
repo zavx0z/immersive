@@ -6,7 +6,7 @@ import CodeEditor from "@ui-views/code-editor"
 Длинные строки сохраняются целиком в локальной горизонтальной прокрутке,
 а ширину ограничивает родительский раздел.
 
-Размеры текста и viewport принадлежат [контракту CodeEditor](../../../ui/views/code-editor.md).
+Размеры текста и viewport принадлежат [контракту CodeEditor](../../../ui/view/code-editor.md).
 Границы CSS-переноса определяет [строчный поток Renderer](../../../renderer/html/inline-flow.md).
 
 @param props - TypeScript-текст value и подпись title для доступности/подсказки существующего {@link CodeEditor}.

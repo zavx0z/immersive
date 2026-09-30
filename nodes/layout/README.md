@@ -8,10 +8,10 @@
 
 | Алгоритм | Вход | Результат и ограничения |
 | --- | --- | --- |
-| [Fixed](./algorithms/fixed/index.ts) | Измеренные ноды, `y` портов, связи, viewport, spacing | `RIGHT` / `DOWN`, источник `EAST`, приёмник `WEST`, ортогональные sections. Один порт с конфликтующими ролями отклоняется |
-| [Adaptive](./algorithms/adaptive/index.ts) | Тот же граф с `capability` и `allowedSides` | Одна сторона для каждого точного сокета, включая общий. [Диагностический вариант](./algorithms/adaptive/diagnostics/index.ts) возвращает также bounded-search counters |
-| [TopDown](./algorithms/top-down/index.ts) | Плоский DAG: точные `x` портов либо `attachment: "contour"` | Прежние `SOUTH` → `NORTH` или пересечения фигур, cubic curves. [Контракт и parity evidence](top-down-parity.md) |
-| [Coffman–Graham](./algorithms/coffman-graham/index.ts) | DAG, `x` портов и `maxNodesPerLayer` | Ограниченные по ширине слои, cubic curves и массив crossings. Цикл возвращает typed witness |
+| [Fixed](./algorithm/fixed/index.ts) | Измеренные ноды, `y` портов, связи, viewport, spacing | `RIGHT` / `DOWN`, источник `EAST`, приёмник `WEST`, ортогональные sections. Один порт с конфликтующими ролями отклоняется |
+| [Adaptive](./algorithm/adaptive/index.ts) | Тот же граф с `capability` и `allowedSides` | Одна сторона для каждого точного сокета, включая общий. [Диагностический вариант](./algorithm/adaptive/diagnostic/index.ts) возвращает также bounded-search counters |
+| [TopDown](./algorithm/top-down/index.ts) | Плоский DAG: точные `x` портов либо `attachment: "contour"` | Прежние `SOUTH` → `NORTH` или пересечения фигур, cubic curves. [Контракт и parity evidence](top-down-parity.md) |
+| [Coffman–Graham](./algorithm/coffman-graham/index.ts) | DAG, `x` портов и `maxNodesPerLayer` | Ограниченные по ширине слои, cubic curves и массив crossings. Цикл возвращает typed witness |
 
 У Adaptive один `source/shared` может соединяться с двумя приёмниками:
 алгоритм возвращает выбранные стороны, число кандидатов и причины отказа.

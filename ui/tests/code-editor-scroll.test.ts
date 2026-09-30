@@ -9,7 +9,7 @@ import createJsxBunPlugin from "@jsx-compiler/bun"
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {CodeEditorScrollFixture, codeEditorScrollSource} = await import("./code-editor-scroll.fixture.tsx")
-const theme = await Bun.file(resolve(workspace, "ui/themes/theme.css")).text()
+const theme = await Bun.file(resolve(workspace, "ui/theme/theme.css")).text()
 
 for (const [compact, height, tooltip] of [
   [false, 440, null],

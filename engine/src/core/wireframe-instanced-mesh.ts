@@ -1,7 +1,7 @@
 import {BufferAttribute, BufferGeometry} from "./buffer-geometry"
 import {Object3D} from "./object-3d"
 import {Vector3, Color, Matrix4, Sphere} from "../math"
-import {LineGlowMaterial} from "../materials"
+import {LineGlowMaterial} from "../material"
 import {type Intersection, Raycaster} from "./raycaster"
 
 export class WireframeInstancedMesh extends Object3D {

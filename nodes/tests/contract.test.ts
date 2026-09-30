@@ -10,7 +10,7 @@ const publicOwners = Object.freeze({
   "./editor": ["./editor/index.tsx", "GraphEditor"],
   "./frame": ["./frame/index.tsx", "Frame"],
   "./link": ["./link/index.tsx", "Link"],
-  "./markers/arrow": ["./markers/arrow/index.tsx", "Arrow"],
+  "./marker/arrow": ["./marker/arrow/index.tsx", "Arrow"],
 } as const)
 
 test("[NODES-001] каждый public TSX является compilable natural owner", async () => {
@@ -77,7 +77,7 @@ test("[NODES-003] Nodes не создаёт platform owners", async () => {
 
 test("[NODES-004] адаптер GraphView читает исходный Store без второй модели", async () => {
   const nodeTreeSource = await Bun.file(resolve(packageRoot, "view/tree.ts")).text() + await Bun.file(resolve(packageRoot, "shared/node-tree/contracts.ts")).text() + await Bun.file(resolve(packageRoot, "shared/node-tree/view.ts")).text()
-  const parameterSource = await Bun.file(resolve(packageRoot, "parameters/shared/parameter/index.tsx")).text()
+  const parameterSource = await Bun.file(resolve(packageRoot, "parameter/shared/parameter/index.tsx")).text()
   const propsStart = nodeTreeSource.indexOf("export type NodeTreeProps")
   const propsEnd = nodeTreeSource.indexOf("\n}>", propsStart)
   const propsContract = nodeTreeSource.slice(propsStart, propsEnd)
@@ -98,7 +98,7 @@ test("[NODES-005] domain imports resolve only through public package contracts",
   const manifests = new Map([
     ["@nodes/tree", await readPackageJson(resolve(root, "nodes/tree"))],
     ["@nodes/layout", await readPackageJson(resolve(root, "nodes/layout"))],
-    ["@ui-buttons/button", await readPackageJson(resolve(root, "ui/buttons/button"))],
+    ["@ui-buttons/button", await readPackageJson(resolve(root, "ui/button/button"))],
   ])
   const specifiers = importSpecifiers(await productionSource())
     .filter(specifier => [...manifests.keys()].some(name =>
@@ -119,7 +119,7 @@ test("[NODES-005] domain imports resolve only through public package contracts",
 })
 
 test("[NODES-006] projected Parameter render и геометрия используют один resolver", async () => {
-  const parameterSource = await Bun.file(resolve(packageRoot, "parameters/shared/parameter/index.tsx")).text()
+  const parameterSource = await Bun.file(resolve(packageRoot, "parameter/shared/parameter/index.tsx")).text()
   const nodeSource = await Bun.file(resolve(packageRoot, "node/shared/geometry.ts")).text()
 
   expect(parameterSource).toContain("const resolved = resolveProjectedParameterPresentation(snapshot)")

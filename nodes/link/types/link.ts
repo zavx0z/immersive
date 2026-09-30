@@ -1,5 +1,5 @@
 import type {SocketKind} from "@nodes/sockets/presets"
-import type {MarkerComponent} from "../../shared/markers/contracts.ts"
+import type {MarkerComponent} from "../../shared/marker/contracts.ts"
 import type {LinkMarkerGeometry, LinkRoute} from "../../shared/routing/link-path.ts"
 
 /** Точный адрес сокета на одном конце связи. */

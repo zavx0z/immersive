@@ -107,7 +107,7 @@ test("[GRAPH-VIEW-DEPENDENCIES] основной модуль просмотра
   for (const path of visited) {
     expect(path).not.toContain("/nodes/editor/")
     expect(path).not.toContain("/nodes/shared/model-node/")
-    expect(path).not.toContain("/nodes/parameters/")
+    expect(path).not.toContain("/nodes/parameter/")
     expect(path).not.toContain("/nodes/node/parameter/")
     expect(path).not.toContain("/nodes/node/content/")
   }

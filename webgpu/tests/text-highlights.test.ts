@@ -5,7 +5,7 @@ import {createDocumentInteractionController, createDocumentRenderer} from "@rend
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 
 test("selection side channel preserves retained text and geometry while adding moving and clearing clipped highlights", async () => {
-  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
   const document = createDocument()
   const root = document.createElement("section") as HTMLElement
   root.setAttribute("style", "display:block;width:200px;height:80px;overflow:auto;border:2px solid #555;border-radius:8px")
@@ -69,7 +69,7 @@ test("selection side channel preserves retained text and geometry while adding m
 })
 
 test("visible selection rectangles follow scroll clips without changing retained glyph geometry", async () => {
-  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
   const document = createDocument()
   const root = document.createElement("section") as HTMLElement
   root.setAttribute("style", "width:180px;height:60px;overflow:auto;border-radius:10px")
@@ -114,7 +114,7 @@ test("visible selection rectangles follow scroll clips without changing retained
 }, 30_000)
 
 test("подсветка остаётся под перекрывающим окном и перед исходным текстом при повторном кадре", async () => {
-  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
   const document = createDocument()
   const root = document.createElement("main")
   root.setAttribute("style", "display:block;width:400px;height:200px;font-size:14px;line-height:20px")
@@ -156,7 +156,7 @@ test("подсветка остаётся под перекрывающим ок
 })
 
 test("единый контур рисуется над собственными фонами каждой выбранной строки", async () => {
-  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
   const document = createDocument()
   const root = document.createElement("main")
   root.setAttribute("style", "display:block;width:300px;height:100px;font-size:14px;line-height:20px")

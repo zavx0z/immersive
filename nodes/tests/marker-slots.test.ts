@@ -12,7 +12,7 @@ const rootPath = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: rootPath, persistent: true, sourceRoots: [resolve(rootPath, "nodes"), resolve(rootPath, "ui")]}))
 const {Link} = await import("@immersive/nodes/link")
 const {projectLinkMarkers} = await import("@immersive/nodes/routing/link-path")
-const {Arrow} = await import("@immersive/nodes/markers/arrow")
+const {Arrow} = await import("@immersive/nodes/marker/arrow")
 const {FilledMarker} = await import("./marker-slots.fixture.tsx")
 
 const route = (y: number): LinkRoute => ({kind: "orthogonal", points: [{x: 20, y}, {x: 180, y}]})

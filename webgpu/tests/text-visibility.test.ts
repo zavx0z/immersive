@@ -5,7 +5,7 @@ import {createDocumentRenderer} from "@renderer/html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 import {collectSpaceObjects, type RenderItem} from "../src/renderer/utils/render-list.ts"
 
-const readFont = async (name: string) => new TrueTypeFont(await Bun.file(new URL(`../../engine/static/fonts/${name}.ttf`, import.meta.url)).arrayBuffer())
+const readFont = async (name: string) => new TrueTypeFont(await Bun.file(new URL(`../../engine/static/font/${name}.ttf`, import.meta.url)).arrayBuffer())
 const texts = (backend: RendererWebGpuBackend) => {
   const result: Text[] = []
   backend.root.traverse(node => { if (node instanceof Text) result.push(node) })

@@ -12,7 +12,7 @@ const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {default: Window} = await import("@ui-surfaces/window")
 const {WindowPairFixture} = await import("./window.fixture.tsx")
-const theme = await Bun.file(resolve(workspace, "ui/themes/theme.css")).text()
+const theme = await Bun.file(resolve(workspace, "ui/theme/theme.css")).text()
 
 /** Настоящий layout и pointer routing одной проекции без отдельной механики компонента. */
 function mount(projection: "hud" | "display", pair = false) {

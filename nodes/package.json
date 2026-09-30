@@ -18,13 +18,13 @@
     "./link/contract/input": "./link/contract/input.ts",
     "./link/types": "./link/types/link.ts",
     "./routing/link-path": "./shared/routing/link-path.ts",
-    "./markers": "./markers/index.ts",
-    "./markers/arrow": "./markers/arrow/index.tsx",
-    "./markers/arrow/contract/input": "./markers/arrow/contract/input.ts"
+    "./marker": "./marker/index.ts",
+    "./marker/arrow": "./marker/arrow/index.tsx",
+    "./marker/arrow/contract/input": "./marker/arrow/contract/input.ts"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel ./tests ./frame/tests ./view/tests ./frame/spec ./markers/arrow/spec",
+    "test": "bun test --parallel ./tests ./frame/tests ./view/tests ./frame/spec ./marker/arrow/spec",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {

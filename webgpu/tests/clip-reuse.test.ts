@@ -4,7 +4,7 @@ import {Mesh, Text, TrueTypeFont, type PresentationClipShape} from "@zavx0z/engi
 import {createDocumentRenderer, type RenderClip, type RenderFrame} from "@renderer/html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 
-const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
 const scrollerStyle = "width:280px;height:120px;overflow:auto;border-radius:6px;transform-origin:0 0;transform:translate(0px,0px)"
 
 function fixture() {

@@ -7,7 +7,7 @@ import "./compiler.ts"
 const root = resolve(import.meta.dir, "../../..")
 const {createNodeFixture} = await import("./composition.fixture.tsx")
 const {planProjectedNodeGeometry} = await import("@nodes/node/geometry")
-const theme = await Bun.file(resolve(root, "ui/themes/theme.css")).text()
+const theme = await Bun.file(resolve(root, "ui/theme/theme.css")).text()
 
 function mount(route: string, looseSockets = false) {
   const document = createDocument()

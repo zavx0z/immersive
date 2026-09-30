@@ -1,5 +1,5 @@
 import {useState} from "@zavx0z/component"
-import {TabContent} from "../surfaces/tab/spec/fixture/src/content.tsx"
+import {TabContent} from "../surface/tab/spec/fixture/src/content.tsx"
 import Tab from "@ui-surfaces/tab"
 import type {TabProps} from "@ui-surfaces/tab"
 

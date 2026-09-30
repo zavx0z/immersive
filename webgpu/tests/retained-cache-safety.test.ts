@@ -63,7 +63,7 @@ test("owned canonical transform deltas skip descriptor eligibility only after va
 
 test("tooltip composition propagates provenance only from actual Renderer frames", async () => {
   const f = fixture()
-  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
   const backend = new RendererWebGpuBackend({font, invalidateGeometry() {}})
   const ownedInteraction = createDocumentInteractionController({document: f.document, hitTest: hitTestProjection, tooltipDelayMs: 0})
   const callerInteraction = createDocumentInteractionController({document: f.document, hitTest: hitTestProjection, tooltipDelayMs: 0})

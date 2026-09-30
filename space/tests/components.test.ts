@@ -6,24 +6,24 @@ const root = resolve(import.meta.dir, "../..")
 const spaceRoot = resolve(root, "space")
 
 const owners = Object.freeze([
-  ["gizmos/grid.tsx", "xr-line-segments"],
-  ["abstractions/asset.tsx", "xr-asset"],
-  ["abstractions/group.tsx", "xr-group"],
-  ["shapes/mesh.tsx", "xr-mesh"],
-  ["shapes/line.tsx", "xr-line"],
-  ["shapes/line-segments.tsx", "xr-line-segments"],
-  ["abstractions/text.tsx", "xr-text"],
+  ["gizmo/grid.tsx", "xr-line-segments"],
+  ["abstraction/asset.tsx", "xr-asset"],
+  ["abstraction/group.tsx", "xr-group"],
+  ["shape/mesh.tsx", "xr-mesh"],
+  ["shape/line.tsx", "xr-line"],
+  ["shape/line-segments.tsx", "xr-line-segments"],
+  ["abstraction/text.tsx", "xr-text"],
   ["staging/light.tsx", "xr-light"],
-  ["abstractions/animation.tsx", "xr-animation"],
-  ["shapes/geometry.tsx", "xr-geometry"],
-  ["shaders/material.tsx", "xr-material"],
+  ["abstraction/animation.tsx", "xr-animation"],
+  ["shape/geometry.tsx", "xr-geometry"],
+  ["shader/material.tsx", "xr-material"],
 ] as const)
 
 describe("Публичные пространственные компоненты", () => {
   test("компоненты экспортируются из разделов без плоских дублей", async () => {
     const manifest = await Bun.file(resolve(spaceRoot, "package.json")).json()
     const components = Object.entries(manifest.exports as Record<string, string>).filter(([, path]) => path.endsWith(".tsx"))
-    expect(manifest.exports["./gizmos/grid"]).toBe("./gizmos/grid.tsx")
+    expect(manifest.exports["./gizmo/grid"]).toBe("./gizmo/grid.tsx")
     expect(components.every(([path]) => path.split("/").length === 3)).toBe(true)
     expect(new Set(components.map(([, path]) => path)).size).toBe(components.length)
     expect([...new Bun.Glob("*.tsx").scanSync({cwd: spaceRoot})]).toEqual([])

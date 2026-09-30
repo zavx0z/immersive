@@ -1,6 +1,6 @@
 import { Object3D } from "./object-3d"
 import { BufferGeometry } from "./buffer-geometry"
-import { Material } from "../materials"
+import { Material } from "../material"
 import { Raycaster, type Intersection } from "./raycaster"
 import { Matrix4, Ray, Sphere, Vector3 } from "../math"
 

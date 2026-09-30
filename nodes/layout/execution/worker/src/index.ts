@@ -6,5 +6,5 @@ Client управляет запросами и dispose, executor выполня
 
 @packageDocumentation
 */
-export {FixedWorkerClient} from "../../../algorithms/fixed/src/worker/client.ts"
-export {runFixedWorkerRequest} from "../../../algorithms/fixed/src/worker/executor.ts"
+export {FixedWorkerClient} from "../../../algorithm/fixed/src/worker/client.ts"
+export {runFixedWorkerRequest} from "../../../algorithm/fixed/src/worker/executor.ts"

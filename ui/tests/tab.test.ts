@@ -12,7 +12,7 @@ const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {default: Tab} = await import("@ui-surfaces/tab")
 const {TabChildrenFixture, TabVerticalLabelFixture} = await import("./tab.fixture.tsx")
-const theme = await Bun.file(resolve(workspace, "ui/themes/theme.css")).text()
+const theme = await Bun.file(resolve(workspace, "ui/theme/theme.css")).text()
 
 /** Одинаковый компонент и локальный ввод в двух проекциях одного API, с отличающейся экранной геометрией. */
 function mount(projection: "hud" | "display") {

@@ -12,8 +12,8 @@ import type {CodeEditorProps} from "@ui-views/code-editor"
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {default: CodeEditor} = await import("@ui-views/code-editor")
-const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
-const theme = await Bun.file(new URL("../../ui/themes/theme.css", import.meta.url)).text()
+const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
+const theme = await Bun.file(new URL("../../ui/theme/theme.css", import.meta.url)).text()
 const source = Array.from({length: 420}, (_, index) =>
   `        <span data-z-ycf0xbqihmrwdwse="" data-major="true" class="source-row-${index}">HTML source ${index}</span>`,
 ).join("\n")

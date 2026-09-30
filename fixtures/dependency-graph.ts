@@ -34,11 +34,11 @@ const graph: ComponentDependencyGraph = {
   // До # — путь от корня проекта, после # — имя функции компонента.
   "nodes/node/diagram/index.tsx#DiagramNode": {
     // DiagramNode использует в своём JSX два компонента: Pane и Typography.
-    uses: ["ui/surfaces/pane/index.tsx#Pane", "ui/typography/index.tsx#Typography"],
+    uses: ["ui/surface/pane/index.tsx#Pane", "ui/typography/index.tsx#Typography"],
     // Сам DiagramNode создаёт нативный элемент <article>.
     elements: ["article"],
   },
-  "ui/surfaces/pane/index.tsx#Pane": {
+  "ui/surface/pane/index.tsx#Pane": {
     // В собственном JSX Pane нет других компонентов.
     // Переданный снаружи Typography остаётся зависимостью DiagramNode.
     uses: [],

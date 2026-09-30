@@ -301,7 +301,7 @@ test("[BRW-007] Geometry/Material factories сохраняют Object identity �
 
 test("[BRW-008] Root представляет Line, Text и DirectionalLight в одном Space", async () => {
   const fontBytes = await Bun.file(
-    `${import.meta.dir}/../../engine/static/fonts/inter-regular.ttf`,
+    `${import.meta.dir}/../../engine/static/font/inter-regular.ttf`,
   ).arrayBuffer()
   const font = new TrueTypeFont(fontBytes)
   const state = createFakeRuntimeState()

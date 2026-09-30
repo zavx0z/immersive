@@ -16,13 +16,13 @@ test("UI предоставляет общий доменный вход и фи
   const manifest = await Bun.file(resolve(packageRoot, "package.json")).json()
   expect(manifest.name).toBe("@zavx0z/ui")
   expect(manifest.exports["."]).toBe("./index.ts")
-  for (const area of ["buttons", "fields", "menus", "navigation", "surfaces", "views", "feedback", "widgets", "themes"]) {
+  for (const area of ["button", "field", "menu", "navigation", "surface", "view", "feedback", "widget", "theme"]) {
     expect(manifest.exports[`./${area}`]).toBe(`./${area}/index.ts`)
     expect(await Bun.file(resolve(packageRoot, area, "package.json")).exists()).toBe(true)
   }
-  expect(manifest.exports["./buttons/button"]).toBe("./buttons/button/index.tsx")
-  expect(manifest.exports["./surfaces/window/control"]).toBe("./surfaces/window/control/index.tsx")
-  expect(manifest.exports["./surfaces/window/contract/input"]).toBeUndefined()
+  expect(manifest.exports["./button/button"]).toBe("./button/button/index.tsx")
+  expect(manifest.exports["./surface/window/control"]).toBe("./surface/window/control/index.tsx")
+  expect(manifest.exports["./surface/window/contract/input"]).toBeUndefined()
 })
 
 test("пакеты UI имеют собственные публичные входы и единый workspace Repo", async () => {
@@ -70,7 +70,7 @@ test("UI сохраняет границу платформы во всех пр
 })
 
 test("FieldGroup, ToggleButtonGroup и виджеты сохраняют предметных владельцев", async () => {
-  for (const [directory, name] of [["fields/field-group", "FieldGroup"], ["buttons/toggle-button-group", "ToggleButtonGroup"], ["widgets/inspector", "Inspector"], ["widgets/editor", "Editor"], ["widgets/terminal", "Terminal"], ["widgets/tree", "Tree"]]) {
+  for (const [directory, name] of [["field/field-group", "FieldGroup"], ["button/toggle-button-group", "ToggleButtonGroup"], ["widget/inspector", "Inspector"], ["widget/editor", "Editor"], ["widget/terminal", "Terminal"], ["widget/tree", "Tree"]]) {
     const source = await Bun.file(resolve(packageRoot, directory!, "index.tsx")).text()
     expect(source).toContain(`export default function ${name}(`)
   }

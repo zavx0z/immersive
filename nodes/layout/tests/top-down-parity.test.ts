@@ -5,7 +5,7 @@ import type {TopDownContourGraph, TopDownLayoutGraph} from "@nodes/layout/types"
 import {runTopDownWorkerRequest} from "@nodes/layout/worker/top-down/executor"
 import reference from "./references/dagre-7.0.14.json"
 import ports from "./references/ports-before.json"
-import {roundedContourCurves, cubicExtrema} from "../algorithms/top-down/src/contour.ts"
+import {roundedContourCurves, cubicExtrema} from "../algorithm/top-down/src/contour.ts"
 
 for (const fixture of reference.fixtures) {
   test(`[TOPDOWN-PARITY] ${fixture.name}: upstream coordinates и raw routes`, () => {

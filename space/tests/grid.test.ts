@@ -8,7 +8,7 @@ import type {GridHelper} from "@zavx0z/engine"
 import {createSpaceElementFactories, XRLineSegmentsElement} from "@zavx0z/space"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {GridProps} from "../gizmos/grid.tsx"
+import type {GridProps} from "../gizmo/grid.tsx"
 
 let directory = ""
 let grid: CompiledTemplate<GridProps>
@@ -17,7 +17,7 @@ beforeAll(async () => {
   const space = resolve(import.meta.dir, "..")
   directory = await mkdtemp(join(import.meta.dir, ".grid-"))
   const result = await Bun.build({
-    entrypoints: [join(space, "gizmos/grid.tsx")],
+    entrypoints: [join(space, "gizmo/grid.tsx")],
     outdir: directory,
     target: "bun",
     external: ["@zavx0z/component", "@zavx0z/dom", "@zavx0z/engine", "@zavx0z/template/compiled"],

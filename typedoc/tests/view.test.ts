@@ -18,7 +18,7 @@ Bun.plugin(createJsxBunPlugin({
 const {TypeDoc} = await import("../typedoc/index.tsx")
 const template = TypeDoc as unknown as CompiledTemplate<TypeDocProps>
 const {default: codeEditorPalette} = await import("@ui-views-code-editor/palette")
-const theme = await Bun.file(resolve(root, "ui/themes/theme.css")).text()
+const theme = await Bun.file(resolve(root, "ui/theme/theme.css")).text()
 
 function mount(props: TypeDocProps = {document: contractDocument}) {
   const document = createDocument()

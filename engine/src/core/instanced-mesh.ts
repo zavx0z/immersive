@@ -1,5 +1,5 @@
 import { BufferGeometry, BufferAttribute } from "./buffer-geometry"
-import { Material } from "../materials"
+import { Material } from "../material"
 import { Mesh } from "./mesh"
 import { Matrix4, Quaternion, Vector3 } from "../math"
 

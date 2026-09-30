@@ -6,7 +6,7 @@ import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 
 /** Проверяет реальную TTF-геометрию, retained identity и culling вертикальной строки. */
 test("vertical text uses one retained Text and rotated ink bounds", async () => {
-  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
   const backend = new RendererWebGpuBackend({font, invalidateGeometry() {}})
   const document = createDocument()
   const root = document.createElement("div")

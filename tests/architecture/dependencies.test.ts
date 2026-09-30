@@ -17,7 +17,7 @@ const basePackageDirectories = Object.freeze({
   "@jsx-runtime/fragment": "jsx/runtime/fragment",
   "@jsx-runtime/create": "jsx/runtime/create",
   "@jsx-development/create": "jsx/development/create",
-  "@jsx/events": "jsx/events",
+  "@jsx/events": "jsx/event",
   "@jsx-slot/plan": "jsx/slot/plan",
   "@jsx-slot/child": "jsx/slot/child",
   "@jsx-compiler/session": "jsx/compiler/session",
@@ -36,12 +36,12 @@ const basePackageDirectories = Object.freeze({
   "@zavx0z/ui": "ui",
   "@nodes/node": "nodes/node",
   "@immersive/headless": "headless",
-  "@nodes/parameters": "nodes/parameters",
-  "@nodes/sockets": "nodes/sockets",
+  "@nodes/parameters": "nodes/parameter",
+  "@nodes/sockets": "nodes/socket",
   "@nodes/tree": "nodes/tree",
   "@nodes/layout": "nodes/layout",
   "@immersive/nodes": "nodes",
-  "@zavx0z/devtools": "devtools",
+  "@zavx0z/devtools": "devtool",
 } as const)
 
 const uiWorkspaces = await readUiWorkspaces(root)

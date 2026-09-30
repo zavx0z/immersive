@@ -40,7 +40,7 @@ test("[ENG-003] Engine владеет математикой, raycast, аним�
   expect(new Raycaster()).toBeInstanceOf(Raycaster)
   expect(new AnimationClip("empty", 0, [])).toBeInstanceOf(AnimationClip)
   expect(typeof TrueTypeFont.fromUrl).toBe("function")
-  expect((await Bun.file(`${root}/static/fonts/inter-regular.ttf`).arrayBuffer()).byteLength)
+  expect((await Bun.file(`${root}/static/font/inter-regular.ttf`).arrayBuffer()).byteLength)
     .toBeGreaterThan(0)
 })
 

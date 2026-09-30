@@ -122,7 +122,7 @@ test("[MARKDOWN-MEASURED-REFERENCE] семь нод исходного обсу�
     document,
     root: owner,
     viewport: {width: 1600, height: 1200},
-    styleSheets: [await Bun.file(Bun.resolveSync("@zavx0z/ui/themes/theme.css", import.meta.dir)).text()],
+    styleSheets: [await Bun.file(Bun.resolveSync("@zavx0z/ui/theme/theme.css", import.meta.dir)).text()],
   })
   try {
     component.render(Markdown as unknown as CompiledTemplate<MarkdownProps>, {source: "```mermaid\n" + source + "\n```"})

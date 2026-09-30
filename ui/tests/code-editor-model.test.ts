@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
 import buildCodeEditorViewModel from "@ui-views-code-editor/view-model"
-import {codeEditorPaintRuns} from "../views/code-editor/src/paint-runs.ts"
-import {codeEditorVisualRows} from "../views/code-editor/src/visual-rows.ts"
+import {codeEditorPaintRuns} from "../view/code-editor/src/paint-runs.ts"
+import {codeEditorVisualRows} from "../view/code-editor/src/visual-rows.ts"
 import codeEditorSyntaxTheme from "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme"
 import resolveCodeEditorSyntaxScopeColorHex from "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex"
 

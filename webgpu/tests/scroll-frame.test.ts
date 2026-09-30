@@ -5,7 +5,7 @@ import {createDocumentRenderer} from "@renderer/html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 
 test("scroll patches reuse retained text objects and geometry across frames", async () => {
-  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
   const backend = new RendererWebGpuBackend({font, invalidateGeometry() {}})
   const document = createDocument()
   const root = document.createElement("div")

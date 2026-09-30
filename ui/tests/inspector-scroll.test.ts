@@ -9,7 +9,7 @@ import createJsxBunPlugin from "@jsx-compiler/bun"
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {InspectorFixture} = await import("./inspector.fixture.tsx")
-const theme = await Bun.file(resolve(workspace, "ui/themes/theme.css")).text()
+const theme = await Bun.file(resolve(workspace, "ui/theme/theme.css")).text()
 
 test("Inspector ограничивает стек панелей доступной высотой и прокручивает его содержимое", async () => {
   const document = createDocument()

@@ -14,4 +14,4 @@ export {
   layoutFixed,
   type FixedLayoutInput,
   type FixedLayoutOutput,
-} from "./algorithms/fixed/index.ts"
+} from "./algorithm/fixed/index.ts"

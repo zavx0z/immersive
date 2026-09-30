@@ -5,7 +5,7 @@ import {createDocumentRenderer, readCanonicalRenderFrameChanges, type RenderFram
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 import {collectSpaceObjects, type RenderItem} from "../src/renderer/utils/render-list.ts"
 
-const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/fonts/inter-regular.ttf", import.meta.url)).arrayBuffer())
+const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
 const rowStyle = "display:flex;width:800px;height:20px;min-height:20px;background:#243344;border:1px solid #455566;box-sizing:border-box"
 
 function fixture(second = false) {

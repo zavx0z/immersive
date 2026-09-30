@@ -33,7 +33,7 @@ test("реальная вёрстка выбирает examples после ух�
     document,
     root: container,
     viewport: {width: 1150, height: 1030},
-    styleSheets: [await Bun.file(resolve(root, "ui/themes/theme.css")).text()],
+    styleSheets: [await Bun.file(resolve(root, "ui/theme/theme.css")).text()],
   })
   try {
     renderer.flush()

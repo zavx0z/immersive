@@ -14,14 +14,14 @@
     "./mermaid/contract/input": "./mermaid/contract/input.ts",
     "./parser/contract/input": "./parser/contract/input.ts",
     "./parser/contract/output": "./parser/contract/output.ts",
-    "./destinations": "./destinations/index.ts",
-    "./destinations/contract/input": "./destinations/contract/input.ts",
-    "./destinations/contract/output": "./destinations/contract/output.ts",
+    "./destination": "./destination/index.ts",
+    "./destination/contract/input": "./destination/contract/input.ts",
+    "./destination/contract/output": "./destination/contract/output.ts",
     "./types": "./shared/types/model.ts"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel parser/tests destinations/tests markdown/tests",
+    "test": "bun test --parallel parser/tests destination/tests markdown/tests",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {

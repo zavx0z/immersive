@@ -76,7 +76,7 @@ test.each(([
   let runtime: Awaited<ReturnType<typeof createDocumentSpaceRuntimeWithSeams>> | null = null
   const observations: Array<{visible: boolean; coherent: boolean; pending: boolean; generation: string | null; nodes: SemanticElement[]}> = []
   const errors: Error[] = []
-  const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/fonts/jetbrains-mono-bold.ttf")).arrayBuffer())
+  const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/font/jetbrains-mono-bold.ttf")).arrayBuffer())
   const root = createRootWithSeams(canvas, {onUncaughtError: error => errors.push(error)}, {
     loadFont: async () => font,
     createStyleSheets: () => ({refresh() {}, async whenReady() {}, dispose() {}}),

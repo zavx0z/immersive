@@ -5,10 +5,10 @@ const uiRoot = resolve(import.meta.dir, "..")
 
 test("[UI-ICONS-001] элементы управления используют SVG или Path вместо текстовых глифов", async () => {
   const [selectField, collectionField, breadcrumbs, iconAssets] = await Promise.all([
-    Bun.file(resolve(uiRoot, "fields/select-field/index.tsx")).text(),
-    Bun.file(resolve(uiRoot, "fields/collection-field/index.tsx")).text(),
-    Bun.file(resolve(uiRoot, "navigation/breadcrumbs/src/helpers.tsx")).text(),
-    Bun.file(resolve(uiRoot, "themes/icons/index.ts")).text(),
+    Bun.file(resolve(uiRoot, "field/select-field/index.tsx")).text(),
+    Bun.file(resolve(uiRoot, "field/collection-field/index.tsx")).text(),
+    Bun.file(resolve(uiRoot, "navigation/breadcrumb/src/helpers.tsx")).text(),
+    Bun.file(resolve(uiRoot, "theme/icon/index.ts")).text(),
   ])
 
   expect(selectField).not.toContain("data-select-field-indicator")

@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
 import {parseMarkdown} from "../index.ts"
-import {markdownDestinations} from "../../destinations/index.ts"
+import {markdownDestinations} from "../../destination/index.ts"
 
 describe("shared Markdown parser", () => {
   test("parses GFM tables with inline content, escaped pipes, alignment and resource discovery", () => {

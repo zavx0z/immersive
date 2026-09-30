@@ -138,7 +138,7 @@ Browser составляет Component, DOM, Renderer, Space и WebGPU чере�
 App объявляет стили обычными `<link rel="stylesheet" href="…" />` рядом со Space.
 Явные links полностью задают author stylesheets в порядке дерева. Только при их
 отсутствии Browser подключает отдельный `./theme.css` приложения. Сборка выбирает
-его исходник; стандартная тема остаётся публичным `ui/themes/theme.css`.
+его исходник; стандартная тема остаётся публичным `ui/theme/theme.css`.
 Browser создаёт настоящие native links, читает загруженный CSSOM и освобождает
 свои links при удалении декларации или unmount. Смена href и порядка деклараций
 сохраняет identity остальных links и смонтированного приложения.
@@ -222,11 +222,11 @@ Nodes.
 | `nodes` | `@immersive/nodes` | Композиция графа: GraphView, GraphEditor, Frame и Link |
 | `nodes/tree` | `@nodes/tree` | Живая модель `NodeTree`, хранилища Parameter, снимки и сохранение |
 | `nodes/layout` | `@nodes/layout` | Алгоритмы расположения нод и Worker |
-| `nodes/parameters` | `@nodes/parameters` | Представления параметров и проекция внешнего Parameter Store |
-| `nodes/sockets` | `@nodes/sockets` | Адресуемый Socket и его визуальные предустановки |
+| `nodes/parameter` | `@nodes/parameters` | Представления параметров и проекция внешнего Parameter Store |
+| `nodes/socket` | `@nodes/sockets` | Адресуемый Socket и его визуальные предустановки |
 | `nodes/node` | `@nodes/node` | DiagramNode, ParameterNode и ContentNode на основе Pane |
 | `headless` | `@immersive/headless` | Нативная отрисовка компонентов в живой DOM и PNG без браузера |
-| `devtools` | `@zavx0z/devtools` | Диагностика Document, состояния элементов и результатов Renderer |
+| `devtool` | `@zavx0z/devtools` | Диагностика Document, состояния элементов и результатов Renderer |
 
 Состав и порядок пакетов задаются `package.json#workspaces`. Каждый пакет
 владеет собственным `package.json`, README, публичными TSDoc и проверками
@@ -274,14 +274,14 @@ API своих владельцев. Реализации доступны из 
 ```text
 ui/
 ├── index.ts
-├── buttons/              # Button, IconButton, ToggleButtonGroup
-├── fields/               # Поля, числовые договоры размеров и обработка значений
-├── menus/                # Menu, MenuItem, ClipboardMenu
+├── button/              # Button, IconButton, ToggleButtonGroup
+├── field/               # Поля, числовые договоры размеров и обработка значений
+├── menu/                # Menu, MenuItem, ClipboardMenu
 ├── navigation/           # Breadcrumbs
-├── surfaces/             # Pane, Panel, Frame, Window, Tab и общие части поверхности
-├── views/                # List, Table, Timeline, CodeEditor
-├── widgets/              # Inspector, Editor, Terminal, Tree и общая шапка
-├── themes/               # SVG-значки, синтаксическая тема и CSS-ресурсы
+├── surface/             # Pane, Panel, Frame, Window, Tab и общие части поверхности
+├── view/                # List, Table, Timeline, CodeEditor
+├── widget/              # Inspector, Editor, Terminal, Tree и общая шапка
+├── theme/               # SVG-значки, синтаксическая тема и CSS-ресурсы
 ├── selection/            # Проверка и выбор вариантов
 ├── code-editor-model/    # Текст, выделения, IME и история
 ├── terminal-model/       # Поток терминального вывода
@@ -298,7 +298,7 @@ ui/
 через публичные входы своих пакетов. Состав всех пакетов объявляет только Repo.
 Нормы размещения принадлежат [Archetypes](../storybook/archetypes/notes/draft-structure.md).
 
-`FieldGroup` принадлежит `fields`, `ToggleButtonGroup` — `buttons`, а
+`FieldGroup` принадлежит `field`, `ToggleButtonGroup` — `button`, а
 `Breadcrumbs` — `navigation`. Модели редактирования и терминального вывода
 сохраняют отдельные входы от их визуальных представлений.
 
@@ -308,13 +308,13 @@ ui/
 Поддерживаемый синтаксис и ограничения описаны в [Markdown](markdown/README.md).
 
 Числовые договоры Field находятся в пакетах `layout` соответствующих полей.
-Они используют единые метрики из `themes/field-metrics.json`; `theme.css`
+Они используют единые метрики из `theme/field-metrics.json`; `theme.css`
 объявляет тот же набор `--field-*`. Сохранность чисел, составные размеры и
 совпадение CSS с метриками проверяются совместно. Сгенерированный Template-план
 остаётся целью платформы; UI не вводит отдельный механизм регистрации новых Field.
 
 Указатели раскрытия и другие служебные знаки используют SVG либо векторные Path.
-Ресурсы находятся у собственных владельцев в `themes/icons`; семейство темы
+Ресурсы находятся у собственных владельцев в `theme/icon`; семейство темы
 раскрывает их именованный API и сохраняет CSS как ресурс.
 
 UI работает в предоставленном Document и не создаёт Browser Root, Canvas,
@@ -359,17 +359,17 @@ nodes/
 │   ├── execution/worker/src/
 │   ├── shared/
 │   └── tests/
-├── parameters/                # @nodes/parameters
+├── parameter/                # @nodes/parameters
 │   ├── text/
 │   ├── numeric/
 │   ├── boolean/
 │   ├── choice/
 │   ├── composite/
-│   ├── references/
-│   ├── collections/
+│   ├── reference/
+│   ├── collection/
 │   ├── output/
 │   └── shared/
-├── sockets/                   # @nodes/sockets
+├── socket/                   # @nodes/sockets
 │   ├── socket/src/
 │   └── shared/
 └── tests/
@@ -377,8 +377,8 @@ nodes/
 
 Каждый пакет имеет собственные package.json и README. Категории Parameter
 содержат предметы с отдельными `src` и TSDoc, а общая проекция Store остаётся
-в `parameters/shared`. Client и executor конкретной политики лежат рядом с
-алгоритмом в `layout/algorithms/<policy>/src/worker`; транспорт поколений общий.
+в `parameter/shared`. Client и executor конкретной политики лежат рядом с
+алгоритмом в `layout/algorithm/<policy>/src/worker`; транспорт поколений общий.
 Пакет `node` предоставляет конкретные DiagramNode, ParameterNode и ContentNode.
 ParameterNode использует Pane и готовые Parameters; ContentNode составляет его
 с независимой областью содержимого. Универсальной визуальной Node нет.
@@ -412,10 +412,10 @@ Grid принадлежит `gizmos`. Новые разделы появляют
 
 ```text
 space/
-├── abstractions/   # Asset, Group, Text, Animation
-├── gizmos/         # Grid
-├── shaders/        # Material
-├── shapes/         # Mesh, Line, LineSegments, Geometry
+├── abstraction/   # Asset, Group, Text, Animation
+├── gizmo/         # Grid
+├── shader/        # Material
+├── shape/         # Mesh, Line, LineSegments, Geometry
 ├── staging/        # Light
 ├── src/
 └── tests/
@@ -433,7 +433,7 @@ Browser вызывает её для конкретной версии элем�
 
 ### Devtools
 
-`devtools/inspector.ts` содержит публичный `createDomInspector`, `types.ts` —
+`devtool/inspector.ts` содержит публичный `createDomInspector`, `types.ts` —
 его договор данных, а `tests/` — проверки поведения. Пакет читает существующий
 Document: постоянные диагностические идентификаторы, снимки дерева и состояния,
 изменения, размеры, области попадания и записи рисования. Renderer остаётся

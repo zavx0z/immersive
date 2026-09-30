@@ -1,5 +1,5 @@
-import { LineSegments } from "../objects/line-segments"
-import { LineBasicMaterial } from "../materials/line-basic-material"
+import { LineSegments } from "../object/line-segments"
+import { LineBasicMaterial } from "../material/line-basic-material"
 import { BufferAttribute } from "../core/buffer-attribute"
 import { BufferGeometry } from "../core/buffer-geometry"
 

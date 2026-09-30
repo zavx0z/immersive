@@ -1,0 +1,37 @@
+/**
+Область theme/icon объединяет публичные возможности принадлежащих ей пакетов.
+Именованный API сохраняет владельцев реализации и типов; область не запускает их жизненный цикл.
+
+@packageDocumentation
+*/
+export {default as applyIcon} from "@ui-themes-icons/apply"
+export {default as arrowDownIcon} from "@ui-themes-icons/arrow-down"
+export {default as arrowUpIcon} from "@ui-themes-icons/arrow-up"
+export {default as breakpointIcon} from "@ui-themes-icons/breakpoint"
+export {default as chevronDownIcon} from "@ui-themes-icons/chevron-down"
+export {default as chevronRightIcon} from "@ui-themes-icons/chevron-right"
+export {default as clearIcon} from "@ui-themes-icons/clear"
+export {default as closeIcon} from "@ui-themes-icons/close"
+export {default as collapseAllIcon} from "@ui-themes-icons/collapse-all"
+export {default as databaseIcon} from "@ui-themes-icons/database"
+export {default as executionPointIcon} from "@ui-themes-icons/execution-point"
+export {default as expandAllIcon} from "@ui-themes-icons/expand-all"
+export {default as expandIcon} from "@ui-themes-icons/expand"
+export {default as folderIcon} from "@ui-themes-icons/folder"
+export {default as homeIcon} from "@ui-themes-icons/home"
+export {default as iconSvg} from "@ui-themes-icons/compose"
+export {default as imageIcon} from "@ui-themes-icons/image"
+export {default as languageIcon} from "@ui-themes-icons/language"
+export {default as minusIcon} from "@ui-themes-icons/minus"
+export {default as pickerIcon} from "@ui-themes-icons/picker"
+export {default as pinIcon} from "@ui-themes-icons/pin"
+export {default as plusIcon} from "@ui-themes-icons/plus"
+export {default as resourceIcon} from "@ui-themes-icons/resource"
+export {default as runIcon} from "@ui-themes-icons/run"
+export {default as searchIcon} from "@ui-themes-icons/search"
+export {default as selectOpenedItemIcon} from "@ui-themes-icons/select-opened-item"
+export type {UiIcon} from "@ui-themes-icons/collection"
+export {default as settingsIcon} from "@ui-themes-icons/settings"
+export {default as svgIcon} from "@ui-themes-icons/encode"
+export {default as uiIcons} from "@ui-themes-icons/collection"
+export {default as visibilityOnIcon} from "@ui-themes-icons/visibility-on"

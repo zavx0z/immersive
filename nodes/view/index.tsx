@@ -5,7 +5,7 @@
 */
 import {useMemo, useRef, useState, useLayoutEffect, useSyncExternalStore} from "@zavx0z/component"
 import {observeElementLayout, readElementLayoutRect} from "@zavx0z/dom/geometry"
-import {GraphControls} from "../shared/graph/controls/index.tsx"
+import {GraphControls} from "../shared/graph/control/index.tsx"
 import {GridPoint} from "../shared/graph/grid-point/index.tsx"
 import {Frame} from "@immersive/nodes/frame"
 import {Link} from "@immersive/nodes/link"
