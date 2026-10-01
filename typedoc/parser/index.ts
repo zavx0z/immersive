@@ -1,5 +1,6 @@
 /**
-Создаёт структурированную документацию экспортируемых type/interface через API TypeScript 7.
+Создаёт структурированную документацию экспортируемых type/interface,
+включая объявления внутри ambient namespace, через API TypeScript 7.
 Импорты разрешает компилятор; исходные модули не исполняются.
 Каждая декларация содержит также JSON Schema с описаниями полей из TSDoc.
 
@@ -17,7 +18,9 @@ export type {AnalyzeTypeDocInput} from "./contract/input.ts"
 export type {AnalyzeTypeDocOutput} from "./contract/output.ts"
 
 /**
-Извлекает документацию экспортируемых type/interface через отдельную сессию TypeScript.
+Извлекает документацию экспортируемых type/interface и типов внутри
+экспортированных ambient namespace через отдельную сессию TypeScript.
+Имена вложенных типов сохраняют публичный путь namespace после реэкспорта.
 Разрешает поля {@link Readonly}, {@link Partial}, наследование и tuple; исходные модули не исполняет.
 Сессия закрывается перед завершением Promise, в том числе при ошибке.
 
@@ -26,6 +29,7 @@ export type {AnalyzeTypeDocOutput} from "./contract/output.ts"
 @returns {@link AnalyzeTypeDocOutput} с моделью справочника и digest посещённых источников.
 
 @throws Promise отклоняется при отсутствии файла или экспортируемых type/interface,
+включая типы внутри namespace,
 ошибках TypeScript в анализируемом источнике и посещённых объявлениях.
 
 @example

@@ -1,5 +1,5 @@
-import {SymbolFlags, type Project} from "typescript/unstable/async"
-import {isTypeAliasDeclaration, isInterfaceDeclaration} from "typescript/unstable/ast"
+import {SymbolFlags, type Project, type Symbol as NativeSymbol} from "typescript/unstable/async"
+import {isTypeAliasDeclaration, isInterfaceDeclaration, isModuleDeclaration} from "typescript/unstable/ast"
 import {createHash} from "node:crypto"
 import {basename, join} from "node:path"
 import {readFile, stat} from "node:fs/promises"
@@ -23,7 +23,8 @@ TypeScript-деклараций результат учитывает актив
 
 @returns Сериализуемая модель и побайтовые снимки её входов.
 
-@throws При отсутствии экспортируемого `type`/`interface` или диагностике TypeScript.
+@throws При отсутствии экспортируемого `type`/`interface`, включая объявления
+внутри ambient namespace, или диагностике TypeScript.
 */
 export async function analyzeTypeDocProject(
   project: Project,
@@ -37,23 +38,38 @@ export async function analyzeTypeDocProject(
   if ((await project.program.getSemanticDiagnostics(absolutePath)).length) throw new Error(`TypeDoc: ошибки типов: ${absolutePath}`)
   const module = await project.checker.getSymbolAtLocation(file)
   const declarations: TypeDocDeclaration[] = []
-  for (const exported of module ? await project.checker.getExportsOfModule(module) : []) {
+  /** Следует экспортированным namespace, сохраняя видимое квалифицированное имя каждой роли. */
+  const collect = async (exported: NativeSymbol, prefix: string, ancestors: ReadonlySet<number>): Promise<void> => {
     const symbol = exported.flags & SymbolFlags.Alias ? await project.checker.getAliasedSymbol(exported) : exported
+    if (ancestors.has(symbol.id)) return
     const nodes = await Promise.all(symbol.declarations.map(handle => handle.resolve()))
     const declaration = nodes.find(node => node && (isTypeAliasDeclaration(node) || isInterfaceDeclaration(node)))
-    if (!declaration || !(isTypeAliasDeclaration(declaration) || isInterfaceDeclaration(declaration))) continue
-    await sources.follow(exported)
-    const docs = documentation(declaration)
-    const type = await project.checker.getTypeAtLocation(declaration)
-    const members = type ? await typeMembers(project, type, declaration, docs, node => sources.visit(node)) : []
-    declarations.push({
-      name: exported.name,
-      kind: isInterfaceDeclaration(declaration) ? "interface" : "type",
-      signature: declaration.getText(declaration.getSourceFile()),
-      comment: docs.comment,
-      members,
-      ...(type ? {schema: await typeSchema(project, type, declaration, node => sources.visit(node))} : {}),
-    })
+    const name = prefix ? `${prefix}.${exported.name}` : exported.name
+    if (declaration && (isTypeAliasDeclaration(declaration) || isInterfaceDeclaration(declaration))) {
+      await sources.follow(exported)
+      const docs = documentation(declaration)
+      const type = await project.checker.getTypeAtLocation(declaration)
+      const members = type ? await typeMembers(project, type, declaration, docs, node => sources.visit(node)) : []
+      declarations.push({
+        name,
+        kind: isInterfaceDeclaration(declaration) ? "interface" : "type",
+        signature: declaration.getText(declaration.getSourceFile()),
+        comment: docs.comment,
+        members,
+        ...(type ? {schema: await typeSchema(project, type, declaration, node => sources.visit(node))} : {}),
+      })
+    }
+    if (nodes.some(node => node && isModuleDeclaration(node))) {
+      await sources.follow(exported)
+      const nextAncestors = new Set(ancestors)
+      nextAncestors.add(symbol.id)
+      for (const member of await project.checker.getExportsOfModule(symbol)) {
+        await collect(member, name, nextAncestors)
+      }
+    }
+  }
+  for (const exported of module ? await project.checker.getExportsOfModule(module) : []) {
+    await collect(exported, "", new Set())
   }
   if (!declarations.length) throw new Error(`TypeDoc: нет экспортируемого type/interface: ${absolutePath}`)
   const tracked = sources.result()

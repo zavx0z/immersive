@@ -28,6 +28,152 @@ afterAll(async () => {
 })
 
 describe("структурированный разбор TypeScript 7", () => {
+  test("экспортированный ambient namespace раскрывает типы, вложенные поля и JSON Schema", async () => {
+    const root = await fixture({
+      "shared.ts": "export interface Shared { id: string }",
+      "namespace.ts": `import type {Shared} from "./shared.ts"
+/** Контракт одной возможности. */
+export declare namespace Example {
+  /** Вход. @property options - Настройки чтения. @property shared - Общая identity. */
+  type Input = Readonly<{options: Readonly<{limit: number; enabled?: boolean}>; shared: Shared}>
+  /** Результат. @property values - Прочитанные значения. */
+  interface Output {readonly values: readonly string[]}
+  /** Слоты. @property default - Основное содержимое. */
+  type Slots = Readonly<{default: string}>
+  namespace Nested {
+    /** Деталь. @property id - Идентификатор. */
+    type Detail = Readonly<{id: string}>
+  }
+}`,
+    })
+    const result = await analyzeTypeDoc({root, path: "namespace.ts"})
+    expect(result.document.declarations.map(declaration => declaration.name)).toEqual([
+      "Example.Input", "Example.Output", "Example.Slots", "Example.Nested.Detail",
+    ])
+    const input = result.document.declarations[0]!
+    expect(input.kind).toBe("type")
+    expect(input.signature).toContain("type Input =")
+    expect(input.members.find(member => member.name === "options")?.children)
+      .toEqual([{
+        name: "limit", type: "number", optional: false, description: "",
+      }, {
+        name: "enabled", type: "boolean | undefined", optional: true, description: "",
+      }])
+    expect(input.schema?.properties?.options?.properties?.limit?.type).toBe("number")
+    expect(result.document.declarations[1]?.kind).toBe("interface")
+    expect(result.sources.filter(source => source.path.startsWith(`${root}/`)).map(source => source.path)).toEqual([
+      join(root, "namespace.ts"), join(root, "shared.ts"), join(root, "tsconfig.json"),
+    ])
+    expect(result.sources.some(source => source.path.endsWith("/lib.es5.d.ts"))).toBeTrue()
+    for (const source of result.sources) {
+      expect(source.digest).toBe(createHash("sha256").update(await readFile(source.path)).digest("hex"))
+    }
+  })
+
+  test("type reexport сохраняет публичное имя namespace и исходный owner", async () => {
+    const root = await fixture({
+      "source.ts": "export declare namespace Source {\n/** Вход. */\ntype Input = Readonly<{value: number}>\n}",
+      "public.ts": 'export type {Source as Public} from "./source.ts"',
+    })
+    const result = await analyzeTypeDoc({root, path: "public.ts"})
+    expect(result.document.declarations.map(declaration => declaration.name)).toEqual(["Public.Input"])
+    expect(result.document.declarations[0]?.members).toEqual([
+      {name: "value", type: "number", optional: false, description: ""},
+    ])
+    expect(result.sources.filter(source => source.path.startsWith(`${root}/`)).map(source => source.path)).toEqual([
+      join(root, "public.ts"), join(root, "source.ts"), join(root, "tsconfig.json"),
+    ])
+    expect(result.sources.some(source => source.path.endsWith("/lib.es5.d.ts"))).toBeTrue()
+  })
+
+  test("readonly tuple внутри namespace сохраняет метки и optional без emitter tuple", async () => {
+    const root = await fixture({
+      "dependencies.ts": `export declare namespace Discovery {
+  type Input = readonly [roots: readonly string[]]
+  type Output = Readonly<{count: number}>
+}
+export declare namespace Revision {
+  type Input = readonly [owner: string, revision: string, graph: unknown, styles?: readonly string[]]
+}`,
+      "catalog.ts": `import type {Discovery, Revision} from "./dependencies.ts"
+export declare namespace Catalog {
+  /**
+  Источник каталога и необязательный поставщик стилей.
+  @property resolveCatalog - Читает очередной снимок каталога.
+  @property [readAuthorStyleSheets] - Читает стили приложения.
+  */
+  type Input = readonly [
+    resolveCatalog: (...input: Discovery.Input) => Promise<Discovery.Output>,
+    readAuthorStyleSheets?: () => NonNullable<Revision.Input[3]>,
+  ]
+}`,
+    })
+    const result = await analyzeTypeDoc({root, path: "catalog.ts"})
+    expect(result.document.declarations.map(declaration => declaration.name)).toEqual(["Catalog.Input"])
+    const input = result.document.declarations[0]!
+    expect(input.members).toEqual([
+      {
+        name: "resolveCatalog",
+        type: "(...input: Discovery.Input) => Promise<Discovery.Output>",
+        optional: false,
+        description: "Читает очередной снимок каталога.",
+      },
+      {
+        name: "readAuthorStyleSheets",
+        type: "() => NonNullable<Revision.Input[3]>",
+        optional: true,
+        description: "Читает стили приложения.",
+      },
+    ])
+    expect(input.schema).toMatchObject({type: "array", minItems: 1, maxItems: 2})
+    expect(input.schema?.prefixItems?.map(item => item.not)).toEqual([{}, {}])
+    expect(result.sources.filter(source => source.path.startsWith(`${root}/`)).map(source => source.path)).toEqual([
+      join(root, "catalog.ts"), join(root, "dependencies.ts"), join(root, "tsconfig.json"),
+    ])
+  })
+
+  test("импортированный generic tuple alias сохраняет авторские метки, optional и rest", async () => {
+    const root = await fixture({
+      "tuple.ts": "export type Named<T> = readonly [first: T, second?: number, ...rest: boolean[]]",
+      "public.ts": `import type {Named} from "./tuple.ts"
+/**
+@property first - Первый.
+@property second - Второй.
+@property rest - Остальные.
+*/
+export type Input = Readonly<Named<string>>
+export type Bare = Named<string>`,
+    })
+    const {document} = await analyzeTypeDoc({root, path: "public.ts"})
+    expect(document.declarations[0]?.members.map(({name, optional, description}) => ({name, optional, description}))).toEqual([
+      {name: "first", optional: false, description: "Первый."},
+      {name: "second", optional: true, description: "Второй."},
+      {name: "rest", optional: false, description: "Остальные."},
+    ])
+    expect(document.declarations[0]?.members.map(({type}) => type)).toEqual(["string", "number | undefined", "boolean[]"])
+    expect(document.declarations[1]?.members.map(({name, type, optional}) => ({name, type, optional}))).toEqual([
+      {name: "first", type: "string", optional: false},
+      {name: "second", type: "number | undefined", optional: true},
+      {name: "rest", type: "boolean[]", optional: false},
+    ])
+  })
+
+  test("variadic generic tuple раскрывает инстанцированные метки и optional", async () => {
+    const root = await fixture({
+      "foreign.ts": "export type Args<T extends unknown[]> = [prefix: string, ...T]",
+      "public.ts": `import type {Args} from "./foreign.ts"
+export declare namespace Command {
+  type Input = Args<[value: number, enabled?: boolean]>
+}`,
+    })
+    const {document} = await analyzeTypeDoc({root, path: "public.ts"})
+    expect(document.declarations[0]?.members.map(({name, type, optional}) => ({name, type, optional}))).toEqual([
+      {name: "prefix", type: "string", optional: false},
+      {name: "value", type: "number", optional: false},
+      {name: "enabled", type: "boolean | undefined", optional: true},
+    ])
+  })
+
   test("контракты владеют объявлениями, реализация и представление импортируют канонические типы", async () => {
     const files = await Promise.all([
       "typedoc/parser/contract/input.ts",
