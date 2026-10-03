@@ -11,7 +11,7 @@ import {textPositionAtOffset} from "@zavx0z/dom/text-position"
 import {clearDocumentTextHighlights} from "@zavx0z/dom/text-highlights"
 import {setDocumentTextHighlights} from "@zavx0z/dom/text-highlights"
 import type {UiCodeEditorModel} from "@ui/code-editor-model"
-type CodeEditorModel = UiCodeEditorModel.Output
+import type CodeEditorModel from "@ui/code-editor-model"
 type CodeEditorRange = UiCodeEditorModel.Output["snapshot"]["selections"][number]
 import {Range} from "@zavx0z/dom/range"
 import type {CodeEditorHandle} from "@ui-views/code-editor"

@@ -45,6 +45,10 @@
         "@zavx0z/webgpu",
       ],
     },
+    "code-editor-model": {
+      "name": "@ui/code-editor-model",
+      "version": "0.0.0",
+    },
     "component": {
       "name": "@zavx0z/component",
       "version": "0.0.0",
@@ -519,6 +523,10 @@
         "typescript",
       ],
     },
+    "terminal-model": {
+      "name": "@ui/terminal-model",
+      "version": "0.0.0",
+    },
     "typedoc": {
       "name": "@immersive/typedoc",
       "version": "0.0.0",
@@ -554,14 +562,12 @@
         "@ui-navigation/breadcrumbs": "workspace:*",
         "@ui/badge": "workspace:*",
         "@ui/buttons": "workspace:*",
-        "@ui/code-editor-model": "workspace:*",
         "@ui/divider": "workspace:*",
         "@ui/feedback": "workspace:*",
         "@ui/fields": "workspace:*",
         "@ui/menus": "workspace:*",
         "@ui/selection": "workspace:*",
         "@ui/surfaces": "workspace:*",
-        "@ui/terminal-model": "workspace:*",
         "@ui/themes": "workspace:*",
         "@ui/typography": "workspace:*",
         "@ui/views": "workspace:*",
@@ -609,6 +615,8 @@
         "@ui-widgets/inspector": "workspace:*",
         "@ui-widgets/terminal": "workspace:*",
         "@ui-widgets/tree": "workspace:*",
+        "@ui/code-editor-model": "workspace:*",
+        "@ui/terminal-model": "workspace:*",
         "@zavx0z/component": "workspace:*",
         "@zavx0z/dom": "workspace:*",
         "@zavx0z/template": "workspace:*",
@@ -674,10 +682,6 @@
         "@immersive/headless": "workspace:*",
         "@ui/buttons": "workspace:*",
       },
-    },
-    "ui/code-editor-model": {
-      "name": "@ui/code-editor-model",
-      "version": "0.0.0",
     },
     "ui/divider": {
       "name": "@ui/divider",
@@ -1836,10 +1840,6 @@
         "@immersive/headless": "workspace:*",
         "@zavx0z/dom": "workspace:*",
       },
-    },
-    "ui/terminal-model": {
-      "name": "@ui/terminal-model",
-      "version": "0.0.0",
     },
     "ui/theme": {
       "name": "@ui/themes",
@@ -3008,7 +3008,7 @@
 
     "@ui/buttons": ["@ui/buttons@workspace:ui/button"],
 
-    "@ui/code-editor-model": ["@ui/code-editor-model@workspace:ui/code-editor-model"],
+    "@ui/code-editor-model": ["@ui/code-editor-model@workspace:code-editor-model"],
 
     "@ui/divider": ["@ui/divider@workspace:ui/divider"],
 
@@ -3022,7 +3022,7 @@
 
     "@ui/surfaces": ["@ui/surfaces@workspace:ui/surface"],
 
-    "@ui/terminal-model": ["@ui/terminal-model@workspace:ui/terminal-model"],
+    "@ui/terminal-model": ["@ui/terminal-model@workspace:terminal-model"],
 
     "@ui/themes": ["@ui/themes@workspace:ui/theme"],
 

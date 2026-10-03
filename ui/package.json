@@ -15,7 +15,6 @@
     "./button/button": "./button/button/index.tsx",
     "./button/icon-button": "./button/icon-button/index.tsx",
     "./button/toggle-button-group": "./button/toggle-button-group/index.tsx",
-    "./code-editor-model": "./code-editor-model/index.ts",
     "./divider": "./divider/index.tsx",
     "./feedback": "./feedback/index.ts",
     "./feedback/notification": "./feedback/notification/index.tsx",
@@ -131,7 +130,6 @@
     "./surface/tab": "./surface/tab/index.tsx",
     "./surface/window": "./surface/window/index.tsx",
     "./surface/window/control": "./surface/window/control/index.tsx",
-    "./terminal-model": "./terminal-model/index.ts",
     "./theme": "./theme/index.ts",
     "./theme/icon": "./theme/icon/index.ts",
     "./theme/icon/apply": "./theme/icon/apply/index.ts",
@@ -203,20 +201,18 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel --max-concurrency=2 --preload @immersive/headless/preload --timeout 30000 ./tests ./button ./field ./feedback ./menu ./navigation ./surface ./view ./widget ./theme ./selection ./badge ./divider ./typography ./code-editor-model ./terminal-model",
+    "test": "bun test --parallel --max-concurrency=2 --preload @immersive/headless/preload --timeout 30000 ./tests ./button ./field ./feedback ./menu ./navigation ./surface ./view ./widget ./theme ./selection ./badge ./divider ./typography",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
     "@ui/badge": "workspace:*",
     "@ui/buttons": "workspace:*",
-    "@ui/code-editor-model": "workspace:*",
     "@ui/divider": "workspace:*",
     "@ui/feedback": "workspace:*",
     "@ui/fields": "workspace:*",
     "@ui/menus": "workspace:*",
     "@ui/selection": "workspace:*",
     "@ui/surfaces": "workspace:*",
-    "@ui/terminal-model": "workspace:*",
     "@ui/themes": "workspace:*",
     "@ui/typography": "workspace:*",
     "@ui/views": "workspace:*",
@@ -267,6 +263,8 @@
     "@ui-widgets/tree": "workspace:*",
     "@zavx0z/component": "workspace:*",
     "@zavx0z/dom": "workspace:*",
-    "@zavx0z/template": "workspace:*"
+    "@zavx0z/template": "workspace:*",
+    "@ui/code-editor-model": "workspace:*",
+    "@ui/terminal-model": "workspace:*"
   }
 }

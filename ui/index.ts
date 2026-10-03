@@ -6,12 +6,8 @@
 */
 export {default as Badge} from "@ui/badge"
 export type {UiBadge} from "@ui/badge"
-export {default as CodeEditorModel} from "@ui/code-editor-model"
-export type {UiCodeEditorModel} from "@ui/code-editor-model"
 export {default as Divider} from "@ui/divider"
 export type {UiDivider} from "@ui/divider"
-export {default as TerminalModel} from "@ui/terminal-model"
-export type {UiTerminalModel} from "@ui/terminal-model"
 export {default as Typography} from "@ui/typography"
 export type {UiTypography} from "@ui/typography"
 export * from "@ui/buttons"

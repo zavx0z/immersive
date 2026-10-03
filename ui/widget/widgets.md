@@ -50,7 +50,7 @@ Enter/Backspace/Tab отправляют CR/DEL/TAB; interrupt не перехв
 `onReady` предоставляет focus/isFocused. `followOutput` по умолчанию включает
 общий scrollIntoView последней строки; false оставляет прокрутку пользователю.
 
-`@zavx0z/ui/terminal-model` переносит общий ANSI subset из прежнего terminal:
+`@ui/terminal-model` переносит общий ANSI subset из прежнего terminal:
 CR/LF/backspace/tab, SGR 8/bright цветов и bold, очистка/перемещение курсора,
 DSR и device replies, потоковый UTF-8 и ограниченный scrollback. Модель не является
 полным VT/xterm emulator. `onReply` возвращает ответ протокола без отправки в процесс.

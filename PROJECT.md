@@ -168,7 +168,7 @@ transport, но не меняют стандартный Selection API. Interpre
 только связью с файлами, Git, debugger и жизненным циклом процессов.
 
 Договоры: [DOM](dom/selection.md), [Renderer](renderer/html/text-selection.md),
-[Browser](browser/clipboard.md), [редакторская модель](ui/code-editor-model.md).
+[Browser](browser/clipboard.md), [редакторская модель](code-editor-model/README.md).
 
 ## Пакеты
 

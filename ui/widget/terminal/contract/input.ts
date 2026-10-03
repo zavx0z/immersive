@@ -1,6 +1,6 @@
 import type {UiTerminalModel} from "@ui/terminal-model"
 type TerminalLine = UiTerminalModel.Output["snapshot"]["lines"][number]
-type TerminalModel = UiTerminalModel.Output
+import type TerminalModel from "@ui/terminal-model"
 import type {TerminalHandle} from "./types.ts"
 import type {WidgetHeaderProps} from "@ui-widgets/header"
 

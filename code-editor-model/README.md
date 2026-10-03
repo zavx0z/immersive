@@ -1,7 +1,7 @@
 # Модель редактирования кода
 
 `@ui/code-editor-model` владеет текстовыми транзакциями редактора.
-Она не создаёт DOM, listeners, clipboard, раскладку или GPU-ресурсы.
+Она не создаёт DOM, обработчики событий DOM, clipboard, раскладку или GPU-ресурсы.
 CodeEditor и Interpreter используют одну и ту же модель; стандартный
 `Document.Selection` не расширяется до несовместимого multicursor API.
 
