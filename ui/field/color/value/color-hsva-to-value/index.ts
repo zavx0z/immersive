@@ -1,17 +1,17 @@
 /**
-Обработка color-hsva-to-value.
+Преобразует частичный HSVA-цвет в нормализованный неизменяемый RGBA-цвет.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {ColorHsvaToValueInput} from "./contract/input"
-import type {ColorHsva} from "@ui-fields-color-value/normalize-color-value"
-import type {ColorValue} from "@ui-fields-color-value/normalize-color-value"
+import type {UiFieldsColorValueColorHsvaToValue as Contract} from "./contract"
+export type {UiFieldsColorValueColorHsvaToValue} from "./contract"
+
 import clampUnit from "@ui-fields-color-value/clamp-unit"
 import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
 import wrapUnit from "@ui-fields-color-value/wrap-unit"
 
-export default function colorHsvaToValue(value: ColorHsvaToValueInput[0]): ColorValue {
+export default function colorHsvaToValue(value: Contract.Input[0]): Contract.Output {
   const hue = wrapUnit(value.h ?? 0) * 6
   const saturation = clampUnit(value.s ?? 0)
   const brightness = clampUnit(value.v ?? 0)
@@ -32,5 +32,3 @@ export default function colorHsvaToValue(value: ColorHsvaToValueInput[0]): Color
     a: value.a ?? 1
   })
 }
-
-export type {ColorHsvaToValueInput} from "./contract/input"

@@ -2,7 +2,7 @@
   "name": "@ui-fields-color-value/color-value-to-hsva",
   "label": "colorValueToHsva",
   "version": "0.0.0",
-  "description": "Обработка color-value-to-hsva",
+  "description": "Преобразует нормализованный RGBA-цвет в неизменяемое представление HSVA",
   "private": true,
   "type": "module",
   "sideEffects": false,

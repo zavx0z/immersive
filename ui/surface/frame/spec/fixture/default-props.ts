@@ -1,12 +1,11 @@
 /**
-Базовые параметры frame.
-Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
+Пример данных рамки для её сценария; не является отдельной исполняемой возможностью.
 
 @packageDocumentation
 */
-import type {FrameDefaultProps} from "@ui-surfaces/frame"
+import type {UiSurfacesFrame} from "@ui-surfaces/frame"
 
-const frameDefaultProps: FrameDefaultProps = Object.freeze({
+const frameDefaultProps: UiSurfacesFrame.Input = Object.freeze({
   title: "Frame",
   edge: "right",
   handles: Object.freeze([

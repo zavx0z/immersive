@@ -1,6 +1,8 @@
 import type {ColorPickerFieldProps} from "./input.ts"
-import type {ColorHsva} from "@ui-fields-color-value/normalize-color-value"
-import type {ColorValue} from "@ui-fields-color-value/normalize-color-value"
+import type {UiFieldsColorValueColorValueToHsva} from "@ui-fields-color-value/color-value-to-hsva"
+type ColorHsva = UiFieldsColorValueColorValueToHsva.Output
+import type {UiFieldsColorValueNormalizeColorValue} from "@ui-fields-color-value/normalize-color-value"
+type ColorValue = UiFieldsColorValueNormalizeColorValue.Output
 
 /**
 Тип ColorPickerFieldValue принадлежит контракту своего владельца.

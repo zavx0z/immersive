@@ -1,5 +1,11 @@
 import type {FrameEdge} from "../contract/types.ts"
-import type {FrameHandleButtonProps} from "../contract/types.ts"
+import type {UiSurfacesFrame} from "../contract"
+
+/** Частный вход кнопки команды рамки. */
+type FrameHandleButtonProps = Readonly<{
+  handle: UiSurfacesFrame.Input["handles"][number]
+  onHandle?: UiSurfacesFrame.Input["onHandle"]
+}>
 import SurfaceButton from "@ui-surfaces-chrome/button"
 
 /** Частная подготовка рамка рабочей области с заголовком и элементами управления. */

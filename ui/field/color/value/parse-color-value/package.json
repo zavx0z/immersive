@@ -2,7 +2,7 @@
   "name": "@ui-fields-color-value/parse-color-value",
   "label": "parseColorValue",
   "version": "0.0.0",
-  "description": "Разбор цветового значения",
+  "description": "Разбирает шестизначный или восьмизначный HEX-цвет, возвращая RGBA либо null",
   "private": true,
   "type": "module",
   "sideEffects": false,

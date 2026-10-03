@@ -5,7 +5,6 @@
 @packageDocumentation
 */
 import type {UiFieldsColorValueRgbaCss as Contract} from "./contract"
-import type {ColorValue} from "@ui-fields-color-value/normalize-color-value"
 
 export default function rgbaCss(value: Contract.Input[0]): Contract.Output {
   const byte = (entry: number): number => Math.round(entry * 255)

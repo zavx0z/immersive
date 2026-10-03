@@ -1,4 +1,5 @@
-import type {ColorHsva} from "@ui-fields-color-value/normalize-color-value"
+import type {UiFieldsColorValueColorValueToHsva} from "@ui-fields-color-value/color-value-to-hsva"
+type ColorHsva = UiFieldsColorValueColorValueToHsva.Output
 
 /** Переводит тон HSVA в целые градусы, остальные каналы округляет до шести десятичных знаков. */
 export declare namespace UiFieldsColorValueColorChannelDisplayValue {

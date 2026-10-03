@@ -1,16 +1,16 @@
 /**
-Нормализация цветового значения.
+Нормализует частичный RGBA-цвет и возвращает неизменяемые каналы от 0 до 1.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {NormalizeColorValueInput} from "./contract/input"
-import type {ColorValue} from "./contract/types.ts"
+import type {UiFieldsColorValueNormalizeColorValue as Contract} from "./contract"
+export type {UiFieldsColorValueNormalizeColorValue} from "./contract"
+
 import clampUnit from "@ui-fields-color-value/clamp-unit"
 
-export type {ColorChannel, ColorValue, ColorHsva} from "./contract/types"
 
-export default function normalizeColorValue(value: NormalizeColorValueInput[0]): ColorValue {
+export default function normalizeColorValue(value: Contract.Input[0]): Contract.Output {
   return Object.freeze({
     r: clampUnit(value.r ?? 0),
     g: clampUnit(value.g ?? 0),
@@ -18,5 +18,3 @@ export default function normalizeColorValue(value: NormalizeColorValueInput[0]):
     a: clampUnit(value.a ?? 1)
   })
 }
-
-export type {NormalizeColorValueInput} from "./contract/input"

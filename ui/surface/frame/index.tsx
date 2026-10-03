@@ -6,7 +6,7 @@
 */
 import {FrameEdgeIndicator} from "./src/helpers.tsx"
 import {FrameHandleButton} from "./src/helpers.tsx"
-import type {FrameProps} from "./contract/input.ts"
+import type {UiSurfacesFrame as Contract} from "./contract"
 import {assertEdge} from "./src/helpers.tsx"
 import assertSurfaceActions from "@ui-surfaces-chrome/assert-surface-actions"
 import SurfaceBody from "@ui-surfaces-chrome/body"
@@ -15,12 +15,10 @@ import SurfaceNavigation from "@ui-surfaces-chrome/navigation"
 import SurfaceOwner from "@ui-surfaces-chrome/owner"
 import SurfaceTitle from "@ui-surfaces-chrome/title"
 
-export type {FrameProps} from "./contract/input"
-export type {FrameEdge, FrameHandle, FrameDefaultProps} from "./contract/types"
+export type {UiSurfacesFrame} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function Frame(props: FrameProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function Frame(props: Contract.Input): Contract.Output {
   if (typeof props.title !== "string") throw new TypeError("Frame title must be a string")
   assertEdge(props.edge)
   assertSurfaceActions(props.handles, "Frame handle")

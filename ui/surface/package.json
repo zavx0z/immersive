@@ -17,7 +17,6 @@
     "./chrome/owner": "./chrome/owner/index.tsx",
     "./chrome/title": "./chrome/title/index.tsx",
     "./frame": "./frame/index.tsx",
-    "./frame/default": "./frame/default/index.tsx",
     "./pane": "./pane/index.tsx",
     "./panel": "./panel/index.tsx",
     "./tab": "./tab/index.tsx",

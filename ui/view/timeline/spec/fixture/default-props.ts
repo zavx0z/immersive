@@ -1,12 +1,11 @@
 /**
-Базовые параметры timeline.
-Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
+Пример кадров и маркеров для сценария временной шкалы.
 
 @packageDocumentation
 */
-import type {TimelineProps} from "@ui-views/timeline"
+import type {UiViewsTimeline} from "@ui-views/timeline"
 
-const timelineDefaultProps: TimelineProps = Object.freeze({
+const timelineDefaultProps: UiViewsTimeline.Input = Object.freeze({
   title: "Timeline",
   frameStart: 1,
   frameEnd: 100,

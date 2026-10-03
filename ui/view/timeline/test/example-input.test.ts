@@ -1,6 +1,6 @@
-/** timelineDefaultProps показывает публичное использование своего владельца. */
+/** Данные примера принадлежат сценарию временной шкалы. */
 import {describe, expect, test} from "bun:test"
-import value from "@ui-views-timeline/defaults"
+import value from "../spec/fixture/default-props"
 
 describe.each([{name: "Публичное значение", props: {}}])("$name", () => {
   test("Данные", () => {

@@ -2,7 +2,7 @@
   "name": "@ui-fields-color-value/color-hsva-to-value",
   "label": "colorHsvaToValue",
   "version": "0.0.0",
-  "description": "Обработка color-hsva-to-value",
+  "description": "Преобразует частичный HSVA-цвет в нормализованный неизменяемый RGBA-цвет",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -17,6 +17,7 @@
   "dependencies": {
     "@ui-fields-color-value/clamp-unit": "workspace:*",
     "@ui-fields-color-value/normalize-color-value": "workspace:*",
-    "@ui-fields-color-value/wrap-unit": "workspace:*"
+    "@ui-fields-color-value/wrap-unit": "workspace:*",
+    "@ui-fields-color-value/color-value-to-hsva": "workspace:*"
   }
 }

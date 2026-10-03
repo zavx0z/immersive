@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 export {default as Frame} from "@ui-surfaces/frame"
-export type {FrameEdge, FrameHandle, FrameProps, FrameDefaultProps} from "@ui-surfaces/frame"
+export type {UiSurfacesFrame} from "@ui-surfaces/frame"
 export {default as Pane} from "@ui-surfaces/pane"
 export type {PaneVariant, PaneTextContent, PaneProps} from "@ui-surfaces/pane"
 export {default as Panel} from "@ui-surfaces/panel"

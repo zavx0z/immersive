@@ -5,7 +5,6 @@
 @packageDocumentation
 */
 import type {UiFieldsColorValueFormatColorValue as Contract} from "./contract"
-import type {ColorValue} from "@ui-fields-color-value/normalize-color-value"
 import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
 
 export default function formatColorValue(value: Contract.Input[0], includeAlpha: Contract.Input[1] = true): Contract.Output {

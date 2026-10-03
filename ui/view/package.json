@@ -25,8 +25,7 @@
     "./table": "./table/index.tsx",
     "./table/normalize-table-selection": "./table/normalize-table-selection/index.tsx",
     "./table/table-selection-after-click": "./table/table-selection-after-click/index.tsx",
-    "./timeline": "./timeline/index.tsx",
-    "./timeline/default": "./timeline/default/index.tsx"
+    "./timeline": "./timeline/index.tsx"
   },
   "dependencies": {
     "@ui-views/code-editor": "workspace:*",

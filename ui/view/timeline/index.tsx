@@ -6,18 +6,16 @@
 */
 import {TimelineBody} from "./src/helpers.tsx"
 import {TimelineOutput} from "./src/helpers.tsx"
-import type {TimelineProps} from "./contract/input.ts"
+import type {UiViewsTimeline as Contract} from "./contract"
 import {normalizeTimelineProps} from "./src/helpers.tsx"
 import SurfaceHeader from "@ui-surfaces-chrome/header"
 import SurfaceOwner from "@ui-surfaces-chrome/owner"
 import SurfaceTitle from "@ui-surfaces-chrome/title"
 
-export type {TimelineProps} from "./contract/input"
-export type {TimelineKeyframe, TimelineMarker, TimelineTrack} from "./contract/types"
+export type {UiViewsTimeline} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function Timeline(props: TimelineProps): JSX.Element {
+export default function Timeline(props: Contract.Input): Contract.Output {
   const model = normalizeTimelineProps(props)
   return <SurfaceOwner
     label={props.title}

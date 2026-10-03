@@ -5,7 +5,6 @@
 @packageDocumentation
 */
 import type {UiFieldsColorValueColorChannelDisplayValue as Contract} from "./contract"
-import type {ColorHsva} from "@ui-fields-color-value/normalize-color-value"
 
 export default function colorChannelDisplayValue(channel: Contract.Input[0], value: Contract.Input[1]): Contract.Output {
   return channel === "h"

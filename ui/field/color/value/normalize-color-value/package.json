@@ -2,7 +2,7 @@
   "name": "@ui-fields-color-value/normalize-color-value",
   "label": "normalizeColorValue",
   "version": "0.0.0",
-  "description": "Нормализация цветового значения",
+  "description": "Нормализует частичный RGBA-цвет и возвращает неизменяемые каналы от 0 до 1",
   "private": true,
   "type": "module",
   "sideEffects": false,

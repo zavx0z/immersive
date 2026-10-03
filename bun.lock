@@ -955,6 +955,7 @@
       "name": "@ui-fields-color-value/color-channel-display-value",
       "version": "0.0.0",
       "dependencies": {
+        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
         "@ui-fields-color-value/normalize-color-value": "workspace:*",
       },
     },
@@ -963,6 +964,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@ui-fields-color-value/clamp-unit": "workspace:*",
+        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
         "@ui-fields-color-value/normalize-color-value": "workspace:*",
         "@ui-fields-color-value/wrap-unit": "workspace:*",
       },
@@ -1755,16 +1757,6 @@
         "@ui/typography": "workspace:*",
       },
     },
-    "ui/surface/frame/default": {
-      "name": "@ui-surfaces-frame/defaults",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-surfaces/frame": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
     "ui/surface/pane": {
       "name": "@ui-surfaces/pane",
       "version": "0.0.0",
@@ -2328,16 +2320,6 @@
         "@immersive/headless": "workspace:*",
       },
     },
-    "ui/view/timeline/default": {
-      "name": "@ui-views-timeline/defaults",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-views/timeline": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
     "ui/widget": {
       "name": "@ui/widgets",
       "version": "0.0.0",
@@ -2866,8 +2848,6 @@
 
     "@ui-surfaces-chrome/title": ["@ui-surfaces-chrome/title@workspace:ui/surface/chrome/title"],
 
-    "@ui-surfaces-frame/defaults": ["@ui-surfaces-frame/defaults@workspace:ui/surface/frame/default"],
-
     "@ui-surfaces-window/control": ["@ui-surfaces-window/control@workspace:ui/surface/window/control"],
 
     "@ui-surfaces/chrome": ["@ui-surfaces/chrome@workspace:ui/surface/chrome"],
@@ -2979,8 +2959,6 @@
     "@ui-views-table/normalize-table-selection": ["@ui-views-table/normalize-table-selection@workspace:ui/view/table/normalize-table-selection"],
 
     "@ui-views-table/table-selection-after-click": ["@ui-views-table/table-selection-after-click@workspace:ui/view/table/table-selection-after-click"],
-
-    "@ui-views-timeline/defaults": ["@ui-views-timeline/defaults@workspace:ui/view/timeline/default"],
 
     "@ui-views/code-editor": ["@ui-views/code-editor@workspace:ui/view/code-editor"],
 

@@ -1,11 +1,12 @@
-import type {NormalizedTimelineKeyframe} from "../contract/types.ts"
-import type {TimelineBodyProps} from "../contract/types.ts"
+import type {NormalizedTimelineKeyframe} from "./types"
+import type {TimelineBodyProps} from "./types"
 import type {TimelineKeyframe} from "../contract/types.ts"
-import type {TimelineKeyframeViewProps} from "../contract/types.ts"
+import type {TimelineKeyframeViewProps} from "./types"
 import type {TimelineMarker} from "../contract/types.ts"
-import type {TimelineMarkerViewProps} from "../contract/types.ts"
-import type {TimelineModel} from "../contract/types.ts"
-import type {TimelineProps} from "../contract/input.ts"
+import type {TimelineMarkerViewProps} from "./types"
+import type {TimelineModel} from "./types"
+import type {UiViewsTimeline} from "../contract"
+type TimelineProps = UiViewsTimeline.Input
 import type {TimelineTrack} from "../contract/types.ts"
 
 /** Частная подготовка временная шкала дорожек, ключевых кадров и маркеров. */

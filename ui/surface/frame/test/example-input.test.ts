@@ -1,6 +1,6 @@
-/** frameDefaultProps показывает публичное использование своего владельца. */
+/** Данные примера принадлежат сценариям рамки. */
 import {describe, expect, test} from "bun:test"
-import value from "@ui-surfaces-frame/defaults"
+import value from "../spec/fixture/default-props"
 
 describe.each([{name: "Публичное значение", props: {}}])("$name", () => {
   test("Данные", () => {
