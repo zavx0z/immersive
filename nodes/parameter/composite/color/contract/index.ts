@@ -43,7 +43,7 @@ export declare namespace NodesParametersColor {
     readonly onOpenChange?: ColorFieldProps["onOpenChange"]
   }
 
-  interface Slots extends NodesParameters.Slots {}
+  type Slots = NodesParameters.Slots
 
   type Output = NodesParameters.Output & JSX.Element<Slots>
 }

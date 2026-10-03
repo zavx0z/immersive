@@ -43,7 +43,7 @@ export declare namespace NodesParametersMatrix {
     readonly onChange?: MatrixFieldProps["onChange"]
   }
 
-  interface Slots extends NodesParameters.Slots {}
+  type Slots = NodesParameters.Slots
 
   type Output = NodesParameters.Output & JSX.Element<Slots>
 }

@@ -42,7 +42,7 @@ export declare namespace NodesParametersOptionGroup {
     readonly onChange?: UiButtonsToggleButtonGroup.Input["onChange"]
   }
 
-  interface Slots extends NodesParameters.Slots {}
+  type Slots = NodesParameters.Slots
 
   type Output = NodesParameters.Output & JSX.Element<Slots>
 }

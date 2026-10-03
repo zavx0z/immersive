@@ -47,7 +47,7 @@ export declare namespace NodesParametersSlider {
     readonly onChange?: SliderFieldProps["onChange"]
   }
 
-  interface Slots extends NodesParameters.Slots {}
+  type Slots = NodesParameters.Slots
 
   type Output = NodesParameters.Output & JSX.Element<Slots>
 }

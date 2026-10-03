@@ -44,7 +44,7 @@ export declare namespace NodesParametersReference {
     readonly onClear?: ReferenceFieldProps["onClear"]
   }
 
-  interface Slots extends NodesParameters.Slots {}
+  type Slots = NodesParameters.Slots
 
   type Output = NodesParameters.Output & JSX.Element<Slots>
 }

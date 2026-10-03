@@ -43,7 +43,7 @@ export declare namespace NodesParametersText {
     readonly onChange?: TextFieldProps["onChange"]
   }
 
-  interface Slots extends NodesParameters.Slots {}
+  type Slots = NodesParameters.Slots
 
   type Output = NodesParameters.Output & JSX.Element<Slots>
 }

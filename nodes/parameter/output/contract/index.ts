@@ -34,7 +34,7 @@ export declare namespace NodesParametersOutput {
     readonly value: NodeJsonValue
   }
 
-  interface Slots extends NodesParameters.Slots {}
+  type Slots = NodesParameters.Slots
 
   type Output = NodesParameters.Output & JSX.Element<Slots>
 }

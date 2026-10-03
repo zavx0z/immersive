@@ -46,7 +46,7 @@ export declare namespace NodesParametersVector {
     readonly onChange?: VectorFieldProps["onChange"]
   }
 
-  interface Slots extends NodesParameters.Slots {}
+  type Slots = NodesParameters.Slots
 
   type Output = NodesParameters.Output & JSX.Element<Slots>
 }
