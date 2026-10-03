@@ -974,6 +974,95 @@
       "name": "@ui-fields-matrix-value/update-matrix-value",
       "version": "0.0.0",
     },
+    "node-geometry/field-height": {
+      "name": "@node-geometry/field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/metrics": "workspace:*",
+        "@ui-buttons/toggle-button-group": "workspace:*",
+        "@ui-fields-checkbox-field/layout": "workspace:*",
+        "@ui-fields-collection-field/layout": "workspace:*",
+        "@ui-fields-color-field/layout": "workspace:*",
+        "@ui-fields-cycle-field/layout": "workspace:*",
+        "@ui-fields-matrix-field/layout": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+        "@ui-fields-number-field/layout": "workspace:*",
+        "@ui-fields-path-field/layout": "workspace:*",
+        "@ui-fields-reference-field/layout": "workspace:*",
+        "@ui-fields-select-field/layout": "workspace:*",
+        "@ui-fields-slider-field/layout": "workspace:*",
+        "@ui-fields-switch-field/layout": "workspace:*",
+        "@ui-fields-text-field/layout": "workspace:*",
+        "@ui-fields-vector-field/layout": "workspace:*",
+      },
+      "devDependencies": {
+        "@nodes/parameter-presentation": "workspace:*",
+      },
+    },
+    "node-geometry/metrics": {
+      "name": "@node-geometry/metrics",
+      "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/metrics": "workspace:*",
+      },
+    },
+    "node-geometry/plan": {
+      "name": "@node-geometry/plan",
+      "version": "0.0.0",
+      "dependencies": {
+        "@node-geometry/metrics": "workspace:*",
+        "@socket-values/metrics": "workspace:*",
+      },
+    },
+    "node-geometry/port-id": {
+      "name": "@node-geometry/port-id",
+      "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/key": "workspace:*",
+      },
+    },
+    "node-geometry/project": {
+      "name": "@node-geometry/project",
+      "version": "0.0.0",
+      "dependencies": {
+        "@node-geometry/field-height": "workspace:*",
+        "@node-geometry/metrics": "workspace:*",
+        "@node-geometry/plan": "workspace:*",
+        "@node-geometry/port-id": "workspace:*",
+        "@node-geometry/socket-side": "workspace:*",
+        "@node-geometry/spacing": "workspace:*",
+        "@nodes/parameter-metrics": "workspace:*",
+        "@nodes/parameter-presentation": "workspace:*",
+        "@socket-values/key": "workspace:*",
+        "@socket-values/metrics": "workspace:*",
+      },
+      "devDependencies": {
+        "@nodes/tree": "workspace:*",
+      },
+    },
+    "node-geometry/socket-side": {
+      "name": "@node-geometry/socket-side",
+      "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/key": "workspace:*",
+        "@socket-values/side": "workspace:*",
+      },
+      "devDependencies": {
+        "@nodes/tree": "workspace:*",
+      },
+    },
+    "node-geometry/spacing": {
+      "name": "@node-geometry/spacing",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes/metadata": "workspace:*",
+      },
+      "devDependencies": {
+        "@nodes/parameter-presentation": "workspace:*",
+      },
+    },
     "node-metadata": {
       "name": "@nodes/metadata",
       "version": "0.0.0",
@@ -1116,6 +1205,13 @@
       "name": "@nodes/node",
       "version": "0.0.0",
       "dependencies": {
+        "@node-geometry/field-height": "workspace:*",
+        "@node-geometry/metrics": "workspace:*",
+        "@node-geometry/plan": "workspace:*",
+        "@node-geometry/port-id": "workspace:*",
+        "@node-geometry/project": "workspace:*",
+        "@node-geometry/socket-side": "workspace:*",
+        "@node-geometry/spacing": "workspace:*",
         "@nodes/metadata": "workspace:*",
         "@nodes/parameter-metrics": "workspace:*",
         "@nodes/parameter-presentation": "workspace:*",
@@ -2910,6 +3006,20 @@
     "@jsx/slot": ["@jsx/slot@workspace:jsx/slot"],
 
     "@mermaid-js/parser": ["@mermaid-js/parser@1.2.1", "", { "dependencies": { "@chevrotain/types": "~11.1.2" } }, "sha512-n12NohV3mrUyUL2o93IgG/ifeW9FTyeJn3zDxkhwa8MJ9Fxg3HQMlA3RiGmD/3UnJvheztkjjQAjA2T4LmUcpw=="],
+
+    "@node-geometry/field-height": ["@node-geometry/field-height@workspace:node-geometry/field-height"],
+
+    "@node-geometry/metrics": ["@node-geometry/metrics@workspace:node-geometry/metrics"],
+
+    "@node-geometry/plan": ["@node-geometry/plan@workspace:node-geometry/plan"],
+
+    "@node-geometry/port-id": ["@node-geometry/port-id@workspace:node-geometry/port-id"],
+
+    "@node-geometry/project": ["@node-geometry/project@workspace:node-geometry/project"],
+
+    "@node-geometry/socket-side": ["@node-geometry/socket-side@workspace:node-geometry/socket-side"],
+
+    "@node-geometry/spacing": ["@node-geometry/spacing@workspace:node-geometry/spacing"],
 
     "@node-metadata/boolean": ["@node-metadata/boolean@workspace:node-metadata/boolean"],
 

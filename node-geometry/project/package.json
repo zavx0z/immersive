@@ -1,0 +1,31 @@
+{
+  "name": "@node-geometry/project",
+  "label": "project",
+  "version": "0.0.0",
+  "description": "Планирует геометрию снимка ноды по представлениям параметров",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@nodes/parameter-presentation": "workspace:*",
+    "@nodes/parameter-metrics": "workspace:*",
+    "@node-geometry/field-height": "workspace:*",
+    "@socket-values/key": "workspace:*",
+    "@node-geometry/spacing": "workspace:*",
+    "@node-geometry/socket-side": "workspace:*",
+    "@node-geometry/port-id": "workspace:*",
+    "@node-geometry/plan": "workspace:*",
+    "@node-geometry/metrics": "workspace:*",
+    "@socket-values/metrics": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "devDependencies": {
+    "@nodes/tree": "workspace:*"
+  }
+}

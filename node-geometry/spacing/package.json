@@ -1,0 +1,22 @@
+{
+  "name": "@node-geometry/spacing",
+  "label": "spacing",
+  "version": "0.0.0",
+  "description": "Читает и проверяет интервал перед параметром",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@nodes/metadata": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "devDependencies": {
+    "@nodes/parameter-presentation": "workspace:*"
+  }
+}

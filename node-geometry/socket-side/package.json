@@ -1,0 +1,23 @@
+{
+  "name": "@node-geometry/socket-side",
+  "label": "socket-side",
+  "version": "0.0.0",
+  "description": "Сохраняет принятую сторону Layout либо сторону модели сокета",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@socket-values/key": "workspace:*",
+    "@socket-values/side": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "devDependencies": {
+    "@nodes/tree": "workspace:*"
+  }
+}

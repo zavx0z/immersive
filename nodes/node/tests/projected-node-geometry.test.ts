@@ -109,15 +109,15 @@ test("[NODES-PROJECTED-GEOMETRY-006] port centers следуют точному 
 
   expect(geometry.height).toBe(134)
   expect(geometry.rows.map(row => row.socketIds)).toEqual([
-    ["node/loose-right"],
-    ["node/parameter-right", "node/parameter-left"],
-    ["node/loose-left"],
+    ['["node","loose-right"]'],
+    ['["node","parameter-right"]', '["node","parameter-left"]'],
+    ['["node","loose-left"]'],
   ])
   expect(geometry.sockets).toEqual([
-    {id: "node/loose-right", y: 42},
-    {id: "node/parameter-right", y: 79},
-    {id: "node/parameter-left", y: 79},
-    {id: "node/loose-left", y: 116},
+    {id: '["node","loose-right"]', y: 42},
+    {id: '["node","parameter-right"]', y: 79},
+    {id: '["node","parameter-left"]', y: 79},
+    {id: '["node","loose-left"]', y: 116},
   ])
 
   const swapped = planProjectedNodeGeometry(
@@ -130,9 +130,9 @@ test("[NODES-PROJECTED-GEOMETRY-006] port centers следуют точному 
     ]),
   )
   expect(swapped.rows.map(row => row.socketIds)).toEqual([
-    ["node/loose-left"],
-    ["node/parameter-right", "node/parameter-left"],
-    ["node/loose-right"],
+    ['["node","loose-left"]'],
+    ['["node","parameter-right"]', '["node","parameter-left"]'],
+    ['["node","loose-right"]'],
   ])
 })
 

@@ -1,0 +1,39 @@
+{
+  "name": "@node-geometry/field-height",
+  "label": "field-height",
+  "version": "0.0.0",
+  "description": "Определяет номинальную высоту подготовленного представления параметра",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@ui-fields-checkbox-field/layout": "workspace:*",
+    "@ui-fields-collection-field/layout": "workspace:*",
+    "@ui-fields-color-field/layout": "workspace:*",
+    "@ui-fields-cycle-field/layout": "workspace:*",
+    "@ui-fields-matrix-field/layout": "workspace:*",
+    "@ui-fields-number-field/layout": "workspace:*",
+    "@ui-fields-path-field/layout": "workspace:*",
+    "@ui-fields-reference-field/layout": "workspace:*",
+    "@ui-fields-select-field/layout": "workspace:*",
+    "@ui-fields-slider-field/layout": "workspace:*",
+    "@ui-fields-switch-field/layout": "workspace:*",
+    "@ui-fields-text-field/layout": "workspace:*",
+    "@ui-fields-vector-field/layout": "workspace:*",
+    "@socket-values/metrics": "workspace:*",
+    "@ui-buttons/toggle-button-group": "workspace:*",
+    "@ui-fields-metrics/field-metric": "workspace:*",
+    "@ui-fields-metrics/labelled-field-height": "workspace:*",
+    "@ui-fields-metrics/resolve-field-density": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "devDependencies": {
+    "@nodes/parameter-presentation": "workspace:*"
+  }
+}

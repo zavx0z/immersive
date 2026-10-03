@@ -9,7 +9,7 @@ const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
-  sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")],
+  sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes"), resolve(root, "ui")],
 }))
 
 const {Frame} = await import("@immersive/nodes/frame")

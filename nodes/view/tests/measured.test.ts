@@ -11,7 +11,7 @@ import type {NodeTreeStore} from "@immersive/nodes/view/tree"
 import {createNodeTree, createNodeTreeExternalStore, Parameter} from "@nodes/tree"
 
 const root = resolve(import.meta.dir, "../../..")
-Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes"), resolve(root, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes"), resolve(root, "ui")]}))
 const {GraphView} = await import("@immersive/nodes/view")
 const {graphInput, measuredLayout, MeasuredEditor, MeasuredCircle} = await import("./measured.fixture.tsx")
 const theme = await Bun.file(resolve(root, "ui/theme/theme.css")).text()

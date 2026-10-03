@@ -1,0 +1,101 @@
+/**
+Планирует геометрию снимка ноды по представлениям параметров.
+
+@packageDocumentation
+*/
+import type {NodeGeometryProject as Contract} from "./contract"
+export type {NodeGeometryProject} from "./contract"
+
+import type {Socket as CoreSocket} from "@nodes/tree"
+import type {NodeGeometryPlan} from "@node-geometry/plan"
+type NodeGeometryRowInput = NodeGeometryPlan.Input["rows"][number]
+type ProjectedNodeSnapshot = Contract.Input[0]
+import resolveProjectedParameterPresentation from "@nodes/parameter-presentation"
+import parameterMetrics from "@nodes/parameter-metrics"
+const {NODE_PARAMETER_SPACING_SMALL, NODE_PARAMETER_SPACING_MEDIUM} = parameterMetrics
+import projectedParameterFieldHeight from "@node-geometry/field-height"
+import socketKey from "@socket-values/key"
+import parameterSpacingBefore from "@node-geometry/spacing"
+import projectedSocketSide from "@node-geometry/socket-side"
+import nodeSocketLayoutPortId from "@node-geometry/port-id"
+import planNodeGeometry from "@node-geometry/plan"
+import nodeMetrics from "@node-geometry/metrics"
+const {NODE_MINIMUM_WIDTH} = nodeMetrics
+import socketMetrics from "@socket-values/metrics"
+const {NODE_ROW_HEIGHT} = socketMetrics
+
+export default function planProjectedNodeGeometry(
+  snapshot: Contract.Input[0],
+  width?: Contract.Input[1],
+  connectedSocketKeys?: Contract.Input[2],
+  resolvedSocketSides?: Contract.Input[3],
+  presentation: NonNullable<Contract.Input[4]> = {},
+): Contract.Output {
+  const parameterIds = new Set(snapshot.parameters.map(parameter => parameter.id))
+  const socketsByParameter = new Map<string, CoreSocket[]>()
+  const loose: CoreSocket[] = []
+  for (const socket of snapshot.sockets) {
+    if (socket.parameterId === undefined || !parameterIds.has(socket.parameterId)) {
+      loose.push(socket)
+      continue
+    }
+    const sockets = socketsByParameter.get(socket.parameterId) ?? []
+    sockets.push(socket)
+    socketsByParameter.set(socket.parameterId, sockets)
+  }
+  const right = loose.filter(socket => projectedSocketSide(
+    snapshot.id,
+    socket,
+    resolvedSocketSides,
+  ) === "right")
+  const left = loose.filter(socket => projectedSocketSide(
+    snapshot.id,
+    socket,
+    resolvedSocketSides,
+  ) === "left")
+  const rows: NodeGeometryRowInput[] = [
+    ...right.map(socket => projectedSocketRow(snapshot.id, socket)),
+    ...snapshot.parameters.map(parameter => {
+      const sockets = socketsByParameter.get(parameter.id) ?? []
+      const connected = sockets.some(socket =>
+        connectedSocketKeys?.has(socketKey(snapshot.id, socket.id)) === true)
+      const resolved = resolveProjectedParameterPresentation(parameter)
+      return Object.freeze({
+        height: connected
+          ? NODE_ROW_HEIGHT
+          : Math.max(NODE_ROW_HEIGHT, projectedParameterFieldHeight(resolved)),
+        spacingBefore: parameterSpacingBeforePixels(parameter),
+        socketIds: Object.freeze(sockets.map(socket =>
+          nodeSocketLayoutPortId(snapshot.id, socket.id))),
+      })
+    }),
+    ...left.map(socket => projectedSocketRow(snapshot.id, socket)),
+  ]
+  if (presentation.kind === "diagram") {
+    const diagramWidth = Math.max(NODE_MINIMUM_WIDTH, width ?? NODE_MINIMUM_WIDTH)
+    const height = presentation.shape === "circle" ? diagramWidth : presentation.height ?? 60
+    if (!Number.isFinite(height) || height <= 0) throw new TypeError("Diagram Node height must be positive and finite")
+    return Object.freeze({width: diagramWidth, height, contentHeight: height, rows: Object.freeze([]),
+      sockets: Object.freeze(snapshot.sockets.map(socket => Object.freeze({id: nodeSocketLayoutPortId(snapshot.id, socket.id), y: height / 2})))})
+  }
+  return planNodeGeometry({width, rows: Object.freeze(rows), collapsed: presentation.collapsed, contentVisible: presentation.contentVisible})
+}
+
+
+
+function parameterSpacingBeforePixels(
+  parameter: ProjectedNodeSnapshot["parameters"][number],
+): number {
+  const spacing = parameterSpacingBefore(parameter)
+  if (spacing === "small") return NODE_PARAMETER_SPACING_SMALL
+  if (spacing === "medium") return NODE_PARAMETER_SPACING_MEDIUM
+  return 0
+}
+
+
+function projectedSocketRow(nodeId: string, socket: CoreSocket): NodeGeometryRowInput {
+  return Object.freeze({
+    height: NODE_ROW_HEIGHT,
+    socketIds: Object.freeze([nodeSocketLayoutPortId(nodeId, socket.id)]),
+  })
+}

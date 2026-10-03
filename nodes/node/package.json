@@ -89,6 +89,13 @@
     "@nodes/metadata": "workspace:*",
     "@nodes/parameter-projection": "workspace:*",
     "@nodes/parameter-presentation": "workspace:*",
-    "@nodes/parameter-metrics": "workspace:*"
+    "@nodes/parameter-metrics": "workspace:*",
+    "@node-geometry/metrics": "workspace:*",
+    "@node-geometry/plan": "workspace:*",
+    "@node-geometry/project": "workspace:*",
+    "@node-geometry/field-height": "workspace:*",
+    "@node-geometry/spacing": "workspace:*",
+    "@node-geometry/socket-side": "workspace:*",
+    "@node-geometry/port-id": "workspace:*"
   }
 }

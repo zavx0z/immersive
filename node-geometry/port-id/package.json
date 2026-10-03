@@ -1,0 +1,19 @@
+{
+  "name": "@node-geometry/port-id",
+  "label": "port-id",
+  "version": "0.0.0",
+  "description": "Создаёт адрес порта Layout из непустых идентификаторов ноды и сокета",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@socket-values/key": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

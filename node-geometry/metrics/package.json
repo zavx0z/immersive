@@ -1,0 +1,19 @@
+{
+  "name": "@node-geometry/metrics",
+  "label": "metrics",
+  "version": "0.0.0",
+  "description": "Размеры ноды и строки без чтения DOM",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@socket-values/metrics": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}
