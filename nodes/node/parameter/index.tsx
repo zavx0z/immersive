@@ -3,8 +3,10 @@
 
 @packageDocumentation
 */
+import socketKey from "@socket-values/key"
 
-import {NODE_BORDER_WIDTH} from "@nodes/sockets/metrics"
+import socketMetrics from "@socket-values/metrics"
+const {NODE_BORDER_WIDTH} = socketMetrics
 import {hasSlot} from "@zavx0z/component/slot-presence"
 import Button from "@ui-buttons/button"
 import IconButton from "@ui-buttons/icon-button"
@@ -12,8 +14,9 @@ import chevronDownIcon from "@ui-themes-icons/chevron-down"
 import chevronRightIcon from "@ui-themes-icons/chevron-right"
 import {metadataBoolean, metadataString, Parameter, type ParameterInput} from "@nodes/parameters/shared"
 import {parameterSpacingBefore} from "../shared/parameter-presentation.ts"
-import {Socket} from "@nodes/sockets/socket"
-import {resolveSocketKind, resolveSocketShape} from "@nodes/sockets/presets"
+import Socket from "@nodes/sockets"
+import resolveSocketKind from "@socket-values/resolve-kind"
+import resolveSocketShape from "@socket-values/resolve-shape"
 import {NODE_BODY_PADDING_TOP, NODE_BODY_PADDING_BOTTOM, NODE_ROW_GAP} from "../shared/metrics.ts"
 import {prepareParameterNode} from "./src/prepare.ts"
 import type {ParameterNodeProps} from "./contract/input.ts"
@@ -231,7 +234,7 @@ export function ParameterNode(props: ParameterNodeProps) {
         side="right"
         label={metadataString(socket.metadata, "label", socket.id)}
         shape={resolveSocketShape(metadataString(socket.metadata, "shape", ""))}
-        connected={props.connectedSocketKeys?.has(`${props.id}\u0000${socket.id}`) === true}
+        connected={props.connectedSocketKeys?.has(socketKey(props.id, socket.id)) === true}
         disabled={metadataBoolean(socket.metadata, "disabled", false)}
         presentation="row"
         style={css`
@@ -271,7 +274,7 @@ export function ParameterNode(props: ParameterNodeProps) {
         side="left"
         label={metadataString(socket.metadata, "label", socket.id)}
         shape={resolveSocketShape(metadataString(socket.metadata, "shape", ""))}
-        connected={props.connectedSocketKeys?.has(`${props.id}\u0000${socket.id}`) === true}
+        connected={props.connectedSocketKeys?.has(socketKey(props.id, socket.id)) === true}
         disabled={metadataBoolean(socket.metadata, "disabled", false)}
         presentation="row"
         style={css`

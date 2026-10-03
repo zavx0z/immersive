@@ -1,3 +1,4 @@
+import socketKey from "@socket-values/key"
 import {expect} from "bun:test"
 import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
@@ -45,7 +46,7 @@ export async function mountParameterStory(mechanism: ParameterMechanism, variant
     nodeId: "parameter-example",
     snapshot: parameter.snapshot(),
     sockets: endpoints,
-    connectedSocketKeys: variant === "connected" ? new Set(["parameter-example\u0000in"]) : undefined,
+    connectedSocketKeys: variant === "connected" ? new Set([socketKey("parameter-example", "in")]) : undefined,
     onInput: change,
     onChange: change,
     onSocketActivate: id => { action.textContent = `Сокет: ${id}` },

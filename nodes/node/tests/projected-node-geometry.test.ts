@@ -1,3 +1,4 @@
+import socketKey from "@socket-values/key"
 import {expect, test} from "bun:test"
 import type {
   NodeJsonValue,
@@ -80,7 +81,7 @@ test("[NODES-PROJECTED-GEOMETRY-004] связанный сложный Parameter
   expect(planProjectedNodeGeometry(
     projected,
     undefined,
-    new Set(["node\u0000matrix-input"]),
+    new Set([socketKey("node", "matrix-input")]),
   ).height).toBe(60)
 })
 
@@ -124,8 +125,8 @@ test("[NODES-PROJECTED-GEOMETRY-006] port centers следуют точному 
     180,
     undefined,
     new Map([
-      ["node\u0000loose-left", "right" as const],
-      ["node\u0000loose-right", "left" as const],
+      [socketKey("node", "loose-left"), "right" as const],
+      [socketKey("node", "loose-right"), "left" as const],
     ]),
   )
   expect(swapped.rows.map(row => row.socketIds)).toEqual([

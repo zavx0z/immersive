@@ -1,6 +1,7 @@
 import type {Socket as CoreSocket} from "@nodes/tree"
 import {metadataString} from "@nodes/parameters/shared"
-import {socketKey, socketSide} from "@nodes/sockets/shared"
+import socketKey from "@socket-values/key"
+import socketSide from "@socket-values/side"
 import type {ParameterNodeProps} from "../parameter/contract/input.ts"
 
 /** Одинаковые правила представления для числового плана и JSX ноды. */

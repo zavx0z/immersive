@@ -6,7 +6,13 @@
 */
 
 import type {ExternalStore, NodeJsonValue, ParameterSnapshot, Socket as CoreSocket} from "@nodes/tree"
-import type {SocketKind, SocketDirection, SocketShape, SocketSide} from "@nodes/sockets/presets"
+import type {SocketValuesKinds} from "@socket-values/kinds"
+type SocketKind = SocketValuesKinds.Output[number]
+import type {NodesSockets} from "@nodes/sockets"
+type SocketDirection = NodesSockets.Input["direction"]
+import type {SocketValuesShapes} from "@socket-values/shapes"
+type SocketShape = SocketValuesShapes.Output[number]
+type SocketSide = NodesSockets.Input["side"]
 
 /**
 Изменение адресуется исходной ноде и Parameter; Store обновляет принимающая сторона.

@@ -16,7 +16,7 @@ test.each([
         elements: [],
       },
       "nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/socket/index.tsx#Socket"],
+        uses: ["nodes/socket/index.tsx#Socket"],
         elements: ["span"],
       },
       "nodes/parameter/shared/label/index.tsx#ParameterLabel": {
@@ -27,7 +27,7 @@ test.each([
         uses: ["nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints","nodes/parameter/shared/label/index.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/socket/index.tsx#Socket": {
+      "nodes/socket/index.tsx#Socket": {
         uses: [],
         elements: ["button","span"],
       },

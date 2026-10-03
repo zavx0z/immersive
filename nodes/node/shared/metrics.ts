@@ -1,4 +1,5 @@
-import {NODE_BORDER_WIDTH, NODE_ROW_HEIGHT, SOCKET_GLYPH_SIZE} from "@nodes/sockets/metrics"
+import socketMetrics from "@socket-values/metrics"
+const {NODE_BORDER_WIDTH, NODE_ROW_HEIGHT, SOCKET_GLYPH_SIZE} = socketMetrics
 
 export const NODE_MINIMUM_WIDTH = 100
 export const NODE_HEADER_HEIGHT = 22

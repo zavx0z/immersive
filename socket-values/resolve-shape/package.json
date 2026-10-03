@@ -1,0 +1,19 @@
+{
+  "name": "@socket-values/resolve-shape",
+  "label": "resolve-shape",
+  "version": "0.0.0",
+  "description": "Сохраняет известную форму сокета, оставляя неизвестную неопределённой",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec"
+  },
+  "dependencies": {
+    "@socket-values/shapes": "workspace:*"
+  }
+}

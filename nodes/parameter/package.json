@@ -85,5 +85,14 @@
   },
   "devDependencies": {
     "@jsx-compiler/bun": "workspace:*"
+  },
+  "dependencies": {
+    "@socket-values/kinds": "workspace:*",
+    "@socket-values/shapes": "workspace:*",
+    "@socket-values/metrics": "workspace:*",
+    "@socket-values/key": "workspace:*",
+    "@socket-values/side": "workspace:*",
+    "@socket-values/resolve-kind": "workspace:*",
+    "@socket-values/resolve-shape": "workspace:*"
   }
 }

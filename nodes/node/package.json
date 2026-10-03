@@ -80,6 +80,11 @@
     "@ui-fields-metrics/field-metric": "workspace:*",
     "@ui-fields-metrics/labelled-field-height": "workspace:*",
     "@ui-fields-metrics/resolve-field-density": "workspace:*",
-    "@ui-buttons/toggle-button-group": "workspace:*"
+    "@ui-buttons/toggle-button-group": "workspace:*",
+    "@socket-values/metrics": "workspace:*",
+    "@socket-values/resolve-kind": "workspace:*",
+    "@socket-values/resolve-shape": "workspace:*",
+    "@socket-values/key": "workspace:*",
+    "@socket-values/side": "workspace:*"
   }
 }

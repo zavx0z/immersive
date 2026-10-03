@@ -16,7 +16,7 @@ import {
   projectLinkRoute,
   projectLinkEndpoints,
 } from "../shared/routing/link-path.ts"
-import {socketPreset} from "@nodes/sockets/presets"
+import socketPreset from "@socket-values/preset"
 import type {LinkProps} from "./contract/input.ts"
 import type {LinkDefinition} from "./types/link.ts"
 

@@ -1,3 +1,4 @@
+import socketKey from "@socket-values/key"
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/component"
@@ -73,7 +74,7 @@ test("[PARAMETERS-PROJECTION-001] все виды из модели исполь
         nodeId: "node",
         snapshot: projectedSnapshot,
         sockets: sockets.map(socket => ({id: socket.id, direction: socket.direction, side: socket.side})),
-        connectedSocketKeys: connected ? new Set(["node\u0000in", "node\u0000out"]) : undefined,
+        connectedSocketKeys: connected ? new Set([socketKey("node", "in"), socketKey("node", "out")]) : undefined,
         spacingBefore: "medium",
       })
       try {
@@ -143,7 +144,7 @@ test("[PARAMETERS-PROJECTION-002] обновления Store, ввод и под
     expect(parameter(mounted.element)).toBe(row)
     expect(row.querySelector("input")).toBe(input)
 
-    mounted.render({...props, connectedSocketKeys: new Set(["node\u0000in"])})
+    mounted.render({...props, connectedSocketKeys: new Set([socketKey("node", "in")])})
     expect(row.querySelector("[data-parameter-field]")?.hasAttribute("hidden")).toBe(true)
     expect(row.querySelector("input")).toBe(input)
     mounted.render(props)
@@ -170,7 +171,7 @@ test("[PARAMETERS-PROJECTION-003] готовые параметры приним
       {id: "first", direction: "input", parameterId: "value"},
       {id: "second", direction: "input", parameterId: "value"},
     ],
-    resolvedSocketSides: new Map([["node\u0000first", "right"], ["node\u0000second", "right"]]),
+    resolvedSocketSides: new Map([[socketKey("node", "first"), "right"], [socketKey("node", "second"), "right"]]),
     onSocketActivate: (id: string) => activations.push(id),
   })
   try {

@@ -11,7 +11,7 @@ export type {NodeView, NodeViewProps, NodeTreeLayoutComputer, NodePresentationSt
 export type {NodeRect, NodeTreeTransform, NodeTreeViewport} from "../shared/projection/geometry.ts"
 export {createNodeTreeLayout, StaleNodeTreeLayoutError} from "../shared/projection/layout.ts"
 export {nodeSocketLayoutPortId} from "../shared/projection/geometry.ts"
-export {socketKey} from "@nodes/sockets/shared"
+export {default as socketKey} from "@socket-values/key"
 export {useMeasuredNodeTreePresentation, type MeasuredNodeTreeComputer} from "../shared/node-tree/measured.ts"
 
 /**

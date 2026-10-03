@@ -1,4 +1,4 @@
-import {socketKey} from "@nodes/sockets/shared"
+import socketKey from "@socket-values/key"
 import type {
   Link as CoreLink,
   NodeJsonValue,

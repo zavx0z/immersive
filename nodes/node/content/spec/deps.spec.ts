@@ -23,7 +23,7 @@ test.each([
       "nodes/node/parameter/index.tsx#ParameterNode": {
         "uses": [
           "nodes/parameter/shared/parameter/index.tsx#Parameter",
-          "nodes/socket/socket/index.tsx#Socket",
+          "nodes/socket/index.tsx#Socket",
           "ui/button/button/index.tsx#Button",
           "ui/button/icon-button/index.tsx#IconButton"
         ],
@@ -135,7 +135,7 @@ test.each([
       },
       "nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints": {
         "uses": [
-          "nodes/socket/socket/index.tsx#Socket"
+          "nodes/socket/index.tsx#Socket"
         ],
         "elements": [
           "span"
@@ -190,7 +190,7 @@ test.each([
         ],
         "elements": []
       },
-      "nodes/socket/socket/index.tsx#Socket": {
+      "nodes/socket/index.tsx#Socket": {
         "uses": [],
         "elements": [
           "button",

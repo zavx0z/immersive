@@ -77,5 +77,10 @@
     "@zavx0z/engine": "workspace:*",
     "@zavx0z/webgpu": "workspace:*",
     "@zavx0z/space": "workspace:*"
+  },
+  "dependencies": {
+    "@socket-values/kinds": "workspace:*",
+    "@socket-values/preset": "workspace:*",
+    "@socket-values/key": "workspace:*"
   }
 }

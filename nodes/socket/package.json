@@ -1,21 +1,17 @@
 {
   "name": "@nodes/sockets",
-  "label": "Сокеты",
+  "label": "Сокет",
   "version": "0.0.0",
-  "description": "Адресуемый Socket и его визуальные предустановки",
+  "description": "Адресуемый визуальный сокет с внешним состоянием и обработчиком активации",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
-    "./socket": "./socket/index.tsx",
-    "./socket/contract/input": "./socket/contract/input.ts",
-    "./presets": "./shared/src/presets.ts",
-    "./shared": "./shared/src/keys.ts",
-    "./metrics": "./shared/src/metrics.ts"
+    ".": "./index.tsx"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel socket/tests socket/spec",
+    "test": "bun test --parallel tests spec/deps.spec.ts && bun test --preload @immersive/headless/preload spec/scenario.spec.tsx",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependenciesMeta": {
@@ -36,6 +32,15 @@
     "@zavx0z/jsx": "workspace:*"
   },
   "devDependencies": {
-    "@jsx-compiler/bun": "workspace:*"
+    "@jsx-compiler/bun": "workspace:*",
+    "@immersive/headless": "workspace:*"
+  },
+  "dependencies": {
+    "@socket-values/kinds": "workspace:*",
+    "@socket-values/shapes": "workspace:*",
+    "@socket-values/presets": "workspace:*",
+    "@socket-values/preset": "workspace:*",
+    "@socket-values/metrics": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
   }
 }

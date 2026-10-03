@@ -1,0 +1,16 @@
+{
+  "name": "@socket-values/key",
+  "label": "key",
+  "version": "0.0.0",
+  "description": "Составляет служебный ключ сокета из идентификаторов ноды и сокета",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec"
+  }
+}

@@ -1,5 +1,6 @@
 import type {ExternalStore} from "@nodes/tree"
-import type {SocketKind} from "@nodes/sockets/presets"
+import type {SocketValuesKinds} from "@socket-values/kinds"
+type SocketKind = SocketValuesKinds.Output[number]
 import type {MarkerComponent} from "../../shared/marker/contracts.ts"
 import type {LinkMarkerGeometry, LinkRoute} from "../../shared/routing/link-path.ts"
 import type {LinkDefinition, LinkEndpoint} from "../types/link.ts"

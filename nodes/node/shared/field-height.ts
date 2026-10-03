@@ -13,7 +13,8 @@ import switchFieldLayout from "@ui-fields-switch-field/layout"
 import textFieldLayout from "@ui-fields-text-field/layout"
 import vectorFieldLayout from "@ui-fields-vector-field/layout"
 import type {ProjectedParameterPresentation} from "@nodes/parameters/shared"
-import {NODE_ROW_HEIGHT} from "@nodes/sockets/metrics"
+import socketMetrics from "@socket-values/metrics"
+const {NODE_ROW_HEIGHT} = socketMetrics
 
 /** Высота поля для существующего числового плана Node с базовой темой; реальное размещение Graph использует измеренный DOM. */
 export function projectedParameterFieldHeight(

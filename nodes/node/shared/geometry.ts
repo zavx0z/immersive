@@ -1,7 +1,7 @@
 import type {NodeJsonValue, NodeTreeNodeSnapshot, ParameterReference, Socket as CoreSocket} from "@nodes/tree"
 import {NODE_PARAMETER_SPACING_SMALL, NODE_PARAMETER_SPACING_MEDIUM, resolveProjectedParameterPresentation} from "@nodes/parameters/shared"
 import {projectedParameterFieldHeight} from "./field-height"
-import {socketKey} from "@nodes/sockets/shared"
+import socketKey from "@socket-values/key"
 import {parameterSpacingBefore, projectedSocketSide} from "./parameter-presentation.ts"
 import type {NodeKind, NodeShape} from "./contracts.ts"
 
@@ -14,7 +14,8 @@ export function nodeSocketLayoutPortId(nodeId: string, socketId: string): string
 }
 
 import {planNodeGeometry, NODE_MINIMUM_WIDTH, type NodeGeometryRowInput, type NodeGeometryPlan} from "./metrics.ts"
-import {NODE_ROW_HEIGHT} from "@nodes/sockets/metrics"
+import socketMetrics from "@socket-values/metrics"
+const {NODE_ROW_HEIGHT} = socketMetrics
 export {NODE_MINIMUM_WIDTH, NODE_HEADER_HEIGHT, NODE_BODY_PADDING_TOP, NODE_BODY_PADDING_BOTTOM, NODE_ROW_GAP, NODE_COLLAPSED_HEIGHT, planNodeGeometry, type NodeGeometryRowInput, type NodeGeometryRow, type NodeGeometryPlan} from "./metrics.ts"
 
 export function planProjectedNodeGeometry(

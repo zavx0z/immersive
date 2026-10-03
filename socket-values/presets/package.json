@@ -1,0 +1,20 @@
+{
+  "name": "@socket-values/presets",
+  "label": "presets",
+  "version": "0.0.0",
+  "description": "Именованные цветовые и геометрические предустановки сокетов",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec"
+  },
+  "dependencies": {
+    "@socket-values/kinds": "workspace:*",
+    "@socket-values/shapes": "workspace:*"
+  }
+}

@@ -27,9 +27,11 @@ import {
   type FunctionComponent,
 } from "@zavx0z/component"
 import {metadata, metadataBoolean, metadataNumber, metadataObjectArray, metadataString, metadataStringArray} from "../src/metadata.ts"
-import {socketKey, socketSide} from "@nodes/sockets/shared"
+import socketKey from "@socket-values/key"
+import socketSide from "@socket-values/side"
 import {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} from "../src/metrics.ts"
-import {resolveSocketKind, resolveSocketShape} from "@nodes/sockets/presets"
+import resolveSocketKind from "@socket-values/resolve-kind"
+import resolveSocketShape from "@socket-values/resolve-shape"
 import type {ParameterProps, ParameterEndpoint} from "../src/contracts.ts"
 import {CheckboxParameter} from "../../boolean/checkbox/index.tsx"
 import {CollectionParameter} from "../../collection/collection/index.tsx"

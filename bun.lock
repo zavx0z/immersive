@@ -992,6 +992,11 @@
     "nodes": {
       "name": "@immersive/nodes",
       "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/key": "workspace:*",
+        "@socket-values/kinds": "workspace:*",
+        "@socket-values/preset": "workspace:*",
+      },
       "devDependencies": {
         "@immersive/markdown": "workspace:*",
         "@jsx-compiler/bun": "workspace:*",
@@ -1038,6 +1043,11 @@
       "name": "@nodes/node",
       "version": "0.0.0",
       "dependencies": {
+        "@socket-values/key": "workspace:*",
+        "@socket-values/metrics": "workspace:*",
+        "@socket-values/resolve-kind": "workspace:*",
+        "@socket-values/resolve-shape": "workspace:*",
+        "@socket-values/side": "workspace:*",
         "@ui-buttons/toggle-button-group": "workspace:*",
         "@ui-fields-checkbox-field/layout": "workspace:*",
         "@ui-fields-collection-field/layout": "workspace:*",
@@ -1089,6 +1099,15 @@
     "nodes/parameter": {
       "name": "@nodes/parameters",
       "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/key": "workspace:*",
+        "@socket-values/kinds": "workspace:*",
+        "@socket-values/metrics": "workspace:*",
+        "@socket-values/resolve-kind": "workspace:*",
+        "@socket-values/resolve-shape": "workspace:*",
+        "@socket-values/shapes": "workspace:*",
+        "@socket-values/side": "workspace:*",
+      },
       "devDependencies": {
         "@jsx-compiler/bun": "workspace:*",
       },
@@ -1125,7 +1144,16 @@
     "nodes/socket": {
       "name": "@nodes/sockets",
       "version": "0.0.0",
+      "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
+        "@socket-values/kinds": "workspace:*",
+        "@socket-values/metrics": "workspace:*",
+        "@socket-values/preset": "workspace:*",
+        "@socket-values/presets": "workspace:*",
+        "@socket-values/shapes": "workspace:*",
+      },
       "devDependencies": {
+        "@immersive/headless": "workspace:*",
         "@jsx-compiler/bun": "workspace:*",
       },
       "peerDependencies": {
@@ -1297,6 +1325,65 @@
       "version": "0.0.0",
       "dependencies": {
         "@ui-selection/validate-selection-options": "workspace:*",
+      },
+    },
+    "socket-values/key": {
+      "name": "@socket-values/key",
+      "version": "0.0.0",
+    },
+    "socket-values/kinds": {
+      "name": "@socket-values/kinds",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@socket-values/presets": "workspace:*",
+      },
+    },
+    "socket-values/metrics": {
+      "name": "@socket-values/metrics",
+      "version": "0.0.0",
+    },
+    "socket-values/preset": {
+      "name": "@socket-values/preset",
+      "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/kinds": "workspace:*",
+        "@socket-values/presets": "workspace:*",
+      },
+    },
+    "socket-values/presets": {
+      "name": "@socket-values/presets",
+      "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/kinds": "workspace:*",
+        "@socket-values/shapes": "workspace:*",
+      },
+    },
+    "socket-values/resolve-kind": {
+      "name": "@socket-values/resolve-kind",
+      "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/kinds": "workspace:*",
+      },
+    },
+    "socket-values/resolve-shape": {
+      "name": "@socket-values/resolve-shape",
+      "version": "0.0.0",
+      "dependencies": {
+        "@socket-values/shapes": "workspace:*",
+      },
+    },
+    "socket-values/shapes": {
+      "name": "@socket-values/shapes",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@socket-values/presets": "workspace:*",
+      },
+    },
+    "socket-values/side": {
+      "name": "@socket-values/side",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@nodes/tree": "workspace:*",
       },
     },
     "space": {
@@ -2524,6 +2611,24 @@
     "@nodes/tree": ["@nodes/tree@workspace:nodes/tree"],
 
     "@renderer/html": ["@renderer/html@workspace:renderer/html"],
+
+    "@socket-values/key": ["@socket-values/key@workspace:socket-values/key"],
+
+    "@socket-values/kinds": ["@socket-values/kinds@workspace:socket-values/kinds"],
+
+    "@socket-values/metrics": ["@socket-values/metrics@workspace:socket-values/metrics"],
+
+    "@socket-values/preset": ["@socket-values/preset@workspace:socket-values/preset"],
+
+    "@socket-values/presets": ["@socket-values/presets@workspace:socket-values/presets"],
+
+    "@socket-values/resolve-kind": ["@socket-values/resolve-kind@workspace:socket-values/resolve-kind"],
+
+    "@socket-values/resolve-shape": ["@socket-values/resolve-shape@workspace:socket-values/resolve-shape"],
+
+    "@socket-values/shapes": ["@socket-values/shapes@workspace:socket-values/shapes"],
+
+    "@socket-values/side": ["@socket-values/side@workspace:socket-values/side"],
 
     "@types/bun": ["@types/bun@1.4.2", "", { "dependencies": { "bun-types": "1.4.2" } }, "sha512-GimotNn7+ZV0uVArItBbriZsR1oNf0+WTzPkdcFrzShI7k2norL0uzEaJT8T33dWr7O/c9ZDuAFQrctKCi72oQ=="],
 

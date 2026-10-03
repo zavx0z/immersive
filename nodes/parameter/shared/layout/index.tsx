@@ -5,7 +5,8 @@
 @packageDocumentation
 */
 
-import {NODE_ROW_HEIGHT} from "@nodes/sockets/metrics"
+import socketMetrics from "@socket-values/metrics"
+const {NODE_ROW_HEIGHT} = socketMetrics
 import {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} from "../src/metrics.ts"
 import type {ParameterBaseProps} from "../src/contracts.ts"
 import {ParameterEndpoints} from "../endpoint/index.tsx"

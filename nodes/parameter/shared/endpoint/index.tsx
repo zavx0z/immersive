@@ -5,8 +5,9 @@
 @packageDocumentation
 */
 
-import {Socket} from "@nodes/sockets/socket"
-import type {SocketSide} from "@nodes/sockets/presets"
+import Socket from "@nodes/sockets"
+import type {NodesSockets} from "@nodes/sockets"
+type SocketSide = NodesSockets.Input["side"]
 import type {ParameterEndpoint} from "../src/contracts.ts"
 
 export function ParameterEndpoints(props: Readonly<{

@@ -1,0 +1,19 @@
+{
+  "name": "@socket-values/side",
+  "label": "side",
+  "version": "0.0.0",
+  "description": "Определяет сторону сокета по явному значению и направлению",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec"
+  },
+  "devDependencies": {
+    "@nodes/tree": "workspace:*"
+  }
+}

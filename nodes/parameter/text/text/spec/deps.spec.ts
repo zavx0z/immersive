@@ -12,7 +12,7 @@ test.each([
     file: "nodes/parameter/text/text/index.tsx",
     expected: {
       "nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/socket/index.tsx#Socket"],
+        uses: ["nodes/socket/index.tsx#Socket"],
         elements: ["span"],
       },
       "nodes/parameter/shared/label/index.tsx#ParameterLabel": {
@@ -27,7 +27,7 @@ test.each([
         uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/text-field/index.tsx#TextField"],
         elements: [],
       },
-      "nodes/socket/socket/index.tsx#Socket": {
+      "nodes/socket/index.tsx#Socket": {
         uses: [],
         elements: ["button","span"],
       },
