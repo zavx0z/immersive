@@ -6,16 +6,6 @@ import JsxCompileError from "@jsx-compiler/error"
 
 const cases = [
   {
-    name: "slot с children равным null",
-    source: 'export function Panel() { return <slot children={null} /> }',
-    error: "атрибут children запрещён",
-  },
-  {
-    name: "slot с JSX в children",
-    source: 'export function Panel() { return <slot children={<b />} /> }',
-    error: "атрибут children запрещён",
-  },
-  {
     name: "Компонент с children равным null",
     source: 'function Panel() { return <slot /> }\nexport function App() { return <Panel children={null} /> }',
     error: "between component tags",
@@ -24,11 +14,6 @@ const cases = [
     name: "Компонент с JSX в children",
     source: 'function Panel() { return <slot /> }\nfunction Child() { return <b /> }\nexport function App() { return <Panel children={<Child />} /> }',
     error: "between component tags",
-  },
-  {
-    name: "slot с children через spread",
-    source: 'const supplied = {children: null}\nexport function Panel() { return <slot {...supplied} /> }',
-    error: "spread запрещён",
   },
   {
     name: "Компонент с children через spread",
@@ -49,16 +34,6 @@ const cases = [
     name: "Динамическое имя точки вставки",
     source: 'export function Panel(props: {name: string}) { return <slot name={props.name} /> }',
     error: "статическое строковое имя",
-  },
-  {
-    name: "Динамическое назначение ребёнка",
-    source: 'function Child() { return <b /> }\nexport function App(props: {name: string}) { return <Child slot={props.name} /> }',
-    error: "статическое строковое имя",
-  },
-  {
-    name: "Стиль псевдоэлемента slot",
-    source: 'export function Panel() { return <slot style={css`color: red;`} /> }',
-    error: "не поддерживается у slot",
   },
   {
     name: "Назначение вне получателя",
@@ -111,16 +86,6 @@ test.each(cases)("$name", async (entry) => {
     () => null,
     (error: unknown) => error,
   )
-  expect(actual, "Неверный авторский TSX отклоняется настоящим компилятором до монтирования").toBeInstanceOf(JsxCompileError)
+  expect(actual, "Непредставимая конструкция не подменяется другим исполняемым поведением").toBeInstanceOf(JsxCompileError)
   expect(actual instanceof Error ? actual.message : undefined, "Диагностика раскрывает конкретную причину отказа").toContain(entry.error)
-})
-
-test("Запрет children при подготовке тестового JSX", async () => {
-  if (!compiler || !directory) throw new Error("Не подготовлен проект проверки авторства слотов")
-  const actual = await compiler.prepareSlotAuthoringFile(join(directory, "authoring.test.tsx")).then(
-    () => null,
-    (error: unknown) => error,
-  )
-  expect(actual, "Тестовый JSX проходит ту же проверку авторства до трансляции Bun").toBeInstanceOf(JsxCompileError)
-  expect(actual instanceof Error ? actual.message : undefined, "Содержимое принимающего slot задаётся вложенностью, включая случай children равный null").toContain("атрибут children запрещён")
 })

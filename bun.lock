@@ -163,7 +163,6 @@
       "dependencies": {
         "@jsx-compiler/error": "workspace:*",
         "@jsx-slot/authoring": "workspace:*",
-        "@jsx-slot/contract": "workspace:*",
         "@jsx-slot/plan": "workspace:*",
         "@jsx/events": "workspace:*",
         "@zavx0z/dom": "workspace:*",

@@ -1,4 +1,3 @@
-import type {ValidateSlotContractsOutput} from "@jsx-slot/contract"
 import type {CapabilityUsage} from "../src/capability-usage.ts"
 
 /**
@@ -9,12 +8,8 @@ import type {CapabilityUsage} from "../src/capability-usage.ts"
 
 @property capabilityUsages - Использованные DOM/CSS возможности с исходными позициями.
 
-@property diagnostics - Неблокирующие рекомендации указать JSX.Element<Slots>.
-Ошибки явных контрактов приводят к исключению и не возвращают успешный результат.
 */
 export type JsxCompileResult = Readonly<{
   capabilityUsages: readonly CapabilityUsage[]
-  /** Нефатальные замечания автора; одинаковый cache hit сохраняет тот же результат. */
-  diagnostics: ValidateSlotContractsOutput["diagnostics"]
   code: string
 }>

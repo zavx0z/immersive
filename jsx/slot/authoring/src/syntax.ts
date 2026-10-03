@@ -103,7 +103,6 @@ export function readSlotChildName(child: JsxChild, source: SourceFile): string {
 
 /** Дополняет тестовый JSX метаданными синтаксических позиций до штатной трансляции Bun. */
 export function prepareSlotAuthoring(source: SourceFile, transportModule?: string): string {
-  validateSlotAuthoring(source)
   if (transportModule === undefined) return source.text
   let helper = "__templateSlotChild"
   while (source.text.includes(helper)) helper += "_"

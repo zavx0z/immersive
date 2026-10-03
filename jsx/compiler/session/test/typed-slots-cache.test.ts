@@ -3,7 +3,7 @@ import {mkdtemp, mkdir, rm, writeFile} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import JsxCompilerSession from "@jsx-compiler/session"
 
-test("type-only контракт вне корней JSX инвалидирует кеш через re-export без runtime импорта", async () => {
+test("изменение только правил слотов не повторяет проверку при компиляции готового компонента", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".slot-types-"))
   const authored = join(directory, "authored")
   const definitions = join(directory, "definitions")
@@ -38,10 +38,9 @@ export function App() { return <Panel><Button text="Первый" /></Panel> }
     expect(emitted).not.toContain("definitions")
     expect(emitted).not.toContain("buttons")
     await writeFile(allowed, 'import type {OtherButton} from "../authored/buttons"\nexport type Allowed = typeof OtherButton\n')
-    const failure = await compiler.compileFile(entry).then(() => null, error => error)
-    expect(failure).toBeInstanceOf(Error)
-    expect(failure.message).toContain("JSX-SLOTS-TYPE")
-    expect(failure.message).toContain("OtherButton")
+    expect(await compiler.compileFile(entry), "Схема проверяется сценарием, готовый код не содержит её runtime-представления")
+      .toBe(accepted)
+    expect(compiler.stats.cacheHits).toBeGreaterThan(0)
   } finally {
     await compiler.close()
     await rm(directory, {recursive: true, force: true})

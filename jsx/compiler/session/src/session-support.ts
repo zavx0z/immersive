@@ -31,18 +31,3 @@ export function assertConfiguredProject(project: Project, sourcePath: string): v
     sourcePath,
   )
 }
-
-export function diagnosticText(
-  diagnostic: Readonly<{
-    messageChain?: readonly unknown[] | undefined
-    text: string
-  }>,
-): string {
-  const nested = diagnostic.messageChain?.flatMap(message =>
-    diagnosticText(message as Readonly<{
-      messageChain?: readonly unknown[] | undefined
-      text: string
-    }>)
-  ) ?? []
-  return [diagnostic.text, ...nested].join(" ")
-}

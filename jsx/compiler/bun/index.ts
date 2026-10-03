@@ -21,9 +21,8 @@ export type {JsxPlugin} from "./contract/output.ts"
 /**
 Подключает общий JSX compiler к штатным callbacks Bun.
 
-Предупреждения выводятся через console.warn один раз на компонент за жизнь
-плагина; cache hit не повторяет сообщение. Ошибки явного контракта останавливают
-сборку. Неперсистентная сессия закрывается в onEnd, в том числе при ошибке.
+Плагин преобразует исходники без повторного запуска проверок разработки.
+Неперсистентная сессия закрывается в onEnd, в том числе при ошибке.
 */
 export default function createJsxBunPlugin(
   options: CreateJsxPluginOptions,
@@ -46,8 +45,6 @@ export default function createJsxBunPlugin(
       : {styleSourceRootIds: options.styleSourceRootIds}),
   })
   const capabilityUsages = new Map<string, readonly CapabilityUsage[]>()
-  const reported = new WeakSet<JsxCompileResult>()
-  const diagnosticKeys = new Set<string>()
   let refresh = Promise.resolve()
   return {
     name: "zavx0z-jsx",
@@ -75,15 +72,6 @@ export default function createJsxBunPlugin(
         if (!session.accepts(path)) return undefined
         await refresh
         const result = await session.compileFile(path)
-        if (!reported.has(result)) {
-          reported.add(result)
-          for (const diagnostic of result.diagnostics) {
-            const key = `${diagnostic.file}:${diagnostic.component}:${diagnostic.code}`
-            if (diagnosticKeys.has(key)) continue
-            diagnosticKeys.add(key)
-            console.warn(`${diagnostic.file}:${diagnostic.line}:${diagnostic.column} [${diagnostic.code}] ${diagnostic.message}`)
-          }
-        }
         capabilityUsages.set(path, result.capabilityUsages)
         return {contents: result.code, loader: sourceLoader(extname(path))}
       })

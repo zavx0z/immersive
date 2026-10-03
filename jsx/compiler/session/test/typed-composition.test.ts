@@ -13,7 +13,6 @@ test("типизированная передача через два получ
   const root = createRoot(document)
   try {
     const result = await compiler.compileFile(join(import.meta.dir, "typed-composition.fixture.tsx"))
-    expect(result.diagnostics).toEqual([])
     const output = join(directory, "compiled.ts")
     await Bun.write(output, result.code)
     const {TypedComposition} = await import(pathToFileURL(output).href)

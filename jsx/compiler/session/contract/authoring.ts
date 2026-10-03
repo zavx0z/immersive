@@ -5,8 +5,8 @@ Element сохраняет принадлежность JSX и необязат�
 Типы props, событий и refs относятся к стандартному DOM. Namespace является
 native интерфейсом TypeScript JSX и дополняется объявлениями custom tags.
 Его объявления стираются; runtime registry и самостоятельной функции здесь нет.
-Контракт принадлежит компилятору: типы автора и native semantic diagnostics
-проверяют допустимые элементы, свойства и расширения языка.
+Контракт принадлежит языку JSX. Отдельная проверка типов использует его для
+элементов, свойств и расширений; сборочный проход не повторяет эту проверку.
 */
 import type {} from "@zavx0z/template"
 import type {Element as AuthoredElement} from "./element.ts"
@@ -58,7 +58,7 @@ export namespace JSX {
     slot?: string
   }
 
-  /** Вложенность проверяется компилятором по контракту получателя. */
+  /** Вложенность проверяется сценарием по контракту получателя. */
   export type LibraryManagedAttributes<Component, Props> = Props & {children?: Child}
 
   /** Custom tags добавляются у владельца через стандартное module augmentation. */

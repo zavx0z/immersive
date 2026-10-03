@@ -11,10 +11,13 @@ import type {ValidateSlotContractsInput} from "../../contract/input.ts"
 @property input - Возвращает AST и project из одного snapshot по имени fixture-файла.
 
 @property close - Освобождает native API, snapshot и принадлежащие fixture файлы.
+
+@property refresh - Открывает новый снимок после изменения исходников, сохраняя файлы примера.
 */
 export type SlotContractFixture = Readonly<{
   directory: string
   input(name: string): Promise<ValidateSlotContractsInput>
+  refresh(): Promise<void>
   close(): Promise<void>
 }>
 
@@ -31,11 +34,17 @@ export async function createSlotContractFixture(sources: Readonly<Record<string,
     include: ["*.ts", "*.tsx"],
     exclude: [],
   }))
-  const api = new API({cwd: directory})
+  let api = new API({cwd: directory})
   try {
-    const snapshot = await api.updateSnapshot({openFiles: files})
+    let snapshot = await api.updateSnapshot({openFiles: files})
     return {
       directory,
+      async refresh() {
+        await snapshot.dispose()
+        await api.close()
+        api = new API({cwd: directory})
+        snapshot = await api.updateSnapshot({openFiles: files})
+      },
       /** Загружает реальный AST, сохраняя владение project и checker текущим snapshot. */
       async input(name) {
         const path = join(directory, name)

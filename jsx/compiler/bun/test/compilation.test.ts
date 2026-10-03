@@ -3,7 +3,7 @@ import {resolve} from "node:path"
 import JsxCompilerSession from "@jsx-compiler/session"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 
-test("Bun выводит рекомендацию типов один раз при повторной сборке из кеша", async () => {
+test("Bun компилирует повторно без проверки контрактов и вывода предупреждений", async () => {
   const directory = resolve(import.meta.dir, "../spec/fixture")
   const session = new JsxCompilerSession({cwd: resolve(import.meta.dir, "../../../.."), sourceRoots: [directory]})
   const plugin = createJsxBunPlugin({session, sourceRoots: [directory], persistent: true})
@@ -18,9 +18,7 @@ test("Bun выводит рекомендацию типов один раз п�
     }
     expect((await Bun.build(config)).success).toBeTrue()
     expect((await Bun.build(config)).success).toBeTrue()
-    expect(warnings).toHaveLength(1)
-    expect(warnings[0]![0]).toContain("JSX-SLOTS-UNTYPED")
-    expect(warnings[0]![0]).toContain("Panel")
+    expect(warnings).toEqual([])
     expect(session.stats.cacheHits).toBeGreaterThan(0)
   } finally {
     spy.mockRestore()

@@ -15,7 +15,6 @@
   "dependencies": {
     "@jsx/events": "workspace:*",
     "@jsx-slot/plan": "workspace:*",
-    "@jsx-slot/contract": "workspace:*",
     "@zavx0z/template": "workspace:*",
     "typescript": "^7.0.2",
     "@jsx-slot/authoring": "workspace:*",

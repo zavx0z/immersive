@@ -2,7 +2,7 @@
 Сессия компиляции JSX в общий формат готового шаблона Template.
 
 Сохраняет TypeScript project, семантические зависимости и кеш между файлами.
-Авторский JSX, слоты и CSS проверяются до выдачи кода. Владелец закрывает сессию
+Преобразует проверенный сценариями JSX, слоты и CSS. Владелец закрывает сессию
 после сборки через close; runtime Document и состояние компонентов сюда не входят.
 
 Именованный default компонента сохраняется в готовом template; домен может
@@ -20,8 +20,7 @@ import JsxCompileError from "@jsx-compiler/error"
 import {GovernedFiles, selectGovernedCompilerSource} from "./src/governed-paths.ts"
 import {transformJsxSourceFile} from "./src/transform.ts"
 import {buildJsxTransformSymbols} from "./src/symbols.ts"
-import validateSlotContracts from "@jsx-slot/contract"
-import {normalizeStyleSourceRootIds, sourceHash, assertConfiguredProject, diagnosticText} from "./src/session-support.ts"
+import {normalizeStyleSourceRootIds, sourceHash, assertConfiguredProject} from "./src/session-support.ts"
 import SlotAuthoring from "@jsx-slot/authoring"
 import {
   collectCapabilityUsages,
@@ -107,24 +106,24 @@ export default class JsxCompilerSession {
   cache hit returns the exact same immutable result object. A changed governed
   semantic dependency recreates the TypeScript API session before reanalysis;
   this avoids stale checker symbols across type-only re-export chains.
-  TypeScript semantic diagnostics fail before either artifact becomes observable.
+  Проверки авторства, типов и контрактов выполняются сценариями разработки.
 
   @param sourcePath - File inside one configured governed source root.
   @returns Transformed code and source-located capability usages.
-  @throws {@link JsxCompileError} when ownership, syntax, semantic typing or the
-    governed compiler profile rejects the source.
+  @throws {@link JsxCompileError} при недоступном исходнике или конструкции,
+  которую невозможно выразить поддерживаемым форматом шаблона.
   */
   async compileFile(sourcePath: string): Promise<JsxCompileResult> {
     return this.exclusive(() => this.compileFileLocked(sourcePath))
   }
 
   /**
-  Проверяет слоты в сценариях без компиляции тестовых callbacks.
+  Подготавливает транспорт слотов в сценариях без компиляции тестовых callbacks.
 
   При заданном transportModule сохраняет статические назначения условных детей
   и keyed map до JSX-трансляции среды исполнения. Исходный файл не изменяется.
 
-  @param transportModule - Публичный модуль фабрики slotChild; без него возвращается проверенный исходник.
+  @param transportModule - Публичный модуль фабрики slotChild; без него возвращается исходный текст.
   @returns Исходник с необходимыми вызовами транспорта либо исходный текст.
   */
   async prepareSlotAuthoringFile(sourcePath: string, transportModule?: string): Promise<string> {
@@ -137,7 +136,6 @@ export default class JsxCompilerSession {
       assertConfiguredProject(project, absolute)
       const source = await project?.program.getSourceFile(absolute)
       if (!source) throw new JsxCompileError("TypeScript 7 returned no source AST", absolute)
-      await validateSlotContracts({sourceFile: source, project})
       return new SlotAuthoring(source).prepare(transportModule)
     })
   }
@@ -186,15 +184,6 @@ export default class JsxCompilerSession {
         throw new JsxCompileError("on-disk source differs from compiler input", absolute)
       }
     }
-    const syntaxDiagnostics = await project.program.getSyntacticDiagnostics(absolute)
-    if (syntaxDiagnostics.length > 0) {
-      throw new JsxCompileError(
-        `TypeScript syntax diagnostics: ${syntaxDiagnostics.map(diagnostic => diagnostic.code).join(", ")}`,
-        absolute,
-      )
-    }
-    new SlotAuthoring(sourceFile).validate()
-    const slots = await validateSlotContracts({sourceFile, project})
     const symbols = await buildJsxTransformSymbols(sourceFile, project, this.governedFiles)
     const capabilityUsages = await collectCapabilityUsages(sourceFile, project, symbols)
     const styleSourceModuleId = this.styleSourceModuleId(absolute)
@@ -203,18 +192,8 @@ export default class JsxCompilerSession {
       symbols,
       styleSourceModuleId === undefined ? {} : {styleSourceModuleId},
     )
-    const semanticDiagnostics = await project.program.getSemanticDiagnostics(absolute)
-    if (semanticDiagnostics.length > 0) {
-      throw new JsxCompileError(
-        `TypeScript semantic diagnostics:\n${semanticDiagnostics.map(diagnostic => {
-          const position = sourceFile.getLineAndCharacterOfPosition(diagnostic.pos)
-          return `TS${diagnostic.code} ${position.line + 1}:${position.character + 1} ${diagnosticText(diagnostic)}`
-        }).join("\n")}`,
-        absolute,
-      )
-    }
-    const dependencies = await this.fingerprintDependencies(new Set([...symbols.dependencyPaths, ...slots.dependencyPaths]), new Set(slots.dependencyPaths))
-    const result = Object.freeze({capabilityUsages, code, diagnostics: slots.diagnostics})
+    const dependencies = await this.fingerprintDependencies(symbols.dependencyPaths)
+    const result = Object.freeze({capabilityUsages, code})
     this.cache.set(absolute, Object.freeze({hash, result, dependencies}))
     this.cacheMisses += 1
     return result
@@ -310,14 +289,13 @@ export default class JsxCompilerSession {
 
   private async fingerprintDependencies(
     dependencyPaths: ReadonlySet<string>,
-    typeDependencies: ReadonlySet<string>,
   ): Promise<readonly DependencyFingerprint[]> {
     const dependencies: DependencyFingerprint[] = []
     for (const path of [...dependencyPaths].sort()) {
       const text = await readFile(path, "utf8")
       const hash = sourceHash(text)
       const authorization = this.governedFiles.authorizationKey(path)
-      if (authorization === null && !typeDependencies.has(path)) {
+      if (authorization === null) {
         throw new JsxCompileError("dependency is outside the governed JSX roots", path)
       }
       this.hashes.set(path, hash)

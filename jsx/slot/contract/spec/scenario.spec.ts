@@ -135,7 +135,7 @@ describe.each([
   /** @remarks Импортированный контракт нужен вариантам Panel; локальные схемы не имеют этих файлов. */
   describe.skipIf(!typeDependencies)("Зависимости типов", () => {
     test("Декларации и промежуточный re-export", () => {
-      expect(result.dependencyPaths, "Изменение любого участника type-only цепочки требует повторной проверки компилятора").toEqual(expect.arrayContaining([
+      expect(result.dependencyPaths, "Изменение любого участника type-only цепочки требует повторной проверки сценария").toEqual(expect.arrayContaining([
         `${fixture.directory}/barrel.ts`,
         `${fixture.directory}/contract.ts`,
         `${fixture.directory}/children.tsx`,
