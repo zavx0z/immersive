@@ -1,6 +1,6 @@
 import {useMemo, useRef} from "@zavx0z/component"
 import Button from "@ui-buttons/button"
-import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditorModel from "@ui/code-editor-model"
 import CodeEditor from "@ui-views/code-editor"
 
 const editableSource = [
@@ -16,7 +16,7 @@ const initialRanges = ["Привет", "Мир"].map(value => {
 })
 
 export function EditableSelectionFixture(props: Readonly<{multiple: boolean}>) {
-  const model = useMemo(() => createCodeEditorModel({
+  const model = useMemo(() => new CodeEditorModel({
     value: editableSource,
     selections: props.multiple ? initialRanges : [{anchor: 0, head: 0}],
     primary: props.multiple ? 1 : 0,

@@ -2,7 +2,8 @@ import type {CodeEditorHandle} from "./types"
 import type {CodeEditorLineDecoration} from "./types"
 import type {CodeEditorSelectionSet} from "./types"
 import type {Tokens} from "@zavx0z/highlighter"
-import type CodeEditorModel from "@ui/code-editor-model"
+import type {UiCodeEditorModel} from "@ui/code-editor-model"
+type CodeEditorModel = UiCodeEditorModel.Output
 
 /**
 Исходный текст, оформление и взаимодействие редактора.

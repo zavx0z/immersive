@@ -19,7 +19,6 @@
       "devDependencies": {
         "@jsx-compiler/bun": "workspace:*",
         "@jsx-compiler/session": "workspace:*",
-        "@ui-code-editor-model/create": "workspace:*",
         "@ui-menus/clipboard-menu": "workspace:*",
         "@ui-views/code-editor": "workspace:*",
         "@ui-widgets/editor": "workspace:*",
@@ -574,7 +573,6 @@
         "@jsx-compiler/session": "workspace:*",
         "@renderer/html": "workspace:*",
         "@ui-buttons/button": "workspace:*",
-        "@ui-code-editor-model/create": "workspace:*",
         "@ui-feedback/status-bar": "workspace:*",
         "@ui-fields-checkbox-field/layout": "workspace:*",
         "@ui-fields-collection-field/layout": "workspace:*",
@@ -681,13 +679,6 @@
     "ui/code-editor-model": {
       "name": "@ui/code-editor-model",
       "version": "0.0.0",
-    },
-    "ui/code-editor-model/create": {
-      "name": "@ui-code-editor-model/create",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui/code-editor-model": "workspace:*",
-      },
     },
     "ui/divider": {
       "name": "@ui/divider",
@@ -2189,7 +2180,6 @@
       "version": "0.0.0",
       "dependencies": {
         "@jsx-compiler/session": "workspace:*",
-        "@ui-code-editor-model/create": "workspace:*",
         "@ui-views-code-editor/highlighter": "workspace:*",
         "@ui-views-code-editor/validate": "workspace:*",
         "@ui-views-code-editor/view-model": "workspace:*",
@@ -2372,9 +2362,9 @@
       "version": "0.0.0",
       "dependencies": {
         "@jsx-compiler/session": "workspace:*",
-        "@ui-code-editor-model/create": "workspace:*",
         "@ui-views/code-editor": "workspace:*",
         "@ui-widgets/header": "workspace:*",
+        "@ui/code-editor-model": "workspace:*",
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
@@ -2681,8 +2671,6 @@
     "@ui-buttons/icon-button": ["@ui-buttons/icon-button@workspace:ui/button/icon-button"],
 
     "@ui-buttons/toggle-button-group": ["@ui-buttons/toggle-button-group@workspace:ui/button/toggle-button-group"],
-
-    "@ui-code-editor-model/create": ["@ui-code-editor-model/create@workspace:ui/code-editor-model/create"],
 
     "@ui-feedback-status-bar/status-bar-text": ["@ui-feedback-status-bar/status-bar-text@workspace:ui/feedback/status-bar/status-bar-text"],
 

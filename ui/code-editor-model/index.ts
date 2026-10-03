@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {CodeEditorModelOptions} from "./contract/input.ts"
+import type {UiCodeEditorModel as Contract} from "./contract"
 import type {CodeEditorMovementUnit} from "./contract/types.ts"
 import type {CodeEditorRange} from "./contract/types.ts"
 import type {CodeEditorSnapshot} from "./contract/types.ts"
-import type {EditorState} from "./contract/types.ts"
-import type {SegmentedLine} from "./contract/types.ts"
+import type {EditorState} from "./src/types"
+import type {SegmentedLine} from "./src/types"
 import {lineBounds} from "./src/helpers.ts"
 import {mapExternalValue} from "./src/helpers.ts"
 import {normalizeSelections} from "./src/helpers.ts"
@@ -18,10 +18,9 @@ import {sameSelections} from "./src/helpers.ts"
 import {sameState} from "./src/helpers.ts"
 import {textValue} from "./src/helpers.ts"
 
-export type {CodeEditorModelOptions} from "./contract/input"
-export type {CodeEditorRange, CodeEditorSnapshot, CodeEditorMovementUnit} from "./contract/types"
+export type {UiCodeEditorModel} from "./contract"
 
-export default class CodeEditorModel {
+export default class CodeEditorModel implements Contract.Output {
   #state: EditorState
   #snapshot: CodeEditorSnapshot
   #readOnly: boolean
@@ -36,7 +35,7 @@ export default class CodeEditorModel {
   #wordSegmenter: Intl.Segmenter | null = null
   #preferredColumns: readonly number[] | null = null
 
-  constructor(options: CodeEditorModelOptions) {
+  constructor(options: Contract.Input) {
     const value = textValue(options.value)
     this.#historyLimit = options.historyLimit ?? 100
     if (!Number.isSafeInteger(this.#historyLimit) || this.#historyLimit < 0) {

@@ -5,7 +5,7 @@ import {createDocument, Event, InputEvent, KeyboardEvent, MouseEvent, Compositio
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentRenderer} from "@renderer/html"
-import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditorModel from "@ui/code-editor-model"
 import createTerminalModel from "@ui-terminal-model/create"
 import type {CodeEditorHandle} from "@ui-views/code-editor"
 import type {EditorProps} from "@ui-widgets/editor"
@@ -34,7 +34,7 @@ function fixture() {
 
 test("Editor fills its structural parent, owns generic annotations and exposes selection/focus/reveal without consumer DOM patches", async () => {
   const f = fixture()
-  const model = createCodeEditorModel({value: "first\nsecond"})
+  const model = new CodeEditorModel({value: "first\nsecond"})
   const handles: Array<CodeEditorHandle | null> = []
   const saves: string[] = []
   const rows: number[] = []

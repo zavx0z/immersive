@@ -7,7 +7,7 @@ import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {createDocumentNativeInputHostWithSeams} from "../../browser/src/native-input-host.ts"
-import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditorModel from "@ui/code-editor-model"
 import type {CodeEditorProps} from "@ui-views/code-editor"
 import type {UiMenusClipboardMenu} from "@ui-menus/clipboard-menu"
 
@@ -44,7 +44,7 @@ function fixture() {
   const menuHost = document.createElement("div")
   root.append(editorHost, menuHost)
   document.append(root)
-  const model = createCodeEditorModel({value: "a b", selections: [{anchor: 0, head: 1}, {anchor: 2, head: 3}], primary: 1})
+  const model = new CodeEditorModel({value: "a b", selections: [{anchor: 0, head: 1}, {anchor: 2, head: 3}], primary: 1})
   const editor = createRoot(editorHost)
   editor.render(CodeEditor as unknown as CompiledTemplate<CodeEditorProps>, {value: "a b", readOnly: false, model})
   const code = editorHost.querySelector("code") as HTMLElement

@@ -1,5 +1,6 @@
 import type {CodeEditorProps} from "@ui-views/code-editor"
-import type {CodeEditorRange} from "@ui/code-editor-model"
+import type {UiCodeEditorModel} from "@ui/code-editor-model"
+type CodeEditorRange = UiCodeEditorModel.Output["snapshot"]["selections"][number]
 import type {UiBadge} from "@ui/badge"
 
 /**

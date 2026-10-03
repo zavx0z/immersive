@@ -14,7 +14,7 @@ import {registerLanguageHighlighter} from "@zavx0z/highlighter"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import {createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "@renderer/html"
-import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditorModel from "@ui/code-editor-model"
 import type {CodeEditorProps} from "@ui-views/code-editor"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 
@@ -27,7 +27,7 @@ function mount(value: string, options: Partial<CodeEditorProps> = {}) {
   const document = createDocument()
   const container = document.createElement("div")
   document.append(container)
-  const model = options.model ?? createCodeEditorModel({value})
+  const model = options.model ?? new CodeEditorModel({value})
   const component = createRoot(container)
   component.render(template, {value, readOnly: false, model, ...options})
   const code = container.querySelector("code") as HTMLElement

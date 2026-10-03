@@ -1,8 +1,8 @@
 import {expect, spyOn, test} from "bun:test"
-import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditorModel from "@ui/code-editor-model"
 
 test("normalization merges overlap and duplicate carets, preserving primary direction", () => {
-  const model = createCodeEditorModel({value: "0123456789", selections: [
+  const model = new CodeEditorModel({value: "0123456789", selections: [
     {anchor: 7, head: 7}, {anchor: 6, head: 3}, {anchor: 1, head: 4}, {anchor: 7, head: 7},
   ], primary: 1})
   expect(model.snapshot.selections).toEqual([{anchor: 6, head: 1}, {anchor: 7, head: 7}])
@@ -17,7 +17,7 @@ test("normalization merges overlap and duplicate carets, preserving primary dire
 
 test("one transaction replaces every range against original offsets and history restores directions", () => {
   const ranges = [{anchor: 2, head: 1}, {anchor: 4, head: 5}]
-  const model = createCodeEditorModel({value: "abcdef", selections: ranges, primary: 1})
+  const model = new CodeEditorModel({value: "abcdef", selections: ranges, primary: 1})
   const before = model.snapshot
   expect(model.insertText("XYZ")).toBe(true)
   expect(model.snapshot.value).toBe("aXYZcdXYZf")
@@ -37,7 +37,7 @@ test("one transaction replaces every range against original offsets and history 
 })
 
 test("overlapping deletion expansions deduplicate edits and resulting carets", () => {
-  const model = createCodeEditorModel({value: "hello world", selections: [{anchor: 2, head: 2}, {anchor: 4, head: 4}], primary: 1})
+  const model = new CodeEditorModel({value: "hello world", selections: [{anchor: 2, head: 2}, {anchor: 4, head: 4}], primary: 1})
   model.deleteBackward("word")
   expect(model.snapshot.value).toBe("o world")
   expect(model.snapshot.selections).toEqual([{anchor: 0, head: 0}])
@@ -47,7 +47,7 @@ test("overlapping deletion expansions deduplicate edits and resulting carets", (
 })
 
 test("paste distributes equal-count lines in source order and otherwise duplicates full payload", () => {
-  const model = createCodeEditorModel({value: "a\nb", selections: [{anchor: 0, head: 1}, {anchor: 2, head: 3}], primary: 1})
+  const model = new CodeEditorModel({value: "a\nb", selections: [{anchor: 0, head: 1}, {anchor: 2, head: 3}], primary: 1})
   model.paste("first\r\nsecond")
   expect(model.snapshot.value).toBe("first\nsecond")
   expect(model.snapshot.selections).toEqual([{anchor: 5, head: 5}, {anchor: 12, head: 12}])
@@ -62,7 +62,7 @@ test("paste distributes equal-count lines in source order and otherwise duplicat
 test("grapheme movement and deletion keep combining marks, surrogate pairs and ZWJ sequences whole", () => {
   const family = "👨‍👩‍👧‍👦"
   const value = `a\u0301${family}🇺🇦z`
-  const model = createCodeEditorModel({value})
+  const model = new CodeEditorModel({value})
   model.move("forward")
   expect(model.snapshot.selections[0]?.head).toBe(2)
   model.move("forward", {extend: true})
@@ -80,7 +80,7 @@ test("grapheme movement and deletion keep combining marks, surrogate pairs and Z
 })
 
 test("word, line and document movement preserve directional extension and collapse selected ranges", () => {
-  const model = createCodeEditorModel({value: "Привет, мир!\r\nsecond line"})
+  const model = new CodeEditorModel({value: "Привет, мир!\r\nsecond line"})
   model.move("forward", {unit: "word"})
   expect(model.snapshot.selections[0]?.head).toBe(6)
   model.move("forward", {unit: "line", extend: true})
@@ -94,7 +94,7 @@ test("word, line and document movement preserve directional extension and collap
 })
 
 test("read-only rejects editing and history but keeps selection and copy available", () => {
-  const model = createCodeEditorModel({value: "abc", readOnly: true, selections: [{anchor: 0, head: 2}]})
+  const model = new CodeEditorModel({value: "abc", readOnly: true, selections: [{anchor: 0, head: 2}]})
   const before = model.snapshot
   expect(model.insertText("x")).toBe(false)
   expect(model.paste("x")).toBe(false)
@@ -118,7 +118,7 @@ test("read-only rejects editing and history but keeps selection and copy availab
 
 test("composition previews all ranges from base and commits as one undo transaction", () => {
   const selections = [{anchor: 0, head: 1}, {anchor: 3, head: 2}]
-  const model = createCodeEditorModel({value: "a b", selections, primary: 1})
+  const model = new CodeEditorModel({value: "a b", selections, primary: 1})
   model.beginComposition()
   expect(model.snapshot.composing).toBe(true)
   model.updateComposition("に")
@@ -143,7 +143,7 @@ test("composition previews all ranges from base and commits as one undo transact
 })
 
 test("composition cancellation and invalid updates preserve base and redo", () => {
-  const model = createCodeEditorModel({value: "abc", selections: [{anchor: 1, head: 2}]})
+  const model = new CodeEditorModel({value: "abc", selections: [{anchor: 1, head: 2}]})
   model.insertText("x")
   model.undo()
   model.beginComposition()
@@ -167,7 +167,7 @@ test("composition cancellation and invalid updates preserve base and redo", () =
 })
 
 test("external replacement explicitly maps selections or resets and clears old history", () => {
-  const model = createCodeEditorModel({value: "abcd", selections: [{anchor: 1, head: 1}, {anchor: 4, head: 3}], primary: 1})
+  const model = new CodeEditorModel({value: "abcd", selections: [{anchor: 1, head: 1}, {anchor: 4, head: 3}], primary: 1})
   model.replaceValue("aXXbcd", {selection: "map"})
   expect(model.snapshot.selections).toEqual([{anchor: 3, head: 3}, {anchor: 6, head: 5}])
   expect(model.snapshot.primary).toBe(1)
@@ -184,7 +184,7 @@ test("external replacement explicitly maps selections or resets and clears old h
 })
 
 test("snapshots are immutable, listeners release, validation is atomic and history is bounded", () => {
-  const model = createCodeEditorModel({value: "", historyLimit: 1})
+  const model = new CodeEditorModel({value: "", historyLimit: 1})
   const snapshots: typeof model.snapshot[] = []
   const unsubscribe = model.subscribe(snapshot => snapshots.push(snapshot))
   expect(Object.isFrozen(model.snapshot)).toBe(true)
@@ -208,13 +208,13 @@ test("snapshots are immutable, listeners release, validation is atomic and histo
 })
 
 test("empty and boundary commands remain no-ops and adjacent nonempty ranges stay independent", () => {
-  const empty = createCodeEditorModel({value: ""})
+  const empty = new CodeEditorModel({value: ""})
   expect(empty.deleteBackward()).toBe(false)
   expect(empty.deleteForward()).toBe(false)
   expect(empty.move("backward")).toBe(false)
   expect(empty.move("forward")).toBe(false)
   expect(empty.insertText("")).toBe(false)
-  const model = createCodeEditorModel({value: "abcd", selections: [{anchor: 0, head: 2}, {anchor: 2, head: 4}], primary: 1})
+  const model = new CodeEditorModel({value: "abcd", selections: [{anchor: 0, head: 2}, {anchor: 2, head: 4}], primary: 1})
   expect(model.snapshot.selections).toHaveLength(2)
   model.paste(["left", "right"])
   expect(model.snapshot.value).toBe("leftright")
@@ -222,7 +222,7 @@ test("empty and boundary commands remain no-ops and adjacent nonempty ranges sta
 })
 
 test("logical vertical movement keeps desired columns across short lines and treats CRLF as one grapheme", () => {
-  const model = createCodeEditorModel({value: "first\r\nx\r\nthird", selections: [{anchor: 4, head: 4}]})
+  const model = new CodeEditorModel({value: "first\r\nx\r\nthird", selections: [{anchor: 4, head: 4}]})
   model.moveVertical("down")
   expect(model.snapshot.selections).toEqual([{anchor: 8, head: 8}])
   model.moveVertical("down")
@@ -232,13 +232,13 @@ test("logical vertical movement keeps desired columns across short lines and tre
   model.setSelections([{anchor: 7, head: 7}])
   model.deleteBackward()
   expect(model.snapshot.value).toBe("firstx\r\nthird")
-  const emptyFirst = createCodeEditorModel({value: "\nnext"})
+  const emptyFirst = new CodeEditorModel({value: "\nnext"})
   expect(emptyFirst.move("backward", {unit: "line"})).toBe(false)
 })
 
 test("grapheme movement segments only the touched line and reuses its cache", () => {
   const value = "unchanged\n".repeat(100_000) + "tail"
-  const model = createCodeEditorModel({value, selections: [{anchor: value.length, head: value.length}]})
+  const model = new CodeEditorModel({value, selections: [{anchor: value.length, head: value.length}]})
   const original = Intl.Segmenter.prototype.segment
   const lengths: number[] = []
   const spy = spyOn(Intl.Segmenter.prototype, "segment").mockImplementation(function (this: Intl.Segmenter, value: string) {
@@ -254,7 +254,7 @@ test("grapheme movement segments only the touched line and reuses its cache", ()
 })
 
 test("logical navigation and deletion preserve standalone CR line endings", () => {
-  const model = createCodeEditorModel({value: "ab\r\rcde", selections: [{anchor: 1, head: 1}]})
+  const model = new CodeEditorModel({value: "ab\r\rcde", selections: [{anchor: 1, head: 1}]})
   model.moveVertical("down")
   expect(model.snapshot.selections[0]?.head).toBe(3)
   model.moveVertical("down")

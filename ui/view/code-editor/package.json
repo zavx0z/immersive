@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "@jsx-compiler/session": "workspace:*",
-    "@ui-code-editor-model/create": "workspace:*",
     "@ui-views-code-editor/highlighter": "workspace:*",
     "@ui-views-code-editor/validate": "workspace:*",
     "@ui-views-code-editor/view-model": "workspace:*",

@@ -1,5 +1,6 @@
 import type {UiBadge} from "@ui/badge"
-import type {CodeEditorRange} from "@ui/code-editor-model"
+import type {UiCodeEditorModel} from "@ui/code-editor-model"
+type CodeEditorRange = UiCodeEditorModel.Output["snapshot"]["selections"][number]
 
 /** CodeEditorHandle описывает данные публичного контракта своего владельца. */
 export type CodeEditorHandle = Readonly<{

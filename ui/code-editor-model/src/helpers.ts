@@ -1,7 +1,7 @@
 import type {CodeEditorRange} from "../contract/types.ts"
-import type {EditorState} from "../contract/types.ts"
-import type {NormalizedSelections} from "../contract/types.ts"
-import type {SelectionEntry} from "../contract/types.ts"
+import type {EditorState} from "./types"
+import type {NormalizedSelections} from "./types"
+import type {SelectionEntry} from "./types"
 
 /** Частная подготовка модель текста, нескольких выделений, ime и истории редактора. */
 export function textValue(value: string): string {

@@ -7,7 +7,7 @@
 import type {EditorProps} from "./contract/input.ts"
 import {useMemo} from "@zavx0z/component"
 import CodeEditor from "@ui-views/code-editor"
-import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditorModel from "@ui/code-editor-model"
 import WidgetHeader from "@ui-widgets/header"
 
 export type {EditorProps} from "./contract/input"
@@ -15,7 +15,7 @@ export type {EditorProps} from "./contract/input"
 import type {JSX} from "@jsx-compiler/session"
 
 export default function Editor(props: EditorProps): JSX.Element {
-  const ownedModel = useMemo(() => createCodeEditorModel({value: props.value, readOnly: props.readOnly}), [])
+  const ownedModel = useMemo(() => new CodeEditorModel({value: props.value, readOnly: props.readOnly}), [])
   const model = props.model ?? ownedModel
   return <section
     data-widget="editor"

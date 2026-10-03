@@ -11,7 +11,7 @@ import {useLayoutEffect} from "@zavx0z/component"
 import {useMemo} from "@zavx0z/component"
 import {useRef} from "@zavx0z/component"
 import {useSyncExternalStore} from "@zavx0z/component"
-import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditorModel from "@ui/code-editor-model"
 import assertCodeEditorProps from "@ui-views-code-editor/validate"
 import buildCodeEditorViewModel from "@ui-views-code-editor/view-model"
 import resolveCodeEditorHighlighter from "@ui-views-code-editor/highlighter"
@@ -29,7 +29,7 @@ import type {JSX} from "@jsx-compiler/session"
 
 export default function CodeEditor(props: CodeEditorProps): JSX.Element {
   assertCodeEditorProps(props)
-  const ownedModel = useMemo(() => createCodeEditorModel({value: props.value, readOnly: props.readOnly}), [])
+  const ownedModel = useMemo(() => new CodeEditorModel({value: props.value, readOnly: props.readOnly}), [])
   const model = props.model ?? ownedModel
   const code = useRef<HTMLElement | null>(null)
   const interaction = useRef<CodeEditorInteraction | null>(null)

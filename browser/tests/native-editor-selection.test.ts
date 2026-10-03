@@ -7,7 +7,7 @@ import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/engine"
 import type {Renderer} from "@zavx0z/webgpu"
 import {caretPositionAtPoint} from "@renderer/html"
-import createCodeEditorModel from "@ui-code-editor-model/create"
+import CodeEditorModel from "@ui/code-editor-model"
 import type {CodeEditorProps} from "@ui-views/code-editor"
 import {createDocumentNativeInputHostWithSeams} from "../src/native-input-host.ts"
 import {createDocumentSpaceRuntimeWithSeams} from "../src/space-runtime.ts"
@@ -61,13 +61,13 @@ test.each([
   root.setAttribute("style", "display:block;width:600px;height:280px;background:#222")
   container.append(root)
   const value = 'const label = "Alpha"\nlet tick = 0\n'
-  const model = createCodeEditorModel({value, selections: [{anchor: value.length, head: value.length}]})
+  const model = new CodeEditorModel({value, selections: [{anchor: value.length, head: value.length}]})
   const component = createRoot(root)
   component.render((widget ? Editor : CodeEditor) as unknown as CompiledTemplate<CodeEditorProps>, {value: model.snapshot.value, readOnly: false, model, languageId: "typescript"})
   const code = root.querySelector("code") as HTMLElement
   const betaRoot = document.createElement("section") as HTMLElement
   betaRoot.setAttribute("style", "display:block;width:600px;height:280px;background:#222")
-  const betaModel = createCodeEditorModel({value: 'const label = "Beta"\nlet tick = 0\n'})
+  const betaModel = new CodeEditorModel({value: 'const label = "Beta"\nlet tick = 0\n'})
   const betaComponent = createRoot(betaRoot)
   if (dual) {
     container.append(betaRoot)
@@ -197,8 +197,8 @@ test.each([
 })
 
 test("real createRoot App keeps two Editor projections isolated across every selection-composed frame", async () => {
-  const alpha = createCodeEditorModel({value: 'const label = "Alpha"\nlet tick = 0\n'})
-  const beta = createCodeEditorModel({value: 'const label = "Beta"\nlet tick = 0\n'})
+  const alpha = new CodeEditorModel({value: 'const label = "Alpha"\nlet tick = 0\n'})
+  const beta = new CodeEditorModel({value: 'const label = "Beta"\nlet tick = 0\n'})
   const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/font/jetbrains-mono-bold.ttf")).arrayBuffer())
   const theme = await Bun.file(resolve(workspace, "ui/theme/theme.css")).text()
   const proxies = {input: new NativeProxy(), select: new NativeProxy(), textarea: new NativeProxy()}
