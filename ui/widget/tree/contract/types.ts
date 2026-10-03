@@ -1,5 +1,5 @@
 import type {WidgetAction} from "@ui-widgets/header"
-import type {BadgeTone} from "@ui/badge"
+import type {UiBadge} from "@ui/badge"
 import type {WindowedTreeBlock} from "../src/windowing.ts"
 
 /**
@@ -18,7 +18,7 @@ export type TreeItem = Readonly<{
   selectable?: boolean | undefined
   /** Помечает текущую страницу независимо от выбранных ключей. */
   current?: boolean | undefined
-  tone?: BadgeTone | undefined
+  tone?: UiBadge.Input["tone"] | undefined
   children?: readonly TreeItem[] | undefined
   actions?: readonly WidgetAction[] | undefined
 }>

@@ -4,14 +4,12 @@
 
 @packageDocumentation
 */
-import type {TypographyProps} from "./contract/input.ts"
+import type {UiTypography} from "./contract"
 
-export type {TypographyProps} from "./contract/input"
-export type {TypographyVariant} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiTypography} from "./contract"
 
-export default function Typography(props: TypographyProps): JSX.Element {
+export default function Typography(props: UiTypography.Input): UiTypography.Output {
   const variant = props.variant ?? "body"
   return <span
     title={props.title}

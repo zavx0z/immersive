@@ -4,14 +4,12 @@
 
 @packageDocumentation
 */
-import type {BadgeProps} from "./contract/input.ts"
+import type {UiBadge} from "./contract"
 
-export type {BadgeProps} from "./contract/input"
-export type {BadgeTone} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiBadge} from "./contract"
 
-export default function Badge(props: BadgeProps): JSX.Element {
+export default function Badge(props: UiBadge.Input): UiBadge.Output {
   const tone = props.tone ?? "neutral"
   return <span
     title={props.title}

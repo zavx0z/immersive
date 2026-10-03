@@ -4,14 +4,12 @@
 
 @packageDocumentation
 */
-import type {DividerProps} from "./contract/input.ts"
+import type {UiDivider} from "./contract"
 
-export type {DividerProps} from "./contract/input"
-export type {DividerVariant} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiDivider} from "./contract"
 
-export default function Divider(props: DividerProps): JSX.Element {
+export default function Divider(props: UiDivider.Input): UiDivider.Output {
   const variant = props.variant ?? "full-width"
   return <hr
     title={props.title}

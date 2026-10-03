@@ -1,6 +1,6 @@
 import type {CodeEditorProps} from "@ui-views/code-editor"
 import type {CodeEditorRange} from "@ui/code-editor-model"
-import type {BadgeTone} from "@ui/badge"
+import type {UiBadge} from "@ui/badge"
 
 /**
 Тип NormalizedToken принадлежит контракту своего владельца.
