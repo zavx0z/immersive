@@ -4,18 +4,20 @@
 
 @packageDocumentation
 */
-import type {SelectionExceptionalLabelInput} from "./contract/input"
-import type {SelectionOptionShape} from "@ui-selection/validate-selection-options"
-import type {SelectionState} from "@ui-selection/validate-selection-options"
+import type {UiSelectionSelectionExceptionalLabel as Contract} from "./contract"
+import type {UiSelectionValidateSelectionOptions} from "@ui-selection/validate-selection-options"
+type SelectionOptionShape = UiSelectionValidateSelectionOptions.Input[0][number]
+import type {UiSelectionValidateSelectionState} from "@ui-selection/validate-selection-state"
+type SelectionState = NonNullable<UiSelectionValidateSelectionState.Input[0]>
 
 export default function selectionExceptionalLabel(
-  state: SelectionExceptionalLabelInput[0],
-  options: SelectionExceptionalLabelInput[1]
-): string | undefined {
+  state: Contract.Input[0],
+  options: Contract.Input[1]
+): Contract.Output {
   if (state === "error") return "Menu Error"
   if (state === "undefined" || options === undefined) return "Menu Undefined"
   if (options.length === 0) return "No Items"
   return undefined
 }
 
-export type {SelectionExceptionalLabelInput} from "./contract/input"
+export type {UiSelectionSelectionExceptionalLabel} from "./contract"

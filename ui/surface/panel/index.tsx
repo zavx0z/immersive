@@ -4,19 +4,17 @@
 
 @packageDocumentation
 */
-import type {PanelProps} from "./contract/input.ts"
+import type {UiSurfacesPanel as Contract} from "./contract"
 import {useId} from "@zavx0z/component"
 import Button from "@ui-buttons/button"
 import IconButton from "@ui-buttons/icon-button"
 import chevronDownIcon from "@ui-themes-icons/chevron-down"
 import chevronRightIcon from "@ui-themes-icons/chevron-right"
 
-export type {PanelProps} from "./contract/input"
-export type {PanelAction} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiSurfacesPanel} from "./contract"
 
-export default function Panel(props: PanelProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function Panel(props: Contract.Input): Contract.Output {
   if (props.label.length === 0) throw new Error("Panel label must not be empty")
   const contentId = useId()
   const onClick = (event: Event) => props.onToggle?.(!props.expanded, event)

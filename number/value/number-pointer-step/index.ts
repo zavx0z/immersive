@@ -5,7 +5,8 @@
 @packageDocumentation
 */
 import type {UiFieldsNumberValueNumberPointerStep as Contract} from "./contract"
-import type {NumberValueOptions} from "@ui-fields-number-value/normalize-number-value"
+import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
+type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
 import validNumberStep from "@ui-fields-number-value/valid-number-step"
 
 export default function numberPointerStep(options: Contract.Input[0]): Contract.Output {

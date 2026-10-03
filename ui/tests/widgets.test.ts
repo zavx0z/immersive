@@ -7,13 +7,17 @@ import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentRenderer} from "@renderer/html"
 import CodeEditorModel from "@ui/code-editor-model"
 import TerminalModel from "@ui/terminal-model"
-import type {CodeEditorHandle} from "@ui-views/code-editor"
+import type {UiViewsCodeEditor} from "@ui-views/code-editor"
+type CodeEditorHandle = NonNullable<Parameters<NonNullable<UiViewsCodeEditor.Input["onReady"]>>[0]>
 import type {UiWidgetsEditor} from "@ui-widgets/editor"
 type EditorProps = UiWidgetsEditor.Input
-import type {TerminalProps} from "@ui-widgets/terminal"
-import type {TerminalHandle} from "@ui-widgets/terminal"
-import type {TreeProps} from "@ui-widgets/tree"
-import type {WindowProps} from "@ui-surfaces/window"
+import type {UiWidgetsTerminal} from "@ui-widgets/terminal"
+type TerminalProps = UiWidgetsTerminal.Input
+type TerminalHandle = NonNullable<Parameters<NonNullable<UiWidgetsTerminal.Input["onReady"]>>[0]>
+import type {UiWidgetsTree} from "@ui-widgets/tree"
+type TreeProps = UiWidgetsTree.Input
+import type {UiSurfacesWindow} from "@ui-surfaces/window"
+type WindowProps = UiSurfacesWindow.Input
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {textPositionAtOffset} from "@zavx0z/dom/text-position"
 

@@ -21,7 +21,7 @@ test("UI предоставляет общий доменный вход и фи
     expect(await Bun.file(resolve(packageRoot, area, "package.json")).exists()).toBe(true)
   }
   expect(manifest.exports["./button/button"]).toBe("./button/button/index.tsx")
-  expect(manifest.exports["./surface/window/control"]).toBe("./surface/window/control/index.tsx")
+  expect(manifest.exports["./surface/window/control"]).toBe("./surface/window-control/index.tsx")
   expect(manifest.exports["./surface/window/contract/input"]).toBeUndefined()
 })
 

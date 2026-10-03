@@ -1,4 +1,5 @@
-import type {FieldDensity} from "@ui-fields-metrics/resolve-field-density"
+import type {UiFieldsMetricsResolveFieldDensity} from "@ui-fields-metrics/resolve-field-density"
+type FieldDensity = UiFieldsMetricsResolveFieldDensity.Output
 
 /** Читает базовую высоту поля для выбранной плотности из числовой темы. */
 export declare namespace UiFieldsMetricsFieldDensityHeight {

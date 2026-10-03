@@ -4,19 +4,19 @@
 
 @packageDocumentation
 */
-import type {TableSelectionGesture} from "@ui-views/table"
-import type {TableSelectionUpdate} from "@ui-views/table"
+import type {UiViewsTableTableSelectionAfterClick as Contract} from "./contract"
+export type {UiViewsTableTableSelectionAfterClick} from "./contract"
 import normalizeTableSelection from "@ui-views-table/normalize-table-selection"
 import {tableRangeKeys} from "./src/helpers.tsx"
 import {uniqueKeys} from "./src/helpers.tsx"
 
 export default function tableSelectionAfterClick(
-  rowKeys: readonly string[],
-  currentSelectedKeys: readonly string[],
-  clickedKey: string,
-  anchorKey: string | null,
-  gesture: TableSelectionGesture = {}
-): TableSelectionUpdate {
+  rowKeys: Contract.Input[0],
+  currentSelectedKeys: Contract.Input[1],
+  clickedKey: Contract.Input[2],
+  anchorKey: Contract.Input[3],
+  gesture: Contract.Input[4] = {}
+): Contract.Output {
   const selected = normalizeTableSelection(rowKeys, currentSelectedKeys)
   const additive = gesture.metaKey === true || gesture.ctrlKey === true
   if (gesture.shiftKey === true) {

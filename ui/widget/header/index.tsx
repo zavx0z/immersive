@@ -5,15 +5,13 @@
 @packageDocumentation
 */
 import WidgetActionButton from "@ui-widgets-header/action"
-import type {WidgetHeaderProps} from "./contract/input.ts"
+import type {UiWidgetsHeader as Contract} from "./contract"
 import Badge from "@ui/badge"
 
-export type {WidgetHeaderProps} from "./contract/input"
-export type {WidgetAction} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiWidgetsHeader} from "./contract"
 
-export default function WidgetHeader(props: WidgetHeaderProps): JSX.Element {
+export default function WidgetHeader(props: Contract.Input): Contract.Output {
   return <header
     style={css`
       box-sizing: border-box;

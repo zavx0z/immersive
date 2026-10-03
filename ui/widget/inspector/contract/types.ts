@@ -1,5 +1,3 @@
-import type {InspectorProps} from "./input.ts"
-
 /**
 Тип InspectorCategory принадлежит контракту своего владельца.
 */
@@ -41,13 +39,4 @@ export type InspectorContextRow = Readonly<{
 */
 export type InspectorContext = InspectorContextRow & Readonly<{
   secondary?: InspectorContextRow | undefined
-}>
-
-/**
-Тип CategoryButtonProps принадлежит контракту своего владельца.
-*/
-export type CategoryButtonProps = Readonly<{
-  category: InspectorCategory
-  selected: boolean
-  onChange?: InspectorProps["onCategoryChange"]
 }>

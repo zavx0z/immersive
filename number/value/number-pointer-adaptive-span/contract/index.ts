@@ -1,4 +1,5 @@
-import type {NumberValueOptions} from "@ui-fields-number-value/normalize-number-value"
+import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
+type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
 
 /** Определяет адаптивный диапазон указателя по ограниченному сверху шагу числа. */
 export declare namespace UiFieldsNumberValueNumberPointerAdaptiveSpan {

@@ -5,16 +5,14 @@
 @packageDocumentation
 */
 import {EmptyListRow} from "./src/helpers.tsx"
-import type {ListProps} from "./contract/input.ts"
+import type {UiViewsList as Contract} from "./contract"
 import {ListRow} from "./src/helpers.tsx"
 import {assertListProps} from "./src/helpers.tsx"
 
-export type {ListProps} from "./contract/input"
-export type {ListItem} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiViewsList} from "./contract"
 
-export default function List(props: ListProps): JSX.Element {
+export default function List(props: Contract.Input): Contract.Output {
   const selectedKey = assertListProps(props)
   return <ul
     role="listbox"

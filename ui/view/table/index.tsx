@@ -5,16 +5,14 @@
 @packageDocumentation
 */
 import {HeaderCell} from "./src/helpers.tsx"
-import type {TableProps} from "./contract/input.ts"
+import type {UiViewsTable as Contract} from "./contract"
 import {TableRowView} from "./src/helpers.tsx"
 import {assertTableProps} from "./src/helpers.tsx"
 
-export type {TableProps} from "./contract/input"
-export type {TableColumn, TableRow, TableCellContext, TableSelectionGesture, TableSelectionUpdate} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiViewsTable} from "./contract"
 
-export default function Table(props: TableProps): JSX.Element {
+export default function Table(props: Contract.Input): Contract.Output {
   const selection = assertTableProps(props)
   return <table
     title={props.title}

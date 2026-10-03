@@ -4,18 +4,18 @@
 
 @packageDocumentation
 */
-import type {ResolveNumberSoftRangeInput} from "./contract/input"
-import type {NumberRange} from "./contract/types"
-import type {NumberValueOptions} from "@ui-fields-number-value/normalize-number-value"
+import type {UiFieldsNumberValueResolveNumberSoftRange as Contract} from "./contract"
+import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
+type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
 import finiteBound from "@ui-fields-number-value/finite-bound"
 import normalizeNumberValue from "@ui-fields-number-value/normalize-number-value"
 import numberPointerAdaptiveSpan from "@ui-fields-number-value/number-pointer-adaptive-span"
 import numberPointerStep from "@ui-fields-number-value/number-pointer-step"
 
 export default function resolveNumberSoftRange(
-  value: ResolveNumberSoftRangeInput[0],
-  options: ResolveNumberSoftRangeInput[1] = {}
-): NumberRange {
+  value: Contract.Input[0],
+  options: Contract.Input[1] = {}
+): Contract.Output {
   const hardMin = finiteBound(options.min, Number.NEGATIVE_INFINITY)
   const hardMax = Math.max(hardMin, finiteBound(options.max, Number.POSITIVE_INFINITY))
   const center = normalizeNumberValue(value, options)
@@ -42,6 +42,4 @@ export default function resolveNumberSoftRange(
   return Object.freeze({min: minimum, max: maximum})
 }
 
-export type {NumberRange} from "./contract/types"
-
-export type {ResolveNumberSoftRangeInput} from "./contract/input"
+export type {UiFieldsNumberValueResolveNumberSoftRange} from "./contract"

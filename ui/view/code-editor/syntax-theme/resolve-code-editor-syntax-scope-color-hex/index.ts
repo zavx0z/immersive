@@ -4,15 +4,15 @@
 
 @packageDocumentation
 */
-import type {ResolveCodeEditorSyntaxScopeColorHexInput} from "./contract/input"
+import type {UiViewsCodeEditorSyntaxThemeResolveCodeEditorSyntaxScopeColorHex as Contract} from "./contract"
 import codeEditorSyntaxTheme from "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme"
 import {foregroundFor} from "./src/helpers.ts"
 import {normalizeHexColor} from "./src/helpers.ts"
 
 export default function resolveCodeEditorSyntaxScopeColorHex(
-  scopes: ResolveCodeEditorSyntaxScopeColorHexInput[0],
-  fallback?: ResolveCodeEditorSyntaxScopeColorHexInput[1]
-): string | undefined {
+  scopes: Contract.Input[0],
+  fallback?: Contract.Input[1]
+): Contract.Output {
   const color = foregroundFor(scopes)
     ?? fallback
     ?? codeEditorSyntaxTheme.colors["editor.foreground"]
@@ -20,4 +20,4 @@ export default function resolveCodeEditorSyntaxScopeColorHex(
   return normalized === undefined ? undefined : `#${normalized}`
 }
 
-export type {ResolveCodeEditorSyntaxScopeColorHexInput} from "./contract/input"
+export type {UiViewsCodeEditorSyntaxThemeResolveCodeEditorSyntaxScopeColorHex} from "./contract"

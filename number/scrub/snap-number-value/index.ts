@@ -7,7 +7,8 @@
 import type {UiFieldsNumberScrubSnapNumberValue as Contract} from "./contract"
 import {roundHalfAwayFromZero} from "./src/helpers.ts"
 import roundedNumber from "@ui-fields-number-value/rounded-number"
-import type {NumberRange} from "@ui-fields-number-value/resolve-number-soft-range"
+import type {UiFieldsNumberValueResolveNumberSoftRange} from "@ui-fields-number-value/resolve-number-soft-range"
+type NumberRange = UiFieldsNumberValueResolveNumberSoftRange.Output
 
 export default function snapNumberValue(
   value: Contract.Input[0],

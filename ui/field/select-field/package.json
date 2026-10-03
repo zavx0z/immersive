@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@ui/fields": "workspace:*",
+    "@ui-selection/validate-selection-state": "workspace:*"
   }
 }

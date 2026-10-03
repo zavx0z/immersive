@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {TreeContext} from "./contract/types.ts"
+import type {TreeContext} from "./src/types"
 import type {TreeItem} from "./contract/types.ts"
 import {TreePlainRows} from "./src/helpers.tsx"
-import type {TreeProps} from "./contract/input.ts"
-import type {TreeRow} from "./contract/types.ts"
+import type {UiWidgetsTree as Contract} from "./contract"
+import type {TreeRow} from "./src/types"
 import {TreeWindowedRows} from "./src/helpers.tsx"
 import {isTreeDescendant} from "./src/helpers.tsx"
 import {useLayoutEffect} from "@zavx0z/component"
@@ -23,12 +23,10 @@ import {visibleTreeRows} from "./src/windowing.ts"
 import {windowedTreeBlocks} from "./src/windowing.ts"
 import type {WindowedTreeBlock} from "./src/windowing.ts"
 
-export type {TreeProps} from "./contract/input"
-export type {TreeItem, TreeHandle} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiWidgetsTree} from "./contract"
 
-export default function Tree(props: TreeProps): JSX.Element {
+export default function Tree(props: Contract.Input): Contract.Output {
   const refs = useRef(new Map<string, HTMLLIElement>())
   const anchor = useRef<string | null>(null)
   const viewport = useRef<HTMLUListElement | null>(null)

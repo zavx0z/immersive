@@ -4,7 +4,8 @@ import {createRoot} from "@zavx0z/component"
 import {createDocument, MouseEvent} from "@zavx0z/dom"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {PaneTextContent} from "@ui-surfaces/pane"
+import type {UiSurfacesPane} from "@ui-surfaces/pane"
+type PaneTextContent = UiSurfacesPane.Input["content"]
 import type {UiSurfacesTab} from "@ui-surfaces/tab"
 type TabProps = UiSurfacesTab.Input
 

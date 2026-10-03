@@ -1,7 +1,8 @@
 import {InspectorActionButton} from "./action-button"
-import type {CategoryButtonProps} from "../contract/types.ts"
+import type {CategoryButtonProps} from "./types"
 import type {InspectorContextRow} from "../contract/types.ts"
-import type {InspectorProps} from "../contract/input.ts"
+import type {UiWidgetsInspector} from "../contract/index"
+type InspectorProps = UiWidgetsInspector.Input
 import Button from "@ui-buttons/button"
 import IconButton from "@ui-buttons/icon-button"
 

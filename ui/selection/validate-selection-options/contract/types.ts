@@ -9,8 +9,3 @@ export type SelectionOptionShape = Readonly<{
   label: string
   disabled?: boolean | undefined
 }>
-
-/**
-Тип SelectionState принадлежит контракту своего владельца.
-*/
-export type SelectionState = "ready" | "undefined" | "error"

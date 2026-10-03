@@ -1,4 +1,5 @@
-import type {WindowProps} from "../contract/input"
+import type {UiSurfacesWindow} from "../contract/index"
+type WindowProps = UiSurfacesWindow.Input
 
 /** Отклоняет неоднозначный адрес, неконечную геометрию и повторяющиеся ключи действий. */
 export function validateWindow(props: WindowProps): void {

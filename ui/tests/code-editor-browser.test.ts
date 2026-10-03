@@ -8,7 +8,8 @@ import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {createDocumentNativeInputHostWithSeams} from "../../browser/src/native-input-host.ts"
 import CodeEditorModel from "@ui/code-editor-model"
-import type {CodeEditorProps} from "@ui-views/code-editor"
+import type {UiViewsCodeEditor} from "@ui-views/code-editor"
+type CodeEditorProps = UiViewsCodeEditor.Input
 import type {UiMenusClipboardMenu} from "@ui-menus/clipboard-menu"
 
 const workspace = resolve(import.meta.dir, "../..")

@@ -1,5 +1,6 @@
-import type {ListProps} from "../contract/input.ts"
-import type {ListRowProps} from "../contract/types.ts"
+import type {UiViewsList} from "../contract/index"
+type ListProps = UiViewsList.Input
+import type {ListRowProps} from "./types"
 
 /** Частная подготовка список элементов с выбором и доступным пустым состоянием. */
 export function ListRow(props: ListRowProps) {

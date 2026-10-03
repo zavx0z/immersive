@@ -4,17 +4,17 @@
 
 @packageDocumentation
 */
-import type {NumberFillPercentageInput} from "./contract/input"
+import type {UiFieldsNumberValueNumberFillPercentage as Contract} from "./contract"
 
 export default function numberFillPercentage(
-  value: NumberFillPercentageInput[0],
-  minimum: NumberFillPercentageInput[1],
-  maximum: NumberFillPercentageInput[2]
-): number | null {
+  value: Contract.Input[0],
+  minimum: Contract.Input[1],
+  maximum: Contract.Input[2]
+): Contract.Output {
   if (!Number.isFinite(value) || !Number.isFinite(minimum) || !Number.isFinite(maximum) || maximum! <= minimum!) {
     return null
   }
   return Math.min(100, Math.max(0, (value - minimum!) / (maximum! - minimum!) * 100))
 }
 
-export type {NumberFillPercentageInput} from "./contract/input"
+export type {UiFieldsNumberValueNumberFillPercentage} from "./contract"

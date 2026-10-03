@@ -4,17 +4,15 @@
 
 @packageDocumentation
 */
-import type {NotificationProps} from "./contract/input.ts"
+import type {UiFeedbackNotification as Contract} from "./contract"
 import {assertNotificationProps} from "./src/helpers.tsx"
 import IconButton from "@ui-buttons/icon-button"
 import closeIcon from "@ui-themes-icons/close"
 
-export type {NotificationProps} from "./contract/input"
-export type {NotificationTone} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFeedbackNotification} from "./contract"
 
-export default function Notification(props: NotificationProps): JSX.Element {
+export default function Notification(props: Contract.Input): Contract.Output {
   assertNotificationProps(props)
   const tone = props.tone ?? "info"
   const dismissible = props.dismissible === true

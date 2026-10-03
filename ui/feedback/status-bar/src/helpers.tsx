@@ -1,5 +1,5 @@
 import type {StatusBarItem} from "../contract/types.ts"
-import type {StatusBarItemViewProps} from "../contract/types.ts"
+import type {StatusBarItemViewProps} from "./types"
 
 /** Частная подготовка строка состояния с областями текста и действий. */
 export function StatusBarItemView(props: StatusBarItemViewProps) {

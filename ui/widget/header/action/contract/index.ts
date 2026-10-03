@@ -1,4 +1,5 @@
-import type {WidgetAction} from "@ui-widgets/header"
+import type {UiWidgetsHeader} from "@ui-widgets/header"
+type WidgetAction = NonNullable<UiWidgetsHeader.Input["actions"]>[number]
 
 import type {JSX} from "@jsx-compiler/session"
 

@@ -14,8 +14,6 @@
     "./code-editor/highlighter": "./code-editor/highlighter/index.ts",
     "./code-editor/is-hex-color": "./code-editor/is-hex-color/index.ts",
     "./code-editor/normalize-hex-color": "./code-editor/normalize-hex-color/index.ts",
-    "./code-editor/palette": "./code-editor/palette/index.ts",
-    "./code-editor/syntax-theme": "./code-editor/syntax-theme/index.ts",
     "./code-editor/syntax-theme/code-editor-syntax-theme": "./code-editor/syntax-theme/code-editor-syntax-theme/index.ts",
     "./code-editor/syntax-theme/resolve-code-editor-syntax-scope-color-hex": "./code-editor/syntax-theme/resolve-code-editor-syntax-scope-color-hex/index.ts",
     "./code-editor/theme-color": "./code-editor/theme-color/index.ts",

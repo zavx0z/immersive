@@ -5,8 +5,9 @@ import {createDocument, HTMLElement, KeyboardEvent, readDocumentScrollIntoViewRe
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentInteractionController, createDocumentRenderer} from "@renderer/html"
-import type {TreeProps} from "@ui-widgets/tree"
-import type {TreeHandle} from "@ui-widgets/tree"
+import type {UiWidgetsTree} from "@ui-widgets/tree"
+type TreeProps = UiWidgetsTree.Input
+type TreeHandle = NonNullable<Parameters<NonNullable<UiWidgetsTree.Input["onReady"]>>[0]>
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))

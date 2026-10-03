@@ -4,17 +4,14 @@
 
 @packageDocumentation
 */
-import type {BuildCodeEditorViewModelInput} from "./contract/input"
-import type {CodeEditorProps} from "@ui-views/code-editor"
-import type {CodeEditorViewModel} from "./contract/types.ts"
+import type {UiViewsCodeEditorViewModel as Contract} from "./contract"
 import assertCodeEditorProps from "@ui-views-code-editor/validate"
 import {buildViewModel} from "./src/helpers.ts"
 
-export type {CodeEditorSegment, CodeEditorViewModel} from "./contract/types"
 
-export default function buildCodeEditorViewModel(props: BuildCodeEditorViewModelInput[0]): CodeEditorViewModel {
+export default function buildCodeEditorViewModel(props: Contract.Input[0]): Contract.Output {
   assertCodeEditorProps(props)
   return buildViewModel(props)
 }
 
-export type {BuildCodeEditorViewModelInput} from "./contract/input"
+export type {UiViewsCodeEditorViewModel} from "./contract"

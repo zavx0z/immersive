@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {NormalizeCollectionItemsInput} from "./contract/input"
+import type {UiFieldsCollectionModelNormalizeCollectionItems as Contract} from "./contract"
 import type {CollectionItemShape} from "./contract/types"
 
 export default function normalizeCollectionItems<T extends CollectionItemShape>(
-  items: NormalizeCollectionItemsInput<T>[0],
-  selectedId: NormalizeCollectionItemsInput<T>[1]
-): readonly T[] {
+  items: Contract.Input<T>[0],
+  selectedId: Contract.Input<T>[1]
+): Contract.Output<T> {
   if (!Array.isArray(items)) throw new TypeError("CollectionField items must be an array")
   const ids = new Set<string>()
   const normalized = items.map(item => {
@@ -26,6 +26,4 @@ export default function normalizeCollectionItems<T extends CollectionItemShape>(
   return Object.freeze(normalized)
 }
 
-export type {CollectionItemShape} from "./contract/types"
-
-export type {NormalizeCollectionItemsInput} from "./contract/input"
+export type {UiFieldsCollectionModelNormalizeCollectionItems} from "./contract"

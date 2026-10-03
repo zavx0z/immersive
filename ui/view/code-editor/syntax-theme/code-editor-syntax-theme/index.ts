@@ -4,7 +4,8 @@
 
 @packageDocumentation
 */
-import type {SyntaxRuntimeTheme} from "./contract/types.ts"
+import type {UiViewsCodeEditorSyntaxThemeCodeEditorSyntaxTheme as Contract} from "./contract"
+export type {UiViewsCodeEditorSyntaxThemeCodeEditorSyntaxTheme} from "./contract"
 
 const codeEditorSyntaxTheme = Object.freeze({
   "colors": {
@@ -405,6 +406,6 @@ const codeEditorSyntaxTheme = Object.freeze({
       }
     }
   ]
-}) as SyntaxRuntimeTheme
+}) as Contract.Output
 
 export default codeEditorSyntaxTheme

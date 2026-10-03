@@ -14,8 +14,9 @@ import type {UiCodeEditorModel} from "@ui/code-editor-model"
 import type CodeEditorModel from "@ui/code-editor-model"
 type CodeEditorRange = UiCodeEditorModel.Output["snapshot"]["selections"][number]
 import {Range} from "@zavx0z/dom/range"
-import type {CodeEditorHandle} from "@ui-views/code-editor"
-import type {CodeEditorSelectionSet} from "@ui-views/code-editor"
+import type {UiViewsCodeEditor} from "@ui-views/code-editor"
+type CodeEditorHandle = NonNullable<Parameters<NonNullable<UiViewsCodeEditor.Input["onReady"]>>[0]>
+type CodeEditorSelectionSet = Parameters<NonNullable<UiViewsCodeEditor.Input["onSelectionChange"]>>[0]
 
 export type CodeEditorInteraction = Readonly<{sync(): void; dispose(): void}>
 

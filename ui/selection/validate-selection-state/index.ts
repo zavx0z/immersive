@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {ValidateSelectionStateInput} from "./contract/input"
-import type {SelectionState} from "@ui-selection/validate-selection-options"
+import type {UiSelectionValidateSelectionState as Contract} from "./contract"
 
-export default function validateSelectionState(state: ValidateSelectionStateInput[0]): void {
+export default function validateSelectionState(state: Contract.Input[0]): Contract.Output {
   if (state !== undefined && state !== "ready" && state !== "undefined" && state !== "error") {
     throw new Error(`Unknown selection state: ${state}`)
   }
 }
 
-export type {ValidateSelectionStateInput} from "./contract/input"
+export type {UiSelectionValidateSelectionState} from "./contract"

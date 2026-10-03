@@ -15,7 +15,7 @@ import CodeEditorModel from "@ui/code-editor-model"
 import assertCodeEditorProps from "@ui-views-code-editor/validate"
 import buildCodeEditorViewModel from "@ui-views-code-editor/view-model"
 import resolveCodeEditorHighlighter from "@ui-views-code-editor/highlighter"
-import type {CodeEditorProps} from "./contract/input.ts"
+import type {UiViewsCodeEditor as Contract} from "./contract"
 import type {CodeEditorHandle} from "./contract/types"
 import type {CodeEditorLineDecoration} from "./contract/types"
 import {codeEditorVisualRows} from "./src/visual-rows.ts"
@@ -23,11 +23,10 @@ import {attachCodeEditorInteraction} from "./src/interaction.ts"
 import {createCodeEditorHandle} from "./src/interaction.ts"
 import type {CodeEditorInteraction} from "./src/interaction.ts"
 
-export type {CodeEditorProps} from "./contract/input"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiViewsCodeEditor} from "./contract"
 
-export default function CodeEditor(props: CodeEditorProps): JSX.Element {
+export default function CodeEditor(props: Contract.Input): Contract.Output {
   assertCodeEditorProps(props)
   const ownedModel = useMemo(() => new CodeEditorModel({value: props.value, readOnly: props.readOnly}), [])
   const model = props.model ?? ownedModel
@@ -203,9 +202,3 @@ export default function CodeEditor(props: CodeEditorProps): JSX.Element {
     </pre>
   </section>
 }
-
-export type {CodeEditorHandle} from "./contract/types"
-
-export type {CodeEditorSelectionSet} from "./contract/types"
-
-export type {CodeEditorLineDecoration} from "./contract/types"

@@ -4,15 +4,13 @@
 
 @packageDocumentation
 */
-import type {PaneProps} from "./contract/input.ts"
+import type {UiSurfacesPane as Contract} from "./contract"
 import {hasSlot} from "@zavx0z/component/slot-presence"
 
-export type {PaneProps} from "./contract/input"
-export type {PaneVariant, PaneTextContent} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiSurfacesPane} from "./contract"
 
-export default function Pane(props: PaneProps): JSX.Element {
+export default function Pane(props: Contract.Input): Contract.Output {
   if (hasSlot() && props.content != null) {
     throw new Error("Pane accepts either slot content or primitive content, not both")
   }

@@ -4,14 +4,15 @@
 
 @packageDocumentation
 */
-import type {FindSelectionOptionInput} from "./contract/input"
-import type {SelectionOptionShape} from "@ui-selection/validate-selection-options"
+import type {UiSelectionFindSelectionOption as Contract} from "./contract"
+import type {UiSelectionValidateSelectionOptions} from "@ui-selection/validate-selection-options"
+type SelectionOptionShape = UiSelectionValidateSelectionOptions.Input[0][number]
 
 export default function findSelectionOption<T extends SelectionOptionShape>(
-  value: FindSelectionOptionInput<T>[0],
-  options: FindSelectionOptionInput<T>[1]
-): T | undefined {
+  value: Contract.Input<T>[0],
+  options: Contract.Input<T>[1]
+): Contract.Output<T> {
   return options.find(option => option.value === value)
 }
 
-export type {FindSelectionOptionInput} from "./contract/input"
+export type {UiSelectionFindSelectionOption} from "./contract"

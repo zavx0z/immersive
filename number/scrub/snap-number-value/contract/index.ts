@@ -1,4 +1,5 @@
-import type {NumberRange} from "@ui-fields-number-value/resolve-number-soft-range"
+import type {UiFieldsNumberValueResolveNumberSoftRange} from "@ui-fields-number-value/resolve-number-soft-range"
+type NumberRange = UiFieldsNumberValueResolveNumberSoftRange.Output
 
 /** Привязывает число к шагу диапазона, сохраняя его граничные и неконечные значения. */
 export declare namespace UiFieldsNumberScrubSnapNumberValue {

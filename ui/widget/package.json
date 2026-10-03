@@ -12,7 +12,6 @@
     "./header": "./header/index.tsx",
     "./header/action": "./header/action/index.tsx",
     "./inspector": "./inspector/index.tsx",
-    "./inspector/is-inspector-panel-visible": "./inspector/is-inspector-panel-visible/index.tsx",
     "./terminal": "./terminal/index.tsx",
     "./tree": "./tree/index.tsx"
   },

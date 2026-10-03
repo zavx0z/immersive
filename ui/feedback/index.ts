@@ -5,6 +5,6 @@
 @packageDocumentation
 */
 export {default as Notification} from "@ui-feedback/notification"
-export type {NotificationTone, NotificationProps} from "@ui-feedback/notification"
+export type {UiFeedbackNotification} from "@ui-feedback/notification"
 export {default as StatusBar} from "@ui-feedback/status-bar"
-export type {StatusBarItem, StatusBarProps} from "@ui-feedback/status-bar"
+export type {UiFeedbackStatusBar} from "@ui-feedback/status-bar"

@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ValidNumberStepInput} from "./contract/input"
+import type {UiFieldsNumberValueValidNumberStep as Contract} from "./contract"
 
-export default function validNumberStep(value: ValidNumberStepInput[0]): number | undefined {
+export default function validNumberStep(value: Contract.Input[0]): Contract.Output {
   return Number.isFinite(value) && value! > 0 ? value : undefined
 }
 
-export type {ValidNumberStepInput} from "./contract/input"
+export type {UiFieldsNumberValueValidNumberStep} from "./contract"

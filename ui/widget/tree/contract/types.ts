@@ -1,6 +1,6 @@
-import type {WidgetAction} from "@ui-widgets/header"
+import type {UiWidgetsHeader} from "@ui-widgets/header"
+type WidgetAction = NonNullable<UiWidgetsHeader.Input["actions"]>[number]
 import type {UiBadge} from "@ui/badge"
-import type {WindowedTreeBlock} from "../src/windowing.ts"
 
 /**
 Тип TreeItem принадлежит контракту своего владельца.
@@ -36,30 +36,4 @@ export type TreeHandle = Readonly<{
   @returns false, если строка отсутствует или находится в свёрнутой ветви.
   */
   reveal(id: string): boolean
-}>
-
-/**
-Тип TreeRow принадлежит контракту своего владельца.
-*/
-export type TreeRow = Readonly<{item: TreeItem; parent: string | null}>
-
-/**
-Тип TreeItemBlock принадлежит контракту своего владельца.
-*/
-export type TreeItemBlock = Extract<WindowedTreeBlock<TreeItem>, {kind: "item"}>
-
-/**
-Тип TreeContext принадлежит контракту своего владельца.
-*/
-export type TreeContext = Readonly<{
-  expanded: ReadonlySet<string>
-  selected: ReadonlySet<string>
-  focusKey: string | null
-  refs: Map<string, HTMLLIElement>
-  select(id: string, event: MouseEvent): void
-  toggle(id: string, event: Event): void
-  activate(id: string, event: Event): void
-  key(id: string, event: KeyboardEvent): void
-  focusIn(id: string): void
-  rowHeight: number
 }>

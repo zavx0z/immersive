@@ -7,7 +7,7 @@
 import type {UiTerminalModel} from "@ui/terminal-model"
 type TerminalLine = UiTerminalModel.Output["snapshot"]["lines"][number]
 import {MemoTerminalLine} from "./src/helpers.tsx"
-import type {TerminalProps} from "./contract/input.ts"
+import type {UiWidgetsTerminal as Contract} from "./contract"
 import type {TerminalSelectionSnapshot} from "./contract/types.ts"
 import type {TerminalTextPosition} from "./contract/types.ts"
 import {emptyLines} from "./src/helpers.tsx"
@@ -20,12 +20,10 @@ import {useSyncExternalStore} from "@zavx0z/component"
 import TextField from "@ui-fields/text-field"
 import WidgetHeader from "@ui-widgets/header"
 
-export type {TerminalProps} from "./contract/input"
-export type {TerminalTextPosition, TerminalSelectionSnapshot, TerminalHandle} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiWidgetsTerminal} from "./contract"
 
-export default function Terminal(props: TerminalProps): JSX.Element {
+export default function Terminal(props: Contract.Input): Contract.Output {
   const inputHost = useRef<HTMLDivElement | null>(null)
   const output = useRef<HTMLDivElement | null>(null)
   const composing = useRef(false)

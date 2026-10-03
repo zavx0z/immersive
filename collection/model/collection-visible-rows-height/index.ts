@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {CollectionVisibleRowsHeightInput} from "./contract/input"
+import type {UiFieldsCollectionModelCollectionVisibleRowsHeight as Contract} from "./contract"
 import resolveCollectionVisibleRowsHeight from "@ui-fields-metrics/collection-visible-rows-height"
 
-export default function collectionVisibleRowsHeight(rows: CollectionVisibleRowsHeightInput[0]): number {
+export default function collectionVisibleRowsHeight(rows: Contract.Input[0]): Contract.Output {
   return resolveCollectionVisibleRowsHeight(rows)
 }
 
-export type {CollectionVisibleRowsHeightInput} from "./contract/input"
+export type {UiFieldsCollectionModelCollectionVisibleRowsHeight} from "./contract"

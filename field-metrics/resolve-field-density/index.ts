@@ -4,16 +4,14 @@
 
 @packageDocumentation
 */
-import type {ResolveFieldDensityInput} from "./contract/input"
-import type {FieldDensity} from "./contract/types.ts"
+import type {UiFieldsMetricsResolveFieldDensity as Contract} from "./contract"
 
-export type {FieldDensity} from "./contract/types"
 
 export default function resolveFieldDensity(
-  value: ResolveFieldDensityInput[0],
-  fallback: ResolveFieldDensityInput[1],
-  owner: ResolveFieldDensityInput[2]
-): FieldDensity {
+  value: Contract.Input[0],
+  fallback: Contract.Input[1],
+  owner: Contract.Input[2]
+): Contract.Output {
   const density = value ?? fallback
   if (density !== "regular" && density !== "compact") {
     throw new Error(`Unknown ${owner} density: ${density}`)
@@ -21,4 +19,4 @@ export default function resolveFieldDensity(
   return density
 }
 
-export type {ResolveFieldDensityInput} from "./contract/input"
+export type {UiFieldsMetricsResolveFieldDensity} from "./contract"

@@ -1,4 +1,5 @@
-import type {NumberValueOptions} from "@ui-fields-number-value/normalize-number-value"
+import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
+type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
 
 /** Выбирает допустимый шаг числового указателя, используя 0.1 при отсутствии корректного шага. */
 export declare namespace UiFieldsNumberValueNumberPointerStep {

@@ -1,6 +1,8 @@
 import {memo} from "@zavx0z/component"
-import type {CodeEditorSegment} from "@ui-views-code-editor/view-model"
-import type {CodeEditorLineDecoration} from "@ui-views/code-editor"
+import type {UiViewsCodeEditorViewModel} from "@ui-views-code-editor/view-model"
+type CodeEditorSegment = UiViewsCodeEditorViewModel.Output["segments"][number][number]
+import type {UiViewsCodeEditor} from "@ui-views/code-editor"
+type CodeEditorLineDecoration = NonNullable<UiViewsCodeEditor.Input["lineDecorations"]>[number]
 import {codeEditorPaintRuns} from "./paint-runs.ts"
 import type {CodeEditorPaintRun} from "./paint-runs.ts"
 

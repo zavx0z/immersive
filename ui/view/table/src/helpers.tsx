@@ -1,8 +1,9 @@
-import type {DataCellProps} from "../contract/types.ts"
-import type {HeaderCellProps} from "../contract/types.ts"
+import type {DataCellProps} from "./types"
+import type {HeaderCellProps} from "./types"
 import type {TableCellContext} from "../contract/types.ts"
-import type {TableProps} from "../contract/input.ts"
-import type {TableRowViewProps} from "../contract/types.ts"
+import type {UiViewsTable} from "../contract/index"
+type TableProps = UiViewsTable.Input
+import type {TableRowViewProps} from "./types"
 import normalizeTableSelection from "@ui-views-table/normalize-table-selection"
 import tableSelectionAfterClick from "@ui-views-table/table-selection-after-click"
 

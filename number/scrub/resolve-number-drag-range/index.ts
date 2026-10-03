@@ -4,17 +4,19 @@
 
 @packageDocumentation
 */
-import type {ResolveNumberDragRangeInput} from "./contract/input"
+import type {UiFieldsNumberScrubResolveNumberDragRange as Contract} from "./contract"
 import normalizeNumberValue from "@ui-fields-number-value/normalize-number-value"
 import numberPointerAdaptiveSpan from "@ui-fields-number-value/number-pointer-adaptive-span"
 import resolveNumberSoftRange from "@ui-fields-number-value/resolve-number-soft-range"
-import type {NumberRange} from "@ui-fields-number-value/resolve-number-soft-range"
-import type {NumberValueOptions} from "@ui-fields-number-value/normalize-number-value"
+import type {UiFieldsNumberValueResolveNumberSoftRange} from "@ui-fields-number-value/resolve-number-soft-range"
+type NumberRange = UiFieldsNumberValueResolveNumberSoftRange.Output
+import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
+type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
 
 export default function resolveNumberDragRange(
-  value: ResolveNumberDragRangeInput[0],
-  options: ResolveNumberDragRangeInput[1]
-): NumberRange {
+  value: Contract.Input[0],
+  options: Contract.Input[1]
+): Contract.Output {
   const range = resolveNumberSoftRange(value, options)
   const span = range.max - range.min
   const maximumSpan = numberPointerAdaptiveSpan(options)
@@ -33,4 +35,4 @@ export default function resolveNumberDragRange(
   return Object.freeze({min: minimum, max: maximum})
 }
 
-export type {ResolveNumberDragRangeInput} from "./contract/input"
+export type {UiFieldsNumberScrubResolveNumberDragRange} from "./contract"

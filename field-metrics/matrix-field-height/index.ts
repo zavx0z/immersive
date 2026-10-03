@@ -5,7 +5,8 @@
 @packageDocumentation
 */
 import type {UiFieldsMetricsMatrixFieldHeight as Contract} from "./contract"
-import type {FieldDensity} from "@ui-fields-metrics/resolve-field-density"
+import type {UiFieldsMetricsResolveFieldDensity} from "@ui-fields-metrics/resolve-field-density"
+type FieldDensity = UiFieldsMetricsResolveFieldDensity.Output
 import fieldDensityHeight from "@ui-fields-metrics/field-density-height"
 import fieldMetric from "@ui-fields-metrics/field-metric"
 

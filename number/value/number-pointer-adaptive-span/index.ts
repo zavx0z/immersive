@@ -5,7 +5,8 @@
 @packageDocumentation
 */
 import type {UiFieldsNumberValueNumberPointerAdaptiveSpan as Contract} from "./contract"
-import type {NumberValueOptions} from "@ui-fields-number-value/normalize-number-value"
+import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
+type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
 import numberPointerStep from "@ui-fields-number-value/number-pointer-step"
 
 export default function numberPointerAdaptiveSpan(options: Contract.Input[0]): Contract.Output {

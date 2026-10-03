@@ -17,14 +17,12 @@ import {WindowActionButton} from "./src/action.tsx"
 import {WindowResizeHandles} from "./src/resize-handles.tsx"
 import {useWindowGeometry} from "./src/use-geometry.ts"
 import {validateWindow} from "./src/validate.ts"
-import type {WindowProps} from "./contract/input.ts"
+import type {UiSurfacesWindow as Contract} from "./contract"
 
-export type {WindowProps} from "./contract/input"
-export type {WindowGeometry, WindowAction} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiSurfacesWindow} from "./contract"
 
-export default function Window(props: WindowProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function Window(props: Contract.Input): Contract.Output {
   validateWindow(props)
   const frame = useWindowGeometry(props)
   const fill = props.layout === "fill"

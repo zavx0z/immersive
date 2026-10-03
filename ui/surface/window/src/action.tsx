@@ -1,5 +1,6 @@
 import SurfaceButton from "@ui-surfaces-chrome/button"
-import type {WindowProps} from "../contract/input"
+import type {UiSurfacesWindow} from "../contract/index"
+type WindowProps = UiSurfacesWindow.Input
 import type {WindowAction} from "../contract/types"
 
 /** Кнопка правой группы сохраняет обычный ввод и не начинает перемещение окна. */

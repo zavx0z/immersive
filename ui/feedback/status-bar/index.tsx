@@ -5,16 +5,14 @@
 @packageDocumentation
 */
 import {StatusBarItems} from "./src/helpers.tsx"
-import type {StatusBarProps} from "./contract/input.ts"
+import type {UiFeedbackStatusBar as Contract} from "./contract"
 import {normalizeStatusBarItems} from "./src/helpers.tsx"
 import {hasSlot} from "@zavx0z/component/slot-presence"
 
-export type {StatusBarProps} from "./contract/input"
-export type {StatusBarItem} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFeedbackStatusBar} from "./contract"
 
-export default function StatusBar(props: StatusBarProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function StatusBar(props: Contract.Input): Contract.Output {
   const start = normalizeStatusBarItems(props.start ?? [])
   const end = normalizeStatusBarItems(props.end ?? [])
   const separator = props.separator ?? " | "

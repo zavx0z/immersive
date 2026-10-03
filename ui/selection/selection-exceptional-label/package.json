@@ -16,5 +16,8 @@
   },
   "dependencies": {
     "@ui-selection/validate-selection-options": "workspace:*"
+  },
+  "devDependencies": {
+    "@ui-selection/validate-selection-state": "workspace:*"
   }
 }

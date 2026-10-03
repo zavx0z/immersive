@@ -1,6 +1,7 @@
 import {useLayoutEffect, useRef, useState} from "@zavx0z/component"
 import {observeElementLayout, readElementLayoutRect} from "@zavx0z/dom/geometry"
-import type {WindowProps} from "../contract/input"
+import type {UiSurfacesWindow} from "../contract/index"
+type WindowProps = UiSurfacesWindow.Input
 import type {WindowGeometry} from "../contract/types"
 import {dragWindow, fitWindow, type WindowGesture} from "./geometry.ts"
 

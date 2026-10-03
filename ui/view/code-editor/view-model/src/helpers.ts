@@ -1,7 +1,9 @@
-import type {CodeEditorProps} from "@ui-views/code-editor"
+import type {UiViewsCodeEditor} from "@ui-views/code-editor"
+type CodeEditorProps = UiViewsCodeEditor.Input
 import type {CodeEditorSegment} from "../contract/types.ts"
-import type {CodeEditorViewModel} from "../contract/types.ts"
-import type {NormalizedToken} from "../contract/types.ts"
+import type {UiViewsCodeEditorViewModel} from "../contract"
+type CodeEditorViewModel = UiViewsCodeEditorViewModel.Output
+import type {NormalizedToken} from "./types"
 import assertNonEmpty from "@ui-views-code-editor/assert-non-empty"
 import editorForeground from "@ui-views-code-editor/editor-foreground"
 import isHexColor from "@ui-views-code-editor/is-hex-color"

@@ -1,4 +1,5 @@
-import type {NotificationProps} from "../contract/input.ts"
+import type {UiFeedbackNotification} from "../contract/index"
+type NotificationProps = UiFeedbackNotification.Input
 
 /** Частная подготовка уведомление о событии с действиями и закрытием. */
 export function assertNotificationProps(props: NotificationProps): void {

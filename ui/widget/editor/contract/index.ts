@@ -1,5 +1,7 @@
-import type {CodeEditorProps} from "@ui-views/code-editor"
-import type {WidgetHeaderProps} from "@ui-widgets/header"
+import type {UiViewsCodeEditor} from "@ui-views/code-editor"
+type CodeEditorProps = UiViewsCodeEditor.Input
+import type {UiWidgetsHeader} from "@ui-widgets/header"
+type WidgetHeaderProps = UiWidgetsHeader.Input
 
 import type {JSX} from "@jsx-compiler/session"
 

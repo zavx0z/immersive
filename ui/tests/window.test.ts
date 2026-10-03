@@ -6,7 +6,8 @@ import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, type RenderCursor} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {WindowProps} from "@ui-surfaces/window"
+import type {UiSurfacesWindow} from "@ui-surfaces/window"
+type WindowProps = UiSurfacesWindow.Input
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))

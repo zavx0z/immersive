@@ -4,16 +4,16 @@
 
 @packageDocumentation
 */
-import type {NormalizeNumberValueInput} from "./contract/input"
+import type {UiFieldsNumberValueNormalizeNumberValue as Contract} from "./contract"
 import type {NumberValueOptions} from "./contract/types"
 import finiteBound from "@ui-fields-number-value/finite-bound"
 import roundedNumber from "@ui-fields-number-value/rounded-number"
 import validNumberStep from "@ui-fields-number-value/valid-number-step"
 
 export default function normalizeNumberValue(
-  value: NormalizeNumberValueInput[0],
-  options: NormalizeNumberValueInput[1] = {}
-): number {
+  value: Contract.Input[0],
+  options: Contract.Input[1] = {}
+): Contract.Output {
   const minimum = finiteBound(options.min, Number.NEGATIVE_INFINITY)
   const maximum = Math.max(minimum, finiteBound(options.max, Number.POSITIVE_INFINITY))
   const finite = Number.isFinite(value) ? value : finiteBound(options.min, 0)
@@ -26,6 +26,4 @@ export default function normalizeNumberValue(
   return roundedNumber(Math.min(maximum, Math.max(minimum, stepped)))
 }
 
-export type {NumberValueOptions} from "./contract/types"
-
-export type {NormalizeNumberValueInput} from "./contract/input"
+export type {UiFieldsNumberValueNormalizeNumberValue} from "./contract"

@@ -1,8 +1,7 @@
 /**
-Область view/code-editor/syntax-theme объединяет публичные возможности принадлежащих ей пакетов.
-Именованный API сохраняет владельцев реализации и типов; область не запускает их жизненный цикл.
+Данные синтаксической темы редактора и поиск цвета по области исходного текста.
+Самостоятельные реализации читаются по своим точным пакетам.
 
 @packageDocumentation
 */
-export {default as codeEditorSyntaxTheme} from "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme"
-export {default as resolveCodeEditorSyntaxScopeColorHex} from "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex"
+export {}

@@ -8,18 +8,16 @@ import {InspectorActionButton} from "./src/action-button"
 
 import {CategoryButton} from "./src/helpers.tsx"
 import {InspectorContextRowView} from "./src/helpers.tsx"
-import type {InspectorProps} from "./contract/input.ts"
+import type {UiWidgetsInspector as Contract} from "./contract"
 import {assertInspectorProps} from "./src/helpers.tsx"
 import IconButton from "@ui-buttons/icon-button"
 import TextField from "@ui-fields/text-field"
 import searchIcon from "@ui-themes-icons/search"
 
-export type {InspectorProps} from "./contract/input"
-export type {InspectorCategory, InspectorAction, InspectorContextRow, InspectorContext} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiWidgetsInspector} from "./contract"
 
-export default function Inspector(props: InspectorProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function Inspector(props: Contract.Input): Contract.Output {
   assertInspectorProps(props)
   const onInput = (query: string, event: Event) => props.onQueryChange?.(query, event)
   return <aside

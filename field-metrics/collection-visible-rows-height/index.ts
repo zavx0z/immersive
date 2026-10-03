@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {CollectionVisibleRowsHeightInput} from "./contract/input"
+import type {UiFieldsMetricsCollectionVisibleRowsHeight as Contract} from "./contract"
 import fieldMetric from "@ui-fields-metrics/field-metric"
 import {normalizeVisibleRows} from "./src/helpers.ts"
 
-export default function collectionVisibleRowsHeight(visibleRows: CollectionVisibleRowsHeightInput[0]): number {
+export default function collectionVisibleRowsHeight(visibleRows: Contract.Input[0]): Contract.Output {
   const normalizedRows = normalizeVisibleRows(visibleRows)
   return fieldMetric(`field-collection-rows-${normalizedRows}-height`)
 }
 
-export type {CollectionVisibleRowsHeightInput} from "./contract/input"
+export type {UiFieldsMetricsCollectionVisibleRowsHeight} from "./contract"

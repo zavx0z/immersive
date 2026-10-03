@@ -49,6 +49,14 @@
       "name": "@ui/code-editor-model",
       "version": "0.0.0",
     },
+    "code-editor-palette": {
+      "name": "@ui-views-code-editor/palette",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-views-code-editor/editor-foreground": "workspace:*",
+        "@ui-views-code-editor/theme-color": "workspace:*",
+      },
+    },
     "collection/model/collection-default-visible-rows": {
       "name": "@ui-fields-collection-model/collection-default-visible-rows",
       "version": "0.0.0",
@@ -395,6 +403,13 @@
         "@zavx0z/ui",
         "@zavx0z/webgpu",
       ],
+    },
+    "inspector-panel-visibility": {
+      "name": "@ui-widgets-inspector/is-inspector-panel-visible",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-widgets/inspector": "workspace:*",
+      },
     },
     "jsx": {
       "name": "@zavx0z/jsx",
@@ -890,6 +905,17 @@
         "@zavx0z/template",
       ],
     },
+    "status-bar-text": {
+      "name": "@ui-feedback-status-bar/status-bar-text",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-feedback/status-bar": "workspace:*",
+      },
+    },
+    "surface-actions": {
+      "name": "@ui-surfaces-chrome/assert-surface-actions",
+      "version": "0.0.0",
+    },
     "template": {
       "name": "@zavx0z/template",
       "version": "0.0.0",
@@ -1110,16 +1136,6 @@
         "@zavx0z/component": "workspace:*",
       },
     },
-    "ui/feedback/status-bar/status-bar-text": {
-      "name": "@ui-feedback-status-bar/status-bar-text",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-feedback/status-bar": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
     "ui/field": {
       "name": "@ui/fields",
       "version": "0.0.0",
@@ -1331,6 +1347,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui-selection/validate-selection-state": "workspace:*",
         "@ui/fields": "workspace:*",
       },
     },
@@ -1471,6 +1488,9 @@
       "dependencies": {
         "@ui-selection/validate-selection-options": "workspace:*",
       },
+      "devDependencies": {
+        "@ui-selection/validate-selection-state": "workspace:*",
+      },
     },
     "ui/selection/validate-selection-options": {
       "name": "@ui-selection/validate-selection-options",
@@ -1487,6 +1507,7 @@
       "name": "@ui/surfaces",
       "version": "0.0.0",
       "dependencies": {
+        "@ui-surfaces-window/control": "workspace:*",
         "@ui-surfaces/chrome": "workspace:*",
         "@ui-surfaces/frame": "workspace:*",
         "@ui-surfaces/pane": "workspace:*",
@@ -1499,20 +1520,12 @@
       "name": "@ui-surfaces/chrome",
       "version": "0.0.0",
       "dependencies": {
-        "@ui-surfaces-chrome/assert-surface-actions": "workspace:*",
         "@ui-surfaces-chrome/body": "workspace:*",
         "@ui-surfaces-chrome/button": "workspace:*",
         "@ui-surfaces-chrome/header": "workspace:*",
         "@ui-surfaces-chrome/navigation": "workspace:*",
         "@ui-surfaces-chrome/owner": "workspace:*",
         "@ui-surfaces-chrome/title": "workspace:*",
-      },
-    },
-    "ui/surface/chrome/assert-surface-actions": {
-      "name": "@ui-surfaces-chrome/assert-surface-actions",
-      "version": "0.0.0",
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
       },
     },
     "ui/surface/chrome/body": {
@@ -1662,7 +1675,7 @@
         "@zavx0z/dom": "workspace:*",
       },
     },
-    "ui/surface/window/control": {
+    "ui/surface/window-control": {
       "name": "@ui-surfaces-window/control",
       "version": "0.0.0",
       "dependencies": {
@@ -2046,22 +2059,6 @@
       "name": "@ui-views-code-editor/normalize-hex-color",
       "version": "0.0.0",
     },
-    "ui/view/code-editor/palette": {
-      "name": "@ui-views-code-editor/palette",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-views-code-editor/editor-foreground": "workspace:*",
-        "@ui-views-code-editor/theme-color": "workspace:*",
-      },
-    },
-    "ui/view/code-editor/syntax-theme": {
-      "name": "@ui-views-code-editor/syntax-theme",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*",
-        "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": "workspace:*",
-      },
-    },
     "ui/view/code-editor/syntax-theme/code-editor-syntax-theme": {
       "name": "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme",
       "version": "0.0.0",
@@ -2229,16 +2226,6 @@
         "@immersive/headless": "workspace:*",
         "@ui-themes-icons/run": "workspace:*",
         "@ui/typography": "workspace:*",
-      },
-    },
-    "ui/widget/inspector/is-inspector-panel-visible": {
-      "name": "@ui-widgets-inspector/is-inspector-panel-visible",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-widgets/inspector": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
       },
     },
     "ui/widget/terminal": {
@@ -2495,7 +2482,7 @@
 
     "@ui-buttons/toggle-button-group": ["@ui-buttons/toggle-button-group@workspace:ui/button/toggle-button-group"],
 
-    "@ui-feedback-status-bar/status-bar-text": ["@ui-feedback-status-bar/status-bar-text@workspace:ui/feedback/status-bar/status-bar-text"],
+    "@ui-feedback-status-bar/status-bar-text": ["@ui-feedback-status-bar/status-bar-text@workspace:status-bar-text"],
 
     "@ui-feedback/notification": ["@ui-feedback/notification@workspace:ui/feedback/notification"],
 
@@ -2659,7 +2646,7 @@
 
     "@ui-selection/validate-selection-state": ["@ui-selection/validate-selection-state@workspace:ui/selection/validate-selection-state"],
 
-    "@ui-surfaces-chrome/assert-surface-actions": ["@ui-surfaces-chrome/assert-surface-actions@workspace:ui/surface/chrome/assert-surface-actions"],
+    "@ui-surfaces-chrome/assert-surface-actions": ["@ui-surfaces-chrome/assert-surface-actions@workspace:surface-actions"],
 
     "@ui-surfaces-chrome/body": ["@ui-surfaces-chrome/body@workspace:ui/surface/chrome/body"],
 
@@ -2673,7 +2660,7 @@
 
     "@ui-surfaces-chrome/title": ["@ui-surfaces-chrome/title@workspace:ui/surface/chrome/title"],
 
-    "@ui-surfaces-window/control": ["@ui-surfaces-window/control@workspace:ui/surface/window/control"],
+    "@ui-surfaces-window/control": ["@ui-surfaces-window/control@workspace:ui/surface/window-control"],
 
     "@ui-surfaces/chrome": ["@ui-surfaces/chrome@workspace:ui/surface/chrome"],
 
@@ -2771,9 +2758,7 @@
 
     "@ui-views-code-editor/normalize-hex-color": ["@ui-views-code-editor/normalize-hex-color@workspace:ui/view/code-editor/normalize-hex-color"],
 
-    "@ui-views-code-editor/palette": ["@ui-views-code-editor/palette@workspace:ui/view/code-editor/palette"],
-
-    "@ui-views-code-editor/syntax-theme": ["@ui-views-code-editor/syntax-theme@workspace:ui/view/code-editor/syntax-theme"],
+    "@ui-views-code-editor/palette": ["@ui-views-code-editor/palette@workspace:code-editor-palette"],
 
     "@ui-views-code-editor/theme-color": ["@ui-views-code-editor/theme-color@workspace:ui/view/code-editor/theme-color"],
 
@@ -2795,7 +2780,7 @@
 
     "@ui-widgets-header/action": ["@ui-widgets-header/action@workspace:ui/widget/header/action"],
 
-    "@ui-widgets-inspector/is-inspector-panel-visible": ["@ui-widgets-inspector/is-inspector-panel-visible@workspace:ui/widget/inspector/is-inspector-panel-visible"],
+    "@ui-widgets-inspector/is-inspector-panel-visible": ["@ui-widgets-inspector/is-inspector-panel-visible@workspace:inspector-panel-visibility"],
 
     "@ui-widgets/editor": ["@ui-widgets/editor@workspace:ui/widget/editor"],
 

@@ -9,8 +9,7 @@
   "exports": {
     ".": "./index.ts",
     "./notification": "./notification/index.tsx",
-    "./status-bar": "./status-bar/index.tsx",
-    "./status-bar/status-bar-text": "./status-bar/status-bar-text/index.tsx"
+    "./status-bar": "./status-bar/index.tsx"
   },
   "dependencies": {
     "@ui-feedback/notification": "workspace:*",

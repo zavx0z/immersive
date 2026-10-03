@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ResolveCodeEditorHighlighterInput} from "./contract/input"
+import type {UiViewsCodeEditorHighlighter as Contract} from "./contract"
 import {resolveLanguageHighlighter} from "@zavx0z/highlighter"
 
-export default function resolveCodeEditorHighlighter(languageId?: ResolveCodeEditorHighlighterInput[0], path?: ResolveCodeEditorHighlighterInput[1]) {
+export default function resolveCodeEditorHighlighter(languageId?: Contract.Input[0], path?: Contract.Input[1]): Contract.Output {
   return resolveLanguageHighlighter({
     ...(languageId === undefined ? {} : {languageId}),
     ...(path === undefined ? {} : {path}),
@@ -15,4 +15,4 @@ export default function resolveCodeEditorHighlighter(languageId?: ResolveCodeEdi
   })
 }
 
-export type {ResolveCodeEditorHighlighterInput} from "./contract/input"
+export type {UiViewsCodeEditorHighlighter} from "./contract"

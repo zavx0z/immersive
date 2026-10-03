@@ -9,7 +9,6 @@
   "exports": {
     ".": "./index.ts",
     "./chrome": "./chrome/index.ts",
-    "./chrome/assert-surface-actions": "./chrome/assert-surface-actions/index.tsx",
     "./chrome/body": "./chrome/body/index.tsx",
     "./chrome/button": "./chrome/button/index.tsx",
     "./chrome/header": "./chrome/header/index.tsx",
@@ -21,7 +20,7 @@
     "./panel": "./panel/index.tsx",
     "./tab": "./tab/index.tsx",
     "./window": "./window/index.tsx",
-    "./window/control": "./window/control/index.tsx"
+    "./window/control": "./window-control/index.tsx"
   },
   "dependencies": {
     "@ui-surfaces/chrome": "workspace:*",
@@ -29,6 +28,7 @@
     "@ui-surfaces/pane": "workspace:*",
     "@ui-surfaces/panel": "workspace:*",
     "@ui-surfaces/tab": "workspace:*",
-    "@ui-surfaces/window": "workspace:*"
+    "@ui-surfaces/window": "workspace:*",
+    "@ui-surfaces-window/control": "workspace:*"
   }
 }

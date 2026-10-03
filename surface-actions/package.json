@@ -1,0 +1,18 @@
+{
+  "name": "@ui-surfaces-chrome/assert-surface-actions",
+  "label": "assertSurfaceActions",
+  "version": "0.0.0",
+  "description": "Проверка ключей и состояний действий поверхности",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec",
+    "check": "bun run --parallel typecheck test"
+  },
+  "devDependencies": {}
+}

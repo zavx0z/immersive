@@ -15,7 +15,8 @@ import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import {createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "@renderer/html"
 import CodeEditorModel from "@ui/code-editor-model"
-import type {CodeEditorProps} from "@ui-views/code-editor"
+import type {UiViewsCodeEditor} from "@ui-views/code-editor"
+type CodeEditorProps = UiViewsCodeEditor.Input
 import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 
 const root = resolve(import.meta.dir, "../..")

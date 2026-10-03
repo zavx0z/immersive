@@ -6,7 +6,7 @@ import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, readCanonicalRenderFrameChanges} from "@renderer/html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
-import type {CodeEditorProps} from "@ui-views/code-editor"
+import type {UiViewsCodeEditor} from "@ui-views/code-editor"
 
 // A CPU-only diagnostic using the actual compiled production component.
 const workspace = resolve(import.meta.dir, "../..")
@@ -27,7 +27,7 @@ for (const tooltip of [false, true]) {
   panel.setAttribute("style", "width:540px;height:220px;overflow:hidden;border-radius:8px")
   root.append(panel)
   const component = createRoot(panel)
-  component.render(CodeEditor as unknown as CompiledTemplate<CodeEditorProps>, {
+  component.render(CodeEditor as unknown as CompiledTemplate<UiViewsCodeEditor.Input>, {
     value: source, languageId: "html", title: tooltip ? "HTML source" : undefined, readOnly: true,
   })
   const editor = panel.querySelector("section") as HTMLElement

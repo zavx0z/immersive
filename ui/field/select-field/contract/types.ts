@@ -1,4 +1,5 @@
-import type {SelectionState} from "@ui-selection/validate-selection-options"
+import type {UiSelectionValidateSelectionState} from "@ui-selection/validate-selection-state"
+type SelectionState = NonNullable<UiSelectionValidateSelectionState.Input[0]>
 
 /**
 Тип SelectFieldOption принадлежит контракту своего владельца.

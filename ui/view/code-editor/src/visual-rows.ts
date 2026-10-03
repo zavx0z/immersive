@@ -1,5 +1,6 @@
-import type {CodeEditorSegment} from "@ui-views-code-editor/view-model"
-import type {CodeEditorViewModel} from "@ui-views-code-editor/view-model"
+import type {UiViewsCodeEditorViewModel} from "@ui-views-code-editor/view-model"
+type CodeEditorSegment = UiViewsCodeEditorViewModel.Output["segments"][number][number]
+type CodeEditorViewModel = UiViewsCodeEditorViewModel.Output
 
 /** Визуальная строка сохраняет исходный номер, текст и диапазоны подсветки. */
 export interface CodeEditorVisualRow {

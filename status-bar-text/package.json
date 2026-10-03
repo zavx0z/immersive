@@ -1,0 +1,21 @@
+{
+  "name": "@ui-feedback-status-bar/status-bar-text",
+  "label": "statusBarText",
+  "version": "0.0.0",
+  "description": "Текстовое представление областей строки состояния",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-feedback/status-bar": "workspace:*"
+  },
+  "devDependencies": {}
+}

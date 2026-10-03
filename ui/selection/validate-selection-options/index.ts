@@ -4,12 +4,11 @@
 
 @packageDocumentation
 */
-import type {ValidateSelectionOptionsInput} from "./contract/input"
+import type {UiSelectionValidateSelectionOptions as Contract} from "./contract"
 import type {SelectionOptionShape} from "./contract/types.ts"
 
-export type {SelectionOptionShape, SelectionState} from "./contract/types"
 
-export default function validateSelectionOptions<T extends SelectionOptionShape>(options: ValidateSelectionOptionsInput<T>[0]): readonly T[] {
+export default function validateSelectionOptions<T extends SelectionOptionShape>(options: Contract.Input<T>[0]): Contract.Output<T> {
   if (!Array.isArray(options)) throw new TypeError("Field options must be an array")
   const keys = new Set<string>()
   const values = new Set<string>()
@@ -28,4 +27,4 @@ export default function validateSelectionOptions<T extends SelectionOptionShape>
   return options
 }
 
-export type {ValidateSelectionOptionsInput} from "./contract/input"
+export type {UiSelectionValidateSelectionOptions} from "./contract"
