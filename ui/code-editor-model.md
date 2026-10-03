@@ -1,14 +1,14 @@
 # Модель редактирования кода
 
-`@zavx0z/ui/code-editor-model` владеет текстовыми транзакциями редактора.
+`@ui/code-editor-model` владеет текстовыми транзакциями редактора.
 Она не создаёт DOM, listeners, clipboard, раскладку или GPU-ресурсы.
 CodeEditor и Interpreter используют одну и ту же модель; стандартный
 `Document.Selection` не расширяется до несовместимого multicursor API.
 
 ## Состояние и выделения
 
-`createCodeEditorModel({value, readOnly?, selections?, primary?, historyLimit?})`
-из `@zavx0z/ui/code-editor-model/create` возвращает `CodeEditorModel`. `snapshot` и содержащиеся в нём диапазоны заморожены.
+Конструктор `new CodeEditorModel(input)` принимает `UiCodeEditorModel.Input`
+и предоставляет `UiCodeEditorModel.Output`. `snapshot` и содержащиеся в нём диапазоны заморожены.
 `subscribe` сообщает только последующие изменения, возвращает функцию отписки.
 `revision` монотонно увеличивается только при изменении текста, включая preview IME,
 undo, redo и отмену composition. Изменение выделения сообщает новый snapshot,

@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {Cell} from "./contract/types.ts"
+import type {Cell} from "./src/types"
 import type {TerminalLine} from "./contract/types.ts"
-import type {TerminalModelOptions} from "./contract/input.ts"
+import type {UiTerminalModel as Contract} from "./contract"
 import type {TerminalQueryMode} from "./contract/types.ts"
 import type {TerminalRun} from "./contract/types.ts"
 import type {TerminalSnapshot} from "./contract/types.ts"
@@ -14,10 +14,9 @@ import {normal} from "./src/helpers.ts"
 import {sameStyle} from "./src/helpers.ts"
 import {sgr} from "./src/helpers.ts"
 
-export type {TerminalModelOptions} from "./contract/input"
-export type {TerminalRun, TerminalLine, TerminalSnapshot, TerminalQueryMode} from "./contract/types"
+export type {UiTerminalModel} from "./contract"
 
-export default class TerminalModel {
+export default class TerminalModel implements Contract.Output {
   #cells: Cell[][] = [[]]
   #row = 0
   #column = 0
@@ -33,7 +32,7 @@ export default class TerminalModel {
   #listeners = new Set<() => void>()
   #snapshot: TerminalSnapshot = Object.freeze({revision: 0, lines: Object.freeze([{id: "0", runs: Object.freeze([])}])})
 
-  constructor(options: TerminalModelOptions = {}) {
+  constructor(options: Contract.Input = {}) {
     this.#maxLines = options.maxLines ?? 40
     if (!Number.isSafeInteger(this.#maxLines) || this.#maxLines < 1) throw new RangeError("Terminal maxLines must be a positive integer")
     this.#queryMode = options.queryMode ?? "all"

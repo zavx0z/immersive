@@ -598,7 +598,6 @@
         "@ui-surfaces/panel": "workspace:*",
         "@ui-surfaces/tab": "workspace:*",
         "@ui-surfaces/window": "workspace:*",
-        "@ui-terminal-model/create": "workspace:*",
         "@ui-themes-icons/chevron-right": "workspace:*",
         "@ui-themes-icons/collection": "workspace:*",
         "@ui-themes-icons/home": "workspace:*",
@@ -1842,13 +1841,6 @@
       "name": "@ui/terminal-model",
       "version": "0.0.0",
     },
-    "ui/terminal-model/create": {
-      "name": "@ui-terminal-model/create",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui/terminal-model": "workspace:*",
-      },
-    },
     "ui/theme": {
       "name": "@ui/themes",
       "version": "0.0.0",
@@ -2889,8 +2881,6 @@
     "@ui-surfaces/tab": ["@ui-surfaces/tab@workspace:ui/surface/tab"],
 
     "@ui-surfaces/window": ["@ui-surfaces/window@workspace:ui/surface/window"],
-
-    "@ui-terminal-model/create": ["@ui-terminal-model/create@workspace:ui/terminal-model/create"],
 
     "@ui-themes-icons/apply": ["@ui-themes-icons/apply@workspace:ui/theme/icon/apply"],
 

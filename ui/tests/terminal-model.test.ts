@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
-import createTerminalModel from "@ui-terminal-model/create"
+import TerminalModel from "@ui/terminal-model"
 
 test("generic terminal preserves streaming ANSI colors, cursor replies and UTF-8 chunks", () => {
   const replies: string[] = []
-  const model = createTerminalModel({onReply: data => replies.push(data)})
+  const model = new TerminalModel({onReply: data => replies.push(data)})
   model.write("plain \x1b[31")
   model.write("mred\x1b[0m\r\nnext")
   expect(model.toText()).toBe("plain red\nnext")
@@ -21,7 +21,7 @@ test("generic terminal preserves streaming ANSI colors, cursor replies and UTF-8
 })
 
 test("scrollback is bounded, surviving output lines retain identity, and subscriptions release", () => {
-  const model = createTerminalModel({maxLines: 3})
+  const model = new TerminalModel({maxLines: 3})
   model.write("0\r\n1\r\n2")
   const survivor = model.snapshot.lines[2]!
   let changes = 0
@@ -39,7 +39,7 @@ test("scrollback is bounded, surviving output lines retain identity, and subscri
 })
 
 test("terminal cursor moves, erases and SGR reset use one retained text state", () => {
-  const model = createTerminalModel()
+  const model = new TerminalModel()
   model.write("abcdef\rXY\x1b[K")
   expect(model.toText()).toBe("XY")
   model.write("\x1b[2J\x1b[1;44mZ\x1b[0m!")

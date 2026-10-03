@@ -6,7 +6,7 @@ import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import {createDocumentRenderer} from "@renderer/html"
 import CodeEditorModel from "@ui/code-editor-model"
-import createTerminalModel from "@ui-terminal-model/create"
+import TerminalModel from "@ui/terminal-model"
 import type {CodeEditorHandle} from "@ui-views/code-editor"
 import type {EditorProps} from "@ui-widgets/editor"
 import type {TerminalProps} from "@ui-widgets/terminal"
@@ -102,7 +102,7 @@ test("Editor line markers emit a real border while marked and unmarked text rema
 
 test("Terminal stream input resets controlled field, sends IME once, retains output rows and uses platform selection", () => {
   const f = fixture()
-  const model = createTerminalModel({maxLines: 3})
+  const model = new TerminalModel({maxLines: 3})
   model.write("plain\r\n\x1b[31mred\x1b[0m")
   let handle: TerminalHandle | null = null
   const data: Array<[string, string]> = []
@@ -139,7 +139,7 @@ test("Terminal stream input resets controlled field, sends IME once, retains out
 
 test("Terminal handle projects directional ANSI text and cross-block selections without changing the Document range", () => {
   const f = fixture()
-  const model = createTerminalModel({maxLines: 3})
+  const model = new TerminalModel({maxLines: 3})
   model.write("a\x1b[31mbc\x1b[0m\r\ndef")
   let ready: TerminalHandle | null = null
   f.component.render(Terminal as unknown as CompiledTemplate<TerminalProps>, {

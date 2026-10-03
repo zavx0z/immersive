@@ -4,6 +4,8 @@
 
 @packageDocumentation
 */
+import type {UiTerminalModel} from "@ui/terminal-model"
+type TerminalLine = UiTerminalModel.Output["snapshot"]["lines"][number]
 import {MemoTerminalLine} from "./src/helpers.tsx"
 import type {TerminalProps} from "./contract/input.ts"
 import type {TerminalSelectionSnapshot} from "./contract/types.ts"
@@ -17,7 +19,6 @@ import {useState} from "@zavx0z/component"
 import {useSyncExternalStore} from "@zavx0z/component"
 import TextField from "@ui-fields/text-field"
 import WidgetHeader from "@ui-widgets/header"
-import type {TerminalLine} from "@ui/terminal-model"
 
 export type {TerminalProps} from "./contract/input"
 export type {TerminalTextPosition, TerminalSelectionSnapshot, TerminalHandle} from "./contract/types"

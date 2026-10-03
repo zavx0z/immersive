@@ -1,4 +1,4 @@
-import type {CellStyle} from "../contract/types.ts"
+import type {CellStyle} from "./types"
 
 /** Частная подготовка модель терминального вывода, управляющих последовательностей и ответов. */
 export const normal: CellStyle = Object.freeze({foreground: null, background: null, bold: false})

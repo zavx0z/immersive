@@ -1,6 +1,7 @@
+import type {UiTerminalModel} from "@ui/terminal-model"
+type TerminalLine = UiTerminalModel.Output["snapshot"]["lines"][number]
+type TerminalRun = UiTerminalModel.Output["snapshot"]["lines"][number]["runs"][number]
 import {memo} from "@zavx0z/component"
-import type {TerminalLine} from "@ui/terminal-model"
-import type {TerminalRun} from "@ui/terminal-model"
 
 /** Частная подготовка представление терминального вывода и ввода команд. */
 export function TerminalTextRun(props: Readonly<{run: TerminalRun}>) {
