@@ -1,16 +1,17 @@
 /**
-Нормализация матрицы.
+Проверяет квадратную матрицу от 2×2 до 4×4 и положительный шаг, сохраняя неизменяемые строки.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {NormalizeMatrixValueOutput} from "./contract/output"
-import type {NormalizeMatrixValueInput} from "./contract/input"
+import type {UiFieldsMatrixValueNormalizeMatrixValue as Contract} from "./contract"
+export type {UiFieldsMatrixValueNormalizeMatrixValue} from "./contract"
+
 
 export default function normalizeMatrixValue(
-  value: NormalizeMatrixValueInput[0],
-  step: NormalizeMatrixValueInput[1]
-): NormalizeMatrixValueOutput {
+  value: Contract.Input[0],
+  step: Contract.Input[1]
+): Contract.Output {
   if (!Array.isArray(value) || value.length < 2 || value.length > 4) {
     throw new TypeError("MatrixField must contain 2 to 4 rows")
   }
@@ -25,7 +26,3 @@ export default function normalizeMatrixValue(
     step: normalizedStep
   })
 }
-
-export type {NormalizeMatrixValueInput} from "./contract/input"
-
-export type {NormalizeMatrixValueOutput} from "./contract/output"

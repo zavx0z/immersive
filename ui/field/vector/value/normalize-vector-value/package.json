@@ -2,7 +2,7 @@
   "name": "@ui-fields-vector-value/normalize-vector-value",
   "label": "normalizeVectorValue",
   "version": "0.0.0",
-  "description": "Нормализация вектора",
+  "description": "Проверяет координаты, оси и шаг вектора из 2–4 измерений и возвращает неизменяемую копию",
   "private": true,
   "type": "module",
   "sideEffects": false,

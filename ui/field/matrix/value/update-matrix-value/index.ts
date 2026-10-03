@@ -1,20 +1,20 @@
 /**
-Изменение матрицы.
+Заменяет совпавшую по координатам ячейку в неизменяемой копии матрицы.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {UpdateMatrixValueInput} from "./contract/input"
+import type {UiFieldsMatrixValueUpdateMatrixValue as Contract} from "./contract"
+export type {UiFieldsMatrixValueUpdateMatrixValue} from "./contract"
+
 
 export default function updateMatrixValue(
-  matrix: UpdateMatrixValueInput[0],
-  rowIndex: UpdateMatrixValueInput[1],
-  columnIndex: UpdateMatrixValueInput[2],
-  next: UpdateMatrixValueInput[3]
-): readonly (readonly number[])[] {
+  matrix: Contract.Input[0],
+  rowIndex: Contract.Input[1],
+  columnIndex: Contract.Input[2],
+  next: Contract.Input[3]
+): Contract.Output {
   return Object.freeze(matrix.map((row, currentRow) => Object.freeze(
     row.map((entry, currentColumn) => currentRow === rowIndex && currentColumn === columnIndex ? next : entry)
   )))
 }
-
-export type {UpdateMatrixValueInput} from "./contract/input"

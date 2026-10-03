@@ -2,7 +2,7 @@
   "name": "@ui-fields-matrix-value/normalize-matrix-value",
   "label": "normalizeMatrixValue",
   "version": "0.0.0",
-  "description": "Нормализация матрицы",
+  "description": "Проверяет квадратную матрицу от 2×2 до 4×4 и положительный шаг, сохраняя неизменяемые строки",
   "private": true,
   "type": "module",
   "sideEffects": false,

@@ -2,7 +2,7 @@
   "name": "@ui-fields-matrix-value/update-matrix-value",
   "label": "updateMatrixValue",
   "version": "0.0.0",
-  "description": "Изменение матрицы",
+  "description": "Заменяет совпавшую по координатам ячейку в неизменяемой копии матрицы",
   "private": true,
   "type": "module",
   "sideEffects": false,

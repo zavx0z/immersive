@@ -1,17 +1,17 @@
 /**
-Изменение вектора.
+Заменяет совпавшую по индексу координату в неизменяемой копии вектора.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {UpdateVectorValueInput} from "./contract/input"
+import type {UiFieldsVectorValueUpdateVectorValue as Contract} from "./contract"
+export type {UiFieldsVectorValueUpdateVectorValue} from "./contract"
+
 
 export default function updateVectorValue(
-  value: UpdateVectorValueInput[0],
-  index: UpdateVectorValueInput[1],
-  next: UpdateVectorValueInput[2]
-): readonly number[] {
+  value: Contract.Input[0],
+  index: Contract.Input[1],
+  next: Contract.Input[2]
+): Contract.Output {
   return Object.freeze(value.map((entry, entryIndex) => entryIndex === index ? next : entry))
 }
-
-export type {UpdateVectorValueInput} from "./contract/input"

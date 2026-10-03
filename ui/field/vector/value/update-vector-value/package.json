@@ -2,7 +2,7 @@
   "name": "@ui-fields-vector-value/update-vector-value",
   "label": "updateVectorValue",
   "version": "0.0.0",
-  "description": "Изменение вектора",
+  "description": "Заменяет совпавшую по индексу координату в неизменяемой копии вектора",
   "private": true,
   "type": "module",
   "sideEffects": false,

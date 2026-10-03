@@ -1,17 +1,18 @@
 /**
-Нормализация вектора.
+Проверяет координаты, оси и шаг вектора из 2–4 измерений и возвращает неизменяемую копию.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {NormalizeVectorValueOutput} from "./contract/output"
-import type {NormalizeVectorValueInput} from "./contract/input"
+import type {UiFieldsVectorValueNormalizeVectorValue as Contract} from "./contract"
+export type {UiFieldsVectorValueNormalizeVectorValue} from "./contract"
+
 
 export default function normalizeVectorValue(
-  value: NormalizeVectorValueInput[0],
-  axes: NormalizeVectorValueInput[1],
-  step: NormalizeVectorValueInput[2]
-): NormalizeVectorValueOutput {
+  value: Contract.Input[0],
+  axes: Contract.Input[1],
+  step: Contract.Input[2]
+): Contract.Output {
   if (!Array.isArray(value) || value.length < 2 || value.length > 4 || !value.every(Number.isFinite)) {
     throw new TypeError("VectorField value must contain 2 to 4 finite numbers")
   }
@@ -27,7 +28,3 @@ export default function normalizeVectorValue(
     step: normalizedStep
   })
 }
-
-export type {NormalizeVectorValueInput} from "./contract/input"
-
-export type {NormalizeVectorValueOutput} from "./contract/output"
