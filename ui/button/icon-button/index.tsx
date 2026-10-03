@@ -5,13 +5,12 @@
 @packageDocumentation
 */
 import Button from "@ui-buttons/button"
-import type {IconButtonProps} from "./contract/input.ts"
+import type {UiButtonsIconButton} from "./contract"
 
-export type {IconButtonProps} from "./contract/input"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiButtonsIconButton} from "./contract"
 
-export default function IconButton(props: IconButtonProps): JSX.Element {
+export default function IconButton(props: UiButtonsIconButton.Input): UiButtonsIconButton.Output {
   return <Button
     label={props.label}
     iconSrc={props.iconSrc}

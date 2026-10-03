@@ -4,14 +4,12 @@
 
 @packageDocumentation
 */
-import type {ButtonProps} from "./contract/input.ts"
+import type {UiButtonsButton} from "./contract"
 
-export type {ButtonProps} from "./contract/input"
-export type {ButtonVariant, ButtonTone, ButtonSize, ButtonIconPosition} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiButtonsButton} from "./contract"
 
-export default function Button(props: ButtonProps): JSX.Element {
+export default function Button(props: UiButtonsButton.Input): UiButtonsButton.Output {
   const variant = props.variant ?? "contained"
   const tone = props.tone ?? "neutral"
   const size = props.size ?? "medium"
@@ -215,5 +213,3 @@ export default function Button(props: ButtonProps): JSX.Element {
     />
   </button>
 }
-
-export type {ButtonPointerEvent, ButtonKeyboardEvent} from "./contract/types"

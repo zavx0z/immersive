@@ -1,19 +1,17 @@
 /**
-Группа кнопок выбора одного или нескольких значений.
+Группа кнопок выбора одного строкового значения из набора.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {ToggleButtonGroupProps} from "./contract/input.ts"
+import type {UiButtonsToggleButtonGroup} from "./contract"
 import Button from "@ui-buttons/button"
 import validateSelectionOptions from "@ui-selection/validate-selection-options"
 
-export type {ToggleButtonGroupProps} from "./contract/input"
-export type {ToggleButtonGroupOption, ToggleButtonGroupDensity} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiButtonsToggleButtonGroup} from "./contract"
 
-export default function ToggleButtonGroup(props: ToggleButtonGroupProps): JSX.Element {
+export default function ToggleButtonGroup(props: UiButtonsToggleButtonGroup.Input): UiButtonsToggleButtonGroup.Output {
   if (typeof props.value !== "string") throw new TypeError("ToggleButtonGroup value must be a string")
   const options = validateSelectionOptions(props.options)
   const density = props.density ?? "regular"

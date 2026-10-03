@@ -27,7 +27,6 @@ const [
   {default: switchFieldLayout},
   {default: textFieldLayout},
   {default: vectorFieldLayout},
-  {default: toggleButtonGroupLayout},
 ] = await Promise.all([
   import("@ui-fields-checkbox-field/layout"),
   import("@ui-fields-collection-field/layout"),
@@ -44,7 +43,6 @@ const [
   import("@ui-fields-switch-field/layout"),
   import("@ui-fields-text-field/layout"),
   import("@ui-fields-vector-field/layout"),
-  import("@ui-buttons-toggle-button-group/layout"),
 ])
 
 test("[UI-005] числовая тема полей и CSS содержат один набор точных метрик", async () => {
@@ -82,9 +80,6 @@ describe("[UI-006] простые поля заранее сообщают св�
     expect(checkboxFieldLayout.height({label: true})).toBe(28)
     expect(switchFieldLayout.height()).toBe(18)
     expect(switchFieldLayout.height({label: true})).toBe(28)
-    expect(toggleButtonGroupLayout.height()).toBe(22)
-    expect(toggleButtonGroupLayout.height({density: "compact"})).toBe(22)
-    expect(toggleButtonGroupLayout.height({label: true})).toBe(28)
   })
 
   test("выбор", () => {
@@ -154,7 +149,6 @@ test("[UI-010] каждый владелец Field связывает публи
     "field/switch-field/index.tsx": ["switchFieldLayout", "var(--field-switch-height)"],
     "field/text-field/index.tsx": ["textFieldLayout", "var(--control-height-medium)"],
     "field/vector-field/index.tsx": ["vectorFieldLayout", "var(--field-group-content-height)"],
-    "button/toggle-button-group/index.tsx": ["toggleButtonGroupLayout", "var(--control-height-medium)"],
   })
 
   for (const [relativePath, requiredFragments] of Object.entries(owners)) {

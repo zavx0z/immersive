@@ -123,7 +123,9 @@ test("[NODES-006] projected Parameter render и геометрия исполь�
   const nodeSource = await Bun.file(resolve(packageRoot, "node/shared/geometry.ts")).text()
 
   expect(parameterSource).toContain("const resolved = resolveProjectedParameterPresentation(snapshot)")
-  expect(parameterSource).toContain("projectedParameterFieldHeight(")
+  const heightSource = await Bun.file(resolve(packageRoot, "node/shared/field-height.ts")).text()
+  expect(heightSource).toContain("projectedParameterFieldHeight(")
+  expect(heightSource).toContain('import type {ProjectedParameterPresentation} from "@nodes/parameters/shared"')
   expect(parameterSource).not.toContain("booleanSwitch")
   expect(parameterSource).not.toContain("collectionEditor")
   expect(nodeSource).toContain("const resolved = resolveProjectedParameterPresentation(parameter)")

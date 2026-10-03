@@ -1,4 +1,4 @@
-import type {ToggleButtonGroupProps} from "@ui-buttons/toggle-button-group"
+import type {UiButtonsToggleButtonGroup} from "@ui-buttons/toggle-button-group"
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные группы вариантов, связанного с нодой и её сокетами.
@@ -46,8 +46,8 @@ export interface OptionGroupParameterProps {
   readonly title?: string | undefined
   readonly style?: CssStyle | undefined
   readonly onSocketActivate?: ((socketId: string, event: Event) => void) | undefined
-  readonly value: ToggleButtonGroupProps["value"]
-  readonly options: ToggleButtonGroupProps["options"]
-  readonly density?: ToggleButtonGroupProps["density"]
-  readonly onChange?: ToggleButtonGroupProps["onChange"]
+  readonly value: UiButtonsToggleButtonGroup.Input["value"]
+  readonly options: UiButtonsToggleButtonGroup.Input["options"]
+  readonly density?: UiButtonsToggleButtonGroup.Input["density"]
+  readonly onChange?: UiButtonsToggleButtonGroup.Input["onChange"]
 }

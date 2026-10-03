@@ -1,5 +1,5 @@
 import type {BadgeTone} from "@ui/badge"
-import type {ButtonTone} from "@ui-buttons/button"
+import type {UiButtonsButton} from "@ui-buttons/button"
 
 /**
 Тип WidgetAction принадлежит контракту своего владельца.
@@ -11,7 +11,7 @@ export type WidgetAction = Readonly<{
   badge?: string | undefined
   disabled?: boolean | undefined
   selected?: boolean | undefined
-  tone?: ButtonTone | undefined
+  tone?: UiButtonsButton.Input["tone"] | undefined
   badgeTone?: BadgeTone | undefined
   dividerAfter?: boolean | undefined
   onAction?: ((event: Event) => void) | undefined

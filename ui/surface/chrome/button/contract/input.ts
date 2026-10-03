@@ -1,4 +1,4 @@
-import type {ButtonProps} from "@ui-buttons/button"
+import type {UiButtonsButton} from "@ui-buttons/button"
 
 /**
 Входные данные SurfaceButton.
@@ -14,5 +14,5 @@ export interface SurfaceButtonProps {
   readonly controls?: string | undefined
   readonly disabled?: boolean | undefined
   readonly style?: CssStyle | undefined
-  readonly onClick?: ButtonProps["onClick"]
+  readonly onClick?: UiButtonsButton.Input["onClick"]
 }

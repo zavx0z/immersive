@@ -1,9 +1,9 @@
 import IconButton from "@ui-buttons/icon-button"
-import type {IconButtonProps} from "@ui-buttons/icon-button"
+import type {UiButtonsIconButton} from "@ui-buttons/icon-button"
 import type {JSX} from "@jsx-compiler/session"
 
 /** Кнопка действия инспектора сохраняет единое оформление шапки и панелей. */
-export function InspectorActionButton(props: IconButtonProps): JSX.Element {
+export function InspectorActionButton(props: UiButtonsIconButton.Input): JSX.Element {
   return <IconButton
     label={props.label}
     iconSrc={props.iconSrc}

@@ -362,6 +362,25 @@
     "nodes/node": {
       "name": "@nodes/node",
       "version": "0.0.0",
+      "dependencies": {
+        "@ui-buttons/toggle-button-group": "workspace:*",
+        "@ui-fields-checkbox-field/layout": "workspace:*",
+        "@ui-fields-collection-field/layout": "workspace:*",
+        "@ui-fields-color-field/layout": "workspace:*",
+        "@ui-fields-cycle-field/layout": "workspace:*",
+        "@ui-fields-matrix-field/layout": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+        "@ui-fields-number-field/layout": "workspace:*",
+        "@ui-fields-path-field/layout": "workspace:*",
+        "@ui-fields-reference-field/layout": "workspace:*",
+        "@ui-fields-select-field/layout": "workspace:*",
+        "@ui-fields-slider-field/layout": "workspace:*",
+        "@ui-fields-switch-field/layout": "workspace:*",
+        "@ui-fields-text-field/layout": "workspace:*",
+        "@ui-fields-vector-field/layout": "workspace:*",
+      },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
         "@jsx-compiler/bun": "workspace:*",
@@ -401,21 +420,7 @@
       "peerDependencies": {
         "@nodes/sockets": "workspace:*",
         "@nodes/tree": "workspace:*",
-        "@ui-buttons-toggle-button-group/layout": "workspace:*",
         "@ui-buttons/toggle-button-group": "workspace:*",
-        "@ui-fields-checkbox-field/layout": "workspace:*",
-        "@ui-fields-collection-field/layout": "workspace:*",
-        "@ui-fields-color-field/layout": "workspace:*",
-        "@ui-fields-cycle-field/layout": "workspace:*",
-        "@ui-fields-matrix-field/layout": "workspace:*",
-        "@ui-fields-number-field/layout": "workspace:*",
-        "@ui-fields-path-field/layout": "workspace:*",
-        "@ui-fields-reference-field/layout": "workspace:*",
-        "@ui-fields-select-field/layout": "workspace:*",
-        "@ui-fields-slider-field/layout": "workspace:*",
-        "@ui-fields-switch-field/layout": "workspace:*",
-        "@ui-fields-text-field/layout": "workspace:*",
-        "@ui-fields-vector-field/layout": "workspace:*",
         "@ui-fields/checkbox-field": "workspace:*",
         "@ui-fields/collection-field": "workspace:*",
         "@ui-fields/color-field": "workspace:*",
@@ -568,7 +573,6 @@
         "@jsx-compiler/bun": "workspace:*",
         "@jsx-compiler/session": "workspace:*",
         "@renderer/html": "workspace:*",
-        "@ui-buttons-toggle-button-group/layout": "workspace:*",
         "@ui-buttons/button": "workspace:*",
         "@ui-code-editor-model/create": "workspace:*",
         "@ui-feedback/status-bar": "workspace:*",
@@ -627,9 +631,14 @@
       "name": "@ui/buttons",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-buttons/button": "workspace:*",
         "@ui-buttons/icon-button": "workspace:*",
         "@ui-buttons/toggle-button-group": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui-themes-icons/run": "workspace:*",
       },
     },
     "ui/button/button": {
@@ -640,6 +649,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/buttons": "workspace:*",
       },
     },
     "ui/button/icon-button": {
@@ -652,6 +662,7 @@
       "devDependencies": {
         "@immersive/headless": "workspace:*",
         "@ui-themes-icons/run": "workspace:*",
+        "@ui/buttons": "workspace:*",
       },
     },
     "ui/button/toggle-button-group": {
@@ -664,19 +675,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/button/toggle-button-group/layout": {
-      "name": "@ui-buttons-toggle-button-group/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-buttons/toggle-button-group": "workspace:*",
-        "@ui-fields-metrics/field-metric": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields-metrics/resolve-field-density": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
+        "@ui/buttons": "workspace:*",
       },
     },
     "ui/code-editor-model": {
@@ -2676,8 +2675,6 @@
     "@typescript/typescript-win32-arm64": ["@typescript/typescript-win32-arm64@7.0.2", "", { "os": "win32", "cpu": "arm64" }, "sha512-Gyl1Vy6OsWesLzmq+EP0Fb7b4Nid5232AvcA2SFcdYreldpNtYFFofPjnt62y9hQy7VTaZp65ICJjuAQRaVcIQ=="],
 
     "@typescript/typescript-win32-x64": ["@typescript/typescript-win32-x64@7.0.2", "", { "os": "win32", "cpu": "x64" }, "sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g=="],
-
-    "@ui-buttons-toggle-button-group/layout": ["@ui-buttons-toggle-button-group/layout@workspace:ui/button/toggle-button-group/layout"],
 
     "@ui-buttons/button": ["@ui-buttons/button@workspace:ui/button/button"],
 

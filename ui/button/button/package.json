@@ -18,6 +18,7 @@
     "@jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/buttons": "workspace:*"
   }
 }

@@ -1,9 +1,9 @@
 import IconButton from "@ui-buttons/icon-button"
-import type {IconButtonProps} from "@ui-buttons/icon-button"
+import type {UiButtonsIconButton} from "@ui-buttons/icon-button"
 import type {JSX} from "@jsx-compiler/session"
 
 /** Действие коллекции сохраняет числовой размер и скрывает неприменимую перестановку. */
-export function CollectionActionButton(props: IconButtonProps & {hidden?: boolean}): JSX.Element {
+export function CollectionActionButton(props: UiButtonsIconButton.Input & {hidden?: boolean}): JSX.Element {
   return <IconButton
     label={props.label}
     iconSrc={props.iconSrc}

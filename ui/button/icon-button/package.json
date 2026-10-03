@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-themes-icons/run": "workspace:*"
+    "@ui-themes-icons/run": "workspace:*",
+    "@ui/buttons": "workspace:*"
   }
 }

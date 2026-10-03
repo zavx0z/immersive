@@ -1,12 +1,15 @@
 /**
-Область button объединяет публичные возможности принадлежащих ей пакетов.
-Именованный API сохраняет владельцев реализации и типов; область не запускает их жизненный цикл.
+Кнопочные элементы объединены протоколом доступной подписи, запрета действия
+и JSX-представления. Каждый участник сохраняет собственную реализацию:
+Button выполняет действие, IconButton показывает его значок,
+ToggleButtonGroup выбирает одно значение из набора.
 
 @packageDocumentation
 */
+export type {UiButtons} from "./contract"
 export {default as Button} from "@ui-buttons/button"
-export type {ButtonVariant, ButtonTone, ButtonSize, ButtonIconPosition, ButtonProps} from "@ui-buttons/button"
+export type {UiButtonsButton} from "@ui-buttons/button"
 export {default as IconButton} from "@ui-buttons/icon-button"
-export type {IconButtonProps} from "@ui-buttons/icon-button"
+export type {UiButtonsIconButton} from "@ui-buttons/icon-button"
 export {default as ToggleButtonGroup} from "@ui-buttons/toggle-button-group"
-export type {ToggleButtonGroupOption, ToggleButtonGroupDensity, ToggleButtonGroupProps} from "@ui-buttons/toggle-button-group"
+export type {UiButtonsToggleButtonGroup} from "@ui-buttons/toggle-button-group"

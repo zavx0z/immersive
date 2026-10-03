@@ -2,7 +2,7 @@
   "name": "@ui-buttons/toggle-button-group",
   "label": "ToggleButtonGroup",
   "version": "0.0.0",
-  "description": "Группа кнопок выбора одного или нескольких значений",
+  "description": "Группа кнопок выбора одного строкового значения из внешнего набора",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -20,6 +20,7 @@
     "@ui-selection/validate-selection-options": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/buttons": "workspace:*"
   }
 }
