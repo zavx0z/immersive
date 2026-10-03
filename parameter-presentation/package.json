@@ -1,0 +1,27 @@
+{
+  "name": "@nodes/parameter-presentation",
+  "label": "Представление Parameter",
+  "version": "0.0.0",
+  "description": "Определяет вид и значения представления снимка Parameter без JSX и Store",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@nodes/metadata": "workspace:*"
+  },
+  "devDependencies": {
+    "@node-values/own": "workspace:*",
+    "@nodes/parameter-store": "workspace:*",
+    "@ui-fields/collection-field": "workspace:*",
+    "@ui-fields/color-field": "workspace:*",
+    "@ui-fields/reference-field": "workspace:*",
+    "@ui-fields/select-field": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

@@ -94,6 +94,8 @@
     "@socket-values/side": "workspace:*",
     "@socket-values/resolve-kind": "workspace:*",
     "@socket-values/resolve-shape": "workspace:*",
-    "@nodes/metadata": "workspace:*"
+    "@nodes/metadata": "workspace:*",
+    "@nodes/parameter-presentation": "workspace:*",
+    "@nodes/parameter-metrics": "workspace:*"
   }
 }

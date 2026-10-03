@@ -1173,6 +1173,8 @@
       "version": "0.0.0",
       "dependencies": {
         "@nodes/metadata": "workspace:*",
+        "@nodes/parameter-metrics": "workspace:*",
+        "@nodes/parameter-presentation": "workspace:*",
         "@socket-values/key": "workspace:*",
         "@socket-values/kinds": "workspace:*",
         "@socket-values/metrics": "workspace:*",
@@ -1348,6 +1350,25 @@
     "number/value/valid-number-step": {
       "name": "@ui-fields-number-value/valid-number-step",
       "version": "0.0.0",
+    },
+    "parameter-metrics": {
+      "name": "@nodes/parameter-metrics",
+      "version": "0.0.0",
+    },
+    "parameter-presentation": {
+      "name": "@nodes/parameter-presentation",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes/metadata": "workspace:*",
+      },
+      "devDependencies": {
+        "@node-values/own": "workspace:*",
+        "@nodes/parameter-store": "workspace:*",
+        "@ui-fields/collection-field": "workspace:*",
+        "@ui-fields/color-field": "workspace:*",
+        "@ui-fields/reference-field": "workspace:*",
+        "@ui-fields/select-field": "workspace:*",
+      },
     },
     "parameter-store": {
       "name": "@nodes/parameter-store",
@@ -2688,6 +2709,10 @@
     "@nodes/metadata": ["@nodes/metadata@workspace:node-metadata"],
 
     "@nodes/node": ["@nodes/node@workspace:nodes/node"],
+
+    "@nodes/parameter-metrics": ["@nodes/parameter-metrics@workspace:parameter-metrics"],
+
+    "@nodes/parameter-presentation": ["@nodes/parameter-presentation@workspace:parameter-presentation"],
 
     "@nodes/parameter-store": ["@nodes/parameter-store@workspace:parameter-store"],
 

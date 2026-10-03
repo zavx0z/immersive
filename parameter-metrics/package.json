@@ -1,0 +1,16 @@
+{
+  "name": "@nodes/parameter-metrics",
+  "label": "Размеры параметра",
+  "version": "0.0.0",
+  "description": "Общие размеры интервалов и текстового вывода параметра в CSS px",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}
