@@ -2,7 +2,7 @@
   "name": "@ui-views-code-editor/normalize-hex-color",
   "label": "normalizeHexColor",
   "version": "0.0.0",
-  "description": "Нормализация hex-color",
+  "description": "Приводит проверенную HEX-строку к нижнему регистру и раскрывает трёхзначную запись",
   "private": true,
   "type": "module",
   "sideEffects": false,

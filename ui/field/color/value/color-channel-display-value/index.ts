@@ -1,16 +1,16 @@
 /**
-Обработка color-channel-display-value.
+Переводит тон HSVA в целые градусы, остальные каналы округляет до шести десятичных знаков.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {ColorChannelDisplayValueInput} from "./contract/input"
+import type {UiFieldsColorValueColorChannelDisplayValue as Contract} from "./contract"
 import type {ColorHsva} from "@ui-fields-color-value/normalize-color-value"
 
-export default function colorChannelDisplayValue(channel: ColorChannelDisplayValueInput[0], value: ColorChannelDisplayValueInput[1]): number {
+export default function colorChannelDisplayValue(channel: Contract.Input[0], value: Contract.Input[1]): Contract.Output {
   return channel === "h"
     ? Math.round(value.h * 360)
     : Math.round(value[channel] * 1_000_000) / 1_000_000
 }
 
-export type {ColorChannelDisplayValueInput} from "./contract/input"
+export type {UiFieldsColorValueColorChannelDisplayValue} from "./contract"

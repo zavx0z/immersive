@@ -2,7 +2,7 @@
   "name": "@ui-fields-metrics/labelled-field-height",
   "label": "labelledFieldHeight",
   "version": "0.0.0",
-  "description": "Высота поля с учётом подписи",
+  "description": "Учитывает базовую высоту подписи при планировании строки поля",
   "private": true,
   "type": "module",
   "sideEffects": false,

@@ -2,7 +2,7 @@
   "name": "@ui-fields-number-value/rounded-number",
   "label": "roundedNumber",
   "version": "0.0.0",
-  "description": "Обработка rounded-number",
+  "description": "Округляет число до шести знаков после десятичной точки",
   "private": true,
   "type": "module",
   "sideEffects": false,

@@ -2,7 +2,7 @@
   "name": "@ui-views-code-editor/theme-color",
   "label": "themeColor",
   "version": "0.0.0",
-  "description": "Обработка theme-color",
+  "description": "Возвращает нормализованный HEX-цвет темы редактора либо переданный запасной цвет",
   "private": true,
   "type": "module",
   "sideEffects": false,

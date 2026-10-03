@@ -2,7 +2,7 @@
   "name": "@ui-fields-number-value/number-pointer-step",
   "label": "numberPointerStep",
   "version": "0.0.0",
-  "description": "Обработка number-pointer-step",
+  "description": "Выбирает допустимый шаг числового указателя, используя 0.1 при отсутствии корректного шага",
   "private": true,
   "type": "module",
   "sideEffects": false,

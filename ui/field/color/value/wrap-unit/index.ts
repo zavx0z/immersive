@@ -1,14 +1,14 @@
 /**
-Обработка wrap-unit.
+Периодически приводит конечное значение к диапазону от 0 включительно до 1; неконечное заменяет нулём.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {WrapUnitInput} from "./contract/input"
+import type {UiFieldsColorValueWrapUnit as Contract} from "./contract"
 
-export default function wrapUnit(value: WrapUnitInput[0]): number {
+export default function wrapUnit(value: Contract.Input[0]): Contract.Output {
   if (!Number.isFinite(value)) return 0
   return ((value % 1) + 1) % 1
 }
 
-export type {WrapUnitInput} from "./contract/input"
+export type {UiFieldsColorValueWrapUnit} from "./contract"

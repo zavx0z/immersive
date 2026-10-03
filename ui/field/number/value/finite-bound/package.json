@@ -2,7 +2,7 @@
   "name": "@ui-fields-number-value/finite-bound",
   "label": "finiteBound",
   "version": "0.0.0",
-  "description": "Обработка finite-bound",
+  "description": "Сохраняет конечную числовую границу либо возвращает переданное запасное значение",
   "private": true,
   "type": "module",
   "sideEffects": false,

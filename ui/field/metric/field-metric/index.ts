@@ -1,13 +1,13 @@
 /**
-Чтение числовой метрики поля из единого набора размеров.
+Читает конечную неотрицательную числовую метрику поля по её точному имени.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {FieldMetricInput} from "./contract/input"
+import type {UiFieldsMetricsFieldMetric as Contract} from "./contract"
 import fieldMetrics from "@ui/themes/field-metrics.json"
 
-export default function fieldMetric(name: FieldMetricInput[0]): number {
+export default function fieldMetric(name: Contract.Input[0]): Contract.Output {
   const value = fieldMetrics[name]
   if (!Number.isFinite(value) || value < 0) {
     throw new TypeError(`UI field metric must be a non-negative finite number: ${name}`)
@@ -15,4 +15,4 @@ export default function fieldMetric(name: FieldMetricInput[0]): number {
   return value
 }
 
-export type {FieldMetricInput} from "./contract/input"
+export type {UiFieldsMetricsFieldMetric} from "./contract"

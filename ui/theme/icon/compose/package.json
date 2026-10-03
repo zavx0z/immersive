@@ -2,7 +2,7 @@
   "name": "@ui-themes-icons/compose",
   "label": "iconSvg",
   "version": "0.0.0",
-  "description": "Сборка SVG-значка из векторного содержимого",
+  "description": "Собирает SVG data URL размером 24×24 из векторного содержимого и цвета штрихов",
   "private": true,
   "type": "module",
   "sideEffects": false,

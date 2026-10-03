@@ -1,19 +1,19 @@
 /**
-Изменение при перетаскивании числового значения при перетаскивании.
+Переводит движение указателя в ограниченное диапазоном число с замедлением при Shift.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {ScrubNumberRawValueInput} from "./contract/input"
+import type {UiFieldsNumberScrubScrubNumberRawValue as Contract} from "./contract"
 import type {NumberRange} from "@ui-fields-number-value/resolve-number-soft-range"
 
 export default function scrubNumberRawValue(
-  value: ScrubNumberRawValueInput[0],
-  deltaX: ScrubNumberRawValueInput[1],
-  distanceX: ScrubNumberRawValueInput[2],
-  range: ScrubNumberRawValueInput[3],
-  shift: ScrubNumberRawValueInput[4]
-): number {
+  value: Contract.Input[0],
+  deltaX: Contract.Input[1],
+  distanceX: Contract.Input[2],
+  range: Contract.Input[3],
+  shift: Contract.Input[4]
+): Contract.Output {
   const softSpan = range.max - range.min
   if (softSpan <= 0 || !Number.isFinite(deltaX) || !Number.isFinite(distanceX)) {
     return Math.min(range.max, Math.max(range.min, value))
@@ -23,4 +23,4 @@ export default function scrubNumberRawValue(
   return Math.min(range.max, Math.max(range.min, value + (deltaX / 500) * scale * softSpan))
 }
 
-export type {ScrubNumberRawValueInput} from "./contract/input"
+export type {UiFieldsNumberScrubScrubNumberRawValue} from "./contract"

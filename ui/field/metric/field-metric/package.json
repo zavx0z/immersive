@@ -2,7 +2,7 @@
   "name": "@ui-fields-metrics/field-metric",
   "label": "fieldMetric",
   "version": "0.0.0",
-  "description": "Чтение числовой метрики поля из единого набора размеров",
+  "description": "Читает конечную неотрицательную числовую метрику поля по её точному имени",
   "private": true,
   "type": "module",
   "sideEffects": false,

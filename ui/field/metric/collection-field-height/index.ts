@@ -1,14 +1,14 @@
 /**
-Высота коллекции с учётом доступных действий.
+Выбирает базовую высоту коллекции по видимым строкам и колонке доступных действий.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {CollectionFieldHeightInput} from "./contract/input"
+import type {UiFieldsMetricsCollectionFieldHeight as Contract} from "./contract"
 import collectionVisibleRowsHeight from "@ui-fields-metrics/collection-visible-rows-height"
 import fieldMetric from "@ui-fields-metrics/field-metric"
 
-export default function collectionFieldHeight(visibleRows: CollectionFieldHeightInput[0], movable: CollectionFieldHeightInput[1]): number {
+export default function collectionFieldHeight(visibleRows: Contract.Input[0], movable: Contract.Input[1]): Contract.Output {
   const visibleHeight = collectionVisibleRowsHeight(visibleRows)
   const actionCount = movable ? 4 : 2
   const actionsHeight = actionCount * fieldMetric("field-collection-action-height") +
@@ -16,4 +16,4 @@ export default function collectionFieldHeight(visibleRows: CollectionFieldHeight
   return Math.max(visibleHeight, actionsHeight)
 }
 
-export type {CollectionFieldHeightInput} from "./contract/input"
+export type {UiFieldsMetricsCollectionFieldHeight} from "./contract"

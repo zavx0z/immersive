@@ -1,15 +1,15 @@
 /**
-Высота поля для выбранной плотности.
+Читает базовую высоту поля для выбранной плотности из числовой темы.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {FieldDensityHeightInput} from "./contract/input"
+import type {UiFieldsMetricsFieldDensityHeight as Contract} from "./contract"
 import type {FieldDensity} from "@ui-fields-metrics/resolve-field-density"
 import fieldMetric from "@ui-fields-metrics/field-metric"
 
-export default function fieldDensityHeight(density: FieldDensityHeightInput[0]): number {
+export default function fieldDensityHeight(density: Contract.Input[0]): Contract.Output {
   return fieldMetric(`field-height-${density}`)
 }
 
-export type {FieldDensityHeightInput} from "./contract/input"
+export type {UiFieldsMetricsFieldDensityHeight} from "./contract"

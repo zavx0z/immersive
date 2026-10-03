@@ -2,7 +2,7 @@
   "name": "@ui-fields-number-scrub/snap-number-value",
   "label": "snapNumberValue",
   "version": "0.0.0",
-  "description": "Привязка к шагу числового значения",
+  "description": "Привязывает число к шагу диапазона, сохраняя его граничные и неконечные значения",
   "private": true,
   "type": "module",
   "sideEffects": false,

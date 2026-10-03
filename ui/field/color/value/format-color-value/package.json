@@ -2,7 +2,7 @@
   "name": "@ui-fields-color-value/format-color-value",
   "label": "formatColorValue",
   "version": "0.0.0",
-  "description": "Представление цветового значения",
+  "description": "Нормализует цвет и форматирует его как HEX со включаемым альфа-каналом",
   "private": true,
   "type": "module",
   "sideEffects": false,

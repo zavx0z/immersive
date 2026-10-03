@@ -2,7 +2,7 @@
   "name": "@ui-views-code-editor/is-hex-color",
   "label": "isHexColor",
   "version": "0.0.0",
-  "description": "Обработка is-hex-color",
+  "description": "Проверяет HEX-цвет из трёх, шести или восьми цифр с необязательными внешними пробелами",
   "private": true,
   "type": "module",
   "sideEffects": false,

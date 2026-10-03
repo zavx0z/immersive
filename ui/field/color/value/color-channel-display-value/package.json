@@ -2,7 +2,7 @@
   "name": "@ui-fields-color-value/color-channel-display-value",
   "label": "colorChannelDisplayValue",
   "version": "0.0.0",
-  "description": "Обработка color-channel-display-value",
+  "description": "Переводит тон HSVA в целые градусы, остальные каналы округляет до шести десятичных знаков",
   "private": true,
   "type": "module",
   "sideEffects": false,

@@ -2,7 +2,7 @@
   "name": "@ui-fields-number-value/number-pointer-adaptive-span",
   "label": "numberPointerAdaptiveSpan",
   "version": "0.0.0",
-  "description": "Обработка number-pointer-adaptive-span",
+  "description": "Определяет адаптивный диапазон указателя по ограниченному сверху шагу числа",
   "private": true,
   "type": "module",
   "sideEffects": false,

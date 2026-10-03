@@ -2,7 +2,7 @@
   "name": "@ui-fields-color-value/rgba-css",
   "label": "rgbaCss",
   "version": "0.0.0",
-  "description": "Обработка rgba-css",
+  "description": "Форматирует цвет как CSS rgba с байтовыми RGB-каналами и альфой до трёх десятичных знаков",
   "private": true,
   "type": "module",
   "sideEffects": false,

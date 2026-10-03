@@ -2,7 +2,7 @@
   "name": "@ui-fields-metrics/matrix-field-height",
   "label": "matrixFieldHeight",
   "version": "0.0.0",
-  "description": "Высота матрицы для её размера и плотности",
+  "description": "Вычисляет базовую высоту матрицы размером от 2×2 до 4×4 с промежутками между строками",
   "private": true,
   "type": "module",
   "sideEffects": false,

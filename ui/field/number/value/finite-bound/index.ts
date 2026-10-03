@@ -1,13 +1,13 @@
 /**
-Обработка finite-bound.
+Сохраняет конечную числовую границу либо возвращает переданное запасное значение.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {FiniteBoundInput} from "./contract/input"
+import type {UiFieldsNumberValueFiniteBound as Contract} from "./contract"
 
-export default function finiteBound(value: FiniteBoundInput[0], fallback: FiniteBoundInput[1]): number {
+export default function finiteBound(value: Contract.Input[0], fallback: Contract.Input[1]): Contract.Output {
   return Number.isFinite(value) ? value! : fallback
 }
 
-export type {FiniteBoundInput} from "./contract/input"
+export type {UiFieldsNumberValueFiniteBound} from "./contract"

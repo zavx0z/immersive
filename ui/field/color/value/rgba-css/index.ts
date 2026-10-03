@@ -1,15 +1,15 @@
 /**
-Обработка rgba-css.
+Форматирует цвет как CSS rgba с байтовыми RGB-каналами и альфой до трёх десятичных знаков.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {RgbaCssInput} from "./contract/input"
+import type {UiFieldsColorValueRgbaCss as Contract} from "./contract"
 import type {ColorValue} from "@ui-fields-color-value/normalize-color-value"
 
-export default function rgbaCss(value: RgbaCssInput[0]): string {
+export default function rgbaCss(value: Contract.Input[0]): Contract.Output {
   const byte = (entry: number): number => Math.round(entry * 255)
   return `rgba(${byte(value.r)}, ${byte(value.g)}, ${byte(value.b)}, ${Math.round(value.a * 1000) / 1000})`
 }
 
-export type {RgbaCssInput} from "./contract/input"
+export type {UiFieldsColorValueRgbaCss} from "./contract"

@@ -2,7 +2,7 @@
   "name": "@ui-fields-collection-model/normalize-collection-visible-rows",
   "label": "normalizeCollectionVisibleRows",
   "version": "0.0.0",
-  "description": "Нормализация числа видимых строк коллекции",
+  "description": "Выбирает целое число видимых строк в пределах коллекции и применяет значение по умолчанию для неконечных чисел",
   "private": true,
   "type": "module",
   "sideEffects": false,

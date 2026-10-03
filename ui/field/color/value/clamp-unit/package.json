@@ -2,7 +2,7 @@
   "name": "@ui-fields-color-value/clamp-unit",
   "label": "clampUnit",
   "version": "0.0.0",
-  "description": "Обработка clamp-unit",
+  "description": "Ограничивает значение диапазоном от 0 до 1; неконечное значение заменяет нулём",
   "private": true,
   "type": "module",
   "sideEffects": false,

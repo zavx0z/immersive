@@ -2,7 +2,7 @@
   "name": "@ui-fields-number-scrub/scrub-number-raw-value",
   "label": "scrubNumberRawValue",
   "version": "0.0.0",
-  "description": "Изменение при перетаскивании числового значения при перетаскивании",
+  "description": "Переводит движение указателя в ограниченное диапазоном число с замедлением при Shift",
   "private": true,
   "type": "module",
   "sideEffects": false,

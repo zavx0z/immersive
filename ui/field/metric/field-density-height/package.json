@@ -2,7 +2,7 @@
   "name": "@ui-fields-metrics/field-density-height",
   "label": "fieldDensityHeight",
   "version": "0.0.0",
-  "description": "Высота поля для выбранной плотности",
+  "description": "Читает базовую высоту поля для выбранной плотности из числовой темы",
   "private": true,
   "type": "module",
   "sideEffects": false,

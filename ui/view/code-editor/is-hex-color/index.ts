@@ -1,13 +1,13 @@
 /**
-Обработка is-hex-color.
+Проверяет HEX-цвет из трёх, шести или восьми цифр с необязательными внешними пробелами.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {IsHexColorInput} from "./contract/input"
+import type {UiViewsCodeEditorIsHexColor as Contract} from "./contract"
 
-export default function isHexColor(value: IsHexColorInput[0]): boolean {
+export default function isHexColor(value: Contract.Input[0]): Contract.Output {
   return /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/iu.test(value.trim())
 }
 
-export type {IsHexColorInput} from "./contract/input"
+export type {UiViewsCodeEditorIsHexColor} from "./contract"

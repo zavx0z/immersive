@@ -2,7 +2,7 @@
   "name": "@ui-fields-metrics/collection-field-height",
   "label": "collectionFieldHeight",
   "version": "0.0.0",
-  "description": "Высота коллекции с учётом доступных действий",
+  "description": "Выбирает базовую высоту коллекции по видимым строкам и колонке доступных действий",
   "private": true,
   "type": "module",
   "sideEffects": false,

@@ -1,15 +1,15 @@
 /**
-Обработка number-pointer-step.
+Выбирает допустимый шаг числового указателя, используя 0.1 при отсутствии корректного шага.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import type {NumberPointerStepInput} from "./contract/input"
+import type {UiFieldsNumberValueNumberPointerStep as Contract} from "./contract"
 import type {NumberValueOptions} from "@ui-fields-number-value/normalize-number-value"
 import validNumberStep from "@ui-fields-number-value/valid-number-step"
 
-export default function numberPointerStep(options: NumberPointerStepInput[0]): number {
+export default function numberPointerStep(options: Contract.Input[0]): Contract.Output {
   return validNumberStep(options.step) ?? 0.1
 }
 
-export type {NumberPointerStepInput} from "./contract/input"
+export type {UiFieldsNumberValueNumberPointerStep} from "./contract"
