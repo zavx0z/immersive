@@ -38,7 +38,8 @@
     "./worker/top-down/client": "./algorithm/top-down/src/worker/client.ts",
     "./worker/top-down/executor": "./algorithm/top-down/src/worker/executor.ts",
     "./worker/coffman-graham/client": "./algorithm/coffman-graham/src/worker/client.ts",
-    "./worker/coffman-graham/executor": "./algorithm/coffman-graham/src/worker/executor.ts"
+    "./worker/coffman-graham/executor": "./algorithm/coffman-graham/src/worker/executor.ts",
+    "./contract": "./contract/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",

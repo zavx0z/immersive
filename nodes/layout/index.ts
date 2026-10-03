@@ -15,3 +15,5 @@ export {
   type FixedLayoutInput,
   type FixedLayoutOutput,
 } from "./algorithm/fixed/index.ts"
+
+export type {NodesLayout} from "./contract"
