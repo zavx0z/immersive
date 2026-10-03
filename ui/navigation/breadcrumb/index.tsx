@@ -5,15 +5,13 @@
 @packageDocumentation
 */
 import {BreadcrumbItemView} from "./src/helpers.tsx"
-import type {BreadcrumbsProps} from "./contract/input.ts"
+import type {UiNavigationBreadcrumbs} from "./contract"
 import {normalizeItems} from "./src/helpers.tsx"
 
-export type {BreadcrumbsProps} from "./contract/input"
-export type {BreadcrumbsItem} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiNavigationBreadcrumbs} from "./contract"
 
-export default function Breadcrumbs(props: BreadcrumbsProps): JSX.Element {
+export default function Breadcrumbs(props: UiNavigationBreadcrumbs.Input): UiNavigationBreadcrumbs.Output {
   const items = normalizeItems(props.items)
   return <nav
     aria-label={props.label ?? "Путь"}

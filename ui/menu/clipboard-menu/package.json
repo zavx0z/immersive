@@ -22,6 +22,7 @@
     "@zavx0z/component": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/menus": "workspace:*"
   }
 }

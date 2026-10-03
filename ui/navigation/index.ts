@@ -1,8 +1,7 @@
 /**
-Область navigation объединяет публичные возможности принадлежащих ей пакетов.
-Именованный API сохраняет владельцев реализации и типов; область не запускает их жизненный цикл.
+Раздел навигации интерфейса. Иерархический путь представлен самостоятельным
+Breadcrumbs с собственным протоколом и проверяемым переходом по сегментам.
 
 @packageDocumentation
 */
-export {default as Breadcrumbs} from "@ui-navigation/breadcrumbs"
-export type {BreadcrumbsItem, BreadcrumbsProps} from "@ui-navigation/breadcrumbs"
+export {}

@@ -4,17 +4,15 @@
 
 @packageDocumentation
 */
-import type {MenuProps} from "./contract/input.ts"
+import type {UiMenusMenu} from "./contract"
 import {useLayoutEffect} from "@zavx0z/component"
 import {useRef} from "@zavx0z/component"
 import MenuItem from "@ui-menus/menu-item"
 
-export type {MenuProps} from "./contract/input"
-export type {MenuAction} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiMenusMenu} from "./contract"
 
-export default function Menu(props: MenuProps): JSX.Element {
+export default function Menu(props: UiMenusMenu.Input): UiMenusMenu.Output {
   const element = useRef<HTMLDivElement | null>(null)
   useLayoutEffect(() => {
     const menu = element.current

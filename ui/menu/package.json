@@ -2,19 +2,25 @@
   "name": "@ui/menus",
   "label": "menu",
   "version": "0.0.0",
-  "description": "Публичные возможности области menu",
+  "description": "Меню и самостоятельные команды с общим протоколом представления",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./clipboard-menu": "./clipboard-menu/index.tsx",
-    "./menu": "./menu/index.tsx",
-    "./menu-item": "./menu-item/index.tsx"
+    "./contract": "./contract/index.ts"
   },
   "dependencies": {
     "@ui-menus/clipboard-menu": "workspace:*",
     "@ui-menus/menu": "workspace:*",
-    "@ui-menus/menu-item": "workspace:*"
+    "@ui-menus/menu-item": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

@@ -552,6 +552,7 @@
       "name": "@zavx0z/ui",
       "version": "0.0.0",
       "dependencies": {
+        "@ui-navigation/breadcrumbs": "workspace:*",
         "@ui/badge": "workspace:*",
         "@ui/buttons": "workspace:*",
         "@ui/code-editor-model": "workspace:*",
@@ -559,7 +560,6 @@
         "@ui/feedback": "workspace:*",
         "@ui/fields": "workspace:*",
         "@ui/menus": "workspace:*",
-        "@ui/navigation": "workspace:*",
         "@ui/selection": "workspace:*",
         "@ui/surfaces": "workspace:*",
         "@ui/terminal-model": "workspace:*",
@@ -1550,9 +1550,13 @@
       "name": "@ui/menus",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-menus/clipboard-menu": "workspace:*",
         "@ui-menus/menu": "workspace:*",
         "@ui-menus/menu-item": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
       },
     },
     "ui/menu/clipboard-menu": {
@@ -1564,6 +1568,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/menus": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
@@ -1578,6 +1583,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/menus": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
@@ -1591,13 +1597,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/navigation": {
-      "name": "@ui/navigation",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-navigation/breadcrumbs": "workspace:*",
+        "@ui/menus": "workspace:*",
       },
     },
     "ui/navigation/breadcrumb": {
@@ -3039,8 +3039,6 @@
     "@ui/fields": ["@ui/fields@workspace:ui/field"],
 
     "@ui/menus": ["@ui/menus@workspace:ui/menu"],
-
-    "@ui/navigation": ["@ui/navigation@workspace:ui/navigation"],
 
     "@ui/selection": ["@ui/selection@workspace:ui/selection"],
 

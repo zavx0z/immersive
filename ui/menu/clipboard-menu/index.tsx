@@ -7,13 +7,12 @@
 import {useSyncExternalStore} from "@zavx0z/component"
 import Menu from "@ui-menus/menu"
 
-export type {ClipboardMenuController} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiMenusClipboardMenu} from "./contract"
 
-import type {ClipboardMenuProps} from "./contract/input"
+import type {UiMenusClipboardMenu} from "./contract"
 
-export default function ClipboardMenu(props: ClipboardMenuProps): JSX.Element {
+export default function ClipboardMenu(props: UiMenusClipboardMenu.Input): UiMenusClipboardMenu.Output {
   const state = useSyncExternalStore(props.controller.subscribe, props.controller.getSnapshot)
   return <Menu
     open={state.open}
@@ -30,5 +29,3 @@ export default function ClipboardMenu(props: ClipboardMenuProps): JSX.Element {
     ]}
   />
 }
-
-export type {ClipboardMenuProps} from "./contract/input"

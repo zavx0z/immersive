@@ -1,13 +1,19 @@
 import type {BreadcrumbsItem} from "../contract/types.ts"
-import type {BreadcrumbsProps} from "../contract/input.ts"
-import type {NormalizedBreadcrumbsItem} from "../contract/types.ts"
+import type {UiNavigationBreadcrumbs} from "../contract"
 import chevronRightIcon from "@ui-themes-icons/chevron-right"
+
+/** Частный результат подготовки сегмента к отображению. */
+type NormalizedBreadcrumbsItem = BreadcrumbsItem & Readonly<{
+  current: boolean
+  separated: boolean
+}>
+
 
 /** Частная подготовка навигация по иерархическому пути с текущим последним сегментом. */
 export function BreadcrumbItemView(props: Readonly<{
   item: NormalizedBreadcrumbsItem
   current: boolean
-  onNavigate?: BreadcrumbsProps["onNavigate"]
+  onNavigate?: UiNavigationBreadcrumbs.Input["onNavigate"]
 }>) {
   const disabled = props.current || props.item.disabled === true || props.onNavigate === undefined
   const label = props.item.iconSrc === undefined ? props.item.label : ""

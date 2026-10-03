@@ -110,7 +110,6 @@
     "./menu/clipboard-menu": "./menu/clipboard-menu/index.tsx",
     "./menu/menu": "./menu/menu/index.tsx",
     "./menu/menu-item": "./menu/menu-item/index.tsx",
-    "./navigation": "./navigation/index.ts",
     "./navigation/breadcrumb": "./navigation/breadcrumb/index.tsx",
     "./selection": "./selection/index.ts",
     "./selection/find-selection-option": "./selection/find-selection-option/index.ts",
@@ -217,14 +216,14 @@
     "@ui/feedback": "workspace:*",
     "@ui/fields": "workspace:*",
     "@ui/menus": "workspace:*",
-    "@ui/navigation": "workspace:*",
     "@ui/selection": "workspace:*",
     "@ui/surfaces": "workspace:*",
     "@ui/terminal-model": "workspace:*",
     "@ui/themes": "workspace:*",
     "@ui/typography": "workspace:*",
     "@ui/views": "workspace:*",
-    "@ui/widgets": "workspace:*"
+    "@ui/widgets": "workspace:*",
+    "@ui-navigation/breadcrumbs": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",

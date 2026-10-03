@@ -11,11 +11,3 @@ export type BreadcrumbsItem = Readonly<{
   title?: string | undefined
   disabled?: boolean | undefined
 }>
-
-/**
-Тип NormalizedBreadcrumbsItem принадлежит контракту своего владельца.
-*/
-export type NormalizedBreadcrumbsItem = BreadcrumbsItem & Readonly<{
-  current: boolean
-  separated: boolean
-}>

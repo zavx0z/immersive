@@ -9,7 +9,7 @@ import {createDocumentClipboardController} from "../../browser/clipboard.ts"
 import {createDocumentNativeInputHostWithSeams} from "../../browser/src/native-input-host.ts"
 import createCodeEditorModel from "@ui-code-editor-model/create"
 import type {CodeEditorProps} from "@ui-views/code-editor"
-import type {ClipboardMenuController} from "@ui-menus/clipboard-menu"
+import type {UiMenusClipboardMenu} from "@ui-menus/clipboard-menu"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
@@ -64,7 +64,7 @@ test("global production menu preserves multicursor paste target across focus and
     },
   }})
   const menu = createRoot(f.menuHost)
-  menu.render(ClipboardMenu as unknown as CompiledTemplate<{controller: ClipboardMenuController}>, {controller: clipboard})
+  menu.render(ClipboardMenu as unknown as CompiledTemplate<{controller: UiMenusClipboardMenu.Input["controller"]}>, {controller: clipboard})
   try {
     expect(clipboard.openContextMenu(f.code, {x: 30, y: 40})).toBe(true)
     const paste = f.menuHost.querySelectorAll('[role="menuitem"]')[1] as HTMLElement

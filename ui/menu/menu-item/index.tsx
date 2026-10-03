@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {MenuItemProps} from "./contract/input.ts"
+import type {UiMenusMenuItem} from "./contract"
 
-export type {MenuItemProps} from "./contract/input"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiMenusMenuItem} from "./contract"
 
-export default function MenuItem(props: MenuItemProps): JSX.Element {
+export default function MenuItem(props: UiMenusMenuItem.Input): UiMenusMenuItem.Output {
   return <button
     type="button"
     role="menuitem"
