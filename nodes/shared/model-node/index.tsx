@@ -8,7 +8,7 @@ import {component} from "@zavx0z/component"
 import {ParameterNode} from "@nodes/node/parameter"
 import {ContentNode} from "@nodes/node/content"
 import {DiagramNode} from "@nodes/node/diagram"
-import {metadataBoolean, metadataString} from "@nodes/parameters/shared"
+import {metadataBoolean, metadataString} from "@nodes/metadata"
 import {nodePreview} from "../node-tree/view.ts"
 import type {VisibleNode, NodeTreeView, NodeTreeProps, NodeTreeActions} from "../node-tree/contracts.ts"
 

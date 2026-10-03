@@ -1,0 +1,22 @@
+{
+  "name": "@node-metadata/string-array",
+  "label": "metadataStringArray",
+  "version": "0.0.0",
+  "description": "Заимствует массив строк, если каждый его элемент имеет подходящий тип",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "devDependencies": {
+    "@nodes/metadata": "workspace:*"
+  },
+  "dependencies": {
+    "@node-metadata/read": "workspace:*"
+  }
+}

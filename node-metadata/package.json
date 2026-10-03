@@ -1,0 +1,26 @@
+{
+  "name": "@nodes/metadata",
+  "label": "Метаданные модели",
+  "version": "0.0.0",
+  "description": "Читатели JSON-метаданных с общим протоколом источника и имени поля",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./contract": "./contract/index.ts"
+  },
+  "dependencies": {
+    "@node-values/own": "workspace:*",
+    "@node-metadata/read": "workspace:*",
+    "@node-metadata/string": "workspace:*",
+    "@node-metadata/number": "workspace:*",
+    "@node-metadata/boolean": "workspace:*",
+    "@node-metadata/string-array": "workspace:*",
+    "@node-metadata/object-array": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

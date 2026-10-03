@@ -4,7 +4,7 @@
 @packageDocumentation
 */
 import {useMemo, useState} from "@zavx0z/component"
-import {metadataBoolean} from "@nodes/parameters/shared"
+import {metadataBoolean} from "@nodes/metadata"
 import {GraphView} from "../view/index.tsx"
 import {useNodeTreePresentation} from "../view/tree.ts"
 import {useMeasuredNodeTreePresentation} from "../shared/node-tree/measured.ts"

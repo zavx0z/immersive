@@ -1,0 +1,19 @@
+{
+  "name": "@node-metadata/read",
+  "label": "metadata",
+  "version": "0.0.0",
+  "description": "Читает собственное поле JSON-объекта",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "devDependencies": {
+    "@nodes/metadata": "workspace:*"
+  }
+}

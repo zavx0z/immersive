@@ -1,7 +1,7 @@
 import {useMemo, useRef, useSyncExternalStore} from "@zavx0z/component"
 import type {NodeTreeSnapshot} from "@nodes/tree"
 import type {LayoutResult} from "@nodes/layout/types"
-import {metadataBoolean, metadataString} from "@nodes/parameters/shared"
+import {metadataBoolean, metadataString} from "@nodes/metadata"
 import socketKey from "@socket-values/key"
 import {createNodeTreeLayout, StaleNodeTreeLayoutError} from "../projection/layout.ts"
 import {createNodeGeometryIndex} from "../projection/geometry.ts"

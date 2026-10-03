@@ -1,5 +1,5 @@
 import type {Socket as CoreSocket} from "@nodes/tree"
-import {metadataString} from "@nodes/parameters/shared"
+import {metadataString} from "@nodes/metadata"
 import socketKey from "@socket-values/key"
 import socketSide from "@socket-values/side"
 import type {ParameterNodeProps} from "../parameter/contract/input.ts"

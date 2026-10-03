@@ -81,6 +81,7 @@
   "dependencies": {
     "@socket-values/kinds": "workspace:*",
     "@socket-values/preset": "workspace:*",
-    "@socket-values/key": "workspace:*"
+    "@socket-values/key": "workspace:*",
+    "@nodes/metadata": "workspace:*"
   }
 }

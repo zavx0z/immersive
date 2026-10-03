@@ -2,7 +2,7 @@ import {useMemo, useRef, useLayoutEffect, useSyncExternalStore} from "@zavx0z/co
 import {createNodeTreeLayout} from "../shared/projection/layout.ts"
 import {getNodeTreeLayoutStore} from "../shared/projection/layout-state.ts"
 import {createActions, createNodeTreeViewSelector, linkKind} from "../shared/node-tree/view.ts"
-import {metadataBoolean, metadataString} from "@nodes/parameters/shared"
+import {metadataBoolean, metadataString} from "@nodes/metadata"
 import {ModelNode} from "../shared/model-node/index.tsx"
 import type {NodeTreeProps} from "../shared/node-tree/contracts.ts"
 import type {GraphScene} from "../shared/graph/contracts.ts"

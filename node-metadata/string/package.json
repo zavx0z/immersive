@@ -1,0 +1,22 @@
+{
+  "name": "@node-metadata/string",
+  "label": "metadataString",
+  "version": "0.0.0",
+  "description": "Читает непустую строку либо возвращает резервное значение",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "devDependencies": {
+    "@nodes/metadata": "workspace:*"
+  },
+  "dependencies": {
+    "@node-metadata/read": "workspace:*"
+  }
+}

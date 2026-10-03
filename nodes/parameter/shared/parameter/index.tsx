@@ -26,7 +26,7 @@ import {
   useSyncExternalStore,
   type FunctionComponent,
 } from "@zavx0z/component"
-import {metadata, metadataBoolean, metadataNumber, metadataObjectArray, metadataString, metadataStringArray} from "../src/metadata.ts"
+import {metadata, metadataBoolean, metadataNumber, metadataObjectArray, metadataString, metadataStringArray} from "@nodes/metadata"
 import socketKey from "@socket-values/key"
 import socketSide from "@socket-values/side"
 import {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} from "../src/metrics.ts"
@@ -50,7 +50,6 @@ import {TextParameter} from "../../text/text/index.tsx"
 import {VectorParameter} from "../../composite/vector/index.tsx"
 
 export type {ParameterProps, ParameterInput, ParameterEndpoint, ParameterBaseProps} from "../src/contracts.ts"
-export {metadata, metadataBoolean, metadataNumber, metadataObjectArray, metadataString, metadataStringArray} from "../src/metadata.ts"
 export {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} from "../src/metrics.ts"
 
 export type ProjectedParameterKind =

@@ -1,6 +1,6 @@
 import type {Link as CoreLink, NodeTreeSnapshot} from "@nodes/tree"
 import type {LayoutResult} from "@nodes/layout/types"
-import {metadata, metadataBoolean, metadataNumber, metadataString} from "@nodes/parameters/shared"
+import {metadata, metadataBoolean, metadataNumber, metadataString} from "@nodes/metadata"
 import socketKey from "@socket-values/key"
 import SOCKET_KINDS from "@socket-values/kinds"
 import type {SocketValuesKinds} from "@socket-values/kinds"
