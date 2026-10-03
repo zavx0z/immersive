@@ -768,6 +768,28 @@
         "@ui-widgets/inspector": "workspace:*",
       },
     },
+    "json-patch": {
+      "name": "@nodes/json-patch",
+      "version": "0.0.0",
+      "dependencies": {
+        "@node-json-patch/error": "workspace:*",
+        "@node-json-patch/limits": "workspace:*",
+        "@node-values/equal": "workspace:*",
+        "@node-values/own": "workspace:*",
+      },
+    },
+    "json-patch/error": {
+      "name": "@node-json-patch/error",
+      "version": "0.0.0",
+    },
+    "json-patch/limits": {
+      "name": "@node-json-patch/limits",
+      "version": "0.0.0",
+    },
+    "json-pointer-token": {
+      "name": "@nodes/json-pointer-token",
+      "version": "0.0.0",
+    },
     "jsx": {
       "name": "@zavx0z/jsx",
       "version": "0.0.0",
@@ -1577,9 +1599,13 @@
       "name": "@nodes/tree",
       "version": "0.0.0",
       "dependencies": {
+        "@node-json-patch/error": "workspace:*",
+        "@node-json-patch/limits": "workspace:*",
         "@node-values/equal": "workspace:*",
         "@node-values/own": "workspace:*",
         "@node-values/type": "workspace:*",
+        "@nodes/json-patch": "workspace:*",
+        "@nodes/json-pointer-token": "workspace:*",
         "@nodes/parameter-store": "workspace:*",
       },
     },
@@ -3053,6 +3079,10 @@
 
     "@node-geometry/spacing": ["@node-geometry/spacing@workspace:node-geometry/spacing"],
 
+    "@node-json-patch/error": ["@node-json-patch/error@workspace:json-patch/error"],
+
+    "@node-json-patch/limits": ["@node-json-patch/limits@workspace:json-patch/limits"],
+
     "@node-metadata/boolean": ["@node-metadata/boolean@workspace:node-metadata/boolean"],
 
     "@node-metadata/number": ["@node-metadata/number@workspace:node-metadata/number"],
@@ -3108,6 +3138,10 @@
     "@nodes-parameters/text": ["@nodes-parameters/text@workspace:nodes/parameter/text/text"],
 
     "@nodes-parameters/vector": ["@nodes-parameters/vector@workspace:nodes/parameter/composite/vector"],
+
+    "@nodes/json-patch": ["@nodes/json-patch@workspace:json-patch"],
+
+    "@nodes/json-pointer-token": ["@nodes/json-pointer-token@workspace:json-pointer-token"],
 
     "@nodes/layout": ["@nodes/layout@workspace:nodes/layout"],
 

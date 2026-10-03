@@ -1,0 +1,22 @@
+{
+  "name": "@nodes/json-patch",
+  "label": "json-patch",
+  "version": "0.0.0",
+  "description": "Применяет ограниченный JSON Patch атомарно к собственной копии данных",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "dependencies": {
+    "@node-values/own": "workspace:*",
+    "@node-values/equal": "workspace:*",
+    "@node-json-patch/error": "workspace:*",
+    "@node-json-patch/limits": "workspace:*"
+  }
+}

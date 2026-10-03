@@ -1,0 +1,16 @@
+{
+  "name": "@node-json-patch/limits",
+  "label": "limits",
+  "version": "0.0.0",
+  "description": "Задаёт допустимые размеры операций JSON Patch",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

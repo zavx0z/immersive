@@ -22,6 +22,10 @@
     "@node-values/own": "workspace:*",
     "@node-values/equal": "workspace:*",
     "@node-values/type": "workspace:*",
-    "@nodes/parameter-store": "workspace:*"
+    "@nodes/parameter-store": "workspace:*",
+    "@nodes/json-patch": "workspace:*",
+    "@nodes/json-pointer-token": "workspace:*",
+    "@node-json-patch/error": "workspace:*",
+    "@node-json-patch/limits": "workspace:*"
   }
 }
