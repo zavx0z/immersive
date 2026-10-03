@@ -424,6 +424,7 @@ const ROOT_STYLE: ComputedStyle = Object.freeze({
   textOrientation: "mixed",
   textOverflow: "clip",
   whiteSpace: "normal",
+  overflowWrap: "normal",
   userSelect: "text",
   selectionBoundary: null,
   zIndex: "auto",
@@ -2140,7 +2141,7 @@ const isStableTextContainer = (
     parent === null ||
     parent.transparent ||
     parent.style.display !== "block" ||
-    parent.style.whiteSpace === "normal" ||
+    (parent.style.whiteSpace === "normal" || parent.style.whiteSpace === "pre-wrap") ||
     parent.style.height?.unit !== "px" ||
     parent.children.length !== 1 ||
     parent.children[0] !== text ||
@@ -2542,6 +2543,7 @@ const buildLayoutTree = (
         cached.style.writingMode !== style.writingMode ||
         cached.style.textOrientation !== style.textOrientation ||
         cached.style.whiteSpace !== style.whiteSpace ||
+        cached.style.overflowWrap !== style.overflowWrap ||
         cached.style.fill !== style.fill ||
         cached.style.fillRule !== style.fillRule ||
         cached.style.stroke !== style.stroke ||
@@ -2664,9 +2666,10 @@ const inlineLayout = (
   width: number,
   height: number,
   state: BuildState,
+  intrinsicMinimum = false,
 ): InlineLayout | null => {
   if (owner.text !== null || owner.transparent || owner.style.display === "flex" || owner.style.writingMode !== "horizontal-tb") return null
-  const key = `${width}:${height}`
+  const key = `${intrinsicMinimum}:${width}:${height}`
   let cached = state.inlinePlans.get(owner)
   if (cached?.has(key)) return cached.get(key) ?? null
   if (cached === undefined) {
@@ -2678,7 +2681,7 @@ const inlineLayout = (
   const single = children.length === 1 ? children[0] : undefined
   if (children.length === 0 || children.some(child => child.text === null && child.style.display !== "inline") ||
     single?.text !== null && single?.text !== undefined &&
-      (single.style.whiteSpace !== "normal" || single.text === single.text.trim() &&
+      ((single.style.whiteSpace !== "normal" && single.style.whiteSpace !== "pre-wrap") || single.style.whiteSpace === "normal" && single.text === single.text.trim() &&
         textAdvance(single.text, single.style, state.textMeasurer) <= width)) {
     cached.set(key, null)
     return null
@@ -2694,7 +2697,9 @@ const inlineLayout = (
       paths.set(node, path)
       inputs.push({
         owner: node, kind: "text", text: node.node.textContent ?? "",
-        whiteSpace: node.style.whiteSpace, width: 0, height: resolveLineHeight(node.style),
+        whiteSpace: node.style.whiteSpace,
+        overflowWrap: intrinsicMinimum && node.style.overflowWrap === "break-word" ? "normal" : node.style.overflowWrap,
+        width: 0, height: resolveLineHeight(node.style),
         baseline: textBaseline(node.style, state.textMeasurer),
       })
     } else if (node.tag === "br") {
@@ -4545,7 +4550,7 @@ const intrinsicContentWidth = (node: LayoutNode, minimum: boolean, availableHeig
     if (natural !== null) return natural.width
   }
   const constraint = minimum ? 0 : Number.POSITIVE_INFINITY
-  const inline = inlineLayout(node, constraint, availableHeight, state)
+  const inline = inlineLayout(node, constraint, availableHeight, state, minimum)
   if (inline !== null) return inline.plan.width
   const children = node.style.display === "flex" ? flexFlowChildren(node) : flowChildren(node)
   const widths = children.map(child => {
@@ -4554,6 +4559,7 @@ const intrinsicContentWidth = (node: LayoutNode, minimum: boolean, availableHeig
         return measureText(child.text, child.style, state.textMeasurer).width
       }
       return layoutInlineFlow([{owner: child, kind: "text", text: child.text, whiteSpace: child.style.whiteSpace,
+        overflowWrap: minimum && child.style.overflowWrap === "break-word" ? "normal" : child.style.overflowWrap,
         width: 0, height: resolveLineHeight(child.style)}], constraint, resolveLineHeight(child.style), "left",
         (owner, text) => textAdvance(text, owner.style, state.textMeasurer)).width
     }
@@ -6848,7 +6854,7 @@ const readText = (node: Text, style: ComputedStyle): string => {
 }
 
 const normalizeText = (value: string, style: ComputedStyle): string => {
-  if (style.whiteSpace === "pre") return value
+  if (style.whiteSpace === "pre" || style.whiteSpace === "pre-wrap") return value
   const collapsed = value.replace(/[\t\n\f\r ]+/g, " ")
   return collapsed.trim() === "" ? "" : collapsed
 }
@@ -7032,7 +7038,7 @@ const textSource = (node: LayoutNode, offsets: readonly number[], state: BuildSt
 }
 
 const normalizedSourceOffsets = (value: string, whiteSpace: ComputedStyle["whiteSpace"]): readonly number[] => {
-  if (whiteSpace === "pre") return Array.from({length: value.length + 1}, (_, offset) => offset)
+  if (whiteSpace === "pre" || whiteSpace === "pre-wrap") return Array.from({length: value.length + 1}, (_, offset) => offset)
   const offsets: number[] = [0]
   for (const match of value.matchAll(/[^\t\n\f\r ]+|[\t\n\f\r ]+/gu)) {
     if (/^[\t\n\f\r ]/u.test(match[0])) offsets.push(match.index + match[0].length)
@@ -7164,6 +7170,7 @@ const textStyle = (inherited: ComputedStyle): ComputedStyle =>
     textOrientation: inherited.textOrientation,
     textOverflow: inherited.textOverflow,
     whiteSpace: inherited.whiteSpace,
+    overflowWrap: inherited.overflowWrap,
     userSelect: inherited.userSelect,
     selectionBoundary: null,
     zIndex: "auto",

@@ -551,7 +551,7 @@ export function readRenderedSelectionText(frames: RenderFrame | readonly RenderF
         return
       }
       const raw = node.data.slice(start, end)
-      const text = source.whiteSpace === "pre" ? raw : raw.replace(/[\t\n\f\r ]+/gu, " ")
+      const text = (source.whiteSpace === "pre" || source.whiteSpace === "pre-wrap") ? raw : raw.replace(/[\t\n\f\r ]+/gu, " ")
       if (text === "") return
       const block = blockOf(node)
       if (output !== "" && block !== previousBlock) output += "\n".repeat(emptyBlocks + (output.endsWith("\n") ? 0 : 1))

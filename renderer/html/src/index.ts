@@ -59,6 +59,7 @@ export type {
   RenderTransform,
   RenderViewport,
   RenderWhiteSpace,
+  RenderOverflowWrap,
   RenderZIndex,
   TextDisplayItem,
 } from "./types.ts"

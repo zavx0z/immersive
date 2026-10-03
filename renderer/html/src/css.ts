@@ -22,6 +22,7 @@ import type {
   RenderPosition,
   RenderTextAlign,
   RenderWhiteSpace,
+  RenderOverflowWrap,
   RenderZIndex,
 } from "./types.ts"
 
@@ -133,6 +134,7 @@ export type ComputedStyle = Readonly<{
   textOrientation: "mixed" | "upright" | "sideways"
   textOverflow: ComputedTextOverflow
   whiteSpace: RenderWhiteSpace
+  overflowWrap: RenderOverflowWrap
   userSelect: "text" | "none" | "all" | "contain"
   selectionBoundary: "all" | "contain" | null
   zIndex: RenderZIndex
@@ -255,6 +257,8 @@ const deferredVariablePropertySet: ReadonlySet<string> = new Set([
   "font-weight",
   "font-style",
   "white-space",
+  "overflow-wrap",
+  "word-wrap",
   "text-overflow",
   "object-fit",
   "position",
@@ -594,6 +598,7 @@ export const computeStyle = (
       parent?.textAlign ?? "start",
     ),
     textOverflow: parseTextOverflow(readValue(values, "text-overflow")),
+    overflowWrap: parseOverflowWrap(readValue(values, "overflow-wrap"), parent?.overflowWrap ?? "normal"),
     whiteSpace: parseWhiteSpace(
       readValue(values, "white-space"),
       parent?.whiteSpace ?? "normal",
@@ -1229,6 +1234,9 @@ const expandDeclaration = (
         : []
     case "white-space":
       return validWhiteSpace(value) ? [["white-space", value.trim().toLowerCase()]] : []
+    case "overflow-wrap":
+    case "word-wrap":
+      return validOverflowWrap(value) ? [["overflow-wrap", value.trim().toLowerCase()]] : []
     case "text-overflow":
       return validTextOverflow(value)
         ? [["text-overflow", value.trim().toLowerCase()]]
@@ -1978,17 +1986,27 @@ const parseWhiteSpace = (
   value: string | undefined,
   inherited: RenderWhiteSpace,
 ): RenderWhiteSpace => {
-  if (value === undefined || value.trim().toLowerCase() === "inherit")
+  if (value === undefined || ["inherit", "unset"].includes(value.trim().toLowerCase()))
     return inherited
   const normalized = value.trim().toLowerCase()
   if (normalized === "nowrap") return "nowrap"
-  return normalized === "pre" || normalized === "pre-wrap" ? "pre" : "normal"
+  return normalized === "pre" || normalized === "pre-wrap" ? normalized : "normal"
 }
+
+const parseOverflowWrap = (value: string | undefined, inherited: RenderOverflowWrap): RenderOverflowWrap => {
+  const normalized = value?.trim().toLowerCase()
+  if (normalized === undefined || normalized === "inherit" || normalized === "unset") return inherited
+  return normalized === "anywhere" || normalized === "break-word" ? normalized : "normal"
+}
+
+const validOverflowWrap = (value: string): boolean =>
+  ["normal", "anywhere", "break-word", "inherit", "initial", "unset"].includes(value.trim().toLowerCase())
 
 const validWhiteSpace = (value: string): boolean => {
   const normalized = value.trim().toLowerCase()
   return normalized === "normal" || normalized === "pre" ||
-    normalized === "pre-wrap" || normalized === "nowrap"
+    normalized === "pre-wrap" || normalized === "nowrap" ||
+    normalized === "inherit" || normalized === "initial" || normalized === "unset"
 }
 
 const validLineHeight = (value: string): boolean => {
@@ -2006,7 +2024,7 @@ const parseLineHeight = (
   inherited: ComputedLineHeight,
 ): ComputedLineHeight => {
   const normalized = value?.trim().toLowerCase()
-  if (normalized === undefined || normalized === "inherit") return inherited
+  if (normalized === undefined || normalized === "inherit" || normalized === "unset") return inherited
   if (normalized === "normal") return "normal"
   const number = transformNumber(normalized)
   if (number !== null && number >= 0) return Object.freeze({kind: "number", value: number})
@@ -2038,7 +2056,7 @@ const parseLetterSpacing = (
   fontSize: number,
 ): number => {
   const normalized = value?.trim().toLowerCase()
-  if (normalized === undefined || normalized === "inherit") return inherited
+  if (normalized === undefined || normalized === "inherit" || normalized === "unset") return inherited
   if (normalized === "normal") return 0
   const length = parseLength(normalized, fontSize)
   return length !== null && length.unit === "px" ? length.value : inherited
