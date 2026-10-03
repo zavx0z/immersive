@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {SurfaceHeaderProps} from "./contract/input.ts"
+import type {UiSurfacesChromeHeader as Contract} from "./contract"
 
-export type {SurfaceHeaderProps} from "./contract/input"
+export type {UiSurfacesChromeHeader} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function SurfaceHeader(props: SurfaceHeaderProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function SurfaceHeader(props: Contract.Input): Contract.Output {
   return <header
     style={css`
       box-sizing: border-box;

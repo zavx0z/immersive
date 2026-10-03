@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {SurfaceNavigationProps} from "./contract/input.ts"
+import type {UiSurfacesChromeNavigation as Contract} from "./contract"
 
-export type {SurfaceNavigationProps} from "./contract/input"
+export type {UiSurfacesChromeNavigation} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function SurfaceNavigation(props: SurfaceNavigationProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function SurfaceNavigation(props: Contract.Input): Contract.Output {
   return <nav
     aria-label={props.label}
     style={css`

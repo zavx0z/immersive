@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {SurfaceBodyProps} from "./contract/input.ts"
+import type {UiSurfacesChromeBody as Contract} from "./contract"
 
-export type {SurfaceBodyProps} from "./contract/input"
+export type {UiSurfacesChromeBody} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function SurfaceBody(props: SurfaceBodyProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function SurfaceBody(props: Contract.Input): Contract.Output {
   return <section
     id={props.id}
     hidden={props.hidden === true}

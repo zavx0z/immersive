@@ -1,4 +1,5 @@
-import type {TabProps} from "@ui-surfaces/tab"
+import type {UiSurfacesTab} from "@ui-surfaces/tab"
+type TabProps = UiSurfacesTab.Input
 
 /** Сторона и нормализованное положение не зависят от HUD, Display или масштаба камеры. */
 export type TabPosition = NonNullable<TabProps["position"]>

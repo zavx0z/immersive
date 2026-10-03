@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {JSX} from "@jsx-compiler/session"
-import type {WidgetActionButtonProps} from "./contract/input"
+import type {UiWidgetsHeaderAction as Contract} from "./contract"
 import Badge from "@ui/badge"
 import Button from "@ui-buttons/button"
 import Divider from "@ui/divider"
 
-export default function WidgetActionButton(props: WidgetActionButtonProps): JSX.Element {
+export default function WidgetActionButton(props: Contract.Input): Contract.Output {
   const action = props.action
   return <div
     style={css`
@@ -60,4 +59,4 @@ export default function WidgetActionButton(props: WidgetActionButtonProps): JSX.
   </div>
 }
 
-export type {WidgetActionButtonProps} from "./contract/input"
+export type {UiWidgetsHeaderAction} from "./contract"

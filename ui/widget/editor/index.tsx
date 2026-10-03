@@ -4,17 +4,16 @@
 
 @packageDocumentation
 */
-import type {EditorProps} from "./contract/input.ts"
+import type {UiWidgetsEditor as Contract} from "./contract"
 import {useMemo} from "@zavx0z/component"
 import CodeEditor from "@ui-views/code-editor"
 import CodeEditorModel from "@ui/code-editor-model"
 import WidgetHeader from "@ui-widgets/header"
 
-export type {EditorProps} from "./contract/input"
+export type {UiWidgetsEditor} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function Editor(props: EditorProps): JSX.Element {
+export default function Editor(props: Contract.Input): Contract.Output {
   const ownedModel = useMemo(() => new CodeEditorModel({value: props.value, readOnly: props.readOnly}), [])
   const model = props.model ?? ownedModel
   return <section

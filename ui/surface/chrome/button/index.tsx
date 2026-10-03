@@ -4,14 +4,13 @@
 
 @packageDocumentation
 */
-import type {SurfaceButtonProps} from "./contract/input.ts"
+import type {UiSurfacesChromeButton as Contract} from "./contract"
 import Button from "@ui-buttons/button"
 
-export type {SurfaceButtonProps} from "./contract/input"
+export type {UiSurfacesChromeButton} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function SurfaceButton(props: SurfaceButtonProps): JSX.Element {
+export default function SurfaceButton(props: Contract.Input): Contract.Output {
   return <Button
     label={props.label}
     iconSrc={props.iconSrc}

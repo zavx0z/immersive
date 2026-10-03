@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {SurfaceOwnerProps} from "./contract/input.ts"
+import type {UiSurfacesChromeOwner as Contract} from "./contract"
 
-export type {SurfaceOwnerProps} from "./contract/input"
+export type {UiSurfacesChromeOwner} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function SurfaceOwner(props: SurfaceOwnerProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function SurfaceOwner(props: Contract.Input): Contract.Output {
   return <section
     aria-label={props.label}
     data-active={props.active === true ? "true" : undefined}

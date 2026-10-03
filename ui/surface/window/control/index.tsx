@@ -6,13 +6,12 @@ WindowControl — элемент управления видимостью Windo
 @packageDocumentation
 */
 import Button from "@ui-buttons/button"
-import type {WindowControlProps} from "./contract/input.ts"
+import type {UiSurfacesWindowControl as Contract} from "./contract"
 
-export type {WindowControlProps} from "./contract/input"
+export type {UiSurfacesWindowControl} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function WindowControl(props: WindowControlProps): JSX.Element {
+export default function WindowControl(props: Contract.Input): Contract.Output {
   return <Button
     label={props.label}
     aria-label={props.label}

@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {SurfaceTitleProps} from "./contract/input.ts"
+import type {UiSurfacesChromeTitle as Contract} from "./contract"
 
-export type {SurfaceTitleProps} from "./contract/input"
+export type {UiSurfacesChromeTitle} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function SurfaceTitle(props: SurfaceTitleProps): JSX.Element {
+export default function SurfaceTitle(props: Contract.Input): Contract.Output {
   const variant = props.variant ?? "title"
   return <span
     style={css`

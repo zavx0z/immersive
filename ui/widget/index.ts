@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 export {default as Editor} from "@ui-widgets/editor"
-export type {EditorProps} from "@ui-widgets/editor"
+export type {UiWidgetsEditor} from "@ui-widgets/editor"
 export {default as Inspector} from "@ui-widgets/inspector"
 export type {InspectorCategory, InspectorAction, InspectorContextRow, InspectorContext, InspectorProps} from "@ui-widgets/inspector"
 export {default as Terminal} from "@ui-widgets/terminal"

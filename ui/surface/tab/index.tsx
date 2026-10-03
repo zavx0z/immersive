@@ -12,18 +12,17 @@ import {useState} from "@zavx0z/component"
 import {observeElementLayout} from "@zavx0z/dom/geometry"
 import {readElementLayoutRect} from "@zavx0z/dom/geometry"
 import {hasSlot} from "@zavx0z/component/slot-presence"
-import type {TabProps} from "./contract/input.ts"
+import type {UiSurfacesTab as Contract} from "./contract"
 import {dockTab} from "./src/placement.ts"
 import {readTabPosition} from "./src/placement.ts"
 import {tabRect} from "./src/placement.ts"
 import type {TabArea} from "./src/placement.ts"
 import type {TabPosition} from "./src/placement.ts"
 
-export type {TabProps} from "./contract/input"
+export type {UiSurfacesTab} from "./contract"
 
-import type {JSX} from "@jsx-compiler/session"
 
-export default function Tab(props: TabProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function Tab(props: Contract.Input): Contract.Output {
   const supplied = hasSlot()
   if (!supplied && !props.label?.trim()) throw new TypeError("Tab requires label or slot content")
   const caption = supplied ? "" : props.label
