@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {resolve} from "node:path"
+import {dirname, resolve} from "node:path"
 import {
   Parameter,
   createNodeTree,
@@ -95,10 +95,8 @@ test("[NODETREE-003] serialization preserves stable ids, values and relations", 
 })
 
 test("[NODETREE-004] NodeTree остаётся headless и предметно-нейтральным", async () => {
-  const packageJson = await Bun.file(resolve(packageRoot, "package.json")).json()
-  expect(packageJson.dependencies ?? {}).toEqual({})
-
-  const source = await productionSource()
+  const owners = await dependencyOwners(packageRoot)
+  const source = (await Promise.all(owners.map(owner => productionSource(owner)))).join("\n")
   const forbiddenImports = [
     "@engine/",
     "@metafor/",
@@ -149,11 +147,11 @@ function createFixture() {
   return {tree, sourceValue, targetValue}
 }
 
-async function productionSource(): Promise<string> {
+async function productionSource(owner = packageRoot): Promise<string> {
   const sources: string[] = []
-  for await (const relativePath of new Bun.Glob("**/*.ts").scan({cwd: packageRoot})) {
-    if (relativePath.startsWith("tests/")) continue
-    sources.push(await Bun.file(resolve(packageRoot, relativePath)).text())
+  for await (const relativePath of new Bun.Glob("**/*.ts").scan({cwd: owner})) {
+    if (/(?:^|\/)(?:spec|test|tests|node_modules)(?:\/|$)/u.test(relativePath)) continue
+    sources.push(await Bun.file(resolve(owner, relativePath)).text())
   }
   return sources.join("\n")
 }
@@ -161,4 +159,26 @@ async function productionSource(): Promise<string> {
 function importSpecifiers(source: string): readonly string[] {
   return [...source.matchAll(/(?:from\s+|import\()\s*["']([^"']+)["']/gu)]
     .map(match => match[1]!)
+}
+
+/** Проверяет весь runtime-граф модели, включая самостоятельных владельцев значений. */
+async function dependencyOwners(start: string): Promise<string[]> {
+  const owners = new Set<string>()
+  const pending = [start]
+  while (pending.length > 0) {
+    const owner = pending.pop()!
+    if (owners.has(owner)) continue
+    owners.add(owner)
+    const manifest = await Bun.file(resolve(owner, "package.json")).json()
+    for (const name of Object.keys({...manifest.dependencies, ...manifest.peerDependencies})) {
+      let dependency = dirname(Bun.resolveSync(name, owner))
+      while (!await Bun.file(resolve(dependency, "package.json")).exists()) {
+        const parent = dirname(dependency)
+        if (parent === dependency) throw new Error(`Не найден владелец зависимости ${name}`)
+        dependency = parent
+      }
+      pending.push(dependency)
+    }
+  }
+  return [...owners]
 }

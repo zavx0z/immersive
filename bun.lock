@@ -974,6 +974,21 @@
       "name": "@ui-fields-matrix-value/update-matrix-value",
       "version": "0.0.0",
     },
+    "node-values/equal": {
+      "name": "@node-values/equal",
+      "version": "0.0.0",
+      "dependencies": {
+        "@node-values/own": "workspace:*",
+      },
+    },
+    "node-values/own": {
+      "name": "@node-values/own",
+      "version": "0.0.0",
+    },
+    "node-values/type": {
+      "name": "@node-values/type",
+      "version": "0.0.0",
+    },
     "nodes": {
       "name": "@immersive/nodes",
       "version": "0.0.0",
@@ -1128,6 +1143,12 @@
     "nodes/tree": {
       "name": "@nodes/tree",
       "version": "0.0.0",
+      "dependencies": {
+        "@node-values/equal": "workspace:*",
+        "@node-values/own": "workspace:*",
+        "@node-values/type": "workspace:*",
+        "@nodes/parameter-store": "workspace:*",
+      },
     },
     "number/scrub/resolve-number-drag-range": {
       "name": "@ui-fields-number-scrub/resolve-number-drag-range",
@@ -1226,6 +1247,15 @@
     "number/value/valid-number-step": {
       "name": "@ui-fields-number-value/valid-number-step",
       "version": "0.0.0",
+    },
+    "parameter-store": {
+      "name": "@nodes/parameter-store",
+      "version": "0.0.0",
+      "dependencies": {
+        "@node-values/equal": "workspace:*",
+        "@node-values/own": "workspace:*",
+        "@node-values/type": "workspace:*",
+      },
     },
     "renderer": {
       "name": "@immersive/renderer",
@@ -2475,9 +2505,17 @@
 
     "@mermaid-js/parser": ["@mermaid-js/parser@1.2.1", "", { "dependencies": { "@chevrotain/types": "~11.1.2" } }, "sha512-n12NohV3mrUyUL2o93IgG/ifeW9FTyeJn3zDxkhwa8MJ9Fxg3HQMlA3RiGmD/3UnJvheztkjjQAjA2T4LmUcpw=="],
 
+    "@node-values/equal": ["@node-values/equal@workspace:node-values/equal"],
+
+    "@node-values/own": ["@node-values/own@workspace:node-values/own"],
+
+    "@node-values/type": ["@node-values/type@workspace:node-values/type"],
+
     "@nodes/layout": ["@nodes/layout@workspace:nodes/layout"],
 
     "@nodes/node": ["@nodes/node@workspace:nodes/node"],
+
+    "@nodes/parameter-store": ["@nodes/parameter-store@workspace:parameter-store"],
 
     "@nodes/parameters": ["@nodes/parameters@workspace:nodes/parameter"],
 

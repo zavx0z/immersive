@@ -17,5 +17,11 @@
     "typecheck": "tsc --project tsconfig.json --pretty false",
     "test": "bun test --parallel tests",
     "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@node-values/own": "workspace:*",
+    "@node-values/equal": "workspace:*",
+    "@node-values/type": "workspace:*",
+    "@nodes/parameter-store": "workspace:*"
   }
 }
