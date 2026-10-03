@@ -12,13 +12,12 @@ export declare namespace NodesParametersVector {
 
   @property id - Идентификатор параметра внутри ноды.
 
-  @property nodeId - Идентификатор ноды для адресов всех сокетов строки.
+  @property nodeId - Адрес ноды параметра.
+  Автор задаёт тот же адрес у Socket, назначенных слотам строки.
 
-  @property [sockets] - Адресуемые сокеты параметра с уже выбранными сторонами.
+  @remarks Socket передаются JSX-содержимым в именованные слоты `left` и `right`.
 
   @property [connected=false] - Скрывает поле, сохраняя строку, подпись и сокеты.
-
-  @property [onSocketActivate] - Получает исходный идентификатор сокета.
 
   @property value - От двух до четырёх числовых компонент.
 
@@ -47,5 +46,7 @@ export declare namespace NodesParametersVector {
     readonly onChange?: VectorFieldProps["onChange"]
   }
 
-  type Output = NodesParameters.Output & JSX.Element
+  interface Slots extends NodesParameters.Slots {}
+
+  type Output = NodesParameters.Output & JSX.Element<Slots>
 }

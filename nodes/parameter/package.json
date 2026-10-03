@@ -21,7 +21,12 @@
     "@jsx-compiler/bun": "workspace:*",
     "@nodes/parameter-projection": "workspace:*",
     "@nodes/parameter-presentation": "workspace:*",
-    "@ui-fields/text-field": "workspace:*"
+    "@ui-fields/text-field": "workspace:*",
+    "@socket-values/key": "workspace:*",
+    "@zavx0z/component": "workspace:*",
+    "@zavx0z/dom": "workspace:*",
+    "@zavx0z/space": "workspace:*",
+    "@zavx0z/template": "workspace:*"
   },
   "dependencies": {
     "@nodes-parameters/text": "workspace:*",

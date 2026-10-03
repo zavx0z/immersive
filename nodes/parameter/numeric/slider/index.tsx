@@ -13,7 +13,7 @@ import type {NodesParametersSlider as Contract} from "./contract"
 export type {NodesParametersSlider} from "./contract"
 
 /**
-Авторский контракт SliderParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт SliderParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property min - Обязательная нижняя граница диапазона.
 
@@ -27,15 +27,21 @@ export default function SliderParameter(props: Contract.Input): Contract.Output 
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="slider"
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <SliderField
       value={props.value}
       min={props.min}

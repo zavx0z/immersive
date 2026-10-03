@@ -9,7 +9,7 @@ export declare namespace NodesParametersLayout {
     readonly fieldBeforeLabel?: boolean | undefined
   }
 
-  interface Slots {
+  interface Slots extends NodesParameters.Slots {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 

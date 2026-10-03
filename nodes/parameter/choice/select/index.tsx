@@ -13,7 +13,7 @@ import type {NodesParametersSelect as Contract} from "./contract"
 export type {NodesParametersSelect} from "./contract"
 
 /**
-Авторский контракт SelectParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт SelectParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property [state] - Передаёт особое состояние выбора публичному SelectField.
 */
@@ -25,15 +25,21 @@ export default function SelectParameter(props: Contract.Input): Contract.Output 
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="select"
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <SelectField
       value={props.value}
       options={props.options}

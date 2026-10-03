@@ -9,7 +9,7 @@ const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
-  sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
+  sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
 }))
 
 const {default: Socket} = await import("@nodes/sockets")

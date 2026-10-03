@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/choice/cycle/index.tsx",
     expected: {
       "nodes/parameter/choice/cycle/index.tsx#CycleParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/cycle-field/index.tsx#CycleField"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/cycle/index.tsx#CycleField"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,20 +27,16 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/button/button/index.tsx#Button": {
+      "ui/component/button/basic/index.tsx#Button": {
         uses: [],
         elements: ["button","img","span"],
       },
-      "ui/field/cycle-field/index.tsx#CycleField": {
-        uses: ["ui/button/button/index.tsx#Button","ui/field/cycle-field/src/helpers.tsx#CycleOption"],
+      "ui/component/field/cycle/index.tsx#CycleField": {
+        uses: ["ui/component/button/basic/index.tsx#Button","ui/component/field/cycle/src/helpers.tsx#CycleOption"],
         elements: ["div","span"],
       },
-      "ui/field/cycle-field/src/helpers.tsx#CycleOption": {
-        uses: ["ui/button/button/index.tsx#Button"],
+      "ui/component/field/cycle/src/helpers.tsx#CycleOption": {
+        uses: ["ui/component/button/basic/index.tsx#Button"],
         elements: [],
       },
     },

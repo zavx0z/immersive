@@ -25,7 +25,7 @@ describe.each(kinds.map(kind => ({name: kind, props: {kind, id: "value", nodeId:
     expect(socket.getAttribute("data-socket-id"), "Сокет сохраняет собственный адрес").toBe(props.id)
     expect(socket.getAttribute("data-socket-kind"), "Вид выбирает предустановку").toBe(props.kind)
     expect(socket.textContent, "Строка показывает авторскую подпись").toContain(props.label)
-    expect(socket.ownerDocument.querySelector('[data-socket-id="value"]'), "Сокет смонтирован в принимающий Document").toBe(socket)
+    expect(socket.ownerDocument?.querySelector('[data-socket-id="value"]'), "Сокет смонтирован в принимающий Document").toBe(socket)
     expect(element.querySelectorAll("canvas"), "Сокет не создаёт собственного Canvas").toHaveLength(0)
   })
 })

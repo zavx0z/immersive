@@ -6,8 +6,7 @@ import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElem
 import {Parameter as ParameterModel, type ParameterSnapshot} from "@nodes/tree"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {NodesParameters} from "@nodes/parameters/contract"
-type ParameterEndpoint = NonNullable<NodesParameters.Input["sockets"]>[number]
+import type {ParameterEndpoint} from "./parameter-endpoint"
 import type {NodesParameterProjection} from "@nodes/parameter-projection"
 type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]
 type ParameterProps = NodesParameterProjection.Input
@@ -17,27 +16,28 @@ const root = resolve(import.meta.dir, "../../../..")
 Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
-  sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
+  sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
 }))
 
 const {default: Parameter} = await import("@nodes/parameter-projection")
 const {default: resolveProjectedParameterPresentation} = await import("@nodes/parameter-presentation")
+const authored = await import("./authored.fixture")
 const components = {
-  text: (await import("@nodes-parameters/text")).default,
-  number: (await import("@nodes-parameters/number")).default,
-  slider: (await import("@nodes-parameters/slider")).default,
-  checkbox: (await import("@nodes-parameters/checkbox")).default,
-  switch: (await import("@nodes-parameters/switch")).default,
-  select: (await import("@nodes-parameters/select")).default,
-  cycle: (await import("@nodes-parameters/cycle")).default,
-  "option-group": (await import("@nodes-parameters/option-group")).default,
-  color: (await import("@nodes-parameters/color")).default,
-  vector: (await import("@nodes-parameters/vector")).default,
-  matrix: (await import("@nodes-parameters/matrix")).default,
-  path: (await import("@nodes-parameters/path")).default,
-  reference: (await import("@nodes-parameters/reference")).default,
-  collection: (await import("@nodes-parameters/collection")).default,
-  output: (await import("@nodes-parameters/output")).default,
+  "text": authored.AuthoredText,
+  "number": authored.AuthoredNumber,
+  "slider": authored.AuthoredSlider,
+  "checkbox": authored.AuthoredCheckbox,
+  "switch": authored.AuthoredSwitch,
+  "select": authored.AuthoredSelect,
+  "cycle": authored.AuthoredCycle,
+  "option-group": authored.AuthoredOptionGroup,
+  "color": authored.AuthoredColor,
+  "vector": authored.AuthoredVector,
+  "matrix": authored.AuthoredMatrix,
+  "path": authored.AuthoredPath,
+  "reference": authored.AuthoredReference,
+  "collection": authored.AuthoredCollection,
+  "output": authored.AuthoredOutput,
 }
 
 test("[PARAMETERS-PROJECTION-001] все виды из модели используют ту же структуру и CSS, что готовые параметры", () => {
@@ -192,8 +192,8 @@ test("[PARAMETERS-PROJECTION-003] готовые параметры приним
   } finally {
     mounted.dispose()
   }
-  expect(() => mount(components.number, {
-    id: "value", nodeId: "node", label: "Число", value: 2,
+  expect(() => mount(Parameter, {
+    snapshot: model.snapshot(), nodeId: "node",
     sockets: [
       {id: "same", direction: "input", side: "left", kind: "custom", label: "A"},
       {id: "same", direction: "output", side: "right", kind: "custom", label: "B"},

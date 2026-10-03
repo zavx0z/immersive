@@ -87,7 +87,7 @@ test.each([
     setPointerCapture(id: number) { captures.add(id) }, releasePointerCapture(id: number) { captures.delete(id) }, hasPointerCapture: (id: number) => captures.has(id),
   } as unknown as HTMLCanvasElement
   const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/font/jetbrains-mono-bold.ttf")).arrayBuffer())
-  const theme = await Bun.file(resolve(workspace, "ui/theme/theme.css")).text()
+  const theme = await Bun.file(resolve(workspace, "ui/component/theme/theme.css")).text()
   const runtime = await createDocumentSpaceRuntimeWithSeams({canvas, document, font, styleSheets: [theme]}, {
     createEngineRenderer: () => ({setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, releaseDisplay() {}, renderComposition(composition: Parameters<Renderer["renderComposition"]>[0]) {
       composition.space.updateWorldMatrix(true, {parents: true})
@@ -201,7 +201,7 @@ test("real createRoot App keeps two Editor projections isolated across every sel
   const alpha = new CodeEditorModel({value: 'const label = "Alpha"\nlet tick = 0\n'})
   const beta = new CodeEditorModel({value: 'const label = "Beta"\nlet tick = 0\n'})
   const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/font/jetbrains-mono-bold.ttf")).arrayBuffer())
-  const theme = await Bun.file(resolve(workspace, "ui/theme/theme.css")).text()
+  const theme = await Bun.file(resolve(workspace, "ui/component/theme/theme.css")).text()
   const proxies = {input: new NativeProxy(), select: new NativeProxy(), textarea: new NativeProxy()}
   const rect = {left: 0, top: 0, width: 600, height: 280}
   const frames = new Map<number, () => void>()

@@ -13,7 +13,7 @@ import type {NodesParametersCheckbox as Contract} from "./contract"
 export type {NodesParametersCheckbox} from "./contract"
 
 /**
-Авторский контракт CheckboxParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт CheckboxParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property [indeterminate] - Смешанное отображение; checked остаётся логическим значением.
 */
@@ -26,15 +26,21 @@ export default function CheckboxParameter(props: Contract.Input): Contract.Outpu
     spacingBefore={props.spacingBefore}
     kind="checkbox"
     fieldBeforeLabel
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <CheckboxField
       checked={props.checked}
       indeterminate={props.indeterminate}

@@ -1,5 +1,6 @@
 /** Готовый параметр сохраняет общий адрес и сокеты при подключении. */
 import {afterAll, describe, expect, test} from "bun:test"
+import Socket from "@nodes/sockets"
 import {createHeadless} from "@immersive/headless"
 import Component, {type NodesParametersSwitch} from "@nodes-parameters/switch"
 
@@ -10,16 +11,28 @@ describe.each([false, true].map(connected => ({
     nodeId: "source",
     label: "Значение",
     connected,
-    sockets: [{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}],
     checked: false,
   } satisfies NodesParametersSwitch.Input,
-})))("$name", async ({props}) => {
+  slots: {
+    left: <Socket
+      slot="left"
+      id="in"
+      nodeId="source"
+      kind="float"
+      direction="input"
+      side="left"
+      label="Вход"
+    />,
+  },
+})))("$name", async ({props, slots}) => {
   const headless = createHeadless({width: 400, height: 500})
   afterAll(() => headless.dispose())
   const element = await headless.render(
     <Component
       {...props}
-    />
+    >
+      {slots.left}
+    </Component>
   )
   test("Общая строка параметра", () => {
     expect(element.getAttribute("data-parameter-id"), "Адрес параметра сохраняется").toBe(props.id)

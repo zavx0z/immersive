@@ -13,6 +13,7 @@ import type {NodesParametersLayout as Contract} from "./contract"
 import type {NodesParameters} from "@nodes/parameters/contract"
 type ParameterBaseProps = NodesParameters.Input
 export type {NodesParametersLayout} from "./contract"
+import {hasSlot} from "@zavx0z/component/slot-presence"
 import {ParameterEndpoints} from "./src/endpoint"
 import {ParameterLabel} from "./src/label"
 
@@ -22,18 +23,18 @@ import {ParameterLabel} from "./src/label"
 */
 export default function ParameterLayout(props: Contract.Input): Contract.Output {
   validateBaseProps(props)
-  const left = (props.sockets ?? []).filter(socket => socket.side === "left")
-  const right = (props.sockets ?? []).filter(socket => socket.side === "right")
+  const left = hasSlot("left")
+  const right = hasSlot("right")
   const connected = props.connected === true
   const leadingField = props.fieldBeforeLabel === true && !connected
   const fieldOwnsLabel = props.fieldOwnsLabel === true && !connected
-  const insetField = fieldOwnsLabel && left.length > 0 && right.length === 0
+  const insetField = fieldOwnsLabel && left && !right
   return <div
     role="group"
     aria-label={props.label}
     data-parameter-id={props.id}
     data-field-kind={props.kind}
-    data-socket-count={(props.sockets ?? []).length}
+    data-has-sockets={left || right ? "true" : "false"}
     data-connected={connected ? "true" : undefined}
     data-label-hidden={props.labelHidden === true ? "true" : undefined}
     data-leading-checkbox={leadingField ? "true" : undefined}
@@ -83,11 +84,10 @@ export default function ParameterLayout(props: Contract.Input): Contract.Output 
     `}
   >
     <ParameterEndpoints
-      nodeId={props.nodeId}
       side="left"
-      sockets={left}
-      onActivate={props.onSocketActivate}
-    />
+    >
+      <slot name="left" />
+    </ParameterEndpoints>
     <ParameterLabel
       label={props.label}
       connected={connected}
@@ -122,20 +122,14 @@ export default function ParameterLayout(props: Contract.Input): Contract.Output 
       title={props.title}
     /> : null}
     <ParameterEndpoints
-      nodeId={props.nodeId}
       side="right"
-      sockets={right}
-      onActivate={props.onSocketActivate}
-    />
+    >
+      <slot name="right" />
+    </ParameterEndpoints>
   </div>
 }
 
 function validateBaseProps(props: ParameterBaseProps): void {
   if (props.id.trim().length === 0) throw new TypeError("Parameter id must be non-empty")
   if (props.nodeId.trim().length === 0) throw new TypeError("Parameter nodeId must be non-empty")
-  const ids = new Set<string>()
-  for (const socket of props.sockets ?? []) {
-    if (ids.has(socket.id)) throw new Error(`Parameter ${props.id} Socket id must be unique: ${socket.id}`)
-    ids.add(socket.id)
-  }
 }

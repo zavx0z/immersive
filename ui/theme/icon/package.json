@@ -1,0 +1,47 @@
+{
+  "name": "@ui-themes/icons",
+  "label": "icon",
+  "version": "0.0.0",
+  "description": "SVG-значки и их создание с общим протоколом SVG data URL",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts",
+    "./contract": "./contract/index.ts"
+  },
+  "dependencies": {
+    "@ui-themes-icons/apply": "workspace:*",
+    "@ui-themes-icons/arrow-down": "workspace:*",
+    "@ui-themes-icons/arrow-up": "workspace:*",
+    "@ui-themes-icons/breakpoint": "workspace:*",
+    "@ui-themes-icons/chevron-down": "workspace:*",
+    "@ui-themes-icons/chevron-right": "workspace:*",
+    "@ui-themes-icons/clear": "workspace:*",
+    "@ui-themes-icons/close": "workspace:*",
+    "@ui-themes-icons/collapse-all": "workspace:*",
+    "@ui-themes-icons/compose": "workspace:*",
+    "@ui-themes-icons/database": "workspace:*",
+    "@ui-themes-icons/execution-point": "workspace:*",
+    "@ui-themes-icons/expand": "workspace:*",
+    "@ui-themes-icons/expand-all": "workspace:*",
+    "@ui-themes-icons/folder": "workspace:*",
+    "@ui-themes-icons/home": "workspace:*",
+    "@ui-themes-icons/image": "workspace:*",
+    "@ui-themes-icons/language": "workspace:*",
+    "@ui-themes-icons/minus": "workspace:*",
+    "@ui-themes-icons/picker": "workspace:*",
+    "@ui-themes-icons/pin": "workspace:*",
+    "@ui-themes-icons/plus": "workspace:*",
+    "@ui-themes-icons/resource": "workspace:*",
+    "@ui-themes-icons/run": "workspace:*",
+    "@ui-themes-icons/search": "workspace:*",
+    "@ui-themes-icons/select-opened-item": "workspace:*",
+    "@ui-themes-icons/settings": "workspace:*",
+    "@ui-themes-icons/visibility-on": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

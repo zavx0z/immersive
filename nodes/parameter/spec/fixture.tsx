@@ -1,3 +1,4 @@
+import Socket from "@nodes/sockets"
 import TextField from "@ui-fields/text-field"
 import {TextParameter, NumberParameter, SliderParameter, CheckboxParameter, SwitchParameter, SelectParameter, CycleParameter, OptionGroupParameter, ColorParameter, VectorParameter, MatrixParameter, PathParameter, ReferenceParameter, CollectionParameter, OutputParameter, ParameterLayout} from "@nodes/parameters"
 
@@ -9,16 +10,34 @@ export default function ParameterExamples(props: Readonly<{connected: boolean}>)
       nodeId="source"
       label="TextParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </TextParameter>
     <NumberParameter
       value={2.5}
       id="number"
       nodeId="source"
       label="NumberParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </NumberParameter>
     <SliderParameter
       value={.4}
       min={0}
@@ -27,24 +46,51 @@ export default function ParameterExamples(props: Readonly<{connected: boolean}>)
       nodeId="source"
       label="SliderParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </SliderParameter>
     <CheckboxParameter
       checked={true}
       id="checkbox"
       nodeId="source"
       label="CheckboxParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </CheckboxParameter>
     <SwitchParameter
       checked={false}
       id="switch"
       nodeId="source"
       label="SwitchParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </SwitchParameter>
     <SelectParameter
       value="first"
       options={[{key: "first", value: "first", label: "Первый"}]}
@@ -52,8 +98,17 @@ export default function ParameterExamples(props: Readonly<{connected: boolean}>)
       nodeId="source"
       label="SelectParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </SelectParameter>
     <CycleParameter
       value="first"
       options={[{key: "first", value: "first", label: "Первый"}]}
@@ -61,8 +116,17 @@ export default function ParameterExamples(props: Readonly<{connected: boolean}>)
       nodeId="source"
       label="CycleParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </CycleParameter>
     <OptionGroupParameter
       value="first"
       options={[{key: "first", value: "first", label: "Первый"}]}
@@ -70,48 +134,102 @@ export default function ParameterExamples(props: Readonly<{connected: boolean}>)
       nodeId="source"
       label="OptionGroupParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </OptionGroupParameter>
     <ColorParameter
       value={{r: .25, g: .55, b: .85, a: 1}}
       id="color"
       nodeId="source"
       label="ColorParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </ColorParameter>
     <VectorParameter
       value={[1, 2, 3]}
       id="vector"
       nodeId="source"
       label="VectorParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </VectorParameter>
     <MatrixParameter
       value={[[1, 0], [0, 1]]}
       id="matrix"
       nodeId="source"
       label="MatrixParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </MatrixParameter>
     <PathParameter
       value="/assets/example.png"
       id="path"
       nodeId="source"
       label="PathParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </PathParameter>
     <ReferenceParameter
       value={{id: "object-a", label: "Объект", kind: "object"}}
       id="reference"
       nodeId="source"
       label="ReferenceParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </ReferenceParameter>
     <CollectionParameter
       items={[{id: "first", label: "Первый"}]}
       selectedId="first"
@@ -119,26 +237,52 @@ export default function ParameterExamples(props: Readonly<{connected: boolean}>)
       nodeId="source"
       label="CollectionParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </CollectionParameter>
     <OutputParameter
       value={{message: "Готово"}}
       id="output"
       nodeId="source"
       label="OutputParameter"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
-    />
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </OutputParameter>
     <ParameterLayout
       id="custom"
       nodeId="source"
       label="Пользовательский параметр"
       kind="custom"
       connected={props.connected}
-      sockets={[{id: "in", kind: "float", direction: "input", side: "left", label: "Вход"}]}
     >
       <TextField
         value="Содержимое"
+      />
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="float"
+        direction="input"
+        side="left"
+        label="Вход"
       />
     </ParameterLayout>
   </section>

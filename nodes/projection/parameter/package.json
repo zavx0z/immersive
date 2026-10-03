@@ -1,0 +1,36 @@
+{
+  "name": "@nodes/parameter-projection",
+  "label": "Проекция Parameter",
+  "version": "0.0.0",
+  "description": "Проецирует заимствованный Store или снимок Parameter в готовое поле с сокетами",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "dependencies": {
+    "@nodes/parameters": "workspace:*",
+    "@nodes/metadata": "workspace:*",
+    "@nodes/parameter-presentation": "workspace:*",
+    "@nodes/parameter-metrics": "workspace:*",
+    "@socket-values/key": "workspace:*",
+    "@socket-values/side": "workspace:*",
+    "@socket-values/resolve-kind": "workspace:*",
+    "@socket-values/resolve-shape": "workspace:*",
+    "@zavx0z/component": "workspace:*",
+    "@nodes/sockets": "workspace:*"
+  },
+  "devDependencies": {
+    "@nodes/tree": "workspace:*",
+    "@node-values/own": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@nodes/parameter-store": "workspace:*",
+    "@zavx0z/dom": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

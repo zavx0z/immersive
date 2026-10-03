@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/composite/matrix/index.tsx",
     expected: {
       "nodes/parameter/composite/matrix/index.tsx#MatrixParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/matrix-field/index.tsx#MatrixField"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/matrix/index.tsx#MatrixField"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,23 +27,19 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/field/field-group/index.tsx#FieldGroup": {
+      "ui/component/field/group/index.tsx#FieldGroup": {
         uses: [],
         elements: ["div","span"],
       },
-      "ui/field/matrix-field/index.tsx#MatrixField": {
-        uses: ["ui/field/matrix-field/src/helpers.tsx#MatrixRow"],
+      "ui/component/field/matrix/index.tsx#MatrixField": {
+        uses: ["ui/component/field/matrix/src/helpers.tsx#MatrixRow"],
         elements: ["div","span"],
       },
-      "ui/field/matrix-field/src/helpers.tsx#MatrixRow": {
-        uses: ["ui/field/field-group/index.tsx#FieldGroup","ui/field/number-field/index.tsx#NumberField"],
+      "ui/component/field/matrix/src/helpers.tsx#MatrixRow": {
+        uses: ["ui/component/field/group/index.tsx#FieldGroup","ui/component/field/number/index.tsx#NumberField"],
         elements: [],
       },
-      "ui/field/number-field/index.tsx#NumberField": {
+      "ui/component/field/number/index.tsx#NumberField": {
         uses: [],
         elements: ["button","div","input","span"],
       },

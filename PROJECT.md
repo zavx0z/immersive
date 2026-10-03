@@ -138,7 +138,7 @@ Browser составляет Component, DOM, Renderer, Space и WebGPU чере�
 App объявляет стили обычными `<link rel="stylesheet" href="…" />` рядом со Space.
 Явные links полностью задают author stylesheets в порядке дерева. Только при их
 отсутствии Browser подключает отдельный `./theme.css` приложения. Сборка выбирает
-его исходник; стандартная тема остаётся публичным `ui/theme/theme.css`.
+его исходник; стандартная тема остаётся публичным `@zavx0z/ui/theme/theme.css`.
 Browser создаёт настоящие native links, читает загруженный CSSOM и освобождает
 свои links при удалении декларации или unmount. Смена href и порядка деклараций
 сохраняет identity остальных links и смонтированного приложения.
@@ -168,7 +168,7 @@ transport, но не меняют стандартный Selection API. Interpre
 только связью с файлами, Git, debugger и жизненным циклом процессов.
 
 Договоры: [DOM](dom/selection.md), [Renderer](renderer/html/text-selection.md),
-[Browser](browser/clipboard.md), [редакторская модель](code-editor-model/README.md).
+[Browser](browser/clipboard.md), [редакторская модель](tech/text-editor/README.md).
 
 ## Пакеты
 

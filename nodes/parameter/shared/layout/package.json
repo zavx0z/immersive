@@ -12,7 +12,8 @@
   "dependencies": {
     "@nodes/sockets": "workspace:*",
     "@socket-values/metrics": "workspace:*",
-    "@nodes/parameter-metrics": "workspace:*"
+    "@nodes/parameter-metrics": "workspace:*",
+    "@zavx0z/component": "workspace:*"
   },
   "devDependencies": {
     "@nodes/parameters": "workspace:*",

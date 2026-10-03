@@ -9,7 +9,7 @@ import type {LinkProps} from "@immersive/nodes/link"
 import type {LinkRoute} from "@immersive/nodes/routing/link-path"
 
 const rootPath = resolve(import.meta.dir, "../..")
-Bun.plugin(createJsxBunPlugin({cwd: rootPath, persistent: true, sourceRoots: [resolve(rootPath, "parameter-projection"), resolve(rootPath, "nodes"), resolve(rootPath, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: rootPath, persistent: true, sourceRoots: [resolve(rootPath, "nodes/projection/parameter"), resolve(rootPath, "nodes"), resolve(rootPath, "ui")]}))
 const {Link} = await import("@immersive/nodes/link")
 const {projectLinkMarkers} = await import("@immersive/nodes/routing/link-path")
 const {Arrow} = await import("@immersive/nodes/marker/arrow")

@@ -13,7 +13,7 @@ import type {NodesParametersVector as Contract} from "./contract"
 export type {NodesParametersVector} from "./contract"
 
 /**
-Авторский контракт VectorParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт VectorParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property value - От двух до четырёх числовых компонент.
 
@@ -27,15 +27,21 @@ export default function VectorParameter(props: Contract.Input): Contract.Output 
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="vector"
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <VectorField
       value={props.value}
       axes={props.axes}

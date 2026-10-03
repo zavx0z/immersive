@@ -13,7 +13,7 @@ import type {NodesParametersSwitch as Contract} from "./contract"
 export type {NodesParametersSwitch} from "./contract"
 
 /**
-Авторский контракт SwitchParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт SwitchParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property onChange - Запрашивает новое checked без записи во внешний Store.
 */
@@ -25,15 +25,21 @@ export default function SwitchParameter(props: Contract.Input): Contract.Output 
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="switch"
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <SwitchField
       checked={props.checked}
       disabled={props.disabled}

@@ -12,13 +12,12 @@ export declare namespace NodesParametersSelect {
 
   @property id - Идентификатор параметра внутри ноды.
 
-  @property nodeId - Идентификатор ноды для адресов всех сокетов строки.
+  @property nodeId - Адрес ноды параметра.
+  Автор задаёт тот же адрес у Socket, назначенных слотам строки.
 
-  @property [sockets] - Адресуемые сокеты параметра с уже выбранными сторонами.
+  @remarks Socket передаются JSX-содержимым в именованные слоты `left` и `right`.
 
   @property [connected=false] - Скрывает поле, сохраняя строку, подпись и сокеты.
-
-  @property [onSocketActivate] - Получает исходный идентификатор сокета.
 
   @property value - Значение выбранного варианта.
 
@@ -44,5 +43,7 @@ export declare namespace NodesParametersSelect {
     readonly onChange?: SelectFieldProps["onChange"]
   }
 
-  type Output = NodesParameters.Output & JSX.Element
+  interface Slots extends NodesParameters.Slots {}
+
+  type Output = NodesParameters.Output & JSX.Element<Slots>
 }

@@ -5,9 +5,9 @@ import {createDocumentRenderer} from "@renderer/html"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 
 const root = resolve(import.meta.dir, "../../..")
-Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes"), resolve(root, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")]}))
 const {mountMixedNodes} = await import("./composition.fixture.tsx")
-const theme = await Bun.file(resolve(root, "ui/theme/theme.css")).text()
+const theme = await Bun.file(resolve(root, "ui/component/theme/theme.css")).text()
 
 function click(owner: Element, label: string) {
   const button = [...owner.querySelectorAll("button")].find(button => button.getAttribute("aria-label") === label || button.textContent === label)

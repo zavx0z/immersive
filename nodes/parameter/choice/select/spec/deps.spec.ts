@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/choice/select/index.tsx",
     expected: {
       "nodes/parameter/choice/select/index.tsx#SelectParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/select-field/index.tsx#SelectField"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/select/index.tsx#SelectField"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,15 +27,11 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/field/select-field/index.tsx#SelectField": {
-        uses: ["ui/field/select-field/src/helpers.tsx#SelectOption"],
+      "ui/component/field/select/index.tsx#SelectField": {
+        uses: ["ui/component/field/select/src/helpers.tsx#SelectOption"],
         elements: ["label","optgroup","option","select","span"],
       },
-      "ui/field/select-field/src/helpers.tsx#SelectOption": {
+      "ui/component/field/select/src/helpers.tsx#SelectOption": {
         uses: [],
         elements: ["option"],
       },

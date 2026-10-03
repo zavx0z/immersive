@@ -104,7 +104,7 @@ export default function ParameterNode(props: Contract.Input): Contract.Output {
         display: none;
       }
 
-      &[data-collapsed="true"] [data-parameter-id][data-socket-count="0"] {
+      &[data-collapsed="true"] [data-parameter-id][data-has-sockets="false"] {
         display: none;
       }
 

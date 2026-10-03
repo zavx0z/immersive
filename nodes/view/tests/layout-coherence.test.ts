@@ -8,7 +8,7 @@ import createJsxBunPlugin from "@jsx-compiler/bun"
 
 const root = resolve(import.meta.dir, "../../..")
 setDefaultTimeout(60_000)
-Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes"), resolve(root, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")]}))
 
 const {createNodeTreeLayout, StaleNodeTreeLayoutError} = await import("@immersive/nodes/view/tree")
 const {createLayoutGraph, graphLayout, mountLayoutFixture, textParameter} = await import("./layout-coherence.fixture.tsx")

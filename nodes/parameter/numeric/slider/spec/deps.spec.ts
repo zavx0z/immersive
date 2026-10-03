@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/numeric/slider/index.tsx",
     expected: {
       "nodes/parameter/numeric/slider/index.tsx#SliderParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/slider-field/index.tsx#SliderField"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/slider/index.tsx#SliderField"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,11 +27,7 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/field/slider-field/index.tsx#SliderField": {
+      "ui/component/field/slider/index.tsx#SliderField": {
         uses: [],
         elements: ["input","label","span"],
       },

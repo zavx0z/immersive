@@ -12,7 +12,7 @@ const workspace = resolve(import.meta.dir, "../../../..")
 Bun.plugin(createJsxBunPlugin({
   cwd: workspace,
   persistent: true,
-  sourceRoots: [resolve(workspace, "parameter-projection"), resolve(workspace, "nodes/parameter"), resolve(workspace, "nodes/socket"), resolve(workspace, "ui")],
+  sourceRoots: [resolve(workspace, "nodes/projection/parameter"), resolve(workspace, "nodes/parameter"), resolve(workspace, "nodes/socket"), resolve(workspace, "ui")],
 }))
 const {default: Parameter} = await import("@nodes/parameter-projection")
 const {default: resolveProjectedParameterPresentation} = await import("@nodes/parameter-presentation")

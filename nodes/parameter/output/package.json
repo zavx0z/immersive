@@ -1,0 +1,27 @@
+{
+  "name": "@nodes-parameters/output",
+  "label": "OutputParameter",
+  "version": "0.0.0",
+  "description": "OutputParameter соединяет публичный текстовый вывод с композицией сокетов ноды",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "dependencies": {
+    "@nodes-parameters/layout": "workspace:*",
+    "@nodes/parameter-metrics": "workspace:*"
+  },
+  "devDependencies": {
+    "@nodes/parameters": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@nodes/tree": "workspace:*",
+    "@nodes/sockets": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

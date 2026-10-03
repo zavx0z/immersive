@@ -1,45 +1,26 @@
 /**
-Создаёт представления конкретных Socket указанной стороны и сохраняет их ключи.
-Активация передаёт исходный идентификатор сокета родительскому обработчику.
+Размещает авторские Socket одной стороны, не создавая их из данных параметра.
+Пустой слот не резервирует ширину и не создаёт Socket.
 
 @packageDocumentation
 */
-
-import Socket from "@nodes/sockets"
-import type {NodesSockets} from "@nodes/sockets"
-type SocketSide = NodesSockets.Input["side"]
-import type {NodesParameters} from "@nodes/parameters/contract"
-type ParameterEndpoint = NonNullable<NodesParameters.Input["sockets"]>[number]
+import type Socket from "@nodes/sockets"
+import type {JSX} from "@jsx-compiler/session"
+import {hasSlot} from "@zavx0z/component/slot-presence"
 
 export function ParameterEndpoints(props: Readonly<{
-  nodeId: string
-  side: SocketSide
-  sockets: readonly ParameterEndpoint[]
-  onActivate?: ((socketId: string, event: Event) => void) | undefined
-}>) {
+  side: "left" | "right"
+}>): JSX.Element<{default?: readonly typeof Socket[]}> {
+  const supplied = hasSlot()
   return <span
     data-parameter-sockets={props.side}
     style={css`
       display: flex;
       align-items: center;
-      min-width: ${props.sockets.length === 0 ? "0" : "12px"};
+      min-width: ${supplied ? "12px" : "0"};
       gap: 2px;
     `}
   >
-    {props.sockets.map(socket => <Socket
-      key={socket.id}
-      id={socket.id}
-      nodeId={props.nodeId}
-      kind={socket.kind}
-      direction={socket.direction}
-      side={socket.side}
-      label={socket.label}
-      title={socket.title}
-      shape={socket.shape}
-      connected={socket.connected}
-      selected={socket.selected}
-      disabled={socket.disabled}
-      onActivate={event => props.onActivate?.(socket.id, event)}
-    />)}
+    <slot />
   </span>
 }

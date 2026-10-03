@@ -13,7 +13,7 @@ import type {NodesParametersColor as Contract} from "./contract"
 export type {NodesParametersColor} from "./contract"
 
 /**
-Авторский контракт ColorParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт ColorParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property value - Одно RGBA-значение; всплывающий выбор цвета остаётся композицией UI.
 
@@ -27,15 +27,21 @@ export default function ColorParameter(props: Contract.Input): Contract.Output {
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="color"
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <ColorField
       value={props.value}
       open={props.open}

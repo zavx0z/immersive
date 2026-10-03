@@ -9,7 +9,7 @@ type DiagramNodeProps = NodesNodeDiagram.Input
 import "./compiler.ts"
 
 const {default: DiagramNode} = await import("@nodes-node/diagram")
-const theme = await Bun.file(resolve(import.meta.dir, "../../../ui/theme/theme.css")).text()
+const theme = await Bun.file(resolve(import.meta.dir, "../../../ui/component/theme/theme.css")).text()
 
 for (const shape of ["rectangle", "oval", "circle"] as const) {
   test(`[DIAGRAM-DEFAULTS] ${shape}: общий вид и естественные размеры без Mermaid`, () => {

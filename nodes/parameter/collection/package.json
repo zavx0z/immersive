@@ -1,0 +1,26 @@
+{
+  "name": "@nodes-parameters/collection",
+  "label": "CollectionParameter",
+  "version": "0.0.0",
+  "description": "CollectionParameter соединяет публичный CollectionField с композицией сокетов ноды",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "dependencies": {
+    "@nodes-parameters/layout": "workspace:*",
+    "@ui-fields/collection-field": "workspace:*"
+  },
+  "devDependencies": {
+    "@nodes/parameters": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@nodes/sockets": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

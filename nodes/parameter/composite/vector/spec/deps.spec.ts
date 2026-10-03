@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/composite/vector/index.tsx",
     expected: {
       "nodes/parameter/composite/vector/index.tsx#VectorParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/vector-field/index.tsx#VectorField"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/vector/index.tsx#VectorField"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,20 +27,16 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/field/field-group/index.tsx#FieldGroup": {
+      "ui/component/field/group/index.tsx#FieldGroup": {
         uses: [],
         elements: ["div","span"],
       },
-      "ui/field/number-field/index.tsx#NumberField": {
+      "ui/component/field/number/index.tsx#NumberField": {
         uses: [],
         elements: ["button","div","input","span"],
       },
-      "ui/field/vector-field/index.tsx#VectorField": {
-        uses: ["ui/field/field-group/index.tsx#FieldGroup","ui/field/number-field/index.tsx#NumberField"],
+      "ui/component/field/vector/index.tsx#VectorField": {
+        uses: ["ui/component/field/group/index.tsx#FieldGroup","ui/component/field/number/index.tsx#NumberField"],
         elements: [],
       },
     },

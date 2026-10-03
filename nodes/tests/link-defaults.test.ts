@@ -11,7 +11,7 @@ import SOCKET_KINDS from "@socket-values/kinds"
 import socketPreset from "@socket-values/preset"
 
 const root = resolve(import.meta.dir, "../..")
-Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes"), resolve(root, "ui")]}))
+Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")]}))
 const {Link} = await import("@immersive/nodes/link")
 const route: LinkDefinition["route"] = {kind: "orthogonal", points: [{x: 20, y: 20}, {x: 180, y: 20}]}
 

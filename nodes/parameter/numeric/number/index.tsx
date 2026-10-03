@@ -13,7 +13,7 @@ import type {NodesParametersNumber as Contract} from "./contract"
 export type {NodesParametersNumber} from "./contract"
 
 /**
-Авторский контракт NumberParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт NumberParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property [softMin] - Мягкая нижняя граница перетаскивания; жёсткая валидация задаётся min.
 
@@ -28,15 +28,21 @@ export default function NumberParameter(props: Contract.Input): Contract.Output 
     spacingBefore={props.spacingBefore}
     kind="number"
     fieldOwnsLabel
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <NumberField
       label={props.labelHidden === true ? undefined : props.label}
       value={props.value}

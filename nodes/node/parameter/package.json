@@ -33,7 +33,11 @@
     "@immersive/headless": "workspace:*",
     "@jsx-compiler/session": "workspace:*",
     "@nodes/tree": "workspace:*",
-    "@ui/typography": "workspace:*"
+    "@ui/typography": "workspace:*",
+    "@nodes-parameters/text": "workspace:*",
+    "@nodes-parameters/number": "workspace:*",
+    "@nodes-parameters/checkbox": "workspace:*",
+    "@zavx0z/dom": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

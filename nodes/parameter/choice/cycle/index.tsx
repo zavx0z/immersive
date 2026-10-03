@@ -13,7 +13,7 @@ import type {NodesParametersCycle as Contract} from "./contract"
 export type {NodesParametersCycle} from "./contract"
 
 /**
-Авторский контракт CycleParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт CycleParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property [open] - Управляемое состояние списка; onOpenChange возвращает запрос изменения.
 */
@@ -25,15 +25,21 @@ export default function CycleParameter(props: Contract.Input): Contract.Output {
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="cycle"
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <CycleField
       value={props.value}
       options={props.options}

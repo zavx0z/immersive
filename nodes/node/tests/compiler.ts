@@ -6,5 +6,5 @@ const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
-  sourceRoots: ["nodes", "ui", "markdown", "parameter-projection"].map(directory => resolve(root, directory)),
+  sourceRoots: ["nodes", "ui", "markdown", "nodes/projection/parameter"].map(directory => resolve(root, directory)),
 }))

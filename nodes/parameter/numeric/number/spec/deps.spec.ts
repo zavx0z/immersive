@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/numeric/number/index.tsx",
     expected: {
       "nodes/parameter/numeric/number/index.tsx#NumberParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/number-field/index.tsx#NumberField"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/number/index.tsx#NumberField"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,11 +27,7 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/field/number-field/index.tsx#NumberField": {
+      "ui/component/field/number/index.tsx#NumberField": {
         uses: [],
         elements: ["button","div","input","span"],
       },

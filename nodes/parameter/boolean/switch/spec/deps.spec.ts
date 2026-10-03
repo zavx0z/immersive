@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/boolean/switch/index.tsx",
     expected: {
       "nodes/parameter/boolean/switch/index.tsx#SwitchParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/switch-field/index.tsx#SwitchField"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/switch/index.tsx#SwitchField"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,11 +27,7 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/field/switch-field/index.tsx#SwitchField": {
+      "ui/component/field/switch/index.tsx#SwitchField": {
         uses: [],
         elements: ["button","div","span"],
       },

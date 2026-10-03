@@ -13,7 +13,7 @@ import type {NodesParametersOptionGroup as Contract} from "./contract"
 export type {NodesParametersOptionGroup} from "./contract"
 
 /**
-Авторский контракт OptionGroupParameter; общие свойства сокетов описаны в ParameterBaseProps.
+Авторский контракт OptionGroupParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
 
 @property options - Полный набор вариантов; в каждый момент выбран одно строковое значение.
 */
@@ -25,15 +25,21 @@ export default function OptionGroupParameter(props: Contract.Input): Contract.Ou
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="option-group"
-    sockets={props.sockets}
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
     readOnly={props.readOnly}
     title={props.title}
     style={props.style}
-    onSocketActivate={props.onSocketActivate}
   >
+    <slot
+      name="left"
+      slot="left"
+    />
+    <slot
+      name="right"
+      slot="right"
+    />
     <ToggleButtonGroup
       value={props.value}
       options={props.options}

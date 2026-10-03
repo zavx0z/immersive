@@ -25,8 +25,11 @@ export declare namespace NodesNodeParameter {
   связи в той же ноде.
   Корпус, заголовок, действия и поля принадлежат самому ParameterNode;
   высота заголовка вычисляется внутри компонента.
-  Авторское содержимое передаётся между тегами в безымянный слот; оно не может
-  использоваться одновременно с непустым списком `parameters`.
+  Автор составляет независимые параметры JSX между тегами в безымянном слоте.
+  Каждый параметр принимает собственные Socket через left/right; пустые слоты
+  не создают сокеты. Для существующих потребителей сохранён путь проекции модели.
+  Авторское содержимое не может использоваться одновременно с непустым
+  списком `parameters`.
 
   @property id - Стабильный идентификатор ноды и адрес её сокетов.
 
@@ -64,9 +67,30 @@ export declare namespace NodesNodeParameter {
   <ParameterNode
     id="source"
     label="Источник"
-    parameters={snapshot.parameters}
-    sockets={snapshot.sockets}
-  />
+  >
+    <TextParameter
+      id="text"
+      nodeId="source"
+      label="Текст"
+      value="Пример"
+    >
+      <Socket
+        slot="left"
+        id="in"
+        nodeId="source"
+        kind="string"
+        direction="input"
+        side="left"
+        label="Вход"
+      />
+    </TextParameter>
+    <NumberParameter
+      id="scale"
+      nodeId="source"
+      label="Масштаб"
+      value={1}
+    />
+  </ParameterNode>
   ```
   */
   interface Input extends NodesNode.Input {

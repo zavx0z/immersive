@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/choice/option-group/index.tsx",
     expected: {
       "nodes/parameter/choice/option-group/index.tsx#OptionGroupParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/button/toggle-button-group/index.tsx#ToggleButtonGroup"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/button/toggle-group/index.tsx#ToggleButtonGroup"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,16 +27,12 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/button/button/index.tsx#Button": {
+      "ui/component/button/basic/index.tsx#Button": {
         uses: [],
         elements: ["button","img","span"],
       },
-      "ui/button/toggle-button-group/index.tsx#ToggleButtonGroup": {
-        uses: ["ui/button/button/index.tsx#Button"],
+      "ui/component/button/toggle-group/index.tsx#ToggleButtonGroup": {
+        uses: ["ui/component/button/basic/index.tsx#Button"],
         elements: ["div","span"],
       },
     },

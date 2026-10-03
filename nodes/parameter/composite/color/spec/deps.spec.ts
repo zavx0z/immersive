@@ -12,11 +12,11 @@ test.each([
     file: "nodes/parameter/composite/color/index.tsx",
     expected: {
       "nodes/parameter/composite/color/index.tsx#ColorParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/color-field/index.tsx#ColorField"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/color/index.tsx#ColorField"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        uses: ["nodes/socket/index.tsx#Socket"],
+        uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
@@ -27,43 +27,39 @@ test.each([
         uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/socket/index.tsx#Socket": {
-        uses: [],
-        elements: ["button","span"],
-      },
-      "ui/button/button/index.tsx#Button": {
+      "ui/component/button/basic/index.tsx#Button": {
         uses: [],
         elements: ["button","img","span"],
       },
-      "ui/field/color-field/index.tsx#ColorField": {
-        uses: ["ui/button/button/index.tsx#Button","ui/field/color-picker-field/index.tsx#ColorPickerField"],
+      "ui/component/field/color/index.tsx#ColorField": {
+        uses: ["ui/component/button/basic/index.tsx#Button","ui/component/field/color-picker/index.tsx#ColorPickerField"],
         elements: ["div","span"],
       },
-      "ui/field/color-picker-field/src/helpers.tsx#CheckerCell": {
+      "ui/component/field/color-picker/src/helpers.tsx#CheckerCell": {
         uses: [],
         elements: ["span"],
       },
-      "ui/field/color-picker-field/src/helpers.tsx#ColorChannelField": {
-        uses: ["ui/field/number-field/index.tsx#NumberField","ui/field/slider-field/index.tsx#SliderField"],
+      "ui/component/field/color-picker/src/helpers.tsx#ColorChannelField": {
+        uses: ["ui/component/field/number/index.tsx#NumberField","ui/component/field/slider/index.tsx#SliderField"],
         elements: ["div","span"],
       },
-      "ui/field/color-picker-field/index.tsx#ColorPickerField": {
-        uses: ["ui/field/color-picker-field/src/helpers.tsx#ColorChannelField","ui/field/color-picker-field/src/helpers.tsx#ColorSwatch","ui/field/text-field/index.tsx#TextField"],
+      "ui/component/field/color-picker/index.tsx#ColorPickerField": {
+        uses: ["ui/component/field/color-picker/src/helpers.tsx#ColorChannelField","ui/component/field/color-picker/src/helpers.tsx#ColorSwatch","ui/component/field/text/index.tsx#TextField"],
         elements: ["div","span"],
       },
-      "ui/field/color-picker-field/src/helpers.tsx#ColorSwatch": {
-        uses: ["ui/field/color-picker-field/src/helpers.tsx#CheckerCell"],
+      "ui/component/field/color-picker/src/helpers.tsx#ColorSwatch": {
+        uses: ["ui/component/field/color-picker/src/helpers.tsx#CheckerCell"],
         elements: ["div","span"],
       },
-      "ui/field/number-field/index.tsx#NumberField": {
+      "ui/component/field/number/index.tsx#NumberField": {
         uses: [],
         elements: ["button","div","input","span"],
       },
-      "ui/field/slider-field/index.tsx#SliderField": {
+      "ui/component/field/slider/index.tsx#SliderField": {
         uses: [],
         elements: ["input","label","span"],
       },
-      "ui/field/text-field/index.tsx#TextField": {
+      "ui/component/field/text/index.tsx#TextField": {
         uses: [],
         elements: ["input","label","span"],
       },

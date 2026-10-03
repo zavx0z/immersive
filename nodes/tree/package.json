@@ -8,7 +8,7 @@
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./json-patch": "./persistence/json-patch/index.ts",
+    "./tech/json/patch": "./persistence/tech/json/patch/index.ts",
     "./parameter": "./model/parameter/index.ts",
     "./node-tree": "./model/node-tree/index.ts",
     "./projection-types": "./model/projection/index.ts"

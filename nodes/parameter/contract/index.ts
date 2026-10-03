@@ -1,5 +1,5 @@
 import type {JSX} from "@jsx-compiler/session"
-import type {ParameterEndpoint} from "./types"
+import type Socket from "@nodes/sockets"
 
 /** Авторские параметры разделяют адрес ноды, подпись, сокеты и внешнее состояние. */
 export declare namespace NodesParameters {
@@ -10,15 +10,19 @@ export declare namespace NodesParameters {
     readonly label: string
     readonly labelHidden?: boolean | undefined
     readonly spacingBefore?: "small" | "medium" | undefined
-    readonly sockets?: readonly ParameterEndpoint[] | undefined
     readonly connected?: boolean | undefined
     readonly hidden?: boolean | undefined
     readonly disabled?: boolean | undefined
     readonly readOnly?: boolean | undefined
     readonly title?: string | undefined
     readonly style?: CssStyle | undefined
-    readonly onSocketActivate?: ((socketId: string, event: Event) => void) | undefined
   }
 
-  type Output = JSX.Element<object>
+  /** Автор назначает готовые Socket каждой стороне; пустой слот не создаёт сокет. */
+  interface Slots {
+    readonly left?: readonly typeof Socket[]
+    readonly right?: readonly typeof Socket[]
+  }
+
+  type Output = JSX.Element<Slots>
 }

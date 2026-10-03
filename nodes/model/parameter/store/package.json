@@ -1,0 +1,21 @@
+{
+  "name": "@nodes/parameter-store",
+  "label": "nodes/model/parameter/store",
+  "version": "0.0.0",
+  "description": "Хранит значение параметра, выпускает снимки и уведомляет подписчиков после изменения",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec"
+  },
+  "dependencies": {
+    "@node-values/own": "workspace:*",
+    "@node-values/equal": "workspace:*",
+    "@node-values/type": "workspace:*"
+  }
+}

@@ -16,7 +16,8 @@
   "devDependencies": {
     "@nodes/parameters": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@jsx-compiler/session": "workspace:*",
+    "@nodes/sockets": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

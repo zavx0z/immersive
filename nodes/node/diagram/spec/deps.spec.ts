@@ -11,11 +11,11 @@ test.each([
     expected: {
       // Typography назначается в безымянный слот Pane, но используется в JSX DiagramNode.
       "nodes/node/diagram/index.tsx#DiagramNode": {
-        uses: ["ui/surface/pane/index.tsx#Pane","ui/typography/index.tsx#Typography"],
+        uses: ["ui/component/surface/pane/index.tsx#Pane","ui/component/typography/index.tsx#Typography"],
         elements: ["article"],
       },
-      "ui/surface/pane/index.tsx#Pane": {uses: [], elements: ["section"]},
-      "ui/typography/index.tsx#Typography": {uses: [], elements: ["span"]},
+      "ui/component/surface/pane/index.tsx#Pane": {uses: [], elements: ["section"]},
+      "ui/component/typography/index.tsx#Typography": {uses: [], elements: ["span"]},
     },
   },
 ] satisfies {

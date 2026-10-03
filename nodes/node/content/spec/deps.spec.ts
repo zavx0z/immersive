@@ -11,14 +11,22 @@ test.each([
     "file": "nodes/node/content/index.tsx",
     "expected": {
       "nodes/node/content/index.tsx#ContentNode": {
-        "uses": ["nodes/node/parameter/index.tsx#ParameterNode","ui/surface/pane/index.tsx#Pane"],
+        "uses": [
+          "nodes/node/parameter/index.tsx#ParameterNode",
+          "ui/component/surface/pane/index.tsx#Pane",
+        ],
         "elements": [
           "article",
           "div"
         ]
       },
       "nodes/node/parameter/index.tsx#ParameterNode": {
-        "uses": ["nodes/socket/index.tsx#Socket","parameter-projection/index.tsx#Parameter","ui/button/button/index.tsx#Button","ui/button/icon-button/index.tsx#IconButton"],
+        "uses": [
+          "nodes/projection/parameter/index.tsx#Parameter",
+          "nodes/socket/index.tsx#Socket",
+          "ui/component/button/basic/index.tsx#Button",
+          "ui/component/button/icon/index.tsx#IconButton",
+        ],
         "elements": [
           "article",
           "header",
@@ -28,204 +36,309 @@ test.each([
         ]
       },
       "nodes/parameter/boolean/checkbox/index.tsx#CheckboxParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/checkbox-field/index.tsx#CheckboxField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/checkbox/index.tsx#CheckboxField",
+        ],
         "elements": []
       },
       "nodes/parameter/boolean/switch/index.tsx#SwitchParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/switch-field/index.tsx#SwitchField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/switch/index.tsx#SwitchField",
+        ],
         "elements": []
       },
       "nodes/parameter/choice/cycle/index.tsx#CycleParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/cycle-field/index.tsx#CycleField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/cycle/index.tsx#CycleField",
+        ],
         "elements": []
       },
       "nodes/parameter/choice/option-group/index.tsx#OptionGroupParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/button/toggle-button-group/index.tsx#ToggleButtonGroup"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/button/toggle-group/index.tsx#ToggleButtonGroup",
+        ],
         "elements": []
       },
       "nodes/parameter/choice/select/index.tsx#SelectParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/select-field/index.tsx#SelectField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/select/index.tsx#SelectField",
+        ],
         "elements": []
       },
-      "nodes/parameter/collection/collection/index.tsx#CollectionParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/collection-field/index.tsx#CollectionField"],
+      "nodes/parameter/collection/index.tsx#CollectionParameter": {
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/collection/index.tsx#CollectionField",
+        ],
         "elements": []
       },
       "nodes/parameter/composite/color/index.tsx#ColorParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/color-field/index.tsx#ColorField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/color/index.tsx#ColorField",
+        ],
         "elements": []
       },
       "nodes/parameter/composite/matrix/index.tsx#MatrixParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/matrix-field/index.tsx#MatrixField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/matrix/index.tsx#MatrixField",
+        ],
         "elements": []
       },
       "nodes/parameter/composite/vector/index.tsx#VectorParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/vector-field/index.tsx#VectorField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/vector/index.tsx#VectorField",
+        ],
         "elements": []
       },
       "nodes/parameter/numeric/number/index.tsx#NumberParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/number-field/index.tsx#NumberField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/number/index.tsx#NumberField",
+        ],
         "elements": []
       },
       "nodes/parameter/numeric/slider/index.tsx#SliderParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/slider-field/index.tsx#SliderField"],
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/slider/index.tsx#SliderField",
+        ],
         "elements": []
       },
-      "nodes/parameter/output/output/index.tsx#OutputParameter": {
-        "uses": ["nodes/parameter/output/output/src/output.tsx#ParameterOutput","nodes/parameter/shared/layout/index.tsx#ParameterLayout"],
+      "nodes/parameter/output/index.tsx#OutputParameter": {
+        "uses": [
+          "nodes/parameter/output/src/output.tsx#ParameterOutput",
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+        ],
         "elements": []
       },
-      "nodes/parameter/reference/path/index.tsx#PathParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/path-field/index.tsx#PathField"],
+      "nodes/parameter/path/index.tsx#PathParameter": {
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/path/index.tsx#PathField",
+        ],
         "elements": []
       },
-      "nodes/parameter/reference/reference/index.tsx#ReferenceParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/reference-field/index.tsx#ReferenceField"],
+      "nodes/parameter/reference/index.tsx#ReferenceParameter": {
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/reference/index.tsx#ReferenceField",
+        ],
         "elements": []
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
-        "uses": ["nodes/socket/index.tsx#Socket"],
+        "uses": [
+        ],
         "elements": [
           "span"
         ]
       },
       "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
-        "uses": [],
+        "uses": [
+        ],
         "elements": [
           "span"
         ]
       },
       "nodes/parameter/shared/layout/index.tsx#ParameterLayout": {
-        "uses": ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
+        "uses": [
+          "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints",
+          "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "nodes/parameter/output/output/src/output.tsx#ParameterOutput": {
-        "uses": [],
+      "nodes/parameter/output/src/output.tsx#ParameterOutput": {
+        "uses": [
+        ],
         "elements": [
           "output"
         ]
       },
-      "parameter-projection/index.tsx#Parameter": {
-        "uses": ["nodes/parameter/boolean/checkbox/index.tsx#CheckboxParameter","nodes/parameter/boolean/switch/index.tsx#SwitchParameter","nodes/parameter/choice/cycle/index.tsx#CycleParameter","nodes/parameter/choice/option-group/index.tsx#OptionGroupParameter","nodes/parameter/choice/select/index.tsx#SelectParameter","nodes/parameter/collection/collection/index.tsx#CollectionParameter","nodes/parameter/composite/color/index.tsx#ColorParameter","nodes/parameter/composite/matrix/index.tsx#MatrixParameter","nodes/parameter/composite/vector/index.tsx#VectorParameter","nodes/parameter/numeric/number/index.tsx#NumberParameter","nodes/parameter/numeric/slider/index.tsx#SliderParameter","nodes/parameter/output/output/index.tsx#OutputParameter","nodes/parameter/reference/path/index.tsx#PathParameter","nodes/parameter/reference/reference/index.tsx#ReferenceParameter","nodes/parameter/text/text/index.tsx#TextParameter"],
+      "nodes/projection/parameter/index.tsx#Parameter": {
+        "uses": [
+          "nodes/parameter/boolean/checkbox/index.tsx#CheckboxParameter",
+          "nodes/parameter/boolean/switch/index.tsx#SwitchParameter",
+          "nodes/parameter/choice/cycle/index.tsx#CycleParameter",
+          "nodes/parameter/choice/option-group/index.tsx#OptionGroupParameter",
+          "nodes/parameter/choice/select/index.tsx#SelectParameter",
+          "nodes/parameter/collection/index.tsx#CollectionParameter",
+          "nodes/parameter/composite/color/index.tsx#ColorParameter",
+          "nodes/parameter/composite/matrix/index.tsx#MatrixParameter",
+          "nodes/parameter/composite/vector/index.tsx#VectorParameter",
+          "nodes/parameter/numeric/number/index.tsx#NumberParameter",
+          "nodes/parameter/numeric/slider/index.tsx#SliderParameter",
+          "nodes/parameter/output/index.tsx#OutputParameter",
+          "nodes/parameter/path/index.tsx#PathParameter",
+          "nodes/parameter/reference/index.tsx#ReferenceParameter",
+          "nodes/parameter/text/index.tsx#TextParameter",
+          "nodes/socket/index.tsx#Socket",
+        ],
         "elements": []
       },
-      "nodes/parameter/text/text/index.tsx#TextParameter": {
-        "uses": ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/text-field/index.tsx#TextField"],
+      "nodes/parameter/text/index.tsx#TextParameter": {
+        "uses": [
+          "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/text/index.tsx#TextField",
+        ],
         "elements": []
       },
       "nodes/socket/index.tsx#Socket": {
-        "uses": [],
+        "uses": [
+        ],
         "elements": [
           "button",
           "span"
         ]
       },
-      "ui/button/button/index.tsx#Button": {
-        "uses": [],
+      "ui/component/button/basic/index.tsx#Button": {
+        "uses": [
+        ],
         "elements": [
           "button",
           "img",
           "span"
         ]
       },
-      "ui/button/icon-button/index.tsx#IconButton": {
-        "uses": ["ui/button/button/index.tsx#Button"],
+      "ui/component/button/icon/index.tsx#IconButton": {
+        "uses": [
+          "ui/component/button/basic/index.tsx#Button",
+        ],
         "elements": []
       },
-      "ui/button/toggle-button-group/index.tsx#ToggleButtonGroup": {
-        "uses": ["ui/button/button/index.tsx#Button"],
+      "ui/component/button/toggle-group/index.tsx#ToggleButtonGroup": {
+        "uses": [
+          "ui/component/button/basic/index.tsx#Button",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/checkbox-field/index.tsx#CheckboxField": {
-        "uses": [],
+      "ui/component/field/checkbox/index.tsx#CheckboxField": {
+        "uses": [
+        ],
         "elements": [
           "input",
           "label",
           "span"
         ]
       },
-      "ui/field/collection-field/index.tsx#CollectionField": {
-        "uses": ["ui/field/collection-field/src/action-button.tsx#CollectionActionButton","ui/view/list/index.tsx#List"],
+      "ui/component/field/collection/index.tsx#CollectionField": {
+        "uses": [
+          "ui/component/field/collection/src/action-button.tsx#CollectionActionButton",
+          "ui/component/view/list/index.tsx#List",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/collection-field/src/action-button.tsx#CollectionActionButton": {
-        "uses": ["ui/button/icon-button/index.tsx#IconButton"],
+      "ui/component/field/collection/src/action-button.tsx#CollectionActionButton": {
+        "uses": [
+          "ui/component/button/icon/index.tsx#IconButton",
+        ],
         "elements": []
       },
-      "ui/field/color-field/index.tsx#ColorField": {
-        "uses": ["ui/button/button/index.tsx#Button","ui/field/color-picker-field/index.tsx#ColorPickerField"],
+      "ui/component/field/color/index.tsx#ColorField": {
+        "uses": [
+          "ui/component/button/basic/index.tsx#Button",
+          "ui/component/field/color-picker/index.tsx#ColorPickerField",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/color-picker-field/src/helpers.tsx#CheckerCell": {
-        "uses": [],
+      "ui/component/field/color-picker/src/helpers.tsx#CheckerCell": {
+        "uses": [
+        ],
         "elements": [
           "span"
         ]
       },
-      "ui/field/color-picker-field/src/helpers.tsx#ColorChannelField": {
-        "uses": ["ui/field/number-field/index.tsx#NumberField","ui/field/slider-field/index.tsx#SliderField"],
-        "elements": [
-          "div",
-          "span"
-        ]
-      },
-      "ui/field/color-picker-field/index.tsx#ColorPickerField": {
-        "uses": ["ui/field/color-picker-field/src/helpers.tsx#ColorChannelField","ui/field/color-picker-field/src/helpers.tsx#ColorSwatch","ui/field/text-field/index.tsx#TextField"],
+      "ui/component/field/color-picker/src/helpers.tsx#ColorChannelField": {
+        "uses": [
+          "ui/component/field/number/index.tsx#NumberField",
+          "ui/component/field/slider/index.tsx#SliderField",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/color-picker-field/src/helpers.tsx#ColorSwatch": {
-        "uses": ["ui/field/color-picker-field/src/helpers.tsx#CheckerCell"],
+      "ui/component/field/color-picker/index.tsx#ColorPickerField": {
+        "uses": [
+          "ui/component/field/color-picker/src/helpers.tsx#ColorChannelField",
+          "ui/component/field/color-picker/src/helpers.tsx#ColorSwatch",
+          "ui/component/field/text/index.tsx#TextField",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/cycle-field/index.tsx#CycleField": {
-        "uses": ["ui/button/button/index.tsx#Button","ui/field/cycle-field/src/helpers.tsx#CycleOption"],
+      "ui/component/field/color-picker/src/helpers.tsx#ColorSwatch": {
+        "uses": [
+          "ui/component/field/color-picker/src/helpers.tsx#CheckerCell",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/cycle-field/src/helpers.tsx#CycleOption": {
-        "uses": ["ui/button/button/index.tsx#Button"],
+      "ui/component/field/cycle/index.tsx#CycleField": {
+        "uses": [
+          "ui/component/button/basic/index.tsx#Button",
+          "ui/component/field/cycle/src/helpers.tsx#CycleOption",
+        ],
+        "elements": [
+          "div",
+          "span"
+        ]
+      },
+      "ui/component/field/cycle/src/helpers.tsx#CycleOption": {
+        "uses": [
+          "ui/component/button/basic/index.tsx#Button",
+        ],
         "elements": []
       },
-      "ui/field/field-group/index.tsx#FieldGroup": {
-        "uses": [],
+      "ui/component/field/group/index.tsx#FieldGroup": {
+        "uses": [
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/matrix-field/index.tsx#MatrixField": {
-        "uses": ["ui/field/matrix-field/src/helpers.tsx#MatrixRow"],
+      "ui/component/field/matrix/index.tsx#MatrixField": {
+        "uses": [
+          "ui/component/field/matrix/src/helpers.tsx#MatrixRow",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/matrix-field/src/helpers.tsx#MatrixRow": {
-        "uses": ["ui/field/field-group/index.tsx#FieldGroup","ui/field/number-field/index.tsx#NumberField"],
+      "ui/component/field/matrix/src/helpers.tsx#MatrixRow": {
+        "uses": [
+          "ui/component/field/group/index.tsx#FieldGroup",
+          "ui/component/field/number/index.tsx#NumberField",
+        ],
         "elements": []
       },
-      "ui/field/number-field/index.tsx#NumberField": {
-        "uses": [],
+      "ui/component/field/number/index.tsx#NumberField": {
+        "uses": [
+        ],
         "elements": [
           "button",
           "div",
@@ -233,22 +346,30 @@ test.each([
           "span"
         ]
       },
-      "ui/field/path-field/index.tsx#PathField": {
-        "uses": ["ui/button/icon-button/index.tsx#IconButton","ui/field/text-field/index.tsx#TextField"],
+      "ui/component/field/path/index.tsx#PathField": {
+        "uses": [
+          "ui/component/button/icon/index.tsx#IconButton",
+          "ui/component/field/text/index.tsx#TextField",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/reference-field/index.tsx#ReferenceField": {
-        "uses": ["ui/button/button/index.tsx#Button","ui/button/icon-button/index.tsx#IconButton"],
+      "ui/component/field/reference/index.tsx#ReferenceField": {
+        "uses": [
+          "ui/component/button/basic/index.tsx#Button",
+          "ui/component/button/icon/index.tsx#IconButton",
+        ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/field/select-field/index.tsx#SelectField": {
-        "uses": ["ui/field/select-field/src/helpers.tsx#SelectOption"],
+      "ui/component/field/select/index.tsx#SelectField": {
+        "uses": [
+          "ui/component/field/select/src/helpers.tsx#SelectOption",
+        ],
         "elements": [
           "label",
           "optgroup",
@@ -257,60 +378,73 @@ test.each([
           "span"
         ]
       },
-      "ui/field/select-field/src/helpers.tsx#SelectOption": {
-        "uses": [],
+      "ui/component/field/select/src/helpers.tsx#SelectOption": {
+        "uses": [
+        ],
         "elements": [
           "option"
         ]
       },
-      "ui/field/slider-field/index.tsx#SliderField": {
-        "uses": [],
+      "ui/component/field/slider/index.tsx#SliderField": {
+        "uses": [
+        ],
         "elements": [
           "input",
           "label",
           "span"
         ]
       },
-      "ui/field/switch-field/index.tsx#SwitchField": {
-        "uses": [],
+      "ui/component/field/switch/index.tsx#SwitchField": {
+        "uses": [
+        ],
         "elements": [
           "button",
           "div",
           "span"
         ]
       },
-      "ui/field/text-field/index.tsx#TextField": {
-        "uses": [],
+      "ui/component/field/text/index.tsx#TextField": {
+        "uses": [
+        ],
         "elements": [
           "input",
           "label",
           "span"
         ]
       },
-      "ui/field/vector-field/index.tsx#VectorField": {
-        "uses": ["ui/field/field-group/index.tsx#FieldGroup","ui/field/number-field/index.tsx#NumberField"],
+      "ui/component/field/vector/index.tsx#VectorField": {
+        "uses": [
+          "ui/component/field/group/index.tsx#FieldGroup",
+          "ui/component/field/number/index.tsx#NumberField",
+        ],
         "elements": []
       },
-      "ui/surface/pane/index.tsx#Pane": {
-        "uses": [],
+      "ui/component/surface/pane/index.tsx#Pane": {
+        "uses": [
+        ],
         "elements": [
           "section"
         ]
       },
-      "ui/view/list/src/helpers.tsx#EmptyListRow": {
-        "uses": [],
+      "ui/component/view/list/src/helpers.tsx#EmptyListRow": {
+        "uses": [
+        ],
         "elements": [
           "li"
         ]
       },
-      "ui/view/list/index.tsx#List": {
-        "uses": ["ui/view/list/src/helpers.tsx#EmptyListRow","ui/view/list/src/helpers.tsx#ListRow"],
+      "ui/component/view/list/index.tsx#List": {
+        "uses": [
+          "ui/component/view/list/src/helpers.tsx#EmptyListRow",
+          "ui/component/view/list/src/helpers.tsx#ListRow",
+        ],
         "elements": [
           "ul"
         ]
       },
-      "ui/view/list/src/helpers.tsx#ListRow": {
-        "uses": [],
+      "ui/component/view/list/src/helpers.tsx#ListRow": {
+        "uses": [
+        ],
         "elements": [
           "img",
           "li",
