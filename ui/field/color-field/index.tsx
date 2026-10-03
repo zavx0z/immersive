@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {ColorFieldProps} from "./contract/input.ts"
+import type {UiFieldsColorField as Contract} from "./contract"
 import {useCallback} from "@zavx0z/component"
 import {useState} from "@zavx0z/component"
 import Button from "@ui-buttons/button"
@@ -12,12 +12,10 @@ import formatColorValue from "@ui-fields-color-value/format-color-value"
 import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
 import ColorPickerField from "@ui-fields/color-picker-field"
 
-export type {ColorFieldProps} from "./contract/input"
-export type {ColorFieldValue} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsColorField} from "./contract"
 
-export default function ColorField(props: ColorFieldProps): JSX.Element {
+export default function ColorField(props: Contract.Input): Contract.Output {
   if (!props.value || typeof props.value !== "object") throw new TypeError("ColorField value must be an object")
   const value = normalizeColorValue(props.value)
   const [internalOpen, setInternalOpen] = useState(false)

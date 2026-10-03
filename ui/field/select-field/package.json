@@ -22,6 +22,7 @@
     "@ui-selection/validate-selection-state": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/fields": "workspace:*"
   }
 }

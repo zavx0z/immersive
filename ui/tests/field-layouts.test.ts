@@ -132,7 +132,7 @@ test("[UI-009] ColorPickerField учитывает образец, четыре 
   expect(colorPickerFieldLayout.height()).toBe(178)
 })
 
-test("[UI-010] каждый владелец Field связывает публичный план со своими переменными темы", async () => {
+test("[UI-010] числовой план базовой темы соответствует CSS соответствующего поля", async () => {
   const owners = Object.freeze({
     "field/checkbox-field/index.tsx": ["checkboxFieldLayout", "var(--field-checkbox-height)"],
     "field/collection-field/index.tsx": ["collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
@@ -155,7 +155,7 @@ test("[UI-010] каждый владелец Field связывает публи
     let source = await Bun.file(resolve(uiRoot, relativePath)).text()
     for await (const child of new Bun.Glob("src/**/*.{ts,tsx}").scan({cwd: resolve(uiRoot, relativePath, "..")})) source += await Bun.file(resolve(uiRoot, relativePath, "..", child)).text()
     const layoutName = requiredFragments[0]!
-    const layoutPath = resolve(uiRoot, relativePath.replace("/index.tsx", "/layout/index.tsx"))
+    const layoutPath = Bun.resolveSync(`@ui-fields-${relativePath.split("/")[1]}/layout`, import.meta.dir)
     expect(await Bun.file(layoutPath).text()).toContain(`const ${layoutName}`)
     for (const fragment of requiredFragments.slice(1)) expect(source).toContain(fragment)
   }

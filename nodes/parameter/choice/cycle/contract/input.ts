@@ -1,4 +1,5 @@
-import type {CycleFieldProps} from "@ui-fields/cycle-field"
+import type {UiFieldsCycleField} from "@ui-fields/cycle-field"
+type CycleFieldProps = UiFieldsCycleField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные циклического выбора, связанного с нодой и её сокетами.

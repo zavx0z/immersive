@@ -1,4 +1,5 @@
-import type {MatrixFieldProps} from "@ui-fields/matrix-field"
+import type {UiFieldsMatrixField} from "@ui-fields/matrix-field"
+type MatrixFieldProps = UiFieldsMatrixField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные матричного параметра, связанного с нодой и её сокетами.

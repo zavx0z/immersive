@@ -1,4 +1,5 @@
-import type {CollectionFieldProps} from "@ui-fields/collection-field"
+import type {UiFieldsCollectionField} from "@ui-fields/collection-field"
+type CollectionFieldProps = UiFieldsCollectionField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные параметра-коллекции, связанного с нодой и её сокетами.

@@ -7,10 +7,14 @@
 @packageDocumentation
 */
 
-import type {CollectionFieldProps} from "@ui-fields/collection-field"
-import type {ColorFieldValue} from "@ui-fields/color-field"
-import type {ReferenceFieldValue} from "@ui-fields/reference-field"
-import type {SelectFieldOption} from "@ui-fields/select-field"
+import type {UiFieldsCollectionField} from "@ui-fields/collection-field"
+type CollectionFieldProps = UiFieldsCollectionField.Input
+import type {UiFieldsColorField} from "@ui-fields/color-field"
+type ColorFieldValue = NonNullable<UiFieldsColorField.Input["value"]>
+import type {UiFieldsReferenceField} from "@ui-fields/reference-field"
+type ReferenceFieldValue = NonNullable<UiFieldsReferenceField.Input["value"]>
+import type {UiFieldsSelectField} from "@ui-fields/select-field"
+type SelectFieldOption = NonNullable<UiFieldsSelectField.Input["options"]>[number]
 import type {
   NodeJsonObject,
   NodeJsonValue,

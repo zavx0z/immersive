@@ -1,4 +1,5 @@
-import type {SliderFieldProps} from "@ui-fields/slider-field"
+import type {UiFieldsSliderField} from "@ui-fields/slider-field"
+type SliderFieldProps = UiFieldsSliderField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные параметра-ползунка, связанного с нодой и её сокетами.

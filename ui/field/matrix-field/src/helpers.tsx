@@ -1,4 +1,4 @@
-import type {MatrixRowProps} from "../contract/types.ts"
+import type {MatrixRowProps} from "./types.ts"
 import updateMatrixValue from "@ui-fields-matrix-value/update-matrix-value"
 import FieldGroup from "@ui-fields/field-group"
 import NumberField from "@ui-fields/number-field"

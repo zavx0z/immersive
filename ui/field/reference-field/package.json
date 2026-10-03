@@ -23,6 +23,7 @@
     "@ui-themes-icons/resource": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/fields": "workspace:*"
   }
 }

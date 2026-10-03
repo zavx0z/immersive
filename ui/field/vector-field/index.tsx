@@ -4,18 +4,16 @@
 
 @packageDocumentation
 */
-import type {VectorFieldProps} from "./contract/input.ts"
+import type {UiFieldsVectorField as Contract} from "./contract"
 import normalizeVectorValue from "@ui-fields-vector-value/normalize-vector-value"
 import updateVectorValue from "@ui-fields-vector-value/update-vector-value"
 import FieldGroup from "@ui-fields/field-group"
 import NumberField from "@ui-fields/number-field"
 
-export type {VectorFieldProps} from "./contract/input"
-export type {VectorFieldDensity} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsVectorField} from "./contract"
 
-export default function VectorField(props: VectorFieldProps): JSX.Element {
+export default function VectorField(props: Contract.Input): Contract.Output {
   const normalized = normalizeVectorValue(props.value, props.axes, props.step)
   const onInput = (index: number, value: number, event: Event) => {
     props.onInput?.(updateVectorValue(normalized.value, index, value), event)

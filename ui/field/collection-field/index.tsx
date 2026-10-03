@@ -7,7 +7,7 @@
 import {CollectionActionButton} from "./src/action-button"
 
 import type {CollectionFieldMoveDirection} from "./contract/types.ts"
-import type {CollectionFieldProps} from "./contract/input.ts"
+import type {UiFieldsCollectionField as Contract} from "./contract"
 import IconButton from "@ui-buttons/icon-button"
 import arrowDownIcon from "@ui-themes-icons/arrow-down"
 import arrowUpIcon from "@ui-themes-icons/arrow-up"
@@ -18,12 +18,10 @@ import collectionVisibleRowsHeight from "@ui-fields-collection-model/collection-
 import normalizeCollectionItems from "@ui-fields-collection-model/normalize-collection-items"
 import normalizeCollectionVisibleRows from "@ui-fields-collection-model/normalize-collection-visible-rows"
 
-export type {CollectionFieldProps} from "./contract/input"
-export type {CollectionFieldItem, CollectionFieldDensity, CollectionFieldMoveDirection} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsCollectionField} from "./contract"
 
-export default function CollectionField(props: CollectionFieldProps): JSX.Element {
+export default function CollectionField(props: Contract.Input): Contract.Output {
   const items = normalizeCollectionItems(props.items, props.selectedId)
   const visibleRows = normalizeCollectionVisibleRows(props.visibleRows)
   const visibleHeight = collectionVisibleRowsHeight(visibleRows)

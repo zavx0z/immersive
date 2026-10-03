@@ -1,4 +1,5 @@
-import type {TextFieldProps} from "@ui-fields/text-field"
+import type {UiFieldsTextField} from "@ui-fields/text-field"
+type TextFieldProps = UiFieldsTextField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные строкового параметра, связанного с нодой и её сокетами.

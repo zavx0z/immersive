@@ -1,0 +1,21 @@
+{
+  "name": "@ui-fields-matrix-field/layout",
+  "label": "matrixFieldLayout",
+  "version": "0.0.0",
+  "description": "Числовой договор размеров matrixField",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-fields-metrics/matrix-field-height": "workspace:*",
+    "@ui-fields/matrix-field": "workspace:*"
+  }
+}

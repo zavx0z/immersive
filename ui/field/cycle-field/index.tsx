@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {CycleFieldProps} from "./contract/input.ts"
+import type {UiFieldsCycleField as Contract} from "./contract"
 import {CycleOption} from "./src/helpers.tsx"
 import {useCallback} from "@zavx0z/component"
 import {useId} from "@zavx0z/component"
@@ -14,12 +14,10 @@ import chevronDownIcon from "@ui-themes-icons/chevron-down"
 import findSelectionOption from "@ui-selection/find-selection-option"
 import validateSelectionOptions from "@ui-selection/validate-selection-options"
 
-export type {CycleFieldProps} from "./contract/input"
-export type {CycleFieldOption, CycleFieldDensity} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsCycleField} from "./contract"
 
-export default function CycleField(props: CycleFieldProps): JSX.Element {
+export default function CycleField(props: Contract.Input): Contract.Output {
   if (typeof props.value !== "string") throw new TypeError("CycleField value must be a string")
   const options = validateSelectionOptions(props.options)
   const density = props.density ?? "regular"

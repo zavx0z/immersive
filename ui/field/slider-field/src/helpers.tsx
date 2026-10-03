@@ -1,4 +1,5 @@
-import type {SliderFieldProps} from "../contract/input.ts"
+import type {UiFieldsSliderField} from "../contract/index"
+type SliderFieldProps = UiFieldsSliderField.Input
 
 /** Частная подготовка поле интерфейса: числовой диапазон. */
 export function validateSliderField(props: SliderFieldProps): number {

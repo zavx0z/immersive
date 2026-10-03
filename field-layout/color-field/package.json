@@ -1,0 +1,20 @@
+{
+  "name": "@ui-fields-color-field/layout",
+  "label": "colorFieldLayout",
+  "version": "0.0.0",
+  "description": "Числовой договор размеров colorField",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-fields-metrics/field-density-height": "workspace:*"
+  }
+}

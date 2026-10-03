@@ -1,4 +1,5 @@
-import type {PathFieldProps} from "@ui-fields/path-field"
+import type {UiFieldsPathField} from "@ui-fields/path-field"
+type PathFieldProps = UiFieldsPathField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные параметра пути, связанного с нодой и её сокетами.

@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {CheckboxFieldProps} from "./contract/input.ts"
+import type {UiFieldsCheckboxField as Contract} from "./contract"
 
-export type {CheckboxFieldProps} from "./contract/input"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsCheckboxField} from "./contract"
 
-export default function CheckboxField(props: CheckboxFieldProps): JSX.Element {
+export default function CheckboxField(props: Contract.Input): Contract.Output {
   const hasLabel = props.label !== undefined
   const onChange = (input: HTMLInputElement, event: Event) => {
     if (props.readOnly === true) {

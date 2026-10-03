@@ -1,4 +1,4 @@
-import type {ColorChannelFieldProps} from "../contract/types.ts"
+import type {ColorChannelFieldProps} from "./types.ts"
 import type {ColorPickerFieldValue} from "../contract/types.ts"
 import clampUnit from "@ui-fields-color-value/clamp-unit"
 import colorChannelDisplayValue from "@ui-fields-color-value/color-channel-display-value"

@@ -1,4 +1,4 @@
-import type {CycleOptionProps} from "../contract/types.ts"
+import type {CycleOptionProps} from "./types.ts"
 import Button from "@ui-buttons/button"
 
 /** Частная подготовка поле интерфейса: циклический выбор. */

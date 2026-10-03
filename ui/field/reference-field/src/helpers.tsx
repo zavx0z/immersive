@@ -1,4 +1,5 @@
-import type {ReferenceFieldProps} from "../contract/input.ts"
+import type {UiFieldsReferenceField} from "../contract/index"
+type ReferenceFieldProps = UiFieldsReferenceField.Input
 
 /** Частная подготовка поле интерфейса: ссылка на ресурс. */
 export function validateReferenceField(props: ReferenceFieldProps): void {

@@ -4,17 +4,15 @@
 
 @packageDocumentation
 */
-import type {PathFieldProps} from "./contract/input.ts"
+import type {UiFieldsPathField as Contract} from "./contract"
 import IconButton from "@ui-buttons/icon-button"
 import folderIcon from "@ui-themes-icons/folder"
 import TextField from "@ui-fields/text-field"
 
-export type {PathFieldProps} from "./contract/input"
-export type {PathFieldDensity} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsPathField} from "./contract"
 
-export default function PathField(props: PathFieldProps): JSX.Element {
+export default function PathField(props: Contract.Input): Contract.Output {
   if (typeof props.value !== "string") throw new TypeError("PathField value must be a string")
   const density = props.density ?? "regular"
   if (density !== "regular" && density !== "compact") throw new Error(`Unknown PathField density: ${density}`)

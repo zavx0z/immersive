@@ -4,16 +4,14 @@
 
 @packageDocumentation
 */
-import type {FieldGroupProps} from "./contract/input.ts"
+import type {UiFieldsFieldGroup as Contract} from "./contract"
 import {hasSlot} from "@zavx0z/component/slot-presence"
 import resolveFieldDensity from "@ui-fields-metrics/resolve-field-density"
 
-export type {FieldGroupProps} from "./contract/input"
-export type {FieldGroupDensity} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsFieldGroup} from "./contract"
 
-export default function FieldGroup(props: FieldGroupProps): JSX.Element<{default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]}> {
+export default function FieldGroup(props: Contract.Input): Contract.Output {
   if (!hasSlot()) {
     throw new TypeError("FieldGroup requires non-empty slot content")
   }

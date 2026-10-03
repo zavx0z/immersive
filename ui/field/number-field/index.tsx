@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {ActiveScrub} from "./contract/types.ts"
-import type {NumberFieldProps} from "./contract/input.ts"
+import type {ActiveScrub} from "./src/types.ts"
+import type {UiFieldsNumberField as Contract} from "./contract"
 import {releaseScrubCapture} from "./src/helpers.tsx"
 import {useRef} from "@zavx0z/component"
 import resolveNumberDragRange from "@ui-fields-number-scrub/resolve-number-drag-range"
@@ -17,11 +17,10 @@ import numberFillPercentage from "@ui-fields-number-value/number-fill-percentage
 import numberPointerStep from "@ui-fields-number-value/number-pointer-step"
 import stepNumberValue from "@ui-fields-number-value/step-number-value"
 
-export type {NumberFieldProps} from "./contract/input"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsNumberField} from "./contract"
 
-export default function NumberField(props: NumberFieldProps): JSX.Element {
+export default function NumberField(props: Contract.Input): Contract.Output {
   const scrub = useRef<ActiveScrub | null>(null)
   const editBaseline = useRef(props.value)
   const hasLabel = props.label !== undefined

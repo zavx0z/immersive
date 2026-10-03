@@ -4,16 +4,14 @@
 
 @packageDocumentation
 */
-import type {MatrixFieldProps} from "./contract/input.ts"
+import type {UiFieldsMatrixField as Contract} from "./contract"
 import {MatrixRow} from "./src/helpers.tsx"
 import normalizeMatrixValue from "@ui-fields-matrix-value/normalize-matrix-value"
 
-export type {MatrixFieldProps} from "./contract/input"
-export type {MatrixFieldDensity} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsMatrixField} from "./contract"
 
-export default function MatrixField(props: MatrixFieldProps): JSX.Element {
+export default function MatrixField(props: Contract.Input): Contract.Output {
   const normalized = normalizeMatrixValue(props.value, props.step)
   const hasLabel = props.label !== undefined
   return <div

@@ -1,4 +1,5 @@
-import type {ReferenceFieldProps} from "@ui-fields/reference-field"
+import type {UiFieldsReferenceField} from "@ui-fields/reference-field"
+type ReferenceFieldProps = UiFieldsReferenceField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные ссылочного параметра, связанного с нодой и её сокетами.

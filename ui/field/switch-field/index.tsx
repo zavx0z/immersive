@@ -4,13 +4,12 @@
 
 @packageDocumentation
 */
-import type {SwitchFieldProps} from "./contract/input.ts"
+import type {UiFieldsSwitchField as Contract} from "./contract"
 
-export type {SwitchFieldProps} from "./contract/input"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsSwitchField} from "./contract"
 
-export default function SwitchField(props: SwitchFieldProps): JSX.Element {
+export default function SwitchField(props: Contract.Input): Contract.Output {
   const hasLabel = props.label !== undefined
   const onClick = (event: PointerEvent) => {
     if (props.readOnly !== true) props.onChange?.(!props.checked, event)

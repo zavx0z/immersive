@@ -1,0 +1,23 @@
+{
+  "name": "@ui-fields-reference-field/layout",
+  "label": "referenceFieldLayout",
+  "version": "0.0.0",
+  "description": "Числовой договор размеров referenceField",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-fields-metrics/field-density-height": "workspace:*",
+    "@ui-fields-metrics/field-metric": "workspace:*",
+    "@ui-fields-metrics/labelled-field-height": "workspace:*",
+    "@ui-fields/reference-field": "workspace:*"
+  }
+}

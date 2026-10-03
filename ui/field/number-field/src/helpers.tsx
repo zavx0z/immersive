@@ -1,4 +1,4 @@
-import type {ActiveScrub} from "../contract/types.ts"
+import type {ActiveScrub} from "./types.ts"
 
 /** Частная подготовка поле интерфейса: числовое значение. */
 export function releaseScrubCapture(active: ActiveScrub | null): void {

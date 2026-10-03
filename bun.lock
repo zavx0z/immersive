@@ -49,6 +49,100 @@
       "name": "@ui/code-editor-model",
       "version": "0.0.0",
     },
+    "collection/model/collection-default-visible-rows": {
+      "name": "@ui-fields-collection-model/collection-default-visible-rows",
+      "version": "0.0.0",
+    },
+    "collection/model/collection-max-visible-rows": {
+      "name": "@ui-fields-collection-model/collection-max-visible-rows",
+      "version": "0.0.0",
+    },
+    "collection/model/collection-min-visible-rows": {
+      "name": "@ui-fields-collection-model/collection-min-visible-rows",
+      "version": "0.0.0",
+    },
+    "collection/model/collection-visible-rows-height": {
+      "name": "@ui-fields-collection-model/collection-visible-rows-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
+      },
+    },
+    "collection/model/normalize-collection-items": {
+      "name": "@ui-fields-collection-model/normalize-collection-items",
+      "version": "0.0.0",
+    },
+    "collection/model/normalize-collection-visible-rows": {
+      "name": "@ui-fields-collection-model/normalize-collection-visible-rows",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-collection-model/collection-default-visible-rows": "workspace:*",
+        "@ui-fields-collection-model/collection-max-visible-rows": "workspace:*",
+        "@ui-fields-collection-model/collection-min-visible-rows": "workspace:*",
+      },
+    },
+    "color/value/clamp-unit": {
+      "name": "@ui-fields-color-value/clamp-unit",
+      "version": "0.0.0",
+    },
+    "color/value/color-channel-display-value": {
+      "name": "@ui-fields-color-value/color-channel-display-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+      },
+    },
+    "color/value/color-hsva-to-value": {
+      "name": "@ui-fields-color-value/color-hsva-to-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/clamp-unit": "workspace:*",
+        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+        "@ui-fields-color-value/wrap-unit": "workspace:*",
+      },
+    },
+    "color/value/color-value-to-hsva": {
+      "name": "@ui-fields-color-value/color-value-to-hsva",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+        "@ui-fields-color-value/wrap-unit": "workspace:*",
+      },
+    },
+    "color/value/format-color-value": {
+      "name": "@ui-fields-color-value/format-color-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+      },
+    },
+    "color/value/normalize-color-value": {
+      "name": "@ui-fields-color-value/normalize-color-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/clamp-unit": "workspace:*",
+      },
+    },
+    "color/value/parse-color-value": {
+      "name": "@ui-fields-color-value/parse-color-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+      },
+    },
+    "color/value/rgba-css": {
+      "name": "@ui-fields-color-value/rgba-css",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-color-value/normalize-color-value": "workspace:*",
+      },
+    },
+    "color/value/wrap-unit": {
+      "name": "@ui-fields-color-value/wrap-unit",
+      "version": "0.0.0",
+    },
     "component": {
       "name": "@zavx0z/component",
       "version": "0.0.0",
@@ -87,6 +181,189 @@
     },
     "engine": {
       "name": "@zavx0z/engine",
+      "version": "0.0.0",
+    },
+    "field-layout/checkbox-field": {
+      "name": "@ui-fields-checkbox-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+      },
+    },
+    "field-layout/collection-field": {
+      "name": "@ui-fields-collection-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-collection-model/normalize-collection-visible-rows": "workspace:*",
+        "@ui-fields-metrics/collection-field-height": "workspace:*",
+      },
+    },
+    "field-layout/color-field": {
+      "name": "@ui-fields-color-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+      },
+    },
+    "field-layout/color-picker-field": {
+      "name": "@ui-fields-color-picker-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/color-picker-field-height": "workspace:*",
+      },
+    },
+    "field-layout/cycle-field": {
+      "name": "@ui-fields-cycle-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/cycle-field": "workspace:*",
+      },
+    },
+    "field-layout/field-group": {
+      "name": "@ui-fields-field-group/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/field-group": "workspace:*",
+      },
+    },
+    "field-layout/matrix-field": {
+      "name": "@ui-fields-matrix-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/matrix-field-height": "workspace:*",
+        "@ui-fields/matrix-field": "workspace:*",
+      },
+    },
+    "field-layout/number-field": {
+      "name": "@ui-fields-number-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+      },
+    },
+    "field-layout/path-field": {
+      "name": "@ui-fields-path-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/path-field": "workspace:*",
+      },
+    },
+    "field-layout/reference-field": {
+      "name": "@ui-fields-reference-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/reference-field": "workspace:*",
+      },
+    },
+    "field-layout/select-field": {
+      "name": "@ui-fields-select-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/select-field": "workspace:*",
+      },
+    },
+    "field-layout/slider-field": {
+      "name": "@ui-fields-slider-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/slider-field": "workspace:*",
+      },
+    },
+    "field-layout/switch-field": {
+      "name": "@ui-fields-switch-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+      },
+    },
+    "field-layout/text-field": {
+      "name": "@ui-fields-text-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+      },
+    },
+    "field-layout/vector-field": {
+      "name": "@ui-fields-vector-field/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/labelled-field-height": "workspace:*",
+        "@ui-fields/vector-field": "workspace:*",
+      },
+    },
+    "field-metrics/collection-field-height": {
+      "name": "@ui-fields-metrics/collection-field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+      },
+    },
+    "field-metrics/collection-visible-rows-height": {
+      "name": "@ui-fields-metrics/collection-visible-rows-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+      },
+    },
+    "field-metrics/color-picker-field-height": {
+      "name": "@ui-fields-metrics/color-picker-field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+      },
+    },
+    "field-metrics/field-density-height": {
+      "name": "@ui-fields-metrics/field-density-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+      },
+    },
+    "field-metrics/field-metric": {
+      "name": "@ui-fields-metrics/field-metric",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui/themes": "workspace:*",
+      },
+    },
+    "field-metrics/labelled-field-height": {
+      "name": "@ui-fields-metrics/labelled-field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-metric": "workspace:*",
+      },
+    },
+    "field-metrics/matrix-field-height": {
+      "name": "@ui-fields-metrics/matrix-field-height",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-metrics/field-density-height": "workspace:*",
+        "@ui-fields-metrics/field-metric": "workspace:*",
+        "@ui-fields-metrics/resolve-field-density": "workspace:*",
+      },
+    },
+    "field-metrics/resolve-field-density": {
+      "name": "@ui-fields-metrics/resolve-field-density",
       "version": "0.0.0",
     },
     "headless": {
@@ -317,6 +594,14 @@
         "@zavx0z/ui",
       ],
     },
+    "matrix/value/normalize-matrix-value": {
+      "name": "@ui-fields-matrix-value/normalize-matrix-value",
+      "version": "0.0.0",
+    },
+    "matrix/value/update-matrix-value": {
+      "name": "@ui-fields-matrix-value/update-matrix-value",
+      "version": "0.0.0",
+    },
     "nodes": {
       "name": "@immersive/nodes",
       "version": "0.0.0",
@@ -470,6 +755,104 @@
     },
     "nodes/tree": {
       "name": "@nodes/tree",
+      "version": "0.0.0",
+    },
+    "number/scrub/resolve-number-drag-range": {
+      "name": "@ui-fields-number-scrub/resolve-number-drag-range",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+      },
+    },
+    "number/scrub/scrub-number-raw-value": {
+      "name": "@ui-fields-number-scrub/scrub-number-raw-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+      },
+    },
+    "number/scrub/scrub-number-value": {
+      "name": "@ui-fields-number-scrub/scrub-number-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-scrub/resolve-number-drag-range": "workspace:*",
+        "@ui-fields-number-scrub/scrub-number-raw-value": "workspace:*",
+        "@ui-fields-number-scrub/snap-number-value": "workspace:*",
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+      },
+    },
+    "number/scrub/snap-number-value": {
+      "name": "@ui-fields-number-scrub/snap-number-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+        "@ui-fields-number-value/rounded-number": "workspace:*",
+      },
+    },
+    "number/value/finite-bound": {
+      "name": "@ui-fields-number-value/finite-bound",
+      "version": "0.0.0",
+    },
+    "number/value/format-number-value": {
+      "name": "@ui-fields-number-value/format-number-value",
+      "version": "0.0.0",
+    },
+    "number/value/normalize-number-value": {
+      "name": "@ui-fields-number-value/normalize-number-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/finite-bound": "workspace:*",
+        "@ui-fields-number-value/rounded-number": "workspace:*",
+        "@ui-fields-number-value/valid-number-step": "workspace:*",
+      },
+    },
+    "number/value/number-fill-percentage": {
+      "name": "@ui-fields-number-value/number-fill-percentage",
+      "version": "0.0.0",
+    },
+    "number/value/number-pointer-adaptive-span": {
+      "name": "@ui-fields-number-value/number-pointer-adaptive-span",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-pointer-step": "workspace:*",
+      },
+    },
+    "number/value/number-pointer-step": {
+      "name": "@ui-fields-number-value/number-pointer-step",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/valid-number-step": "workspace:*",
+      },
+    },
+    "number/value/resolve-number-soft-range": {
+      "name": "@ui-fields-number-value/resolve-number-soft-range",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/finite-bound": "workspace:*",
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
+        "@ui-fields-number-value/number-pointer-step": "workspace:*",
+      },
+    },
+    "number/value/rounded-number": {
+      "name": "@ui-fields-number-value/rounded-number",
+      "version": "0.0.0",
+    },
+    "number/value/step-number-value": {
+      "name": "@ui-fields-number-value/step-number-value",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-fields-number-value/normalize-number-value": "workspace:*",
+        "@ui-fields-number-value/number-pointer-step": "workspace:*",
+        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
+      },
+    },
+    "number/value/valid-number-step": {
+      "name": "@ui-fields-number-value/valid-number-step",
       "version": "0.0.0",
     },
     "renderer": {
@@ -741,18 +1124,14 @@
       "name": "@ui/fields",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-fields/checkbox-field": "workspace:*",
-        "@ui-fields/collection": "workspace:*",
         "@ui-fields/collection-field": "workspace:*",
-        "@ui-fields/color": "workspace:*",
         "@ui-fields/color-field": "workspace:*",
         "@ui-fields/color-picker-field": "workspace:*",
         "@ui-fields/cycle-field": "workspace:*",
         "@ui-fields/field-group": "workspace:*",
-        "@ui-fields/matrix": "workspace:*",
         "@ui-fields/matrix-field": "workspace:*",
-        "@ui-fields/metrics": "workspace:*",
-        "@ui-fields/number": "workspace:*",
         "@ui-fields/number-field": "workspace:*",
         "@ui-fields/path-field": "workspace:*",
         "@ui-fields/reference-field": "workspace:*",
@@ -760,8 +1139,10 @@
         "@ui-fields/slider-field": "workspace:*",
         "@ui-fields/switch-field": "workspace:*",
         "@ui-fields/text-field": "workspace:*",
-        "@ui-fields/vector": "workspace:*",
         "@ui-fields/vector-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
       },
     },
     "ui/field/checkbox-field": {
@@ -772,24 +1153,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/checkbox-field/layout": {
-      "name": "@ui-fields-checkbox-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-metric": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/collection": {
-      "name": "@ui-fields/collection",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-collection/model": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/collection-field": {
@@ -809,68 +1173,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/collection-field/layout": {
-      "name": "@ui-fields-collection-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-collection-model/normalize-collection-visible-rows": "workspace:*",
-        "@ui-fields-metrics/collection-field-height": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/collection/model": {
-      "name": "@ui-fields-collection/model",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-collection-model/collection-default-visible-rows": "workspace:*",
-        "@ui-fields-collection-model/collection-max-visible-rows": "workspace:*",
-        "@ui-fields-collection-model/collection-min-visible-rows": "workspace:*",
-        "@ui-fields-collection-model/collection-visible-rows-height": "workspace:*",
-        "@ui-fields-collection-model/normalize-collection-items": "workspace:*",
-        "@ui-fields-collection-model/normalize-collection-visible-rows": "workspace:*",
-      },
-    },
-    "ui/field/collection/model/collection-default-visible-rows": {
-      "name": "@ui-fields-collection-model/collection-default-visible-rows",
-      "version": "0.0.0",
-    },
-    "ui/field/collection/model/collection-max-visible-rows": {
-      "name": "@ui-fields-collection-model/collection-max-visible-rows",
-      "version": "0.0.0",
-    },
-    "ui/field/collection/model/collection-min-visible-rows": {
-      "name": "@ui-fields-collection-model/collection-min-visible-rows",
-      "version": "0.0.0",
-    },
-    "ui/field/collection/model/collection-visible-rows-height": {
-      "name": "@ui-fields-collection-model/collection-visible-rows-height",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
-      },
-    },
-    "ui/field/collection/model/normalize-collection-items": {
-      "name": "@ui-fields-collection-model/normalize-collection-items",
-      "version": "0.0.0",
-    },
-    "ui/field/collection/model/normalize-collection-visible-rows": {
-      "name": "@ui-fields-collection-model/normalize-collection-visible-rows",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-collection-model/collection-default-visible-rows": "workspace:*",
-        "@ui-fields-collection-model/collection-max-visible-rows": "workspace:*",
-        "@ui-fields-collection-model/collection-min-visible-rows": "workspace:*",
-      },
-    },
-    "ui/field/color": {
-      "name": "@ui-fields/color",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color/value": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/color-field": {
@@ -885,19 +1188,10 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
-      },
-    },
-    "ui/field/color-field/layout": {
-      "name": "@ui-fields-color-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
       },
     },
     "ui/field/color-picker-field": {
@@ -920,94 +1214,8 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
-    },
-    "ui/field/color-picker-field/layout": {
-      "name": "@ui-fields-color-picker-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/color-picker-field-height": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/color/value": {
-      "name": "@ui-fields-color/value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color-value/clamp-unit": "workspace:*",
-        "@ui-fields-color-value/color-channel-display-value": "workspace:*",
-        "@ui-fields-color-value/color-hsva-to-value": "workspace:*",
-        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
-        "@ui-fields-color-value/format-color-value": "workspace:*",
-        "@ui-fields-color-value/normalize-color-value": "workspace:*",
-        "@ui-fields-color-value/parse-color-value": "workspace:*",
-        "@ui-fields-color-value/rgba-css": "workspace:*",
-        "@ui-fields-color-value/wrap-unit": "workspace:*",
-      },
-    },
-    "ui/field/color/value/clamp-unit": {
-      "name": "@ui-fields-color-value/clamp-unit",
-      "version": "0.0.0",
-    },
-    "ui/field/color/value/color-channel-display-value": {
-      "name": "@ui-fields-color-value/color-channel-display-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
-        "@ui-fields-color-value/normalize-color-value": "workspace:*",
-      },
-    },
-    "ui/field/color/value/color-hsva-to-value": {
-      "name": "@ui-fields-color-value/color-hsva-to-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color-value/clamp-unit": "workspace:*",
-        "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
-        "@ui-fields-color-value/normalize-color-value": "workspace:*",
-        "@ui-fields-color-value/wrap-unit": "workspace:*",
-      },
-    },
-    "ui/field/color/value/color-value-to-hsva": {
-      "name": "@ui-fields-color-value/color-value-to-hsva",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color-value/normalize-color-value": "workspace:*",
-        "@ui-fields-color-value/wrap-unit": "workspace:*",
-      },
-    },
-    "ui/field/color/value/format-color-value": {
-      "name": "@ui-fields-color-value/format-color-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color-value/normalize-color-value": "workspace:*",
-      },
-    },
-    "ui/field/color/value/normalize-color-value": {
-      "name": "@ui-fields-color-value/normalize-color-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color-value/clamp-unit": "workspace:*",
-      },
-    },
-    "ui/field/color/value/parse-color-value": {
-      "name": "@ui-fields-color-value/parse-color-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color-value/normalize-color-value": "workspace:*",
-      },
-    },
-    "ui/field/color/value/rgba-css": {
-      "name": "@ui-fields-color-value/rgba-css",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-color-value/normalize-color-value": "workspace:*",
-      },
-    },
-    "ui/field/color/value/wrap-unit": {
-      "name": "@ui-fields-color-value/wrap-unit",
-      "version": "0.0.0",
     },
     "ui/field/cycle-field": {
       "name": "@ui-fields/cycle-field",
@@ -1021,21 +1229,10 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
-      },
-    },
-    "ui/field/cycle-field/layout": {
-      "name": "@ui-fields-cycle-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields/cycle-field": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
       },
     },
     "ui/field/field-group": {
@@ -1047,29 +1244,11 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
         "@ui/typography": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
-      },
-    },
-    "ui/field/field-group/layout": {
-      "name": "@ui-fields-field-group/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields/field-group": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/matrix": {
-      "name": "@ui-fields/matrix",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-matrix/value": "workspace:*",
       },
     },
     "ui/field/matrix-field": {
@@ -1084,112 +1263,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/matrix-field/layout": {
-      "name": "@ui-fields-matrix-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/matrix-field-height": "workspace:*",
-        "@ui-fields/matrix-field": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/matrix/value": {
-      "name": "@ui-fields-matrix/value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-matrix-value/normalize-matrix-value": "workspace:*",
-        "@ui-fields-matrix-value/update-matrix-value": "workspace:*",
-      },
-    },
-    "ui/field/matrix/value/normalize-matrix-value": {
-      "name": "@ui-fields-matrix-value/normalize-matrix-value",
-      "version": "0.0.0",
-    },
-    "ui/field/matrix/value/update-matrix-value": {
-      "name": "@ui-fields-matrix-value/update-matrix-value",
-      "version": "0.0.0",
-    },
-    "ui/field/metric": {
-      "name": "@ui-fields/metrics",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/collection-field-height": "workspace:*",
-        "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
-        "@ui-fields-metrics/color-picker-field-height": "workspace:*",
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/field-metric": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields-metrics/matrix-field-height": "workspace:*",
-        "@ui-fields-metrics/resolve-field-density": "workspace:*",
-      },
-    },
-    "ui/field/metric/collection-field-height": {
-      "name": "@ui-fields-metrics/collection-field-height",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
-        "@ui-fields-metrics/field-metric": "workspace:*",
-      },
-    },
-    "ui/field/metric/collection-visible-rows-height": {
-      "name": "@ui-fields-metrics/collection-visible-rows-height",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-metric": "workspace:*",
-      },
-    },
-    "ui/field/metric/color-picker-field-height": {
-      "name": "@ui-fields-metrics/color-picker-field-height",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-metric": "workspace:*",
-      },
-    },
-    "ui/field/metric/field-density-height": {
-      "name": "@ui-fields-metrics/field-density-height",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-metric": "workspace:*",
-        "@ui-fields-metrics/resolve-field-density": "workspace:*",
-      },
-    },
-    "ui/field/metric/field-metric": {
-      "name": "@ui-fields-metrics/field-metric",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui/themes": "workspace:*",
-      },
-    },
-    "ui/field/metric/labelled-field-height": {
-      "name": "@ui-fields-metrics/labelled-field-height",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-metric": "workspace:*",
-      },
-    },
-    "ui/field/metric/matrix-field-height": {
-      "name": "@ui-fields-metrics/matrix-field-height",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/field-metric": "workspace:*",
-        "@ui-fields-metrics/resolve-field-density": "workspace:*",
-      },
-    },
-    "ui/field/metric/resolve-field-density": {
-      "name": "@ui-fields-metrics/resolve-field-density",
-      "version": "0.0.0",
-    },
-    "ui/field/number": {
-      "name": "@ui-fields/number",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number/scrub": "workspace:*",
-        "@ui-fields-number/value": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/number-field": {
@@ -1209,144 +1283,11 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
       },
-    },
-    "ui/field/number-field/layout": {
-      "name": "@ui-fields-number-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/number/scrub": {
-      "name": "@ui-fields-number/scrub",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-scrub/resolve-number-drag-range": "workspace:*",
-        "@ui-fields-number-scrub/scrub-number-raw-value": "workspace:*",
-        "@ui-fields-number-scrub/scrub-number-value": "workspace:*",
-        "@ui-fields-number-scrub/snap-number-value": "workspace:*",
-      },
-    },
-    "ui/field/number/scrub/resolve-number-drag-range": {
-      "name": "@ui-fields-number-scrub/resolve-number-drag-range",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/normalize-number-value": "workspace:*",
-        "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
-        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
-      },
-    },
-    "ui/field/number/scrub/scrub-number-raw-value": {
-      "name": "@ui-fields-number-scrub/scrub-number-raw-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
-      },
-    },
-    "ui/field/number/scrub/scrub-number-value": {
-      "name": "@ui-fields-number-scrub/scrub-number-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-scrub/resolve-number-drag-range": "workspace:*",
-        "@ui-fields-number-scrub/scrub-number-raw-value": "workspace:*",
-        "@ui-fields-number-scrub/snap-number-value": "workspace:*",
-        "@ui-fields-number-value/normalize-number-value": "workspace:*",
-      },
-    },
-    "ui/field/number/scrub/snap-number-value": {
-      "name": "@ui-fields-number-scrub/snap-number-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
-        "@ui-fields-number-value/rounded-number": "workspace:*",
-      },
-    },
-    "ui/field/number/value": {
-      "name": "@ui-fields-number/value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/finite-bound": "workspace:*",
-        "@ui-fields-number-value/format-number-value": "workspace:*",
-        "@ui-fields-number-value/normalize-number-value": "workspace:*",
-        "@ui-fields-number-value/number-fill-percentage": "workspace:*",
-        "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
-        "@ui-fields-number-value/number-pointer-step": "workspace:*",
-        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
-        "@ui-fields-number-value/rounded-number": "workspace:*",
-        "@ui-fields-number-value/step-number-value": "workspace:*",
-        "@ui-fields-number-value/valid-number-step": "workspace:*",
-      },
-    },
-    "ui/field/number/value/finite-bound": {
-      "name": "@ui-fields-number-value/finite-bound",
-      "version": "0.0.0",
-    },
-    "ui/field/number/value/format-number-value": {
-      "name": "@ui-fields-number-value/format-number-value",
-      "version": "0.0.0",
-    },
-    "ui/field/number/value/normalize-number-value": {
-      "name": "@ui-fields-number-value/normalize-number-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/finite-bound": "workspace:*",
-        "@ui-fields-number-value/rounded-number": "workspace:*",
-        "@ui-fields-number-value/valid-number-step": "workspace:*",
-      },
-    },
-    "ui/field/number/value/number-fill-percentage": {
-      "name": "@ui-fields-number-value/number-fill-percentage",
-      "version": "0.0.0",
-    },
-    "ui/field/number/value/number-pointer-adaptive-span": {
-      "name": "@ui-fields-number-value/number-pointer-adaptive-span",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/normalize-number-value": "workspace:*",
-        "@ui-fields-number-value/number-pointer-step": "workspace:*",
-      },
-    },
-    "ui/field/number/value/number-pointer-step": {
-      "name": "@ui-fields-number-value/number-pointer-step",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/normalize-number-value": "workspace:*",
-        "@ui-fields-number-value/valid-number-step": "workspace:*",
-      },
-    },
-    "ui/field/number/value/resolve-number-soft-range": {
-      "name": "@ui-fields-number-value/resolve-number-soft-range",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/finite-bound": "workspace:*",
-        "@ui-fields-number-value/normalize-number-value": "workspace:*",
-        "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
-        "@ui-fields-number-value/number-pointer-step": "workspace:*",
-      },
-    },
-    "ui/field/number/value/rounded-number": {
-      "name": "@ui-fields-number-value/rounded-number",
-      "version": "0.0.0",
-    },
-    "ui/field/number/value/step-number-value": {
-      "name": "@ui-fields-number-value/step-number-value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-number-value/normalize-number-value": "workspace:*",
-        "@ui-fields-number-value/number-pointer-step": "workspace:*",
-        "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
-      },
-    },
-    "ui/field/number/value/valid-number-step": {
-      "name": "@ui-fields-number-value/valid-number-step",
-      "version": "0.0.0",
     },
     "ui/field/path-field": {
       "name": "@ui-fields/path-field",
@@ -1359,19 +1300,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/path-field/layout": {
-      "name": "@ui-fields-path-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/field-metric": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields/path-field": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/reference-field": {
@@ -1387,19 +1316,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/reference-field/layout": {
-      "name": "@ui-fields-reference-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/field-metric": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields/reference-field": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/select-field": {
@@ -1414,18 +1331,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/select-field/layout": {
-      "name": "@ui-fields-select-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields/select-field": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/slider-field": {
@@ -1437,18 +1343,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/slider-field/layout": {
-      "name": "@ui-fields-slider-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields/slider-field": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/switch-field": {
@@ -1459,17 +1354,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/switch-field/layout": {
-      "name": "@ui-fields-switch-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-metric": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/text-field": {
@@ -1480,24 +1365,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/text-field/layout": {
-      "name": "@ui-fields-text-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/vector": {
-      "name": "@ui-fields/vector",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-vector/value": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
     },
     "ui/field/vector-field": {
@@ -1512,35 +1380,8 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/fields": "workspace:*",
       },
-    },
-    "ui/field/vector-field/layout": {
-      "name": "@ui-fields-vector-field/layout",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-metrics/field-density-height": "workspace:*",
-        "@ui-fields-metrics/labelled-field-height": "workspace:*",
-        "@ui-fields/vector-field": "workspace:*",
-      },
-      "devDependencies": {
-        "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/field/vector/value": {
-      "name": "@ui-fields-vector/value",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-fields-vector-value/normalize-vector-value": "workspace:*",
-        "@ui-fields-vector-value/update-vector-value": "workspace:*",
-      },
-    },
-    "ui/field/vector/value/normalize-vector-value": {
-      "name": "@ui-fields-vector-value/normalize-vector-value",
-      "version": "0.0.0",
-    },
-    "ui/field/vector/value/update-vector-value": {
-      "name": "@ui-fields-vector-value/update-vector-value",
-      "version": "0.0.0",
     },
     "ui/menu": {
       "name": "@ui/menus",
@@ -2437,6 +2278,14 @@
         "@zavx0z/dom": "workspace:*",
       },
     },
+    "vector/value/normalize-vector-value": {
+      "name": "@ui-fields-vector-value/normalize-vector-value",
+      "version": "0.0.0",
+    },
+    "vector/value/update-vector-value": {
+      "name": "@ui-fields-vector-value/update-vector-value",
+      "version": "0.0.0",
+    },
     "webgpu": {
       "name": "@zavx0z/webgpu",
       "version": "0.0.0",
@@ -2652,137 +2501,121 @@
 
     "@ui-feedback/status-bar": ["@ui-feedback/status-bar@workspace:ui/feedback/status-bar"],
 
-    "@ui-fields-checkbox-field/layout": ["@ui-fields-checkbox-field/layout@workspace:ui/field/checkbox-field/layout"],
+    "@ui-fields-checkbox-field/layout": ["@ui-fields-checkbox-field/layout@workspace:field-layout/checkbox-field"],
 
-    "@ui-fields-collection-field/layout": ["@ui-fields-collection-field/layout@workspace:ui/field/collection-field/layout"],
+    "@ui-fields-collection-field/layout": ["@ui-fields-collection-field/layout@workspace:field-layout/collection-field"],
 
-    "@ui-fields-collection-model/collection-default-visible-rows": ["@ui-fields-collection-model/collection-default-visible-rows@workspace:ui/field/collection/model/collection-default-visible-rows"],
+    "@ui-fields-collection-model/collection-default-visible-rows": ["@ui-fields-collection-model/collection-default-visible-rows@workspace:collection/model/collection-default-visible-rows"],
 
-    "@ui-fields-collection-model/collection-max-visible-rows": ["@ui-fields-collection-model/collection-max-visible-rows@workspace:ui/field/collection/model/collection-max-visible-rows"],
+    "@ui-fields-collection-model/collection-max-visible-rows": ["@ui-fields-collection-model/collection-max-visible-rows@workspace:collection/model/collection-max-visible-rows"],
 
-    "@ui-fields-collection-model/collection-min-visible-rows": ["@ui-fields-collection-model/collection-min-visible-rows@workspace:ui/field/collection/model/collection-min-visible-rows"],
+    "@ui-fields-collection-model/collection-min-visible-rows": ["@ui-fields-collection-model/collection-min-visible-rows@workspace:collection/model/collection-min-visible-rows"],
 
-    "@ui-fields-collection-model/collection-visible-rows-height": ["@ui-fields-collection-model/collection-visible-rows-height@workspace:ui/field/collection/model/collection-visible-rows-height"],
+    "@ui-fields-collection-model/collection-visible-rows-height": ["@ui-fields-collection-model/collection-visible-rows-height@workspace:collection/model/collection-visible-rows-height"],
 
-    "@ui-fields-collection-model/normalize-collection-items": ["@ui-fields-collection-model/normalize-collection-items@workspace:ui/field/collection/model/normalize-collection-items"],
+    "@ui-fields-collection-model/normalize-collection-items": ["@ui-fields-collection-model/normalize-collection-items@workspace:collection/model/normalize-collection-items"],
 
-    "@ui-fields-collection-model/normalize-collection-visible-rows": ["@ui-fields-collection-model/normalize-collection-visible-rows@workspace:ui/field/collection/model/normalize-collection-visible-rows"],
+    "@ui-fields-collection-model/normalize-collection-visible-rows": ["@ui-fields-collection-model/normalize-collection-visible-rows@workspace:collection/model/normalize-collection-visible-rows"],
 
-    "@ui-fields-collection/model": ["@ui-fields-collection/model@workspace:ui/field/collection/model"],
+    "@ui-fields-color-field/layout": ["@ui-fields-color-field/layout@workspace:field-layout/color-field"],
 
-    "@ui-fields-color-field/layout": ["@ui-fields-color-field/layout@workspace:ui/field/color-field/layout"],
+    "@ui-fields-color-picker-field/layout": ["@ui-fields-color-picker-field/layout@workspace:field-layout/color-picker-field"],
 
-    "@ui-fields-color-picker-field/layout": ["@ui-fields-color-picker-field/layout@workspace:ui/field/color-picker-field/layout"],
+    "@ui-fields-color-value/clamp-unit": ["@ui-fields-color-value/clamp-unit@workspace:color/value/clamp-unit"],
 
-    "@ui-fields-color-value/clamp-unit": ["@ui-fields-color-value/clamp-unit@workspace:ui/field/color/value/clamp-unit"],
+    "@ui-fields-color-value/color-channel-display-value": ["@ui-fields-color-value/color-channel-display-value@workspace:color/value/color-channel-display-value"],
 
-    "@ui-fields-color-value/color-channel-display-value": ["@ui-fields-color-value/color-channel-display-value@workspace:ui/field/color/value/color-channel-display-value"],
+    "@ui-fields-color-value/color-hsva-to-value": ["@ui-fields-color-value/color-hsva-to-value@workspace:color/value/color-hsva-to-value"],
 
-    "@ui-fields-color-value/color-hsva-to-value": ["@ui-fields-color-value/color-hsva-to-value@workspace:ui/field/color/value/color-hsva-to-value"],
+    "@ui-fields-color-value/color-value-to-hsva": ["@ui-fields-color-value/color-value-to-hsva@workspace:color/value/color-value-to-hsva"],
 
-    "@ui-fields-color-value/color-value-to-hsva": ["@ui-fields-color-value/color-value-to-hsva@workspace:ui/field/color/value/color-value-to-hsva"],
+    "@ui-fields-color-value/format-color-value": ["@ui-fields-color-value/format-color-value@workspace:color/value/format-color-value"],
 
-    "@ui-fields-color-value/format-color-value": ["@ui-fields-color-value/format-color-value@workspace:ui/field/color/value/format-color-value"],
+    "@ui-fields-color-value/normalize-color-value": ["@ui-fields-color-value/normalize-color-value@workspace:color/value/normalize-color-value"],
 
-    "@ui-fields-color-value/normalize-color-value": ["@ui-fields-color-value/normalize-color-value@workspace:ui/field/color/value/normalize-color-value"],
+    "@ui-fields-color-value/parse-color-value": ["@ui-fields-color-value/parse-color-value@workspace:color/value/parse-color-value"],
 
-    "@ui-fields-color-value/parse-color-value": ["@ui-fields-color-value/parse-color-value@workspace:ui/field/color/value/parse-color-value"],
+    "@ui-fields-color-value/rgba-css": ["@ui-fields-color-value/rgba-css@workspace:color/value/rgba-css"],
 
-    "@ui-fields-color-value/rgba-css": ["@ui-fields-color-value/rgba-css@workspace:ui/field/color/value/rgba-css"],
+    "@ui-fields-color-value/wrap-unit": ["@ui-fields-color-value/wrap-unit@workspace:color/value/wrap-unit"],
 
-    "@ui-fields-color-value/wrap-unit": ["@ui-fields-color-value/wrap-unit@workspace:ui/field/color/value/wrap-unit"],
+    "@ui-fields-cycle-field/layout": ["@ui-fields-cycle-field/layout@workspace:field-layout/cycle-field"],
 
-    "@ui-fields-color/value": ["@ui-fields-color/value@workspace:ui/field/color/value"],
+    "@ui-fields-field-group/layout": ["@ui-fields-field-group/layout@workspace:field-layout/field-group"],
 
-    "@ui-fields-cycle-field/layout": ["@ui-fields-cycle-field/layout@workspace:ui/field/cycle-field/layout"],
+    "@ui-fields-matrix-field/layout": ["@ui-fields-matrix-field/layout@workspace:field-layout/matrix-field"],
 
-    "@ui-fields-field-group/layout": ["@ui-fields-field-group/layout@workspace:ui/field/field-group/layout"],
+    "@ui-fields-matrix-value/normalize-matrix-value": ["@ui-fields-matrix-value/normalize-matrix-value@workspace:matrix/value/normalize-matrix-value"],
 
-    "@ui-fields-matrix-field/layout": ["@ui-fields-matrix-field/layout@workspace:ui/field/matrix-field/layout"],
+    "@ui-fields-matrix-value/update-matrix-value": ["@ui-fields-matrix-value/update-matrix-value@workspace:matrix/value/update-matrix-value"],
 
-    "@ui-fields-matrix-value/normalize-matrix-value": ["@ui-fields-matrix-value/normalize-matrix-value@workspace:ui/field/matrix/value/normalize-matrix-value"],
+    "@ui-fields-metrics/collection-field-height": ["@ui-fields-metrics/collection-field-height@workspace:field-metrics/collection-field-height"],
 
-    "@ui-fields-matrix-value/update-matrix-value": ["@ui-fields-matrix-value/update-matrix-value@workspace:ui/field/matrix/value/update-matrix-value"],
+    "@ui-fields-metrics/collection-visible-rows-height": ["@ui-fields-metrics/collection-visible-rows-height@workspace:field-metrics/collection-visible-rows-height"],
 
-    "@ui-fields-matrix/value": ["@ui-fields-matrix/value@workspace:ui/field/matrix/value"],
+    "@ui-fields-metrics/color-picker-field-height": ["@ui-fields-metrics/color-picker-field-height@workspace:field-metrics/color-picker-field-height"],
 
-    "@ui-fields-metrics/collection-field-height": ["@ui-fields-metrics/collection-field-height@workspace:ui/field/metric/collection-field-height"],
+    "@ui-fields-metrics/field-density-height": ["@ui-fields-metrics/field-density-height@workspace:field-metrics/field-density-height"],
 
-    "@ui-fields-metrics/collection-visible-rows-height": ["@ui-fields-metrics/collection-visible-rows-height@workspace:ui/field/metric/collection-visible-rows-height"],
+    "@ui-fields-metrics/field-metric": ["@ui-fields-metrics/field-metric@workspace:field-metrics/field-metric"],
 
-    "@ui-fields-metrics/color-picker-field-height": ["@ui-fields-metrics/color-picker-field-height@workspace:ui/field/metric/color-picker-field-height"],
+    "@ui-fields-metrics/labelled-field-height": ["@ui-fields-metrics/labelled-field-height@workspace:field-metrics/labelled-field-height"],
 
-    "@ui-fields-metrics/field-density-height": ["@ui-fields-metrics/field-density-height@workspace:ui/field/metric/field-density-height"],
+    "@ui-fields-metrics/matrix-field-height": ["@ui-fields-metrics/matrix-field-height@workspace:field-metrics/matrix-field-height"],
 
-    "@ui-fields-metrics/field-metric": ["@ui-fields-metrics/field-metric@workspace:ui/field/metric/field-metric"],
+    "@ui-fields-metrics/resolve-field-density": ["@ui-fields-metrics/resolve-field-density@workspace:field-metrics/resolve-field-density"],
 
-    "@ui-fields-metrics/labelled-field-height": ["@ui-fields-metrics/labelled-field-height@workspace:ui/field/metric/labelled-field-height"],
+    "@ui-fields-number-field/layout": ["@ui-fields-number-field/layout@workspace:field-layout/number-field"],
 
-    "@ui-fields-metrics/matrix-field-height": ["@ui-fields-metrics/matrix-field-height@workspace:ui/field/metric/matrix-field-height"],
+    "@ui-fields-number-scrub/resolve-number-drag-range": ["@ui-fields-number-scrub/resolve-number-drag-range@workspace:number/scrub/resolve-number-drag-range"],
 
-    "@ui-fields-metrics/resolve-field-density": ["@ui-fields-metrics/resolve-field-density@workspace:ui/field/metric/resolve-field-density"],
+    "@ui-fields-number-scrub/scrub-number-raw-value": ["@ui-fields-number-scrub/scrub-number-raw-value@workspace:number/scrub/scrub-number-raw-value"],
 
-    "@ui-fields-number-field/layout": ["@ui-fields-number-field/layout@workspace:ui/field/number-field/layout"],
+    "@ui-fields-number-scrub/scrub-number-value": ["@ui-fields-number-scrub/scrub-number-value@workspace:number/scrub/scrub-number-value"],
 
-    "@ui-fields-number-scrub/resolve-number-drag-range": ["@ui-fields-number-scrub/resolve-number-drag-range@workspace:ui/field/number/scrub/resolve-number-drag-range"],
+    "@ui-fields-number-scrub/snap-number-value": ["@ui-fields-number-scrub/snap-number-value@workspace:number/scrub/snap-number-value"],
 
-    "@ui-fields-number-scrub/scrub-number-raw-value": ["@ui-fields-number-scrub/scrub-number-raw-value@workspace:ui/field/number/scrub/scrub-number-raw-value"],
+    "@ui-fields-number-value/finite-bound": ["@ui-fields-number-value/finite-bound@workspace:number/value/finite-bound"],
 
-    "@ui-fields-number-scrub/scrub-number-value": ["@ui-fields-number-scrub/scrub-number-value@workspace:ui/field/number/scrub/scrub-number-value"],
+    "@ui-fields-number-value/format-number-value": ["@ui-fields-number-value/format-number-value@workspace:number/value/format-number-value"],
 
-    "@ui-fields-number-scrub/snap-number-value": ["@ui-fields-number-scrub/snap-number-value@workspace:ui/field/number/scrub/snap-number-value"],
+    "@ui-fields-number-value/normalize-number-value": ["@ui-fields-number-value/normalize-number-value@workspace:number/value/normalize-number-value"],
 
-    "@ui-fields-number-value/finite-bound": ["@ui-fields-number-value/finite-bound@workspace:ui/field/number/value/finite-bound"],
+    "@ui-fields-number-value/number-fill-percentage": ["@ui-fields-number-value/number-fill-percentage@workspace:number/value/number-fill-percentage"],
 
-    "@ui-fields-number-value/format-number-value": ["@ui-fields-number-value/format-number-value@workspace:ui/field/number/value/format-number-value"],
+    "@ui-fields-number-value/number-pointer-adaptive-span": ["@ui-fields-number-value/number-pointer-adaptive-span@workspace:number/value/number-pointer-adaptive-span"],
 
-    "@ui-fields-number-value/normalize-number-value": ["@ui-fields-number-value/normalize-number-value@workspace:ui/field/number/value/normalize-number-value"],
+    "@ui-fields-number-value/number-pointer-step": ["@ui-fields-number-value/number-pointer-step@workspace:number/value/number-pointer-step"],
 
-    "@ui-fields-number-value/number-fill-percentage": ["@ui-fields-number-value/number-fill-percentage@workspace:ui/field/number/value/number-fill-percentage"],
+    "@ui-fields-number-value/resolve-number-soft-range": ["@ui-fields-number-value/resolve-number-soft-range@workspace:number/value/resolve-number-soft-range"],
 
-    "@ui-fields-number-value/number-pointer-adaptive-span": ["@ui-fields-number-value/number-pointer-adaptive-span@workspace:ui/field/number/value/number-pointer-adaptive-span"],
+    "@ui-fields-number-value/rounded-number": ["@ui-fields-number-value/rounded-number@workspace:number/value/rounded-number"],
 
-    "@ui-fields-number-value/number-pointer-step": ["@ui-fields-number-value/number-pointer-step@workspace:ui/field/number/value/number-pointer-step"],
+    "@ui-fields-number-value/step-number-value": ["@ui-fields-number-value/step-number-value@workspace:number/value/step-number-value"],
 
-    "@ui-fields-number-value/resolve-number-soft-range": ["@ui-fields-number-value/resolve-number-soft-range@workspace:ui/field/number/value/resolve-number-soft-range"],
+    "@ui-fields-number-value/valid-number-step": ["@ui-fields-number-value/valid-number-step@workspace:number/value/valid-number-step"],
 
-    "@ui-fields-number-value/rounded-number": ["@ui-fields-number-value/rounded-number@workspace:ui/field/number/value/rounded-number"],
+    "@ui-fields-path-field/layout": ["@ui-fields-path-field/layout@workspace:field-layout/path-field"],
 
-    "@ui-fields-number-value/step-number-value": ["@ui-fields-number-value/step-number-value@workspace:ui/field/number/value/step-number-value"],
+    "@ui-fields-reference-field/layout": ["@ui-fields-reference-field/layout@workspace:field-layout/reference-field"],
 
-    "@ui-fields-number-value/valid-number-step": ["@ui-fields-number-value/valid-number-step@workspace:ui/field/number/value/valid-number-step"],
+    "@ui-fields-select-field/layout": ["@ui-fields-select-field/layout@workspace:field-layout/select-field"],
 
-    "@ui-fields-number/scrub": ["@ui-fields-number/scrub@workspace:ui/field/number/scrub"],
+    "@ui-fields-slider-field/layout": ["@ui-fields-slider-field/layout@workspace:field-layout/slider-field"],
 
-    "@ui-fields-number/value": ["@ui-fields-number/value@workspace:ui/field/number/value"],
+    "@ui-fields-switch-field/layout": ["@ui-fields-switch-field/layout@workspace:field-layout/switch-field"],
 
-    "@ui-fields-path-field/layout": ["@ui-fields-path-field/layout@workspace:ui/field/path-field/layout"],
+    "@ui-fields-text-field/layout": ["@ui-fields-text-field/layout@workspace:field-layout/text-field"],
 
-    "@ui-fields-reference-field/layout": ["@ui-fields-reference-field/layout@workspace:ui/field/reference-field/layout"],
+    "@ui-fields-vector-field/layout": ["@ui-fields-vector-field/layout@workspace:field-layout/vector-field"],
 
-    "@ui-fields-select-field/layout": ["@ui-fields-select-field/layout@workspace:ui/field/select-field/layout"],
+    "@ui-fields-vector-value/normalize-vector-value": ["@ui-fields-vector-value/normalize-vector-value@workspace:vector/value/normalize-vector-value"],
 
-    "@ui-fields-slider-field/layout": ["@ui-fields-slider-field/layout@workspace:ui/field/slider-field/layout"],
-
-    "@ui-fields-switch-field/layout": ["@ui-fields-switch-field/layout@workspace:ui/field/switch-field/layout"],
-
-    "@ui-fields-text-field/layout": ["@ui-fields-text-field/layout@workspace:ui/field/text-field/layout"],
-
-    "@ui-fields-vector-field/layout": ["@ui-fields-vector-field/layout@workspace:ui/field/vector-field/layout"],
-
-    "@ui-fields-vector-value/normalize-vector-value": ["@ui-fields-vector-value/normalize-vector-value@workspace:ui/field/vector/value/normalize-vector-value"],
-
-    "@ui-fields-vector-value/update-vector-value": ["@ui-fields-vector-value/update-vector-value@workspace:ui/field/vector/value/update-vector-value"],
-
-    "@ui-fields-vector/value": ["@ui-fields-vector/value@workspace:ui/field/vector/value"],
+    "@ui-fields-vector-value/update-vector-value": ["@ui-fields-vector-value/update-vector-value@workspace:vector/value/update-vector-value"],
 
     "@ui-fields/checkbox-field": ["@ui-fields/checkbox-field@workspace:ui/field/checkbox-field"],
 
-    "@ui-fields/collection": ["@ui-fields/collection@workspace:ui/field/collection"],
-
     "@ui-fields/collection-field": ["@ui-fields/collection-field@workspace:ui/field/collection-field"],
-
-    "@ui-fields/color": ["@ui-fields/color@workspace:ui/field/color"],
 
     "@ui-fields/color-field": ["@ui-fields/color-field@workspace:ui/field/color-field"],
 
@@ -2792,13 +2625,7 @@
 
     "@ui-fields/field-group": ["@ui-fields/field-group@workspace:ui/field/field-group"],
 
-    "@ui-fields/matrix": ["@ui-fields/matrix@workspace:ui/field/matrix"],
-
     "@ui-fields/matrix-field": ["@ui-fields/matrix-field@workspace:ui/field/matrix-field"],
-
-    "@ui-fields/metrics": ["@ui-fields/metrics@workspace:ui/field/metric"],
-
-    "@ui-fields/number": ["@ui-fields/number@workspace:ui/field/number"],
 
     "@ui-fields/number-field": ["@ui-fields/number-field@workspace:ui/field/number-field"],
 
@@ -2813,8 +2640,6 @@
     "@ui-fields/switch-field": ["@ui-fields/switch-field@workspace:ui/field/switch-field"],
 
     "@ui-fields/text-field": ["@ui-fields/text-field@workspace:ui/field/text-field"],
-
-    "@ui-fields/vector": ["@ui-fields/vector@workspace:ui/field/vector"],
 
     "@ui-fields/vector-field": ["@ui-fields/vector-field@workspace:ui/field/vector-field"],
 

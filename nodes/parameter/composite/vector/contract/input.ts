@@ -1,4 +1,5 @@
-import type {VectorFieldProps} from "@ui-fields/vector-field"
+import type {UiFieldsVectorField} from "@ui-fields/vector-field"
+type VectorFieldProps = UiFieldsVectorField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные векторного параметра, связанного с нодой и её сокетами.

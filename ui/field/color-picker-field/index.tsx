@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 import {ColorChannelField} from "./src/helpers.tsx"
-import type {ColorPickerFieldProps} from "./contract/input.ts"
+import type {UiFieldsColorPickerField as Contract} from "./contract"
 import {ColorSwatch} from "./src/helpers.tsx"
 import {channels} from "./src/helpers.tsx"
 import colorValueToHsva from "@ui-fields-color-value/color-value-to-hsva"
@@ -14,12 +14,10 @@ import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
 import parseColorValue from "@ui-fields-color-value/parse-color-value"
 import TextField from "@ui-fields/text-field"
 
-export type {ColorPickerFieldProps} from "./contract/input"
-export type {ColorPickerFieldValue} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsColorPickerField} from "./contract"
 
-export default function ColorPickerField(props: ColorPickerFieldProps): JSX.Element {
+export default function ColorPickerField(props: Contract.Input): Contract.Output {
   if (!props.value || typeof props.value !== "object") throw new TypeError("ColorPickerField value must be an object")
   const value = normalizeColorValue(props.value)
   const hsva = colorValueToHsva(value)

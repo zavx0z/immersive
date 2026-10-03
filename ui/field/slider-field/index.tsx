@@ -4,16 +4,14 @@
 
 @packageDocumentation
 */
-import type {SliderFieldProps} from "./contract/input.ts"
+import type {UiFieldsSliderField as Contract} from "./contract"
 import {validateSliderField} from "./src/helpers.tsx"
 import resolveFieldDensity from "@ui-fields-metrics/resolve-field-density"
 
-export type {SliderFieldProps} from "./contract/input"
-export type {SliderFieldDensity} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsSliderField} from "./contract"
 
-export default function SliderField(props: SliderFieldProps): JSX.Element {
+export default function SliderField(props: Contract.Input): Contract.Output {
   const step = validateSliderField(props)
   const density = resolveFieldDensity(props.density, "regular", "SliderField")
   const hasLabel = props.label !== undefined

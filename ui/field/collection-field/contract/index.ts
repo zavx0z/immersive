@@ -1,0 +1,28 @@
+import type {CollectionFieldDensity} from "./types.ts"
+import type {CollectionFieldItem} from "./types.ts"
+import type {CollectionFieldMoveDirection} from "./types.ts"
+
+import type {JSX} from "@jsx-compiler/session"
+import type {UiFields} from "@ui/fields/contract"
+
+/** Собственный протокол поля и общие гарантии его группы. */
+export declare namespace UiFieldsCollectionField {
+  /**
+  Входные данные CollectionField.
+  */
+  interface Input extends UiFields.Input {
+    readonly items: readonly CollectionFieldItem[]
+    readonly selectedId: string | null
+    readonly visibleRows?: number | undefined
+    readonly emptyLabel?: string | undefined
+    readonly density?: CollectionFieldDensity | undefined
+    readonly disabled?: boolean | undefined
+    readonly readOnly?: boolean | undefined
+    readonly onSelect?: ((id: string, event: Event) => void) | undefined
+    readonly onAdd?: ((event: Event) => void) | undefined
+    readonly onRemove?: ((id: string, event: Event) => void) | undefined
+    readonly onMove?: ((id: string, direction: CollectionFieldMoveDirection, event: Event) => void) | undefined
+  }
+
+  type Output = UiFields.Output & JSX.Element
+}

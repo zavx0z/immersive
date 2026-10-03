@@ -5,14 +5,12 @@
 @packageDocumentation
 */
 import type {TextFieldInputEvent} from "./contract/types.ts"
-import type {TextFieldProps} from "./contract/input.ts"
+import type {UiFieldsTextField as Contract} from "./contract"
 
-export type {TextFieldProps} from "./contract/input"
-export type {TextFieldType} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsTextField} from "./contract"
 
-export default function TextField(props: TextFieldProps): JSX.Element {
+export default function TextField(props: Contract.Input): Contract.Output {
   const hasLabel = props.label !== undefined
   const onInput = (input: HTMLInputElement, event: TextFieldInputEvent) => props.onInput?.(
     input.value,

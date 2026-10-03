@@ -5,19 +5,17 @@
 @packageDocumentation
 */
 import type {SelectFieldOption} from "./contract/types.ts"
-import type {SelectFieldProps} from "./contract/input.ts"
+import type {UiFieldsSelectField as Contract} from "./contract"
 import {SelectOption} from "./src/helpers.tsx"
 import findSelectionOption from "@ui-selection/find-selection-option"
 import selectionExceptionalLabel from "@ui-selection/selection-exceptional-label"
 import validateSelectionOptions from "@ui-selection/validate-selection-options"
 import validateSelectionState from "@ui-selection/validate-selection-state"
 
-export type {SelectFieldProps} from "./contract/input"
-export type {SelectFieldOption, SelectFieldDensity, SelectFieldState} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsSelectField} from "./contract"
 
-export default function SelectField(props: SelectFieldProps): JSX.Element {
+export default function SelectField(props: Contract.Input): Contract.Output {
   if (typeof props.value !== "string") throw new TypeError("SelectField value must be a string")
   validateSelectionState(props.state)
   const options = props.options === undefined ? undefined : validateSelectionOptions(props.options)

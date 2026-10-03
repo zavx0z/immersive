@@ -1,4 +1,5 @@
-import type {SelectFieldProps} from "@ui-fields/select-field"
+import type {UiFieldsSelectField} from "@ui-fields/select-field"
+type SelectFieldProps = UiFieldsSelectField.Input
 import type {ParameterEndpoint} from "../../../shared/src/contracts.ts"
 /**
 Входные данные параметра выбора, связанного с нодой и её сокетами.

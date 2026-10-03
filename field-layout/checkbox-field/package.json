@@ -1,0 +1,21 @@
+{
+  "name": "@ui-fields-checkbox-field/layout",
+  "label": "checkboxFieldLayout",
+  "version": "0.0.0",
+  "description": "Числовой договор размеров checkboxField",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-fields-metrics/field-metric": "workspace:*",
+    "@ui-fields-metrics/labelled-field-height": "workspace:*"
+  }
+}

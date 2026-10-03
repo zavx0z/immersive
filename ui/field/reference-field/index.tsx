@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {ReferenceFieldProps} from "./contract/input.ts"
+import type {UiFieldsReferenceField as Contract} from "./contract"
 import {validateReferenceField} from "./src/helpers.tsx"
 import Button from "@ui-buttons/button"
 import IconButton from "@ui-buttons/icon-button"
@@ -12,12 +12,10 @@ import closeIcon from "@ui-themes-icons/close"
 import pickerIcon from "@ui-themes-icons/picker"
 import resourceIcon from "@ui-themes-icons/resource"
 
-export type {ReferenceFieldProps} from "./contract/input"
-export type {ReferenceFieldValue, ReferenceFieldDensity} from "./contract/types"
 
-import type {JSX} from "@jsx-compiler/session"
+export type {UiFieldsReferenceField} from "./contract"
 
-export default function ReferenceField(props: ReferenceFieldProps): JSX.Element {
+export default function ReferenceField(props: Contract.Input): Contract.Output {
   validateReferenceField(props)
   const density = props.density ?? "regular"
   const hasLabel = props.label !== undefined

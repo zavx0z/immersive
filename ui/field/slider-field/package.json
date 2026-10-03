@@ -19,6 +19,7 @@
     "@ui-fields-metrics/resolve-field-density": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/fields": "workspace:*"
   }
 }
