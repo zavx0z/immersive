@@ -2,17 +2,25 @@
   "name": "@ui/feedback",
   "label": "feedback",
   "version": "0.0.0",
-  "description": "Публичные возможности области feedback",
+  "description": "Уведомления и строки состояния представляют обратную связь в Document приложения.",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./notification": "./notification/index.tsx",
-    "./status-bar": "./status-bar/index.tsx"
+    "./contract": "./contract/index.ts"
   },
   "dependencies": {
     "@ui-feedback/notification": "workspace:*",
-    "@ui-feedback/status-bar": "workspace:*"
+    "@ui-feedback/status-bar": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

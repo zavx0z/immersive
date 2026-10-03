@@ -1,3 +1,4 @@
+import type {UiViews} from "@ui/views/contract"
 import type {TableCellContext} from "./types.ts"
 import type {TableColumn} from "./types.ts"
 import type {TableRow} from "./types.ts"
@@ -25,5 +26,5 @@ export declare namespace UiViewsTable {
     readonly onCellActivate?: ((context: TableCellContext, event: Event) => void) | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiViews.Output & JSX.Element
 }

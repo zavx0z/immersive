@@ -1,3 +1,4 @@
+import type {UiSurfacesChrome} from "@ui-surfaces/chrome/contract"
 import type {UiButtonsButton} from "@ui-buttons/button"
 
 import type {JSX} from "@jsx-compiler/session"
@@ -21,5 +22,5 @@ export declare namespace UiSurfacesChromeButton {
     readonly onClick?: UiButtonsButton.Input["onClick"]
   }
 
-  type Output = JSX.Element
+  type Output = UiSurfacesChrome.Output & JSX.Element
 }

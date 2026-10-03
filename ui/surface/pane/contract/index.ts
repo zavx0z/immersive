@@ -1,3 +1,4 @@
+import type {UiSurfaces} from "@ui/surfaces/contract"
 import type {PaneTextContent} from "./types.ts"
 import type {PaneVariant} from "./types.ts"
 
@@ -16,5 +17,5 @@ export declare namespace UiSurfacesPane {
     readonly style?: CssStyle | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiSurfaces.Output & JSX.Element
 }

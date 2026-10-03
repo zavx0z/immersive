@@ -1,3 +1,4 @@
+import type {UiSurfaces} from "@ui/surfaces/contract"
 
 
 import type {JSX} from "@jsx-compiler/session"
@@ -23,5 +24,5 @@ export declare namespace UiSurfacesWindowControl {
     readonly style?: CssStyle | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiSurfaces.Output & JSX.Element
 }

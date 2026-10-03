@@ -1,0 +1,14 @@
+/**
+SVG-значок minus в формате data URL.
+Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
+
+@packageDocumentation
+*/
+import type {UiThemesIconsMinus as Contract} from "./contract"
+import iconSvg from "@ui-themes-icons/compose"
+
+const minusIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"M5 12h14\"/>")
+
+export default minusIcon
+
+export type {UiThemesIconsMinus} from "./contract"

@@ -1,3 +1,4 @@
+import type {UiSurfaces} from "@ui/surfaces/contract"
 import type {JSX} from "@jsx-compiler/session"
 import type {FrameEdge, FrameHandle} from "./types"
 
@@ -15,5 +16,5 @@ export declare namespace UiSurfacesFrame {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = JSX.Element<Slots>
+  type Output = UiSurfaces.Output & JSX.Element<Slots>
 }

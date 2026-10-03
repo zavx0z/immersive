@@ -21,6 +21,7 @@
     "@ui-surfaces-chrome/title": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/views": "workspace:*"
   }
 }

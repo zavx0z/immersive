@@ -2,7 +2,7 @@
   "name": "@ui/buttons",
   "label": "button",
   "version": "0.0.0",
-  "description": "Самостоятельные кнопочные элементы с общим протоколом подписи, запрета действия и JSX-результата",
+  "description": "Кнопки и переключатели сохраняют общий протокол доступности и представления.",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -18,7 +18,8 @@
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-themes-icons/run": "workspace:*"
+    "@ui-themes-icons/run": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",

@@ -8,7 +8,7 @@ test("[UI-ICONS-001] элементы управления используют 
     Bun.file(resolve(uiRoot, "field/select-field/index.tsx")).text(),
     Bun.file(resolve(uiRoot, "field/collection-field/index.tsx")).text(),
     Bun.file(resolve(uiRoot, "navigation/breadcrumb/src/helpers.tsx")).text(),
-    Bun.file(resolve(uiRoot, "theme/icon/index.ts")).text(),
+    Bun.file(Bun.resolveSync("@ui-themes/icons", uiRoot)).text(),
   ])
 
   expect(selectField).not.toContain("data-select-field-indicator")

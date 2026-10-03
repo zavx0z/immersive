@@ -1,3 +1,4 @@
+import type {UiSurfacesChrome} from "@ui-surfaces/chrome/contract"
 
 
 import type {JSX} from "@jsx-compiler/session"
@@ -13,5 +14,5 @@ export declare namespace UiSurfacesChromeTitle {
     readonly style?: CssStyle | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiSurfacesChrome.Output & JSX.Element
 }

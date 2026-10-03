@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@zavx0z/dom": "workspace:*",
+    "@ui/surfaces": "workspace:*"
   }
 }

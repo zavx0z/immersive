@@ -1,0 +1,47 @@
+{
+  "name": "@ui-themes-icons/collection",
+  "label": "uiIcons",
+  "version": "0.0.0",
+  "description": "Именованный набор значков интерфейса",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "check": "bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@ui-themes-icons/apply": "workspace:*",
+    "@ui-themes-icons/arrow-down": "workspace:*",
+    "@ui-themes-icons/arrow-up": "workspace:*",
+    "@ui-themes-icons/breakpoint": "workspace:*",
+    "@ui-themes-icons/chevron-down": "workspace:*",
+    "@ui-themes-icons/chevron-right": "workspace:*",
+    "@ui-themes-icons/clear": "workspace:*",
+    "@ui-themes-icons/close": "workspace:*",
+    "@ui-themes-icons/compose": "workspace:*",
+    "@ui-themes-icons/database": "workspace:*",
+    "@ui-themes-icons/encode": "workspace:*",
+    "@ui-themes-icons/execution-point": "workspace:*",
+    "@ui-themes-icons/expand": "workspace:*",
+    "@ui-themes-icons/folder": "workspace:*",
+    "@ui-themes-icons/image": "workspace:*",
+    "@ui-themes-icons/language": "workspace:*",
+    "@ui-themes-icons/minus": "workspace:*",
+    "@ui-themes-icons/picker": "workspace:*",
+    "@ui-themes-icons/pin": "workspace:*",
+    "@ui-themes-icons/plus": "workspace:*",
+    "@ui-themes-icons/resource": "workspace:*",
+    "@ui-themes-icons/run": "workspace:*",
+    "@ui-themes-icons/search": "workspace:*",
+    "@ui-themes-icons/settings": "workspace:*",
+    "@ui-themes-icons/visibility-on": "workspace:*"
+  },
+  "devDependencies": {
+    "@ui-themes/icons": "workspace:*"
+  }
+}

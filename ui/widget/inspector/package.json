@@ -24,6 +24,7 @@
   "devDependencies": {
     "@immersive/headless": "workspace:*",
     "@ui-themes-icons/run": "workspace:*",
-    "@ui/typography": "workspace:*"
+    "@ui/typography": "workspace:*",
+    "@ui/widgets": "workspace:*"
   }
 }

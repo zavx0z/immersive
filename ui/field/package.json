@@ -2,7 +2,7 @@
   "name": "@ui/fields",
   "label": "field",
   "version": "0.0.0",
-  "description": "Самостоятельные поля с общим протоколом подписи, подсказки, оформления и JSX-результата",
+  "description": "Поля сохраняют общий протокол подписи, подсказки и представления.",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -29,7 +29,8 @@
     "@jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

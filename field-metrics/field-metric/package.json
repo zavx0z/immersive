@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui/themes": "workspace:*"
+    "@zavx0z/ui": "workspace:*"
   }
 }

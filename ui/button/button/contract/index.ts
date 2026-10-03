@@ -1,3 +1,4 @@
+import type {JSX} from "@jsx-compiler/session"
 import type {ButtonIconPosition} from "./types.ts"
 import type {ButtonKeyboardEvent} from "./types.ts"
 import type {ButtonPointerEvent} from "./types.ts"
@@ -36,5 +37,5 @@ export declare namespace UiButtonsButton {
   }
 
   /** Представление сохраняет общий JSX-результат группы. */
-  type Output = UiButtons.Output
+  type Output = UiButtons.Output & JSX.Element
 }

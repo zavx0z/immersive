@@ -19,6 +19,7 @@
     "@ui-themes-icons/chevron-right": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
   }
 }

@@ -1,3 +1,4 @@
+import type {UiFeedback} from "@ui/feedback/contract"
 import type {NotificationTone} from "./types.ts"
 
 import type {JSX} from "@jsx-compiler/session"
@@ -18,5 +19,5 @@ export declare namespace UiFeedbackNotification {
     readonly onDismiss?: ((event: Event) => void) | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiFeedback.Output & JSX.Element
 }

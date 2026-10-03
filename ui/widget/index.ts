@@ -1,6 +1,6 @@
 /**
-Область widget объединяет публичные возможности принадлежащих ей пакетов.
-Именованный API сохраняет владельцев реализации и типов; область не запускает их жизненный цикл.
+Виджеты составляют законченные панели с управлением и содержимым.
+Самостоятельные участники сохраняют собственные протоколы и расширяют общий JSX-результат.
 
 @packageDocumentation
 */
@@ -14,3 +14,4 @@ export {default as Tree} from "@ui-widgets/tree"
 export type {UiWidgetsTree} from "@ui-widgets/tree"
 export {default as WidgetHeader} from "@ui-widgets/header"
 export type {UiWidgetsHeader} from "@ui-widgets/header"
+export type {UiWidgets} from "./contract"

@@ -1,3 +1,4 @@
+import type {UiSurfaces} from "@ui/surfaces/contract"
 import type {PanelAction} from "./types.ts"
 
 import type {JSX} from "@jsx-compiler/session"
@@ -22,5 +23,5 @@ export declare namespace UiSurfacesPanel {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = JSX.Element<Slots>
+  type Output = UiSurfaces.Output & JSX.Element<Slots>
 }

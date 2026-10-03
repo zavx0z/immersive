@@ -1,3 +1,4 @@
+import type {UiFeedback} from "@ui/feedback/contract"
 import type {StatusBarItem} from "./types.ts"
 
 import type {JSX} from "@jsx-compiler/session"
@@ -20,5 +21,5 @@ export declare namespace UiFeedbackStatusBar {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = JSX.Element<Slots>
+  type Output = UiFeedback.Output & JSX.Element<Slots>
 }

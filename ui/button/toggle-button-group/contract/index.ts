@@ -1,3 +1,4 @@
+import type {JSX} from "@jsx-compiler/session"
 import type {ToggleButtonGroupDensity} from "./types.ts"
 import type {ToggleButtonGroupOption} from "./types.ts"
 
@@ -17,5 +18,5 @@ export declare namespace UiButtonsToggleButtonGroup {
   }
 
   /** Представление сохраняет общий JSX-результат группы. */
-  type Output = UiButtons.Output
+  type Output = UiButtons.Output & JSX.Element
 }

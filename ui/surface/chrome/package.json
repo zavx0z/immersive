@@ -2,18 +2,13 @@
   "name": "@ui-surfaces/chrome",
   "label": "chrome",
   "version": "0.0.0",
-  "description": "Публичные возможности области surfaces/chrome",
+  "description": "Части оболочки поверхности создают её заголовок, навигацию, действия и тело.",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./body": "./body/index.tsx",
-    "./button": "./button/index.tsx",
-    "./header": "./header/index.tsx",
-    "./navigation": "./navigation/index.tsx",
-    "./owner": "./owner/index.tsx",
-    "./title": "./title/index.tsx"
+    "./contract": "./contract/index.ts"
   },
   "dependencies": {
     "@ui-surfaces-chrome/body": "workspace:*",
@@ -21,6 +16,15 @@
     "@ui-surfaces-chrome/header": "workspace:*",
     "@ui-surfaces-chrome/navigation": "workspace:*",
     "@ui-surfaces-chrome/owner": "workspace:*",
-    "@ui-surfaces-chrome/title": "workspace:*"
+    "@ui-surfaces-chrome/title": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*",
+    "@ui/surfaces": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

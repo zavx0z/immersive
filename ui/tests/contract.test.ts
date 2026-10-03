@@ -1,5 +1,14 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
+import * as ui from "@zavx0z/ui"
+import Button from "@ui-buttons/button"
+import TextField from "@ui-fields/text-field"
+import MenuItem from "@ui-menus/menu-item"
+import Notification from "@ui-feedback/notification"
+import Window from "@ui-surfaces/window"
+import WindowControl from "@ui-surfaces-window/control"
+import List from "@ui-views/list"
+import Tree from "@ui-widgets/tree"
 
 const packageRoot = resolve(import.meta.dir, "..")
 
@@ -12,17 +21,22 @@ async function manifests() {
   return result
 }
 
-test("UI предоставляет общий доменный вход и физические входы владельцев", async () => {
+test("UI публикует именованные компоненты, типовой протокол и ресурсы", async () => {
   const manifest = await Bun.file(resolve(packageRoot, "package.json")).json()
   expect(manifest.name).toBe("@zavx0z/ui")
-  expect(manifest.exports["."]).toBe("./index.ts")
-  for (const area of ["button", "field", "menu", "navigation", "surface", "view", "feedback", "widget", "theme"]) {
-    expect(manifest.exports[`./${area}`]).toBe(`./${area}/index.ts`)
-    expect(await Bun.file(resolve(packageRoot, area, "package.json")).exists()).toBe(true)
+  expect(manifest.exports).toEqual({
+    ".": "./index.ts",
+    "./contract": "./contract/index.ts",
+    "./theme/theme.css": "./theme/theme.css",
+    "./theme/field-metrics.json": "./theme/field-metrics.json",
+    "./theme/islands-dark.color-theme.json": "./theme/islands-dark.color-theme.json",
+  })
+  for (const [name, component] of Object.entries({Button, TextField, MenuItem, Notification, Window, WindowControl, List, Tree})) {
+    expect(ui[name as keyof typeof ui], `Сохраняется исходная реализация ${name}`).toBe(component)
   }
-  expect(manifest.exports["./button/button"]).toBe("./button/button/index.tsx")
-  expect(manifest.exports["./surface/window/control"]).toBe("./surface/window-control/index.tsx")
-  expect(manifest.exports["./surface/window/contract/input"]).toBeUndefined()
+  for (const name of ["default", "CodeEditorModel", "TerminalModel", "uiIcons", "normalizeNumberValue"]) {
+    expect(Object.hasOwn(ui, name), name).toBe(false)
+  }
 })
 
 test("пакеты UI имеют собственные публичные входы и единый workspace Repo", async () => {

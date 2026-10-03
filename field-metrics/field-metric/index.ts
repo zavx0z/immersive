@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 import type {UiFieldsMetricsFieldMetric as Contract} from "./contract"
-import fieldMetrics from "@ui/themes/field-metrics.json"
+import fieldMetrics from "@zavx0z/ui/theme/field-metrics.json"
 
 export default function fieldMetric(name: Contract.Input[0]): Contract.Output {
   const value = fieldMetrics[name]

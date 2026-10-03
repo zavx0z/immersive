@@ -1,3 +1,4 @@
+import type {UiWidgets} from "@ui/widgets/contract"
 import type {UiViewsCodeEditor} from "@ui-views/code-editor"
 type CodeEditorProps = UiViewsCodeEditor.Input
 import type {UiWidgetsHeader} from "@ui-widgets/header"
@@ -15,5 +16,5 @@ export declare namespace UiWidgetsEditor {
     onSubmit?: ((value: string, event: KeyboardEvent) => void) | undefined
   }>
 
-  type Output = JSX.Element
+  type Output = UiWidgets.Output & JSX.Element
 }

@@ -2,25 +2,13 @@
   "name": "@ui/surfaces",
   "label": "surface",
   "version": "0.0.0",
-  "description": "Публичные возможности области surface",
+  "description": "Поверхности размещают содержимое и управление в Document приложения.",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./chrome": "./chrome/index.ts",
-    "./chrome/body": "./chrome/body/index.tsx",
-    "./chrome/button": "./chrome/button/index.tsx",
-    "./chrome/header": "./chrome/header/index.tsx",
-    "./chrome/navigation": "./chrome/navigation/index.tsx",
-    "./chrome/owner": "./chrome/owner/index.tsx",
-    "./chrome/title": "./chrome/title/index.tsx",
-    "./frame": "./frame/index.tsx",
-    "./pane": "./pane/index.tsx",
-    "./panel": "./panel/index.tsx",
-    "./tab": "./tab/index.tsx",
-    "./window": "./window/index.tsx",
-    "./window/control": "./window-control/index.tsx"
+    "./contract": "./contract/index.ts"
   },
   "dependencies": {
     "@ui-surfaces/chrome": "workspace:*",
@@ -29,6 +17,15 @@
     "@ui-surfaces/panel": "workspace:*",
     "@ui-surfaces/tab": "workspace:*",
     "@ui-surfaces/window": "workspace:*",
-    "@ui-surfaces-window/control": "workspace:*"
+    "@ui-surfaces-window/control": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

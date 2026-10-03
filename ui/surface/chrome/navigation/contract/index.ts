@@ -1,3 +1,4 @@
+import type {UiSurfacesChrome} from "@ui-surfaces/chrome/contract"
 
 
 import type {JSX} from "@jsx-compiler/session"
@@ -17,5 +18,5 @@ export declare namespace UiSurfacesChromeNavigation {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = JSX.Element<Slots>
+  type Output = UiSurfacesChrome.Output & JSX.Element<Slots>
 }

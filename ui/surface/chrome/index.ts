@@ -1,6 +1,6 @@
 /**
-Область surface/chrome объединяет публичные возможности принадлежащих ей пакетов.
-Именованный API сохраняет владельцев реализации и типов; область не запускает их жизненный цикл.
+Части оболочки поверхности создают её заголовок, навигацию, действия и тело.
+Самостоятельные участники сохраняют собственные протоколы и расширяют общий JSX-результат.
 
 @packageDocumentation
 */
@@ -16,3 +16,4 @@ export {default as SurfaceOwner} from "@ui-surfaces-chrome/owner"
 export type {UiSurfacesChromeOwner} from "@ui-surfaces-chrome/owner"
 export {default as SurfaceTitle} from "@ui-surfaces-chrome/title"
 export type {UiSurfacesChromeTitle} from "@ui-surfaces-chrome/title"
+export type {UiSurfacesChrome} from "./contract"

@@ -1,6 +1,6 @@
 /**
-Область ui объединяет публичные возможности принадлежащих ей пакетов.
-Именованный API сохраняет владельцев реализации и типов; область не запускает их жизненный цикл.
+Компоненты интерфейса создают JSX-представления в Document принимающего приложения.
+Самостоятельные участники сохраняют собственные протоколы и расширяют общий JSX-результат.
 
 @packageDocumentation
 */
@@ -16,8 +16,7 @@ export * from "@ui/fields"
 export * from "@ui/menus"
 export {default as Breadcrumbs} from "@ui-navigation/breadcrumbs"
 export type {UiNavigationBreadcrumbs} from "@ui-navigation/breadcrumbs"
-export * from "@ui/selection"
 export * from "@ui/surfaces"
-export * from "@ui/themes"
 export * from "@ui/views"
 export * from "@ui/widgets"
+export type {Zavx0zUi} from "./contract"

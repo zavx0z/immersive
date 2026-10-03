@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-fields/text-field": "workspace:*"
+    "@ui-fields/text-field": "workspace:*",
+    "@ui/surfaces": "workspace:*"
   }
 }

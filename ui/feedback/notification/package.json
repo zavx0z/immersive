@@ -20,6 +20,7 @@
     "@ui-themes-icons/close": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/feedback": "workspace:*"
   }
 }

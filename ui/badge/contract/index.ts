@@ -1,3 +1,4 @@
+import type {Zavx0zUi} from "@zavx0z/ui/contract"
 import type {BadgeTone} from "./types.ts"
 
 import type {JSX} from "@jsx-compiler/session"
@@ -15,5 +16,5 @@ export declare namespace UiBadge {
   }
 
   /** Готовое представление в Document приложения. */
-  type Output = JSX.Element
+  type Output = Zavx0zUi.Output & JSX.Element
 }

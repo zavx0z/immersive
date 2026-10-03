@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-buttons/button": "workspace:*"
+    "@ui-buttons/button": "workspace:*",
+    "@ui/surfaces": "workspace:*"
   }
 }

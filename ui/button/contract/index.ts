@@ -1,3 +1,4 @@
+import type {Zavx0zUi} from "@zavx0z/ui/contract"
 import type {JSX} from "@jsx-compiler/session"
 
 /** Общий протокол кнопочных элементов: доступная подпись, запрет действия и JSX-представление. */
@@ -11,5 +12,5 @@ export declare namespace UiButtons {
   }
 
   /** Кнопка участвует в Document вызывающего Experience. */
-  type Output = JSX.Element
+  type Output = Zavx0zUi.Output
 }

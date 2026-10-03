@@ -1,3 +1,4 @@
+import type {UiViews} from "@ui/views/contract"
 import type {TimelineKeyframe} from "./types.ts"
 import type {TimelineMarker} from "./types.ts"
 import type {TimelineTrack} from "./types.ts"
@@ -45,5 +46,5 @@ export declare namespace UiViewsTimeline {
     readonly onNext?: ((event: Event) => void) | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiViews.Output & JSX.Element
 }

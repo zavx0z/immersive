@@ -1,3 +1,4 @@
+import type {JSX} from "@jsx-compiler/session"
 import type {ClipboardMenuController} from "./types.ts"
 
 import type {UiMenus} from "@ui/menus/contract"
@@ -9,5 +10,5 @@ export declare namespace UiMenusClipboardMenu {
     readonly controller: ClipboardMenuController
   }
 
-  type Output = UiMenus.Output
+  type Output = UiMenus.Output & JSX.Element
 }

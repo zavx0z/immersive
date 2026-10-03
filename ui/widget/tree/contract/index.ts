@@ -1,3 +1,4 @@
+import type {UiWidgets} from "@ui/widgets/contract"
 import type {TreeHandle} from "./types.ts"
 import type {TreeItem} from "./types.ts"
 import type {UiWidgetsHeader} from "@ui-widgets/header"
@@ -36,5 +37,5 @@ export declare namespace UiWidgetsTree {
     style?: CssStyle | undefined
   }>
 
-  type Output = JSX.Element
+  type Output = UiWidgets.Output & JSX.Element
 }

@@ -1,3 +1,4 @@
+import type {UiSurfaces} from "@ui/surfaces/contract"
 import type {WindowAction} from "./types.ts"
 import type {WindowGeometry} from "./types.ts"
 
@@ -50,5 +51,5 @@ export declare namespace UiSurfacesWindow {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = JSX.Element<Slots>
+  type Output = UiSurfaces.Output & JSX.Element<Slots>
 }

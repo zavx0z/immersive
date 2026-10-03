@@ -1,3 +1,4 @@
+import type {JSX} from "@jsx-compiler/session"
 import type {UiButtonsButton} from "@ui-buttons/button"
 
 import type {UiButtons} from "@ui/buttons/contract"
@@ -19,5 +20,5 @@ export declare namespace UiButtonsIconButton {
   }
 
   /** Представление сохраняет общий JSX-результат группы. */
-  type Output = UiButtons.Output
+  type Output = UiButtons.Output & JSX.Element
 }

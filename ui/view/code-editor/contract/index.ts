@@ -1,3 +1,4 @@
+import type {UiViews} from "@ui/views/contract"
 import type {CodeEditorHandle} from "./types"
 import type {CodeEditorLineDecoration} from "./types"
 import type {CodeEditorSelectionSet} from "./types"
@@ -38,5 +39,5 @@ export declare namespace UiViewsCodeEditor {
     readonly style?: CssStyle | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiViews.Output & JSX.Element
 }

@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/typography": "workspace:*"
+    "@ui/typography": "workspace:*",
+    "@ui/surfaces": "workspace:*"
   }
 }

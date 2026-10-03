@@ -20,6 +20,7 @@
     "@ui-views-table/table-selection-after-click": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/views": "workspace:*"
   }
 }

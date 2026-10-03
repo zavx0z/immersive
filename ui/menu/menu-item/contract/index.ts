@@ -1,3 +1,4 @@
+import type {JSX} from "@jsx-compiler/session"
 
 
 import type {UiMenus} from "@ui/menus/contract"
@@ -14,5 +15,5 @@ export declare namespace UiMenusMenuItem {
     readonly onSelect: () => void
   }
 
-  type Output = UiMenus.Output
+  type Output = UiMenus.Output & JSX.Element
 }

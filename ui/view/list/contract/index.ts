@@ -1,3 +1,4 @@
+import type {UiViews} from "@ui/views/contract"
 import type {ListItem} from "./types.ts"
 
 import type {JSX} from "@jsx-compiler/session"
@@ -19,5 +20,5 @@ export declare namespace UiViewsList {
     readonly onSelect?: ((key: string, event: Event) => void) | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiViews.Output & JSX.Element
 }

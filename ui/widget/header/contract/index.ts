@@ -1,3 +1,4 @@
+import type {UiWidgets} from "@ui/widgets/contract"
 import type {WidgetAction} from "./types.ts"
 import type {UiBadge} from "@ui/badge"
 
@@ -16,5 +17,5 @@ export declare namespace UiWidgetsHeader {
     readonly actions?: readonly WidgetAction[] | undefined
   }
 
-  type Output = JSX.Element
+  type Output = UiWidgets.Output & JSX.Element
 }

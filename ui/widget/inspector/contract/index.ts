@@ -1,3 +1,4 @@
+import type {UiWidgets} from "@ui/widgets/contract"
 import type {InspectorAction} from "./types.ts"
 import type {InspectorCategory} from "./types.ts"
 import type {InspectorContext} from "./types.ts"
@@ -30,5 +31,5 @@ export declare namespace UiWidgetsInspector {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = JSX.Element<Slots>
+  type Output = UiWidgets.Output & JSX.Element<Slots>
 }

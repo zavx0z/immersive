@@ -2,7 +2,7 @@
   "name": "@ui/menus",
   "label": "menu",
   "version": "0.0.0",
-  "description": "Меню и самостоятельные команды с общим протоколом представления",
+  "description": "Команды меню сохраняют семантику пунктов и представление в Document приложения.",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -17,7 +17,8 @@
     "@jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

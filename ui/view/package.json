@@ -2,33 +2,27 @@
   "name": "@ui/views",
   "label": "view",
   "version": "0.0.0",
-  "description": "Публичные возможности области view",
+  "description": "Представления показывают данные и предоставляют их собственные способы взаимодействия.",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./code-editor": "./code-editor/index.tsx",
-    "./code-editor/assert-non-empty": "./code-editor/assert-non-empty/index.ts",
-    "./code-editor/editor-foreground": "./code-editor/editor-foreground/index.ts",
-    "./code-editor/highlighter": "./code-editor/highlighter/index.ts",
-    "./code-editor/is-hex-color": "./code-editor/is-hex-color/index.ts",
-    "./code-editor/normalize-hex-color": "./code-editor/normalize-hex-color/index.ts",
-    "./code-editor/syntax-theme/code-editor-syntax-theme": "./code-editor/syntax-theme/code-editor-syntax-theme/index.ts",
-    "./code-editor/syntax-theme/resolve-code-editor-syntax-scope-color-hex": "./code-editor/syntax-theme/resolve-code-editor-syntax-scope-color-hex/index.ts",
-    "./code-editor/theme-color": "./code-editor/theme-color/index.ts",
-    "./code-editor/validate": "./code-editor/validate/index.ts",
-    "./code-editor/view-model": "./code-editor/view-model/index.ts",
-    "./list": "./list/index.tsx",
-    "./table": "./table/index.tsx",
-    "./table/normalize-table-selection": "./table/normalize-table-selection/index.tsx",
-    "./table/table-selection-after-click": "./table/table-selection-after-click/index.tsx",
-    "./timeline": "./timeline/index.tsx"
+    "./contract": "./contract/index.ts"
   },
   "dependencies": {
     "@ui-views/code-editor": "workspace:*",
     "@ui-views/list": "workspace:*",
     "@ui-views/table": "workspace:*",
-    "@ui-views/timeline": "workspace:*"
+    "@ui-views/timeline": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

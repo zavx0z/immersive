@@ -25,6 +25,7 @@
     "@zavx0z/dom": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/widgets": "workspace:*"
   }
 }

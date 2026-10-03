@@ -1,6 +1,6 @@
 /**
-Область surface объединяет публичные возможности принадлежащих ей пакетов.
-Именованный API сохраняет владельцев реализации и типов; область не запускает их жизненный цикл.
+Поверхности размещают содержимое и управление в Document приложения.
+Самостоятельные участники сохраняют собственные протоколы и расширяют общий JSX-результат.
 
 @packageDocumentation
 */
@@ -17,3 +17,4 @@ export type {UiSurfacesWindow} from "@ui-surfaces/window"
 export * from "@ui-surfaces/chrome"
 export {default as WindowControl} from "@ui-surfaces-window/control"
 export type {UiSurfacesWindowControl} from "@ui-surfaces-window/control"
+export type {UiSurfaces} from "./contract"

@@ -21,6 +21,7 @@
     "@ui/badge": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui/widgets": "workspace:*"
   }
 }

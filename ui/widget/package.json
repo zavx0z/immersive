@@ -2,24 +2,28 @@
   "name": "@ui/widgets",
   "label": "widget",
   "version": "0.0.0",
-  "description": "Публичные возможности области widget",
+  "description": "Виджеты составляют законченные панели с управлением и содержимым.",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
     ".": "./index.ts",
-    "./editor": "./editor/index.tsx",
-    "./header": "./header/index.tsx",
-    "./header/action": "./header/action/index.tsx",
-    "./inspector": "./inspector/index.tsx",
-    "./terminal": "./terminal/index.tsx",
-    "./tree": "./tree/index.tsx"
+    "./contract": "./contract/index.ts"
   },
   "dependencies": {
     "@ui-widgets/editor": "workspace:*",
     "@ui-widgets/header": "workspace:*",
     "@ui-widgets/inspector": "workspace:*",
     "@ui-widgets/terminal": "workspace:*",
-    "@ui-widgets/tree": "workspace:*"
+    "@ui-widgets/tree": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
+  },
+  "devDependencies": {
+    "@immersive/headless": "workspace:*",
+    "@zavx0z/ui": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

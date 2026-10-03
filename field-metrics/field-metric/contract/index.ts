@@ -1,4 +1,4 @@
-import type fieldMetrics from "@ui/themes/field-metrics.json"
+import type fieldMetrics from "@zavx0z/ui/theme/field-metrics.json"
 
 /** Читает конечную неотрицательную числовую метрику поля по её точному имени. */
 export declare namespace UiFieldsMetricsFieldMetric {

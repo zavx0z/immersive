@@ -1,3 +1,4 @@
+import type {UiWidgets} from "@ui/widgets/contract"
 import type {UiTerminalModel} from "@ui/terminal-model"
 type TerminalLine = UiTerminalModel.Output["snapshot"]["lines"][number]
 import type TerminalModel from "@ui/terminal-model"
@@ -30,5 +31,5 @@ export declare namespace UiWidgetsTerminal {
     style?: CssStyle | undefined
   }>
 
-  type Output = JSX.Element
+  type Output = UiWidgets.Output & JSX.Element
 }

@@ -19,6 +19,7 @@
     "@ui-buttons/button": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@ui-surfaces/chrome": "workspace:*"
   }
 }

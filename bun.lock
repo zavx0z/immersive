@@ -351,7 +351,7 @@
       "name": "@ui-fields-metrics/field-metric",
       "version": "0.0.0",
       "dependencies": {
-        "@ui/themes": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "field-metrics/labelled-field-height": {
@@ -403,6 +403,363 @@
         "@zavx0z/ui",
         "@zavx0z/webgpu",
       ],
+    },
+    "icon-collection": {
+      "name": "@ui-themes-icons/collection",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/apply": "workspace:*",
+        "@ui-themes-icons/arrow-down": "workspace:*",
+        "@ui-themes-icons/arrow-up": "workspace:*",
+        "@ui-themes-icons/breakpoint": "workspace:*",
+        "@ui-themes-icons/chevron-down": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+        "@ui-themes-icons/clear": "workspace:*",
+        "@ui-themes-icons/close": "workspace:*",
+        "@ui-themes-icons/compose": "workspace:*",
+        "@ui-themes-icons/database": "workspace:*",
+        "@ui-themes-icons/encode": "workspace:*",
+        "@ui-themes-icons/execution-point": "workspace:*",
+        "@ui-themes-icons/expand": "workspace:*",
+        "@ui-themes-icons/folder": "workspace:*",
+        "@ui-themes-icons/image": "workspace:*",
+        "@ui-themes-icons/language": "workspace:*",
+        "@ui-themes-icons/minus": "workspace:*",
+        "@ui-themes-icons/picker": "workspace:*",
+        "@ui-themes-icons/pin": "workspace:*",
+        "@ui-themes-icons/plus": "workspace:*",
+        "@ui-themes-icons/resource": "workspace:*",
+        "@ui-themes-icons/run": "workspace:*",
+        "@ui-themes-icons/search": "workspace:*",
+        "@ui-themes-icons/settings": "workspace:*",
+        "@ui-themes-icons/visibility-on": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons": {
+      "name": "@ui-themes/icons",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/apply": "workspace:*",
+        "@ui-themes-icons/arrow-down": "workspace:*",
+        "@ui-themes-icons/arrow-up": "workspace:*",
+        "@ui-themes-icons/breakpoint": "workspace:*",
+        "@ui-themes-icons/chevron-down": "workspace:*",
+        "@ui-themes-icons/chevron-right": "workspace:*",
+        "@ui-themes-icons/clear": "workspace:*",
+        "@ui-themes-icons/close": "workspace:*",
+        "@ui-themes-icons/collapse-all": "workspace:*",
+        "@ui-themes-icons/compose": "workspace:*",
+        "@ui-themes-icons/database": "workspace:*",
+        "@ui-themes-icons/encode": "workspace:*",
+        "@ui-themes-icons/execution-point": "workspace:*",
+        "@ui-themes-icons/expand": "workspace:*",
+        "@ui-themes-icons/expand-all": "workspace:*",
+        "@ui-themes-icons/folder": "workspace:*",
+        "@ui-themes-icons/home": "workspace:*",
+        "@ui-themes-icons/image": "workspace:*",
+        "@ui-themes-icons/language": "workspace:*",
+        "@ui-themes-icons/minus": "workspace:*",
+        "@ui-themes-icons/picker": "workspace:*",
+        "@ui-themes-icons/pin": "workspace:*",
+        "@ui-themes-icons/plus": "workspace:*",
+        "@ui-themes-icons/resource": "workspace:*",
+        "@ui-themes-icons/run": "workspace:*",
+        "@ui-themes-icons/search": "workspace:*",
+        "@ui-themes-icons/select-opened-item": "workspace:*",
+        "@ui-themes-icons/settings": "workspace:*",
+        "@ui-themes-icons/visibility-on": "workspace:*",
+      },
+    },
+    "icons/apply": {
+      "name": "@ui-themes-icons/apply",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/arrow-down": {
+      "name": "@ui-themes-icons/arrow-down",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/arrow-up": {
+      "name": "@ui-themes-icons/arrow-up",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/breakpoint": {
+      "name": "@ui-themes-icons/breakpoint",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/chevron-down": {
+      "name": "@ui-themes-icons/chevron-down",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/chevron-right": {
+      "name": "@ui-themes-icons/chevron-right",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/clear": {
+      "name": "@ui-themes-icons/clear",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/close": {
+      "name": "@ui-themes-icons/close",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/collapse-all": {
+      "name": "@ui-themes-icons/collapse-all",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/compose": {
+      "name": "@ui-themes-icons/compose",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/encode": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/database": {
+      "name": "@ui-themes-icons/database",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/encode": {
+      "name": "@ui-themes-icons/encode",
+      "version": "0.0.0",
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/execution-point": {
+      "name": "@ui-themes-icons/execution-point",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/expand": {
+      "name": "@ui-themes-icons/expand",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/expand-all": {
+      "name": "@ui-themes-icons/expand-all",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/folder": {
+      "name": "@ui-themes-icons/folder",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/home": {
+      "name": "@ui-themes-icons/home",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/image": {
+      "name": "@ui-themes-icons/image",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/language": {
+      "name": "@ui-themes-icons/language",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/minus": {
+      "name": "@ui-themes-icons/minus",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/picker": {
+      "name": "@ui-themes-icons/picker",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/pin": {
+      "name": "@ui-themes-icons/pin",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/plus": {
+      "name": "@ui-themes-icons/plus",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/resource": {
+      "name": "@ui-themes-icons/resource",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/run": {
+      "name": "@ui-themes-icons/run",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/search": {
+      "name": "@ui-themes-icons/search",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/select-opened-item": {
+      "name": "@ui-themes-icons/select-opened-item",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/collection": "workspace:*",
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/setting": {
+      "name": "@ui-themes-icons/settings",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
+    },
+    "icons/visibility-on": {
+      "name": "@ui-themes-icons/visibility-on",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-icons/compose": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-themes/icons": "workspace:*",
+      },
     },
     "inspector-panel-visibility": {
       "name": "@ui-widgets-inspector/is-inspector-panel-visible",
@@ -884,6 +1241,34 @@
         "@zavx0z/dom",
       ],
     },
+    "selection/find-selection-option": {
+      "name": "@ui-selection/find-selection-option",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-selection/validate-selection-options": "workspace:*",
+      },
+    },
+    "selection/selection-exceptional-label": {
+      "name": "@ui-selection/selection-exceptional-label",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-selection/validate-selection-options": "workspace:*",
+      },
+      "devDependencies": {
+        "@ui-selection/validate-selection-state": "workspace:*",
+      },
+    },
+    "selection/validate-selection-options": {
+      "name": "@ui-selection/validate-selection-options",
+      "version": "0.0.0",
+    },
+    "selection/validate-selection-state": {
+      "name": "@ui-selection/validate-selection-state",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-selection/validate-selection-options": "workspace:*",
+      },
+    },
     "space": {
       "name": "@zavx0z/space",
       "version": "0.0.0",
@@ -915,6 +1300,27 @@
     "surface-actions": {
       "name": "@ui-surfaces-chrome/assert-surface-actions",
       "version": "0.0.0",
+    },
+    "syntax-theme/active": {
+      "name": "@ui-themes-syntax-theme/active",
+      "version": "0.0.0",
+      "dependencies": {
+        "@zavx0z/ui": "workspace:*",
+      },
+    },
+    "syntax-theme/name": {
+      "name": "@ui-themes-syntax-theme/name",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-syntax-theme/active": "workspace:*",
+      },
+    },
+    "syntax-theme/resolve": {
+      "name": "@ui-themes-syntax-theme/resolve",
+      "version": "0.0.0",
+      "dependencies": {
+        "@ui-themes-syntax-theme/active": "workspace:*",
+      },
     },
     "template": {
       "name": "@zavx0z/template",
@@ -968,6 +1374,7 @@
       "name": "@zavx0z/ui",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-navigation/breadcrumbs": "workspace:*",
         "@ui/badge": "workspace:*",
         "@ui/buttons": "workspace:*",
@@ -975,9 +1382,7 @@
         "@ui/feedback": "workspace:*",
         "@ui/fields": "workspace:*",
         "@ui/menus": "workspace:*",
-        "@ui/selection": "workspace:*",
         "@ui/surfaces": "workspace:*",
-        "@ui/themes": "workspace:*",
         "@ui/typography": "workspace:*",
         "@ui/views": "workspace:*",
         "@ui/widgets": "workspace:*",
@@ -988,6 +1393,7 @@
         "@jsx-compiler/session": "workspace:*",
         "@renderer/html": "workspace:*",
         "@ui-buttons/button": "workspace:*",
+        "@ui-feedback/notification": "workspace:*",
         "@ui-feedback/status-bar": "workspace:*",
         "@ui-fields-checkbox-field/layout": "workspace:*",
         "@ui-fields-collection-field/layout": "workspace:*",
@@ -1005,7 +1411,9 @@
         "@ui-fields-text-field/layout": "workspace:*",
         "@ui-fields-vector-field/layout": "workspace:*",
         "@ui-fields/field-group": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
         "@ui-menus/clipboard-menu": "workspace:*",
+        "@ui-menus/menu-item": "workspace:*",
         "@ui-navigation/breadcrumbs": "workspace:*",
         "@ui-surfaces-window/control": "workspace:*",
         "@ui-surfaces/frame": "workspace:*",
@@ -1016,10 +1424,12 @@
         "@ui-themes-icons/chevron-right": "workspace:*",
         "@ui-themes-icons/collection": "workspace:*",
         "@ui-themes-icons/home": "workspace:*",
+        "@ui-themes/icons": "workspace:*",
         "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*",
         "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": "workspace:*",
         "@ui-views-code-editor/view-model": "workspace:*",
         "@ui-views/code-editor": "workspace:*",
+        "@ui-views/list": "workspace:*",
         "@ui-widgets/editor": "workspace:*",
         "@ui-widgets/inspector": "workspace:*",
         "@ui-widgets/terminal": "workspace:*",
@@ -1039,6 +1449,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/button": {
@@ -1053,6 +1464,7 @@
       "devDependencies": {
         "@immersive/headless": "workspace:*",
         "@ui-themes-icons/run": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/button/button": {
@@ -1100,14 +1512,20 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/feedback": {
       "name": "@ui/feedback",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-feedback/notification": "workspace:*",
         "@ui-feedback/status-bar": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/feedback/notification": {
@@ -1120,6 +1538,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/feedback": "workspace:*",
       },
     },
     "ui/feedback/status-bar": {
@@ -1130,6 +1549,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/feedback": "workspace:*",
         "@ui/typography": "workspace:*",
       },
       "peerDependencies": {
@@ -1159,6 +1579,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/field/checkbox-field": {
@@ -1411,6 +1832,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/menu/clipboard-menu": {
@@ -1463,50 +1885,14 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
-      },
-    },
-    "ui/selection": {
-      "name": "@ui/selection",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-selection/find-selection-option": "workspace:*",
-        "@ui-selection/selection-exceptional-label": "workspace:*",
-        "@ui-selection/validate-selection-options": "workspace:*",
-        "@ui-selection/validate-selection-state": "workspace:*",
-      },
-    },
-    "ui/selection/find-selection-option": {
-      "name": "@ui-selection/find-selection-option",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-selection/validate-selection-options": "workspace:*",
-      },
-    },
-    "ui/selection/selection-exceptional-label": {
-      "name": "@ui-selection/selection-exceptional-label",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-selection/validate-selection-options": "workspace:*",
-      },
-      "devDependencies": {
-        "@ui-selection/validate-selection-state": "workspace:*",
-      },
-    },
-    "ui/selection/validate-selection-options": {
-      "name": "@ui-selection/validate-selection-options",
-      "version": "0.0.0",
-    },
-    "ui/selection/validate-selection-state": {
-      "name": "@ui-selection/validate-selection-state",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-selection/validate-selection-options": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/surface": {
       "name": "@ui/surfaces",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-surfaces-window/control": "workspace:*",
         "@ui-surfaces/chrome": "workspace:*",
         "@ui-surfaces/frame": "workspace:*",
@@ -1515,17 +1901,26 @@
         "@ui-surfaces/tab": "workspace:*",
         "@ui-surfaces/window": "workspace:*",
       },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
+      },
     },
     "ui/surface/chrome": {
       "name": "@ui-surfaces/chrome",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-surfaces-chrome/body": "workspace:*",
         "@ui-surfaces-chrome/button": "workspace:*",
         "@ui-surfaces-chrome/header": "workspace:*",
         "@ui-surfaces-chrome/navigation": "workspace:*",
         "@ui-surfaces-chrome/owner": "workspace:*",
         "@ui-surfaces-chrome/title": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@ui/surfaces": "workspace:*",
       },
     },
     "ui/surface/chrome/body": {
@@ -1536,6 +1931,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui-surfaces/chrome": "workspace:*",
         "@ui/typography": "workspace:*",
       },
     },
@@ -1548,6 +1944,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui-surfaces/chrome": "workspace:*",
       },
     },
     "ui/surface/chrome/header": {
@@ -1558,6 +1955,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui-surfaces/chrome": "workspace:*",
         "@ui/typography": "workspace:*",
       },
     },
@@ -1569,6 +1967,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui-surfaces/chrome": "workspace:*",
         "@ui/typography": "workspace:*",
       },
     },
@@ -1580,6 +1979,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui-surfaces/chrome": "workspace:*",
         "@ui/typography": "workspace:*",
       },
     },
@@ -1591,6 +1991,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui-surfaces/chrome": "workspace:*",
       },
     },
     "ui/surface/frame": {
@@ -1608,6 +2009,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/surfaces": "workspace:*",
         "@ui/typography": "workspace:*",
       },
     },
@@ -1619,6 +2021,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/surfaces": "workspace:*",
         "@ui/typography": "workspace:*",
       },
       "peerDependencies": {
@@ -1637,6 +2040,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/surfaces": "workspace:*",
         "@ui/typography": "workspace:*",
       },
       "peerDependencies": {
@@ -1652,6 +2056,7 @@
       "devDependencies": {
         "@immersive/headless": "workspace:*",
         "@ui-buttons/button": "workspace:*",
+        "@ui/surfaces": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
@@ -1669,6 +2074,7 @@
       "devDependencies": {
         "@immersive/headless": "workspace:*",
         "@ui-fields/text-field": "workspace:*",
+        "@ui/surfaces": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
@@ -1684,313 +2090,8 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/surfaces": "workspace:*",
         "@zavx0z/dom": "workspace:*",
-      },
-    },
-    "ui/theme": {
-      "name": "@ui/themes",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes/icons": "workspace:*",
-        "@ui-themes/syntax-theme": "workspace:*",
-      },
-    },
-    "ui/theme/icon": {
-      "name": "@ui-themes/icons",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/apply": "workspace:*",
-        "@ui-themes-icons/arrow-down": "workspace:*",
-        "@ui-themes-icons/arrow-up": "workspace:*",
-        "@ui-themes-icons/breakpoint": "workspace:*",
-        "@ui-themes-icons/chevron-down": "workspace:*",
-        "@ui-themes-icons/chevron-right": "workspace:*",
-        "@ui-themes-icons/clear": "workspace:*",
-        "@ui-themes-icons/close": "workspace:*",
-        "@ui-themes-icons/collapse-all": "workspace:*",
-        "@ui-themes-icons/collection": "workspace:*",
-        "@ui-themes-icons/compose": "workspace:*",
-        "@ui-themes-icons/database": "workspace:*",
-        "@ui-themes-icons/encode": "workspace:*",
-        "@ui-themes-icons/execution-point": "workspace:*",
-        "@ui-themes-icons/expand": "workspace:*",
-        "@ui-themes-icons/expand-all": "workspace:*",
-        "@ui-themes-icons/folder": "workspace:*",
-        "@ui-themes-icons/home": "workspace:*",
-        "@ui-themes-icons/image": "workspace:*",
-        "@ui-themes-icons/language": "workspace:*",
-        "@ui-themes-icons/minus": "workspace:*",
-        "@ui-themes-icons/picker": "workspace:*",
-        "@ui-themes-icons/pin": "workspace:*",
-        "@ui-themes-icons/plus": "workspace:*",
-        "@ui-themes-icons/resource": "workspace:*",
-        "@ui-themes-icons/run": "workspace:*",
-        "@ui-themes-icons/search": "workspace:*",
-        "@ui-themes-icons/select-opened-item": "workspace:*",
-        "@ui-themes-icons/settings": "workspace:*",
-        "@ui-themes-icons/visibility-on": "workspace:*",
-      },
-    },
-    "ui/theme/icon/apply": {
-      "name": "@ui-themes-icons/apply",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/arrow-down": {
-      "name": "@ui-themes-icons/arrow-down",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/arrow-up": {
-      "name": "@ui-themes-icons/arrow-up",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/breakpoint": {
-      "name": "@ui-themes-icons/breakpoint",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/chevron-down": {
-      "name": "@ui-themes-icons/chevron-down",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/chevron-right": {
-      "name": "@ui-themes-icons/chevron-right",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/clear": {
-      "name": "@ui-themes-icons/clear",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/close": {
-      "name": "@ui-themes-icons/close",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/collapse-all": {
-      "name": "@ui-themes-icons/collapse-all",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/collection": {
-      "name": "@ui-themes-icons/collection",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/apply": "workspace:*",
-        "@ui-themes-icons/arrow-down": "workspace:*",
-        "@ui-themes-icons/arrow-up": "workspace:*",
-        "@ui-themes-icons/breakpoint": "workspace:*",
-        "@ui-themes-icons/chevron-down": "workspace:*",
-        "@ui-themes-icons/chevron-right": "workspace:*",
-        "@ui-themes-icons/clear": "workspace:*",
-        "@ui-themes-icons/close": "workspace:*",
-        "@ui-themes-icons/compose": "workspace:*",
-        "@ui-themes-icons/database": "workspace:*",
-        "@ui-themes-icons/encode": "workspace:*",
-        "@ui-themes-icons/execution-point": "workspace:*",
-        "@ui-themes-icons/expand": "workspace:*",
-        "@ui-themes-icons/folder": "workspace:*",
-        "@ui-themes-icons/image": "workspace:*",
-        "@ui-themes-icons/language": "workspace:*",
-        "@ui-themes-icons/minus": "workspace:*",
-        "@ui-themes-icons/picker": "workspace:*",
-        "@ui-themes-icons/pin": "workspace:*",
-        "@ui-themes-icons/plus": "workspace:*",
-        "@ui-themes-icons/resource": "workspace:*",
-        "@ui-themes-icons/run": "workspace:*",
-        "@ui-themes-icons/search": "workspace:*",
-        "@ui-themes-icons/settings": "workspace:*",
-        "@ui-themes-icons/visibility-on": "workspace:*",
-      },
-    },
-    "ui/theme/icon/compose": {
-      "name": "@ui-themes-icons/compose",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/encode": "workspace:*",
-      },
-    },
-    "ui/theme/icon/database": {
-      "name": "@ui-themes-icons/database",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/encode": {
-      "name": "@ui-themes-icons/encode",
-      "version": "0.0.0",
-    },
-    "ui/theme/icon/execution-point": {
-      "name": "@ui-themes-icons/execution-point",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/expand": {
-      "name": "@ui-themes-icons/expand",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/expand-all": {
-      "name": "@ui-themes-icons/expand-all",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/folder": {
-      "name": "@ui-themes-icons/folder",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/home": {
-      "name": "@ui-themes-icons/home",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/image": {
-      "name": "@ui-themes-icons/image",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/language": {
-      "name": "@ui-themes-icons/language",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/minus": {
-      "name": "@ui-themes-icons/minus",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/picker": {
-      "name": "@ui-themes-icons/picker",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/pin": {
-      "name": "@ui-themes-icons/pin",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/plus": {
-      "name": "@ui-themes-icons/plus",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/resource": {
-      "name": "@ui-themes-icons/resource",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/run": {
-      "name": "@ui-themes-icons/run",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/search": {
-      "name": "@ui-themes-icons/search",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/select-opened-item": {
-      "name": "@ui-themes-icons/select-opened-item",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/collection": "workspace:*",
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/setting": {
-      "name": "@ui-themes-icons/settings",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/icon/visibility-on": {
-      "name": "@ui-themes-icons/visibility-on",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-icons/compose": "workspace:*",
-      },
-    },
-    "ui/theme/syntax-theme": {
-      "name": "@ui-themes/syntax-theme",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-syntax-theme/active": "workspace:*",
-        "@ui-themes-syntax-theme/name": "workspace:*",
-        "@ui-themes-syntax-theme/resolve": "workspace:*",
-      },
-    },
-    "ui/theme/syntax-theme/active": {
-      "name": "@ui-themes-syntax-theme/active",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui/themes": "workspace:*",
-      },
-    },
-    "ui/theme/syntax-theme/name": {
-      "name": "@ui-themes-syntax-theme/name",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-syntax-theme/active": "workspace:*",
-      },
-    },
-    "ui/theme/syntax-theme/resolve": {
-      "name": "@ui-themes-syntax-theme/resolve",
-      "version": "0.0.0",
-      "dependencies": {
-        "@ui-themes-syntax-theme/active": "workspace:*",
       },
     },
     "ui/typography": {
@@ -2001,16 +2102,22 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/view": {
       "name": "@ui/views",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-views/code-editor": "workspace:*",
         "@ui-views/list": "workspace:*",
         "@ui-views/table": "workspace:*",
         "@ui-views/timeline": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/view/code-editor": {
@@ -2027,6 +2134,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/views": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
@@ -2113,6 +2221,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/views": "workspace:*",
       },
     },
     "ui/view/table": {
@@ -2125,6 +2234,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/views": "workspace:*",
       },
     },
     "ui/view/table/normalize-table-selection": {
@@ -2156,17 +2266,23 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/views": "workspace:*",
       },
     },
     "ui/widget": {
       "name": "@ui/widgets",
       "version": "0.0.0",
       "dependencies": {
+        "@jsx-compiler/session": "workspace:*",
         "@ui-widgets/editor": "workspace:*",
         "@ui-widgets/header": "workspace:*",
         "@ui-widgets/inspector": "workspace:*",
         "@ui-widgets/terminal": "workspace:*",
         "@ui-widgets/tree": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@zavx0z/ui": "workspace:*",
       },
     },
     "ui/widget/editor": {
@@ -2180,6 +2296,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/widgets": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
@@ -2196,6 +2313,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/widgets": "workspace:*",
       },
     },
     "ui/widget/header/action": {
@@ -2226,6 +2344,7 @@
         "@immersive/headless": "workspace:*",
         "@ui-themes-icons/run": "workspace:*",
         "@ui/typography": "workspace:*",
+        "@ui/widgets": "workspace:*",
       },
     },
     "ui/widget/terminal": {
@@ -2239,6 +2358,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/widgets": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
@@ -2259,6 +2379,7 @@
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
+        "@ui/widgets": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/component": "workspace:*",
@@ -2638,13 +2759,13 @@
 
     "@ui-navigation/breadcrumbs": ["@ui-navigation/breadcrumbs@workspace:ui/navigation/breadcrumb"],
 
-    "@ui-selection/find-selection-option": ["@ui-selection/find-selection-option@workspace:ui/selection/find-selection-option"],
+    "@ui-selection/find-selection-option": ["@ui-selection/find-selection-option@workspace:selection/find-selection-option"],
 
-    "@ui-selection/selection-exceptional-label": ["@ui-selection/selection-exceptional-label@workspace:ui/selection/selection-exceptional-label"],
+    "@ui-selection/selection-exceptional-label": ["@ui-selection/selection-exceptional-label@workspace:selection/selection-exceptional-label"],
 
-    "@ui-selection/validate-selection-options": ["@ui-selection/validate-selection-options@workspace:ui/selection/validate-selection-options"],
+    "@ui-selection/validate-selection-options": ["@ui-selection/validate-selection-options@workspace:selection/validate-selection-options"],
 
-    "@ui-selection/validate-selection-state": ["@ui-selection/validate-selection-state@workspace:ui/selection/validate-selection-state"],
+    "@ui-selection/validate-selection-state": ["@ui-selection/validate-selection-state@workspace:selection/validate-selection-state"],
 
     "@ui-surfaces-chrome/assert-surface-actions": ["@ui-surfaces-chrome/assert-surface-actions@workspace:surface-actions"],
 
@@ -2674,75 +2795,73 @@
 
     "@ui-surfaces/window": ["@ui-surfaces/window@workspace:ui/surface/window"],
 
-    "@ui-themes-icons/apply": ["@ui-themes-icons/apply@workspace:ui/theme/icon/apply"],
+    "@ui-themes-icons/apply": ["@ui-themes-icons/apply@workspace:icons/apply"],
 
-    "@ui-themes-icons/arrow-down": ["@ui-themes-icons/arrow-down@workspace:ui/theme/icon/arrow-down"],
+    "@ui-themes-icons/arrow-down": ["@ui-themes-icons/arrow-down@workspace:icons/arrow-down"],
 
-    "@ui-themes-icons/arrow-up": ["@ui-themes-icons/arrow-up@workspace:ui/theme/icon/arrow-up"],
+    "@ui-themes-icons/arrow-up": ["@ui-themes-icons/arrow-up@workspace:icons/arrow-up"],
 
-    "@ui-themes-icons/breakpoint": ["@ui-themes-icons/breakpoint@workspace:ui/theme/icon/breakpoint"],
+    "@ui-themes-icons/breakpoint": ["@ui-themes-icons/breakpoint@workspace:icons/breakpoint"],
 
-    "@ui-themes-icons/chevron-down": ["@ui-themes-icons/chevron-down@workspace:ui/theme/icon/chevron-down"],
+    "@ui-themes-icons/chevron-down": ["@ui-themes-icons/chevron-down@workspace:icons/chevron-down"],
 
-    "@ui-themes-icons/chevron-right": ["@ui-themes-icons/chevron-right@workspace:ui/theme/icon/chevron-right"],
+    "@ui-themes-icons/chevron-right": ["@ui-themes-icons/chevron-right@workspace:icons/chevron-right"],
 
-    "@ui-themes-icons/clear": ["@ui-themes-icons/clear@workspace:ui/theme/icon/clear"],
+    "@ui-themes-icons/clear": ["@ui-themes-icons/clear@workspace:icons/clear"],
 
-    "@ui-themes-icons/close": ["@ui-themes-icons/close@workspace:ui/theme/icon/close"],
+    "@ui-themes-icons/close": ["@ui-themes-icons/close@workspace:icons/close"],
 
-    "@ui-themes-icons/collapse-all": ["@ui-themes-icons/collapse-all@workspace:ui/theme/icon/collapse-all"],
+    "@ui-themes-icons/collapse-all": ["@ui-themes-icons/collapse-all@workspace:icons/collapse-all"],
 
-    "@ui-themes-icons/collection": ["@ui-themes-icons/collection@workspace:ui/theme/icon/collection"],
+    "@ui-themes-icons/collection": ["@ui-themes-icons/collection@workspace:icon-collection"],
 
-    "@ui-themes-icons/compose": ["@ui-themes-icons/compose@workspace:ui/theme/icon/compose"],
+    "@ui-themes-icons/compose": ["@ui-themes-icons/compose@workspace:icons/compose"],
 
-    "@ui-themes-icons/database": ["@ui-themes-icons/database@workspace:ui/theme/icon/database"],
+    "@ui-themes-icons/database": ["@ui-themes-icons/database@workspace:icons/database"],
 
-    "@ui-themes-icons/encode": ["@ui-themes-icons/encode@workspace:ui/theme/icon/encode"],
+    "@ui-themes-icons/encode": ["@ui-themes-icons/encode@workspace:icons/encode"],
 
-    "@ui-themes-icons/execution-point": ["@ui-themes-icons/execution-point@workspace:ui/theme/icon/execution-point"],
+    "@ui-themes-icons/execution-point": ["@ui-themes-icons/execution-point@workspace:icons/execution-point"],
 
-    "@ui-themes-icons/expand": ["@ui-themes-icons/expand@workspace:ui/theme/icon/expand"],
+    "@ui-themes-icons/expand": ["@ui-themes-icons/expand@workspace:icons/expand"],
 
-    "@ui-themes-icons/expand-all": ["@ui-themes-icons/expand-all@workspace:ui/theme/icon/expand-all"],
+    "@ui-themes-icons/expand-all": ["@ui-themes-icons/expand-all@workspace:icons/expand-all"],
 
-    "@ui-themes-icons/folder": ["@ui-themes-icons/folder@workspace:ui/theme/icon/folder"],
+    "@ui-themes-icons/folder": ["@ui-themes-icons/folder@workspace:icons/folder"],
 
-    "@ui-themes-icons/home": ["@ui-themes-icons/home@workspace:ui/theme/icon/home"],
+    "@ui-themes-icons/home": ["@ui-themes-icons/home@workspace:icons/home"],
 
-    "@ui-themes-icons/image": ["@ui-themes-icons/image@workspace:ui/theme/icon/image"],
+    "@ui-themes-icons/image": ["@ui-themes-icons/image@workspace:icons/image"],
 
-    "@ui-themes-icons/language": ["@ui-themes-icons/language@workspace:ui/theme/icon/language"],
+    "@ui-themes-icons/language": ["@ui-themes-icons/language@workspace:icons/language"],
 
-    "@ui-themes-icons/minus": ["@ui-themes-icons/minus@workspace:ui/theme/icon/minus"],
+    "@ui-themes-icons/minus": ["@ui-themes-icons/minus@workspace:icons/minus"],
 
-    "@ui-themes-icons/picker": ["@ui-themes-icons/picker@workspace:ui/theme/icon/picker"],
+    "@ui-themes-icons/picker": ["@ui-themes-icons/picker@workspace:icons/picker"],
 
-    "@ui-themes-icons/pin": ["@ui-themes-icons/pin@workspace:ui/theme/icon/pin"],
+    "@ui-themes-icons/pin": ["@ui-themes-icons/pin@workspace:icons/pin"],
 
-    "@ui-themes-icons/plus": ["@ui-themes-icons/plus@workspace:ui/theme/icon/plus"],
+    "@ui-themes-icons/plus": ["@ui-themes-icons/plus@workspace:icons/plus"],
 
-    "@ui-themes-icons/resource": ["@ui-themes-icons/resource@workspace:ui/theme/icon/resource"],
+    "@ui-themes-icons/resource": ["@ui-themes-icons/resource@workspace:icons/resource"],
 
-    "@ui-themes-icons/run": ["@ui-themes-icons/run@workspace:ui/theme/icon/run"],
+    "@ui-themes-icons/run": ["@ui-themes-icons/run@workspace:icons/run"],
 
-    "@ui-themes-icons/search": ["@ui-themes-icons/search@workspace:ui/theme/icon/search"],
+    "@ui-themes-icons/search": ["@ui-themes-icons/search@workspace:icons/search"],
 
-    "@ui-themes-icons/select-opened-item": ["@ui-themes-icons/select-opened-item@workspace:ui/theme/icon/select-opened-item"],
+    "@ui-themes-icons/select-opened-item": ["@ui-themes-icons/select-opened-item@workspace:icons/select-opened-item"],
 
-    "@ui-themes-icons/settings": ["@ui-themes-icons/settings@workspace:ui/theme/icon/setting"],
+    "@ui-themes-icons/settings": ["@ui-themes-icons/settings@workspace:icons/setting"],
 
-    "@ui-themes-icons/visibility-on": ["@ui-themes-icons/visibility-on@workspace:ui/theme/icon/visibility-on"],
+    "@ui-themes-icons/visibility-on": ["@ui-themes-icons/visibility-on@workspace:icons/visibility-on"],
 
-    "@ui-themes-syntax-theme/active": ["@ui-themes-syntax-theme/active@workspace:ui/theme/syntax-theme/active"],
+    "@ui-themes-syntax-theme/active": ["@ui-themes-syntax-theme/active@workspace:syntax-theme/active"],
 
-    "@ui-themes-syntax-theme/name": ["@ui-themes-syntax-theme/name@workspace:ui/theme/syntax-theme/name"],
+    "@ui-themes-syntax-theme/name": ["@ui-themes-syntax-theme/name@workspace:syntax-theme/name"],
 
-    "@ui-themes-syntax-theme/resolve": ["@ui-themes-syntax-theme/resolve@workspace:ui/theme/syntax-theme/resolve"],
+    "@ui-themes-syntax-theme/resolve": ["@ui-themes-syntax-theme/resolve@workspace:syntax-theme/resolve"],
 
-    "@ui-themes/icons": ["@ui-themes/icons@workspace:ui/theme/icon"],
-
-    "@ui-themes/syntax-theme": ["@ui-themes/syntax-theme@workspace:ui/theme/syntax-theme"],
+    "@ui-themes/icons": ["@ui-themes/icons@workspace:icons"],
 
     "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": ["@ui-views-code-editor-syntax-theme/code-editor-syntax-theme@workspace:ui/view/code-editor/syntax-theme/code-editor-syntax-theme"],
 
@@ -2806,13 +2925,9 @@
 
     "@ui/menus": ["@ui/menus@workspace:ui/menu"],
 
-    "@ui/selection": ["@ui/selection@workspace:ui/selection"],
-
     "@ui/surfaces": ["@ui/surfaces@workspace:ui/surface"],
 
     "@ui/terminal-model": ["@ui/terminal-model@workspace:terminal-model"],
-
-    "@ui/themes": ["@ui/themes@workspace:ui/theme"],
 
     "@ui/typography": ["@ui/typography@workspace:ui/typography"],
 
