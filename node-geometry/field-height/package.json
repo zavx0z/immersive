@@ -30,7 +30,7 @@
     "@ui-fields-metrics/resolve-field-density": "workspace:*"
   },
   "scripts": {
-    "test": "bun test ./spec",
+    "test": "bun test ./spec ./test",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {

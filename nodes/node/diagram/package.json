@@ -1,0 +1,27 @@
+{
+  "name": "@nodes-node/diagram",
+  "label": "DiagramNode",
+  "version": "0.0.0",
+  "description": "Показывает описание ноды диаграммы внутри выбранной формы",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "dependencies": {
+    "@ui-surfaces/pane": "workspace:*",
+    "@ui/typography": "workspace:*"
+  },
+  "devDependencies": {
+    "@nodes/node": "workspace:*",
+    "@nodes/layout": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@node-geometry/project": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

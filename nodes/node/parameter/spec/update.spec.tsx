@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import {ParameterNode} from "@nodes/node/parameter"
+import ParameterNode from "@nodes-node/parameter"
 import {parameters, sockets} from "../../spec/fixture/parameters"
 
 test.each([{collapsed: false}, {collapsed: true}])("обновление collapsed=$collapsed сохраняет элементы ноды", async ({collapsed}) => {

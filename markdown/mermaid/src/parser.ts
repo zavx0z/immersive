@@ -1,6 +1,7 @@
 /// <reference path="../types/mermaid-vendor.d.ts" />
 import {parseFragment, type DefaultTreeAdapterTypes} from "parse5"
-import type {NodeShape} from "@nodes/node/contracts"
+import type {NodeGeometryProject} from "@node-geometry/project"
+type NodeShape = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["shape"]>
 import type {MermaidGraph} from "../types/graph.ts"
 import type {FlowDatabase} from "../types/parser.ts"
 

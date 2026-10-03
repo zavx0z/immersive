@@ -13,9 +13,11 @@ import {
 } from "../routing/link-path.ts"
 
 export type NodePoint = Readonly<{x: number; y: number}>
-import {nodeSocketLayoutPortId, type NodeRect} from "@nodes/node/geometry"
-export {nodeSocketLayoutPortId} from "@nodes/node/geometry"
-export type {NodeRect} from "@nodes/node/geometry"
+import nodeSocketLayoutPortId from "@node-geometry/port-id"
+import type {NodesLayout} from "@nodes/layout/contract"
+type NodeRect = NodesLayout.Output["bounds"]
+export {default as nodeSocketLayoutPortId} from "@node-geometry/port-id"
+export type {NodeRect}
 
 export type NodeTreeTransform = Readonly<{
   x: number

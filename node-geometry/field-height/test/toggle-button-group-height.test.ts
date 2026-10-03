@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import layout from "../shared/toggle-button-group"
+import layout from "../src/toggle-button-group"
 
 test("план Node сохраняет номинальную высоту строки кнопок базовой темы", () => {
   expect(layout.height()).toBe(22)

@@ -1,4 +1,5 @@
-import type {NodeShape} from "@nodes/node/contracts"
+import type {NodeGeometryProject} from "@node-geometry/project"
+type NodeShape = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["shape"]>
 
 /**
 Нормализованная модель flowchart между Mermaid parser, раскладкой и {@link @immersive/nodes/view#GraphView | GraphView}.

@@ -98,7 +98,7 @@ describe("Markdown production owner", () => {
     const host = document.createElement("div")
     document.append(host)
     const component = createRoot(host)
-    const editor = CodeEditor as unknown as CompiledTemplate<import("@zavx0z/ui/view/code-editor").CodeEditorProps>
+    const editor = CodeEditor as unknown as CompiledTemplate<import("@ui-views/code-editor").UiViewsCodeEditor.Input>
     try {
       component.render(editor, {value: "code", readOnly: true, languageId, title: "First"})
       const line = host.querySelector('code [data-line-index="0"]')
@@ -294,7 +294,7 @@ describe("Markdown production owner", () => {
     document.append(container)
     const component = createRoot(container)
     const value = Array.from({length: 30}, () => "long line ".repeat(20)).join("\n")
-    component.render(CodeEditor as unknown as CompiledTemplate<import("@zavx0z/ui/view/code-editor").CodeEditorProps>, {
+    component.render(CodeEditor as unknown as CompiledTemplate<import("@ui-views/code-editor").UiViewsCodeEditor.Input>, {
       value,
       readOnly: true,
     })

@@ -1,6 +1,8 @@
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import {DiagramNode, type DiagramNodeProps} from "@nodes/node/diagram"
+import DiagramNode from "@nodes-node/diagram"
+import type {NodesNodeDiagram} from "@nodes-node/diagram"
+type DiagramNodeProps = NodesNodeDiagram.Input
 
 describe.each([
   {

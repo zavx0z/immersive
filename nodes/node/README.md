@@ -2,14 +2,17 @@
 
 ## Компоненты
 
-Каждый компонент и его авторская TSX-разметка находятся в `index.tsx` собственного
-каталога. Публичные импорты ниже разрешаются непосредственно в эти файлы.
+`@nodes/node` — Cluster трёх самостоятельных представлений. Именованный API
+сохраняет их реализации; общий `NodesNode.Input` задаёт адрес, выбор, видимость
+и активацию, `NodesNode.Output` — JSX в Document приложения.
+Каждый участник также предоставляет default-реализацию и собственный namespace
+по точному публичному адресу ниже.
 
 | Компонент             | Назначение                                                 | Импорт                  |
 |-----------------------|------------------------------------------------------------|-------------------------|
-| DiagramNode           | Описание на всю ноду; прямоугольник, овал или круг         | `@nodes/node/diagram`   |
-| ParameterNode         | Корпус, шапка, действия, параметры и сокеты           | `@nodes/node/parameter` |
-| ContentNode           | ParameterNode плюс произвольный компонент содержимого      | `@nodes/node/content`   |
+| DiagramNode           | Описание на всю ноду; прямоугольник, овал или круг         | `@nodes-node/diagram`   |
+| ParameterNode         | Корпус, шапка, действия, параметры и сокеты           | `@nodes-node/parameter` |
+| ContentNode           | ParameterNode плюс произвольный компонент содержимого      | `@nodes-node/content`   |
 
 Варианты просмотра и проверки использования принадлежат каждому компоненту:
 [формы DiagramNode](diagram/spec/scenario.spec.tsx),
@@ -20,9 +23,10 @@
 находятся рядом в scenario.spec.tsx.
 
 Каталоги компонентов находятся непосредственно в корне `@nodes/node`.
-Входной тип DiagramNodeProps с описанием полей находится в
-[diagram/contract/input.ts](diagram/contract/input.ts) и импортируется через
-`@nodes/node/diagram/contract/input`. Сам DiagramNode остаётся в `diagram/index.tsx`.
+Протокол DiagramNode с описанием полей находится в
+[diagram/contract/index.ts](diagram/contract/index.ts) и доступен как
+`NodesNodeDiagram.Input` / `Output` из `@nodes-node/diagram`.
+Сам DiagramNode остаётся в `diagram/index.tsx`.
 Каждый содержит `index.tsx` и `spec/deps.spec.ts`: тест сравнивает полный
 статический граф компонентов и нативных JSX-тегов через общий
 [dependency fixture](../../fixtures/dependency-graph.ts). Он включает все ветви
@@ -49,21 +53,20 @@ ContentNode задаётся `aspect-ratio: 1`. Обе ноды использу
 Содержимое скрывается без размонтирования. Квадратная область имеет сторону,
 равную ширине ноды, и входит в её полную высоту.
 
-Нода получает данные и обработчики. Значения и их Stores принадлежат `@nodes/tree`;
+Нода получает данные и обработчики. Значения принадлежат `@nodes/parameter-store`, topology — `@nodes/tree`;
 визуальные компоненты не создают вторую модель. ContentNode составляет два
 компонента, но остаётся одной нодой графа.
 
-`planProjectedNodeGeometry` из `@nodes/node/geometry` расширяет действующий
-числовой расчёт с учётом обоих состояний. Низкоуровневый `@nodes/node/metrics`
-не импортирует TSX. Для графа передайте вычисление в `GraphEditor.layout` либо
-обновляйте готовую раскладку и состояния снаружи вместе.
+`@node-geometry/project` планирует геометрию снимка ноды,
+`@node-geometry/plan` — размеры строк и сокетов по числовым входам.
+`@node-geometry/metrics` хранит общие числовые размеры; эти владельцы не импортируют TSX.
+Для графа передайте вычисление в `GraphEditor.layout` либо обновляйте готовую
+раскладку и состояния снаружи вместе.
 
-Геометрия не является визуальным компонентом. Общий план находится в
-[shared/geometry.ts](shared/geometry.ts), числовые метрики — в
-[shared/metrics.ts](shared/metrics.ts). Публичные импорты `./geometry` и `./metrics`
-сохранены. Общие `NodeRect` и договоры props принадлежат
-[shared/contracts.ts](shared/contracts.ts). Числовой план и ParameterNode
-используют одни [правила отступов и сторон сокетов](shared/parameter-presentation.ts).
+Геометрия не является визуальным компонентом. Общий прямоугольник происходит
+из результата `NodesLayout.Output`, а формы отдельных представлений — из их
+собственных протоколов. Числовой план и ParameterNode используют общие
+`@node-geometry/spacing` и `@node-geometry/socket-side`.
 
 Компоненты используют общую UI-тему текущего Experience. Подключение темы
 принадлежит приложению; пакет не создаёт отдельные Document, Canvas или Renderer.

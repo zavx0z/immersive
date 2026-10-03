@@ -77,13 +77,20 @@
     "@zavx0z/engine": "workspace:*",
     "@zavx0z/webgpu": "workspace:*",
     "@zavx0z/space": "workspace:*",
-    "@nodes/parameter-presentation": "workspace:*"
+    "@nodes/parameter-presentation": "workspace:*",
+    "@node-geometry/project": "workspace:*",
+    "@nodes-node/diagram": "workspace:*",
+    "@node-geometry/port-id": "workspace:*"
   },
   "dependencies": {
     "@socket-values/kinds": "workspace:*",
     "@socket-values/preset": "workspace:*",
     "@socket-values/key": "workspace:*",
     "@nodes/metadata": "workspace:*",
-    "@nodes/parameter-projection": "workspace:*"
+    "@nodes/parameter-projection": "workspace:*",
+    "@nodes-node/parameter": "workspace:*",
+    "@nodes-node/content": "workspace:*",
+    "@nodes-node/diagram": "workspace:*",
+    "@node-geometry/port-id": "workspace:*"
   }
 }

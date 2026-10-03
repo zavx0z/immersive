@@ -1,7 +1,8 @@
 import {component, memo} from "@zavx0z/component"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 import type {JSX} from "@jsx-compiler/session"
-import type {NodeChildren} from "@nodes/node/contracts"
+import type {NodesNode} from "@nodes/node/contract"
+type NodeChildren = NodesNode.Output | readonly NodesNode.Output[] | null | undefined
 import type {GraphRenderedNode, GraphNodeProps} from "../contracts.ts"
 import {GraphNodeSlot} from "./content/index.tsx"
 

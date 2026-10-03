@@ -1,4 +1,4 @@
-import {DiagramNode} from "@nodes/node/diagram"
+import DiagramNode from "@nodes-node/diagram"
 import type {GraphNodeProps, GraphInput, GraphLayoutComputer} from "@immersive/nodes/view"
 import {layoutTopDown} from "@nodes/layout/top-down"
 import {createCubicLinkRoute} from "@immersive/nodes/routing/link-path"

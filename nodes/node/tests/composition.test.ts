@@ -1,3 +1,4 @@
+import nodeSocketLayoutPortId from "@node-geometry/port-id"
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, MouseEvent, type Element, type HTMLInputElement} from "@zavx0z/dom"
@@ -6,7 +7,7 @@ import "./compiler.ts"
 
 const root = resolve(import.meta.dir, "../../..")
 const {createNodeFixture} = await import("./composition.fixture.tsx")
-const {planProjectedNodeGeometry} = await import("@nodes/node/geometry")
+const {default: planProjectedNodeGeometry} = await import("@node-geometry/project")
 const theme = await Bun.file(resolve(root, "ui/theme/theme.css")).text()
 
 function mount(route: string, looseSockets = false) {
@@ -104,7 +105,7 @@ test("[NODE-COMPOSITION-002] square content and visible socket geometry agree wi
       for (const socket of node.querySelectorAll("[data-socket-id]")) {
         const glyph = socket.querySelector("[data-socket-glyph]")!
         const box = frame.boxByNode.get(glyph)!
-        const expected = plan.sockets.find(port => port.id === `example/${socket.getAttribute("data-socket-id")}`)!
+        const expected = plan.sockets.find(port => port.id === nodeSocketLayoutPortId("example", socket.getAttribute("data-socket-id")!))!
         expect(box.y + box.height / 2 - bounds.y).toBeCloseTo(expected.y)
         expect(box.x + box.width / 2 - bounds.x).toBeCloseTo(socket.getAttribute("data-socket-side") === "left" ? 0 : plan.width)
       }
@@ -156,7 +157,7 @@ test("[NODE-COMPOSITION-004] loose and parameter sockets retain their elements a
     for (const socket of sockets) {
       const glyph = socket.querySelector("[data-socket-glyph]")!
       const box = frame.boxByNode.get(glyph)!
-      const expected = plan.sockets.find(port => port.id === `example/${socket.getAttribute("data-socket-id")}`)!
+      const expected = plan.sockets.find(port => port.id === nodeSocketLayoutPortId("example", socket.getAttribute("data-socket-id")!))!
       expect(box.y + box.height / 2 - bounds.y).toBeCloseTo(expected.y)
       expect(box.x + box.width / 2 - bounds.x).toBeCloseTo(socket.getAttribute("data-socket-side") === "left" ? 0 : plan.width)
     }

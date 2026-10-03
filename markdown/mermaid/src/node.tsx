@@ -1,4 +1,4 @@
-import {DiagramNode} from "@nodes/node/diagram"
+import DiagramNode from "@nodes-node/diagram"
 import type {GraphNodeProps} from "@immersive/nodes/view"
 import type {MermaidGraph} from "../types/graph.ts"
 

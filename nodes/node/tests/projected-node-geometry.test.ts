@@ -6,15 +6,16 @@ import type {
   Socket,
 } from "@nodes/tree"
 import "./compiler.ts"
-import type {ProjectedNodeSnapshot} from "@nodes/node/geometry"
+import type {NodeGeometryProject} from "@node-geometry/project"
+type ProjectedNodeSnapshot = NodeGeometryProject.Input[0]
 
 
 
 const [
-  {planProjectedNodeGeometry},
+  {default: planProjectedNodeGeometry},
   {default: resolveProjectedParameterPresentation},
 ] = await Promise.all([
-  import("@nodes/node/geometry"),
+  import("@node-geometry/project"),
   import("@nodes/parameter-presentation"),
 ])
 

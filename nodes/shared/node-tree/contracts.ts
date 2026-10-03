@@ -1,6 +1,11 @@
 import type {FunctionComponent} from "@zavx0z/component"
-import type {ParameterNodeProps} from "@nodes/node/parameter"
-import type {NodeChildren, NodeKind, NodeShape} from "@nodes/node/contracts"
+import type {NodesNodeParameter} from "@nodes-node/parameter"
+type ParameterNodeProps = NodesNodeParameter.Input
+import type {NodesNode} from "@nodes/node/contract"
+type NodeChildren = NodesNode.Output | readonly NodesNode.Output[] | null | undefined
+import type {NodeGeometryProject} from "@node-geometry/project"
+type NodeKind = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["kind"]>
+type NodeShape = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["shape"]>
 import type {NodeTreeExternalStore, NodeTreeSnapshot, ParameterSnapshot} from "@nodes/tree"
 import type {LayoutResult} from "@nodes/layout/types"
 import type {NodesParameterProjection} from "@nodes/parameter-projection"

@@ -1,4 +1,5 @@
-import type {ParameterNodeProps} from "@nodes/node/parameter"
+import type {NodesNodeParameter} from "@nodes-node/parameter"
+type ParameterNodeProps = NodesNodeParameter.Input
 
 /** Неизменяемые исходные данные числового поля для вариантов ноды. */
 export const parameters: NonNullable<ParameterNodeProps["parameters"]> = [

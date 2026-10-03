@@ -2,100 +2,39 @@
   "name": "@nodes/node",
   "label": "Ноды",
   "version": "0.0.0",
-  "description": "Ноды диаграмм, параметров и произвольного содержимого",
+  "description": "Представления нод с общим протоколом адреса, выбора, видимости и активации",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
-    "./diagram": "./diagram/index.tsx",
-    "./diagram/contract/input": "./diagram/contract/input.ts",
-    "./parameter": "./parameter/index.tsx",
-    "./parameter/contract/input": "./parameter/contract/input.ts",
-    "./content": "./content/index.tsx",
-    "./content/contract/input": "./content/contract/input.ts",
-    "./geometry": "./shared/geometry.ts",
-    "./contracts": "./shared/contracts.ts",
-    "./metrics": "./shared/metrics.ts"
-  },
-  "scripts": {
-    "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests && bun test --preload @immersive/headless/preload --parallel diagram/spec content/spec parameter/spec",
-    "check": "bun run --parallel typecheck test"
-  },
-  "peerDependencies": {
-    "@nodes/tree": "workspace:*",
-    "@nodes/parameters": "workspace:*",
-    "@nodes/sockets": "workspace:*",
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@zavx0z/jsx": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-surfaces/pane": "workspace:*",
-    "@ui-themes-icons/chevron-right": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui/typography": "workspace:*",
-    "@ui-themes-icons/visibility-on": "workspace:*",
-    "@ui-buttons/icon-button": "workspace:*",
-    "@ui-themes-icons/chevron-down": "workspace:*"
-  },
-  "peerDependenciesMeta": {
-    "@nodes/tree": {
-      "optional": true
-    },
-    "@nodes/parameters": {
-      "optional": true
-    },
-    "@nodes/sockets": {
-      "optional": true
-    },
-    "@zavx0z/component": {
-      "optional": true
-    },
-    "@zavx0z/template": {
-      "optional": true
-    },
-    "@zavx0z/ui": {
-      "optional": true
-    }
-  },
-  "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@jsx-compiler/bun": "workspace:*"
+    ".": "./index.ts",
+    "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-fields-checkbox-field/layout": "workspace:*",
-    "@ui-fields-collection-field/layout": "workspace:*",
-    "@ui-fields-color-field/layout": "workspace:*",
-    "@ui-fields-cycle-field/layout": "workspace:*",
-    "@ui-fields-matrix-field/layout": "workspace:*",
-    "@ui-fields-number-field/layout": "workspace:*",
-    "@ui-fields-path-field/layout": "workspace:*",
-    "@ui-fields-reference-field/layout": "workspace:*",
-    "@ui-fields-select-field/layout": "workspace:*",
-    "@ui-fields-slider-field/layout": "workspace:*",
-    "@ui-fields-switch-field/layout": "workspace:*",
-    "@ui-fields-text-field/layout": "workspace:*",
-    "@ui-fields-vector-field/layout": "workspace:*",
-    "@ui-fields-metrics/field-metric": "workspace:*",
-    "@ui-fields-metrics/labelled-field-height": "workspace:*",
-    "@ui-fields-metrics/resolve-field-density": "workspace:*",
-    "@ui-buttons/toggle-button-group": "workspace:*",
-    "@socket-values/metrics": "workspace:*",
-    "@socket-values/resolve-kind": "workspace:*",
-    "@socket-values/resolve-shape": "workspace:*",
-    "@socket-values/key": "workspace:*",
-    "@socket-values/side": "workspace:*",
-    "@nodes/metadata": "workspace:*",
-    "@nodes/parameter-projection": "workspace:*",
-    "@nodes/parameter-presentation": "workspace:*",
-    "@nodes/parameter-metrics": "workspace:*",
-    "@node-geometry/metrics": "workspace:*",
+    "@nodes-node/diagram": "workspace:*",
+    "@nodes-node/parameter": "workspace:*",
+    "@nodes-node/content": "workspace:*"
+  },
+  "devDependencies": {
+    "@jsx-compiler/session": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@jsx-compiler/bun": "workspace:*",
+    "@zavx0z/dom": "workspace:*",
+    "@zavx0z/component": "workspace:*",
+    "@renderer/html": "workspace:*",
+    "@zavx0z/template": "workspace:*",
     "@node-geometry/plan": "workspace:*",
+    "@node-geometry/metrics": "workspace:*",
+    "@ui/typography": "workspace:*",
     "@node-geometry/project": "workspace:*",
-    "@node-geometry/field-height": "workspace:*",
-    "@node-geometry/spacing": "workspace:*",
-    "@node-geometry/socket-side": "workspace:*",
+    "@socket-values/key": "workspace:*",
+    "@nodes/tree": "workspace:*",
+    "@nodes/parameter-presentation": "workspace:*",
+    "@ui-buttons/button": "workspace:*",
     "@node-geometry/port-id": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec ./tests",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

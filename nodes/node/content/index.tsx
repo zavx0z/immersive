@@ -6,14 +6,14 @@
 
 import Pane from "@ui-surfaces/pane"
 import visibilityOnIcon from "@ui-themes-icons/visibility-on"
-import {ParameterNode} from "../parameter/index.tsx"
-import type {ContentNodeProps} from "./contract/input.ts"
-import {planProjectedNodeGeometry} from "../shared/geometry.ts"
+import ParameterNode from "@nodes-node/parameter"
+import type {NodesNodeContent as Contract} from "./contract"
+import planProjectedNodeGeometry from "@node-geometry/project"
 
-export type {ContentNodeProps} from "./contract/input.ts"
+export type {NodesNodeContent} from "./contract"
 
 /** Квадратная область содержимого и ParameterNode образуют одну ноду графа с общей тенью из темы. */
-export function ContentNode(props: ContentNodeProps) {
+export default function ContentNode(props: Contract.Input): Contract.Output {
   const visible = props.contentVisible !== false
   const geometry = planProjectedNodeGeometry({id: props.id, parameters: props.parameters ?? [], sockets: props.sockets ?? []}, undefined,
     props.connectedSocketKeys, props.resolvedSocketSides, {collapsed: props.collapsed, contentVisible: visible})

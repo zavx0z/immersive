@@ -1,16 +1,16 @@
 /**
-Описание и форма узла диаграммы. Входной контракт DiagramNodeProps находится
-в contract/input.ts; этот модуль владеет разметкой и поведением компонента.
+Описание и форма узла диаграммы. Протокол NodesNodeDiagram принадлежит contract/index.ts;
+этот модуль владеет разметкой и поведением компонента.
 
 @packageDocumentation
 */
 import Pane from "@ui-surfaces/pane"
 import Typography from "@ui/typography"
-import type {DiagramNodeProps} from "./contract/input.ts"
-export type {DiagramNodeProps} from "./contract/input.ts"
+import type {NodesNodeDiagram as Contract} from "./contract"
+export type {NodesNodeDiagram} from "./contract"
 
 /** Описание заполняет Pane выбранной формы без полей редактора и видимых сокетов. */
-export function DiagramNode(props: DiagramNodeProps) {
+export default function DiagramNode(props: Contract.Input): Contract.Output {
   const round = props.shape === "oval" || props.shape === "circle"
   return <article
     ref={props.elementRef}

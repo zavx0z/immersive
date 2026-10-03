@@ -16,19 +16,21 @@ import Parameter from "@nodes/parameter-projection"
 import type {NodesParameterProjection} from "@nodes/parameter-projection"
 type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]
 import {metadataBoolean, metadataString} from "@nodes/metadata"
-import {parameterSpacingBefore} from "../shared/parameter-presentation.ts"
+import parameterSpacingBefore from "@node-geometry/spacing"
 import Socket from "@nodes/sockets"
 import resolveSocketKind from "@socket-values/resolve-kind"
 import resolveSocketShape from "@socket-values/resolve-shape"
-import {NODE_BODY_PADDING_TOP, NODE_BODY_PADDING_BOTTOM, NODE_ROW_GAP} from "../shared/metrics.ts"
+import nodeMetrics from "@node-geometry/metrics"
+const {NODE_BODY_PADDING_TOP, NODE_BODY_PADDING_BOTTOM, NODE_ROW_GAP} = nodeMetrics
 import {prepareParameterNode} from "./src/prepare.ts"
-import type {ParameterNodeProps} from "./contract/input.ts"
-import {planProjectedNodeGeometry, NODE_HEADER_HEIGHT, NODE_MINIMUM_WIDTH} from "../shared/geometry.ts"
+import type {NodesNodeParameter as Contract} from "./contract"
+import planProjectedNodeGeometry from "@node-geometry/project"
+const {NODE_HEADER_HEIGHT, NODE_MINIMUM_WIDTH} = nodeMetrics
 
-export type {ParameterNodeProps} from "./contract/input.ts"
+export type {NodesNodeParameter} from "./contract"
 
 /** Объединяет корпус, шапку, действия, параметры и сокеты. Ширина задаётся CSS, тень принадлежит общей теме или составной ContentNode. */
-export function ParameterNode(props: ParameterNodeProps) {
+export default function ParameterNode(props: Contract.Input): Contract.Output {
   const {parameters, sockets, left, right} = prepareParameterNode(props, hasSlot())
   const collapseLabel = props.collapsed === true ? `Развернуть ${props.label}` : `Свернуть ${props.label}`
   const collapseIcon = props.collapsed === true ? chevronRightIcon : chevronDownIcon

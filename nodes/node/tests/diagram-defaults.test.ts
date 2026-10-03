@@ -4,10 +4,11 @@ import {createDocument} from "@zavx0z/dom"
 import {createRoot} from "@zavx0z/component"
 import {createDocumentRenderer} from "@renderer/html"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {DiagramNodeProps} from "../diagram/contract/input.ts"
+import type {NodesNodeDiagram} from "@nodes-node/diagram"
+type DiagramNodeProps = NodesNodeDiagram.Input
 import "./compiler.ts"
 
-const {DiagramNode} = await import("../diagram/index.tsx")
+const {default: DiagramNode} = await import("@nodes-node/diagram")
 const theme = await Bun.file(resolve(import.meta.dir, "../../../ui/theme/theme.css")).text()
 
 for (const shape of ["rectangle", "oval", "circle"] as const) {

@@ -1,4 +1,4 @@
-import {ParameterNode} from "@nodes/node/parameter"
+import ParameterNode from "@nodes-node/parameter"
 import Typography from "@ui/typography"
 import {parameters} from "../spec/fixture/parameters.ts"
 

@@ -5,7 +5,7 @@ import {layoutFixed} from "@nodes/layout/fixed"
 import type {LayoutResult} from "@nodes/layout/types"
 import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeJsonValue, type NodeTreeSnapshot} from "@nodes/tree"
 import {GraphEditor} from "@immersive/nodes/editor"
-import {planProjectedNodeGeometry} from "@nodes/node/geometry"
+import planProjectedNodeGeometry from "@node-geometry/project"
 import {nodeSocketLayoutPortId, socketKey, type NodeTreeLayout, type NodeTreeSelection, type NodeTreeTransform} from "@immersive/nodes/view/tree"
 import type {NodesParameterProjection} from "@nodes/parameter-projection"
 type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]

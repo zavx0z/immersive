@@ -1,5 +1,5 @@
-import {dirname, relative} from "node:path"
-import {API} from "typescript/unstable/async"
+import {relative} from "node:path"
+import {API, SymbolFlags} from "typescript/unstable/async"
 import {type Node, SyntaxKind} from "typescript/unstable/ast"
 import {
   isFunctionDeclaration,
@@ -63,8 +63,9 @@ export type ComponentDependencyGraph = Record<string, {uses: string[], elements:
 
 Поддерживаются объявления функций в том же файле, именованные и default-импорты,
 включая псевдонимы. Default разрешается к имени функции у владельца, независимо
-от локального имени импорта. Реэкспорты, составные JSX-имена и компоненты,
-объявленные через переменные, не разрешаются. Импорты типов пропускаются.
+от локального имени импорта. Native TypeScript раскрывает цепочки реэкспортов
+до исходного объявления функции, в том числе именованные входы Cluster.
+Составные JSX-имена и компоненты через переменные не разрешаются; импорты типов пропускаются.
 Повторно достигнутые компоненты не обходятся, поэтому циклы не зацикливают поиск.
 
 Функция создаёт собственную сессию TypeScript API и закрывает её в `finally`,
@@ -107,28 +108,38 @@ export async function buildComponentDependencyGraph(root: string, entry: Compone
       if (declaration === undefined) throw new Error(`Не найдено объявление компонента: ${id}`)
 
       const imports = new Map<string, ComponentReference>()
+      const resolveImportedFunction = async (name: Node): Promise<ComponentReference | undefined> => {
+        let symbol = await project.checker.getSymbolAtLocation(name)
+        const visited = new Set<number>()
+        while (symbol && (symbol.flags & SymbolFlags.Alias) !== 0) {
+          if (visited.has(symbol.id)) throw new Error("Цикл псевдонимов компонента")
+          visited.add(symbol.id)
+          symbol = await project.checker.getAliasedSymbol(symbol)
+        }
+        if (!symbol) return undefined
+        for (const handle of symbol.declarations) {
+          const ownerProject = await snapshot.getDefaultProjectForFile(handle.path) ?? project
+          const declaration = await handle.resolve(ownerProject)
+          if (declaration && isFunctionDeclaration(declaration) && declaration.name) {
+            return {file: declaration.getSourceFile().fileName, name: declaration.name.text}
+          }
+        }
+        return undefined
+      }
       for (const statement of source.statements) {
         if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier)) continue
         const clause = statement.importClause
         if (clause === undefined || clause.phaseModifier === SyntaxKind.TypeKeyword) continue
         if (clause.name) {
-          const importedFile = Bun.resolveSync(statement.moduleSpecifier.text, dirname(file))
-          const importedSource = await project.program.getSourceFile(importedFile)
-          const implementation = importedSource?.statements.find(statement =>
-            isFunctionDeclaration(statement) && statement.name !== undefined &&
-            statement.modifiers?.some(modifier => modifier.kind === SyntaxKind.DefaultKeyword))
-          if (implementation && isFunctionDeclaration(implementation) && implementation.name) {
-            imports.set(clause.name.text, {file: importedFile, name: implementation.name.text})
-          }
+          const declaration = await resolveImportedFunction(clause.name)
+          if (declaration) imports.set(clause.name.text, declaration)
         }
         const bindings = clause.namedBindings
         if (bindings === undefined || !isNamedImports(bindings)) continue
         for (const binding of bindings.elements) {
           if (binding.isTypeOnly) continue
-          imports.set(binding.name.text, {
-            file: Bun.resolveSync(statement.moduleSpecifier.text, dirname(file)),
-            name: binding.propertyName?.text ?? binding.name.text,
-          })
+          const declaration = await resolveImportedFunction(binding.name)
+          if (declaration) imports.set(binding.name.text, declaration)
         }
       }
 

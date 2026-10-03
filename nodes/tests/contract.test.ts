@@ -120,13 +120,14 @@ test("[NODES-005] domain imports resolve only through public package contracts",
 
 test("[NODES-006] projected Parameter render и геометрия используют один resolver", async () => {
   const parameterSource = await Bun.file(Bun.resolveSync("@nodes/parameter-projection", packageRoot)).text()
-  const nodeSource = await Bun.file(resolve(packageRoot, "node/shared/geometry.ts")).text()
+  const nodeSource = await Bun.file(Bun.resolveSync("@node-geometry/project", packageRoot)).text()
 
   expect(parameterSource).toContain("const resolved = resolveProjectedParameterPresentation(snapshot)")
-  const heightSource = await Bun.file(resolve(packageRoot, "node/shared/field-height.ts")).text()
+  const heightSource = await Bun.file(Bun.resolveSync("@node-geometry/field-height", packageRoot)).text()
   expect(heightSource).toContain("projectedParameterFieldHeight(")
-  expect(heightSource).toContain('import type {NodesParameterPresentation} from "@nodes/parameter-presentation"')
-  expect(heightSource).toContain('type ProjectedParameterPresentation = NodesParameterPresentation.Output')
+  const heightContract = await Bun.file(resolve(Bun.resolveSync("@node-geometry/field-height", packageRoot), "../contract/index.ts")).text()
+  expect(heightContract).toContain('import type {NodesParameterPresentation} from "@nodes/parameter-presentation"')
+  expect(heightContract).toContain('type Input = NodesParameterPresentation.Output')
   expect(parameterSource).not.toContain("booleanSwitch")
   expect(parameterSource).not.toContain("collectionEditor")
   expect(nodeSource).toContain("const resolved = resolveProjectedParameterPresentation(parameter)")

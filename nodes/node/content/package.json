@@ -1,0 +1,31 @@
+{
+  "name": "@nodes-node/content",
+  "label": "ContentNode",
+  "version": "0.0.0",
+  "description": "Соединяет пользовательское содержимое и параметры в одной ноде",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "dependencies": {
+    "@ui-surfaces/pane": "workspace:*",
+    "@ui-themes-icons/visibility-on": "workspace:*",
+    "@nodes-node/parameter": "workspace:*",
+    "@node-geometry/project": "workspace:*"
+  },
+  "devDependencies": {
+    "@nodes/node": "workspace:*",
+    "@nodes/layout": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@nodes/tree": "workspace:*",
+    "@nodes/parameter-projection": "workspace:*",
+    "@ui/typography": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

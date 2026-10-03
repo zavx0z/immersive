@@ -1,0 +1,42 @@
+{
+  "name": "@nodes-node/parameter",
+  "label": "ParameterNode",
+  "version": "0.0.0",
+  "description": "Компонует заголовок, параметры и адресуемые сокеты ноды",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "dependencies": {
+    "@socket-values/key": "workspace:*",
+    "@socket-values/metrics": "workspace:*",
+    "@ui-buttons/button": "workspace:*",
+    "@ui-buttons/icon-button": "workspace:*",
+    "@ui-themes-icons/chevron-down": "workspace:*",
+    "@ui-themes-icons/chevron-right": "workspace:*",
+    "@nodes/parameter-projection": "workspace:*",
+    "@nodes/metadata": "workspace:*",
+    "@nodes/sockets": "workspace:*",
+    "@socket-values/resolve-kind": "workspace:*",
+    "@socket-values/resolve-shape": "workspace:*",
+    "@zavx0z/component": "workspace:*",
+    "@node-geometry/spacing": "workspace:*",
+    "@node-geometry/metrics": "workspace:*",
+    "@node-geometry/project": "workspace:*",
+    "@node-geometry/socket-side": "workspace:*"
+  },
+  "devDependencies": {
+    "@nodes/node": "workspace:*",
+    "@nodes/layout": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@nodes/tree": "workspace:*",
+    "@ui/typography": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

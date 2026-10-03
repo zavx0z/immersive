@@ -27,7 +27,8 @@
   "dependencies": {
     "markdown-it": "^15.0.1",
     "mermaid": "^11.17.2",
-    "parse5": "^8.0.1"
+    "parse5": "^8.0.1",
+    "@nodes-node/diagram": "workspace:*"
   },
   "peerDependencies": {
     "@zavx0z/component": "workspace:*",
@@ -46,7 +47,8 @@
     "@renderer/html": "workspace:*",
     "@zavx0z/highlighter": "^0.1.0",
     "@jsx-compiler/bun": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@zavx0z/ui": "workspace:*",
+    "@node-geometry/project": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/component": {

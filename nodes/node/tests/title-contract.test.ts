@@ -5,7 +5,7 @@ import "./compiler.ts"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
 
 
-const {ParameterNode} = await import("@nodes/node/parameter")
+const {default: ParameterNode} = await import("@nodes-node/parameter")
 
 test("[NODES-TITLE-001-NODE] ParameterNode не распространяет tooltip на всю поверхность", () => {
   const node = mount(ParameterNode, {

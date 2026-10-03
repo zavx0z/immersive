@@ -1,8 +1,7 @@
 import {expect, test} from "bun:test"
-import {
-  NODE_MINIMUM_WIDTH,
-  planNodeGeometry,
-} from "@nodes/node/metrics"
+import planNodeGeometry from "@node-geometry/plan"
+import nodeMetrics from "@node-geometry/metrics"
+const {NODE_MINIMUM_WIDTH} = nodeMetrics
 
 test("[NODES-METRICS-001] пустая Node имеет фиксированную высоту и минимальную ширину", () => {
   const geometry = planNodeGeometry({width: 72, rows: []})
