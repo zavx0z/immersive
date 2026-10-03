@@ -7,17 +7,17 @@ MatrixParameter соединяет публичный MatrixField с компо�
 */
 
 import MatrixField from "@ui-fields/matrix-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {MatrixParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersMatrix as Contract} from "./contract"
 
-export type {MatrixParameterProps} from "./contract/input.ts"
+export type {NodesParametersMatrix} from "./contract"
 
 /**
 Авторский контракт MatrixParameter; общие свойства сокетов описаны в ParameterBaseProps.
 
 @property value - Квадратная числовая матрица размером 2, 3 или 4.
 */
-export function MatrixParameter(props: MatrixParameterProps) {
+export default function MatrixParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

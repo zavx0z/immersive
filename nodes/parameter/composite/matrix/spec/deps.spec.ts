@@ -15,16 +15,16 @@ test.each([
         uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/field/matrix-field/index.tsx#MatrixField"],
         elements: [],
       },
-      "nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints": {
+      "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
         uses: ["nodes/socket/index.tsx#Socket"],
         elements: ["span"],
       },
-      "nodes/parameter/shared/label/index.tsx#ParameterLabel": {
+      "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
         uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/index.tsx#ParameterLayout": {
-        uses: ["nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints","nodes/parameter/shared/label/index.tsx#ParameterLabel"],
+        uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
       "nodes/socket/index.tsx#Socket": {

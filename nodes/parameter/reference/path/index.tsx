@@ -7,17 +7,17 @@ PathParameter соединяет публичный PathField с компози�
 */
 
 import PathField from "@ui-fields/path-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {PathParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersPath as Contract} from "./contract"
 
-export type {PathParameterProps} from "./contract/input.ts"
+export type {NodesParametersPath} from "./contract"
 
 /**
 Авторский контракт PathParameter; общие свойства сокетов описаны в ParameterBaseProps.
 
 @property [onBrowse] - Запрашивает действие приложения; компонент не открывает файловую систему.
 */
-export function PathParameter(props: PathParameterProps) {
+export default function PathParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

@@ -7,17 +7,17 @@ OptionGroupParameter соединяет публичный ToggleButtonGroup с 
 */
 
 import ToggleButtonGroup from "@ui-buttons/toggle-button-group"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {OptionGroupParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersOptionGroup as Contract} from "./contract"
 
-export type {OptionGroupParameterProps} from "./contract/input.ts"
+export type {NodesParametersOptionGroup} from "./contract"
 
 /**
 Авторский контракт OptionGroupParameter; общие свойства сокетов описаны в ParameterBaseProps.
 
 @property options - Полный набор вариантов; в каждый момент выбран одно строковое значение.
 */
-export function OptionGroupParameter(props: OptionGroupParameterProps) {
+export default function OptionGroupParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

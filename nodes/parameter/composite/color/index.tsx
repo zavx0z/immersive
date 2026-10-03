@@ -7,10 +7,10 @@ ColorParameter соединяет публичный ColorField с композ�
 */
 
 import ColorField from "@ui-fields/color-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {ColorParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersColor as Contract} from "./contract"
 
-export type {ColorParameterProps} from "./contract/input.ts"
+export type {NodesParametersColor} from "./contract"
 
 /**
 Авторский контракт ColorParameter; общие свойства сокетов описаны в ParameterBaseProps.
@@ -19,7 +19,7 @@ export type {ColorParameterProps} from "./contract/input.ts"
 
 @property [open] - Управляемая видимость панели выбора цвета без изменения значения.
 */
-export function ColorParameter(props: ColorParameterProps) {
+export default function ColorParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

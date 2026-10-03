@@ -1,5 +1,6 @@
 import type {LayoutResult} from "@nodes/layout/types"
-import type {ParameterInput} from "@nodes/parameters/shared"
+import type {NodesParameterProjection} from "@nodes/parameter-projection"
+type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]
 import type {NodeChildren, NodeKind, NodeShape} from "@nodes/node/contracts"
 import type {
   GraphSelection,

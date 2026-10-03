@@ -7,17 +7,17 @@ CycleParameter соединяет публичный CycleField с композ�
 */
 
 import CycleField from "@ui-fields/cycle-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {CycleParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersCycle as Contract} from "./contract"
 
-export type {CycleParameterProps} from "./contract/input.ts"
+export type {NodesParametersCycle} from "./contract"
 
 /**
 Авторский контракт CycleParameter; общие свойства сокетов описаны в ParameterBaseProps.
 
 @property [open] - Управляемое состояние списка; onOpenChange возвращает запрос изменения.
 */
-export function CycleParameter(props: CycleParameterProps) {
+export default function CycleParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

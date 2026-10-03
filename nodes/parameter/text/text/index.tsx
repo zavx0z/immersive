@@ -7,17 +7,17 @@ TextParameter соединяет публичный TextField с компози�
 */
 
 import TextField from "@ui-fields/text-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {TextParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersText as Contract} from "./contract"
 
-export type {TextParameterProps} from "./contract/input.ts"
+export type {NodesParametersText} from "./contract"
 
 /**
 Авторский контракт TextParameter; общие свойства сокетов описаны в ParameterBaseProps.
 
 @property value - Текущее строковое значение; изменение публикуется через onInput/onChange.
 */
-export function TextParameter(props: TextParameterProps) {
+export default function TextParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

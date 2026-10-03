@@ -77,7 +77,7 @@ test("[NODES-003] Nodes не создаёт platform owners", async () => {
 
 test("[NODES-004] адаптер GraphView читает исходный Store без второй модели", async () => {
   const nodeTreeSource = await Bun.file(resolve(packageRoot, "view/tree.ts")).text() + await Bun.file(resolve(packageRoot, "shared/node-tree/contracts.ts")).text() + await Bun.file(resolve(packageRoot, "shared/node-tree/view.ts")).text()
-  const parameterSource = await Bun.file(resolve(packageRoot, "parameter/shared/parameter/index.tsx")).text()
+  const parameterSource = await Bun.file(Bun.resolveSync("@nodes/parameter-projection", packageRoot)).text()
   const propsStart = nodeTreeSource.indexOf("export type NodeTreeProps")
   const propsEnd = nodeTreeSource.indexOf("\n}>", propsStart)
   const propsContract = nodeTreeSource.slice(propsStart, propsEnd)
@@ -119,13 +119,14 @@ test("[NODES-005] domain imports resolve only through public package contracts",
 })
 
 test("[NODES-006] projected Parameter render и геометрия используют один resolver", async () => {
-  const parameterSource = await Bun.file(resolve(packageRoot, "parameter/shared/parameter/index.tsx")).text()
+  const parameterSource = await Bun.file(Bun.resolveSync("@nodes/parameter-projection", packageRoot)).text()
   const nodeSource = await Bun.file(resolve(packageRoot, "node/shared/geometry.ts")).text()
 
   expect(parameterSource).toContain("const resolved = resolveProjectedParameterPresentation(snapshot)")
   const heightSource = await Bun.file(resolve(packageRoot, "node/shared/field-height.ts")).text()
   expect(heightSource).toContain("projectedParameterFieldHeight(")
-  expect(heightSource).toContain('import type {ProjectedParameterPresentation} from "@nodes/parameters/shared"')
+  expect(heightSource).toContain('import type {NodesParameterPresentation} from "@nodes/parameter-presentation"')
+  expect(heightSource).toContain('type ProjectedParameterPresentation = NodesParameterPresentation.Output')
   expect(parameterSource).not.toContain("booleanSwitch")
   expect(parameterSource).not.toContain("collectionEditor")
   expect(nodeSource).toContain("const resolved = resolveProjectedParameterPresentation(parameter)")

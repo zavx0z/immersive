@@ -7,10 +7,10 @@ ReferenceParameter соединяет публичный ReferenceField с ко�
 */
 
 import ReferenceField from "@ui-fields/reference-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {ReferenceParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersReference as Contract} from "./contract"
 
-export type {ReferenceParameterProps} from "./contract/input.ts"
+export type {NodesParametersReference} from "./contract"
 
 /**
 Авторский контракт ReferenceParameter; общие свойства сокетов описаны в ParameterBaseProps.
@@ -19,7 +19,7 @@ export type {ReferenceParameterProps} from "./contract/input.ts"
 
 @property [onPick] - Запрашивает выбор у приложения; новый объект не создаётся локально.
 */
-export function ReferenceParameter(props: ReferenceParameterProps) {
+export default function ReferenceParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

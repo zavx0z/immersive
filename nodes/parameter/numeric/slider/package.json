@@ -1,0 +1,25 @@
+{
+  "name": "@nodes-parameters/slider",
+  "label": "SliderParameter",
+  "version": "0.0.0",
+  "description": "SliderParameter соединяет публичный SliderField с композицией сокетов ноды",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "dependencies": {
+    "@nodes-parameters/layout": "workspace:*",
+    "@ui-fields/slider-field": "workspace:*"
+  },
+  "devDependencies": {
+    "@nodes/parameters": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

@@ -7,10 +7,10 @@ CollectionParameter соединяет публичный CollectionField с к�
 */
 
 import CollectionField from "@ui-fields/collection-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {CollectionParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersCollection as Contract} from "./contract"
 
-export type {CollectionParameterProps} from "./contract/input.ts"
+export type {NodesParametersCollection} from "./contract"
 
 /**
 Авторский контракт CollectionParameter; общие свойства сокетов описаны в ParameterBaseProps.
@@ -19,7 +19,7 @@ export type {CollectionParameterProps} from "./contract/input.ts"
 
 @property [onMove] - Запрашивает перестановку элемента; приложение публикует новый порядок.
 */
-export function CollectionParameter(props: CollectionParameterProps) {
+export default function CollectionParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

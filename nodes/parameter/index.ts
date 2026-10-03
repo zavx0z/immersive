@@ -1,7 +1,40 @@
 /**
-Параметры нод организованы по способу взаимодействия: текст, числа, логические
-значения, выбор, составные значения, пути и ссылки, коллекции и вывод.
-Каждый публичный TSX использует UI Field; общий адаптер в shared проецирует внешнее хранилище.
+Самостоятельные параметры и композиция пользовательского поля разделяют адрес,
+подпись, сокеты и внешнее состояние. Участники сохраняют собственные значения и события.
+Проекция снимка Store имеет отдельного владельца @nodes/parameter-projection.
 
 @packageDocumentation
 */
+export type {NodesParameters} from "./contract"
+export {default as TextParameter} from "@nodes-parameters/text"
+export type {NodesParametersText} from "@nodes-parameters/text"
+export {default as NumberParameter} from "@nodes-parameters/number"
+export type {NodesParametersNumber} from "@nodes-parameters/number"
+export {default as SliderParameter} from "@nodes-parameters/slider"
+export type {NodesParametersSlider} from "@nodes-parameters/slider"
+export {default as CheckboxParameter} from "@nodes-parameters/checkbox"
+export type {NodesParametersCheckbox} from "@nodes-parameters/checkbox"
+export {default as SwitchParameter} from "@nodes-parameters/switch"
+export type {NodesParametersSwitch} from "@nodes-parameters/switch"
+export {default as SelectParameter} from "@nodes-parameters/select"
+export type {NodesParametersSelect} from "@nodes-parameters/select"
+export {default as CycleParameter} from "@nodes-parameters/cycle"
+export type {NodesParametersCycle} from "@nodes-parameters/cycle"
+export {default as OptionGroupParameter} from "@nodes-parameters/option-group"
+export type {NodesParametersOptionGroup} from "@nodes-parameters/option-group"
+export {default as ColorParameter} from "@nodes-parameters/color"
+export type {NodesParametersColor} from "@nodes-parameters/color"
+export {default as VectorParameter} from "@nodes-parameters/vector"
+export type {NodesParametersVector} from "@nodes-parameters/vector"
+export {default as MatrixParameter} from "@nodes-parameters/matrix"
+export type {NodesParametersMatrix} from "@nodes-parameters/matrix"
+export {default as PathParameter} from "@nodes-parameters/path"
+export type {NodesParametersPath} from "@nodes-parameters/path"
+export {default as ReferenceParameter} from "@nodes-parameters/reference"
+export type {NodesParametersReference} from "@nodes-parameters/reference"
+export {default as CollectionParameter} from "@nodes-parameters/collection"
+export type {NodesParametersCollection} from "@nodes-parameters/collection"
+export {default as OutputParameter} from "@nodes-parameters/output"
+export type {NodesParametersOutput} from "@nodes-parameters/output"
+export {default as ParameterLayout} from "@nodes-parameters/layout"
+export type {NodesParametersLayout} from "@nodes-parameters/layout"

@@ -10,11 +10,11 @@ const root = resolve(import.meta.dir, "../../../../..")
 Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
-  sourceRoots: [resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
+  sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
 }))
 
-const {Parameter} = await import("@nodes/parameters/shared")
-const {TextParameter} = await import("@nodes/parameters/text")
+const {default: Parameter} = await import("@nodes/parameter-projection")
+const {default: TextParameter} = await import("@nodes-parameters/text")
 
 test("[NODES-TITLE-003] Parameter проецирует description ровно на один видимый target", () => {
   const field = mount(TextParameter, {

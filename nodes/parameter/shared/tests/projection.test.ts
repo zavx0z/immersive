@@ -6,33 +6,38 @@ import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElem
 import {Parameter as ParameterModel, type ParameterSnapshot} from "@nodes/tree"
 import createJsxBunPlugin from "@jsx-compiler/bun"
 import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {ParameterEndpoint, ParameterInput, ParameterProps} from "@nodes/parameters/shared"
+import type {NodesParameters} from "@nodes/parameters/contract"
+type ParameterEndpoint = NonNullable<NodesParameters.Input["sockets"]>[number]
+import type {NodesParameterProjection} from "@nodes/parameter-projection"
+type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]
+type ParameterProps = NodesParameterProjection.Input
 import {PARAMETER_EXAMPLES, parameterFixture, type ParameterMechanism} from "./parameter.fixture.ts"
 
 const root = resolve(import.meta.dir, "../../../..")
 Bun.plugin(createJsxBunPlugin({
   cwd: root,
   persistent: true,
-  sourceRoots: [resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
+  sourceRoots: [resolve(root, "parameter-projection"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
 }))
 
-const {Parameter, resolveProjectedParameterPresentation} = await import("@nodes/parameters/shared")
+const {default: Parameter} = await import("@nodes/parameter-projection")
+const {default: resolveProjectedParameterPresentation} = await import("@nodes/parameter-presentation")
 const components = {
-  text: (await import("@nodes/parameters/text")).TextParameter,
-  number: (await import("@nodes/parameters/number")).NumberParameter,
-  slider: (await import("@nodes/parameters/slider")).SliderParameter,
-  checkbox: (await import("@nodes/parameters/checkbox")).CheckboxParameter,
-  switch: (await import("@nodes/parameters/switch")).SwitchParameter,
-  select: (await import("@nodes/parameters/select")).SelectParameter,
-  cycle: (await import("@nodes/parameters/cycle")).CycleParameter,
-  "option-group": (await import("@nodes/parameters/option-group")).OptionGroupParameter,
-  color: (await import("@nodes/parameters/color")).ColorParameter,
-  vector: (await import("@nodes/parameters/vector")).VectorParameter,
-  matrix: (await import("@nodes/parameters/matrix")).MatrixParameter,
-  path: (await import("@nodes/parameters/path")).PathParameter,
-  reference: (await import("@nodes/parameters/reference")).ReferenceParameter,
-  collection: (await import("@nodes/parameters/collection")).CollectionParameter,
-  output: (await import("@nodes/parameters/output")).OutputParameter,
+  text: (await import("@nodes-parameters/text")).default,
+  number: (await import("@nodes-parameters/number")).default,
+  slider: (await import("@nodes-parameters/slider")).default,
+  checkbox: (await import("@nodes-parameters/checkbox")).default,
+  switch: (await import("@nodes-parameters/switch")).default,
+  select: (await import("@nodes-parameters/select")).default,
+  cycle: (await import("@nodes-parameters/cycle")).default,
+  "option-group": (await import("@nodes-parameters/option-group")).default,
+  color: (await import("@nodes-parameters/color")).default,
+  vector: (await import("@nodes-parameters/vector")).default,
+  matrix: (await import("@nodes-parameters/matrix")).default,
+  path: (await import("@nodes-parameters/path")).default,
+  reference: (await import("@nodes-parameters/reference")).default,
+  collection: (await import("@nodes-parameters/collection")).default,
+  output: (await import("@nodes-parameters/output")).default,
 }
 
 test("[PARAMETERS-PROJECTION-001] все виды из модели используют ту же структуру и CSS, что готовые параметры", () => {

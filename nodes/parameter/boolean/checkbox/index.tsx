@@ -7,17 +7,17 @@ CheckboxParameter соединяет публичный CheckboxField с ком�
 */
 
 import CheckboxField from "@ui-fields/checkbox-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {CheckboxParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersCheckbox as Contract} from "./contract"
 
-export type {CheckboxParameterProps} from "./contract/input.ts"
+export type {NodesParametersCheckbox} from "./contract"
 
 /**
 Авторский контракт CheckboxParameter; общие свойства сокетов описаны в ParameterBaseProps.
 
 @property [indeterminate] - Смешанное отображение; checked остаётся логическим значением.
 */
-export function CheckboxParameter(props: CheckboxParameterProps) {
+export default function CheckboxParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

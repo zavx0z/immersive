@@ -2,100 +2,44 @@
   "name": "@nodes/parameters",
   "label": "Параметры",
   "version": "0.0.0",
-  "description": "Представления параметров нод и проекция Parameter Store",
+  "description": "Самостоятельные параметры с общим адресом, подписью, сокетами и внешним состоянием",
   "private": true,
   "type": "module",
   "sideEffects": false,
   "exports": {
-    "./text": "./text/text/index.tsx",
-    "./text/contract/input": "./text/text/contract/input.ts",
-    "./number": "./numeric/number/index.tsx",
-    "./number/contract/input": "./numeric/number/contract/input.ts",
-    "./slider": "./numeric/slider/index.tsx",
-    "./slider/contract/input": "./numeric/slider/contract/input.ts",
-    "./checkbox": "./boolean/checkbox/index.tsx",
-    "./checkbox/contract/input": "./boolean/checkbox/contract/input.ts",
-    "./switch": "./boolean/switch/index.tsx",
-    "./switch/contract/input": "./boolean/switch/contract/input.ts",
-    "./select": "./choice/select/index.tsx",
-    "./select/contract/input": "./choice/select/contract/input.ts",
-    "./cycle": "./choice/cycle/index.tsx",
-    "./cycle/contract/input": "./choice/cycle/contract/input.ts",
-    "./option-group": "./choice/option-group/index.tsx",
-    "./option-group/contract/input": "./choice/option-group/contract/input.ts",
-    "./color": "./composite/color/index.tsx",
-    "./color/contract/input": "./composite/color/contract/input.ts",
-    "./vector": "./composite/vector/index.tsx",
-    "./vector/contract/input": "./composite/vector/contract/input.ts",
-    "./matrix": "./composite/matrix/index.tsx",
-    "./matrix/contract/input": "./composite/matrix/contract/input.ts",
-    "./path": "./reference/path/index.tsx",
-    "./path/contract/input": "./reference/path/contract/input.ts",
-    "./reference": "./reference/reference/index.tsx",
-    "./reference/contract/input": "./reference/reference/contract/input.ts",
-    "./collection": "./collection/collection/index.tsx",
-    "./collection/contract/input": "./collection/collection/contract/input.ts",
-    "./output": "./output/output/index.tsx",
-    "./output/contract/input": "./output/output/contract/input.ts",
-    "./shared": "./shared/parameter/index.tsx"
+    ".": "./index.ts",
+    "./contract": "./contract/index.ts"
   },
   "scripts": {
-    "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel",
-    "check": "bun run --parallel typecheck test"
-  },
-  "peerDependenciesMeta": {
-    "@nodes/tree": {
-      "optional": true
-    },
-    "@nodes/sockets": {
-      "optional": true
-    },
-    "@zavx0z/component": {
-      "optional": true
-    },
-    "@zavx0z/template": {
-      "optional": true
-    },
-    "@zavx0z/ui": {
-      "optional": true
-    }
-  },
-  "peerDependencies": {
-    "@nodes/tree": "workspace:*",
-    "@nodes/sockets": "workspace:*",
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@zavx0z/jsx": "workspace:*",
-    "@ui-fields/reference-field": "workspace:*",
-    "@ui-fields/switch-field": "workspace:*",
-    "@ui-buttons/toggle-button-group": "workspace:*",
-    "@ui-fields/collection-field": "workspace:*",
-    "@ui-fields/matrix-field": "workspace:*",
-    "@ui-fields/path-field": "workspace:*",
-    "@ui-fields/vector-field": "workspace:*",
-    "@ui-fields/slider-field": "workspace:*",
-    "@ui-fields/select-field": "workspace:*",
-    "@ui-fields/color-field": "workspace:*",
-    "@ui-fields/text-field": "workspace:*",
-    "@ui-fields/number-field": "workspace:*",
-    "@ui-fields/cycle-field": "workspace:*",
-    "@ui-fields/checkbox-field": "workspace:*"
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@jsx-compiler/bun": "workspace:*"
+    "@immersive/headless": "workspace:*",
+    "@nodes/sockets": "workspace:*",
+    "@nodes/tree": "workspace:*",
+    "@jsx-compiler/bun": "workspace:*",
+    "@nodes/parameter-projection": "workspace:*",
+    "@nodes/parameter-presentation": "workspace:*",
+    "@ui-fields/text-field": "workspace:*"
   },
   "dependencies": {
-    "@socket-values/kinds": "workspace:*",
-    "@socket-values/shapes": "workspace:*",
-    "@socket-values/metrics": "workspace:*",
-    "@socket-values/key": "workspace:*",
-    "@socket-values/side": "workspace:*",
-    "@socket-values/resolve-kind": "workspace:*",
-    "@socket-values/resolve-shape": "workspace:*",
-    "@nodes/metadata": "workspace:*",
-    "@nodes/parameter-presentation": "workspace:*",
-    "@nodes/parameter-metrics": "workspace:*"
+    "@nodes-parameters/text": "workspace:*",
+    "@nodes-parameters/number": "workspace:*",
+    "@nodes-parameters/slider": "workspace:*",
+    "@nodes-parameters/checkbox": "workspace:*",
+    "@nodes-parameters/switch": "workspace:*",
+    "@nodes-parameters/select": "workspace:*",
+    "@nodes-parameters/cycle": "workspace:*",
+    "@nodes-parameters/option-group": "workspace:*",
+    "@nodes-parameters/color": "workspace:*",
+    "@nodes-parameters/vector": "workspace:*",
+    "@nodes-parameters/matrix": "workspace:*",
+    "@nodes-parameters/path": "workspace:*",
+    "@nodes-parameters/reference": "workspace:*",
+    "@nodes-parameters/collection": "workspace:*",
+    "@nodes-parameters/output": "workspace:*",
+    "@nodes-parameters/layout": "workspace:*",
+    "@jsx-compiler/session": "workspace:*"
   }
 }

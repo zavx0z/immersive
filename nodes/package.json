@@ -76,12 +76,14 @@
     "@renderer/html": "workspace:*",
     "@zavx0z/engine": "workspace:*",
     "@zavx0z/webgpu": "workspace:*",
-    "@zavx0z/space": "workspace:*"
+    "@zavx0z/space": "workspace:*",
+    "@nodes/parameter-presentation": "workspace:*"
   },
   "dependencies": {
     "@socket-values/kinds": "workspace:*",
     "@socket-values/preset": "workspace:*",
     "@socket-values/key": "workspace:*",
-    "@nodes/metadata": "workspace:*"
+    "@nodes/metadata": "workspace:*",
+    "@nodes/parameter-projection": "workspace:*"
   }
 }

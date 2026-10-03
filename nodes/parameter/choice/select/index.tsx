@@ -7,17 +7,17 @@ SelectParameter соединяет публичный SelectField с компо�
 */
 
 import SelectField from "@ui-fields/select-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {SelectParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersSelect as Contract} from "./contract"
 
-export type {SelectParameterProps} from "./contract/input.ts"
+export type {NodesParametersSelect} from "./contract"
 
 /**
 Авторский контракт SelectParameter; общие свойства сокетов описаны в ParameterBaseProps.
 
 @property [state] - Передаёт особое состояние выбора публичному SelectField.
 */
-export function SelectParameter(props: SelectParameterProps) {
+export default function SelectParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

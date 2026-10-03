@@ -12,10 +12,10 @@ import type {ProjectedNodeSnapshot} from "@nodes/node/geometry"
 
 const [
   {planProjectedNodeGeometry},
-  {resolveProjectedParameterPresentation},
+  {default: resolveProjectedParameterPresentation},
 ] = await Promise.all([
   import("@nodes/node/geometry"),
-  import("@nodes/parameters/shared"),
+  import("@nodes/parameter-presentation"),
 ])
 
 test("[NODES-PROJECTED-GEOMETRY-001] каждый простой Parameter имеет точную высоту своего UI-владельца", () => {

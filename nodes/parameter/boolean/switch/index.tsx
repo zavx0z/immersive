@@ -7,17 +7,17 @@ SwitchParameter соединяет публичный SwitchField с компо�
 */
 
 import SwitchField from "@ui-fields/switch-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {SwitchParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersSwitch as Contract} from "./contract"
 
-export type {SwitchParameterProps} from "./contract/input.ts"
+export type {NodesParametersSwitch} from "./contract"
 
 /**
 Авторский контракт SwitchParameter; общие свойства сокетов описаны в ParameterBaseProps.
 
 @property onChange - Запрашивает новое checked без записи во внешний Store.
 */
-export function SwitchParameter(props: SwitchParameterProps) {
+export default function SwitchParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

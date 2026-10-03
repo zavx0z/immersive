@@ -7,10 +7,10 @@ SliderParameter соединяет публичный SliderField с компо�
 */
 
 import SliderField from "@ui-fields/slider-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {SliderParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersSlider as Contract} from "./contract"
 
-export type {SliderParameterProps} from "./contract/input.ts"
+export type {NodesParametersSlider} from "./contract"
 
 /**
 Авторский контракт SliderParameter; общие свойства сокетов описаны в ParameterBaseProps.
@@ -19,7 +19,7 @@ export type {SliderParameterProps} from "./contract/input.ts"
 
 @property max - Обязательная верхняя граница диапазона.
 */
-export function SliderParameter(props: SliderParameterProps) {
+export default function SliderParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

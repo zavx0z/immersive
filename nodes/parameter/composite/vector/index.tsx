@@ -7,10 +7,10 @@ VectorParameter соединяет публичный VectorField с компо�
 */
 
 import VectorField from "@ui-fields/vector-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {VectorParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersVector as Contract} from "./contract"
 
-export type {VectorParameterProps} from "./contract/input.ts"
+export type {NodesParametersVector} from "./contract"
 
 /**
 Авторский контракт VectorParameter; общие свойства сокетов описаны в ParameterBaseProps.
@@ -19,7 +19,7 @@ export type {VectorParameterProps} from "./contract/input.ts"
 
 @property [axes] - Подписи и ключи ячеек; соответствуют длине value.
 */
-export function VectorParameter(props: VectorParameterProps) {
+export default function VectorParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

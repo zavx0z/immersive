@@ -1,0 +1,28 @@
+{
+  "name": "@nodes-parameters/layout",
+  "label": "ParameterLayout",
+  "version": "0.0.0",
+  "description": "Компонует подпись и адресуемые сокеты вокруг пользовательского поля",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "dependencies": {
+    "@nodes/sockets": "workspace:*",
+    "@socket-values/metrics": "workspace:*",
+    "@nodes/parameter-metrics": "workspace:*"
+  },
+  "devDependencies": {
+    "@nodes/parameters": "workspace:*",
+    "@jsx-compiler/session": "workspace:*",
+    "@immersive/headless": "workspace:*",
+    "@ui-fields/text-field": "workspace:*",
+    "@zavx0z/dom": "workspace:*"
+  },
+  "scripts": {
+    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  }
+}

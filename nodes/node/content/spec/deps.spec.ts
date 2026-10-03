@@ -22,7 +22,7 @@ test.each([
       },
       "nodes/node/parameter/index.tsx#ParameterNode": {
         "uses": [
-          "nodes/parameter/shared/parameter/index.tsx#Parameter",
+          "parameter-projection/index.tsx#Parameter",
           "nodes/socket/index.tsx#Socket",
           "ui/button/button/index.tsx#Button",
           "ui/button/icon-button/index.tsx#IconButton"
@@ -115,7 +115,7 @@ test.each([
       "nodes/parameter/output/output/index.tsx#OutputParameter": {
         "uses": [
           "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
-          "nodes/parameter/shared/output/index.tsx#ParameterOutput"
+          "nodes/parameter/output/output/src/output.tsx#ParameterOutput"
         ],
         "elements": []
       },
@@ -133,7 +133,7 @@ test.each([
         ],
         "elements": []
       },
-      "nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints": {
+      "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
         "uses": [
           "nodes/socket/index.tsx#Socket"
         ],
@@ -141,7 +141,7 @@ test.each([
           "span"
         ]
       },
-      "nodes/parameter/shared/label/index.tsx#ParameterLabel": {
+      "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
         "uses": [],
         "elements": [
           "span"
@@ -149,21 +149,21 @@ test.each([
       },
       "nodes/parameter/shared/layout/index.tsx#ParameterLayout": {
         "uses": [
-          "nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints",
-          "nodes/parameter/shared/label/index.tsx#ParameterLabel"
+          "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints",
+          "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"
         ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "nodes/parameter/shared/output/index.tsx#ParameterOutput": {
+      "nodes/parameter/output/output/src/output.tsx#ParameterOutput": {
         "uses": [],
         "elements": [
           "output"
         ]
       },
-      "nodes/parameter/shared/parameter/index.tsx#Parameter": {
+      "parameter-projection/index.tsx#Parameter": {
         "uses": [
           "nodes/parameter/boolean/checkbox/index.tsx#CheckboxParameter",
           "nodes/parameter/boolean/switch/index.tsx#SwitchParameter",

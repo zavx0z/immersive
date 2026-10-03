@@ -12,22 +12,22 @@ test.each([
     file: "nodes/parameter/output/output/index.tsx",
     expected: {
       "nodes/parameter/output/output/index.tsx#OutputParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","nodes/parameter/shared/output/index.tsx#ParameterOutput"],
+        uses: ["nodes/parameter/output/output/src/output.tsx#ParameterOutput","nodes/parameter/shared/layout/index.tsx#ParameterLayout"],
         elements: [],
       },
-      "nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints": {
+      "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
         uses: ["nodes/socket/index.tsx#Socket"],
         elements: ["span"],
       },
-      "nodes/parameter/shared/label/index.tsx#ParameterLabel": {
+      "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
         uses: [],
         elements: ["span"],
       },
       "nodes/parameter/shared/layout/index.tsx#ParameterLayout": {
-        uses: ["nodes/parameter/shared/endpoint/index.tsx#ParameterEndpoints","nodes/parameter/shared/label/index.tsx#ParameterLabel"],
+        uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
         elements: ["div","span"],
       },
-      "nodes/parameter/shared/output/index.tsx#ParameterOutput": {
+      "nodes/parameter/output/output/src/output.tsx#ParameterOutput": {
         uses: [],
         elements: ["output"],
       },

@@ -1064,6 +1064,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@nodes/metadata": "workspace:*",
+        "@nodes/parameter-projection": "workspace:*",
         "@socket-values/key": "workspace:*",
         "@socket-values/kinds": "workspace:*",
         "@socket-values/preset": "workspace:*",
@@ -1072,6 +1073,7 @@
         "@immersive/markdown": "workspace:*",
         "@jsx-compiler/bun": "workspace:*",
         "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameter-presentation": "workspace:*",
         "@renderer/html": "workspace:*",
         "@zavx0z/engine": "workspace:*",
         "@zavx0z/space": "workspace:*",
@@ -1115,6 +1117,9 @@
       "version": "0.0.0",
       "dependencies": {
         "@nodes/metadata": "workspace:*",
+        "@nodes/parameter-metrics": "workspace:*",
+        "@nodes/parameter-presentation": "workspace:*",
+        "@nodes/parameter-projection": "workspace:*",
         "@socket-values/key": "workspace:*",
         "@socket-values/metrics": "workspace:*",
         "@socket-values/resolve-kind": "workspace:*",
@@ -1172,49 +1177,246 @@
       "name": "@nodes/parameters",
       "version": "0.0.0",
       "dependencies": {
-        "@nodes/metadata": "workspace:*",
-        "@nodes/parameter-metrics": "workspace:*",
-        "@nodes/parameter-presentation": "workspace:*",
-        "@socket-values/key": "workspace:*",
-        "@socket-values/kinds": "workspace:*",
-        "@socket-values/metrics": "workspace:*",
-        "@socket-values/resolve-kind": "workspace:*",
-        "@socket-values/resolve-shape": "workspace:*",
-        "@socket-values/shapes": "workspace:*",
-        "@socket-values/side": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes-parameters/checkbox": "workspace:*",
+        "@nodes-parameters/collection": "workspace:*",
+        "@nodes-parameters/color": "workspace:*",
+        "@nodes-parameters/cycle": "workspace:*",
+        "@nodes-parameters/layout": "workspace:*",
+        "@nodes-parameters/matrix": "workspace:*",
+        "@nodes-parameters/number": "workspace:*",
+        "@nodes-parameters/option-group": "workspace:*",
+        "@nodes-parameters/output": "workspace:*",
+        "@nodes-parameters/path": "workspace:*",
+        "@nodes-parameters/reference": "workspace:*",
+        "@nodes-parameters/select": "workspace:*",
+        "@nodes-parameters/slider": "workspace:*",
+        "@nodes-parameters/switch": "workspace:*",
+        "@nodes-parameters/text": "workspace:*",
+        "@nodes-parameters/vector": "workspace:*",
       },
       "devDependencies": {
+        "@immersive/headless": "workspace:*",
         "@jsx-compiler/bun": "workspace:*",
-      },
-      "peerDependencies": {
+        "@nodes/parameter-presentation": "workspace:*",
+        "@nodes/parameter-projection": "workspace:*",
         "@nodes/sockets": "workspace:*",
         "@nodes/tree": "workspace:*",
-        "@ui-buttons/toggle-button-group": "workspace:*",
-        "@ui-fields/checkbox-field": "workspace:*",
-        "@ui-fields/collection-field": "workspace:*",
-        "@ui-fields/color-field": "workspace:*",
-        "@ui-fields/cycle-field": "workspace:*",
-        "@ui-fields/matrix-field": "workspace:*",
-        "@ui-fields/number-field": "workspace:*",
-        "@ui-fields/path-field": "workspace:*",
-        "@ui-fields/reference-field": "workspace:*",
-        "@ui-fields/select-field": "workspace:*",
-        "@ui-fields/slider-field": "workspace:*",
-        "@ui-fields/switch-field": "workspace:*",
         "@ui-fields/text-field": "workspace:*",
-        "@ui-fields/vector-field": "workspace:*",
-        "@zavx0z/component": "workspace:*",
-        "@zavx0z/jsx": "workspace:*",
-        "@zavx0z/template": "workspace:*",
-        "@zavx0z/ui": "workspace:*",
       },
-      "optionalPeers": [
-        "@nodes/sockets",
-        "@nodes/tree",
-        "@zavx0z/component",
-        "@zavx0z/template",
-        "@zavx0z/ui",
-      ],
+    },
+    "nodes/parameter/boolean/checkbox": {
+      "name": "@nodes-parameters/checkbox",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/checkbox-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/boolean/switch": {
+      "name": "@nodes-parameters/switch",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/switch-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/choice/cycle": {
+      "name": "@nodes-parameters/cycle",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/cycle-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/choice/option-group": {
+      "name": "@nodes-parameters/option-group",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-buttons/toggle-button-group": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/choice/select": {
+      "name": "@nodes-parameters/select",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/select-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/collection/collection": {
+      "name": "@nodes-parameters/collection",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/collection-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/composite/color": {
+      "name": "@nodes-parameters/color",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/color-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/composite/matrix": {
+      "name": "@nodes-parameters/matrix",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/matrix-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/composite/vector": {
+      "name": "@nodes-parameters/vector",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/vector-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/numeric/number": {
+      "name": "@nodes-parameters/number",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/number-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/numeric/slider": {
+      "name": "@nodes-parameters/slider",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/slider-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/output/output": {
+      "name": "@nodes-parameters/output",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@nodes/parameter-metrics": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+        "@nodes/tree": "workspace:*",
+      },
+    },
+    "nodes/parameter/reference/path": {
+      "name": "@nodes-parameters/path",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/path-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/reference/reference": {
+      "name": "@nodes-parameters/reference",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/reference-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
+    },
+    "nodes/parameter/shared/layout": {
+      "name": "@nodes-parameters/layout",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes/parameter-metrics": "workspace:*",
+        "@nodes/sockets": "workspace:*",
+        "@socket-values/metrics": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
+      },
+    },
+    "nodes/parameter/text/text": {
+      "name": "@nodes-parameters/text",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes-parameters/layout": "workspace:*",
+        "@ui-fields/text-field": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@nodes/parameter-projection": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+      },
     },
     "nodes/socket": {
       "name": "@nodes/sockets",
@@ -1368,6 +1570,29 @@
         "@ui-fields/color-field": "workspace:*",
         "@ui-fields/reference-field": "workspace:*",
         "@ui-fields/select-field": "workspace:*",
+      },
+    },
+    "parameter-projection": {
+      "name": "@nodes/parameter-projection",
+      "version": "0.0.0",
+      "dependencies": {
+        "@nodes/metadata": "workspace:*",
+        "@nodes/parameter-metrics": "workspace:*",
+        "@nodes/parameter-presentation": "workspace:*",
+        "@nodes/parameters": "workspace:*",
+        "@socket-values/key": "workspace:*",
+        "@socket-values/resolve-kind": "workspace:*",
+        "@socket-values/resolve-shape": "workspace:*",
+        "@socket-values/side": "workspace:*",
+        "@zavx0z/component": "workspace:*",
+      },
+      "devDependencies": {
+        "@immersive/headless": "workspace:*",
+        "@jsx-compiler/session": "workspace:*",
+        "@node-values/own": "workspace:*",
+        "@nodes/parameter-store": "workspace:*",
+        "@nodes/tree": "workspace:*",
+        "@zavx0z/dom": "workspace:*",
       },
     },
     "parameter-store": {
@@ -2704,6 +2929,38 @@
 
     "@node-values/type": ["@node-values/type@workspace:node-values/type"],
 
+    "@nodes-parameters/checkbox": ["@nodes-parameters/checkbox@workspace:nodes/parameter/boolean/checkbox"],
+
+    "@nodes-parameters/collection": ["@nodes-parameters/collection@workspace:nodes/parameter/collection/collection"],
+
+    "@nodes-parameters/color": ["@nodes-parameters/color@workspace:nodes/parameter/composite/color"],
+
+    "@nodes-parameters/cycle": ["@nodes-parameters/cycle@workspace:nodes/parameter/choice/cycle"],
+
+    "@nodes-parameters/layout": ["@nodes-parameters/layout@workspace:nodes/parameter/shared/layout"],
+
+    "@nodes-parameters/matrix": ["@nodes-parameters/matrix@workspace:nodes/parameter/composite/matrix"],
+
+    "@nodes-parameters/number": ["@nodes-parameters/number@workspace:nodes/parameter/numeric/number"],
+
+    "@nodes-parameters/option-group": ["@nodes-parameters/option-group@workspace:nodes/parameter/choice/option-group"],
+
+    "@nodes-parameters/output": ["@nodes-parameters/output@workspace:nodes/parameter/output/output"],
+
+    "@nodes-parameters/path": ["@nodes-parameters/path@workspace:nodes/parameter/reference/path"],
+
+    "@nodes-parameters/reference": ["@nodes-parameters/reference@workspace:nodes/parameter/reference/reference"],
+
+    "@nodes-parameters/select": ["@nodes-parameters/select@workspace:nodes/parameter/choice/select"],
+
+    "@nodes-parameters/slider": ["@nodes-parameters/slider@workspace:nodes/parameter/numeric/slider"],
+
+    "@nodes-parameters/switch": ["@nodes-parameters/switch@workspace:nodes/parameter/boolean/switch"],
+
+    "@nodes-parameters/text": ["@nodes-parameters/text@workspace:nodes/parameter/text/text"],
+
+    "@nodes-parameters/vector": ["@nodes-parameters/vector@workspace:nodes/parameter/composite/vector"],
+
     "@nodes/layout": ["@nodes/layout@workspace:nodes/layout"],
 
     "@nodes/metadata": ["@nodes/metadata@workspace:node-metadata"],
@@ -2713,6 +2970,8 @@
     "@nodes/parameter-metrics": ["@nodes/parameter-metrics@workspace:parameter-metrics"],
 
     "@nodes/parameter-presentation": ["@nodes/parameter-presentation@workspace:parameter-presentation"],
+
+    "@nodes/parameter-projection": ["@nodes/parameter-projection@workspace:parameter-projection"],
 
     "@nodes/parameter-store": ["@nodes/parameter-store@workspace:parameter-store"],
 

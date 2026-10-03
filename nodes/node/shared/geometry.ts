@@ -1,5 +1,7 @@
 import type {NodeJsonValue, NodeTreeNodeSnapshot, ParameterReference, Socket as CoreSocket} from "@nodes/tree"
-import {NODE_PARAMETER_SPACING_SMALL, NODE_PARAMETER_SPACING_MEDIUM, resolveProjectedParameterPresentation} from "@nodes/parameters/shared"
+import resolveProjectedParameterPresentation from "@nodes/parameter-presentation"
+import parameterMetrics from "@nodes/parameter-metrics"
+const {NODE_PARAMETER_SPACING_SMALL, NODE_PARAMETER_SPACING_MEDIUM} = parameterMetrics
 import {projectedParameterFieldHeight} from "./field-height"
 import socketKey from "@socket-values/key"
 import {parameterSpacingBefore, projectedSocketSide} from "./parameter-presentation.ts"

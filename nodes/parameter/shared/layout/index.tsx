@@ -7,31 +7,20 @@
 
 import socketMetrics from "@socket-values/metrics"
 const {NODE_ROW_HEIGHT} = socketMetrics
-import {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} from "../src/metrics.ts"
-import type {ParameterBaseProps} from "../src/contracts.ts"
-import {ParameterEndpoints} from "../endpoint/index.tsx"
-import {ParameterLabel} from "../label/index.tsx"
-
-/**
-Составная строка параметра с готовым полем в безымянном слоте.
-
-@property kind - Вид готового поля, публикуемый в `data-field-kind` для проекции.
-
-@property [fieldOwnsLabel] - Поле показывает собственную подпись, поэтому внешняя скрывается.
-
-@property [fieldBeforeLabel] - Поле располагается перед видимой внешней подписью.
-*/
-type ParameterLayoutProps = ParameterBaseProps & Readonly<{
-  kind: string
-  fieldOwnsLabel?: boolean | undefined
-  fieldBeforeLabel?: boolean | undefined
-}>
+import parameterMetrics from "@nodes/parameter-metrics"
+const {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} = parameterMetrics
+import type {NodesParametersLayout as Contract} from "./contract"
+import type {NodesParameters} from "@nodes/parameters/contract"
+type ParameterBaseProps = NodesParameters.Input
+export type {NodesParametersLayout} from "./contract"
+import {ParameterEndpoints} from "./src/endpoint"
+import {ParameterLabel} from "./src/label"
 
 /**
 Компонует подпись и сокеты вокруг поля, назначенного безымянному слоту.
 При подключении скрывает область поля, сохраняя его экземпляр и семантические узлы.
 */
-export function ParameterLayout(props: ParameterLayoutProps) {
+export default function ParameterLayout(props: Contract.Input): Contract.Output {
   validateBaseProps(props)
   const left = (props.sockets ?? []).filter(socket => socket.side === "left")
   const right = (props.sockets ?? []).filter(socket => socket.side === "right")

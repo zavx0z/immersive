@@ -7,10 +7,10 @@ NumberParameter соединяет публичный NumberField с компо�
 */
 
 import NumberField from "@ui-fields/number-field"
-import {ParameterLayout} from "../../shared/layout/index.tsx"
-import type {NumberParameterProps} from "./contract/input.ts"
+import ParameterLayout from "@nodes-parameters/layout"
+import type {NodesParametersNumber as Contract} from "./contract"
 
-export type {NumberParameterProps} from "./contract/input.ts"
+export type {NodesParametersNumber} from "./contract"
 
 /**
 Авторский контракт NumberParameter; общие свойства сокетов описаны в ParameterBaseProps.
@@ -19,7 +19,7 @@ export type {NumberParameterProps} from "./contract/input.ts"
 
 @property [softMax] - Мягкая верхняя граница перетаскивания; жёсткая валидация задаётся max.
 */
-export function NumberParameter(props: NumberParameterProps) {
+export default function NumberParameter(props: Contract.Input): Contract.Output {
   return <ParameterLayout
     id={props.id}
     nodeId={props.nodeId}

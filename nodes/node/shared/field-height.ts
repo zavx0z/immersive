@@ -12,7 +12,8 @@ import sliderFieldLayout from "@ui-fields-slider-field/layout"
 import switchFieldLayout from "@ui-fields-switch-field/layout"
 import textFieldLayout from "@ui-fields-text-field/layout"
 import vectorFieldLayout from "@ui-fields-vector-field/layout"
-import type {ProjectedParameterPresentation} from "@nodes/parameters/shared"
+import type {NodesParameterPresentation} from "@nodes/parameter-presentation"
+type ProjectedParameterPresentation = NodesParameterPresentation.Output
 import socketMetrics from "@socket-values/metrics"
 const {NODE_ROW_HEIGHT} = socketMetrics
 

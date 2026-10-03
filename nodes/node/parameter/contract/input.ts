@@ -6,7 +6,8 @@ import type {
   ParameterSnapshot,
   Socket,
 } from "@nodes/tree"
-import type {ParameterInput} from "@nodes/parameters/shared"
+import type {NodesParameterProjection} from "@nodes/parameter-projection"
+type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]
 import type {JSX} from "@jsx-compiler/session"
 import type {NodeAction, NodeRect} from "../../shared/contracts.ts"
 
