@@ -39,6 +39,7 @@ export default function Inspector(props: Contract.Input): Contract.Output {
     `}
   >
     <header
+      hidden={props.showSearch === false && (props.toolbarLeadingActions?.length ?? 0) === 0 && (props.toolbarActions?.length ?? 0) === 0}
       style={css`
         box-sizing: border-box;
         display: flex;
@@ -49,6 +50,10 @@ export default function Inspector(props: Contract.Input): Contract.Output {
         gap: 4px;
         padding: 4px;
         background: var(--widget-number-background-readonly);
+
+        &[hidden] {
+          display: none;
+        }
       `}
     >
       <div
@@ -74,12 +79,17 @@ export default function Inspector(props: Contract.Input): Contract.Output {
         />)}
       </div>
       <div
+        hidden={props.showSearch === false}
         style={css`
           position: relative;
           display: block;
           width: 115px;
           min-width: 115px;
           height: 22px;
+
+          &[hidden] {
+            display: none;
+          }
         `}
       >
         <img

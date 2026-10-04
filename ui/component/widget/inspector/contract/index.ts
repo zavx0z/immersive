@@ -16,6 +16,8 @@ export declare namespace UiWidgetsInspector {
     readonly categories: readonly InspectorCategory[]
     readonly selectedCategoryId: string
     readonly query: string
+    /** Показывать поиск; по умолчанию true. При false панель действий сохраняется, если действия переданы. */
+    readonly showSearch?: boolean | undefined
     readonly searchLabel?: string | undefined
     readonly searchPlaceholder?: string | undefined
     readonly toolbarLeadingActions?: readonly InspectorAction[] | undefined
