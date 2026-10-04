@@ -49,7 +49,7 @@ export default function CollectionField(props: Contract.Input): Contract.Output 
       display: flex;
       flex-direction: row;
       align-items: flex-start;
-      width: auto;
+      width: 320px;
       min-width: 0;
       padding: 0;
       color: var(--widget-list-content);
@@ -87,14 +87,11 @@ export default function CollectionField(props: Contract.Input): Contract.Output 
         box-sizing: border-box;
         display: flex;
         flex-direction: row;
-        width: 320px;
+        width: 0;
+        min-width: 0;
+        flex-grow: 1;
         min-height: var(--field-label-height);
         gap: var(--field-label-gap);
-
-        &[data-labelled="true"] {
-          width: 0;
-          flex-grow: 1;
-        }
 
         &[data-readonly="true"] {
           color: var(--widget-text-content-readonly);

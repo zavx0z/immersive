@@ -41,6 +41,7 @@ export default function SelectParameter(props: Contract.Input): Contract.Output 
       slot="right"
     />
     <SelectField
+      label={props.labelHidden === true ? undefined : props.label}
       value={props.value}
       options={props.options}
       state={props.state}

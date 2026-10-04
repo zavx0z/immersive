@@ -35,7 +35,7 @@ export default function SliderField(props: Contract.Input): Contract.Output {
       display: flex;
       flex-direction: row;
       align-items: flex-start;
-      width: auto;
+      width: var(--slider-field-width, 180px);
       min-width: 0;
       padding: 0;
       color: var(--widget-list-content);
@@ -84,7 +84,9 @@ export default function SliderField(props: Contract.Input): Contract.Output {
       style={css`
         box-sizing: border-box;
         display: block;
-        width: var(--slider-field-width, 180px);
+        width: 0;
+        min-width: 0;
+        flex-grow: 1;
         height: var(--slider-field-height, var(--control-height-large));
         padding: var(--slider-field-padding, 3px 6px);
         border: var(--border-width-control) solid var(--widget-regular-outline);
@@ -92,11 +94,6 @@ export default function SliderField(props: Contract.Input): Contract.Output {
         background: var(--widget-regular-background);
         box-shadow: var(--shadow-2xs);
         color: var(--widget-regular-background-selected);
-
-        &[data-labelled="true"] {
-          width: 0;
-          flex-grow: 1;
-        }
 
         &[data-density="compact"] {
           height: var(--slider-field-height, var(--field-height-compact));

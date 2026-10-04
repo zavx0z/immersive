@@ -1,12 +1,10 @@
 import type {NodesParameters} from "@nodes/parameters/contract"
 import type {JSX} from "@jsx-compiler/session"
 
-/** Пользовательское поле в общей строке параметра с подписью и сокетами. */
+/** Пользовательское поле с собственной подписью в общей строке с сокетами. */
 export declare namespace NodesParametersLayout {
   interface Input extends NodesParameters.Input {
     readonly kind: string
-    readonly fieldOwnsLabel?: boolean | undefined
-    readonly fieldBeforeLabel?: boolean | undefined
   }
 
   interface Slots extends NodesParameters.Slots {

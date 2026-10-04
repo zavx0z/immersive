@@ -41,6 +41,7 @@ export default function TextParameter(props: Contract.Input): Contract.Output {
       slot="right"
     />
     <TextField
+      label={props.labelHidden === true ? undefined : props.label}
       value={props.value}
       type={props.type}
       placeholder={props.placeholder}
@@ -51,7 +52,6 @@ export default function TextParameter(props: Contract.Input): Contract.Output {
         width: 0;
         min-width: 0;
         flex-grow: 1;
-        --field-label-width: 18px;
       `}
       onInput={props.onInput}
       onChange={props.onChange}

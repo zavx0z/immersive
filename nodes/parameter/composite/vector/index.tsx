@@ -43,6 +43,7 @@ export default function VectorParameter(props: Contract.Input): Contract.Output 
       slot="right"
     />
     <VectorField
+      label={props.labelHidden === true ? undefined : props.label}
       value={props.value}
       axes={props.axes}
       min={props.min}
@@ -56,7 +57,6 @@ export default function VectorParameter(props: Contract.Input): Contract.Output 
         width: 0;
         min-width: 0;
         flex-grow: 1;
-        --field-label-width: 18px;
       `}
       onInput={props.onInput}
       onChange={props.onChange}

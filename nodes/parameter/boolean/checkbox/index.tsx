@@ -25,7 +25,6 @@ export default function CheckboxParameter(props: Contract.Input): Contract.Outpu
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="checkbox"
-    fieldBeforeLabel
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}
@@ -42,11 +41,12 @@ export default function CheckboxParameter(props: Contract.Input): Contract.Outpu
       slot="right"
     />
     <CheckboxField
+      label={props.labelHidden === true ? undefined : props.label}
       checked={props.checked}
       indeterminate={props.indeterminate}
       disabled={props.disabled}
       readOnly={props.readOnly}
-      title={props.labelHidden === true ? props.title : undefined}
+      title={props.title}
       onChange={props.onChange}
     />
   </ParameterLayout>

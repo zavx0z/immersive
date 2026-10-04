@@ -43,6 +43,7 @@ export default function ReferenceParameter(props: Contract.Input): Contract.Outp
       slot="right"
     />
     <ReferenceField
+      label={props.labelHidden === true ? undefined : props.label}
       value={props.value}
       placeholder={props.placeholder}
       disabled={props.disabled}
@@ -53,7 +54,6 @@ export default function ReferenceParameter(props: Contract.Input): Contract.Outp
         width: 0;
         min-width: 0;
         flex-grow: 1;
-        --field-label-width: 18px;
       `}
       onActivate={props.onActivate}
       onPick={props.onPick}

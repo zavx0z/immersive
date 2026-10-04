@@ -10,6 +10,7 @@
     ".": "./index.tsx"
   },
   "dependencies": {
+    "@ui-fields/field-group": "workspace:*",
     "@nodes-parameters/layout": "workspace:*",
     "@nodes/parameter-metrics": "workspace:*"
   },

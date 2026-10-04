@@ -301,6 +301,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
         connected={props.connected}
       >
         <TextField
+          label="Пользовательский параметр"
           value="Содержимое"
         />
         <Socket

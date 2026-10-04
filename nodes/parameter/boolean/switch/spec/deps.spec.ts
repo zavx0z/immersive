@@ -19,12 +19,8 @@ test.each([
         uses: [],
         elements: ["span"],
       },
-      "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
-        uses: [],
-        elements: ["span"],
-      },
       "nodes/parameter/shared/layout/index.tsx#ParameterLayout": {
-        uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
+        uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints"],
         elements: ["div","span"],
       },
       "ui/component/field/switch/index.tsx#SwitchField": {

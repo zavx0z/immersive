@@ -41,6 +41,7 @@ export default function SwitchParameter(props: Contract.Input): Contract.Output 
       slot="right"
     />
     <SwitchField
+      label={props.labelHidden === true ? undefined : props.label}
       checked={props.checked}
       disabled={props.disabled}
       readOnly={props.readOnly}
@@ -49,7 +50,6 @@ export default function SwitchParameter(props: Contract.Input): Contract.Output 
         width: 0;
         min-width: 0;
         flex-grow: 1;
-        --field-label-width: 18px;
       `}
       onChange={props.onChange}
     />

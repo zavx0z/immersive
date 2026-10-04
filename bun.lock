@@ -721,6 +721,7 @@
       "dependencies": {
         "@nodes-parameters/layout": "workspace:*",
         "@ui-buttons/toggle-button-group": "workspace:*",
+        "@ui-fields/field-group": "workspace:*",
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",
@@ -833,6 +834,7 @@
       "dependencies": {
         "@nodes-parameters/layout": "workspace:*",
         "@nodes/parameter-metrics": "workspace:*",
+        "@ui-fields/field-group": "workspace:*",
       },
       "devDependencies": {
         "@immersive/headless": "workspace:*",

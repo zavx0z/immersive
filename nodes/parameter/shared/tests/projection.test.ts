@@ -87,6 +87,10 @@ test("[PARAMETERS-PROJECTION-001] все виды из модели исполь
         expect(styles(projected), `${kind}/${variant}: CSS owners`).toEqual(styles(direct))
         expect(parameter(projected.element).querySelector("[data-parameter-field]")?.hasAttribute("hidden"),
           `${kind}/${variant}: поле доступно вместе с сокетами`).toBe(false)
+        const row = parameter(projected.element)
+        const field = row.querySelector("[data-parameter-field]")!
+        expect(row.querySelector("[data-parameter-label]"), `${kind}/${variant}: Layout не дублирует подпись`).toBeNull()
+        expect(field.textContent.includes(p.label), `${kind}/${variant}: подпись принадлежит Field`).toBe(!labelHidden)
       } finally {
         direct.dispose()
         projected.dispose()
@@ -203,7 +207,7 @@ test("[PARAMETERS-PROJECTION-003] готовые параметры приним
     for (const socket of endpoints) socket.dispatchEvent(new MouseEvent("click", {bubbles: true}))
     expect(activations).toEqual(["first", "second"])
     expect(row.getAttribute("data-label-hidden")).toBe("true")
-    expect(row.querySelector("[data-parameter-label]")?.hasAttribute("hidden")).toBe(true)
+    expect(row.querySelector("[data-parameter-label]")).toBeNull()
     expect(row.querySelector("input")).not.toBeNull()
   } finally {
     mounted.dispose()

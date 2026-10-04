@@ -6,6 +6,7 @@ OptionGroupParameter соединяет публичный ToggleButtonGroup с 
 @packageDocumentation
 */
 
+import FieldGroup from "@ui-fields/field-group"
 import ToggleButtonGroup from "@ui-buttons/toggle-button-group"
 import ParameterLayout from "@nodes-parameters/layout"
 import type {NodesParametersOptionGroup as Contract} from "./contract"
@@ -40,20 +41,24 @@ export default function OptionGroupParameter(props: Contract.Input): Contract.Ou
       name="right"
       slot="right"
     />
-    <ToggleButtonGroup
-      value={props.value}
-      options={props.options}
-      density="compact"
-      disabled={props.disabled}
-      readOnly={props.readOnly}
+    <FieldGroup
+      label={props.labelHidden === true ? undefined : props.label}
       title={props.title}
-      style={css`
-        width: 0;
-        min-width: 0;
-        flex-grow: 1;
-        --field-label-width: 18px;
-      `}
-      onChange={props.onChange}
-    />
+      density="compact"
+    >
+      <ToggleButtonGroup
+        value={props.value}
+        options={props.options}
+        density="compact"
+        disabled={props.disabled}
+        readOnly={props.readOnly}
+        style={css`
+          width: 0;
+          min-width: 0;
+          flex-grow: 1;
+        `}
+        onChange={props.onChange}
+      />
+    </FieldGroup>
   </ParameterLayout>
 }

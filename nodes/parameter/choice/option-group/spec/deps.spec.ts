@@ -11,20 +11,20 @@ test.each([
     name: "OptionGroupParameter",
     file: "nodes/parameter/choice/option-group/index.tsx",
     expected: {
+      "ui/component/field/group/index.tsx#FieldGroup": {
+        uses: [],
+        elements: ["div","span"],
+      },
       "nodes/parameter/choice/option-group/index.tsx#OptionGroupParameter": {
-        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/button/toggle-group/index.tsx#ToggleButtonGroup"],
+        uses: ["nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/button/toggle-group/index.tsx#ToggleButtonGroup","ui/component/field/group/index.tsx#FieldGroup"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
         uses: [],
         elements: ["span"],
       },
-      "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
-        uses: [],
-        elements: ["span"],
-      },
       "nodes/parameter/shared/layout/index.tsx#ParameterLayout": {
-        uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
+        uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints"],
         elements: ["div","span"],
       },
       "ui/component/button/basic/index.tsx#Button": {

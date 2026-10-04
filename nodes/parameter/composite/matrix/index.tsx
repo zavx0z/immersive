@@ -41,6 +41,7 @@ export default function MatrixParameter(props: Contract.Input): Contract.Output 
       slot="right"
     />
     <MatrixField
+      label={props.labelHidden === true ? undefined : props.label}
       value={props.value}
       step={props.step}
       density={props.density ?? "compact"}
@@ -51,7 +52,6 @@ export default function MatrixParameter(props: Contract.Input): Contract.Output 
         width: 0;
         min-width: 0;
         flex-grow: 1;
-        --field-label-width: 18px;
       `}
       onInput={props.onInput}
       onChange={props.onChange}

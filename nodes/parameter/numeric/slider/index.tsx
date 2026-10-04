@@ -43,6 +43,7 @@ export default function SliderParameter(props: Contract.Input): Contract.Output 
       slot="right"
     />
     <SliderField
+      label={props.labelHidden === true ? undefined : props.label}
       value={props.value}
       min={props.min}
       max={props.max}
@@ -55,7 +56,6 @@ export default function SliderParameter(props: Contract.Input): Contract.Output 
         width: 0;
         min-width: 0;
         flex-grow: 1;
-        --field-label-width: 18px;
       `}
       onInput={props.onInput}
       onChange={props.onChange}

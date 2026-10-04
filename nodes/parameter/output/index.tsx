@@ -7,6 +7,7 @@ OutputParameter соединяет публичный текстовый выв�
 @packageDocumentation
 */
 
+import FieldGroup from "@ui-fields/field-group"
 import {ParameterOutput} from "./src/output"
 import ParameterLayout from "@nodes-parameters/layout"
 import type {NodesParametersOutput as Contract} from "./contract"
@@ -41,9 +42,12 @@ export default function OutputParameter(props: Contract.Input): Contract.Output 
       name="right"
       slot="right"
     />
-    <ParameterOutput
-      value={props.value}
+    <FieldGroup
+      label={props.labelHidden === true ? undefined : props.label}
       title={props.title}
-    />
+      density="compact"
+    >
+      <ParameterOutput value={props.value} />
+    </FieldGroup>
   </ParameterLayout>
 }

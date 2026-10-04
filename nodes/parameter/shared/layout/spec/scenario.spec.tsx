@@ -16,7 +16,10 @@ describe.each([{name: "Поле", props: {connected: false}}, {name: "Подкл
       kind="custom"
       connected={props.connected}
     >
-      <TextField value="Содержимое" />
+      <TextField
+        label="Свой параметр"
+        value="Содержимое"
+      />
     </ParameterLayout>
   )
   test("Слот пользовательского поля", () => {

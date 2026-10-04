@@ -43,6 +43,7 @@ export default function CollectionParameter(props: Contract.Input): Contract.Out
       slot="right"
     />
     <CollectionField
+      label={props.labelHidden === true ? undefined : props.label}
       items={props.items}
       selectedId={props.selectedId}
       visibleRows={props.visibleRows}
@@ -55,7 +56,6 @@ export default function CollectionParameter(props: Contract.Input): Contract.Out
         width: 0;
         min-width: 0;
         flex-grow: 1;
-        --field-label-width: 18px;
       `}
       onSelect={props.onSelect}
       onAdd={props.onAdd}

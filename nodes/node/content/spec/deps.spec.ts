@@ -60,6 +60,7 @@ test.each([
         "uses": [
           "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
           "ui/component/button/toggle-group/index.tsx#ToggleButtonGroup",
+          "ui/component/field/group/index.tsx#FieldGroup",
         ],
         "elements": []
       },
@@ -116,6 +117,7 @@ test.each([
         "uses": [
           "nodes/parameter/output/src/output.tsx#ParameterOutput",
           "nodes/parameter/shared/layout/index.tsx#ParameterLayout",
+          "ui/component/field/group/index.tsx#FieldGroup",
         ],
         "elements": []
       },
@@ -140,17 +142,9 @@ test.each([
           "span"
         ]
       },
-      "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
-        "uses": [
-        ],
-        "elements": [
-          "span"
-        ]
-      },
       "nodes/parameter/shared/layout/index.tsx#ParameterLayout": {
         "uses": [
           "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints",
-          "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel",
         ],
         "elements": [
           "div",

@@ -2,7 +2,7 @@
   "name": "@nodes-parameters/layout",
   "label": "ParameterLayout",
   "version": "0.0.0",
-  "description": "Компонует подпись и адресуемые сокеты вокруг пользовательского поля",
+  "description": "Размещает пользовательское поле с собственной подписью между адресуемыми сокетами",
   "private": true,
   "type": "module",
   "sideEffects": false,

@@ -27,7 +27,6 @@ export default function NumberParameter(props: Contract.Input): Contract.Output 
     labelHidden={props.labelHidden}
     spacingBefore={props.spacingBefore}
     kind="number"
-    fieldOwnsLabel
     connected={props.connected}
     hidden={props.hidden}
     disabled={props.disabled}

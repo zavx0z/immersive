@@ -41,6 +41,7 @@ export default function CycleParameter(props: Contract.Input): Contract.Output {
       slot="right"
     />
     <CycleField
+      label={props.labelHidden === true ? undefined : props.label}
       value={props.value}
       options={props.options}
       density="compact"
@@ -52,7 +53,6 @@ export default function CycleParameter(props: Contract.Input): Contract.Output {
         width: 0;
         min-width: 0;
         flex-grow: 1;
-        --field-label-width: 18px;
       `}
       onChange={props.onChange}
       onOpenChange={props.onOpenChange}

@@ -11,20 +11,20 @@ test.each([
     name: "OutputParameter",
     file: "nodes/parameter/output/index.tsx",
     expected: {
+      "ui/component/field/group/index.tsx#FieldGroup": {
+        uses: [],
+        elements: ["div","span"],
+      },
       "nodes/parameter/output/index.tsx#OutputParameter": {
-        uses: ["nodes/parameter/output/src/output.tsx#ParameterOutput","nodes/parameter/shared/layout/index.tsx#ParameterLayout"],
+        uses: ["nodes/parameter/output/src/output.tsx#ParameterOutput","nodes/parameter/shared/layout/index.tsx#ParameterLayout","ui/component/field/group/index.tsx#FieldGroup"],
         elements: [],
       },
       "nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints": {
         uses: [],
         elements: ["span"],
       },
-      "nodes/parameter/shared/layout/src/label.tsx#ParameterLabel": {
-        uses: [],
-        elements: ["span"],
-      },
       "nodes/parameter/shared/layout/index.tsx#ParameterLayout": {
-        uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints","nodes/parameter/shared/layout/src/label.tsx#ParameterLabel"],
+        uses: ["nodes/parameter/shared/layout/src/endpoint.tsx#ParameterEndpoints"],
         elements: ["div","span"],
       },
       "nodes/parameter/output/src/output.tsx#ParameterOutput": {
