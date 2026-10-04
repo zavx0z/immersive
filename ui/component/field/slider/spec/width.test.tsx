@@ -5,7 +5,7 @@ import SliderField from "@ui-fields/slider-field"
 test("содержимое помещается в заданную ширину независимо от подписи", async () => {
   const headless = createHeadless({width: 400, height: 240})
   try {
-    for (const label of [undefined, "Значение"]) {
+    for (const label of [undefined, "Значение", "Очень длинная подпись поля"]) {
       const field = await headless.render(
         <SliderField
           label={label}

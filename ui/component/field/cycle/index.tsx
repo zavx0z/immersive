@@ -92,11 +92,14 @@ export default function CycleField(props: Contract.Input): Contract.Output {
       hidden={!hasLabel}
       style={css`
         box-sizing: border-box;
-        display: flex;
-        align-items: center;
+        display: block;
         width: 40%;
         min-width: 0;
         height: var(--field-label-height);
+        line-height: var(--field-label-height);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         color: var(--widget-list-content);
         font-size: var(--font-size-sm);
 
