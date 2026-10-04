@@ -1,0 +1,19 @@
+import {StorybookCdpClient} from "../../app/server/browser/src/chrome-client.ts"
+import {StorybookCdpConnection} from "../../app/server/browser/src/cdp-connection.ts"
+const client=new StorybookCdpClient({launchIfMissing:false})
+const targets=await(await fetch(new URL('/json/list',await client.cdpOrigin()))).json()
+const target=targets.find((x:any)=>x.type==='page'&&new URL(x.url).pathname==='/storybook/package')
+const cdp=await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+try{
+ const census=[]
+ for(const kind of ['GPUBuffer','GPUTexture']){
+  const proto:any=await cdp.command('Runtime.evaluate',{expression:`typeof ${kind}==='function'?${kind}.prototype:null`,objectGroup:'buffer-census'})
+  if(!proto.result.objectId)continue
+  const all:any=await cdp.command('Runtime.queryObjects',{prototypeObjectId:proto.result.objectId,objectGroup:'buffer-census'})
+  const values:any=await cdp.command('Runtime.callFunctionOn',{objectId:all.objects.objectId,functionDeclaration:`function(){return [...this].map(x=>(${kind==='GPUBuffer'?'{size:x.size,usage:x.usage,mapState:x.mapState}':'{width:x.width,height:x.height,depth:x.depthOrArrayLayers,format:x.format,mips:x.mipLevelCount,samples:x.sampleCount}'}))}`,returnByValue:true})
+  census.push({kind,values:values.result.value})
+ }
+ const report={census}
+ await Bun.write('tmp/performance/gpu-memory.json',JSON.stringify(report,null,2))
+ console.log(JSON.stringify(report,null,2))
+}finally{await cdp.command('Runtime.releaseObjectGroup',{objectGroup:'buffer-census'}).catch(()=>{});cdp.close()}

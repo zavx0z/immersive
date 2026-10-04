@@ -1,0 +1,27 @@
+{
+  "before": {
+    "usedSize": 156547936,
+    "totalSize": 161959936,
+    "embedderHeapUsedSize": 1444400,
+    "backingStorageSize": 507651800
+  },
+  "after": {
+    "usedSize": 156563500,
+    "totalSize": 161959936,
+    "embedderHeapUsedSize": 1444400,
+    "backingStorageSize": 507652529
+  },
+  "requests": [],
+  "runtime": {
+    "type": "string",
+    "value": "{\"now\":2381095.5999999046,\"lastResources\":[{\"path\":\"/api/browser/registry-session\",\"ageMs\":444033.5,\"bytes\":402},{\"path\":\"/api/browser/mcp-address\",\"ageMs\":444014.2999999523,\"bytes\":8536},{\"path\":\"/api/client\",\"ageMs\":443753.39999997616,\"bytes\":6691262},{\"path\":\"/api/browser/registry-session\",\"ageMs\":442011.6999999285,\"bytes\":402},{\"path\":\"/__storybook/revisions/%40zavx0z%2Fstorybook/3a213f948d7502625051c5a2/resources/nodes/directory%3Apackage%3A%40zavx0z%2Fstorybook%2Fpackage/module.md\",\"ageMs\":442006.89999997616,\"bytes\":528},{\"path\":\"/api/browser/chat/session\",\"ageMs\":441909.2999999523,\"bytes\":5785},{\"path\":\"/api/browser/shared\",\"ageMs\":441537.89999997616,\"bytes\":914},{\"path\":\"/api/browser/shared\",\"ageMs\":441486.6999999285,\"bytes\":914}],\"symbols\":[]}"
+  },
+  "semantic": {
+    "type": "object",
+    "value": {
+      "total": 981,
+      "mutationVersion": 300,
+      "durationMs": 48.59999990463257
+    }
+  }
+}

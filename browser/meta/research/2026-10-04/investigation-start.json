@@ -1,0 +1,121 @@
+{
+  "heap": {
+    "usedSize": 51191964,
+    "totalSize": 54034432,
+    "embedderHeapUsedSize": 1299336,
+    "backingStorageSize": 64501536
+  },
+  "result": {
+    "type": "object",
+    "value": {
+      "elements": 1346,
+      "tags": {
+        "HTML": 1,
+        "HEAD": 1,
+        "BODY": 1,
+        "SPACE": 1,
+        "VIEWPOINT": 1,
+        "DISPLAY": 1,
+        "DIV": 154,
+        "SECTION": 21,
+        "BUTTON": 90,
+        "IMG": 188,
+        "SPAN": 616,
+        "MAIN": 1,
+        "ARTICLE": 10,
+        "P": 12,
+        "ASIDE": 1,
+        "HEADER": 4,
+        "LABEL": 2,
+        "INPUT": 2,
+        "NAV": 6,
+        "UL": 11,
+        "LI": 172,
+        "STRONG": 8,
+        "CODE": 34,
+        "TEXTAREA": 1,
+        "FOOTER": 1,
+        "OL": 1,
+        "PRE": 4,
+        "HUD": 1
+      },
+      "windows": [
+        {
+          "title": "Журнал агента",
+          "hidden": false,
+          "command": "23:22:37 · storybook · success · 56 мс",
+          "elements": 535,
+          "editors": [
+            {
+              "language": "json",
+              "lines": 2,
+              "textCharacters": 3
+            },
+            {
+              "language": "json",
+              "lines": 196,
+              "textCharacters": 3415
+            }
+          ]
+        },
+        {
+          "title": "Общий журнал вызовов",
+          "hidden": true,
+          "command": "23:12:03 · storybook_inspect · success · 96 мс",
+          "elements": 66,
+          "editors": [
+            {
+              "language": "json",
+              "lines": 2,
+              "textCharacters": 1
+            },
+            {
+              "language": "json",
+              "lines": 2,
+              "textCharacters": 1
+            }
+          ]
+        },
+        {
+          "title": "zavx0z",
+          "hidden": false,
+          "elements": 355,
+          "editors": []
+        }
+      ],
+      "shellKeys": [
+        "document",
+        "browserDocument",
+        "canvas",
+        "root",
+        "space",
+        "viewPoint",
+        "display",
+        "hud",
+        "workbench",
+        "presentedFrameSequence",
+        "projectionFor",
+        "present",
+        "mountPreview",
+        "mountSpacePreview",
+        "showMessage",
+        "showMarkdown",
+        "showContract",
+        "showDependencies",
+        "reportDiagnostic",
+        "clearDiagnostics",
+        "updateStatus",
+        "requestRender",
+        "presentFrame",
+        "waitForPresentedFrame",
+        "captureLastPresentedFramePng",
+        "subscribePreviewBounds",
+        "dispatchNativeKey",
+        "dispatchNativeText",
+        "captureUserState",
+        "releaseRoot",
+        "dispose"
+      ]
+    }
+  }
+}

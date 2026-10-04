@@ -1,0 +1,17 @@
+import {StorybookCdpClient} from "../../app/server/browser/src/chrome-client.ts"
+import {StorybookCdpConnection} from "../../app/server/browser/src/cdp-connection.ts"
+const client=new StorybookCdpClient({launchIfMissing:false})
+const targets=await(await fetch(new URL('/json/list',await client.cdpOrigin()))).json()
+const target=targets.find((x:any)=>x.type==='page'&&new URL(x.url).pathname==='/storybook/package')
+const cdp=await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+try {
+ const before=await cdp.command('Runtime.getHeapUsage')
+ await cdp.command('HeapProfiler.collectGarbage',{}, {timeoutMs:20000})
+ const after=await cdp.command('Runtime.getHeapUsage')
+ const proto:any=await cdp.command('Runtime.evaluate',{expression:'ArrayBuffer.prototype',objectGroup:'heap-census'})
+ const all:any=await cdp.command('Runtime.queryObjects',{prototypeObjectId:proto.result.objectId,objectGroup:'heap-census'})
+ const buffers:any=await cdp.command('Runtime.callFunctionOn',{objectId:all.objects.objectId,functionDeclaration:`function(){const histogram={};let bytes=0;for(const b of this){bytes+=b.byteLength;histogram[b.byteLength]=(histogram[b.byteLength]||0)+1}return {count:this.length,bytes,largest:[...this].map(b=>b.byteLength).sort((a,b)=>b-a).slice(0,12),histogram:Object.entries(histogram).sort((a,b)=>Number(b[0])*b[1]-Number(a[0])*a[1]).slice(0,12)}}`,returnByValue:true})
+ const result={before,after,buffers:buffers.result}
+ await Bun.write('tmp/performance/heap-after.json',JSON.stringify(result,null,2))
+ console.log(JSON.stringify(result,null,2))
+} finally {await cdp.command('Runtime.releaseObjectGroup',{objectGroup:'heap-census'}).catch(()=>{});cdp.close()}

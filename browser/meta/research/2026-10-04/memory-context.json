@@ -1,0 +1,22 @@
+{
+  "page": {
+    "timeOrigin": 1791145356214.8,
+    "now": 406403.89999997616,
+    "devicePixelRatio": 2,
+    "innerWidth": 1920,
+    "innerHeight": 1088,
+    "canvas": [
+      {
+        "width": 3840,
+        "height": 2176
+      }
+    ],
+    "visibility": "visible"
+  },
+  "heap": {
+    "usedSize": 51202272,
+    "totalSize": 54034432,
+    "embedderHeapUsedSize": 1299336,
+    "backingStorageSize": 64501542
+  }
+}

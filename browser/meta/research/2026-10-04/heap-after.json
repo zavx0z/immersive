@@ -1,0 +1,23 @@
+{
+  "before": {
+    "usedSize": 650439344,
+    "totalSize": 882384896,
+    "embedderHeapUsedSize": 3468280,
+    "backingStorageSize": 518427648
+  },
+  "after": {
+    "usedSize": 158869944,
+    "totalSize": 197349376,
+    "embedderHeapUsedSize": 1153048,
+    "backingStorageSize": 506828333
+  },
+  "buffers": {
+    "type": "object",
+    "value": {
+      "count": 0,
+      "bytes": 0,
+      "largest": [],
+      "histogram": []
+    }
+  }
+}

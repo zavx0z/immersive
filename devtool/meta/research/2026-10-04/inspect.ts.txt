@@ -1,0 +1,40 @@
+import {StorybookCdpClient} from "../../app/server/browser/src/chrome-client.ts"
+import {StorybookCdpConnection} from "../../app/server/browser/src/cdp-connection.ts"
+const client = new StorybookCdpClient({launchIfMissing: false})
+const origin = await client.cdpOrigin()
+const inventory = await (await fetch(new URL("/json/list", origin))).json()
+const matches = inventory.filter((item: any) => item.type === "page" && new URL(item.url).hostname === "127.0.0.1" && new URL(item.url).pathname === "/storybook/package")
+if (matches.length !== 1) throw new Error(`Expected exact Storybook tab, found ${matches.length}`)
+const target = matches[0]
+const cdp = await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+try {
+  await cdp.command("Performance.enable")
+  const heap = await cdp.command("Runtime.getHeapUsage")
+  const dom = await cdp.command("Memory.getDOMCounters")
+  const metrics = await cdp.command("Performance.getMetrics")
+  const runtime = await cdp.command("Runtime.evaluate", {expression: `JSON.stringify({url:location.href,ready:document.readyState,nativeElements:document.querySelectorAll('*').length,globals:Object.keys(globalThis).filter(k=>/STORYBOOK/.test(k)),resources:performance.getEntriesByType('resource').slice(-30).map(r=>({name:new URL(r.name).pathname,bytes:r.transferSize,duration:r.duration}))})`, returnByValue:true}, {timeoutMs:5000})
+  await cdp.command("Profiler.enable")
+  await cdp.command("Profiler.start")
+  await Bun.sleep(2500)
+  const {profile} = await cdp.command("Profiler.stop")
+  await Bun.write("tmp/performance/current.cpuprofile", JSON.stringify(profile))
+  const nodes = new Map(profile.nodes.map((node:any)=>[node.id,node]))
+  const parents = new Map()
+  for (const node of profile.nodes) for (const child of node.children??[]) parents.set(child,node.id)
+  const costs = new Map<number,number>()
+  for (let i=0;i<(profile.samples??[]).length;i++) costs.set(profile.samples[i],(costs.get(profile.samples[i])??0)+(profile.timeDeltas?.[i]??0))
+  const frame = (id:number) => {const node:any=nodes.get(id);return {name:node?.callFrame.functionName,url:node?.callFrame.url,line:node?.callFrame.lineNumber+1}}
+  const hot=[...costs].sort((a,b)=>b[1]-a[1]).slice(0,15).map(([id,us])=>{
+    const stack=[]
+    let parent=parents.get(id)
+    while(parent!==undefined&&stack.length<10){stack.push(frame(parent));parent=parents.get(parent)}
+    return {...frame(id),ms:us/1000,stack}
+  })
+  const result={heap,dom,metrics,runtime:runtime.result,profile:{durationMs:(profile.endTime-profile.startTime)/1000,hot}}
+  await Bun.write("tmp/performance/current.json", JSON.stringify(result,null,2))
+  console.log(JSON.stringify(result,null,2))
+} finally {
+  await cdp.command("Profiler.disable").catch(()=>{})
+  await cdp.command("Performance.disable").catch(()=>{})
+  cdp.close()
+}

@@ -1,0 +1,31 @@
+import {StorybookCdpClient} from "../../app/server/browser/src/chrome-client.ts"
+import {StorybookCdpConnection} from "../../app/server/browser/src/cdp-connection.ts"
+const client=new StorybookCdpClient({launchIfMissing:false})
+const inventory=await(await fetch(new URL('/json/list',await client.cdpOrigin()))).json()
+const target=inventory.find((x:any)=>x.type==='page'&&new URL(x.url).pathname==='/storybook/package')
+const cdp=await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+try {
+ const result=await cdp.command('Runtime.evaluate',{expression:'globalThis.__EXTERNAL_STORYBOOK_AGENT_BRIDGE__.invoke',objectGroup:'perf-readonly'})
+ const fn:any=result.result
+ const details:any=await cdp.command('Runtime.getProperties',{objectId:fn.objectId,ownProperties:true})
+ const scopes=details.internalProperties.find((p:any)=>p.name==='[[Scopes]]')?.value?.objectId
+ if(!scopes)throw new Error('No closure scopes')
+ const scopeList:any=await cdp.command('Runtime.getProperties',{objectId:scopes,ownProperties:true})
+ let optionsId:string|undefined
+ const inventories=[]
+ for(const item of scopeList.result){
+   if(!/^\d+$/.test(item.name)||!item.value?.objectId||item.value?.description==='Global')continue
+   const contents:any=await cdp.command('Runtime.getProperties',{objectId:item.value.objectId,ownProperties:true})
+   inventories.push({scope:item.value.description,keys:contents.result.map((p:any)=>p.name)})
+   optionsId??=contents.result.find((p:any)=>p.name==='options')?.value?.objectId
+ }
+ if(!optionsId){console.log(JSON.stringify({inventories}));throw new Error('No options')}
+ const optionProperties:any=await cdp.command('Runtime.getProperties',{objectId:optionsId,ownProperties:true})
+ const shellId=optionProperties.result.find((p:any)=>p.name==='shell')?.value?.objectId
+ if(!shellId)throw new Error('No Shell')
+ const data:any=await cdp.command('Runtime.callFunctionOn',{objectId:shellId,functionDeclaration:`function(){const doc=this.document;const nodes=[...doc.querySelectorAll('*')];const tags={};for(const n of nodes)tags[n.tagName]=(tags[n.tagName]||0)+1;return {elements:nodes.length,tags,windows:[...doc.querySelectorAll('[data-window]')].map(n=>({title:n.getAttribute('aria-label'),hidden:n.hasAttribute('hidden'),command:n.querySelector('article')?.firstElementChild?.textContent,elements:n.querySelectorAll('*').length,editors:[...n.querySelectorAll('[data-language-id]')].map(e=>({language:e.getAttribute('data-language-id'),lines:e.querySelectorAll('[data-line-index]').length,textCharacters:e.textContent.length}))})),shellKeys:Object.keys(this)}}`,returnByValue:true},{timeoutMs:15000})
+ const heap=await cdp.command('Runtime.getHeapUsage')
+ const report={heap,...data}
+ await Bun.write(`tmp/performance/${process.argv[2] ?? 'retained'}.json`,JSON.stringify(report,null,2))
+ console.log(JSON.stringify(report,null,2))
+}finally{await cdp.command('Runtime.releaseObjectGroup',{objectGroup:'perf-readonly'}).catch(()=>{});cdp.close()}

@@ -1,0 +1,38 @@
+import {StorybookCdpClient} from '../../app/server/browser/src/chrome-client.ts'
+import {StorybookCdpConnection} from '../../app/server/browser/src/cdp-connection.ts'
+const api=new StorybookCdpClient({launchIfMissing:false})
+const targets=await(await fetch(new URL('/json/list',await api.cdpOrigin()))).json()
+const target=targets.find((t:any)=>t.type==='page'&&new URL(t.url).pathname==='/storybook/package')
+const cdp=await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+const props=async(id:string):Promise<any>=>cdp.command('Runtime.getProperties',{objectId:id,ownProperties:true})
+const child=async(id:string,name:string)=>{const p=await props(id);return p.result.find((v:any)=>v.name===name)?.value?.objectId}
+const binding=async(fn:string,name:string)=>{
+ const d=await props(fn)
+ const id=d.internalProperties?.find((p:any)=>p.name==='[[Scopes]]')?.value?.objectId
+ if(!id)return undefined
+ for(const s of (await props(id)).result){
+  if(!/^\d+$/.test(s.name)||!s.value?.objectId||s.value.description==='Global')continue
+  const result=await child(s.value.objectId,name)
+  if(result)return result
+ }
+}
+try{
+ const fn:any=await cdp.command('Runtime.evaluate',{expression:'globalThis.__EXTERNAL_STORYBOOK_AGENT_BRIDGE__.invoke',objectGroup:'renderer-census'})
+ const options=await binding(fn.result.objectId,'options')
+ const shell=await child(options!,'shell')
+ const root=await child(shell!,'root')
+ const render=await child(root!,'render')
+ const runtime=await binding(render!,'runtime')
+ const renderer=await child(runtime!,'engineRenderer')
+ if(!renderer)throw new Error('Active renderer not found')
+ const result:any=await cdp.command('Runtime.callFunctionOn',{objectId:renderer,functionDeclaration:`function(){
+   const texture=(t)=>t?({label:t.label,width:t.width,height:t.height,format:t.format,samples:t.sampleCount,mips:t.mipLevelCount}):null;
+   const cpu=new Set();let geometryGpuBytes=0;
+   for(const [g,b] of this.geometryCache){for(const value of Object.values(g.attributes||{})){if(value?.array?.buffer)cpu.add(value.array.buffer)}if(g.index?.array?.buffer)cpu.add(g.index.array.buffer);for(const value of Object.values(b))if(value&&typeof value.size==='number'&&typeof value.usage==='number')geometryGpuBytes+=value.size}
+   return {keys:Object.keys(this),canvas:{width:this.canvas.width,height:this.canvas.height},sampleCount:this.sampleCount,perObjectCapacity:this.perObjectCapacity,uniformCpuBytes:this.perObjectDataCPU?.byteLength,bonesCpuBytes:this.boneMatricesDataCPU?.byteLength,uniformGpuBytes:this.perObjectUniformBuffer?.size,bonesGpuBytes:this.boneMatricesBuffer?.size,geometry:{entries:this.geometryCache.size,cpuBuffers:cpu.size,cpuBytes:[...cpu].reduce((n,b)=>n+b.byteLength,0),gpuBytes:geometryGpuBytes},textures:{depth:texture(this.depthTexture),multisample:texture(this.multisampleTexture),presented:texture(this.presentedFrameTexture),displays:[...this.displayRasterTargets.values()].map(t=>({color:texture(t.texture),msaa:texture(t.multisample),depth:texture(t.depth)}))}};
+ }`,returnByValue:true})
+ const value=result.result.value
+ const report={...value,heap:await cdp.command('Runtime.getHeapUsage')}
+ await Bun.write('tmp/performance/renderer-memory.json',JSON.stringify(report,null,2))
+ console.log(JSON.stringify({...report,keys:undefined},null,2))
+}finally{await cdp.command('Runtime.releaseObjectGroup',{objectGroup:'renderer-census'}).catch(()=>{});cdp.close()}

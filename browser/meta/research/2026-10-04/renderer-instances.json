@@ -1,0 +1,15 @@
+{
+  "renderers": [
+    {
+      "capacity": 2048,
+      "geometry": 655,
+      "bonesCpu": 16777216,
+      "hasDevice": true
+    }
+  ],
+  "arrayBuffer": {
+    "constructor": "ArrayBuffer",
+    "nativePrototype": true,
+    "nativeInstance": true
+  }
+}

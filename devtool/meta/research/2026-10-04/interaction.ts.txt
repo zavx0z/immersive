@@ -1,0 +1,22 @@
+import {StorybookCdpClient} from "../../app/server/browser/src/chrome-client.ts"
+import {StorybookCdpConnection} from "../../app/server/browser/src/cdp-connection.ts"
+const client=new StorybookCdpClient({launchIfMissing:false})
+const targets=await(await fetch(new URL('/json/list',await client.cdpOrigin()))).json()
+const target=targets.find((x:any)=>x.type==='page'&&new URL(x.url).pathname==='/storybook/package')
+const cdp=await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+try {
+ await cdp.command('Profiler.enable')
+ await cdp.command('Profiler.start')
+ console.log('PROFILE_READY')
+ await Bun.sleep(8000)
+ const {profile}:any=await cdp.command('Profiler.stop')
+ await Bun.write('tmp/performance/interaction.cpuprofile',JSON.stringify(profile))
+ const nodes=new Map(profile.nodes.map((n:any)=>[n.id,n]))
+ const parents=new Map()
+ for(const n of profile.nodes)for(const id of n.children??[])parents.set(id,n.id)
+ const costs=new Map<number,number>()
+ for(let i=0;i<(profile.samples??[]).length;i++)costs.set(profile.samples[i],(costs.get(profile.samples[i])??0)+(profile.timeDeltas?.[i]??0))
+ const frame=(id:number)=>{const n:any=nodes.get(id);return {name:n?.callFrame.functionName,url:n?.callFrame.url,line:n?.callFrame.lineNumber+1}}
+ const hot=[...costs].sort((a,b)=>b[1]-a[1]).slice(0,15).map(([id,us])=>{const stack=[];let p=parents.get(id);while(p!==undefined&&stack.length<12){stack.push(frame(p));p=parents.get(p)}return {...frame(id),ms:us/1000,stack}})
+ console.log(JSON.stringify({durationMs:(profile.endTime-profile.startTime)/1000,hot},null,2))
+} finally {await cdp.command('Profiler.disable').catch(()=>{});cdp.close()}

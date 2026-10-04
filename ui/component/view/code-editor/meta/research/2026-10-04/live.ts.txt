@@ -1,0 +1,21 @@
+import {StorybookCdpClient} from "../../app/server/browser/src/chrome-client.ts"
+import {StorybookCdpConnection} from "../../app/server/browser/src/cdp-connection.ts"
+const client = new StorybookCdpClient({launchIfMissing:false})
+const origin = await client.cdpOrigin()
+const targets = await (await fetch(new URL("/json/list", origin))).json()
+const target = targets.find((x:any)=>x.type==="page"&&new URL(x.url).pathname==="/storybook/package")
+const cdp=await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+try {
+ const requests:any[]=[]
+ const release=cdp.onMessage(m=>{if(m.method==="Network.requestWillBeSent") {const p:any=m.params; requests.push({url:new URL(p.request.url).pathname,method:p.request.method})}})
+ await cdp.command("Network.enable")
+ const before=await cdp.command("Runtime.getHeapUsage")
+ const read=await cdp.command("Runtime.evaluate",{expression:`JSON.stringify({now:performance.now(),lastResources:performance.getEntriesByType('resource').slice(-8).map(r=>({path:new URL(r.name).pathname,ageMs:performance.now()-r.startTime,bytes:r.transferSize})),symbols:Object.getOwnPropertySymbols(globalThis).map(s=>s.description)})`,returnByValue:true})
+ await Bun.sleep(5000)
+ const after=await cdp.command("Runtime.getHeapUsage")
+ const semantic=await cdp.command("Runtime.evaluate",{expression:`(async()=>{const t=performance.now();const x=await globalThis.__EXTERNAL_STORYBOOK_AGENT_BRIDGE__.call('inspect',{include:['semantic'],limit:1,maxDepth:12});return {total:x.semantic?.total,mutationVersion:x.semantic?.mutationVersion,durationMs:performance.now()-t}})()`,awaitPromise:true,returnByValue:true},{timeoutMs:15000})
+ const result={before,after,requests,runtime:read.result,semantic:semantic.result}
+ await Bun.write("tmp/performance/live.json",JSON.stringify(result,null,2))
+ console.log(JSON.stringify(result,null,2))
+ release()
+} finally {await cdp.command("Network.disable").catch(()=>{});cdp.close()}

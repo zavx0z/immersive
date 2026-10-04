@@ -1,0 +1,196 @@
+{
+  "heap": {
+    "usedSize": 847217740,
+    "totalSize": 924024832,
+    "embedderHeapUsedSize": 2670312,
+    "backingStorageSize": 497412543
+  },
+  "dom": {
+    "documents": 1,
+    "nodes": 64,
+    "jsEventListeners": 56
+  },
+  "metrics": {
+    "metrics": [
+      {
+        "name": "Timestamp",
+        "value": 828766.150093
+      },
+      {
+        "name": "AudioHandlers",
+        "value": 0
+      },
+      {
+        "name": "AudioWorkletProcessors",
+        "value": 0
+      },
+      {
+        "name": "Documents",
+        "value": 1
+      },
+      {
+        "name": "Frames",
+        "value": 1
+      },
+      {
+        "name": "JSEventListeners",
+        "value": 56
+      },
+      {
+        "name": "LayoutObjects",
+        "value": 12
+      },
+      {
+        "name": "MediaKeySessions",
+        "value": 0
+      },
+      {
+        "name": "MediaKeys",
+        "value": 0
+      },
+      {
+        "name": "Nodes",
+        "value": 64
+      },
+      {
+        "name": "Resources",
+        "value": 0
+      },
+      {
+        "name": "ContextLifecycleStateObservers",
+        "value": 6
+      },
+      {
+        "name": "V8PerContextDatas",
+        "value": 1
+      },
+      {
+        "name": "WorkerGlobalScopes",
+        "value": 0
+      },
+      {
+        "name": "UACSSResources",
+        "value": 0
+      },
+      {
+        "name": "RTCPeerConnections",
+        "value": 0
+      },
+      {
+        "name": "ResourceFetchers",
+        "value": 1
+      },
+      {
+        "name": "AdSubframes",
+        "value": 0
+      },
+      {
+        "name": "DetachedScriptStates",
+        "value": 0
+      },
+      {
+        "name": "ArrayBufferContents",
+        "value": 14720
+      },
+      {
+        "name": "LayoutCount",
+        "value": 0
+      },
+      {
+        "name": "RecalcStyleCount",
+        "value": 0
+      },
+      {
+        "name": "LayoutDuration",
+        "value": 0
+      },
+      {
+        "name": "RecalcStyleDuration",
+        "value": 0
+      },
+      {
+        "name": "DevToolsCommandDuration",
+        "value": 0.001733
+      },
+      {
+        "name": "ScriptDuration",
+        "value": 0
+      },
+      {
+        "name": "V8CompileDuration",
+        "value": 0
+      },
+      {
+        "name": "TaskDuration",
+        "value": 0.001785
+      },
+      {
+        "name": "TaskOtherDuration",
+        "value": 0.000052
+      },
+      {
+        "name": "ThreadTime",
+        "value": 0.000932
+      },
+      {
+        "name": "ProcessTime",
+        "value": 3139.300712
+      },
+      {
+        "name": "JSHeapUsedSize",
+        "value": 847217740
+      },
+      {
+        "name": "JSHeapTotalSize",
+        "value": 924024832
+      },
+      {
+        "name": "FirstMeaningfulPaint",
+        "value": 0
+      },
+      {
+        "name": "DomContentLoaded",
+        "value": 827992.504924
+      },
+      {
+        "name": "NavigationStart",
+        "value": 827985.076708
+      }
+    ]
+  },
+  "runtime": {
+    "type": "string",
+    "value": "{\"url\":\"http://127.0.0.1:50074/storybook/package?inspector=chat\",\"ready\":\"complete\",\"nativeElements\":28,\"globals\":[\"__EXTERNAL_STORYBOOK_AGENT_BRIDGE__\"],\"resources\":[{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.399999976158142},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":9.600000023841858},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.1999999284744263},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":9},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.3000000715255737},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":9.599999904632568},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.600000023841858},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":10.799999952316284},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.600000023841858},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":11.199999928474426},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.0999999046325684},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":7.799999952316284},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":2.700000047683716},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":12},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":8.600000023841858},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":26.299999952316284},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.5},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":9.300000071525574},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.2999999523162842},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":9.200000047683716},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.8000000715255737},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":9.599999904632568},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":3.100000023841858},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":8},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":2.899999976158142},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":8.700000047683716},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.7000000476837158},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":8.399999976158142},{\"name\":\"/api/browser/registry-session\",\"bytes\":402,\"duration\":1.5999999046325684},{\"name\":\"/api/browser/mcp-requests\",\"bytes\":1448100,\"duration\":9.299999952316284}]}"
+  },
+  "profile": {
+    "durationMs": 4128.303,
+    "hot": [
+      {
+        "name": "(idle)",
+        "url": "",
+        "line": 0,
+        "ms": 2491.303,
+        "stack": [
+          {
+            "name": "(root)",
+            "url": "",
+            "line": 0
+          }
+        ]
+      },
+      {
+        "name": "(program)",
+        "url": "",
+        "line": 0,
+        "ms": 1635.781,
+        "stack": [
+          {
+            "name": "(root)",
+            "url": "",
+            "line": 0
+          }
+        ]
+      }
+    ]
+  }
+}

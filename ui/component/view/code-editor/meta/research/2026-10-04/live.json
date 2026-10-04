@@ -1,0 +1,27 @@
+{
+  "before": {
+    "usedSize": 848749684,
+    "totalSize": 924024832,
+    "embedderHeapUsedSize": 2685848,
+    "backingStorageSize": 497412703
+  },
+  "after": {
+    "usedSize": 848759944,
+    "totalSize": 924024832,
+    "embedderHeapUsedSize": 2687728,
+    "backingStorageSize": 497412703
+  },
+  "requests": [],
+  "runtime": {
+    "type": "string",
+    "value": "{\"now\":842511.7999999523,\"lastResources\":[{\"path\":\"/api/browser/registry-session\",\"ageMs\":728831.6000000238,\"bytes\":402},{\"path\":\"/api/browser/mcp-requests\",\"ageMs\":728827.8999999762,\"bytes\":1448100},{\"path\":\"/api/browser/registry-session\",\"ageMs\":727798.7000000477,\"bytes\":402},{\"path\":\"/api/browser/mcp-requests\",\"ageMs\":727795.3000000715,\"bytes\":1448100},{\"path\":\"/api/browser/registry-session\",\"ageMs\":726768.7000000477,\"bytes\":402},{\"path\":\"/api/browser/mcp-requests\",\"ageMs\":726766.3999999762,\"bytes\":1448100},{\"path\":\"/api/browser/registry-session\",\"ageMs\":725393.8999999762,\"bytes\":402},{\"path\":\"/api/browser/mcp-requests\",\"ageMs\":725261.1000000238,\"bytes\":1448100}],\"symbols\":[]}"
+  },
+  "semantic": {
+    "type": "object",
+    "value": {
+      "total": 998,
+      "mutationVersion": 265,
+      "durationMs": 2819.7000000476837
+    }
+  }
+}

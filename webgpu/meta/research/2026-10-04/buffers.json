@@ -1,0 +1,54 @@
+{
+  "census": [
+    {
+      "kind": "WebAssembly.Memory",
+      "values": []
+    }
+  ],
+  "scripts": {
+    "count": 106,
+    "characters": 20151682,
+    "largest": [
+      {
+        "url": "http://127.0.0.1:50074/__storybook/shared/host/1d999a52211988f31e1a23325ee8748ff912ea1e343b2521bdae6f12db43474c/page-entry-r3m630ez.js",
+        "length": 9239263,
+        "language": "JavaScript"
+      },
+      {
+        "url": "http://127.0.0.1:50074/__storybook/shared/host/401bff0454ab9fa1e9d08ac643639a1fad69159cb23a927c752646fbfd03625e/page-entry-52p5eph5.js",
+        "length": 9238956,
+        "language": "JavaScript"
+      },
+      {
+        "url": "http://127.0.0.1:50074/__storybook/shared/kernel/ce304c7f2c3b44a2fc6c7a7f0a911038c62de9c820cd9578317aa0260dc3f7c7/chunks/159c774ed0d0dd29d4d3217ccee0463ab3297b65b46b5a9666ed744a73151be0-8ggag47v.js",
+        "length": 374242,
+        "language": "JavaScript"
+      },
+      {
+        "url": "http://127.0.0.1:50074/__storybook/shared/kernel/ce304c7f2c3b44a2fc6c7a7f0a911038c62de9c820cd9578317aa0260dc3f7c7/chunks/159c774ed0d0dd29d4d3217ccee0463ab3297b65b46b5a9666ed744a73151be0-06heetfg.js",
+        "length": 266330,
+        "language": "JavaScript"
+      },
+      {
+        "url": "http://127.0.0.1:50074/__storybook/shared/kernel/ce304c7f2c3b44a2fc6c7a7f0a911038c62de9c820cd9578317aa0260dc3f7c7/chunks/159c774ed0d0dd29d4d3217ccee0463ab3297b65b46b5a9666ed744a73151be0-tnk5c5j6.js",
+        "length": 181638,
+        "language": "JavaScript"
+      },
+      {
+        "url": "http://127.0.0.1:50074/__storybook/shared/kernel/ce304c7f2c3b44a2fc6c7a7f0a911038c62de9c820cd9578317aa0260dc3f7c7/chunks/space-runtime-k5rbvg7p.js",
+        "length": 138683,
+        "language": "JavaScript"
+      },
+      {
+        "url": "http://127.0.0.1:50074/__storybook/shared/kernel/ce304c7f2c3b44a2fc6c7a7f0a911038c62de9c820cd9578317aa0260dc3f7c7/chunks/159c774ed0d0dd29d4d3217ccee0463ab3297b65b46b5a9666ed744a73151be0-4ah6bxpf.js",
+        "length": 79505,
+        "language": "JavaScript"
+      },
+      {
+        "url": "http://127.0.0.1:50074/__storybook/shared/kernel/ce304c7f2c3b44a2fc6c7a7f0a911038c62de9c820cd9578317aa0260dc3f7c7/chunks/159c774ed0d0dd29d4d3217ccee0463ab3297b65b46b5a9666ed744a73151be0-pfw4xk79.js",
+        "length": 75089,
+        "language": "JavaScript"
+      }
+    ]
+  }
+}

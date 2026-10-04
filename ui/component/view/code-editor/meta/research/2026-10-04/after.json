@@ -1,0 +1,109 @@
+{
+  "heap": {
+    "usedSize": 650432004,
+    "totalSize": 882384896,
+    "embedderHeapUsedSize": 3460392,
+    "backingStorageSize": 518427648
+  },
+  "result": {
+    "type": "object",
+    "value": {
+      "elements": 1327,
+      "tags": {
+        "HTML": 1,
+        "HEAD": 1,
+        "BODY": 1,
+        "SPACE": 1,
+        "VIEWPOINT": 1,
+        "DISPLAY": 1,
+        "DIV": 150,
+        "SECTION": 17,
+        "BUTTON": 90,
+        "IMG": 188,
+        "SPAN": 614,
+        "MAIN": 1,
+        "ARTICLE": 9,
+        "P": 12,
+        "ASIDE": 1,
+        "HEADER": 4,
+        "LABEL": 2,
+        "INPUT": 2,
+        "NAV": 6,
+        "UL": 9,
+        "LI": 170,
+        "STRONG": 8,
+        "CODE": 32,
+        "TEXTAREA": 1,
+        "FOOTER": 1,
+        "OL": 1,
+        "PRE": 2,
+        "HUD": 1
+      },
+      "windows": [
+        {
+          "title": "Журнал агента",
+          "hidden": false,
+          "command": "23:10:22 · storybook · success · 67 мс",
+          "elements": 535,
+          "editors": [
+            {
+              "language": "json",
+              "lines": 2,
+              "textCharacters": 3
+            },
+            {
+              "language": "json",
+              "lines": 196,
+              "textCharacters": 3415
+            }
+          ]
+        },
+        {
+          "title": "Общий журнал вызовов",
+          "hidden": true,
+          "elements": 47,
+          "editors": []
+        },
+        {
+          "title": "zavx0z",
+          "hidden": false,
+          "elements": 355,
+          "editors": []
+        }
+      ],
+      "shellKeys": [
+        "document",
+        "browserDocument",
+        "canvas",
+        "root",
+        "space",
+        "viewPoint",
+        "display",
+        "hud",
+        "workbench",
+        "presentedFrameSequence",
+        "projectionFor",
+        "present",
+        "mountPreview",
+        "mountSpacePreview",
+        "showMessage",
+        "showMarkdown",
+        "showContract",
+        "showDependencies",
+        "reportDiagnostic",
+        "clearDiagnostics",
+        "updateStatus",
+        "requestRender",
+        "presentFrame",
+        "waitForPresentedFrame",
+        "captureLastPresentedFramePng",
+        "subscribePreviewBounds",
+        "dispatchNativeKey",
+        "dispatchNativeText",
+        "captureUserState",
+        "releaseRoot",
+        "dispose"
+      ]
+    }
+  }
+}

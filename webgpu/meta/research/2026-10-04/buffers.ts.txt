@@ -1,0 +1,25 @@
+import {StorybookCdpClient} from "../../app/server/browser/src/chrome-client.ts"
+import {StorybookCdpConnection} from "../../app/server/browser/src/cdp-connection.ts"
+const client=new StorybookCdpClient({launchIfMissing:false})
+const targets=await(await fetch(new URL('/json/list',await client.cdpOrigin()))).json()
+const target=targets.find((x:any)=>x.type==='page'&&new URL(x.url).pathname==='/storybook/package')
+const cdp=await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+try{
+ const census=[]
+ for(const kind of ['SharedArrayBuffer','WebAssembly.Memory']){
+  const proto:any=await cdp.command('Runtime.evaluate',{expression:`typeof ${kind}==='function'?${kind}.prototype:null`,objectGroup:'buffer-census'})
+  if(!proto.result.objectId)continue
+  const all:any=await cdp.command('Runtime.queryObjects',{prototypeObjectId:proto.result.objectId,objectGroup:'buffer-census'})
+  const values:any=await cdp.command('Runtime.callFunctionOn',{objectId:all.objects.objectId,functionDeclaration:`function(){return [...this].map(x=>({bytes:${kind==='WebAssembly.Memory'?'x.buffer.byteLength':'x.byteLength'}}))}`,returnByValue:true})
+  census.push({kind,values:values.result.value})
+ }
+ const scripts:any[]=[]
+ const release=cdp.onMessage(m=>{if(m.method==='Debugger.scriptParsed'){const p:any=m.params;scripts.push({url:p.url,length:p.length,language:p.scriptLanguage})}})
+ await cdp.command('Debugger.enable')
+ await Bun.sleep(300)
+ await cdp.command('Debugger.disable')
+ release()
+ const report={census,scripts:{count:scripts.length,characters:scripts.reduce((n,s)=>n+(s.length??0),0),largest:scripts.sort((a,b)=>(b.length??0)-(a.length??0)).slice(0,8)}}
+ await Bun.write('tmp/performance/buffers.json',JSON.stringify(report,null,2))
+ console.log(JSON.stringify(report,null,2))
+}finally{await cdp.command('Runtime.releaseObjectGroup',{objectGroup:'buffer-census'}).catch(()=>{});cdp.close()}

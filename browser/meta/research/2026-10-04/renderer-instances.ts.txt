@@ -1,0 +1,35 @@
+import {StorybookCdpClient} from '../../app/server/browser/src/chrome-client.ts'
+import {StorybookCdpConnection} from '../../app/server/browser/src/cdp-connection.ts'
+const api=new StorybookCdpClient({launchIfMissing:false})
+const targets=await(await fetch(new URL('/json/list',await api.cdpOrigin()))).json()
+const target=targets.find((t:any)=>t.type==='page'&&new URL(t.url).pathname==='/storybook/package')
+const cdp=await StorybookCdpConnection.connect(target.webSocketDebuggerUrl)
+const props=async(id:string):Promise<any>=>cdp.command('Runtime.getProperties',{objectId:id,ownProperties:true})
+const child=async(id:string,name:string)=>{const p=await props(id);return p.result.find((v:any)=>v.name===name)?.value?.objectId}
+const binding=async(fn:string,name:string)=>{
+ const d=await props(fn)
+ const id=d.internalProperties?.find((p:any)=>p.name==='[[Scopes]]')?.value?.objectId
+ if(!id)return undefined
+ for(const s of (await props(id)).result){
+  if(!/^\d+$/.test(s.name)||!s.value?.objectId||s.value.description==='Global')continue
+  const result=await child(s.value.objectId,name)
+  if(result)return result
+ }
+}
+try{
+ const fn:any=await cdp.command('Runtime.evaluate',{expression:'globalThis.__EXTERNAL_STORYBOOK_AGENT_BRIDGE__.invoke',objectGroup:'renderer-census'})
+ const options=await binding(fn.result.objectId,'options')
+ const shell=await child(options!,'shell')
+ const root=await child(shell!,'root')
+ const render=await child(root!,'render')
+ const runtime=await binding(render!,'runtime')
+ const renderer=await child(runtime!,'engineRenderer')
+ if(!renderer)throw new Error('Active renderer not found')
+ const proto:any=await cdp.command('Runtime.callFunctionOn',{objectId:renderer,functionDeclaration:'function(){return Object.getPrototypeOf(this)}',objectGroup:'renderer-census'})
+ const instances:any=await cdp.command('Runtime.queryObjects',{prototypeObjectId:proto.result.objectId,objectGroup:'renderer-census'})
+ const counts:any=await cdp.command('Runtime.callFunctionOn',{objectId:instances.objects.objectId,functionDeclaration:'function(){return [...this].map(r=>({capacity:r.perObjectCapacity,geometry:r.geometryCache.size,bonesCpu:r.boneMatricesDataCPU?.byteLength,hasDevice:!!r.device}))}',returnByValue:true})
+ const identities:any=await cdp.command('Runtime.callFunctionOn',{objectId:renderer,functionDeclaration:'function(){const b=this.boneMatricesDataCPU.buffer;return {constructor:b.constructor.name,nativePrototype:Object.getPrototypeOf(b)===ArrayBuffer.prototype,nativeInstance:b instanceof ArrayBuffer}}',returnByValue:true})
+ const report={renderers:counts.result.value,arrayBuffer:identities.result.value}
+ await Bun.write('tmp/performance/renderer-instances.json',JSON.stringify(report,null,2))
+ console.log(JSON.stringify(report,null,2))
+}finally{await cdp.command('Runtime.releaseObjectGroup',{objectGroup:'renderer-census'}).catch(()=>{});cdp.close()}

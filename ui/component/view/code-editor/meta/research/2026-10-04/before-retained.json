@@ -1,0 +1,113 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "elements": 72374,
+      "tags": {
+        "HTML": 1,
+        "HEAD": 1,
+        "BODY": 1,
+        "SPACE": 1,
+        "VIEWPOINT": 1,
+        "DISPLAY": 1,
+        "DIV": 154,
+        "SECTION": 21,
+        "BUTTON": 90,
+        "IMG": 188,
+        "SPAN": 58522,
+        "MAIN": 1,
+        "ARTICLE": 10,
+        "P": 12,
+        "ASIDE": 1,
+        "HEADER": 4,
+        "LABEL": 2,
+        "INPUT": 2,
+        "NAV": 6,
+        "UL": 11,
+        "LI": 13294,
+        "STRONG": 8,
+        "CODE": 34,
+        "TEXTAREA": 1,
+        "FOOTER": 1,
+        "OL": 1,
+        "PRE": 4,
+        "HUD": 1
+      },
+      "windows": [
+        {
+          "title": "Журнал агента",
+          "hidden": false,
+          "elements": 535,
+          "editors": [
+            {
+              "language": "json",
+              "lines": 2,
+              "textCharacters": 3
+            },
+            {
+              "language": "json",
+              "lines": 196,
+              "textCharacters": 3415
+            }
+          ]
+        },
+        {
+          "title": "Общий журнал вызовов",
+          "hidden": true,
+          "elements": 71094,
+          "editors": [
+            {
+              "language": "json",
+              "lines": 6,
+              "textCharacters": 27
+            },
+            {
+              "language": "json",
+              "lines": 26242,
+              "textCharacters": 494365
+            }
+          ]
+        },
+        {
+          "title": "zavx0z",
+          "hidden": false,
+          "elements": 355,
+          "editors": []
+        }
+      ],
+      "shellKeys": [
+        "document",
+        "browserDocument",
+        "canvas",
+        "root",
+        "space",
+        "viewPoint",
+        "display",
+        "hud",
+        "workbench",
+        "presentedFrameSequence",
+        "projectionFor",
+        "present",
+        "mountPreview",
+        "mountSpacePreview",
+        "showMessage",
+        "showMarkdown",
+        "showContract",
+        "showDependencies",
+        "reportDiagnostic",
+        "clearDiagnostics",
+        "updateStatus",
+        "requestRender",
+        "presentFrame",
+        "waitForPresentedFrame",
+        "captureLastPresentedFramePng",
+        "subscribePreviewBounds",
+        "dispatchNativeKey",
+        "dispatchNativeText",
+        "captureUserState",
+        "releaseRoot",
+        "dispose"
+      ]
+    }
+  }
+}

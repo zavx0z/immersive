@@ -1,0 +1,72 @@
+{
+  "textCaches": [
+    {
+      "name": "Text2",
+      "entries": 628,
+      "cpuBytes": 33257400,
+      "inactiveBytes": 20695728,
+      "inactiveEntries": 408,
+      "constructionDefaults": {
+        "entries": 313,
+        "bytes": 16554744,
+        "active": 0
+      },
+      "largest": [
+        {
+          "constructionDefault": true,
+          "keyCharacters": 159,
+          "bytes": 368304,
+          "active": false
+        },
+        {
+          "constructionDefault": false,
+          "keyCharacters": 162,
+          "bytes": 368304,
+          "active": true
+        },
+        {
+          "constructionDefault": true,
+          "keyCharacters": 99,
+          "bytes": 224568,
+          "active": false
+        },
+        {
+          "constructionDefault": false,
+          "keyCharacters": 102,
+          "bytes": 224568,
+          "active": false
+        },
+        {
+          "constructionDefault": true,
+          "keyCharacters": 99,
+          "bytes": 223248,
+          "active": false
+        },
+        {
+          "constructionDefault": false,
+          "keyCharacters": 102,
+          "bytes": 223248,
+          "active": false
+        },
+        {
+          "constructionDefault": true,
+          "keyCharacters": 99,
+          "bytes": 209616,
+          "active": false
+        },
+        {
+          "constructionDefault": false,
+          "keyCharacters": 102,
+          "bytes": 209616,
+          "active": false
+        }
+      ]
+    }
+  ],
+  "heap": {
+    "usedSize": 56127396,
+    "totalSize": 137867264,
+    "embedderHeapUsedSize": 1160280,
+    "backingStorageSize": 65382104
+  }
+}

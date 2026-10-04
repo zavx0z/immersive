@@ -1,0 +1,14 @@
+import {StorybookCdpClient} from '../../app/server/browser/src/chrome-client.ts'
+import {StorybookCdpConnection} from '../../app/server/browser/src/cdp-connection.ts'
+const api=new StorybookCdpClient({launchIfMissing:false})
+const targets=await(await fetch(new URL('/json/list',await api.cdpOrigin()))).json()
+const matches=targets.filter((t:any)=>t.type==='page'&&new URL(t.url).pathname==='/storybook/package')
+if(matches.length!==1)throw new Error('Exact tab required')
+const cdp=await StorybookCdpConnection.connect(matches[0].webSocketDebuggerUrl)
+try{
+ const page:any=await cdp.command('Runtime.evaluate',{expression:`({timeOrigin:performance.timeOrigin,now:performance.now(),devicePixelRatio,innerWidth,innerHeight,canvas:[...document.querySelectorAll('canvas')].map(c=>({width:c.width,height:c.height})),visibility:document.visibilityState})`,returnByValue:true})
+ const heap=await cdp.command('Runtime.getHeapUsage')
+ const output={page:page.result.value,heap}
+ await Bun.write('tmp/performance/memory-context.json',JSON.stringify(output,null,2))
+ console.log(JSON.stringify(output,null,2))
+}finally{cdp.close()}

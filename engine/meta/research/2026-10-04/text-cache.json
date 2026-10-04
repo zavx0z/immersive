@@ -1,0 +1,49 @@
+{
+  "textCaches": [
+    {
+      "name": "Text2",
+      "entries": 628,
+      "cpuBytes": 33257400,
+      "largest": [
+        {
+          "keyCharacters": 159,
+          "bytes": 368304
+        },
+        {
+          "keyCharacters": 162,
+          "bytes": 368304
+        },
+        {
+          "keyCharacters": 99,
+          "bytes": 224568
+        },
+        {
+          "keyCharacters": 102,
+          "bytes": 224568
+        },
+        {
+          "keyCharacters": 99,
+          "bytes": 223248
+        },
+        {
+          "keyCharacters": 102,
+          "bytes": 223248
+        },
+        {
+          "keyCharacters": 99,
+          "bytes": 209616
+        },
+        {
+          "keyCharacters": 102,
+          "bytes": 209616
+        }
+      ]
+    }
+  ],
+  "heap": {
+    "usedSize": 53487456,
+    "totalSize": 136671232,
+    "embedderHeapUsedSize": 1160280,
+    "backingStorageSize": 65382104
+  }
+}
