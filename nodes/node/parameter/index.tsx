@@ -62,7 +62,7 @@ export default function ParameterNode(props: Contract.Input): Contract.Output {
       display: block;
       left: ${props.embedded ? 0 : props.rect?.x ?? 0}px;
       top: ${props.embedded ? 0 : props.rect?.y ?? 0}px;
-      width: ${props.embedded ? "100%" : "180px"};
+      width: ${props.embedded ? "100%" : "360px"};
       height: ${props.collapsed ? `${geometry.height}px` : "auto"};
       min-width: ${NODE_MINIMUM_WIDTH}px;
       min-height: 0;

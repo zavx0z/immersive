@@ -15,7 +15,7 @@ test("нода определяет высоту по полям и состоя
       />,
     )
     const initial = first.getBoundingClientRect()
-    expect(initial.width, "Компактная базовая ширина ноды").toBe(180)
+    expect(initial.width, "Базовая ширина ноды оставляет место подписи и составным полям").toBe(360)
     const expanded = await headless.render(
       <ParameterNode
         id="sizing"

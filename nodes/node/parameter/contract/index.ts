@@ -44,7 +44,7 @@ export declare namespace NodesNodeParameter {
   Высота раскрытой ноды определяется её содержимым, свёрнутой — шапкой и сокетами.
 
   @property [style] - CSS ноды, включая width, min-width и max-width.
-  Базовая ширина — 180px, минимальная — 100px. Встроенная нода заполняет родителя.
+  Базовая ширина — 360px, минимальная — 100px. Встроенная нода заполняет родителя.
 
   @property [parameters] - Снимки параметров из принятого снимка {@link NodeTreeNodeSnapshot}.
 
