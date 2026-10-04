@@ -149,7 +149,7 @@ export default class JsxCompilerSession {
     if (previousHash !== undefined && previousHash !== hash) {
       this.cache.clear()
       if (this.opened.has(absolute)) {
-        await this.updateSnapshot({fileChanges: {changed: [absolute]}})
+        await this.reloadOpenedFiles([absolute])
       }
     }
     this.hashes.set(absolute, hash)
@@ -175,7 +175,7 @@ export default class JsxCompilerSession {
     let sourceFile = await project.program.getSourceFile(absolute)
     if (!sourceFile) throw new JsxCompileError("TypeScript 7 returned no source AST", absolute)
     if (sourceFile.text !== text) {
-      await this.updateSnapshot({fileChanges: {changed: [absolute]}})
+      await this.reloadOpenedFiles([absolute])
       project = await this.snapshot!.getDefaultProjectForFile(absolute)
       if (!project) throw new JsxCompileError("TypeScript 7 found no project", absolute)
       assertConfiguredProject(project, absolute)
@@ -244,6 +244,21 @@ export default class JsxCompilerSession {
     for (const sourcePath of files) this.opened.add(sourcePath)
   }
 
+  /** Disk notifications не заменяют текст открытого буфера TypeScript: закрываем и открываем его раздельно. */
+  private async reloadOpenedFiles(paths: readonly string[]): Promise<void> {
+    const files = paths.filter(path => this.opened.has(path))
+    this.api.clearSourceFileCache()
+    await this.updateSnapshot({
+      ...(files.length === 0 ? {} : {closeFiles: files}),
+      fileChanges: {changed: [...paths]},
+    })
+    for (const path of files) this.opened.delete(path)
+    if (files.length > 0) {
+      await this.updateSnapshot({openFiles: files})
+      for (const path of files) this.opened.add(path)
+    }
+  }
+
   private async refreshFilesLocked(sourcePaths: readonly string[]): Promise<void> {
     if (this.closed) throw new Error("JSX compiler session is closed")
     this.governedFiles.refresh()
@@ -263,11 +278,8 @@ export default class JsxCompilerSession {
     }
     if (changed.length > 0) this.cache.clear()
     if (openFiles.length === 0 && changed.length === 0) return
-    if (changed.length > 0) this.api.clearSourceFileCache()
-    await this.updateSnapshot({
-      ...(openFiles.length === 0 ? {} : {openFiles}),
-      ...(changed.length === 0 ? {} : {fileChanges: {changed}}),
-    })
+    if (changed.length > 0) await this.reloadOpenedFiles(changed)
+    if (openFiles.length > 0) await this.updateSnapshot({openFiles})
     for (const sourcePath of openFiles) this.opened.add(sourcePath)
   }
 
