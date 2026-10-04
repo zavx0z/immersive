@@ -4,11 +4,11 @@
 именованными областями одного получателя в том же Document с сохранением
 DOM identity, state, focus, refs, listeners и effects.
 Распределение авторского содержимого принадлежит
-[Slot в JSX](../../jsx/slot/notes/design.md).
+[Slot в JSX](../../../jsx/slot/plan/meta/notes/design.md).
 
 ## Текущее ограничение
 
-В [runtime](../src/runtime.ts) `prepareSingleRange` ищет существующий экземпляр
+В [runtime](../../src/runtime.ts) `prepareSingleRange` ищет существующий экземпляр
 только в `binding.child`, `prepareKeyedRange` — в `binding.childrenByKey`.
 Одинаковые template/key в разных областях не связывают экземпляры.
 При смене области создаётся новый экземпляр, прежний размонтируется;

@@ -1174,7 +1174,7 @@ class ComponentInstance<Props> {
   }
 }
 
-// TODO(slot-transfer): перенос экземпляра между областями — ../notes/slot-transfer.md.
+// TODO(slot-transfer): перенос экземпляра между областями — ../meta/notes/slot-transfer.md.
 function prepareSingleRange(
   owner: ComponentInstance<unknown>,
   binding: RuntimeChildBinding | RuntimeConditionalBinding,

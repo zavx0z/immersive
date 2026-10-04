@@ -1,15 +1,15 @@
 # Дальнейшее развитие слотов
 
-Действующее распределение описано в [публичном входе Slot](../index.ts),
-его [контрактах](../contract/input.ts) и
-[исполняемых сценариях](../spec/scenario.spec.ts).
+Действующее распределение описано в [публичном входе Slot](../../index.ts),
+его [контрактах](../../contract/input.ts) и
+[исполняемых сценариях](../../spec/scenario.spec.ts).
 Синтаксис `<slot>` принадлежит JSX и не требует Shadow DOM.
 
 ## Сохранение экземпляра при смене области
 
 Динамические имена сейчас отвергаются. Будущая смена slot должна сохранять
 state, DOM identity, focus, refs и effects. Ответственность и места реализации
-сохранены в [заметке Component](../../../component/notes/slot-transfer.md).
+сохранены в [заметке Component](../../../../../component/meta/notes/slot-transfer.md).
 Существующий remount между областями не является выполнением этого контракта.
 
 ## Произвольная разметка через границу компонента
@@ -20,8 +20,8 @@ Intrinsic-поддеревья и fragments через границу component 
 контракта захвата выражений, CSS-владения и сценариев. Не добавлять обход
 только в Headless или отдельном consumer.
 
-[Правила размещения](../../../../storybook/archetypes/entity/notes/draft-placement.md),
-[контракты](../../../../storybook/archetypes/specs/contracts/notes/draft-contracts.md)
-и [руководство сценариев](../../../../storybook/archetypes/specs/scenarios/spec/scenario.spec.ts)
+[Правила размещения](../../../../../../storybook/component/meta/notes/draft-placement.md),
+[контракты](../../../../../../storybook/contracts/meta/notes/draft-contracts.md)
+и [руководство сценариев](../../../../../../storybook/specs/scenarios/spec/scenario.spec.ts)
 остаются у Archetypes. Заметка сохраняется до переноса оставшегося смысла
-в реализацию и проверки по [правилу жизненного цикла](../../../../storybook/archetypes/notes/note-lifecycle.md).
+в реализацию и проверки по [правилу жизненного цикла](../../../../../../storybook/package/meta/notes/note-lifecycle.md).

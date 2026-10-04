@@ -296,7 +296,7 @@ ui/
 экспорт — default; контрактные типы именованы. Домены назначают публичные имена
 реализациям, сохраняя владельцев. Общие расчёты, модели и ресурсы используются
 через публичные входы своих пакетов. Состав всех пакетов объявляет только Repo.
-Нормы размещения принадлежат [Archetypes](../storybook/archetypes/notes/draft-structure.md).
+Нормы размещения принадлежат [Archetypes](../storybook/package/meta/notes/draft-structure.md).
 
 `FieldGroup` принадлежит `field`, `ToggleButtonGroup` — `button`, а
 `Breadcrumbs` — `navigation`. Модели редактирования и терминального вывода

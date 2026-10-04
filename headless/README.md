@@ -54,7 +54,7 @@ Headless не владеет отдельным JSX runtime. Штатный pers
 последовательную обработку; новый запуск Bun получает собственную сессию.
 Для программной передачи компонента и props отдельно используется
 [`renderComponent`](contract/output.ts). Сценарии компонентов следуют
-[правилу render](../../storybook/archetypes/specs/scenarios/spec/scenario.spec.ts).
+[правилу render](../../storybook/specs/scenarios/spec/scenario.spec.ts).
 
 Один host сохраняет Document, компонентный root, Canvas, Renderer, Space
 и ViewPoint до `dispose`. Повторный render того же template/key обновляет props
@@ -62,7 +62,7 @@ Headless не владеет отдельным JSX runtime. Штатный pers
 элемента. Компонент должен иметь один внешний Element, а снимаемая область —
 полностью помещаться в настроенный viewport.
 
-[Браузерный контракт Headless](notes/browser-api.md) определяет единое поведение
+[Браузерный контракт Headless](meta/notes/browser-api.md) определяет единое поведение
 API для компонентов и Renderer. Изображения проходят через
 [createImageBitmap](image-bitmap.ts) и
 [GPUQueue.copyExternalImageToTexture](external-image.ts) внутри Headless;

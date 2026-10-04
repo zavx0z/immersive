@@ -21,6 +21,6 @@ DocumentFragment. Staging новых компонентов остаётся п�
 через границу слота и fragment вместо keyed component в `.map()` пока
 не принимаются. Существующие governed component children остаются доступны.
 
-Проверка: [проверка фрагментов](../test/fragments.test.ts) и [исходный пример](../test/fragments.fixture.tsx) — вложенность,
+Проверка: [проверка фрагментов](../../test/fragments.test.ts) и [исходный пример](../../test/fragments.fixture.tsx) — вложенность,
 пустой и текстовый корень, keyed reorder, identity, focus, state и однократный
 cleanup. CodeEditor и Markdown используют этот же механизм.
