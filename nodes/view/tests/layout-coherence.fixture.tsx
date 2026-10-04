@@ -1,14 +1,14 @@
 import {ModelGraphView} from "./model-view.fixture.tsx"
-import {createRoot, useMemo, useSyncExternalStore} from "@immersive/component"
-import type {Document, Element} from "@immersive/dom"
-import {layoutFixed} from "@immersive-nodes/layout/fixed"
-import type {LayoutResult} from "@immersive-nodes/layout/types"
-import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeJsonValue, type NodeTreeSnapshot} from "@immersive-nodes/tree"
-import {GraphEditor} from "@immersive/nodes/editor"
-import planProjectedNodeGeometry from "@immersive-nodes-geometry-node/project"
-import {nodeSocketLayoutPortId, socketKey, type NodeTreeLayout, type NodeTreeSelection, type NodeTreeTransform} from "@immersive/nodes/view/tree"
-import type {ImmersiveNodesProjectionParameter} from "@immersive-nodes-projection/parameter"
-type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+import {createRoot, useMemo, useSyncExternalStore} from "@zavx0z/immersive-component"
+import type {Document, Element} from "@zavx0z/immersive-dom"
+import {layoutFixed} from "@zavx0z/immersive-nodes-layout/fixed"
+import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
+import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeJsonValue, type NodeTreeSnapshot} from "@zavx0z/immersive-nodes-tree"
+import {GraphEditor} from "@zavx0z/immersive-nodes/editor"
+import planProjectedNodeGeometry from "@zavx0z/immersive-nodes-geometry-node-project"
+import {nodeSocketLayoutPortId, socketKey, type NodeTreeLayout, type NodeTreeSelection, type NodeTreeTransform} from "@zavx0z/immersive-nodes/view/tree"
+import type {Zavx0zImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
+type ParameterInput = Parameters<NonNullable<Zavx0zImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
 
 export function textParameter(value: string) {
   return new Parameter<NodeJsonValue, NodeJsonValue>("message", value, {label: "Сообщение"}, {id: "string", version: 1})

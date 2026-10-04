@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-theme-icon/language",
+  "name": "@zavx0z/immersive-ui-theme-icon-language",
   "label": "languageIcon",
   "version": "0.0.0",
   "description": "SVG-значок language в формате data URL",
@@ -11,13 +11,13 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-theme-icon/compose": "workspace:*"
+    "@zavx0z/immersive-ui-theme-icon-compose": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-ui-theme/icon": "workspace:*"
+    "@zavx0z/immersive-ui-theme-icon": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 import type {CycleOptionProps} from "./types.ts"
-import Button from "@immersive-ui-component-button/basic"
+import Button from "@zavx0z/immersive-ui-component-button-basic"
 
 /** Частная подготовка поле интерфейса: циклический выбор. */
 export function CycleOption(props: CycleOptionProps) {

@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import JsxCompileError from "@immersive-jsx-compiler/error"
+import JsxCompileError from "@zavx0z/immersive-jsx-compiler-error"
 
 describe.each([
   {name: "Ошибка компонента", props: {message: "Неизвестный слот", sourcePath: "/app/panel.tsx"}},

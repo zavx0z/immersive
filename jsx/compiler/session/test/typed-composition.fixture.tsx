@@ -1,4 +1,4 @@
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 function Action(props: {id: string}) {
   return <button data-action={props.id}>{props.id}</button>

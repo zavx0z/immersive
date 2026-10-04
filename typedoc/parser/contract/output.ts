@@ -1,7 +1,7 @@
 import type {TypeDocDocument, TypeDocSource} from "../../shared/types/model.ts"
 
 /**
-Данные после выполнения {@link @immersive/typedoc/parser#analyzeTypeDoc | analyzeTypeDoc}.
+Данные после выполнения {@link @zavx0z/immersive-typedoc/parser#analyzeTypeDoc | analyzeTypeDoc}.
 Результат сериализуется в JSON и не содержит объектов компилятора.
 
 Функция возвращает Promise этого результата. При отсутствии файла,

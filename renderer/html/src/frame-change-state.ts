@@ -1,4 +1,4 @@
-import type {Element} from "@immersive/dom"
+import type {Element} from "@zavx0z/immersive-dom"
 import {isImmutableArray} from "./immutable-array.ts"
 import type {DisplayItem, RenderFrame, RenderTransform} from "./types.ts"
 import type {CanonicalStructuralSplice} from "./frame-structural.ts"

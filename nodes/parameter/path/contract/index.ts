@@ -1,10 +1,10 @@
-import type {ImmersiveUiComponentFieldPath} from "@immersive-ui-component-field/path"
-type PathFieldProps = ImmersiveUiComponentFieldPath.Input
-import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {Zavx0zImmersiveUiComponentFieldPath} from "@zavx0z/immersive-ui-component-field-path"
+type PathFieldProps = Zavx0zImmersiveUiComponentFieldPath.Input
+import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace ImmersiveNodesParameterPath {
+export declare namespace Zavx0zImmersiveNodesParameterPath {
   /**
   Входные данные параметра пути, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace ImmersiveNodesParameterPath {
 
   @example
   ```ts
-  const input: ImmersiveNodesParameterPath.Input = {
+  const input: Zavx0zImmersiveNodesParameterPath.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace ImmersiveNodesParameterPath {
   }
   ```
   */
-  interface Input extends ImmersiveNodesParameter.Input {
+  interface Input extends Zavx0zImmersiveNodesParameter.Input {
     readonly value: PathFieldProps["value"]
     readonly placeholder?: PathFieldProps["placeholder"]
     readonly density?: PathFieldProps["density"]
@@ -45,7 +45,7 @@ export declare namespace ImmersiveNodesParameterPath {
     readonly onBrowse?: PathFieldProps["onBrowse"]
   }
 
-  type Slots = ImmersiveNodesParameter.Slots
+  type Slots = Zavx0zImmersiveNodesParameter.Slots
 
-  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

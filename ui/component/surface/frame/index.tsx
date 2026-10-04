@@ -6,16 +6,16 @@
 */
 import {FrameEdgeIndicator} from "./src/helpers.tsx"
 import {FrameHandleButton} from "./src/helpers.tsx"
-import type {ImmersiveUiComponentSurfaceFrame as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentSurfaceFrame as Contract} from "./contract"
 import {assertEdge} from "./src/helpers.tsx"
-import assertSurfaceActions from "@immersive-ui-surface/assert-actions"
-import SurfaceBody from "@immersive-ui-component-surface-chrome/body"
-import SurfaceHeader from "@immersive-ui-component-surface-chrome/header"
-import SurfaceNavigation from "@immersive-ui-component-surface-chrome/navigation"
-import SurfaceOwner from "@immersive-ui-component-surface-chrome/owner"
-import SurfaceTitle from "@immersive-ui-component-surface-chrome/title"
+import assertSurfaceActions from "@zavx0z/immersive-ui-surface-assert-actions"
+import SurfaceBody from "@zavx0z/immersive-ui-component-surface-chrome-body"
+import SurfaceHeader from "@zavx0z/immersive-ui-component-surface-chrome-header"
+import SurfaceNavigation from "@zavx0z/immersive-ui-component-surface-chrome-navigation"
+import SurfaceOwner from "@zavx0z/immersive-ui-component-surface-chrome-owner"
+import SurfaceTitle from "@zavx0z/immersive-ui-component-surface-chrome-title"
 
-export type {ImmersiveUiComponentSurfaceFrame} from "./contract"
+export type {Zavx0zImmersiveUiComponentSurfaceFrame} from "./contract"
 
 
 export default function Frame(props: Contract.Input): Contract.Output {

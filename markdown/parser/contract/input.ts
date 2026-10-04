@@ -1,5 +1,5 @@
 /**
-Вход {@link @immersive/markdown/parser#parseMarkdown | parseMarkdown} для CommonMark
+Вход {@link @zavx0z/immersive-markdown/parser#parseMarkdown | parseMarkdown} для CommonMark
 с таблицами и инертной HTML-проекцией.
 
 @property source - Исходный текст; нестроковое значение приводит к TypeError.

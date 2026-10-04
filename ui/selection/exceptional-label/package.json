@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-selection/exceptional-label",
+  "name": "@zavx0z/immersive-ui-selection-exceptional-label",
   "label": "selectionExceptionalLabel",
   "version": "0.0.0",
   "description": "Обработка selection-exceptional-label",
@@ -11,13 +11,13 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-selection/validate-options": "workspace:*"
+    "@zavx0z/immersive-ui-selection-validate-options": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-ui-selection/validate-state": "workspace:*"
+    "@zavx0z/immersive-ui-selection-validate-state": "workspace:*"
   }
 }

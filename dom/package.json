@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/dom",
+  "name": "@zavx0z/immersive-dom",
   "label": "DOM",
   "version": "0.0.0",
   "description": "Семантический документ, элементы, атрибуты, события, фокус и состояние полей",
@@ -74,7 +74,7 @@
     "typescript": "7.0.2"
   },
   "devDependencies": {
-    "@immersive-jsx-compiler/bun": "workspace:*",
-    "@immersive/jsx": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-jsx": "workspace:*"
   }
 }

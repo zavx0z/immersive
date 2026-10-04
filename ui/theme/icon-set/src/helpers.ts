@@ -1,6 +1,6 @@
-import imageIcon from "@immersive-ui-theme-icon/image"
-import iconSvg from "@immersive-ui-theme-icon/compose"
-import svgIcon from "@immersive-tech-svg/encode"
+import imageIcon from "@zavx0z/immersive-ui-theme-icon-image"
+import iconSvg from "@zavx0z/immersive-ui-theme-icon-compose"
+import svgIcon from "@zavx0z/immersive-tech-svg-encode"
 
 /** Частная подготовка именованный набор значков интерфейса. */
 export const restartSvg = /* @__PURE__ */ iconSvg("<path d=\"M20 7v5h-5\"/><path d=\"M20 12a8 8 0 1 0-2.34 5.66\"/>")

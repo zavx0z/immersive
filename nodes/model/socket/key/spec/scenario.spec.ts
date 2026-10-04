@@ -1,6 +1,6 @@
 /** Кодирование адреса сохраняет любые строковые идентификаторы без коллизии разделителей. */
 import {describe, expect, test} from "bun:test"
-import key from "@immersive-nodes-model-socket/key"
+import key from "@zavx0z/immersive-nodes-model-socket-key"
 
 describe.each([
   {name: "Обычный адрес", props: {nodeId: "source", socketId: "out"}},

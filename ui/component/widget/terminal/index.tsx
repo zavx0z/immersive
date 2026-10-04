@@ -4,24 +4,24 @@
 
 @packageDocumentation
 */
-import type {ImmersiveTechTerminal} from "@immersive-tech/terminal"
-type TerminalLine = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]
+import type {Zavx0zImmersiveTechTerminal} from "@zavx0z/immersive-tech-terminal"
+type TerminalLine = Zavx0zImmersiveTechTerminal.Output["snapshot"]["lines"][number]
 import {MemoTerminalLine} from "./src/helpers.tsx"
-import type {ImmersiveUiComponentWidgetTerminal as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentWidgetTerminal as Contract} from "./contract"
 import type {TerminalSelectionSnapshot} from "./contract/types.ts"
 import type {TerminalTextPosition} from "./contract/types.ts"
 import {emptyLines} from "./src/helpers.tsx"
 import {readTerminalSelectionOffsets} from "./src/selection.ts"
-import {useCallback} from "@immersive/component"
-import {useLayoutEffect} from "@immersive/component"
-import {useRef} from "@immersive/component"
-import {useState} from "@immersive/component"
-import {useSyncExternalStore} from "@immersive/component"
-import TextField from "@immersive-ui-component-field/text"
-import WidgetHeader from "@immersive-ui-component-widget/header"
+import {useCallback} from "@zavx0z/immersive-component"
+import {useLayoutEffect} from "@zavx0z/immersive-component"
+import {useRef} from "@zavx0z/immersive-component"
+import {useState} from "@zavx0z/immersive-component"
+import {useSyncExternalStore} from "@zavx0z/immersive-component"
+import TextField from "@zavx0z/immersive-ui-component-field-text"
+import WidgetHeader from "@zavx0z/immersive-ui-component-widget-header"
 
 
-export type {ImmersiveUiComponentWidgetTerminal} from "./contract"
+export type {Zavx0zImmersiveUiComponentWidgetTerminal} from "./contract"
 
 export default function Terminal(props: Contract.Input): Contract.Output {
   const inputHost = useRef<HTMLDivElement | null>(null)

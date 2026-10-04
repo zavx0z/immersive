@@ -736,7 +736,7 @@
       "status": "partial"
     }
   },
-  "compilerOwner": "@immersive/template",
+  "compilerOwner": "@zavx0z/immersive-template",
   "featureCount": 147,
   "features": {
     "browserExecution": "unsupported",
@@ -789,7 +789,7 @@
     "useTransition": "unsupported"
   },
   "npmReactDependency": false,
-  "package": "@immersive/component",
+  "package": "@zavx0z/immersive-component",
   "reactDomHost": false,
   "reactPackageAlias": false,
   "reference": "React 19.2 complete reference profile",

@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, ClipboardEvent, InputEvent, HTMLElement} from "@immersive/dom"
+import {createDocument, ClipboardEvent, InputEvent, HTMLElement} from "@zavx0z/immersive-dom"
 import {createDocumentClipboardController} from "../clipboard.ts"
 
 test("menu copy preserves the selected source while menu focus changes", async () => {

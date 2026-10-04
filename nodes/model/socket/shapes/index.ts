@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {ImmersiveNodesModelSocketShapes as Contract} from "./contract"
-export type {ImmersiveNodesModelSocketShapes} from "./contract"
+import type {Zavx0zImmersiveNodesModelSocketShapes as Contract} from "./contract"
+export type {Zavx0zImmersiveNodesModelSocketShapes} from "./contract"
 
 const SOCKET_SHAPES: Contract.Output = Object.freeze([
   "circle",

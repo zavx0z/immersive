@@ -5,8 +5,8 @@
 @packageDocumentation
 */
 
-import type {NodeJsonValue} from "@immersive-nodes/tree"
-import parameterMetrics from "@immersive-nodes-geometry/parameter"
+import type {NodeJsonValue} from "@zavx0z/immersive-nodes-tree"
+import parameterMetrics from "@zavx0z/immersive-nodes-geometry-parameter"
 const {PARAMETER_OUTPUT_HEIGHT} = parameterMetrics
 
 export function ParameterOutput(props: Readonly<{

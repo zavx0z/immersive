@@ -3,31 +3,31 @@
 
 @packageDocumentation
 */
-import socketKey from "@immersive-nodes-model-socket/key"
+import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 
-import socketMetrics from "@immersive-nodes-model-socket/metrics"
+import socketMetrics from "@zavx0z/immersive-nodes-model-socket-metrics"
 const {NODE_BORDER_WIDTH} = socketMetrics
-import {hasSlot} from "@immersive/component/slot-presence"
-import Button from "@immersive-ui-component-button/basic"
-import IconButton from "@immersive-ui-component-button/icon"
-import chevronDownIcon from "@immersive-ui-theme-icon/chevron-down"
-import chevronRightIcon from "@immersive-ui-theme-icon/chevron-right"
-import Parameter from "@immersive-nodes-projection/parameter"
-import type {ImmersiveNodesProjectionParameter} from "@immersive-nodes-projection/parameter"
-type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
-import {metadataBoolean, metadataString} from "@immersive-tech-json/metadata"
-import parameterSpacingBefore from "@immersive-nodes-geometry-node/spacing"
-import Socket from "@immersive-nodes/socket"
-import resolveSocketKind from "@immersive-nodes-model-socket/resolve-kind"
-import resolveSocketShape from "@immersive-nodes-model-socket/resolve-shape"
-import nodeMetrics from "@immersive-nodes-geometry-node/metrics"
+import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import Button from "@zavx0z/immersive-ui-component-button-basic"
+import IconButton from "@zavx0z/immersive-ui-component-button-icon"
+import chevronDownIcon from "@zavx0z/immersive-ui-theme-icon-chevron-down"
+import chevronRightIcon from "@zavx0z/immersive-ui-theme-icon-chevron-right"
+import Parameter from "@zavx0z/immersive-nodes-projection-parameter"
+import type {Zavx0zImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
+type ParameterInput = Parameters<NonNullable<Zavx0zImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+import {metadataBoolean, metadataString} from "@zavx0z/immersive-tech-json-metadata"
+import parameterSpacingBefore from "@zavx0z/immersive-nodes-geometry-node-spacing"
+import Socket from "@zavx0z/immersive-nodes-socket"
+import resolveSocketKind from "@zavx0z/immersive-nodes-model-socket-resolve-kind"
+import resolveSocketShape from "@zavx0z/immersive-nodes-model-socket-resolve-shape"
+import nodeMetrics from "@zavx0z/immersive-nodes-geometry-node-metrics"
 const {NODE_BODY_PADDING_TOP, NODE_BODY_PADDING_BOTTOM, NODE_ROW_GAP} = nodeMetrics
 import {prepareParameterNode} from "./src/prepare.ts"
-import type {ImmersiveNodesNodeParameter as Contract} from "./contract"
-import planProjectedNodeGeometry from "@immersive-nodes-geometry-node/project"
+import type {Zavx0zImmersiveNodesNodeParameter as Contract} from "./contract"
+import planProjectedNodeGeometry from "@zavx0z/immersive-nodes-geometry-node-project"
 const {NODE_HEADER_HEIGHT, NODE_MINIMUM_WIDTH} = nodeMetrics
 
-export type {ImmersiveNodesNodeParameter} from "./contract"
+export type {Zavx0zImmersiveNodesNodeParameter} from "./contract"
 
 /** Объединяет корпус, шапку, действия, параметры и сокеты. Ширина задаётся CSS, тень принадлежит общей теме или составной ContentNode. */
 export default function ParameterNode(props: Contract.Input): Contract.Output {

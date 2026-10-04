@@ -1,6 +1,6 @@
 /** findSelectionOption показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@immersive-ui-selection/find-option"
+import operation from "@zavx0z/immersive-ui-selection-find-option"
 
 describe.each([{name: "Публичный вызов", props: {args: ["a", [{key: "a", value: "a", label: "Первый"}]] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

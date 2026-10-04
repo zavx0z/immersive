@@ -6,10 +6,10 @@
 
 | Владелец | Проверка | Результат |
 | --- | --- | --- |
-| @immersive/nodes | bun run --cwd nodes check | 53 теста, 4105 assertions, typecheck PASS |
-| @immersive-nodes/node, до удаления устаревших историй | bun run --cwd nodes/node check | 27 тестов, 316 assertions, typecheck PASS |
-| @immersive/markdown | bun run --cwd markdown check | 25 тестов, 328 assertions, typecheck PASS |
-| @immersive-nodes/node, после удаления устаревших историй | bun run --cwd nodes/node check | 25 тестов, 209 assertions, typecheck PASS |
+| @zavx0z/immersive-nodes | bun run --cwd nodes check | 53 теста, 4105 assertions, typecheck PASS |
+| @zavx0z/immersive-nodes-node, до удаления устаревших историй | bun run --cwd nodes/node check | 27 тестов, 316 assertions, typecheck PASS |
+| @zavx0z/immersive-markdown | bun run --cwd markdown check | 25 тестов, 328 assertions, typecheck PASS |
+| @zavx0z/immersive-nodes-node, после удаления устаревших историй | bun run --cwd nodes/node check | 25 тестов, 209 assertions, typecheck PASS |
 
 Проверены отсутствие неявного kind, все 19 явных Socket kinds, приоритет color,
 компоненты start/end/both, смешанные виды, legacy flags и advanced markers,
@@ -22,16 +22,16 @@ DiagramNode проверяют fill/border/padding/typography и измерен�
 Использованы только инструменты Storybook MCP. Проверенные кандидаты были
 ready/presented, diagnostics и consoleErrors пусты.
 
-- @immersive/nodes, b24ad300edaa280475b0b140: components/link/orthogonal,
+- @zavx0z/immersive-nodes, b24ad300edaa280475b0b140: components/link/orthogonal,
   arrows, filled-arrows, mixed-markers, types, color; marker/arrow/open и filled.
   На preview видны нейтральная связь без стрелок, отдельные start/end/both,
   смешанные фигуры, 20 строк default+явные типы и приоритет color.
-- @immersive-nodes/node, 337a8aa6a7ce2818f7d8838c: diagram/rectangle показывает общий
+- @zavx0z/immersive-nodes-node, 337a8aa6a7ce2818f7d8838c: diagram/rectangle показывает общий
   DiagramNode с новым оформлением.
-- @immersive-nodes/node, fac58f4d97dcd512085240fe: обзор diagram → кнопка «Зависимости».
+- @zavx0z/immersive-nodes-node, fac58f4d97dcd512085240fe: обзор diagram → кнопка «Зависимости».
   Runtime viewer показывает шесть DiagramNode и пять нейтральных связей
   с открытыми Arrow. Capture: capture_jF9Eune5Zl2ZrfVdluaJvBXp.
-- @immersive/markdown, ad063b17b3b3d913e7ccc7db: components/data/markdown/mermaid/flowchart.
+- @zavx0z/immersive-markdown, ad063b17b3b3d913e7ccc7db: components/data/markdown/mermaid/flowchart.
   После стабилизации layout кнопка «Граф из обсуждения» показывает семь нод
   с заполненными Arrow, прежними асимметричными размерами и shared defaults.
 
@@ -58,7 +58,7 @@ Markdown fdc479f14d33ccdeea361f69 и Node fac58f4d97dcd512085240fe.
 категории и предмета в поиске Storybook и сохранение diagram. Обзор diagram →
 «Зависимости» проверен: ready/presented, frame64, diagnostics/consoleErrors пусты.
 Capture capture_GEc0Gl6OyGhHNK33JjWF3wGW фиксирует этот просмотр.
-После live check и wait active ревизия проверки очистки @immersive-nodes/node:
+После live check и wait active ревизия проверки очистки @zavx0z/immersive-nodes-node:
 cd0fe61a58465d8d78d16364, active=lastWorking, failed/built/candidate/activating=null,
 diagnostics пусты, незавершённых MCP операций на этом этапе нет.
 
@@ -74,7 +74,7 @@ Dependencies. После уточнения пользователя runtime-з�
 Display 180×80 и сохранение identity нод.
 
 Исправленный candidate 549f450680fe363f74ba25d1 проверен до применения;
-после обновления declaration применена @immersive-nodes/node 35283672516f80c750589c20.
+после обновления declaration применена @zavx0z/immersive-nodes-node 35283672516f80c750589c20.
 Повторная проверка именно этой active revision: diagram → «Зависимости»,
 ready/presented, frame5, diagnostics/consoleErrors пусты. Capture
 capture_PFA8bDRRr0St_zlnNaUh5fNv совпал по SHA с исправленным candidate capture

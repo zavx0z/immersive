@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
-import {Text, TrueTypeFont} from "@immersive/engine"
-import {createDocumentRenderer, readCanonicalRenderFrameChanges} from "@immersive-renderer/html"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {Text, TrueTypeFont} from "@zavx0z/immersive-engine"
+import {createDocumentRenderer, readCanonicalRenderFrameChanges} from "@zavx0z/immersive-renderer-html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 import {PaintVisibilityIndex} from "../src/paint-visibility-index.ts"
 

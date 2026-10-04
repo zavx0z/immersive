@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-theme-syntax/name",
+  "name": "@zavx0z/immersive-ui-theme-syntax-name",
   "label": "activeSyntaxThemeName",
   "version": "0.0.0",
   "description": "Название активной синтаксической темы",
@@ -11,10 +11,10 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-theme-syntax/active": "workspace:*"
+    "@zavx0z/immersive-ui-theme-syntax-active": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-projection-parameter/presentation",
+  "name": "@zavx0z/immersive-nodes-projection-parameter-presentation",
   "label": "Представление Parameter",
   "version": "0.0.0",
   "description": "Определяет вид и значения представления снимка Parameter без JSX и Store",
@@ -10,15 +10,15 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@immersive-tech-json/metadata": "workspace:*"
+    "@zavx0z/immersive-tech-json-metadata": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-tech-json-value/own": "workspace:*",
-    "@immersive-nodes-model-parameter/store": "workspace:*",
-    "@immersive-ui-component-field/collection": "workspace:*",
-    "@immersive-ui-component-field/color": "workspace:*",
-    "@immersive-ui-component-field/reference": "workspace:*",
-    "@immersive-ui-component-field/select": "workspace:*"
+    "@zavx0z/immersive-tech-json-value-own": "workspace:*",
+    "@zavx0z/immersive-nodes-model-parameter-store": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-collection": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-color": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-reference": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-select": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",

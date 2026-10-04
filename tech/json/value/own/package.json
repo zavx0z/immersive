@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-tech-json-value/own",
+  "name": "@zavx0z/immersive-tech-json-value-own",
   "label": "own",
   "version": "0.0.0",
   "description": "Создаёт принадлежащее вызывающему владельцу глубоко замороженное JSON-значение",

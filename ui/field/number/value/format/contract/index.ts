@@ -2,7 +2,7 @@
 
 
 /** Представление числового значения. */
-export declare namespace ImmersiveUiFieldNumberValueFormat {
+export declare namespace Zavx0zImmersiveUiFieldNumberValueFormat {
   /** Аргументы публичной операции formatNumberValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,

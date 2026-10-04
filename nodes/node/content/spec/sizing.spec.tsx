@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import ContentNode from "@immersive-nodes-node/content"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import ContentNode from "@zavx0z/immersive-nodes-node-content"
 
 test("CSS ширина ContentNode определяет квадрат без внешнего плана", async () => {
   const headless = createHeadless({width: 400, height: 560})

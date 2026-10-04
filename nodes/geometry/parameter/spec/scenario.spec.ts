@@ -1,6 +1,6 @@
 /** Метрики описывают отдельный интервал и высоту текстового вывода в одной единице. */
 import {describe, expect, test} from "bun:test"
-import metrics from "@immersive-nodes-geometry/parameter"
+import metrics from "@zavx0z/immersive-nodes-geometry-parameter"
 
 describe.each([{name: "Логические пиксели", props: {unit: "CSS px"}}])("$name", ({props}) => {
   const result = metrics

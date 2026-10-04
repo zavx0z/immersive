@@ -1,17 +1,17 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@immersive/component"
-import {createDocument} from "@immersive/dom"
-import {flushDocumentLayoutObservers} from "@immersive/dom/geometry"
-import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {ImmersiveUiComponentSurfaceTab} from "@immersive-ui-component-surface/tab"
-type TabProps = ImmersiveUiComponentSurfaceTab.Input
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
+import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {Zavx0zImmersiveUiComponentSurfaceTab} from "@zavx0z/immersive-ui-component-surface-tab"
+type TabProps = Zavx0zImmersiveUiComponentSurfaceTab.Input
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {default: Tab} = await import("@immersive-ui-component-surface/tab")
+const {default: Tab} = await import("@zavx0z/immersive-ui-component-surface-tab")
 const {TabChildrenFixture, TabVerticalLabelFixture} = await import("./tab.fixture.tsx")
 const theme = await Bun.file(resolve(workspace, "ui/component/theme/theme.css")).text()
 

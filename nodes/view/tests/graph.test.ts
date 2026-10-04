@@ -1,15 +1,15 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
-import {createDocument, MouseEvent, PointerEvent, WheelEvent} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {GraphViewProps, GraphSelection} from "@immersive/nodes/view"
+import {createDocument, MouseEvent, PointerEvent, WheelEvent} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {GraphViewProps, GraphSelection} from "@zavx0z/immersive-nodes/view"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(root, path))}))
-const {GraphView} = await import("@immersive/nodes/view")
+const {GraphView} = await import("@zavx0z/immersive-nodes/view")
 const {scene, MeasurementNode} = await import("./graph.fixture.tsx")
 
 test("[GRAPH-VIEW-001] просмотр самостоятельно выполняет навигацию и сохраняет состояние при pending и смене режима", async () => {

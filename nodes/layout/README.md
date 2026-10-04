@@ -1,6 +1,6 @@
 # Раскладка
 
-`@immersive-nodes/layout` принимает измеренный числовой граф и возвращает геометрию.
+`@zavx0z/immersive-nodes-layout` принимает измеренный числовой граф и возвращает геометрию.
 Пакет не измеряет текст, не создаёт DOM, Canvas, Renderer или NodeTree и не
 управляет панорамированием. Его production-зависимости — Dagre и d3-dag.
 
@@ -19,7 +19,7 @@ Production-диапазон `maxNodesPerLayer` у Coffman–Graham — цело�
 Пустой массив `crossings` означает только отсутствие пересечений на данном входе.
 
 Фиксированная политика экспортирует `FixedLayoutInput` и `FixedLayoutOutput` из
-`@immersive-nodes/layout` и `@immersive-nodes/layout/fixed`. Они заменили прежние alias общего
+`@zavx0z/immersive-nodes-layout` и `@zavx0z/immersive-nodes-layout/fixed`. Они заменили прежние alias общего
 протокола `FixedLayoutGraph` и `FixedLayoutResult`; `layoutFixed` принимает
 измеренный вход и возвращает ту же числовую геометрию со сторонами портов.
 

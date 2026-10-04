@@ -1,8 +1,8 @@
 /** Все виды сокетов используют один адресуемый семантический элемент. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import Socket from "@immersive-nodes/socket"
-import kinds from "@immersive-nodes-model-socket/kinds"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import Socket from "@zavx0z/immersive-nodes-socket"
+import kinds from "@zavx0z/immersive-nodes-model-socket-kinds"
 
 describe.each(kinds.map(kind => ({name: kind, props: {kind, id: "value", nodeId: "source", label: "Значение"}})))("$name", async ({props}) => {
   const headless = createHeadless({width: 240, height: 80})

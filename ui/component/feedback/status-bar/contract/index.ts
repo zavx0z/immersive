@@ -1,10 +1,10 @@
-import type {ImmersiveUiComponentFeedback} from "@immersive-ui-component/feedback/contract"
+import type {Zavx0zImmersiveUiComponentFeedback} from "@zavx0z/immersive-ui-component-feedback/contract"
 import type {StatusBarItem} from "./types.ts"
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace ImmersiveUiComponentFeedbackStatusBar {
+export declare namespace Zavx0zImmersiveUiComponentFeedbackStatusBar {
   /**
   Входные данные StatusBar.
   */
@@ -21,5 +21,5 @@ export declare namespace ImmersiveUiComponentFeedbackStatusBar {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = ImmersiveUiComponentFeedback.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveUiComponentFeedback.Output & JSX.Element<Slots>
 }

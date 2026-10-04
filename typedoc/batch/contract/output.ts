@@ -1,7 +1,7 @@
 import type {AnalyzeTypeDocsResult} from "../types/result.ts"
 
 /**
-Результаты {@link @immersive/typedoc/batch#analyzeTypeDocs | analyzeTypeDocs}
+Результаты {@link @zavx0z/immersive-typedoc/batch#analyzeTypeDocs | analyzeTypeDocs}
 после закрытия общей TypeScript API session.
 
 Ошибка конкретного исходника представлена своей строкой и не удаляет успешные

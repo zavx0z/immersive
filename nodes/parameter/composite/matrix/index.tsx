@@ -6,14 +6,14 @@ MatrixParameter соединяет публичный MatrixField с компо�
 @packageDocumentation
 */
 
-import MatrixField from "@immersive-ui-component-field/matrix"
-import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
-import type {ImmersiveNodesParameterCompositeMatrix as Contract} from "./contract"
+import MatrixField from "@zavx0z/immersive-ui-component-field-matrix"
+import ParameterLayout from "@zavx0z/immersive-nodes-parameter-shared-layout"
+import type {Zavx0zImmersiveNodesParameterCompositeMatrix as Contract} from "./contract"
 
-export type {ImmersiveNodesParameterCompositeMatrix} from "./contract"
+export type {Zavx0zImmersiveNodesParameterCompositeMatrix} from "./contract"
 
 /**
-Авторский контракт MatrixParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
+Авторский контракт MatrixParameter; общий протокол описан в Zavx0zImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property value - Квадратная числовая матрица размером 2, 3 или 4.
 */

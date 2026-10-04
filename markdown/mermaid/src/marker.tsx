@@ -1,6 +1,6 @@
-import {useContext} from "@immersive/component"
-import {Arrow} from "@immersive/nodes/marker/arrow"
-import type {MarkerProps} from "@immersive/nodes/marker"
+import {useContext} from "@zavx0z/immersive-component"
+import {Arrow} from "@zavx0z/immersive-nodes/marker/arrow"
+import type {MarkerProps} from "@zavx0z/immersive-nodes/marker"
 import {MermaidHorizontal} from "./graph-context.ts"
 
 /**

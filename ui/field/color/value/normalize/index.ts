@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldColorValueNormalize as Contract} from "./contract"
-export type {ImmersiveUiFieldColorValueNormalize} from "./contract"
+import type {Zavx0zImmersiveUiFieldColorValueNormalize as Contract} from "./contract"
+export type {Zavx0zImmersiveUiFieldColorValueNormalize} from "./contract"
 
-import clampUnit from "@immersive-ui-field-color-value/clamp-unit"
+import clampUnit from "@zavx0z/immersive-ui-field-color-value-clamp-unit"
 
 
 export default function normalizeColorValue(value: Contract.Input[0]): Contract.Output {

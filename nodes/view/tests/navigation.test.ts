@@ -1,16 +1,16 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, MouseEvent, WheelEvent} from "@immersive/dom"
-import {flushDocumentLayoutObservers} from "@immersive/dom/geometry"
-import {createRoot} from "@immersive/component"
-import {createDocumentRenderer, createDocumentInteractionController} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {GraphScene, GraphTransform, GraphViewProps} from "@immersive/nodes/view"
+import {createDocument, MouseEvent, WheelEvent} from "@zavx0z/immersive-dom"
+import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocumentRenderer, createDocumentInteractionController} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {GraphScene, GraphTransform, GraphViewProps} from "@zavx0z/immersive-nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(workspace, path))}))
-const {GraphView} = await import("@immersive/nodes/view")
+const {GraphView} = await import("@zavx0z/immersive-nodes/view")
 const {CounterNode} = await import("./graph.fixture.tsx")
 const scene: GraphScene = {
   bounds: {x: 0, y: 0, width: 20000, height: 10000},

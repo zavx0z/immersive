@@ -1,18 +1,18 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, MouseEvent, type Element} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {LinkProps} from "@immersive/nodes/link"
-import type {LinkDefinition} from "@immersive/nodes/link/types"
-import SOCKET_KINDS from "@immersive-nodes-model-socket/kinds"
-import socketPreset from "@immersive-nodes-model-socket/preset"
+import {createDocument, MouseEvent, type Element} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {LinkProps} from "@zavx0z/immersive-nodes/link"
+import type {LinkDefinition} from "@zavx0z/immersive-nodes/link/types"
+import SOCKET_KINDS from "@zavx0z/immersive-nodes-model-socket-kinds"
+import socketPreset from "@zavx0z/immersive-nodes-model-socket-preset"
 
 const root = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")]}))
-const {Link} = await import("@immersive/nodes/link")
+const {Link} = await import("@zavx0z/immersive-nodes/link")
 const route: LinkDefinition["route"] = {kind: "orthogonal", points: [{x: 20, y: 20}, {x: 180, y: 20}]}
 
 function host() {

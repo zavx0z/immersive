@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldMatrixValueNormalize as Contract} from "./contract"
-export type {ImmersiveUiFieldMatrixValueNormalize} from "./contract"
+import type {Zavx0zImmersiveUiFieldMatrixValueNormalize as Contract} from "./contract"
+export type {Zavx0zImmersiveUiFieldMatrixValueNormalize} from "./contract"
 
 
 export default function normalizeMatrixValue(

@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ImmersiveTechColorHexValid as Contract} from "./contract"
+import type {Zavx0zImmersiveTechColorHexValid as Contract} from "./contract"
 
 export default function isHexColor(value: Contract.Input[0]): Contract.Output {
   return /^#(?:[0-9a-f]{3}|[0-9a-f]{6}|[0-9a-f]{8})$/iu.test(value.trim())
 }
 
-export type {ImmersiveTechColorHexValid} from "./contract"
+export type {Zavx0zImmersiveTechColorHexValid} from "./contract"

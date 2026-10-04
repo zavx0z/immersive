@@ -1,6 +1,6 @@
 /**
-Исходник {@link @immersive/markdown/mermaid#Mermaid | Mermaid} для общего
-{@link @immersive/nodes/view#GraphView | GraphView}.
+Исходник {@link @zavx0z/immersive-markdown/mermaid#Mermaid | Mermaid} для общего
+{@link @zavx0z/immersive-nodes/view#GraphView | GraphView}.
 
 @property source - Mermaid-код без Markdown-ограждения.
 Изменение запускает асинхронный разбор; диаграмма показывается после измерения

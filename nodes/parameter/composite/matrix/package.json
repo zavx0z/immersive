@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-parameter-composite/matrix",
+  "name": "@zavx0z/immersive-nodes-parameter-composite-matrix",
   "label": "MatrixParameter",
   "version": "0.0.0",
   "description": "MatrixParameter соединяет публичный MatrixField с композицией сокетов ноды",
@@ -10,17 +10,17 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@immersive-nodes-parameter-shared/layout": "workspace:*",
-    "@immersive-ui-component-field/matrix": "workspace:*"
+    "@zavx0z/immersive-nodes-parameter-shared-layout": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-matrix": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-nodes/parameter": "workspace:*",
-    "@immersive/headless": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-nodes/socket": "workspace:*"
+    "@zavx0z/immersive-nodes-parameter": "workspace:*",
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-nodes-socket": "workspace:*"
   },
   "scripts": {
-    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

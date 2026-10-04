@@ -1,13 +1,13 @@
-import nodeSocketLayoutPortId from "@immersive-nodes-geometry-node/port-id"
+import nodeSocketLayoutPortId from "@zavx0z/immersive-nodes-geometry-node-port-id"
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, MouseEvent, type Element, type HTMLInputElement} from "@immersive/dom"
-import {createDocumentRenderer} from "@immersive-renderer/html"
+import {createDocument, MouseEvent, type Element, type HTMLInputElement} from "@zavx0z/immersive-dom"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import "./compiler.ts"
 
 const root = resolve(import.meta.dir, "../../..")
 const {createNodeFixture} = await import("./composition.fixture.tsx")
-const {default: planProjectedNodeGeometry} = await import("@immersive-nodes-geometry-node/project")
+const {default: planProjectedNodeGeometry} = await import("@zavx0z/immersive-nodes-geometry-node-project")
 const theme = await Bun.file(resolve(root, "ui/component/theme/theme.css")).text()
 
 function mount(route: string, looseSockets = false) {

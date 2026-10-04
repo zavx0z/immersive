@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-layout/slider",
+  "name": "@zavx0z/immersive-ui-field-layout-slider",
   "label": "sliderFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров sliderField",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-metric/density-height": "workspace:*",
-    "@immersive-ui-field-metric/labelled-height": "workspace:*",
-    "@immersive-ui-component-field/slider": "workspace:*"
+    "@zavx0z/immersive-ui-field-metric-density-height": "workspace:*",
+    "@zavx0z/immersive-ui-field-metric-labelled-height": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-slider": "workspace:*"
   }
 }

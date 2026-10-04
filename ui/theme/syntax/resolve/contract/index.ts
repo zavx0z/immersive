@@ -1,5 +1,5 @@
 /** Цвет синтаксической области с явно переданным запасным цветом. */
-export declare namespace ImmersiveUiThemeSyntaxResolve {
+export declare namespace Zavx0zImmersiveUiThemeSyntaxResolve {
   /** Аргументы публичной операции resolveSyntaxScopeColorHex; порядок сохраняет её форму вызова. */
   type Input = readonly [
     scopes: readonly string[],

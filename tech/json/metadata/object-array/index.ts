@@ -3,9 +3,9 @@
 
 @packageDocumentation
 */
-import type {ImmersiveTechJsonMetadataObjectArray as Contract} from "./contract"
-export type {ImmersiveTechJsonMetadataObjectArray} from "./contract"
-import metadata from "@immersive-tech-json-metadata/read"
+import type {Zavx0zImmersiveTechJsonMetadataObjectArray as Contract} from "./contract"
+export type {Zavx0zImmersiveTechJsonMetadataObjectArray} from "./contract"
+import metadata from "@zavx0z/immersive-tech-json-metadata-read"
 type NodeJsonObject = NonNullable<Contract.Output>[number]
 
 export default function metadataObjectArray(value: Contract.Input[0], key: Contract.Input[1]): Contract.Output {

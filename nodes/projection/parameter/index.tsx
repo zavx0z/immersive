@@ -6,30 +6,30 @@
 
 @packageDocumentation
 */
-import {TextParameter, NumberParameter, SliderParameter, CheckboxParameter, SwitchParameter, SelectParameter, CycleParameter, OptionGroupParameter, ColorParameter, VectorParameter, MatrixParameter, PathParameter, ReferenceParameter, CollectionParameter, OutputParameter} from "@immersive-nodes/parameter"
-import resolveProjectedParameterPresentation from "@immersive-nodes-projection-parameter/presentation"
+import {TextParameter, NumberParameter, SliderParameter, CheckboxParameter, SwitchParameter, SelectParameter, CycleParameter, OptionGroupParameter, ColorParameter, VectorParameter, MatrixParameter, PathParameter, ReferenceParameter, CollectionParameter, OutputParameter} from "@zavx0z/immersive-nodes-parameter"
+import resolveProjectedParameterPresentation from "@zavx0z/immersive-nodes-projection-parameter-presentation"
 
 
 import type {
   NodeJsonValue,
   Socket as CoreSocket,
-} from "@immersive-nodes/tree"
+} from "@zavx0z/immersive-nodes-tree"
 import {
   useMemo,
   useSyncExternalStore,
-} from "@immersive/component"
-import {metadataBoolean, metadataString} from "@immersive-tech-json/metadata"
-import socketKey from "@immersive-nodes-model-socket/key"
-import socketSide from "@immersive-nodes-model-socket/side"
-import parameterMetrics from "@immersive-nodes-geometry/parameter"
+} from "@zavx0z/immersive-component"
+import {metadataBoolean, metadataString} from "@zavx0z/immersive-tech-json-metadata"
+import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
+import socketSide from "@zavx0z/immersive-nodes-model-socket-side"
+import parameterMetrics from "@zavx0z/immersive-nodes-geometry-parameter"
 const {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} = parameterMetrics
-import resolveSocketKind from "@immersive-nodes-model-socket/resolve-kind"
-import resolveSocketShape from "@immersive-nodes-model-socket/resolve-shape"
-import type {ImmersiveNodesProjectionParameter as Contract} from "./contract"
-import type {ImmersiveNodesSocket} from "@immersive-nodes/socket"
-type ParameterEndpoint = Readonly<Pick<ImmersiveNodesSocket.Input, "id" | "kind" | "direction" | "side" | "label" | "title" | "shape" | "connected" | "disabled">>
-import Socket from "@immersive-nodes/socket"
-export type {ImmersiveNodesProjectionParameter} from "./contract"
+import resolveSocketKind from "@zavx0z/immersive-nodes-model-socket-resolve-kind"
+import resolveSocketShape from "@zavx0z/immersive-nodes-model-socket-resolve-shape"
+import type {Zavx0zImmersiveNodesProjectionParameter as Contract} from "./contract"
+import type {Zavx0zImmersiveNodesSocket} from "@zavx0z/immersive-nodes-socket"
+type ParameterEndpoint = Readonly<Pick<Zavx0zImmersiveNodesSocket.Input, "id" | "kind" | "direction" | "side" | "label" | "title" | "shape" | "connected" | "disabled">>
+import Socket from "@zavx0z/immersive-nodes-socket"
+export type {Zavx0zImmersiveNodesProjectionParameter} from "./contract"
 
 
 /** Проецирует переданный Store параметра модели без копирования его значения. */

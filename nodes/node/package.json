@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes/node",
+  "name": "@zavx0z/immersive-nodes-node",
   "label": "Ноды",
   "version": "0.0.0",
   "description": "Представления нод с общим протоколом адреса, выбора, видимости и активации",
@@ -11,30 +11,30 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@immersive-nodes-node/diagram": "workspace:*",
-    "@immersive-nodes-node/parameter": "workspace:*",
-    "@immersive-nodes-node/content": "workspace:*"
+    "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
+    "@zavx0z/immersive-nodes-node-parameter": "workspace:*",
+    "@zavx0z/immersive-nodes-node-content": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive/headless": "workspace:*",
-    "@immersive-jsx-compiler/bun": "workspace:*",
-    "@immersive/dom": "workspace:*",
-    "@immersive/component": "workspace:*",
-    "@immersive-renderer/html": "workspace:*",
-    "@immersive/template": "workspace:*",
-    "@immersive-nodes-geometry-node/plan": "workspace:*",
-    "@immersive-nodes-geometry-node/metrics": "workspace:*",
-    "@immersive-ui-component/typography": "workspace:*",
-    "@immersive-nodes-geometry-node/project": "workspace:*",
-    "@immersive-nodes-model-socket/key": "workspace:*",
-    "@immersive-nodes/tree": "workspace:*",
-    "@immersive-nodes-projection-parameter/presentation": "workspace:*",
-    "@immersive-ui-component-button/basic": "workspace:*",
-    "@immersive-nodes-geometry-node/port-id": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-renderer-html": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-plan": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-metrics": "workspace:*",
+    "@zavx0z/immersive-ui-component-typography": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-project": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-key": "workspace:*",
+    "@zavx0z/immersive-nodes-tree": "workspace:*",
+    "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-port-id": "workspace:*"
   },
   "scripts": {
-    "test": "bun test --preload @immersive/headless/preload ./spec ./tests",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec ./tests",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

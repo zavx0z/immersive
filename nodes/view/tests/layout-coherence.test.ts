@@ -1,16 +1,16 @@
 import {expect, setDefaultTimeout, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElement} from "@immersive/dom"
-import type {LayoutResult} from "@immersive-nodes/layout/types"
-import type {NodeTreeSnapshot} from "@immersive-nodes/tree"
-import {createSpaceElementFactories} from "@immersive/space"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElement} from "@zavx0z/immersive-dom"
+import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
+import type {NodeTreeSnapshot} from "@zavx0z/immersive-nodes-tree"
+import {createSpaceElementFactories} from "@zavx0z/immersive-space"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
 const root = resolve(import.meta.dir, "../../..")
 setDefaultTimeout(60_000)
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")]}))
 
-const {createNodeTreeLayout, StaleNodeTreeLayoutError} = await import("@immersive/nodes/view/tree")
+const {createNodeTreeLayout, StaleNodeTreeLayoutError} = await import("@zavx0z/immersive-nodes/view/tree")
 const {createLayoutGraph, graphLayout, mountLayoutFixture, textParameter} = await import("./layout-coherence.fixture.tsx")
 type Graph = ReturnType<typeof createLayoutGraph>
 type Mounted = ReturnType<typeof mountLayoutFixture>

@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-model-parameter/value-type",
+  "name": "@zavx0z/immersive-nodes-model-parameter-value-type",
   "label": "type",
   "version": "0.0.0",
   "description": "Проверяет и копирует переносимую идентичность типа значения",

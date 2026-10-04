@@ -1,8 +1,8 @@
 import {afterAll, beforeAll, expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
-import JsxCompileError from "@immersive-jsx-compiler/error"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
+import JsxCompileError from "@zavx0z/immersive-jsx-compiler-error"
 
 const cases = [
   {
@@ -47,7 +47,7 @@ const cases = [
   },
   {
     name: "Передача именованного слота получателю без слотов",
-    source: 'import type {JSX} from "@immersive-jsx-compiler/session"\nfunction Legacy(props: {children: JSX.Element}) { return <main>{props.children}</main> }\nexport function Forward() { return <Legacy><slot name="header" slot="header" /></Legacy> }',
+    source: 'import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"\nfunction Legacy(props: {children: JSX.Element}) { return <main>{props.children}</main> }\nexport function Forward() { return <Legacy><slot name="header" slot="header" /></Legacy> }',
     error: "только внутри компонента",
   },
 ]

@@ -1,4 +1,4 @@
-import {Badge, Divider, Typography, Breadcrumbs, Button, TextField, MenuItem, Notification, Pane, List, WidgetHeader} from "@immersive-ui/component"
+import {Badge, Divider, Typography, Breadcrumbs, Button, TextField, MenuItem, Notification, Pane, List, WidgetHeader} from "@zavx0z/immersive-ui-component"
 
 export default function ClusterExamples(props: Readonly<{label: string}>) {
   return <section>

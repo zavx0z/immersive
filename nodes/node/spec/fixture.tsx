@@ -1,5 +1,5 @@
-import {DiagramNode, ParameterNode, ContentNode} from "@immersive-nodes/node"
-import Typography from "@immersive-ui-component/typography"
+import {DiagramNode, ParameterNode, ContentNode} from "@zavx0z/immersive-nodes-node"
+import Typography from "@zavx0z/immersive-ui-component-typography"
 
 export default function NodeExamples(props: Readonly<{selected: boolean, hidden: boolean}>) {
   return <section>

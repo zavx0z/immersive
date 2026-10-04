@@ -1,7 +1,7 @@
-import {component, provideContext} from "@immersive/component"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {JSX} from "@immersive-jsx-compiler/session"
-import {GraphView, type GraphViewProps} from "@immersive/nodes/view"
+import {component, provideContext} from "@zavx0z/immersive-component"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
+import {GraphView, type GraphViewProps} from "@zavx0z/immersive-nodes/view"
 import {MermaidHorizontal} from "./graph-context.ts"
 import type {GraphContent} from "../types/graph-view.ts"
 

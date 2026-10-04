@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/template",
+  "name": "@zavx0z/immersive-template",
   "label": "Шаблоны",
   "version": "0.0.0",
   "description": "HTML, CSS и общий формат готового шаблона",
@@ -17,11 +17,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@immersive/dom": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*",
     "typescript": "7.0.2"
   },
   "peerDependenciesMeta": {
-    "@immersive/dom": {
+    "@zavx0z/immersive-dom": {
       "optional": true
     },
     "typescript": {
@@ -29,7 +29,7 @@
     }
   },
   "devDependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive/jsx": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-jsx": "workspace:*"
   }
 }

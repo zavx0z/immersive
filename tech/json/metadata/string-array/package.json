@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-tech-json-metadata/string-array",
+  "name": "@zavx0z/immersive-tech-json-metadata-string-array",
   "label": "metadataStringArray",
   "version": "0.0.0",
   "description": "Заимствует массив строк, если каждый его элемент имеет подходящий тип",
@@ -14,9 +14,9 @@
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@immersive-tech-json/metadata": "workspace:*"
+    "@zavx0z/immersive-tech-json-metadata": "workspace:*"
   },
   "dependencies": {
-    "@immersive-tech-json-metadata/read": "workspace:*"
+    "@zavx0z/immersive-tech-json-metadata-read": "workspace:*"
   }
 }

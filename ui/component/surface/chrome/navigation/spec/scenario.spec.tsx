@@ -1,8 +1,8 @@
-import Typography from "@immersive-ui-component/typography"
+import Typography from "@zavx0z/immersive-ui-component-typography"
 /** SurfaceNavigation показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import SurfaceNavigation from "@immersive-ui-component-surface-chrome/navigation"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import SurfaceNavigation from "@zavx0z/immersive-ui-component-surface-chrome-navigation"
 
 describe.each([{name: "Основное представление", props: {label: "Действия"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

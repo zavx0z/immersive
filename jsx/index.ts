@@ -6,16 +6,16 @@
 
 @packageDocumentation
 */
-export {JsxCompilerSession, createJsxBunPlugin, JsxCompileError} from "@immersive-jsx/compiler"
+export {JsxCompilerSession, createJsxBunPlugin, JsxCompileError} from "@zavx0z/immersive-jsx-compiler"
 export type {
   JsxCompilerSessionOptions, JsxCompileResult, CreateJsxPluginOptions,
   JsxPlugin, JsxErrorInput, JsxErrorOutput,
-} from "@immersive-jsx/compiler"
-export {default as jsxEventNames} from "@immersive-jsx/event"
-export type {JsxEventName, EventNamesOutput} from "@immersive-jsx/event"
-export {planSlots, slotChild, SlotAuthoring, validateSlotContracts} from "@immersive-jsx/slot"
+} from "@zavx0z/immersive-jsx-compiler"
+export {default as jsxEventNames} from "@zavx0z/immersive-jsx-event"
+export type {JsxEventName, EventNamesOutput} from "@zavx0z/immersive-jsx-event"
+export {planSlots, slotChild, SlotAuthoring, validateSlotContracts} from "@zavx0z/immersive-jsx-slot"
 export type {
   PlanSlotsInput, PlanSlotsOutput, SlotChildInput, SlotChildOutput,
   SlotAuthoringInput, SlotAuthoringOutput, ValidateSlotContractsInput, ValidateSlotContractsOutput,
-} from "@immersive-jsx/slot"
-export type {JSX} from "@immersive-jsx/compiler"
+} from "@zavx0z/immersive-jsx-slot"
+export type {JSX} from "@zavx0z/immersive-jsx-compiler"

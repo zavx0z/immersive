@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-model-socket/side",
+  "name": "@zavx0z/immersive-nodes-model-socket-side",
   "label": "side",
   "version": "0.0.0",
   "description": "Определяет сторону сокета по явному значению и направлению",
@@ -14,6 +14,6 @@
     "test": "bun test ./spec"
   },
   "devDependencies": {
-    "@immersive-nodes/tree": "workspace:*"
+    "@zavx0z/immersive-nodes-tree": "workspace:*"
   }
 }

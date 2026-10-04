@@ -70,7 +70,7 @@ export async function createSlotContractFixture(sources: Readonly<Record<string,
 
 /** Type-only imports и обычные функции с совпадающими сигнатурами для проверки identity. */
 export const childSource = `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 export function Button(props: {label?: string}): JSX.Element {
   return <button>{props.label}</button>
@@ -87,7 +87,7 @@ export function IconButton(props: {label?: string}): JSX.Element {
 
 /** Общая схема раскрывает наследование interface, union детей и alias результата. */
 export const contractSource = `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {Button, IconButton} from "./children"
 
 export type Header = typeof Button | typeof IconButton

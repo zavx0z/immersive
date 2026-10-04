@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-field/reference",
+  "name": "@zavx0z/immersive-ui-component-field-reference",
   "label": "ReferenceField",
   "version": "0.0.0",
   "description": "Поле интерфейса: ссылка на ресурс",
@@ -11,19 +11,19 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-ui-component-button/basic": "workspace:*",
-    "@immersive-ui-component-button/icon": "workspace:*",
-    "@immersive-ui-theme-icon/close": "workspace:*",
-    "@immersive-ui-theme-icon/picker": "workspace:*",
-    "@immersive-ui-theme-icon/resource": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-icon": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-close": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-picker": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-resource": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-component/field": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component-field": "workspace:*"
   }
 }

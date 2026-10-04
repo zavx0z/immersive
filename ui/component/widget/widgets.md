@@ -18,7 +18,7 @@ Renderer, сервер, файловую модель или debugger session. I
 
 ## Editor
 
-`@immersive-ui/component/widget/editor` компонует CodeEditor и общую шапку. Принимает его
+`@zavx0z/immersive-ui-component/widget/editor` компонует CodeEditor и общую шапку. Принимает его
 value/readOnly/model/languageId/path/tokens и callbacks. `onSave(value,event)`
 обрабатывает ⌘/Ctrl+S, `onSubmit(value,event)` — ⌘/Ctrl+Enter; что именно сохранить
 или выполнить решает приложение. CodeEditorModel владеет транзакциями текста.
@@ -37,7 +37,7 @@ value/readOnly/model/languageId/path/tokens и callbacks. `onSave(value,event)`
 
 ## Terminal
 
-`@immersive-ui/component/widget/terminal` принимает TerminalModel либо controlled `lines`
+`@zavx0z/immersive-ui-component/widget/terminal` принимает TerminalModel либо controlled `lines`
 с `{id, runs:[{text,color?,background?,bold?}]}`, а также controlled `input`,
 `inputEnabled`, `onInput` и `onSubmit`. Обычный текст вывода выделяется общим DOM
 механизмом. Меню и системное копирование не реализуются заново.
@@ -50,7 +50,7 @@ Enter/Backspace/Tab отправляют CR/DEL/TAB; interrupt не перехв
 `onReady` предоставляет focus/isFocused. `followOutput` по умолчанию включает
 общий scrollIntoView последней строки; false оставляет прокрутку пользователю.
 
-`@immersive-tech/terminal` переносит общий ANSI subset из прежнего terminal:
+`@zavx0z/immersive-tech-terminal` переносит общий ANSI subset из прежнего terminal:
 CR/LF/backspace/tab, SGR 8/bright цветов и bold, очистка/перемещение курсора,
 DSR и device replies, потоковый UTF-8 и ограниченный scrollback. Модель не является
 полным VT/xterm emulator. `onReply` возвращает ответ протокола без отправки в процесс.
@@ -58,7 +58,7 @@ write/writeln/clear/toText и subscribe доступны независимо о
 
 ## Tree
 
-`@immersive-ui/component/widget/tree` отображает настоящую вложенную иерархию tree/treeitem/group.
+`@zavx0z/immersive-ui-component/widget/tree` отображает настоящую вложенную иерархию tree/treeitem/group.
 Элемент содержит `id`, `label`, optional `children`, `iconSrc`, `detail`, `title`,
 `disabled`, `muted`, `tone`, `actions`. `expandable` позволяет раскрыть ленивый узел
 до получения children: приложение реагирует на onExpandedChange и обновляет данные.
@@ -89,7 +89,7 @@ disabled не выбираются. `muted` только приглушает о
 вызывающему приложению.
 Для внешней панели дерева UI предоставляет именованные SVG-ресурсы
 `selectOpenedItemIcon`, `expandAllIcon` и `collapseAllIcon` через
-`@immersive-ui/component/theme/icon`. Действия над деревом реализует вызывающее приложение.
+`@zavx0z/immersive-ui-component/theme/icon`. Действия над деревом реализует вызывающее приложение.
 
 ## Примеры и проверки
 

@@ -1,7 +1,7 @@
-import {useSpace} from "@immersive/browser"
-import ClipboardMenu from "@immersive-ui-component-menu/clipboard"
-import Editor from "@immersive-ui-component-widget/editor"
-import type CodeEditorModel from "@immersive-tech/text-editor"
+import {useSpace} from "@zavx0z/immersive-browser"
+import ClipboardMenu from "@zavx0z/immersive-ui-component-menu-clipboard"
+import Editor from "@zavx0z/immersive-ui-component-widget-editor"
+import type CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
 
 function ClipboardHud() {
   const clipboard = useSpace(state => state.clipboard)

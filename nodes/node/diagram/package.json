@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-node/diagram",
+  "name": "@zavx0z/immersive-nodes-node-diagram",
   "label": "DiagramNode",
   "version": "0.0.0",
   "description": "Показывает описание ноды диаграммы внутри выбранной формы",
@@ -10,18 +10,18 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@immersive-ui-component-surface/pane": "workspace:*",
-    "@immersive-ui-component/typography": "workspace:*"
+    "@zavx0z/immersive-ui-component-surface-pane": "workspace:*",
+    "@zavx0z/immersive-ui-component-typography": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-nodes/node": "workspace:*",
-    "@immersive-nodes/layout": "workspace:*",
-    "@immersive/headless": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-nodes-geometry-node/project": "workspace:*"
+    "@zavx0z/immersive-nodes-node": "workspace:*",
+    "@zavx0z/immersive-nodes-layout": "workspace:*",
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-project": "workspace:*"
   },
   "scripts": {
-    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

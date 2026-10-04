@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-jsx-runtime/fragment",
+  "name": "@zavx0z/immersive-jsx-runtime-fragment",
   "label": "Фрагмент JSX",
   "version": "0.0.0",
   "description": "Единая identity группы соседних JSX-значений",

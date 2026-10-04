@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
+import fieldDensityHeight from "@zavx0z/immersive-ui-field-metric-density-height"
 
 const colorFieldLayout = Object.freeze({
   height(): number {

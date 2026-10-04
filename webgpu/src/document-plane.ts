@@ -3,8 +3,8 @@ import {
   Object3D,
   Ray,
   Vector3,
-} from "@immersive/engine"
-import type {RenderViewport} from "@immersive-renderer/html"
+} from "@zavx0z/immersive-engine"
+import type {RenderViewport} from "@zavx0z/immersive-renderer-html"
 
 export type RendererWebGpuDocumentPoint = Readonly<{
   x: number
@@ -67,7 +67,7 @@ export class RendererWebGpuDocumentPlane extends Object3D {
     this.#viewport = viewport
     this.#worldUnitsPerPixel = worldUnitsPerPixel
     this.#worldUnitsPerPixelY = worldUnitsPerPixelY
-    this.name = "@immersive/webgpu:document-plane"
+    this.name = "@zavx0z/immersive-webgpu:document-plane"
     this.renderLayer = "world"
     this.frustumCulled = false
     this.add(this.content)

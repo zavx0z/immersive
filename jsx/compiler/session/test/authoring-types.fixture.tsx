@@ -1,6 +1,6 @@
-import type {JSX} from "@immersive-jsx-compiler/session"
-import {memo, createRoot} from "@immersive/component"
-import {createDocument} from "@immersive/dom"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
+import {memo, createRoot} from "@zavx0z/immersive-component"
+import {createDocument} from "@zavx0z/immersive-dom"
 
 /** Native semantic fixture проверяет типы автора; этот TSX не исполняется без compiler. */
 export function Child() {
@@ -42,5 +42,5 @@ if (false) {
   // @ts-expect-error Бренд авторского Element является обязательным.
   const missingElementBrand: JSX.Element = {}
   // @ts-expect-error Принимающие области образуют объектный контракт.
-  const nonObjectContract: JSX.Element<string> = {"@immersive/jsx/element": true}
+  const nonObjectContract: JSX.Element<string> = {"@zavx0z/immersive-jsx/element": true}
 }

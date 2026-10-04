@@ -1,8 +1,8 @@
 /** Проверяет публичные данные и правила операции над сокетами. */
 import {describe, expect, test} from "bun:test"
-import value from "@immersive-nodes-model-socket/preset"
-import kinds from "@immersive-nodes-model-socket/kinds"
-import presets from "@immersive-nodes-model-socket/presets"
+import value from "@zavx0z/immersive-nodes-model-socket-preset"
+import kinds from "@zavx0z/immersive-nodes-model-socket-kinds"
+import presets from "@zavx0z/immersive-nodes-model-socket-presets"
 
 describe.each(kinds.map(kind => ({name: kind, props: {kind}})))("$name", ({props}) => {
   const result = value(props.kind)

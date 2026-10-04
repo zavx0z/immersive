@@ -1,5 +1,5 @@
 import type {RenderCursor} from "./cursor.ts"
-import type { Document, Element, Node } from "@immersive/dom"
+import type { Document, Element, Node } from "@zavx0z/immersive-dom"
 import type {DocumentInteractionState} from "./pseudo-state.ts"
 
 export type RenderDisplay = "block" | "inline" | "flex" | "none"

@@ -1,12 +1,12 @@
-import type {ImmersiveUiComponentView} from "@immersive-ui-component/view/contract"
+import type {Zavx0zImmersiveUiComponentView} from "@zavx0z/immersive-ui-component-view/contract"
 import type {TimelineKeyframe} from "./types.ts"
 import type {TimelineMarker} from "./types.ts"
 import type {TimelineTrack} from "./types.ts"
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Протокол временной шкалы, кадров и маркеров с внешними действиями. */
-export declare namespace ImmersiveUiComponentViewTimeline {
+export declare namespace Zavx0zImmersiveUiComponentViewTimeline {
   /**
   Входные данные Timeline.
   */
@@ -46,5 +46,5 @@ export declare namespace ImmersiveUiComponentViewTimeline {
     readonly onNext?: ((event: Event) => void) | undefined
   }
 
-  type Output = ImmersiveUiComponentView.Output & JSX.Element
+  type Output = Zavx0zImmersiveUiComponentView.Output & JSX.Element
 }

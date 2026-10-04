@@ -3,10 +3,10 @@
 
 @packageDocumentation
 */
-import type {ImmersiveNodesGeometryNodePortId as Contract} from "./contract"
-export type {ImmersiveNodesGeometryNodePortId} from "./contract"
+import type {Zavx0zImmersiveNodesGeometryNodePortId as Contract} from "./contract"
+export type {Zavx0zImmersiveNodesGeometryNodePortId} from "./contract"
 
-import socketKey from "@immersive-nodes-model-socket/key"
+import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 
 export default function nodeSocketLayoutPortId(nodeId: Contract.Input[0], socketId: Contract.Input[1]): Contract.Output {
   if (nodeId.length === 0 || socketId.length === 0) throw new TypeError("Socket endpoint IDs must be non-empty")

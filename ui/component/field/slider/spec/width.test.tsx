@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import SliderField from "@immersive-ui-component-field/slider"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import SliderField from "@zavx0z/immersive-ui-component-field-slider"
 
 test("содержимое помещается в заданную ширину независимо от подписи", async () => {
   const headless = createHeadless({width: 400, height: 240})

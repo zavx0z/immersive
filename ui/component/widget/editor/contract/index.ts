@@ -1,13 +1,13 @@
-import type {ImmersiveUiComponentWidget} from "@immersive-ui-component/widget/contract"
-import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
-type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
-import type {ImmersiveUiComponentWidgetHeader} from "@immersive-ui-component-widget/header"
-type WidgetHeaderProps = ImmersiveUiComponentWidgetHeader.Input
+import type {Zavx0zImmersiveUiComponentWidget} from "@zavx0z/immersive-ui-component-widget/contract"
+import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorProps = Zavx0zImmersiveUiComponentViewCodeEditor.Input
+import type {Zavx0zImmersiveUiComponentWidgetHeader} from "@zavx0z/immersive-ui-component-widget-header"
+type WidgetHeaderProps = Zavx0zImmersiveUiComponentWidgetHeader.Input
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный вход и JSX-результат компонента. */
-export declare namespace ImmersiveUiComponentWidgetEditor {
+export declare namespace Zavx0zImmersiveUiComponentWidgetEditor {
   /**
   Входные данные Editor.
   */
@@ -16,5 +16,5 @@ export declare namespace ImmersiveUiComponentWidgetEditor {
     onSubmit?: ((value: string, event: KeyboardEvent) => void) | undefined
   }>
 
-  type Output = ImmersiveUiComponentWidget.Output & JSX.Element
+  type Output = Zavx0zImmersiveUiComponentWidget.Output & JSX.Element
 }

@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldMetricCollectionVisibleRowsHeight as Contract} from "./contract"
-import fieldMetric from "@immersive-ui-field-metric/read"
+import type {Zavx0zImmersiveUiFieldMetricCollectionVisibleRowsHeight as Contract} from "./contract"
+import fieldMetric from "@zavx0z/immersive-ui-field-metric-read"
 import {normalizeVisibleRows} from "./src/helpers.ts"
 
 export default function collectionVisibleRowsHeight(visibleRows: Contract.Input[0]): Contract.Output {
@@ -13,4 +13,4 @@ export default function collectionVisibleRowsHeight(visibleRows: Contract.Input[
   return fieldMetric(`field-collection-rows-${normalizedRows}-height`)
 }
 
-export type {ImmersiveUiFieldMetricCollectionVisibleRowsHeight} from "./contract"
+export type {Zavx0zImmersiveUiFieldMetricCollectionVisibleRowsHeight} from "./contract"

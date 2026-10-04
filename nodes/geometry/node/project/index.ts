@@ -3,24 +3,24 @@
 
 @packageDocumentation
 */
-import type {ImmersiveNodesGeometryNodeProject as Contract} from "./contract"
-export type {ImmersiveNodesGeometryNodeProject} from "./contract"
+import type {Zavx0zImmersiveNodesGeometryNodeProject as Contract} from "./contract"
+export type {Zavx0zImmersiveNodesGeometryNodeProject} from "./contract"
 
-import type {Socket as CoreSocket} from "@immersive-nodes/tree"
-import type {ImmersiveNodesGeometryNodePlan} from "@immersive-nodes-geometry-node/plan"
-type NodeGeometryRowInput = ImmersiveNodesGeometryNodePlan.Input["rows"][number]
+import type {Socket as CoreSocket} from "@zavx0z/immersive-nodes-tree"
+import type {Zavx0zImmersiveNodesGeometryNodePlan} from "@zavx0z/immersive-nodes-geometry-node-plan"
+type NodeGeometryRowInput = Zavx0zImmersiveNodesGeometryNodePlan.Input["rows"][number]
 type ProjectedNodeSnapshot = Contract.Input[0]
-import resolveProjectedParameterPresentation from "@immersive-nodes-projection-parameter/presentation"
-import parameterMetrics from "@immersive-nodes-geometry/parameter"
+import resolveProjectedParameterPresentation from "@zavx0z/immersive-nodes-projection-parameter-presentation"
+import parameterMetrics from "@zavx0z/immersive-nodes-geometry-parameter"
 const {NODE_PARAMETER_SPACING_SMALL, NODE_PARAMETER_SPACING_MEDIUM} = parameterMetrics
-import projectedParameterFieldHeight from "@immersive-nodes-geometry-node/field-height"
-import parameterSpacingBefore from "@immersive-nodes-geometry-node/spacing"
-import projectedSocketSide from "@immersive-nodes-geometry-node/socket-side"
-import nodeSocketLayoutPortId from "@immersive-nodes-geometry-node/port-id"
-import planNodeGeometry from "@immersive-nodes-geometry-node/plan"
-import nodeMetrics from "@immersive-nodes-geometry-node/metrics"
+import projectedParameterFieldHeight from "@zavx0z/immersive-nodes-geometry-node-field-height"
+import parameterSpacingBefore from "@zavx0z/immersive-nodes-geometry-node-spacing"
+import projectedSocketSide from "@zavx0z/immersive-nodes-geometry-node-socket-side"
+import nodeSocketLayoutPortId from "@zavx0z/immersive-nodes-geometry-node-port-id"
+import planNodeGeometry from "@zavx0z/immersive-nodes-geometry-node-plan"
+import nodeMetrics from "@zavx0z/immersive-nodes-geometry-node-metrics"
 const {NODE_MINIMUM_WIDTH} = nodeMetrics
-import socketMetrics from "@immersive-nodes-model-socket/metrics"
+import socketMetrics from "@zavx0z/immersive-nodes-model-socket-metrics"
 const {NODE_ROW_HEIGHT} = socketMetrics
 
 export default function planProjectedNodeGeometry(

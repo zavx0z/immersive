@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-number-value/step",
+  "name": "@zavx0z/immersive-ui-field-number-value-step",
   "label": "stepNumberValue",
   "version": "0.0.0",
   "description": "Пошаговое изменение числового значения",
@@ -11,12 +11,12 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-number-value/normalize": "workspace:*",
-    "@immersive-ui-field-number-value/pointer-step": "workspace:*",
-    "@immersive-ui-field-number-value/soft-range": "workspace:*"
+    "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-pointer-step": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-soft-range": "workspace:*"
   }
 }

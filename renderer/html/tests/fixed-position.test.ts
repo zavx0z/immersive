@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement} from "@immersive/dom"
+import {createDocument, HTMLElement} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, hitTestProjection} from "../src/index.ts"
 
 function fixture() {

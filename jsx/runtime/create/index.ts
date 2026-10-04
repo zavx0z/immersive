@@ -2,20 +2,20 @@
 Автоматический JSX protocol для уже подготовленных компонентов.
 
 jsx создаёт ComponentValue, распределяя вложенность единым planSlots.
-Descriptor @immersive-jsx-slot/child сохраняет статическое имя и границу условного
+Descriptor @zavx0z/immersive-jsx-slot-child сохраняет статическое имя и границу условного
 ребёнка либо keyed map после вычисления expression. Protocol не исполняет авторскую функцию компонента
 и не создаёт intrinsic DOM-узлы: они компилируются своим владельцем.
 
 Имена jsx/jsxs и общий Fragment собираются доменом в automatic JSX protocol.
-Fragment принадлежит @immersive-jsx-runtime/fragment; типовой JSX namespace — @immersive-jsx-compiler/session.
+Fragment принадлежит @zavx0z/immersive-jsx-runtime-fragment; типовой JSX namespace — @zavx0z/immersive-jsx-compiler-session.
 
 @packageDocumentation
 */
-import Fragment from "@immersive-jsx-runtime/fragment"
-import {component, fixedChildren, type ComponentKey} from "@immersive/component"
-import {composeSlot, type ComposeSlotInput} from "@immersive/component/slot"
-import {isCompiledTemplate, slotContents} from "@immersive/template/compiled"
-import planSlots from "@immersive-jsx-slot/plan"
+import Fragment from "@zavx0z/immersive-jsx-runtime-fragment"
+import {component, fixedChildren, type ComponentKey} from "@zavx0z/immersive-component"
+import {composeSlot, type ComposeSlotInput} from "@zavx0z/immersive-component/slot"
+import {isCompiledTemplate, slotContents} from "@zavx0z/immersive-template/compiled"
+import planSlots from "@zavx0z/immersive-jsx-slot-plan"
 import {assignments, authoredChildren, containsSlotChild} from "./src/children.ts"
 import type {RuntimeInput} from "./contract/input.ts"
 import type {RuntimeOutput} from "./contract/output.ts"

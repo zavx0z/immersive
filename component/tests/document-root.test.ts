@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import {createDocument, Element, type Document} from "@immersive/dom"
-import {bindProperty, defineCompiledTemplate, writeBinding} from "@immersive/template/compiled"
+import {createDocument, Element, type Document} from "@zavx0z/immersive-dom"
+import {bindProperty, defineCompiledTemplate, writeBinding} from "@zavx0z/immersive-template/compiled"
 import {component, createRoot} from "../src/index.ts"
 
 class SceneElement extends Element {

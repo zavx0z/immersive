@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/typedoc",
+  "name": "@zavx0z/immersive-typedoc",
   "label": "TypeDoc",
   "version": "0.0.0",
   "description": "Разбор TypeScript 7 и отображение документации типов",
@@ -25,32 +25,32 @@
     "typescript": "^7.0.2"
   },
   "peerDependencies": {
-    "@immersive/component": "workspace:*",
-    "@immersive/template": "workspace:*",
-    "@immersive/markdown": "workspace:*",
-    "@immersive-ui/component": "workspace:*",
-    "@immersive/jsx": "workspace:*",
-    "@immersive-ui-component-view/code-editor": "workspace:*"
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-markdown": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*",
+    "@zavx0z/immersive-jsx": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@immersive/component": {
+    "@zavx0z/immersive-component": {
       "optional": true
     },
-    "@immersive/template": {
+    "@zavx0z/immersive-template": {
       "optional": true
     },
-    "@immersive/markdown": {
+    "@zavx0z/immersive-markdown": {
       "optional": true
     },
-    "@immersive-ui/component": {
+    "@zavx0z/immersive-ui-component": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@immersive-jsx-compiler/bun": "workspace:*",
-    "@immersive-ui/component": "workspace:*",
-    "@immersive-ui-view-code-editor/palette": "workspace:*",
-    "@immersive/dom": "workspace:*",
-    "@immersive-renderer/html": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*",
+    "@zavx0z/immersive-ui-view-code-editor-palette": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-renderer-html": "workspace:*"
   }
 }

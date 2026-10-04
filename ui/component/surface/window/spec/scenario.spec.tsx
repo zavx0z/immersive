@@ -1,8 +1,8 @@
 import {afterAll, describe, expect, mock, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import {MouseEvent} from "@immersive/dom"
-import Window from "@immersive-ui-component-surface/window"
-import TextField from "@immersive-ui-component-field/text"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import {MouseEvent} from "@zavx0z/immersive-dom"
+import Window from "@zavx0z/immersive-ui-component-surface-window"
+import TextField from "@zavx0z/immersive-ui-component-field-text"
 
 describe.each([
   {name: "Плавающее окно", props: {open: true, layout: "floating" as const, movable: true, resizable: true}},

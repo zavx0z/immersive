@@ -1,6 +1,6 @@
-import {createDocument, type HTMLElement} from "@immersive/dom"
-import {Text, TrueTypeFont} from "@immersive/engine"
-import {createDocumentInteractionController, createDocumentInteractionState, createDocumentRenderer, hitTestProjection} from "@immersive-renderer/html"
+import {createDocument, type HTMLElement} from "@zavx0z/immersive-dom"
+import {Text, TrueTypeFont} from "@zavx0z/immersive-engine"
+import {createDocumentInteractionController, createDocumentInteractionState, createDocumentRenderer, hitTestProjection} from "@zavx0z/immersive-renderer-html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 import {collectSpaceObjects, type RenderItem} from "../src/renderer/utils/render-list.ts"
 

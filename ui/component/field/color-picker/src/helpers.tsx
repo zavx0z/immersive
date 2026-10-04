@@ -1,12 +1,12 @@
 import type {ColorChannelFieldProps} from "./types.ts"
 import type {ColorPickerFieldValue} from "../contract/types.ts"
-import clampUnit from "@immersive-ui-field-color-value/clamp-unit"
-import colorChannelDisplayValue from "@immersive-ui-field-color-value/channel-display"
-import colorHsvaToValue from "@immersive-ui-field-color-value/from-hsva"
-import rgbaCss from "@immersive-ui-field-color-value/rgba-css"
-import wrapUnit from "@immersive-ui-field-color-value/wrap-unit"
-import NumberField from "@immersive-ui-component-field/number"
-import SliderField from "@immersive-ui-component-field/slider"
+import clampUnit from "@zavx0z/immersive-ui-field-color-value-clamp-unit"
+import colorChannelDisplayValue from "@zavx0z/immersive-ui-field-color-value-channel-display"
+import colorHsvaToValue from "@zavx0z/immersive-ui-field-color-value-from-hsva"
+import rgbaCss from "@zavx0z/immersive-ui-field-color-value-rgba-css"
+import wrapUnit from "@zavx0z/immersive-ui-field-color-value-wrap-unit"
+import NumberField from "@zavx0z/immersive-ui-component-field-number"
+import SliderField from "@zavx0z/immersive-ui-component-field-slider"
 
 /** Частная подготовка поле интерфейса: каналы и палитра цвета. */
 export const channels = ["h", "s", "v", "a"] as const

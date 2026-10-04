@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
-import {ImageMaterial, Mesh} from "@immersive/engine"
-import {createDocumentRenderer} from "@immersive-renderer/html"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {ImageMaterial, Mesh} from "@zavx0z/immersive-engine"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 
 function fixture() {

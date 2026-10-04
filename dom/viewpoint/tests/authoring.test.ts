@@ -5,7 +5,7 @@ import {pathToFileURL} from "node:url"
 import {createDocument} from "../../src/index.ts"
 import type {ViewPointElement} from "../index.ts"
 import {createRoot} from "../../../component/src/index.ts"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
 test("Повторный JSX render сохраняет команды камеры и ref, изменение атрибута обновляет тот же элемент", async () => {
   const output = await mkdtemp(join(import.meta.dir, ".authoring-"))
@@ -15,7 +15,7 @@ test("Повторный JSX render сохраняет команды камер
       entrypoints: [resolve(import.meta.dir, "authoring.fixture.tsx")],
       outdir: output,
       target: "bun",
-      external: ["@immersive/component", "@immersive/dom", "@immersive/template/compiled"],
+      external: ["@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template/compiled"],
       plugins: [createJsxBunPlugin({cwd: resolve(import.meta.dir, "../../.."), sourceRoots: [import.meta.dir]})],
     })
     expect(result.success, "Базовый тег viewpoint должен компилироваться без компонента Space").toBe(true)

@@ -4,7 +4,7 @@ import {
   defineCompiledTemplate,
   writeBinding,
   type CompiledTemplate,
-} from "@immersive/template/compiled"
+} from "@zavx0z/immersive-template/compiled"
 import type {ComposeSlotOutput} from "../contract/output.ts"
 
 /**

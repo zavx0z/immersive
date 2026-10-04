@@ -1,10 +1,10 @@
-import type {Link as CoreLink, NodeTreeSnapshot} from "@immersive-nodes/tree"
-import type {LayoutResult} from "@immersive-nodes/layout/types"
-import {metadata, metadataBoolean, metadataNumber, metadataString} from "@immersive-tech-json/metadata"
-import socketKey from "@immersive-nodes-model-socket/key"
-import SOCKET_KINDS from "@immersive-nodes-model-socket/kinds"
-import type {ImmersiveNodesModelSocketKinds} from "@immersive-nodes-model-socket/kinds"
-type SocketKind = ImmersiveNodesModelSocketKinds.Output[number]
+import type {Link as CoreLink, NodeTreeSnapshot} from "@zavx0z/immersive-nodes-tree"
+import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
+import {metadata, metadataBoolean, metadataNumber, metadataString} from "@zavx0z/immersive-tech-json-metadata"
+import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
+import SOCKET_KINDS from "@zavx0z/immersive-nodes-model-socket-kinds"
+import type {Zavx0zImmersiveNodesModelSocketKinds} from "@zavx0z/immersive-nodes-model-socket-kinds"
+type SocketKind = Zavx0zImmersiveNodesModelSocketKinds.Output[number]
 import {
   appendNodeGeometryIndex,
   createNodeGeometryIndex,

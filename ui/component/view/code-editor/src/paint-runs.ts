@@ -1,5 +1,5 @@
-import type {ImmersiveUiComponentViewCodeEditorViewModel} from "@immersive-ui-component-view-code-editor/view-model"
-type CodeEditorSegment = ImmersiveUiComponentViewCodeEditorViewModel.Output["segments"][number][number]
+import type {Zavx0zImmersiveUiComponentViewCodeEditorViewModel} from "@zavx0z/immersive-ui-component-view-code-editor-view-model"
+type CodeEditorSegment = Zavx0zImmersiveUiComponentViewCodeEditorViewModel.Output["segments"][number][number]
 
 export type CodeEditorPaintRun = Readonly<{
   key: string

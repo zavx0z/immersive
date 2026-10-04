@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-layout/group",
+  "name": "@zavx0z/immersive-ui-field-layout-group",
   "label": "fieldGroupLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров fieldGroup",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-metric/density-height": "workspace:*",
-    "@immersive-ui-field-metric/labelled-height": "workspace:*",
-    "@immersive-ui-component-field/group": "workspace:*"
+    "@zavx0z/immersive-ui-field-metric-density-height": "workspace:*",
+    "@zavx0z/immersive-ui-field-metric-labelled-height": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-group": "workspace:*"
   }
 }

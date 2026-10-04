@@ -1,5 +1,5 @@
 import {afterAll, expect, test} from "bun:test"
-import validateSlotContracts from "@immersive-jsx-slot/contract"
+import validateSlotContracts from "@zavx0z/immersive-jsx-slot-contract"
 import {barrelSource, childSource, contractSource, createSlotContractFixture, receiverSource} from "./fixture/index.ts"
 
 const cases = [
@@ -45,18 +45,18 @@ export function Application(props: {content: unknown}) {
 }
 `},
   {name: "Общий Element не доказывает identity", code: "JSX-SLOTS-UNPROVABLE", detail: "declaration identity", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {Button} from "./children"
 export function Single(): JSX.Element<{default: typeof Button}> {return <slot />}
 export function Application(props: {content: JSX.Element}) {return <Single>{props.content}</Single>}
 `},
   {name: "Контракт не соответствует точке вставки", code: "JSX-SLOTS-NAME", detail: "header", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {Button} from "./children"
 export function Incorrect(): JSX.Element<{header: typeof Button}> {return <slot name="footer" />}
 `},
   {name: "Default и пустое имя конфликтуют", code: "JSX-SLOTS-NAME", detail: "default", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {Button} from "./children"
 export function Incorrect(): JSX.Element<{default: typeof Button, "": typeof Button}> {return <slot />}
 `},
@@ -71,7 +71,7 @@ import {Button, TwinButton} from "./children"
 export function Application() {return <Panel><Button slot="header" /><TwinButton /></Panel>}
 `},
   {name: "Несовместимая типизированная передача", code: "JSX-SLOTS-TYPE", detail: "TwinButton", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import {Panel} from "./receiver"
 import type {Button, TwinButton} from "./children"
 export function Forward(): JSX.Element<{header: typeof TwinButton, default: readonly typeof Button[]}> {
@@ -84,7 +84,7 @@ import {Button} from "./children"
 export function Forward() {return <Panel><Button slot="header" /><slot /></Panel>}
 `},
   {name: "Коллекция передаётся в одиночную область", code: "JSX-SLOTS-CARDINALITY", detail: "header", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import {Panel} from "./receiver"
 import type {Button} from "./children"
 export function Forward(): JSX.Element<{header: readonly typeof Button[], default: readonly typeof Button[]}> {
@@ -92,7 +92,7 @@ export function Forward(): JSX.Element<{header: readonly typeof Button[], defaul
 }
 `},
   {name: "Необязательная область передаётся в обязательную", code: "JSX-SLOTS-REQUIRED", detail: "header", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import {Panel} from "./receiver"
 import type {Button} from "./children"
 export function Forward(): JSX.Element<{header?: typeof Button, default: readonly typeof Button[]}> {
@@ -100,21 +100,21 @@ export function Forward(): JSX.Element<{header?: typeof Button, default: readonl
 }
 `},
   {name: "Структурная function signature не является typeof", code: "JSX-SLOTS-CONTRACT", detail: "typeof", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 export function Incorrect(): JSX.Element<{default: () => JSX.Element}> {return <slot />}
 `},
   {name: "Primitive не преобразуется к объявленному типу", code: "JSX-SLOTS-TYPE", detail: "number", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 export function Text(): JSX.Element<{default: string}> {return <slot />}
 export function Application() {return <Text>{0}</Text>}
 `},
   {name: "Literal primitive не расширяется молча", code: "JSX-SLOTS-CONTRACT", detail: "literal", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 export function Text(): JSX.Element<{default: "yes"}> {return <slot />}
 export function Application() {return <Text>{"no"}</Text>}
 `},
   {name: "Динамическая строка не доказывает непустоту обязательного слота", code: "JSX-SLOTS-REQUIRED", detail: "default", source: `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 export function Text(): JSX.Element<{default: string}> {return <slot />}
 export function Application(props: {text: string}) {return <Text>{props.text}</Text>}
 `},

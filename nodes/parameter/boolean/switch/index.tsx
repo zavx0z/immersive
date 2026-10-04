@@ -6,14 +6,14 @@ SwitchParameter соединяет публичный SwitchField с компо�
 @packageDocumentation
 */
 
-import SwitchField from "@immersive-ui-component-field/switch"
-import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
-import type {ImmersiveNodesParameterBooleanSwitch as Contract} from "./contract"
+import SwitchField from "@zavx0z/immersive-ui-component-field-switch"
+import ParameterLayout from "@zavx0z/immersive-nodes-parameter-shared-layout"
+import type {Zavx0zImmersiveNodesParameterBooleanSwitch as Contract} from "./contract"
 
-export type {ImmersiveNodesParameterBooleanSwitch} from "./contract"
+export type {Zavx0zImmersiveNodesParameterBooleanSwitch} from "./contract"
 
 /**
-Авторский контракт SwitchParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
+Авторский контракт SwitchParameter; общий протокол описан в Zavx0zImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property onChange - Запрашивает новое checked без записи во внешний Store.
 */

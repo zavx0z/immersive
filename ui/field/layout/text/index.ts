@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
-import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
+import fieldDensityHeight from "@zavx0z/immersive-ui-field-metric-density-height"
+import labelledFieldHeight from "@zavx0z/immersive-ui-field-metric-labelled-height"
 
 const textFieldLayout = Object.freeze({
   height(options: Readonly<{label?: boolean | undefined}> = {}): number {

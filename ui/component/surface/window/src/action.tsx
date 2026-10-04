@@ -1,6 +1,6 @@
-import SurfaceButton from "@immersive-ui-component-surface-chrome/button"
-import type {ImmersiveUiComponentSurfaceWindow} from "../contract/index"
-type WindowProps = ImmersiveUiComponentSurfaceWindow.Input
+import SurfaceButton from "@zavx0z/immersive-ui-component-surface-chrome-button"
+import type {Zavx0zImmersiveUiComponentSurfaceWindow} from "../contract/index"
+type WindowProps = Zavx0zImmersiveUiComponentSurfaceWindow.Input
 import type {WindowAction} from "../contract/types"
 
 /** Кнопка правой группы сохраняет обычный ввод и не начинает перемещение окна. */

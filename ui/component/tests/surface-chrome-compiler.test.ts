@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 const root = resolve(import.meta.dir, "../../..")
 const uiRoot = resolve(import.meta.dir, "..")
@@ -20,7 +20,7 @@ test("[UI-COMPILED-SURFACE-001] shared surface chrome is governed TSX rather tha
       "view/timeline/index.tsx",
     ]) {
       const result = await compiler.compileFile(resolve(uiRoot, relativePath))
-      expect(result.code).toContain('from "@immersive/component"')
+      expect(result.code).toContain('from "@zavx0z/immersive-component"')
     }
   } finally {
     await compiler.close()

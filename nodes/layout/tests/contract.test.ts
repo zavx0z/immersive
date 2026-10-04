@@ -1,8 +1,8 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {layoutFixed, type FixedLayoutInput} from "@immersive-nodes/layout/fixed"
-import {layoutFixed as layoutFixedFromRoot, type FixedLayoutOutput} from "@immersive-nodes/layout"
-import {runFixedWorkerRequest} from "@immersive-nodes/layout/worker/fixed/executor"
+import {layoutFixed, type FixedLayoutInput} from "@zavx0z/immersive-nodes-layout/fixed"
+import {layoutFixed as layoutFixedFromRoot, type FixedLayoutOutput} from "@zavx0z/immersive-nodes-layout"
+import {runFixedWorkerRequest} from "@zavx0z/immersive-nodes-layout/worker/fixed/executor"
 
 const packageRoot = resolve(import.meta.dir, "..")
 
@@ -25,17 +25,17 @@ test("[LAYOUT-001] layout остаётся чистым numeric owner без UI/
   const source = await productionSource()
   for (const specifier of importSpecifiers(source)) {
     expect([
-      "@immersive/browser",
-      "@immersive/dom",
-      "@immersive/engine",
-      "@immersive/nodes",
-      "@immersive-nodes/parameter",
-      "@immersive-nodes/socket",
-      "@immersive-nodes/tree",
-      "@immersive-renderer/html",
-      "@immersive/space",
-      "@immersive-ui/component",
-      "@immersive/webgpu",
+      "@zavx0z/immersive-browser",
+      "@zavx0z/immersive-dom",
+      "@zavx0z/immersive-engine",
+      "@zavx0z/immersive-nodes",
+      "@zavx0z/immersive-nodes-parameter",
+      "@zavx0z/immersive-nodes-socket",
+      "@zavx0z/immersive-nodes-tree",
+      "@zavx0z/immersive-renderer-html",
+      "@zavx0z/immersive-space",
+      "@zavx0z/immersive-ui-component",
+      "@zavx0z/immersive-webgpu",
     ].some(prefix => specifier === prefix || specifier.startsWith(`${prefix}/`))).toBe(false)
   }
 
@@ -73,7 +73,7 @@ test("[LAYOUT-003] exact Worker executor эквивалентен прямому
 
 test("[LAYOUT-004] Worker является stateless executor, а не вторым NodeTree", async () => {
   const workerSource = await productionSource()
-  expect(workerSource).not.toContain("@immersive-nodes/tree")
+  expect(workerSource).not.toContain("@zavx0z/immersive-nodes-tree")
   expect(workerSource).not.toMatch(/\bNodeTree\b/u)
   expect(workerSource).not.toContain("createDocument")
   expect(workerSource).not.toContain("requestAnimationFrame")

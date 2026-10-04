@@ -1,7 +1,7 @@
 # Сокет
 
-`@immersive-nodes/socket` предоставляет одну реализацию `Socket` через default и протокол
-`ImmersiveNodesSocket.Input` / `ImmersiveNodesSocket.Output`. Он отображает переданные адрес,
+`@zavx0z/immersive-nodes-socket` предоставляет одну реализацию `Socket` через default и протокол
+`Zavx0zImmersiveNodesSocket.Input` / `Zavx0zImmersiveNodesSocket.Output`. Он отображает переданные адрес,
 вид и состояние в семантической кнопке Document приложения. Значение соединения
 и обработчик активации остаются у вызывающего компонента.
 
@@ -10,7 +10,7 @@
 
 Предустановки, допустимые виды и формы, числовые метрики и операции над адресами
 имеют самостоятельных владельцев `@socket-values/*`. Нормализаторы
-`@immersive-nodes-model-socket/resolve-kind` и `@immersive-nodes-model-socket/resolve-shape` сохраняют прежние
+`@zavx0z/immersive-nodes-model-socket-resolve-kind` и `@zavx0z/immersive-nodes-model-socket-resolve-shape` сохраняют прежние
 правила: неизвестный вид становится `custom`, неизвестная форма оставляет
-выбор предустановке. Ключ `@immersive-nodes-model-socket/key` кодирует пару идентификаторов
+выбор предустановке. Ключ `@zavx0z/immersive-nodes-model-socket-key` кодирует пару идентификаторов
 как JSON-массив, поэтому управляющий символ внутри идентификатора не создаёт коллизию.

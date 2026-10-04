@@ -2,7 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "jsx": "preserve",
-    "jsxImportSource": "@immersive/jsx"
+    "jsxImportSource": "@zavx0z/immersive-jsx"
   },
   "include": ["src/**/*.ts", "tests/**/*.ts", "slot/**/*.ts", "slot-presence/**/*.ts"]
 }

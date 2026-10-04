@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldNumberScrubRaw as Contract} from "./contract"
-import type {ImmersiveUiFieldNumberValueSoftRange} from "@immersive-ui-field-number-value/soft-range"
-type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
+import type {Zavx0zImmersiveUiFieldNumberScrubRaw as Contract} from "./contract"
+import type {Zavx0zImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
+type NumberRange = Zavx0zImmersiveUiFieldNumberValueSoftRange.Output
 
 export default function scrubNumberRawValue(
   value: Contract.Input[0],
@@ -24,4 +24,4 @@ export default function scrubNumberRawValue(
   return Math.min(range.max, Math.max(range.min, value + (deltaX / 500) * scale * softSpan))
 }
 
-export type {ImmersiveUiFieldNumberScrubRaw} from "./contract"
+export type {Zavx0zImmersiveUiFieldNumberScrubRaw} from "./contract"

@@ -1,6 +1,6 @@
-import type {ExternalStore} from "@immersive-nodes/tree"
-import type {ImmersiveNodesModelSocketKinds} from "@immersive-nodes-model-socket/kinds"
-type SocketKind = ImmersiveNodesModelSocketKinds.Output[number]
+import type {ExternalStore} from "@zavx0z/immersive-nodes-tree"
+import type {Zavx0zImmersiveNodesModelSocketKinds} from "@zavx0z/immersive-nodes-model-socket-kinds"
+type SocketKind = Zavx0zImmersiveNodesModelSocketKinds.Output[number]
 import type {MarkerComponent} from "../../shared/marker/contracts.ts"
 import type {LinkMarkerGeometry, LinkRoute} from "../../shared/routing/link-path.ts"
 import type {LinkDefinition, LinkEndpoint} from "../types/link.ts"

@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentFieldGroup as Contract} from "./contract"
-import {hasSlot} from "@immersive/component/slot-presence"
-import resolveFieldDensity from "@immersive-ui-field-metric/resolve-density"
+import type {Zavx0zImmersiveUiComponentFieldGroup as Contract} from "./contract"
+import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import resolveFieldDensity from "@zavx0z/immersive-ui-field-metric-resolve-density"
 
 
-export type {ImmersiveUiComponentFieldGroup} from "./contract"
+export type {Zavx0zImmersiveUiComponentFieldGroup} from "./contract"
 
 export default function FieldGroup(props: Contract.Input): Contract.Output {
   if (!hasSlot()) {

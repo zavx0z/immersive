@@ -1,12 +1,12 @@
 import {expect, test} from "bun:test"
-import {createDocument, type HTMLElement} from "@immersive/dom"
-import {Text, TrueTypeFont} from "@immersive/engine"
+import {createDocument, type HTMLElement} from "@zavx0z/immersive-dom"
+import {Text, TrueTypeFont} from "@zavx0z/immersive-engine"
 import {
   createDocumentInteractionController,
   createDocumentRenderer,
   hitTestProjection,
   readCanonicalRenderFrameChanges,
-} from "@immersive-renderer/html"
+} from "@zavx0z/immersive-renderer-html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 
 const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())

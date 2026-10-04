@@ -1,6 +1,6 @@
 /** Участники группы создают настоящие элементы одного принимающего Document. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
+import {createHeadless} from "@zavx0z/immersive-headless"
 import ClusterExamples from "./fixture"
 
 describe.each([

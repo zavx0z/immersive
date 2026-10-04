@@ -1,4 +1,4 @@
-import {Matrix4, type ViewPoint} from "@immersive/engine"
+import {Matrix4, type ViewPoint} from "@zavx0z/immersive-engine"
 import type {RendererWebGpuDisplayPlane} from "./display-plane.ts"
 
 /**

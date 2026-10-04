@@ -1,5 +1,5 @@
 /** Выбирает базовую высоту коллекции по видимым строкам и колонке доступных действий. */
-export declare namespace ImmersiveUiFieldMetricCollectionHeight {
+export declare namespace Zavx0zImmersiveUiFieldMetricCollectionHeight {
   /** Аргументы публичной операции collectionFieldHeight; порядок сохраняет её форму вызова. */
   type Input = readonly [
     visibleRows: number,

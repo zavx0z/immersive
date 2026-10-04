@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldMetricLabelledHeight as Contract} from "./contract"
-import fieldMetric from "@immersive-ui-field-metric/read"
+import type {Zavx0zImmersiveUiFieldMetricLabelledHeight as Contract} from "./contract"
+import fieldMetric from "@zavx0z/immersive-ui-field-metric-read"
 
 export default function labelledFieldHeight(controlHeight: Contract.Input[0], labelled: Contract.Input[1] = false): Contract.Output {
   return labelled
@@ -13,4 +13,4 @@ export default function labelledFieldHeight(controlHeight: Contract.Input[0], la
     : controlHeight
 }
 
-export type {ImmersiveUiFieldMetricLabelledHeight} from "./contract"
+export type {Zavx0zImmersiveUiFieldMetricLabelledHeight} from "./contract"

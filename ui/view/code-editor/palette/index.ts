@@ -6,7 +6,7 @@
 */
 import {editorBackground} from "./src/helpers.ts"
 import {editorBorder} from "./src/helpers.ts"
-import editorForeground from "@immersive-ui-view-code-editor/editor-foreground"
+import editorForeground from "@zavx0z/immersive-ui-view-code-editor-editor-foreground"
 import {gutterBackground} from "./src/helpers.ts"
 import {gutterForeground} from "./src/helpers.ts"
 

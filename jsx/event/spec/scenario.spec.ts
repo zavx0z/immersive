@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import jsxEventNames, {type JsxEventName} from "@immersive-jsx/event"
+import jsxEventNames, {type JsxEventName} from "@zavx0z/immersive-jsx-event"
 
 describe.each([
   {name: "Указатель", props: ["onClick", "onPointerDown", "onDoubleClick"], expected: ["click", "pointerdown", "dblclick"]},

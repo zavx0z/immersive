@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
 const uiRoot = resolve(import.meta.dir, "..")
 const root = resolve(uiRoot, "..")
@@ -28,21 +28,21 @@ const [
   {default: textFieldLayout},
   {default: vectorFieldLayout},
 ] = await Promise.all([
-  import("@immersive-ui-field-layout/checkbox"),
-  import("@immersive-ui-field-layout/collection"),
-  import("@immersive-ui-field-layout/color"),
-  import("@immersive-ui-field-layout/color-picker"),
-  import("@immersive-ui-field-layout/cycle"),
-  import("@immersive-ui-field-layout/group"),
-  import("@immersive-ui-field-layout/matrix"),
-  import("@immersive-ui-field-layout/number"),
-  import("@immersive-ui-field-layout/path"),
-  import("@immersive-ui-field-layout/reference"),
-  import("@immersive-ui-field-layout/select"),
-  import("@immersive-ui-field-layout/slider"),
-  import("@immersive-ui-field-layout/switch"),
-  import("@immersive-ui-field-layout/text"),
-  import("@immersive-ui-field-layout/vector"),
+  import("@zavx0z/immersive-ui-field-layout-checkbox"),
+  import("@zavx0z/immersive-ui-field-layout-collection"),
+  import("@zavx0z/immersive-ui-field-layout-color"),
+  import("@zavx0z/immersive-ui-field-layout-color-picker"),
+  import("@zavx0z/immersive-ui-field-layout-cycle"),
+  import("@zavx0z/immersive-ui-field-layout-group"),
+  import("@zavx0z/immersive-ui-field-layout-matrix"),
+  import("@zavx0z/immersive-ui-field-layout-number"),
+  import("@zavx0z/immersive-ui-field-layout-path"),
+  import("@zavx0z/immersive-ui-field-layout-reference"),
+  import("@zavx0z/immersive-ui-field-layout-select"),
+  import("@zavx0z/immersive-ui-field-layout-slider"),
+  import("@zavx0z/immersive-ui-field-layout-switch"),
+  import("@zavx0z/immersive-ui-field-layout-text"),
+  import("@zavx0z/immersive-ui-field-layout-vector"),
 ])
 
 test("[UI-005] числовая тема полей и CSS содержат один набор точных метрик", async () => {
@@ -134,21 +134,21 @@ test("[UI-009] ColorPickerField учитывает образец, четыре 
 
 test("[UI-010] числовой план базовой темы соответствует CSS соответствующего поля", async () => {
   const owners = Object.freeze({
-    "field/checkbox/index.tsx": ["@immersive-ui-field-layout/checkbox", "checkboxFieldLayout", "var(--field-checkbox-height)"],
-    "field/collection/index.tsx": ["@immersive-ui-field-layout/collection", "collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
-    "field/color/index.tsx": ["@immersive-ui-field-layout/color", "colorFieldLayout", "var(--field-height-regular)"],
-    "field/color-picker/index.tsx": ["@immersive-ui-field-layout/color-picker", "colorPickerFieldLayout", "height: var(--field-color-picker-height)"],
-    "field/cycle/index.tsx": ["@immersive-ui-field-layout/cycle", "cycleFieldLayout", "var(--control-height-medium)"],
-    "field/group/index.tsx": ["@immersive-ui-field-layout/group", "fieldGroupLayout", "var(--field-height-compact)"],
-    "field/matrix/index.tsx": ["@immersive-ui-field-layout/matrix", "matrixFieldLayout", "var(--field-matrix-row-gap)"],
-    "field/number/index.tsx": ["@immersive-ui-field-layout/number", "numberFieldLayout", "var(--control-height-medium)"],
-    "field/path/index.tsx": ["@immersive-ui-field-layout/path", "pathFieldLayout", "var(--field-path-height-compact)"],
-    "field/reference/index.tsx": ["@immersive-ui-field-layout/reference", "referenceFieldLayout", "var(--field-reference-height-compact)"],
-    "field/select/index.tsx": ["@immersive-ui-field-layout/select", "selectFieldLayout", "var(--control-height-medium)"],
-    "field/slider/index.tsx": ["@immersive-ui-field-layout/slider", "sliderFieldLayout", "var(--field-height-compact)"],
-    "field/switch/index.tsx": ["@immersive-ui-field-layout/switch", "switchFieldLayout", "var(--field-switch-height)"],
-    "field/text/index.tsx": ["@immersive-ui-field-layout/text", "textFieldLayout", "var(--control-height-medium)"],
-    "field/vector/index.tsx": ["@immersive-ui-field-layout/vector", "vectorFieldLayout", "var(--field-group-content-height)"],
+    "field/checkbox/index.tsx": ["@zavx0z/immersive-ui-field-layout-checkbox", "checkboxFieldLayout", "var(--field-checkbox-height)"],
+    "field/collection/index.tsx": ["@zavx0z/immersive-ui-field-layout-collection", "collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
+    "field/color/index.tsx": ["@zavx0z/immersive-ui-field-layout-color", "colorFieldLayout", "var(--field-height-regular)"],
+    "field/color-picker/index.tsx": ["@zavx0z/immersive-ui-field-layout-color-picker", "colorPickerFieldLayout", "height: var(--field-color-picker-height)"],
+    "field/cycle/index.tsx": ["@zavx0z/immersive-ui-field-layout-cycle", "cycleFieldLayout", "var(--control-height-medium)"],
+    "field/group/index.tsx": ["@zavx0z/immersive-ui-field-layout-group", "fieldGroupLayout", "var(--field-height-compact)"],
+    "field/matrix/index.tsx": ["@zavx0z/immersive-ui-field-layout-matrix", "matrixFieldLayout", "var(--field-matrix-row-gap)"],
+    "field/number/index.tsx": ["@zavx0z/immersive-ui-field-layout-number", "numberFieldLayout", "var(--control-height-medium)"],
+    "field/path/index.tsx": ["@zavx0z/immersive-ui-field-layout-path", "pathFieldLayout", "var(--field-path-height-compact)"],
+    "field/reference/index.tsx": ["@zavx0z/immersive-ui-field-layout-reference", "referenceFieldLayout", "var(--field-reference-height-compact)"],
+    "field/select/index.tsx": ["@zavx0z/immersive-ui-field-layout-select", "selectFieldLayout", "var(--control-height-medium)"],
+    "field/slider/index.tsx": ["@zavx0z/immersive-ui-field-layout-slider", "sliderFieldLayout", "var(--field-height-compact)"],
+    "field/switch/index.tsx": ["@zavx0z/immersive-ui-field-layout-switch", "switchFieldLayout", "var(--field-switch-height)"],
+    "field/text/index.tsx": ["@zavx0z/immersive-ui-field-layout-text", "textFieldLayout", "var(--control-height-medium)"],
+    "field/vector/index.tsx": ["@zavx0z/immersive-ui-field-layout-vector", "vectorFieldLayout", "var(--field-group-content-height)"],
   })
 
   for (const [relativePath, requiredFragments] of Object.entries(owners)) {

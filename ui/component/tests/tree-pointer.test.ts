@@ -1,18 +1,18 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@immersive/component"
-import {createDocument, HTMLElement, KeyboardEvent, readDocumentScrollIntoViewRequests} from "@immersive/dom"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import {createDocumentInteractionController, createDocumentRenderer} from "@immersive-renderer/html"
-import type {ImmersiveUiComponentWidgetTree} from "@immersive-ui-component-widget/tree"
-type TreeProps = ImmersiveUiComponentWidgetTree.Input
-type TreeHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentWidgetTree.Input["onReady"]>>[0]>
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument, HTMLElement, KeyboardEvent, readDocumentScrollIntoViewRequests} from "@zavx0z/immersive-dom"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDocumentInteractionController, createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import type {Zavx0zImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-component-widget-tree"
+type TreeProps = Zavx0zImmersiveUiComponentWidgetTree.Input
+type TreeHandle = NonNullable<Parameters<NonNullable<Zavx0zImmersiveUiComponentWidgetTree.Input["onReady"]>>[0]>
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 
-const {default: Tree} = await import("@immersive-ui-component-widget/tree")
+const {default: Tree} = await import("@zavx0z/immersive-ui-component-widget-tree")
 const template = Tree as unknown as CompiledTemplate<TreeProps>
 
 function mount(

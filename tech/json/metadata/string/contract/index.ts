@@ -1,7 +1,7 @@
-import type {ImmersiveTechJsonMetadata} from "@immersive-tech-json/metadata/contract"
+import type {Zavx0zImmersiveTechJsonMetadata} from "@zavx0z/immersive-tech-json-metadata/contract"
 
 /** Читает непустую строку либо возвращает резервное значение. */
-export declare namespace ImmersiveTechJsonMetadataString {
-  type Input = readonly [value: ImmersiveTechJsonMetadata.Input[0], key: ImmersiveTechJsonMetadata.Input[1], fallback: string]
+export declare namespace Zavx0zImmersiveTechJsonMetadataString {
+  type Input = readonly [value: Zavx0zImmersiveTechJsonMetadata.Input[0], key: Zavx0zImmersiveTechJsonMetadata.Input[1], fallback: string]
   type Output = string
 }

@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
+import {createDocument} from "@zavx0z/immersive-dom"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "../src/index.ts"
 import {projectionPaintIndex} from "../src/projection-hit.ts"
 

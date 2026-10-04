@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-metric/collection-visible-rows-height",
+  "name": "@zavx0z/immersive-ui-field-metric-collection-visible-rows-height",
   "label": "collectionVisibleRowsHeight",
   "version": "0.0.0",
   "description": "Высота видимых строк коллекции",
@@ -11,10 +11,10 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-metric/read": "workspace:*"
+    "@zavx0z/immersive-ui-field-metric-read": "workspace:*"
   }
 }

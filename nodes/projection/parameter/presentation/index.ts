@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import {metadata, metadataBoolean, metadataNumber, metadataObjectArray, metadataString, metadataStringArray} from "@immersive-tech-json/metadata"
-import type {ImmersiveTechJsonValueOwn} from "@immersive-tech-json-value/own"
-import type {ImmersiveNodesProjectionParameterPresentation as Contract} from "./contract"
-export type {ImmersiveNodesProjectionParameterPresentation} from "./contract"
-type NodeJsonValue = ImmersiveTechJsonValueOwn.Input[0]
+import {metadata, metadataBoolean, metadataNumber, metadataObjectArray, metadataString, metadataStringArray} from "@zavx0z/immersive-tech-json-metadata"
+import type {Zavx0zImmersiveTechJsonValueOwn} from "@zavx0z/immersive-tech-json-value-own"
+import type {Zavx0zImmersiveNodesProjectionParameterPresentation as Contract} from "./contract"
+export type {Zavx0zImmersiveNodesProjectionParameterPresentation} from "./contract"
+type NodeJsonValue = Zavx0zImmersiveTechJsonValueOwn.Input[0]
 type NodeJsonObject = Extract<NodeJsonValue, Readonly<Record<string, NodeJsonValue>>>
 type SelectFieldOption = NonNullable<Contract.Output["options"]>[number]
 type ColorFieldValue = NonNullable<Contract.Output["color"]>

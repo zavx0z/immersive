@@ -1,9 +1,9 @@
-import type {ImmersiveUiSelectionValidateOptions} from "@immersive-ui-selection/validate-options"
-type SelectionOptionShape = ImmersiveUiSelectionValidateOptions.Input[0][number]
+import type {Zavx0zImmersiveUiSelectionValidateOptions} from "@zavx0z/immersive-ui-selection-validate-options"
+type SelectionOptionShape = Zavx0zImmersiveUiSelectionValidateOptions.Input[0][number]
 
 
 /** Поиск варианта выбора. */
-export declare namespace ImmersiveUiSelectionFindOption {
+export declare namespace Zavx0zImmersiveUiSelectionFindOption {
   /** Аргументы публичной операции findSelectionOption; порядок сохраняет её форму вызова. */
   type Input<T extends SelectionOptionShape = SelectionOptionShape> = readonly [
     value: string,

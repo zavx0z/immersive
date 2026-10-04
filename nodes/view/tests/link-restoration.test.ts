@@ -1,19 +1,19 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument} from "@immersive/dom"
-import {flushDocumentLayoutObservers} from "@immersive/dom/geometry"
-import {createRoot} from "@immersive/component"
-import {createDocumentRenderer, type RenderFrame} from "@immersive-renderer/html"
-import {InstancedStrokedPath, TrueTypeFont} from "@immersive/engine"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocumentRenderer, type RenderFrame} from "@zavx0z/immersive-renderer-html"
+import {InstancedStrokedPath, TrueTypeFont} from "@zavx0z/immersive-engine"
 import {RendererWebGpuBackend} from "../../../webgpu/src/webgpu-backend.ts"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {GraphViewProps, GraphLayoutComputer} from "@immersive/nodes/view"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {GraphViewProps, GraphLayoutComputer} from "@zavx0z/immersive-nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui"].map(path => resolve(workspace, path))}))
-const {createCubicLinkRoute} = await import("@immersive/nodes/routing/link-path")
-const {GraphView} = await import("@immersive/nodes/view")
+const {createCubicLinkRoute} = await import("@zavx0z/immersive-nodes/routing/link-path")
+const {GraphView} = await import("@zavx0z/immersive-nodes/view")
 const {graphInput} = await import("./measured.fixture.tsx")
 const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/font/inter-regular.ttf")).arrayBuffer())
 

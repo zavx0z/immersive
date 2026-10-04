@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import colorPickerFieldHeight from "@immersive-ui-field-metric/color-picker-height"
+import colorPickerFieldHeight from "@zavx0z/immersive-ui-field-metric-color-picker-height"
 
 const colorPickerFieldLayout = Object.freeze({
   height(): number {

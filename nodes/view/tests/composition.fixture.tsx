@@ -1,18 +1,18 @@
-import nodeSocketLayoutPortId from "@immersive-nodes-geometry-node/port-id"
-import {createRoot, component} from "@immersive/component"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {JSX} from "@immersive-jsx-compiler/session"
-import type {Document} from "@immersive/dom"
-import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeTreeSnapshot} from "@immersive-nodes/tree"
-import DiagramNode from "@immersive-nodes-node/diagram"
-import type {NodeViewProps, NodeView} from "@immersive/nodes/view/tree"
-import {GraphEditor} from "@immersive/nodes/editor"
-import {socketKey, type NodePresentationState} from "@immersive/nodes/view/tree"
-import planProjectedNodeGeometry from "@immersive-nodes-geometry-node/project"
-import type {ImmersiveNodesGeometryNodeProject} from "@immersive-nodes-geometry-node/project"
-type NodeKind = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["kind"]>
-type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
-import {layoutFixed} from "@immersive-nodes/layout/fixed"
+import nodeSocketLayoutPortId from "@zavx0z/immersive-nodes-geometry-node-port-id"
+import {createRoot, component} from "@zavx0z/immersive-component"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
+import type {Document} from "@zavx0z/immersive-dom"
+import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeTreeSnapshot} from "@zavx0z/immersive-nodes-tree"
+import DiagramNode from "@zavx0z/immersive-nodes-node-diagram"
+import type {NodeViewProps, NodeView} from "@zavx0z/immersive-nodes/view/tree"
+import {GraphEditor} from "@zavx0z/immersive-nodes/editor"
+import {socketKey, type NodePresentationState} from "@zavx0z/immersive-nodes/view/tree"
+import planProjectedNodeGeometry from "@zavx0z/immersive-nodes-geometry-node-project"
+import type {Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+type NodeKind = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["kind"]>
+type NodeShape = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
+import {layoutFixed} from "@zavx0z/immersive-nodes-layout/fixed"
 import {InteractiveContent} from "../../node/tests/composition.fixture.tsx"
 
 const kinds: ReadonlyMap<string, NodeKind> = new Map([["source", "content"], ["target", "diagram"]])

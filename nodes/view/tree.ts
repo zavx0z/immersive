@@ -1,8 +1,8 @@
-import {useMemo, useRef, useLayoutEffect, useSyncExternalStore} from "@immersive/component"
+import {useMemo, useRef, useLayoutEffect, useSyncExternalStore} from "@zavx0z/immersive-component"
 import {createNodeTreeLayout} from "../shared/projection/layout.ts"
 import {getNodeTreeLayoutStore} from "../shared/projection/layout-state.ts"
 import {createActions, createNodeTreeViewSelector, linkKind} from "../shared/node-tree/view.ts"
-import {metadataBoolean, metadataString} from "@immersive-tech-json/metadata"
+import {metadataBoolean, metadataString} from "@zavx0z/immersive-tech-json-metadata"
 import {ModelNode} from "../shared/model-node/index.tsx"
 import type {NodeTreeProps} from "../shared/node-tree/contracts.ts"
 import type {GraphScene} from "../shared/graph/contracts.ts"
@@ -11,7 +11,7 @@ export type {NodeView, NodeViewProps, NodeTreeLayoutComputer, NodePresentationSt
 export type {NodeRect, NodeTreeTransform, NodeTreeViewport} from "../shared/projection/geometry.ts"
 export {createNodeTreeLayout, StaleNodeTreeLayoutError} from "../shared/projection/layout.ts"
 export {nodeSocketLayoutPortId} from "../shared/projection/geometry.ts"
-export {default as socketKey} from "@immersive-nodes-model-socket/key"
+export {default as socketKey} from "@zavx0z/immersive-nodes-model-socket-key"
 export {useMeasuredNodeTreePresentation, type MeasuredNodeTreeComputer} from "../shared/node-tree/measured.ts"
 
 /**

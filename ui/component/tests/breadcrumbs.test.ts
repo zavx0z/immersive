@@ -1,11 +1,11 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@immersive/component"
-import {createDocument} from "@immersive/dom"
-import {createDocumentInteractionState, createDocumentRenderer} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import chevronRightIcon from "@immersive-ui-theme-icon/chevron-right"
-import homeIcon from "@immersive-ui-theme-icon/home"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {createDocumentInteractionState, createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import chevronRightIcon from "@zavx0z/immersive-ui-theme-icon-chevron-right"
+import homeIcon from "@zavx0z/immersive-ui-theme-icon-home"
 
 const root = resolve(import.meta.dir, "../../..")
 const uiRoot = resolve(root, "ui")
@@ -16,7 +16,7 @@ Bun.plugin(createJsxBunPlugin({
   sourceRoots: [uiRoot],
 }))
 
-const {default: Breadcrumbs} = await import("@immersive-ui-component-navigation/breadcrumb")
+const {default: Breadcrumbs} = await import("@zavx0z/immersive-ui-component-navigation-breadcrumb")
 
 test("иконка, разделители и подписи выровнены по центру одной строки", () => {
   const document = createDocument()
@@ -41,7 +41,7 @@ test("иконка, разделители и подписи выровнены 
   expect(center('[data-breadcrumb-id="package"] button span')).toBeCloseTo(iconCenter)
   expect(center('[data-breadcrumb-id="project"] img')).toBeCloseTo(iconCenter)
   const opacity = () => renderer.flush().displayList.find(item => item.kind === "image" && item.src === homeIcon)?.opacity
-  const home = container.querySelector('[data-breadcrumb-id="home"] button') as import("@immersive/dom").HTMLButtonElement
+  const home = container.querySelector('[data-breadcrumb-id="home"] button') as import("@zavx0z/immersive-dom").HTMLButtonElement
   expect(opacity()).toBe(0.5)
   interactionState.setHoveredElement(home)
   expect(opacity()).toBe(1)
@@ -65,7 +65,7 @@ test("иконка корня сохраняет имя, подсказку и �
     items: [{id: "home", label: "Главная", iconSrc: homeIcon}, {id: "package", label: "Пакет"}],
     onNavigate: (item: {id: string}) => { visited.push(item.id) },
   })
-  const button = container.querySelector('[data-breadcrumb-id="home"] button') as import("@immersive/dom").HTMLButtonElement
+  const button = container.querySelector('[data-breadcrumb-id="home"] button') as import("@zavx0z/immersive-dom").HTMLButtonElement
   expect(button.textContent).toBe("")
   expect(button.getAttribute("aria-label")).toBe("Главная")
   expect(button.title).toBe("Главная")
@@ -81,7 +81,7 @@ test("[UI-BREADCRUMBS-001] путь является ordered navigation с те�
   document.append(container)
   const component = createRoot(container)
   const items = Object.freeze([
-    Object.freeze({id: "package", label: "@immersive/nodes"}),
+    Object.freeze({id: "package", label: "@zavx0z/immersive-nodes"}),
     Object.freeze({id: "layout", label: "Раскладка"}),
     Object.freeze({id: "adaptive", label: "Адаптивная"}),
   ])

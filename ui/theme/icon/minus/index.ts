@@ -4,11 +4,11 @@ SVG-значок minus в формате data URL.
 
 @packageDocumentation
 */
-import type {ImmersiveUiThemeIconMinus as Contract} from "./contract"
-import iconSvg from "@immersive-ui-theme-icon/compose"
+import type {Zavx0zImmersiveUiThemeIconMinus as Contract} from "./contract"
+import iconSvg from "@zavx0z/immersive-ui-theme-icon-compose"
 
 const minusIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"M5 12h14\"/>")
 
 export default minusIcon
 
-export type {ImmersiveUiThemeIconMinus} from "./contract"
+export type {Zavx0zImmersiveUiThemeIconMinus} from "./contract"

@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/component",
+  "name": "@zavx0z/immersive-component",
   "label": "Компоненты",
   "version": "0.0.0",
   "description": "Состояние компонентов, хуки, контекст, эффекты и освобождение ресурсов",
@@ -19,15 +19,15 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@immersive/dom": "workspace:*",
-    "@immersive/template": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@immersive/dom": {
+    "@zavx0z/immersive-dom": {
       "optional": true
     },
-    "@immersive/template": {
+    "@zavx0z/immersive-template": {
       "optional": true
     }
   }

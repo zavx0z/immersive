@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, DOMRect} from "@immersive/dom"
+import {createDocument, DOMRect} from "@zavx0z/immersive-dom"
 import {createTypeDocNavigation} from "../typedoc/src/navigation.ts"
 
 test("верхнее видимое поле выбирается по своему содержимому, а не общей высоте родителя", () => {

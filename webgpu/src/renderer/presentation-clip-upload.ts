@@ -1,6 +1,6 @@
-import {Matrix4} from "@immersive/engine"
-import type {Object3D} from "@immersive/engine"
-import type {PresentationClipShape} from "@immersive/engine"
+import {Matrix4} from "@zavx0z/immersive-engine"
+import type {Object3D} from "@zavx0z/immersive-engine"
+import type {PresentationClipShape} from "@zavx0z/immersive-engine"
 
 export const PRESENTATION_CLIP_RECORD_FLOATS = 24
 export const PRESENTATION_CLIP_RECORD_SIZE = PRESENTATION_CLIP_RECORD_FLOATS * Float32Array.BYTES_PER_ELEMENT

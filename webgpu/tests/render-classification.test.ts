@@ -7,7 +7,7 @@ import {
   Mesh,
   MeshBasicMaterial,
   Object3D,
-} from "@immersive/engine"
+} from "@zavx0z/immersive-engine"
 import {classifyRenderItems, type RenderItem} from "../src/renderer/utils/render-list.ts"
 
 function mesh(glass = false): RenderItem {

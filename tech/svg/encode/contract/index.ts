@@ -1,6 +1,6 @@
 
 /** SVG-значок svg в формате data URL. */
-export declare namespace ImmersiveTechSvgEncode {
+export declare namespace Zavx0zImmersiveTechSvgEncode {
   /** SVG-текст; кодирование сохраняет всё его содержимое. */
   type Input = string
 

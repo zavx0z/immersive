@@ -1,5 +1,5 @@
 import {afterEach, describe, expect, test} from "bun:test"
-import {createDocument, type Node} from "@immersive/dom"
+import {createDocument, type Node} from "@zavx0z/immersive-dom"
 import {
   component,
   createRoot,
@@ -10,8 +10,8 @@ import {
   type ComponentValue,
   type Ref,
   type StateDispatch,
-} from "@immersive/component"
-import {composeSlot, type ComposeSlotInput} from "@immersive/component/slot"
+} from "@zavx0z/immersive-component"
+import {composeSlot, type ComposeSlotInput} from "@zavx0z/immersive-component/slot"
 import {
   bindConditional,
   bindProperty,
@@ -19,7 +19,7 @@ import {
   bindText,
   defineCompiledTemplate,
   writeBinding,
-} from "@immersive/template/compiled"
+} from "@zavx0z/immersive-template/compiled"
 
 /** Поддерживаемое содержимое берётся из публичного входного контракта. */
 type SlotContent = ComposeSlotInput["content"]

@@ -1,7 +1,7 @@
 /** Button показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import Button from "@immersive-ui-component-button/basic"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import Button from "@zavx0z/immersive-ui-component-button-basic"
 
 describe.each([{name: "Основное представление", props: {label: "Действие"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

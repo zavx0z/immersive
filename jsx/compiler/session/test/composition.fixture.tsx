@@ -1,4 +1,4 @@
-import {memo, useEffect, useState} from "@immersive/component"
+import {memo, useEffect, useState} from "@zavx0z/immersive-component"
 
 export function Counter(props: {id: string; label: string; onDispose(id: string): void}) {
   const [count, setCount] = useState(0)

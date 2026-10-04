@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import type {CompiledTemplate} from "@immersive/template/compiled"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import type {ParameterSlotFixtureProps} from "./slot-content.fixture.tsx"
 import "./compiler.ts"
 

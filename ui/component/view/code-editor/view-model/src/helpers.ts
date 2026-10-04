@@ -1,17 +1,17 @@
-import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
-type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
+import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorProps = Zavx0zImmersiveUiComponentViewCodeEditor.Input
 import type {CodeEditorSegment} from "../contract/types.ts"
-import type {ImmersiveUiComponentViewCodeEditorViewModel} from "../contract"
-type CodeEditorViewModel = ImmersiveUiComponentViewCodeEditorViewModel.Output
+import type {Zavx0zImmersiveUiComponentViewCodeEditorViewModel} from "../contract"
+type CodeEditorViewModel = Zavx0zImmersiveUiComponentViewCodeEditorViewModel.Output
 import type {NormalizedToken} from "./types"
-import assertNonEmpty from "@immersive-tech-text/assert-non-empty"
-import editorForeground from "@immersive-ui-view-code-editor/editor-foreground"
-import isHexColor from "@immersive-tech-color-hex/valid"
-import normalizeHexColor from "@immersive-tech-color-hex/normalize"
-import resolveCodeEditorHighlighter from "@immersive-ui-component-view-code-editor/highlighter"
+import assertNonEmpty from "@zavx0z/immersive-tech-text-assert-non-empty"
+import editorForeground from "@zavx0z/immersive-ui-view-code-editor-editor-foreground"
+import isHexColor from "@zavx0z/immersive-tech-color-hex-valid"
+import normalizeHexColor from "@zavx0z/immersive-tech-color-hex-normalize"
+import resolveCodeEditorHighlighter from "@zavx0z/immersive-ui-component-view-code-editor-highlighter"
 import type {Token} from "@zavx0z/highlighter"
 import type {Tokens} from "@zavx0z/highlighter"
-import resolveCodeEditorSyntaxScopeColorHex from "@immersive-ui-component-view-code-editor-syntax-theme/resolve-scope-color-hex"
+import resolveCodeEditorSyntaxScopeColorHex from "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-resolve-scope-color-hex"
 
 /** Частная подготовка подготовка строк, токенов и оформления редактора. */
 export function buildViewModel(props: CodeEditorProps): CodeEditorViewModel {

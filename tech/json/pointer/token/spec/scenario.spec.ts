@@ -1,6 +1,6 @@
 /** Слеш и тильда кодируются без потери границ JSON Pointer. */
 import {describe, expect, test} from "bun:test"
-import encode from "@immersive-tech-json-pointer/token"
+import encode from "@zavx0z/immersive-tech-json-pointer-token"
 
 describe.each([
   {name: "Обычное имя", props: {value: "name"}, expected: "name"},

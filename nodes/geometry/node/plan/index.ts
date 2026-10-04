@@ -3,12 +3,12 @@
 
 @packageDocumentation
 */
-import type {ImmersiveNodesGeometryNodePlan as Contract} from "./contract"
-export type {ImmersiveNodesGeometryNodePlan} from "./contract"
+import type {Zavx0zImmersiveNodesGeometryNodePlan as Contract} from "./contract"
+export type {Zavx0zImmersiveNodesGeometryNodePlan} from "./contract"
 
-import metrics from "@immersive-nodes-geometry-node/metrics"
+import metrics from "@zavx0z/immersive-nodes-geometry-node-metrics"
 const {NODE_MINIMUM_WIDTH, NODE_HEADER_HEIGHT, NODE_BODY_PADDING_TOP, NODE_BODY_PADDING_BOTTOM, NODE_ROW_GAP, NODE_COLLAPSED_HEIGHT} = metrics
-import socketMetrics from "@immersive-nodes-model-socket/metrics"
+import socketMetrics from "@zavx0z/immersive-nodes-model-socket-metrics"
 const {NODE_BORDER_WIDTH, NODE_ROW_HEIGHT, SOCKET_GLYPH_SIZE} = socketMetrics
 import type {Row} from "./contract/types"
 

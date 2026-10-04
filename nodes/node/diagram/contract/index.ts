@@ -1,13 +1,13 @@
 
-import type {ImmersiveNodesNode} from "@immersive-nodes/node/contract"
-import type {JSX} from "@immersive-jsx-compiler/session"
-import type {ImmersiveNodesLayout} from "@immersive-nodes/layout/contract"
-type NodeRect = ImmersiveNodesLayout.Output["bounds"]
-import type {ImmersiveNodesGeometryNodeProject} from "@immersive-nodes-geometry-node/project"
-type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
+import type {Zavx0zImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
+import type {Zavx0zImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
+type NodeRect = Zavx0zImmersiveNodesLayout.Output["bounds"]
+import type {Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+type NodeShape = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
 
 /** Собственные данные представления и общий протокол ноды. */
-export declare namespace ImmersiveNodesNodeDiagram {
+export declare namespace Zavx0zImmersiveNodesNodeDiagram {
   /**
   Данные отображения диаграммной ноды. Компонент показывает описание внутри Pane,
   а выбор состояния и обработка действий остаются у вызывающей стороны.
@@ -46,7 +46,7 @@ export declare namespace ImmersiveNodesNodeDiagram {
 
   @example
   ```ts
-  const input: ImmersiveNodesNodeDiagram.Input = {
+  const input: Zavx0zImmersiveNodesNodeDiagram.Input = {
     id: "example",
     description: "Описание узла",
     shape: "rectangle",
@@ -54,12 +54,12 @@ export declare namespace ImmersiveNodesNodeDiagram {
   }
   ```
   */
-  interface Input extends ImmersiveNodesNode.Input {
+  interface Input extends Zavx0zImmersiveNodesNode.Input {
     readonly description: string
     readonly rect?: NodeRect | undefined
     readonly intrinsic?: boolean | undefined
     readonly shape?: NodeShape | undefined
   }
 
-  type Output = ImmersiveNodesNode.Output & JSX.Element
+  type Output = Zavx0zImmersiveNodesNode.Output & JSX.Element
 }

@@ -1,4 +1,4 @@
-import codeEditorSyntaxTheme from "@immersive-ui-component-view-code-editor-syntax-theme/data"
+import codeEditorSyntaxTheme from "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-data"
 
 /** Частная подготовка цвет синтаксической области редактора. */
 export const foregroundRules = codeEditorSyntaxTheme.tokenColors.map(rule => ({

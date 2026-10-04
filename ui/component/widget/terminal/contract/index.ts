@@ -1,15 +1,15 @@
-import type {ImmersiveUiComponentWidget} from "@immersive-ui-component/widget/contract"
-import type {ImmersiveTechTerminal} from "@immersive-tech/terminal"
-type TerminalLine = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]
-import type TerminalModel from "@immersive-tech/terminal"
+import type {Zavx0zImmersiveUiComponentWidget} from "@zavx0z/immersive-ui-component-widget/contract"
+import type {Zavx0zImmersiveTechTerminal} from "@zavx0z/immersive-tech-terminal"
+type TerminalLine = Zavx0zImmersiveTechTerminal.Output["snapshot"]["lines"][number]
+import type TerminalModel from "@zavx0z/immersive-tech-terminal"
 import type {TerminalHandle} from "./types.ts"
-import type {ImmersiveUiComponentWidgetHeader} from "@immersive-ui-component-widget/header"
-type WidgetHeaderProps = ImmersiveUiComponentWidgetHeader.Input
+import type {Zavx0zImmersiveUiComponentWidgetHeader} from "@zavx0z/immersive-ui-component-widget-header"
+type WidgetHeaderProps = Zavx0zImmersiveUiComponentWidgetHeader.Input
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace ImmersiveUiComponentWidgetTerminal {
+export declare namespace Zavx0zImmersiveUiComponentWidgetTerminal {
   /**
   Входные данные Terminal.
   */
@@ -31,5 +31,5 @@ export declare namespace ImmersiveUiComponentWidgetTerminal {
     style?: CssStyle | undefined
   }>
 
-  type Output = ImmersiveUiComponentWidget.Output & JSX.Element
+  type Output = Zavx0zImmersiveUiComponentWidget.Output & JSX.Element
 }

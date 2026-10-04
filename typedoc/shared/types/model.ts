@@ -1,5 +1,5 @@
 /**
-Текстовая часть документации, общая для parser и представления {@link @immersive/typedoc#TypeDoc | TypeDoc}.
+Текстовая часть документации, общая для parser и представления {@link @zavx0z/immersive-typedoc#TypeDoc | TypeDoc}.
 Сохраняет Markdown без ссылок на AST и без исполнения примеров.
 
 @property summary - Описание декларации и содержимое @remarks без тегов полей.
@@ -76,7 +76,7 @@ export interface TypeDocDeclaration {
 }
 
 /**
-Готовый справочник одного исходного файла для {@link @immersive/typedoc#TypeDoc | TypeDoc}.
+Готовый справочник одного исходного файла для {@link @zavx0z/immersive-typedoc#TypeDoc | TypeDoc}.
 Не удерживает сессию TypeScript и может передаваться через JSON.
 
 @property name - Имя входного файла без директорий; используется как заголовок по умолчанию.

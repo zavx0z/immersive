@@ -39,7 +39,7 @@ JSX descriptor, функцию или обычный объект.
 
 @example
 ```ts
-import {composeSlot} from "@immersive/component/slot"
+import {composeSlot} from "@zavx0z/immersive-component/slot"
 
 const content = composeSlot({content: [null, "Счётчик: ", 0]})
 ```

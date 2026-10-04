@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldColorValueChannelDisplay as Contract} from "./contract"
+import type {Zavx0zImmersiveUiFieldColorValueChannelDisplay as Contract} from "./contract"
 
 export default function colorChannelDisplayValue(channel: Contract.Input[0], value: Contract.Input[1]): Contract.Output {
   return channel === "h"
@@ -12,4 +12,4 @@ export default function colorChannelDisplayValue(channel: Contract.Input[0], val
     : Math.round(value[channel] * 1_000_000) / 1_000_000
 }
 
-export type {ImmersiveUiFieldColorValueChannelDisplay} from "./contract"
+export type {Zavx0zImmersiveUiFieldColorValueChannelDisplay} from "./contract"

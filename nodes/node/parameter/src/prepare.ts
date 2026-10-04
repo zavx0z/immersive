@@ -1,6 +1,6 @@
-import type {ImmersiveNodesNodeParameter} from "@immersive-nodes-node/parameter"
-type ParameterNodeProps = ImmersiveNodesNodeParameter.Input
-import projectedSocketSide from "@immersive-nodes-geometry-node/socket-side"
+import type {Zavx0zImmersiveNodesNodeParameter} from "@zavx0z/immersive-nodes-node-parameter"
+type ParameterNodeProps = Zavx0zImmersiveNodesNodeParameter.Input
+import projectedSocketSide from "@zavx0z/immersive-nodes-geometry-node-socket-side"
 
 /**
 Проверяет данные ноды и выделяет самостоятельные сокеты по сторонам.

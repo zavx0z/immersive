@@ -1,8 +1,8 @@
 import {expect, test} from "bun:test"
-import {layoutFixed} from "@immersive-nodes/layout/fixed"
-import {layoutAdaptiveWithDiagnostics} from "@immersive-nodes/layout/adaptive/diagnostics"
-import {layoutTopDown} from "@immersive-nodes/layout/top-down"
-import {layoutCoffmanGraham} from "@immersive-nodes/layout/coffman-graham"
+import {layoutFixed} from "@zavx0z/immersive-nodes-layout/fixed"
+import {layoutAdaptiveWithDiagnostics} from "@zavx0z/immersive-nodes-layout/adaptive/diagnostics"
+import {layoutTopDown} from "@zavx0z/immersive-nodes-layout/top-down"
+import {layoutCoffmanGraham} from "@zavx0z/immersive-nodes-layout/coffman-graham"
 import {fixedGraph, adaptiveGraph, topDownGraph, coffmanGrahamGraph} from "./layout.fixture.ts"
 
 test("[LAYOUT-ALGORITHMS-001] реальные стороны, направления, compound containment и независимые входы", () => {

@@ -1,6 +1,6 @@
 # Вертикальные текстовые строки
 
-`@immersive-renderer/html` рассчитывает intrinsic-размеры DOM Text для `horizontal-tb`,
+`@zavx0z/immersive-renderer-html` рассчитывает intrinsic-размеры DOM Text для `horizontal-tb`,
 `vertical-rl`, `vertical-lr`, `sideways-rl` и `sideways-lr`. Вертикальная строка
 использует длину текста как высоту, а `line-height` — как ширину колонки.
 Явные переводы строки создают колонки в направлении выбранного writing-mode.
@@ -19,7 +19,7 @@
 приоритет каскада. RTL direction этой частью пока не поддерживается.
 
 В `TextDisplayItem` необязательные `orientation` и `inlineSize` описывают поворот
-и измеренную длину строки. `@immersive/webgpu` поворачивает существующий Text вокруг
+и измеренную длину строки. `@zavx0z/immersive-webgpu` поворачивает существующий Text вокруг
 рассчитанной базовой линии, учитывает scale/clip и границы глифов при culling.
 Отдельный Document, Canvas или semantic tree не создаётся.
 

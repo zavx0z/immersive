@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/devtool",
+  "name": "@zavx0z/immersive-devtool",
   "label": "Диагностика",
   "version": "0.0.0",
   "private": true,
@@ -18,14 +18,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@immersive/dom": "workspace:*",
-    "@immersive-renderer/html": "workspace:*"
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-renderer-html": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@immersive/dom": {
+    "@zavx0z/immersive-dom": {
       "optional": true
     },
-    "@immersive-renderer/html": {
+    "@zavx0z/immersive-renderer-html": {
       "optional": true
     }
   },

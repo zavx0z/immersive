@@ -1,11 +1,11 @@
-import type {ImmersiveUiComponentSurface} from "@immersive-ui-component/surface/contract"
+import type {Zavx0zImmersiveUiComponentSurface} from "@zavx0z/immersive-ui-component-surface/contract"
 import type {PaneTextContent} from "./types.ts"
 import type {PaneVariant} from "./types.ts"
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace ImmersiveUiComponentSurfacePane {
+export declare namespace Zavx0zImmersiveUiComponentSurfacePane {
   /**
   Входные данные Pane.
   */
@@ -17,5 +17,5 @@ export declare namespace ImmersiveUiComponentSurfacePane {
     readonly style?: CssStyle | undefined
   }
 
-  type Output = ImmersiveUiComponentSurface.Output & JSX.Element
+  type Output = Zavx0zImmersiveUiComponentSurface.Output & JSX.Element
 }

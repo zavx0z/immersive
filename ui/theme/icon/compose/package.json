@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-theme-icon/compose",
+  "name": "@zavx0z/immersive-ui-theme-icon-compose",
   "label": "iconSvg",
   "version": "0.0.0",
   "description": "Собирает SVG data URL размером 24×24 из векторного содержимого и цвета штрихов",
@@ -11,13 +11,13 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-tech-svg/encode": "workspace:*"
+    "@zavx0z/immersive-tech-svg-encode": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-ui-theme/icon": "workspace:*"
+    "@zavx0z/immersive-ui-theme-icon": "workspace:*"
   }
 }

@@ -1,6 +1,6 @@
 /** scrubNumberValue показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@immersive-ui-field-number-scrub/value"
+import operation from "@zavx0z/immersive-ui-field-number-scrub-value"
 
 describe.each([{name: "Публичный вызов", props: {args: [5, 0, 0, {min: 0, max: 10}] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

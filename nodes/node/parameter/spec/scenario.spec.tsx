@@ -1,6 +1,6 @@
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import ParameterNode from "@immersive-nodes-node/parameter"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import ParameterNode from "@zavx0z/immersive-nodes-node-parameter"
 import {parameters, sockets} from "../../spec/fixture/parameters"
 
 describe.each([

@@ -1,13 +1,13 @@
 # Нодовая система
 
 GraphView показывает согласованную числовую сцену: ноды, связи и рамки.
-GraphEditor использует тот же GraphView и добавляет управление изменениями. Состояние значений принадлежит `@immersive-nodes/tree`, числовая
-раскладка — `@immersive-nodes/layout`, универсальные поля — `@immersive-ui/component`.
+GraphEditor использует тот же GraphView и добавляет управление изменениями. Состояние значений принадлежит `@zavx0z/immersive-nodes-tree`, числовая
+раскладка — `@zavx0z/immersive-nodes-layout`, универсальные поля — `@zavx0z/immersive-ui-component`.
 
 ## Состав
 
 Пакеты сокетов и параметров владеют своими production-компонентами и проверками.
-DiagramNode, ParameterNode и ContentNode принадлежат `@immersive-nodes/node`. Frame, Link
+DiagramNode, ParameterNode и ContentNode принадлежат `@zavx0z/immersive-nodes-node`. Frame, Link
 и GraphView показывают переданную сцену; GraphEditor связывает просмотр со Store
 и числовой раскладкой.
 Публичные TSX и их стили служат источником для принадлежащих компонентам
@@ -40,7 +40,7 @@ NodeType остаётся отдельным будущим production-срез�
 
 ## Конкретные ноды
 
-Пакет [@immersive-nodes/node](node/README.md) владеет DiagramNode, ParameterNode и ContentNode.
+Пакет [@zavx0z/immersive-nodes-node](node/README.md) владеет DiagramNode, ParameterNode и ContentNode.
 Адаптер модели и GraphEditor принимают `nodeKinds`, `nodeShapes` и `nodeContent` как
 настройки представления существующего Store. `nodeViews` позволяет передать
 импортированный TSX-компонент для конкретной ноды. Он получает NodeViewProps: принятый
@@ -62,13 +62,13 @@ Store параметра и соединение при изменении об�
 ## Публичный просмотр и редактор
 
 Авторская реализация расположена в `view/index.tsx` и `editor/index.tsx`.
-Пакет `@immersive-nodes/tree` и имена его модели не переименованы.
+Пакет `@zavx0z/immersive-nodes-tree` и имена его модели не переименованы.
 
 | Импорт | Договор |
 | --- | --- |
-| `@immersive/nodes/view` | GraphView, GraphScene, GraphNodeProps; общий показ нод/связей/рамок и навигация |
-| `@immersive/nodes/view/tree` | useNodeTreePresentation, createNodeTreeLayout и типы адаптации существующего Store |
-| `@immersive/nodes/editor` | GraphEditor; использует тот же просмотр, передаёт Parameter/Socket callbacks приложению |
+| `@zavx0z/immersive-nodes/view` | GraphView, GraphScene, GraphNodeProps; общий показ нод/связей/рамок и навигация |
+| `@zavx0z/immersive-nodes/view/tree` | useNodeTreePresentation, createNodeTreeLayout и типы адаптации существующего Store |
+| `@zavx0z/immersive-nodes/editor` | GraphEditor; использует тот же просмотр, передаёт Parameter/Socket callbacks приложению |
 
 GraphView не импортирует GraphEditor, адаптер модели или набор параметризованных
 нод. Вариант `navigation="scroll"` не монтирует toolbar и сетку. `pan-zoom`

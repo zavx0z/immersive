@@ -1,8 +1,8 @@
-import Typography from "@immersive-ui-component/typography"
+import Typography from "@zavx0z/immersive-ui-component-typography"
 /** Frame показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import Frame from "@immersive-ui-component-surface/frame"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import Frame from "@zavx0z/immersive-ui-component-surface-frame"
 import example from "./fixture/default-props"
 
 describe.each([

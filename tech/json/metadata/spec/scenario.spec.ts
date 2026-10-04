@@ -1,6 +1,6 @@
 /** Участники принимают один источник и имя поля, сохраняя собственные правила результата. */
 import {describe, expect, test} from "bun:test"
-import {metadata, metadataString, metadataNumber, metadataBoolean, metadataStringArray, metadataObjectArray} from "@immersive-tech-json/metadata"
+import {metadata, metadataString, metadataNumber, metadataBoolean, metadataStringArray, metadataObjectArray} from "@zavx0z/immersive-tech-json-metadata"
 
 describe.each([
   {name: "Нулевое число", props: {value: {field: 0}, key: "field"}, number: 0, boolean: true},

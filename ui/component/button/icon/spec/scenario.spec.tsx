@@ -1,8 +1,8 @@
-import runIcon from "@immersive-ui-theme-icon/run"
+import runIcon from "@zavx0z/immersive-ui-theme-icon-run"
 /** IconButton показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import IconButton from "@immersive-ui-component-button/icon"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import IconButton from "@zavx0z/immersive-ui-component-button-icon"
 
 describe.each([{name: "Основное представление", props: {label: "Действие", iconSrc: runIcon}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

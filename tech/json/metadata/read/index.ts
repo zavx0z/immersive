@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {ImmersiveTechJsonMetadataRead as Contract} from "./contract"
-export type {ImmersiveTechJsonMetadataRead} from "./contract"
+import type {Zavx0zImmersiveTechJsonMetadataRead as Contract} from "./contract"
+export type {Zavx0zImmersiveTechJsonMetadataRead} from "./contract"
 type NodeJsonObject = Extract<Contract.Input[0], Readonly<Record<string, Contract.Input[0]>>>
 
 export default function metadata(value: Contract.Input[0], key: Contract.Input[1]): Contract.Output {

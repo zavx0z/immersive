@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-collection-model/normalize-visible-rows",
+  "name": "@zavx0z/immersive-ui-field-collection-model-normalize-visible-rows",
   "label": "normalizeCollectionVisibleRows",
   "version": "0.0.0",
   "description": "Выбирает целое число видимых строк в пределах коллекции и применяет значение по умолчанию для неконечных чисел",
@@ -11,12 +11,12 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-collection-model/default-visible-rows": "workspace:*",
-    "@immersive-ui-field-collection-model/max-visible-rows": "workspace:*",
-    "@immersive-ui-field-collection-model/min-visible-rows": "workspace:*"
+    "@zavx0z/immersive-ui-field-collection-model-default-visible-rows": "workspace:*",
+    "@zavx0z/immersive-ui-field-collection-model-max-visible-rows": "workspace:*",
+    "@zavx0z/immersive-ui-field-collection-model-min-visible-rows": "workspace:*"
   }
 }

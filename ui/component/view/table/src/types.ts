@@ -1,6 +1,6 @@
 import type {TableColumn, TableRow} from "../contract/types"
-import type {ImmersiveUiComponentViewTable} from "../contract"
-type TableProps = ImmersiveUiComponentViewTable.Input
+import type {Zavx0zImmersiveUiComponentViewTable} from "../contract"
+type TableProps = Zavx0zImmersiveUiComponentViewTable.Input
 
 /**
 Тип HeaderCellProps принадлежит контракту своего владельца.

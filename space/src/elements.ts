@@ -1,12 +1,12 @@
-import {Comment, Element, type Document, type Node} from "@immersive/dom"
-import {SpatialElement} from "@immersive/dom/space"
+import {Comment, Element, type Document, type Node} from "@zavx0z/immersive-dom"
+import {SpatialElement} from "@zavx0z/immersive-dom/space"
 import type {
   AnimationClip,
   BufferGeometry,
   Material,
   Object3D,
   TrueTypeFont,
-} from "@immersive/engine"
+} from "@zavx0z/immersive-engine"
 
 const numberAttribute = (
   element: Element,

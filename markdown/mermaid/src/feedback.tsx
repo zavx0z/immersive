@@ -1,4 +1,4 @@
-import CodeEditor from "@immersive-ui-component-view/code-editor"
+import CodeEditor from "@zavx0z/immersive-ui-component-view-code-editor"
 
 /**
 Сообщает через role=status, что разбор или измерение диаграммы ещё не завершены.

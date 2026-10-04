@@ -38,7 +38,7 @@ export const markdownExampleSource = [
   "## Код",
   "",
   "```typescript",
-  'import {Markdown} from "@immersive/markdown"',
+  'import {Markdown} from "@zavx0z/immersive-markdown"',
   "",
   'const source = "# Документ"',
   "```",

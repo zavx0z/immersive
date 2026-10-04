@@ -1,9 +1,9 @@
-import type {ImmersiveUiComponentButtonToggleGroup} from "@immersive-ui-component-button/toggle-group"
-import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {Zavx0zImmersiveUiComponentButtonToggleGroup} from "@zavx0z/immersive-ui-component-button-toggle-group"
+import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace ImmersiveNodesParameterChoiceOptionGroup {
+export declare namespace Zavx0zImmersiveNodesParameterChoiceOptionGroup {
   /**
   Входные данные группы вариантов, связанного с нодой и её сокетами.
 
@@ -26,7 +26,7 @@ export declare namespace ImmersiveNodesParameterChoiceOptionGroup {
 
   @example
   ```ts
-  const input: ImmersiveNodesParameterChoiceOptionGroup.Input = {
+  const input: Zavx0zImmersiveNodesParameterChoiceOptionGroup.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,14 +35,14 @@ export declare namespace ImmersiveNodesParameterChoiceOptionGroup {
   }
   ```
   */
-  interface Input extends ImmersiveNodesParameter.Input {
-    readonly value: ImmersiveUiComponentButtonToggleGroup.Input["value"]
-    readonly options: ImmersiveUiComponentButtonToggleGroup.Input["options"]
-    readonly density?: ImmersiveUiComponentButtonToggleGroup.Input["density"]
-    readonly onChange?: ImmersiveUiComponentButtonToggleGroup.Input["onChange"]
+  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+    readonly value: Zavx0zImmersiveUiComponentButtonToggleGroup.Input["value"]
+    readonly options: Zavx0zImmersiveUiComponentButtonToggleGroup.Input["options"]
+    readonly density?: Zavx0zImmersiveUiComponentButtonToggleGroup.Input["density"]
+    readonly onChange?: Zavx0zImmersiveUiComponentButtonToggleGroup.Input["onChange"]
   }
 
-  type Slots = ImmersiveNodesParameter.Slots
+  type Slots = Zavx0zImmersiveNodesParameter.Slots
 
-  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

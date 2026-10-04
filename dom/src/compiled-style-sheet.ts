@@ -25,13 +25,13 @@ export type DocumentCompiledStyleSheetLease = Readonly<{
 }>
 
 export const acquireDocumentCompiledStyleSheetsInternal = Symbol.for(
-  "@immersive/dom/acquire-document-compiled-style-sheets"
+  "@zavx0z/immersive-dom/acquire-document-compiled-style-sheets"
 )
 export const readDocumentCompiledStyleSheetsInternal = Symbol.for(
-  "@immersive/dom/read-document-compiled-style-sheets"
+  "@zavx0z/immersive-dom/read-document-compiled-style-sheets"
 )
 export const subscribeDocumentCompiledStyleSheetsInternal = Symbol.for(
-  "@immersive/dom/subscribe-document-compiled-style-sheets"
+  "@zavx0z/immersive-dom/subscribe-document-compiled-style-sheets"
 )
 
 type DocumentCompiledStyleSheetHost = Document & Readonly<{

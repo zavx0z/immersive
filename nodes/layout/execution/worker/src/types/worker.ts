@@ -1,15 +1,15 @@
-import type {AdaptiveLayoutInput, AdaptiveLayoutOutput} from "@immersive-nodes/layout/adaptive"
-import type {AdaptiveLayoutDiagnostics, AdaptiveNoLegalSideWitness} from "@immersive-nodes/layout/adaptive/types"
+import type {AdaptiveLayoutInput, AdaptiveLayoutOutput} from "@zavx0z/immersive-nodes-layout/adaptive"
+import type {AdaptiveLayoutDiagnostics, AdaptiveNoLegalSideWitness} from "@zavx0z/immersive-nodes-layout/adaptive/types"
 import type {
   CoffmanGrahamLayoutInput,
   CoffmanGrahamLayoutOutput,
-} from "@immersive-nodes/layout/coffman-graham"
-import type {CoffmanGrahamCycleWitness} from "@immersive-nodes/layout/types"
-import type {FixedLayoutInput, FixedLayoutOutput} from "@immersive-nodes/layout/fixed"
+} from "@zavx0z/immersive-nodes-layout/coffman-graham"
+import type {CoffmanGrahamCycleWitness} from "@zavx0z/immersive-nodes-layout/types"
+import type {FixedLayoutInput, FixedLayoutOutput} from "@zavx0z/immersive-nodes-layout/fixed"
 import type {
   TopDownLayoutOutput,
-} from "@immersive-nodes/layout/top-down"
-import type {TopDownCycleWitness, TopDownInput} from "@immersive-nodes/layout/types"
+} from "@zavx0z/immersive-nodes-layout/top-down"
+import type {TopDownCycleWitness, TopDownInput} from "@zavx0z/immersive-nodes-layout/types"
 
 /** Policy-neutral request envelope for one long-lived layout Worker. */
 export type WorkerRequest<Graph = FixedLayoutInput> = Readonly<{

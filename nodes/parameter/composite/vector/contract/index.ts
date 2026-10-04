@@ -1,10 +1,10 @@
-import type {ImmersiveUiComponentFieldVector} from "@immersive-ui-component-field/vector"
-type VectorFieldProps = ImmersiveUiComponentFieldVector.Input
-import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {Zavx0zImmersiveUiComponentFieldVector} from "@zavx0z/immersive-ui-component-field-vector"
+type VectorFieldProps = Zavx0zImmersiveUiComponentFieldVector.Input
+import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace ImmersiveNodesParameterCompositeVector {
+export declare namespace Zavx0zImmersiveNodesParameterCompositeVector {
   /**
   Входные данные векторного параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace ImmersiveNodesParameterCompositeVector {
 
   @example
   ```ts
-  const input: ImmersiveNodesParameterCompositeVector.Input = {
+  const input: Zavx0zImmersiveNodesParameterCompositeVector.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace ImmersiveNodesParameterCompositeVector {
   }
   ```
   */
-  interface Input extends ImmersiveNodesParameter.Input {
+  interface Input extends Zavx0zImmersiveNodesParameter.Input {
     readonly value: VectorFieldProps["value"]
     readonly axes?: VectorFieldProps["axes"]
     readonly min?: VectorFieldProps["min"]
@@ -46,7 +46,7 @@ export declare namespace ImmersiveNodesParameterCompositeVector {
     readonly onChange?: VectorFieldProps["onChange"]
   }
 
-  type Slots = ImmersiveNodesParameter.Slots
+  type Slots = Zavx0zImmersiveNodesParameter.Slots
 
-  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

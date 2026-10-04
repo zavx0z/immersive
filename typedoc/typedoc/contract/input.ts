@@ -2,7 +2,7 @@ import type {TypeDocDocument} from "../../shared/types/model.ts"
 import type {TypeDocNavigationHandle} from "../types/navigation.ts"
 
 /**
-Вход {@link @immersive/typedoc#TypeDoc | TypeDoc} с готовым справочником без объектов компилятора.
+Вход {@link @zavx0z/immersive-typedoc#TypeDoc | TypeDoc} с готовым справочником без объектов компилятора.
 
 @property document - Готовый {@link TypeDocDocument}, заимствуемый без изменения.
 Обновление сохраняет корневой Element; имена деклараций и полей служат ключами.

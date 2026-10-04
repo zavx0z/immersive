@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import fieldMetric from "@immersive-ui-field-metric/read"
+import fieldMetric from "@zavx0z/immersive-ui-field-metric-read"
 
 export default function colorPickerFieldHeight(): number {
   const channelCount = fieldMetric("field-color-picker-channel-count")

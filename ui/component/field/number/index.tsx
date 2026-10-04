@@ -5,20 +5,20 @@
 @packageDocumentation
 */
 import type {ActiveScrub} from "./src/types.ts"
-import type {ImmersiveUiComponentFieldNumber as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentFieldNumber as Contract} from "./contract"
 import {releaseScrubCapture} from "./src/helpers.tsx"
-import {useRef} from "@immersive/component"
-import resolveNumberDragRange from "@immersive-ui-field-number-scrub/range"
-import scrubNumberRawValue from "@immersive-ui-field-number-scrub/raw"
-import snapNumberValue from "@immersive-ui-field-number-scrub/snap"
-import formatNumberValue from "@immersive-ui-field-number-value/format"
-import normalizeNumberValue from "@immersive-ui-field-number-value/normalize"
-import numberFillPercentage from "@immersive-ui-field-number-value/fill-percentage"
-import numberPointerStep from "@immersive-ui-field-number-value/pointer-step"
-import stepNumberValue from "@immersive-ui-field-number-value/step"
+import {useRef} from "@zavx0z/immersive-component"
+import resolveNumberDragRange from "@zavx0z/immersive-ui-field-number-scrub-range"
+import scrubNumberRawValue from "@zavx0z/immersive-ui-field-number-scrub-raw"
+import snapNumberValue from "@zavx0z/immersive-ui-field-number-scrub-snap"
+import formatNumberValue from "@zavx0z/immersive-ui-field-number-value-format"
+import normalizeNumberValue from "@zavx0z/immersive-ui-field-number-value-normalize"
+import numberFillPercentage from "@zavx0z/immersive-ui-field-number-value-fill-percentage"
+import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-pointer-step"
+import stepNumberValue from "@zavx0z/immersive-ui-field-number-value-step"
 
 
-export type {ImmersiveUiComponentFieldNumber} from "./contract"
+export type {Zavx0zImmersiveUiComponentFieldNumber} from "./contract"
 
 export default function NumberField(props: Contract.Input): Contract.Output {
   const scrub = useRef<ActiveScrub | null>(null)

@@ -1,5 +1,5 @@
-import {useState} from "@immersive/component"
-import type {GraphNodeProps, GraphScene} from "@immersive/nodes/view"
+import {useState} from "@zavx0z/immersive-component"
+import type {GraphNodeProps, GraphScene} from "@zavx0z/immersive-nodes/view"
 
 /** Состояние принадлежит настоящему компоненту, чтобы обнаруживать remount. */
 export function CounterNode(props: GraphNodeProps) {

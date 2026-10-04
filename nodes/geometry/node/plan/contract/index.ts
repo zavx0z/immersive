@@ -1,7 +1,7 @@
 import type {RowInput, Row} from "./types"
 
 /** Планирует размеры ноды и центры сокетов по высотам строк. */
-export declare namespace ImmersiveNodesGeometryNodePlan {
+export declare namespace Zavx0zImmersiveNodesGeometryNodePlan {
   type Input = Readonly<{
     width?: number | undefined
     rows: readonly RowInput[]

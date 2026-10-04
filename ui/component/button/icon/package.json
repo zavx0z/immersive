@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-button/icon",
+  "name": "@zavx0z/immersive-ui-component-button-icon",
   "label": "IconButton",
   "version": "0.0.0",
   "description": "Квадратная кнопка действия со значком и доступным названием",
@@ -11,16 +11,16 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-ui-component-button/basic": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-theme-icon/run": "workspace:*",
-    "@immersive-ui-component/button": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-run": "workspace:*",
+    "@zavx0z/immersive-ui-component-button": "workspace:*"
   }
 }

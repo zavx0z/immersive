@@ -1,5 +1,5 @@
 import type jsxEventNames from "../index.ts"
-import type {EventTarget as SemanticEventTarget} from "@immersive/dom"
+import type {EventTarget as SemanticEventTarget} from "@zavx0z/immersive-dom"
 
 /** Получатель события для стандартного и semantic DOM. */
 export type EventTargetValue = EventTarget | SemanticEventTarget

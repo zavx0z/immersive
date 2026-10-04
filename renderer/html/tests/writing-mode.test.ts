@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
+import {createDocument} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, hitTest} from "../src/index.ts"
 
 function fixture(mode = "horizontal-tb", orientation = "sideways", text = "Tab") {

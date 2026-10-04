@@ -1,8 +1,8 @@
 import {acceptsCursor, computeCursor, type RenderCursor} from "./cursor.ts"
 import {ABSOLUTE_LENGTH_FACTORS, displaySurfaceStyle} from "./spatial-css.ts"
 import type {DisplayStyle} from "./display-style.ts"
-import type {Element, Node} from "@immersive/dom"
-import {DisplayElement} from "@immersive/dom/display"
+import type {Element, Node} from "@zavx0z/immersive-dom"
+import {DisplayElement} from "@zavx0z/immersive-dom/display"
 import type {DocumentInteractionState} from "./pseudo-state.ts"
 import type {
   RenderAlignContent,

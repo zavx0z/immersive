@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-geometry-node/field-height",
+  "name": "@zavx0z/immersive-nodes-geometry-node-field-height",
   "label": "field-height",
   "version": "0.0.0",
   "description": "Определяет номинальную высоту подготовленного представления параметра",
@@ -10,30 +10,30 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@immersive-ui-field-layout/checkbox": "workspace:*",
-    "@immersive-ui-field-layout/collection": "workspace:*",
-    "@immersive-ui-field-layout/color": "workspace:*",
-    "@immersive-ui-field-layout/cycle": "workspace:*",
-    "@immersive-ui-field-layout/matrix": "workspace:*",
-    "@immersive-ui-field-layout/number": "workspace:*",
-    "@immersive-ui-field-layout/path": "workspace:*",
-    "@immersive-ui-field-layout/reference": "workspace:*",
-    "@immersive-ui-field-layout/select": "workspace:*",
-    "@immersive-ui-field-layout/slider": "workspace:*",
-    "@immersive-ui-field-layout/switch": "workspace:*",
-    "@immersive-ui-field-layout/text": "workspace:*",
-    "@immersive-ui-field-layout/vector": "workspace:*",
-    "@immersive-nodes-model-socket/metrics": "workspace:*",
-    "@immersive-ui-component-button/toggle-group": "workspace:*",
-    "@immersive-ui-field-metric/read": "workspace:*",
-    "@immersive-ui-field-metric/labelled-height": "workspace:*",
-    "@immersive-ui-field-metric/resolve-density": "workspace:*"
+    "@zavx0z/immersive-ui-field-layout-checkbox": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-collection": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-color": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-cycle": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-matrix": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-number": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-path": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-reference": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-select": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-slider": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-switch": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-text": "workspace:*",
+    "@zavx0z/immersive-ui-field-layout-vector": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-metrics": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-toggle-group": "workspace:*",
+    "@zavx0z/immersive-ui-field-metric-read": "workspace:*",
+    "@zavx0z/immersive-ui-field-metric-labelled-height": "workspace:*",
+    "@zavx0z/immersive-ui-field-metric-resolve-density": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec ./test",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@immersive-nodes-projection-parameter/presentation": "workspace:*"
+    "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*"
   }
 }

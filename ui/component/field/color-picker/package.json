@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-field/color-picker",
+  "name": "@zavx0z/immersive-ui-component-field-color-picker",
   "label": "ColorPickerField",
   "version": "0.0.0",
   "description": "Поле интерфейса: каналы и палитра цвета",
@@ -11,26 +11,26 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-ui-field-color-value/clamp-unit": "workspace:*",
-    "@immersive-ui-field-color-value/channel-display": "workspace:*",
-    "@immersive-ui-field-color-value/from-hsva": "workspace:*",
-    "@immersive-ui-field-color-value/to-hsva": "workspace:*",
-    "@immersive-ui-field-color-value/format": "workspace:*",
-    "@immersive-ui-field-color-value/normalize": "workspace:*",
-    "@immersive-ui-field-color-value/parse": "workspace:*",
-    "@immersive-ui-field-color-value/rgba-css": "workspace:*",
-    "@immersive-ui-field-color-value/wrap-unit": "workspace:*",
-    "@immersive-ui-component-field/number": "workspace:*",
-    "@immersive-ui-component-field/slider": "workspace:*",
-    "@immersive-ui-component-field/text": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-clamp-unit": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-channel-display": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-from-hsva": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-to-hsva": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-format": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-normalize": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-parse": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-rgba-css": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-wrap-unit": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-number": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-slider": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-text": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-component/field": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component-field": "workspace:*"
   }
 }

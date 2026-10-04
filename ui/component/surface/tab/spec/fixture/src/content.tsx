@@ -1,4 +1,4 @@
-import Button from "@immersive-ui-component-button/basic"
+import Button from "@zavx0z/immersive-ui-component-button-basic"
 
 /** Авторская композиция: за подпись можно перемещать Tab, кнопка принимает собственный ввод. */
 export function TabContent(props: Readonly<{count: number; onIncrement(): void}>) {

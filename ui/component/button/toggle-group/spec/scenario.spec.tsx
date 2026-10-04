@@ -1,7 +1,7 @@
 /** ToggleButtonGroup показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import ToggleButtonGroup from "@immersive-ui-component-button/toggle-group"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import ToggleButtonGroup from "@zavx0z/immersive-ui-component-button-toggle-group"
 
 describe.each([{name: "Основное представление", props: {value: "a", options: [{key: "a", value: "a", label: "Первый"}]}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

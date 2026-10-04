@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-jsx-slot/contract",
+  "name": "@zavx0z/immersive-jsx-slot-contract",
   "label": "Контракты слотов",
   "version": "0.0.0",
   "description": "Статическая проверка типов, наличия и количества содержимого слотов",
@@ -15,15 +15,15 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-slot/authoring": "workspace:*",
-    "@immersive-jsx-compiler/error": "workspace:*"
+    "@zavx0z/immersive-jsx-slot-authoring": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-error": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "7.0.2"
   },
   "devDependencies": {
-    "@immersive/jsx": "workspace:*",
-    "@immersive/component": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-jsx": "workspace:*",
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   }
 }

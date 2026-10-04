@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-export type {ImmersiveUiComponentMenu} from "./contract"
-export {default as Menu} from "@immersive-ui-component-menu/basic"
-export type {ImmersiveUiComponentMenuBasic} from "@immersive-ui-component-menu/basic"
-export {default as MenuItem} from "@immersive-ui-component-menu/item"
-export type {ImmersiveUiComponentMenuItem} from "@immersive-ui-component-menu/item"
-export {default as ClipboardMenu} from "@immersive-ui-component-menu/clipboard"
-export type {ImmersiveUiComponentMenuClipboard} from "@immersive-ui-component-menu/clipboard"
+export type {Zavx0zImmersiveUiComponentMenu} from "./contract"
+export {default as Menu} from "@zavx0z/immersive-ui-component-menu-basic"
+export type {Zavx0zImmersiveUiComponentMenuBasic} from "@zavx0z/immersive-ui-component-menu-basic"
+export {default as MenuItem} from "@zavx0z/immersive-ui-component-menu-item"
+export type {Zavx0zImmersiveUiComponentMenuItem} from "@zavx0z/immersive-ui-component-menu-item"
+export {default as ClipboardMenu} from "@zavx0z/immersive-ui-component-menu-clipboard"
+export type {Zavx0zImmersiveUiComponentMenuClipboard} from "@zavx0z/immersive-ui-component-menu-clipboard"

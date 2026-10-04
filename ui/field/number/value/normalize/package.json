@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-number-value/normalize",
+  "name": "@zavx0z/immersive-ui-field-number-value-normalize",
   "label": "normalizeNumberValue",
   "version": "0.0.0",
   "description": "Нормализация числового значения",
@@ -11,12 +11,12 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-number-value/finite-bound": "workspace:*",
-    "@immersive-ui-field-number-value/round": "workspace:*",
-    "@immersive-ui-field-number-value/valid-step": "workspace:*"
+    "@zavx0z/immersive-ui-field-number-value-finite-bound": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-round": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-valid-step": "workspace:*"
   }
 }

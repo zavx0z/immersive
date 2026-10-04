@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-tech-color-hex/normalize",
+  "name": "@zavx0z/immersive-tech-color-hex-normalize",
   "label": "normalizeHexColor",
   "version": "0.0.0",
   "description": "Приводит проверенную HEX-строку к нижнему регистру и раскрывает трёхзначную запись",
@@ -11,7 +11,7 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   }
 }

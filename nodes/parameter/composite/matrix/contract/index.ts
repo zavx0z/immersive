@@ -1,10 +1,10 @@
-import type {ImmersiveUiComponentFieldMatrix} from "@immersive-ui-component-field/matrix"
-type MatrixFieldProps = ImmersiveUiComponentFieldMatrix.Input
-import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {Zavx0zImmersiveUiComponentFieldMatrix} from "@zavx0z/immersive-ui-component-field-matrix"
+type MatrixFieldProps = Zavx0zImmersiveUiComponentFieldMatrix.Input
+import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace ImmersiveNodesParameterCompositeMatrix {
+export declare namespace Zavx0zImmersiveNodesParameterCompositeMatrix {
   /**
   Входные данные матричного параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace ImmersiveNodesParameterCompositeMatrix {
 
   @example
   ```ts
-  const input: ImmersiveNodesParameterCompositeMatrix.Input = {
+  const input: Zavx0zImmersiveNodesParameterCompositeMatrix.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace ImmersiveNodesParameterCompositeMatrix {
   }
   ```
   */
-  interface Input extends ImmersiveNodesParameter.Input {
+  interface Input extends Zavx0zImmersiveNodesParameter.Input {
     readonly value: MatrixFieldProps["value"]
     readonly step?: MatrixFieldProps["step"]
     readonly density?: MatrixFieldProps["density"]
@@ -43,7 +43,7 @@ export declare namespace ImmersiveNodesParameterCompositeMatrix {
     readonly onChange?: MatrixFieldProps["onChange"]
   }
 
-  type Slots = ImmersiveNodesParameter.Slots
+  type Slots = Zavx0zImmersiveNodesParameter.Slots
 
-  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

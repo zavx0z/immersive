@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldNumberScrubValue as Contract} from "./contract"
-import resolveNumberDragRange from "@immersive-ui-field-number-scrub/range"
-import scrubNumberRawValue from "@immersive-ui-field-number-scrub/raw"
-import snapNumberValue from "@immersive-ui-field-number-scrub/snap"
-import normalizeNumberValue from "@immersive-ui-field-number-value/normalize"
-import type {ImmersiveUiFieldNumberValueNormalize} from "@immersive-ui-field-number-value/normalize"
-type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
+import type {Zavx0zImmersiveUiFieldNumberScrubValue as Contract} from "./contract"
+import resolveNumberDragRange from "@zavx0z/immersive-ui-field-number-scrub-range"
+import scrubNumberRawValue from "@zavx0z/immersive-ui-field-number-scrub-raw"
+import snapNumberValue from "@zavx0z/immersive-ui-field-number-scrub-snap"
+import normalizeNumberValue from "@zavx0z/immersive-ui-field-number-value-normalize"
+import type {Zavx0zImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
+type NumberValueOptions = NonNullable<Zavx0zImmersiveUiFieldNumberValueNormalize.Input[1]>
 
 export default function scrubNumberValue(
   value: Contract.Input[0],
@@ -26,4 +26,4 @@ export default function scrubNumberValue(
   return normalizeNumberValue(candidate, options)
 }
 
-export type {ImmersiveUiFieldNumberScrubValue} from "./contract"
+export type {Zavx0zImmersiveUiFieldNumberScrubValue} from "./contract"

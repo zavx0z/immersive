@@ -1,6 +1,6 @@
 # Компоненты
 
-`@immersive/component` управляет состоянием и жизненным циклом скомпилированных
+`@zavx0z/immersive-component` управляет состоянием и жизненным циклом скомпилированных
 компонентов в одном семантическом Document. Пакет связывает результат компиляции
 Template с существующими DOM-элементами и обновляет их при изменении состояния.
 
@@ -18,13 +18,13 @@ Browser создаёт приложение и владеет Canvas, вводо
 
 ## Публичный API
 
-Основной вход — `@immersive/component`: `createRoot`, hooks, `createContext`,
+Основной вход — `@zavx0z/immersive-component`: `createRoot`, hooks, `createContext`,
 `component`, `memo` и средства композиции. Для запуска приложения используется
 Browser `createRoot(canvas)`, который составляет этот механизм с остальной
 платформой.
 
 Поддерживаемое поведение React-подобного API описано в публичных exports
-`@immersive/component/compatibility` и `@immersive/component/compatibility.json`.
+`@zavx0z/immersive-component/compatibility` и `@zavx0z/immersive-component/compatibility.json`.
 Сходство названий hooks само по себе не означает полной совместимости с React.
 
 ## Документация и проверки

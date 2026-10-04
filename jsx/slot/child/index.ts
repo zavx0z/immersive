@@ -24,5 +24,5 @@ export default function slotChild(...[name, content, kind]: SlotChildInput): Slo
   if (typeof name !== "string" || (kind !== "conditional" && kind !== "keyed")) {
     throw new TypeError("JSX slot child requires a static name and composition kind")
   }
-  return Object.freeze({"@immersive/jsx/slot-child": true as const, name, content, kind})
+  return Object.freeze({"@zavx0z/immersive-jsx/slot-child": true as const, name, content, kind})
 }

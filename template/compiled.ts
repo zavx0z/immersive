@@ -5,18 +5,18 @@ import type {
   EventListenerOptions,
   Node,
   Text
-} from "@immersive/dom"
+} from "@zavx0z/immersive-dom"
 export {
   decodeCompiledStyleText,
   encodeCompiledStyleText
 } from "./style-codec.ts"
 import {decodeCompiledStyleText} from "./style-codec.ts"
 
-const templateBrand = Symbol.for("@immersive/template/compiled-template")
-const bindingBrand = Symbol.for("@immersive/template/compiled-binding")
+const templateBrand = Symbol.for("@zavx0z/immersive-template/compiled-template")
+const bindingBrand = Symbol.for("@zavx0z/immersive-template/compiled-binding")
 
 /** Внутренний канал именованной композиции; авторский JSX не передаёт его через props. */
-export const slotContents = Symbol.for("@immersive/template/slot-contents")
+export const slotContents = Symbol.for("@zavx0z/immersive-template/slot-contents")
 
 export type BindingValues = unknown[]
 

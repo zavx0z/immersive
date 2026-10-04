@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component/button",
+  "name": "@zavx0z/immersive-ui-component-button",
   "label": "button",
   "version": "0.0.0",
   "description": "Кнопки и переключатели сохраняют общий протокол доступности и представления.",
@@ -11,19 +11,19 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@immersive-ui-component-button/basic": "workspace:*",
-    "@immersive-ui-component-button/icon": "workspace:*",
-    "@immersive-ui-component-button/toggle-group": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-icon": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-toggle-group": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-theme-icon/run": "workspace:*",
-    "@immersive-ui/component": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-run": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec",
     "check": "bun run typecheck && bun run test"
   }
 }

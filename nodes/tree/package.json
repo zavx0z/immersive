@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes/tree",
+  "name": "@zavx0z/immersive-nodes-tree",
   "label": "Дерево нодов",
   "version": "0.0.0",
   "description": "Живая модель NodeTree, хранилища параметров, снимки и сохранение",
@@ -19,13 +19,13 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-tech-json-value/own": "workspace:*",
-    "@immersive-tech-json-value/equal": "workspace:*",
-    "@immersive-nodes-model-parameter/value-type": "workspace:*",
-    "@immersive-nodes-model-parameter/store": "workspace:*",
-    "@immersive-tech-json/patch": "workspace:*",
-    "@immersive-tech-json-pointer/token": "workspace:*",
-    "@immersive-tech-json-patch/error": "workspace:*",
-    "@immersive-tech-json-patch/limits": "workspace:*"
+    "@zavx0z/immersive-tech-json-value-own": "workspace:*",
+    "@zavx0z/immersive-tech-json-value-equal": "workspace:*",
+    "@zavx0z/immersive-nodes-model-parameter-value-type": "workspace:*",
+    "@zavx0z/immersive-nodes-model-parameter-store": "workspace:*",
+    "@zavx0z/immersive-tech-json-patch": "workspace:*",
+    "@zavx0z/immersive-tech-json-pointer-token": "workspace:*",
+    "@zavx0z/immersive-tech-json-patch-error": "workspace:*",
+    "@zavx0z/immersive-tech-json-patch-limits": "workspace:*"
   }
 }

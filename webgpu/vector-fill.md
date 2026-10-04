@@ -26,13 +26,13 @@ invalidateGeometry, а dispose освобождает оставшиеся ре�
 
 `tests/vector-fill.test.ts` проверяет triangles/interior, color/geometry/rule
 updates, transform/clip/opacity, stroke combination, hidden и resource release.
-Native результат проверяется в Storybook `@immersive-renderer/html/vector/fill/geometry`.
+Native результат проверяется в Storybook `@zavx0z/immersive-renderer-html/vector/fill/geometry`.
 
 ## Native GPU evidence — 2026-09-10
 
 Через Storybook MCP выполнены nonlive build, exact open/inspect/capture,
 затем live apply. Применённая revision `2036312fd7b6f2dc83792193`, owner
-`@immersive-renderer/html`, route `vector/fill/geometry`. Diagnostics и consoleErrors пусты.
+`@zavx0z/immersive-renderer-html`, route `vector/fill/geometry`. Diagnostics и consoleErrors пусты.
 Preview capture `capture_-wEQu4uP3QALn1wvr5ST6OMr`, 2304×2048,
 SHA-256 `58b1898c5ac2a536a8be2aade77cc3c99bd6a621f5838cc5614d068c58649307`.
 

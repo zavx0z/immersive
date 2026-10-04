@@ -1,7 +1,7 @@
 /** Политика высоты использует подготовленное представление, не читая DOM. */
 import {describe, expect, test} from "bun:test"
-import height from "@immersive-nodes-geometry-node/field-height"
-import present from "@immersive-nodes-projection-parameter/presentation"
+import height from "@zavx0z/immersive-nodes-geometry-node-field-height"
+import present from "@zavx0z/immersive-nodes-projection-parameter-presentation"
 
 describe.each([
   {name: "Число", props: present({id: "value", revision: 0, value: 1, presentation: {}}), expected: 22},

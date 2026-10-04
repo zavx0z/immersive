@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-geometry-node/project",
+  "name": "@zavx0z/immersive-nodes-geometry-node-project",
   "label": "project",
   "version": "0.0.0",
   "description": "Планирует геометрию снимка ноды по представлениям параметров",
@@ -10,22 +10,22 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@immersive-nodes-projection-parameter/presentation": "workspace:*",
-    "@immersive-nodes-geometry/parameter": "workspace:*",
-    "@immersive-nodes-geometry-node/field-height": "workspace:*",
-    "@immersive-nodes-model-socket/key": "workspace:*",
-    "@immersive-nodes-geometry-node/spacing": "workspace:*",
-    "@immersive-nodes-geometry-node/socket-side": "workspace:*",
-    "@immersive-nodes-geometry-node/port-id": "workspace:*",
-    "@immersive-nodes-geometry-node/plan": "workspace:*",
-    "@immersive-nodes-geometry-node/metrics": "workspace:*",
-    "@immersive-nodes-model-socket/metrics": "workspace:*"
+    "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-parameter": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-field-height": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-key": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-spacing": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-socket-side": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-port-id": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-plan": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-metrics": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-metrics": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@immersive-nodes/tree": "workspace:*"
+    "@zavx0z/immersive-nodes-tree": "workspace:*"
   }
 }

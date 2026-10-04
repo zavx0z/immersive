@@ -1,18 +1,18 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {LinkProps} from "@immersive/nodes/link"
-import type {LinkRoute} from "@immersive/nodes/routing/link-path"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {LinkProps} from "@zavx0z/immersive-nodes/link"
+import type {LinkRoute} from "@zavx0z/immersive-nodes/routing/link-path"
 
 const rootPath = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: rootPath, persistent: true, sourceRoots: [resolve(rootPath, "nodes/projection/parameter"), resolve(rootPath, "nodes"), resolve(rootPath, "ui")]}))
-const {Link} = await import("@immersive/nodes/link")
-const {projectLinkMarkers} = await import("@immersive/nodes/routing/link-path")
-const {Arrow} = await import("@immersive/nodes/marker/arrow")
+const {Link} = await import("@zavx0z/immersive-nodes/link")
+const {projectLinkMarkers} = await import("@zavx0z/immersive-nodes/routing/link-path")
+const {Arrow} = await import("@zavx0z/immersive-nodes/marker/arrow")
 const {FilledMarker} = await import("./marker-slots.fixture.tsx")
 
 const route = (y: number): LinkRoute => ({kind: "orthogonal", points: [{x: 20, y}, {x: 180, y}]})

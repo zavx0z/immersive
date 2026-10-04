@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
-import jsx from "@immersive-jsx-runtime/create"
-import slotChild from "@immersive-jsx-slot/child"
+import jsx from "@zavx0z/immersive-jsx-runtime-create"
+import slotChild from "@zavx0z/immersive-jsx-slot-child"
 import {receiverTemplate, textTemplate} from "./fixture/index.ts"
 
 describe("Отказы automatic JSX protocol", () => {

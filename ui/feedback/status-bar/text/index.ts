@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFeedbackStatusBarText as Contract} from "./contract"
+import type {Zavx0zImmersiveUiFeedbackStatusBarText as Contract} from "./contract"
 
 export default function statusBarText(items: Contract.Input[0], separator: Contract.Input[1] = " | "): Contract.Output {
   return items.map(item => item.text).join(separator)
 }
-export type {ImmersiveUiFeedbackStatusBarText} from "./contract"
+export type {Zavx0zImmersiveUiFeedbackStatusBarText} from "./contract"

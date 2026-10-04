@@ -1,6 +1,6 @@
-import type {SlotChildOutput} from "@immersive-jsx-slot/child"
-import {keyedComponents, type ComponentValue} from "@immersive/component"
-import {isCompiledTemplate} from "@immersive/template/compiled"
+import type {SlotChildOutput} from "@zavx0z/immersive-jsx-slot-child"
+import {keyedComponents, type ComponentValue} from "@zavx0z/immersive-component"
+import {isCompiledTemplate} from "@zavx0z/immersive-template/compiled"
 
 /** Статические назначения принадлежат готовым значениям одного runtime-модуля. */
 export const assignments = new WeakMap<object, string>()
@@ -41,7 +41,7 @@ export function authoredChildren(value: unknown): PreparedChild[] {
 /** Отличает compiler transport от ComponentValue и произвольных пользовательских объектов. */
 function isSlotChild(value: unknown): value is SlotChildOutput {
   if (value === null || typeof value !== "object" ||
-    !("@immersive/jsx/slot-child" in value) || value["@immersive/jsx/slot-child"] !== true) return false
+    !("@zavx0z/immersive-jsx/slot-child" in value) || value["@zavx0z/immersive-jsx/slot-child"] !== true) return false
   if (!("name" in value) || typeof value.name !== "string" ||
     !("kind" in value) || (value.kind !== "conditional" && value.kind !== "keyed") ||
     !("content" in value)) {

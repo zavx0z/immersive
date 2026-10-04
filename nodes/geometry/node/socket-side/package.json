@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-geometry-node/socket-side",
+  "name": "@zavx0z/immersive-nodes-geometry-node-socket-side",
   "label": "socket-side",
   "version": "0.0.0",
   "description": "Сохраняет принятую сторону Layout либо сторону модели сокета",
@@ -10,14 +10,14 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@immersive-nodes-model-socket/key": "workspace:*",
-    "@immersive-nodes-model-socket/side": "workspace:*"
+    "@zavx0z/immersive-nodes-model-socket-key": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-side": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@immersive-nodes/tree": "workspace:*"
+    "@zavx0z/immersive-nodes-tree": "workspace:*"
   }
 }

@@ -1,6 +1,6 @@
 /** checkboxFieldLayout показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import layout from "@immersive-ui-field-layout/checkbox"
+import layout from "@zavx0z/immersive-ui-field-layout-checkbox"
 
 describe.each([{name: "Базовый размер", props: {}}])("$name", () => {
   const height = layout.height()

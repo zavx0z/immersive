@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-jsx-development/create",
+  "name": "@zavx0z/immersive-jsx-development-create",
   "label": "JSX development",
   "version": "0.0.0",
   "description": "Development protocol JSX с общей Fragment identity",
@@ -15,11 +15,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-runtime/create": "workspace:*",
-    "@immersive/component": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-jsx-runtime-create": "workspace:*",
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/template": "workspace:*"
+    "@zavx0z/immersive-template": "workspace:*"
   }
 }

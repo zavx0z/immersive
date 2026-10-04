@@ -2,10 +2,10 @@ import {expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createDocument, MouseEvent} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
+import {createDocument, MouseEvent} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 test("нативно типизированный document захватывает Document компонента и сохраняется после await", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".document-global-"))

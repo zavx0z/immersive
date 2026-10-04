@@ -3,16 +3,16 @@
 
 @packageDocumentation
 */
-import type {ImmersiveTechJsonPatch as Contract} from "./contract"
-export type {ImmersiveTechJsonPatch} from "./contract"
+import type {Zavx0zImmersiveTechJsonPatch as Contract} from "./contract"
+export type {Zavx0zImmersiveTechJsonPatch} from "./contract"
 
-import ownNodeJsonValue, {type ImmersiveTechJsonValueOwn} from "@immersive-tech-json-value/own"
-import equalNodeJsonValue from "@immersive-tech-json-value/equal"
-import JsonPatchError, {type ImmersiveTechJsonPatchError} from "@immersive-tech-json-patch/error"
-import JSON_PATCH_LIMITS from "@immersive-tech-json-patch/limits"
+import ownNodeJsonValue, {type Zavx0zImmersiveTechJsonValueOwn} from "@zavx0z/immersive-tech-json-value-own"
+import equalNodeJsonValue from "@zavx0z/immersive-tech-json-value-equal"
+import JsonPatchError, {type Zavx0zImmersiveTechJsonPatchError} from "@zavx0z/immersive-tech-json-patch-error"
+import JSON_PATCH_LIMITS from "@zavx0z/immersive-tech-json-patch-limits"
 import type {Operation} from "./contract/types"
-type NodeJsonValue = ImmersiveTechJsonValueOwn.Input[0]
-type JsonPatchErrorCode = ImmersiveTechJsonPatchError.Input[0]
+type NodeJsonValue = Zavx0zImmersiveTechJsonValueOwn.Input[0]
+type JsonPatchErrorCode = Zavx0zImmersiveTechJsonPatchError.Input[0]
 
 type MutableJsonObject = {[key: string]: NodeJsonValue}
 type MutableJsonContainer = NodeJsonValue[] | MutableJsonObject

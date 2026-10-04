@@ -1,6 +1,6 @@
-import {useRef} from "@immersive/component"
-import Button from "@immersive-ui-component-button/basic"
-import CodeEditor from "@immersive-ui-component-view/code-editor"
+import {useRef} from "@zavx0z/immersive-component"
+import Button from "@zavx0z/immersive-ui-component-button-basic"
+import CodeEditor from "@zavx0z/immersive-ui-component-view-code-editor"
 
 export const codeEditorScrollSource = Array.from({length: 420}, (_, index) =>
   `        <span data-z-ycf0xbqihmrwdwse="" data-major="true" class="source-row-${index}">HTML source ${index}</span>`,

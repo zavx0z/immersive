@@ -1,11 +1,11 @@
-import type {ImmersiveUiComponentSurface} from "@immersive-ui-component/surface/contract"
+import type {Zavx0zImmersiveUiComponentSurface} from "@zavx0z/immersive-ui-component-surface/contract"
 import type {WindowAction} from "./types.ts"
 import type {WindowGeometry} from "./types.ts"
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace ImmersiveUiComponentSurfaceWindow {
+export declare namespace Zavx0zImmersiveUiComponentSurfaceWindow {
   /**
   Оболочка окна в позиционированной области HUD, Display или обычного контейнера.
   Безымянный слот содержит тело окна; скрытие сохраняет его DOM и состояние.
@@ -51,5 +51,5 @@ export declare namespace ImmersiveUiComponentSurfaceWindow {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = ImmersiveUiComponentSurface.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveUiComponentSurface.Output & JSX.Element<Slots>
 }

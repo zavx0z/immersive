@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement, readDocumentScrollIntoViewRequests} from "@immersive/dom"
-import type {TrueTypeFont} from "@immersive/engine"
+import {createDocument, HTMLElement, readDocumentScrollIntoViewRequests} from "@zavx0z/immersive-dom"
+import type {TrueTypeFont} from "@zavx0z/immersive-engine"
 import {createDocumentPlaneRuntime} from "../src/plane-runtime.ts"
 import {createDocumentOverlayRuntime} from "../src/overlay-runtime.ts"
 

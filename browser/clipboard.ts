@@ -12,7 +12,7 @@ import {
   sealDataTransfer,
   type Range,
   type Node,
-} from "@immersive/dom"
+} from "@zavx0z/immersive-dom"
 
 export type ClipboardResult = Readonly<{
   status: "copied" | "pasted" | "empty" | "cancelled" | "stale" | "unavailable" | "error"

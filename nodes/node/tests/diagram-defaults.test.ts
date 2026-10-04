@@ -1,14 +1,14 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {ImmersiveNodesNodeDiagram} from "@immersive-nodes-node/diagram"
-type DiagramNodeProps = ImmersiveNodesNodeDiagram.Input
+import {createDocument} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {Zavx0zImmersiveNodesNodeDiagram} from "@zavx0z/immersive-nodes-node-diagram"
+type DiagramNodeProps = Zavx0zImmersiveNodesNodeDiagram.Input
 import "./compiler.ts"
 
-const {default: DiagramNode} = await import("@immersive-nodes-node/diagram")
+const {default: DiagramNode} = await import("@zavx0z/immersive-nodes-node-diagram")
 const theme = await Bun.file(resolve(import.meta.dir, "../../../ui/component/theme/theme.css")).text()
 
 for (const shape of ["rectangle", "oval", "circle"] as const) {

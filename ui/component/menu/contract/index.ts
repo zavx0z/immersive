@@ -1,8 +1,8 @@
-import type {ImmersiveUiComponent} from "@immersive-ui/component/contract"
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {Zavx0zImmersiveUiComponent} from "@zavx0z/immersive-ui-component/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Меню и его команды участвуют в семантическом дереве одного Experience. */
-export declare namespace ImmersiveUiComponentMenu {
+export declare namespace Zavx0zImmersiveUiComponentMenu {
   /** Представление меню либо его команды с сохранением ролей menu/menuitem. */
-  type Output = ImmersiveUiComponent.Output
+  type Output = Zavx0zImmersiveUiComponent.Output
 }

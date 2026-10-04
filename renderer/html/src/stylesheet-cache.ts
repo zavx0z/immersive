@@ -2,7 +2,7 @@ import {
   readDocumentAuthorStyleSheets,
   readDocumentCompiledStyleSheets,
   type Document
-} from "@immersive/dom"
+} from "@zavx0z/immersive-dom"
 import {parseStyleSheets, type StyleRuleIndex} from "./css.ts"
 
 type CacheEntry = Readonly<{

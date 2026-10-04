@@ -1,6 +1,6 @@
 /** resolveCodeEditorSyntaxScopeColorHex показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@immersive-ui-component-view-code-editor-syntax-theme/resolve-scope-color-hex"
+import operation from "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-resolve-scope-color-hex"
 
 describe.each([{name: "Публичный вызов", props: {args: [[], "#abcdef"] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

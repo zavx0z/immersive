@@ -1,4 +1,4 @@
-import type {ComponentValue} from "@immersive/component"
+import type {ComponentValue} from "@zavx0z/immersive-component"
 
 /**
 Подготовленное значение Component, возвращаемое native JSX protocol.

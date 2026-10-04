@@ -1,16 +1,16 @@
-# `@immersive/devtool` requirements
+# `@zavx0z/immersive-devtool` requirements
 
-`@immersive/devtool` exposes one serializable inspection boundary for the
-custom `@immersive/dom` realm. It is intended for a product-owned DevTools panel,
+`@zavx0z/immersive-devtool` exposes one serializable inspection boundary for the
+custom `@zavx0z/immersive-dom` realm. It is intended for a product-owned DevTools panel,
 debug transport or AI bridge. It does not pretend that the semantic tree is the
 browser's native DOM.
 
 ## `DOM-DEVTOOLS-001` — exact realm and ownership
 
 `createDomInspector({document, renderer?, readFrame?})` receives one exact
-`@immersive/dom` `Document`. Every inspected Node must be that Document or have it
+`@zavx0z/immersive-dom` `Document`. Every inspected Node must be that Document or have it
 as `ownerDocument`; foreign DOM realms and Documents fail closed. The optional
-`@immersive-renderer/html` peer must project the same Document. A caller that keeps its
+`@zavx0z/immersive-renderer-html` peer must project the same Document. A caller that keeps its
 Renderer private may instead provide one `readFrame(node)` function owned by the
 same Experience; `renderer` and `readFrame` are mutually exclusive. The package has no
 Engine, UI, browser DOM, CDP or GPU dependency.

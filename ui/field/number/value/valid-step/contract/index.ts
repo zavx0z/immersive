@@ -2,7 +2,7 @@
 
 
 /** Обработка valid-number-step. */
-export declare namespace ImmersiveUiFieldNumberValueValidStep {
+export declare namespace Zavx0zImmersiveUiFieldNumberValueValidStep {
   /** Аргументы публичной операции validNumberStep; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number | undefined

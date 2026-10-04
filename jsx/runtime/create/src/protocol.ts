@@ -1,8 +1,8 @@
-import type {JSX as AuthorJSX} from "@immersive-jsx-compiler/session"
+import type {JSX as AuthorJSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /**
 Native namespace automatic JSX требует негeneric Element для типа expression.
-Авторский generic-контракт остаётся у @immersive-jsx-compiler/session; ElementType принимает
+Авторский generic-контракт остаётся у @zavx0z/immersive-jsx-compiler-session; ElementType принимает
 функции с конкретным объектным контрактом, а синтаксис JSX возвращает Element
 с отсутствующим phantom-контрактом. Объявления namespace стираются.
 */

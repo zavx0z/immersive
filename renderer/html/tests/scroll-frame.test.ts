@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement, Node} from "@immersive/dom"
+import {createDocument, HTMLElement, Node} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, hitTestProjection, type RenderFrame} from "../src/index.ts"
 import {readCanonicalRenderFrameChanges} from "../src/frame-changes.ts"
 

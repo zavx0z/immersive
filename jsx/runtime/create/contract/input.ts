@@ -1,4 +1,4 @@
-import type {ComponentKey} from "@immersive/component"
+import type {ComponentKey} from "@zavx0z/immersive-component"
 
 /**
 Позиционные аргументы автоматических jsx и jsxs.

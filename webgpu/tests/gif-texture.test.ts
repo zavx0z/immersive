@@ -2,9 +2,9 @@ import {expect, test} from "bun:test"
 import {TextureLoader} from "../src/texture-loader.ts"
 import type {GifDecoderConstructor} from "../src/gif-animation.ts"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
-import {createDocument} from "@immersive/dom"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import {ImageMaterial, Mesh} from "@immersive/engine"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import {ImageMaterial, Mesh} from "@zavx0z/immersive-engine"
 
 test("GIF reuses one texture, resumes after dimension discovery and stops with its last material", async () => {
   const globals = globalThis as unknown as {ImageDecoder?: GifDecoderConstructor; GPUTextureUsage?: unknown}

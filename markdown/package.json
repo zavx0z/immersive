@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/markdown",
+  "name": "@zavx0z/immersive-markdown",
   "label": "Markdown",
   "version": "0.0.0",
   "description": "Разбор и отображение Markdown через готовые UI-компоненты",
@@ -28,48 +28,48 @@
     "markdown-it": "^15.0.1",
     "mermaid": "^11.17.2",
     "parse5": "^8.0.1",
-    "@immersive-nodes-node/diagram": "workspace:*"
+    "@zavx0z/immersive-nodes-node-diagram": "workspace:*"
   },
   "peerDependencies": {
-    "@immersive/component": "workspace:*",
-    "@immersive/dom": "workspace:*",
-    "@immersive/template": "workspace:*",
-    "@immersive-ui/component": "workspace:*",
-    "@immersive-nodes/node": "workspace:*",
-    "@immersive-nodes/layout": "workspace:*",
-    "@immersive/nodes": "workspace:*",
-    "@immersive/jsx": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-ui-component/divider": "workspace:*",
-    "@immersive-ui-component-view/code-editor": "workspace:*"
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*",
+    "@zavx0z/immersive-nodes-node": "workspace:*",
+    "@zavx0z/immersive-nodes-layout": "workspace:*",
+    "@zavx0z/immersive-nodes": "workspace:*",
+    "@zavx0z/immersive-jsx": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-component-divider": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-renderer/html": "workspace:*",
+    "@zavx0z/immersive-renderer-html": "workspace:*",
     "@zavx0z/highlighter": "^0.1.0",
-    "@immersive-jsx-compiler/bun": "workspace:*",
-    "@immersive-ui/component": "workspace:*",
-    "@immersive-nodes-geometry-node/project": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*",
+    "@zavx0z/immersive-nodes-geometry-node-project": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@immersive/component": {
+    "@zavx0z/immersive-component": {
       "optional": true
     },
-    "@immersive/dom": {
+    "@zavx0z/immersive-dom": {
       "optional": true
     },
-    "@immersive/template": {
+    "@zavx0z/immersive-template": {
       "optional": true
     },
-    "@immersive-ui/component": {
+    "@zavx0z/immersive-ui-component": {
       "optional": true
     },
-    "@immersive-nodes/node": {
+    "@zavx0z/immersive-nodes-node": {
       "optional": true
     },
-    "@immersive-nodes/layout": {
+    "@zavx0z/immersive-nodes-layout": {
       "optional": true
     },
-    "@immersive/nodes": {
+    "@zavx0z/immersive-nodes": {
       "optional": true
     }
   }

@@ -1,7 +1,7 @@
 import type {MarkdownBlock} from "../../shared/types/model.ts"
 
 /**
-Результат {@link @immersive/markdown/parser#parseMarkdown | parseMarkdown} для отображения
+Результат {@link @zavx0z/immersive-markdown/parser#parseMarkdown | parseMarkdown} для отображения
 документа и поиска его ресурсов. Корневой объект заморожен; модель не содержит живых HTML-узлов.
 
 @property blocks - Корневые {@link MarkdownBlock} в порядке документа.

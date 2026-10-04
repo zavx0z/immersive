@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentFieldSlider} from "@immersive-ui-component-field/slider"
-type SliderFieldDensity = NonNullable<ImmersiveUiComponentFieldSlider.Input["density"]>
-import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
-import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
+import type {Zavx0zImmersiveUiComponentFieldSlider} from "@zavx0z/immersive-ui-component-field-slider"
+type SliderFieldDensity = NonNullable<Zavx0zImmersiveUiComponentFieldSlider.Input["density"]>
+import fieldDensityHeight from "@zavx0z/immersive-ui-field-metric-density-height"
+import labelledFieldHeight from "@zavx0z/immersive-ui-field-metric-labelled-height"
 
 const sliderFieldLayout = Object.freeze({
   height(options: Readonly<{

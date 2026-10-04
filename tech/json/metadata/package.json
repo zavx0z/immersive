@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-tech-json/metadata",
+  "name": "@zavx0z/immersive-tech-json-metadata",
   "label": "Метаданные модели",
   "version": "0.0.0",
   "description": "Читатели JSON-метаданных с общим протоколом источника и имени поля",
@@ -11,13 +11,13 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@immersive-tech-json-value/own": "workspace:*",
-    "@immersive-tech-json-metadata/read": "workspace:*",
-    "@immersive-tech-json-metadata/string": "workspace:*",
-    "@immersive-tech-json-metadata/number": "workspace:*",
-    "@immersive-tech-json-metadata/boolean": "workspace:*",
-    "@immersive-tech-json-metadata/string-array": "workspace:*",
-    "@immersive-tech-json-metadata/object-array": "workspace:*"
+    "@zavx0z/immersive-tech-json-value-own": "workspace:*",
+    "@zavx0z/immersive-tech-json-metadata-read": "workspace:*",
+    "@zavx0z/immersive-tech-json-metadata-string": "workspace:*",
+    "@zavx0z/immersive-tech-json-metadata-number": "workspace:*",
+    "@zavx0z/immersive-tech-json-metadata-boolean": "workspace:*",
+    "@zavx0z/immersive-tech-json-metadata-string-array": "workspace:*",
+    "@zavx0z/immersive-tech-json-metadata-object-array": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",

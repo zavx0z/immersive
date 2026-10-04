@@ -1,10 +1,10 @@
 # Параметры
 
-`@immersive-nodes/parameter` — Cluster готовых параметров и `ParameterLayout` для собственного поля.
+`@zavx0z/immersive-nodes-parameter` — Cluster готовых параметров и `ParameterLayout` для собственного поля.
 Именованный вход сохраняет самостоятельные реализации участников. Общий протокол
-`ImmersiveNodesParameter.Input` задаёт адрес, подпись и внешнее состояние;
-участники расширяют его типом значения и событиями. `ImmersiveNodesParameter.Output`
-сохраняет JSX-представление в Document приложения. Общий `ImmersiveNodesParameter.Slots`
+`Zavx0zImmersiveNodesParameter.Input` задаёт адрес, подпись и внешнее состояние;
+участники расширяют его типом значения и событиями. `Zavx0zImmersiveNodesParameter.Output`
+сохраняет JSX-представление в Document приложения. Общий `Zavx0zImmersiveNodesParameter.Slots`
 принимает независимые `Socket` в именованные области `left` и `right`; Socket
 владеет своим адресом, состоянием и обработчиком. Пустой слот не создаёт сокет.
 
@@ -14,10 +14,10 @@
 `ParameterLayout` размещает поле в безымянном слоте и авторские Socket
 в именованных слотах `left` и `right`. Подпись передаётся самому Field; отдельной подписи в Layout нет.
 
-Проекция модели принадлежит `@immersive-nodes-projection/parameter`. Она подписывается
+Проекция модели принадлежит `@zavx0z/immersive-nodes-projection-parameter`. Она подписывается
 на переданный Store и выбирает те же готовые компоненты. Подготовка данных
-принадлежит `@immersive-nodes-projection-parameter/presentation`, числовые размеры —
-`@immersive-nodes-geometry/parameter`; Node использует этих же владельцев в расчёте геометрии.
+принадлежит `@zavx0z/immersive-nodes-projection-parameter-presentation`, числовые размеры —
+`@zavx0z/immersive-nodes-geometry-parameter`; Node использует этих же владельцев в расчёте геометрии.
 
 Готовые компоненты сохраняют `labelHidden`, `spacingBefore`, состояние подключения
 и точные ID сокетов. Несколько сокетов одной стороны допустимы. Автор сохраняет уникальность их ID;

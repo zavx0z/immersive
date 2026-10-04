@@ -1,13 +1,13 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {planSlots, JsxCompilerSession, createJsxBunPlugin} from "@immersive/jsx"
-import runtime from "@immersive-jsx-runtime/create"
-import fragment from "@immersive-jsx-runtime/fragment"
-import planner from "@immersive-jsx-slot/plan"
-import compiler from "@immersive-jsx-compiler/session"
-import adapter from "@immersive-jsx-compiler/bun"
-import {Fragment as protocolFragment, jsx as protocolJsx, jsxs} from "@immersive/jsx/jsx-runtime"
-import {Fragment as developmentFragment} from "@immersive/jsx/jsx-dev-runtime"
+import {planSlots, JsxCompilerSession, createJsxBunPlugin} from "@zavx0z/immersive-jsx"
+import runtime from "@zavx0z/immersive-jsx-runtime-create"
+import fragment from "@zavx0z/immersive-jsx-runtime-fragment"
+import planner from "@zavx0z/immersive-jsx-slot-plan"
+import compiler from "@zavx0z/immersive-jsx-compiler-session"
+import adapter from "@zavx0z/immersive-jsx-compiler-bun"
+import {Fragment as protocolFragment, jsx as protocolJsx, jsxs} from "@zavx0z/immersive-jsx/jsx-runtime"
+import {Fragment as developmentFragment} from "@zavx0z/immersive-jsx/jsx-dev-runtime"
 
 test("домен назначает имена, сохраняя identity компонентов и обоих протоколов", () => {
   expect(planSlots).toBe(planner)

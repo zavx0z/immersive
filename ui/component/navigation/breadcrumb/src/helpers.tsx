@@ -1,6 +1,6 @@
 import type {BreadcrumbsItem} from "../contract/types.ts"
-import type {ImmersiveUiComponentNavigationBreadcrumb} from "../contract"
-import chevronRightIcon from "@immersive-ui-theme-icon/chevron-right"
+import type {Zavx0zImmersiveUiComponentNavigationBreadcrumb} from "../contract"
+import chevronRightIcon from "@zavx0z/immersive-ui-theme-icon-chevron-right"
 
 /** Частный результат подготовки сегмента к отображению. */
 type NormalizedBreadcrumbsItem = BreadcrumbsItem & Readonly<{
@@ -13,7 +13,7 @@ type NormalizedBreadcrumbsItem = BreadcrumbsItem & Readonly<{
 export function BreadcrumbItemView(props: Readonly<{
   item: NormalizedBreadcrumbsItem
   current: boolean
-  onNavigate?: ImmersiveUiComponentNavigationBreadcrumb.Input["onNavigate"]
+  onNavigate?: Zavx0zImmersiveUiComponentNavigationBreadcrumb.Input["onNavigate"]
 }>) {
   const disabled = props.current || props.item.disabled === true || props.onNavigate === undefined
   const label = props.item.iconSrc === undefined ? props.item.label : ""

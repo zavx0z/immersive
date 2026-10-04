@@ -1,7 +1,7 @@
 /** VectorField показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import VectorField from "@immersive-ui-component-field/vector"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import VectorField from "@zavx0z/immersive-ui-component-field-vector"
 
 describe.each([{name: "Основное представление", props: {value: [1, 2]}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

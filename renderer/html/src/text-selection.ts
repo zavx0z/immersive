@@ -1,4 +1,4 @@
-import {Text, textOffsetAtPosition, type Node, type Range, type Selection} from "@immersive/dom"
+import {Text, textOffsetAtPosition, type Node, type Range, type Selection} from "@zavx0z/immersive-dom"
 import type {RenderFrame, RenderTextMeasurer, RenderTextSource, TextDisplayItem, RenderClip, RenderTransform, RenderTextHighlight} from "./types.ts"
 import {buildTextHighlights} from "./text-highlight-geometry.ts"
 import {hitTestProjection} from "./projection-hit.ts"

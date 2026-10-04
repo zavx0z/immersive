@@ -1,6 +1,6 @@
 # Согласованная модель и раскладка
 
-Исходная гонка исправлена 8 сентября 2026 в `@immersive/nodes`.
+Исходная гонка исправлена 8 сентября 2026 в `@zavx0z/immersive-nodes`.
 `NODES-CATALOG-006` проходит с прежними ожиданиями новой ноды и сохранения Element.
 
 ## Передача геометрии
@@ -28,7 +28,7 @@ GraphView и GraphEditor используют одну принятую пару
 
 ## Асинхронный расчёт
 
-`createNodeTreeLayout` из `@immersive/nodes/view/tree` захватывает snapshot
+`createNodeTreeLayout` из `@zavx0z/immersive-nodes/view/tree` захватывает snapshot
 до вызова владельца числовой раскладки:
 
 ```ts

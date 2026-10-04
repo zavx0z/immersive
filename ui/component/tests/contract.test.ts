@@ -1,14 +1,14 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
-import * as ui from "@immersive-ui/component"
-import Button from "@immersive-ui-component-button/basic"
-import TextField from "@immersive-ui-component-field/text"
-import MenuItem from "@immersive-ui-component-menu/item"
-import Notification from "@immersive-ui-component-feedback/notification"
-import Window from "@immersive-ui-component-surface/window"
-import WindowControl from "@immersive-ui-component-surface/window-control"
-import List from "@immersive-ui-component-view/list"
-import Tree from "@immersive-ui-component-widget/tree"
+import * as ui from "@zavx0z/immersive-ui-component"
+import Button from "@zavx0z/immersive-ui-component-button-basic"
+import TextField from "@zavx0z/immersive-ui-component-field-text"
+import MenuItem from "@zavx0z/immersive-ui-component-menu-item"
+import Notification from "@zavx0z/immersive-ui-component-feedback-notification"
+import Window from "@zavx0z/immersive-ui-component-surface-window"
+import WindowControl from "@zavx0z/immersive-ui-component-surface-window-control"
+import List from "@zavx0z/immersive-ui-component-view-list"
+import Tree from "@zavx0z/immersive-ui-component-widget-tree"
 
 const packageRoot = resolve(import.meta.dir, "..")
 
@@ -23,7 +23,7 @@ async function manifests() {
 
 test("UI публикует именованные компоненты, типовой протокол и ресурсы", async () => {
   const manifest = await Bun.file(resolve(packageRoot, "package.json")).json()
-  expect(manifest.name).toBe("@immersive-ui/component")
+  expect(manifest.name).toBe("@zavx0z/immersive-ui-component")
   expect(manifest.exports).toEqual({
     ".": "./index.ts",
     "./contract": "./contract/index.ts",
@@ -67,7 +67,7 @@ test("пакеты UI имеют собственные публичные вх�
 })
 
 test("UI сохраняет границу платформы во всех производственных пакетах", async () => {
-  const forbidden = ["@immersive/browser", "@immersive/engine", "@immersive-nodes/layout", "@immersive/nodes", "@immersive-nodes/tree", "@immersive-renderer/html", "@immersive/space", "@immersive/webgpu"]
+  const forbidden = ["@zavx0z/immersive-browser", "@zavx0z/immersive-engine", "@zavx0z/immersive-nodes-layout", "@zavx0z/immersive-nodes", "@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-renderer-html", "@zavx0z/immersive-space", "@zavx0z/immersive-webgpu"]
   for (const {directory, manifest} of await manifests()) {
     for (const name of forbidden) {
       expect(manifest.dependencies?.[name], directory).toBeUndefined()

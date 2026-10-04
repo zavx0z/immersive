@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import CollectionField from "@immersive-ui-component-field/collection"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import CollectionField from "@zavx0z/immersive-ui-component-field-collection"
 
 test("содержимое помещается в заданную ширину независимо от подписи", async () => {
   const headless = createHeadless({width: 400, height: 240})

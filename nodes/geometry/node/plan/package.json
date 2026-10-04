@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-geometry-node/plan",
+  "name": "@zavx0z/immersive-nodes-geometry-node-plan",
   "label": "plan",
   "version": "0.0.0",
   "description": "Планирует размеры ноды и центры сокетов по высотам строк",
@@ -10,8 +10,8 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@immersive-nodes-geometry-node/metrics": "workspace:*",
-    "@immersive-nodes-model-socket/metrics": "workspace:*"
+    "@zavx0z/immersive-nodes-geometry-node-metrics": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-metrics": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",

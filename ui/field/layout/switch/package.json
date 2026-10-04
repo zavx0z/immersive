@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-layout/switch",
+  "name": "@zavx0z/immersive-ui-field-layout-switch",
   "label": "switchFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров switchField",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-metric/read": "workspace:*",
-    "@immersive-ui-field-metric/labelled-height": "workspace:*"
+    "@zavx0z/immersive-ui-field-metric-read": "workspace:*",
+    "@zavx0z/immersive-ui-field-metric-labelled-height": "workspace:*"
   }
 }

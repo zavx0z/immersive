@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-model-parameter/store",
+  "name": "@zavx0z/immersive-nodes-model-parameter-store",
   "label": "nodes/model/parameter/store",
   "version": "0.0.0",
   "description": "Хранит значение параметра, выпускает снимки и уведомляет подписчиков после изменения",
@@ -14,8 +14,8 @@
     "test": "bun test ./spec"
   },
   "dependencies": {
-    "@immersive-tech-json-value/own": "workspace:*",
-    "@immersive-tech-json-value/equal": "workspace:*",
-    "@immersive-nodes-model-parameter/value-type": "workspace:*"
+    "@zavx0z/immersive-tech-json-value-own": "workspace:*",
+    "@zavx0z/immersive-tech-json-value-equal": "workspace:*",
+    "@zavx0z/immersive-nodes-model-parameter-value-type": "workspace:*"
   }
 }

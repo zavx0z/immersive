@@ -1,4 +1,4 @@
-import {useEffect} from "@immersive/component"
+import {useEffect} from "@zavx0z/immersive-component"
 
 type Props = Readonly<{
   wait: Promise<void>

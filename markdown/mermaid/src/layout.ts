@@ -1,11 +1,11 @@
-import {createCubicLinkRoute, type LinkPathPoint, type LinkRoute} from "@immersive/nodes/routing/link-path"
-import {layoutFixed} from "@immersive-nodes/layout/fixed"
-import {layoutTopDown} from "@immersive-nodes/layout/top-down"
+import {createCubicLinkRoute, type LinkPathPoint, type LinkRoute} from "@zavx0z/immersive-nodes/routing/link-path"
+import {layoutFixed} from "@zavx0z/immersive-nodes-layout/fixed"
+import {layoutTopDown} from "@zavx0z/immersive-nodes-layout/top-down"
 import type {MermaidGraph} from "../types/graph.ts"
-import type {GraphMeasurement} from "@immersive/nodes/view"
+import type {GraphMeasurement} from "@zavx0z/immersive-nodes/view"
 
 /**
-Строит план {@link @immersive/nodes/view#GraphView | GraphView} из разобранного графа и фактических измерений нод.
+Строит план {@link @zavx0z/immersive-nodes/view#GraphView | GraphView} из разобранного графа и фактических измерений нод.
 Горизонтальные схемы используют fixed layout, вертикальные — contour TopDown;
 RL/BT отражают координаты, сохраняя идентификаторы графа.
 

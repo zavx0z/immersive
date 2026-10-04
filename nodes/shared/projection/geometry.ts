@@ -1,22 +1,22 @@
-import socketKey from "@immersive-nodes-model-socket/key"
+import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 import type {
   Link as CoreLink,
   NodeJsonValue,
   NodeTreeNodeSnapshot,
   ParameterReference,
   Socket as CoreSocket,
-} from "@immersive-nodes/tree"
-import type {LayoutResult} from "@immersive-nodes/layout/types"
+} from "@zavx0z/immersive-nodes-tree"
+import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
 import {
   projectLinkRoute,
   type LinkRoute,
 } from "../routing/link-path.ts"
 
 export type NodePoint = Readonly<{x: number; y: number}>
-import nodeSocketLayoutPortId from "@immersive-nodes-geometry-node/port-id"
-import type {ImmersiveNodesLayout} from "@immersive-nodes/layout/contract"
-type NodeRect = ImmersiveNodesLayout.Output["bounds"]
-export {default as nodeSocketLayoutPortId} from "@immersive-nodes-geometry-node/port-id"
+import nodeSocketLayoutPortId from "@zavx0z/immersive-nodes-geometry-node-port-id"
+import type {Zavx0zImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
+type NodeRect = Zavx0zImmersiveNodesLayout.Output["bounds"]
+export {default as nodeSocketLayoutPortId} from "@zavx0z/immersive-nodes-geometry-node-port-id"
 export type {NodeRect}
 
 export type NodeTreeTransform = Readonly<{

@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-view-code-editor/view-model",
+  "name": "@zavx0z/immersive-ui-component-view-code-editor-view-model",
   "label": "buildCodeEditorViewModel",
   "version": "0.0.0",
   "description": "Подготовка строк, токенов и оформления редактора",
@@ -11,20 +11,20 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-component-view-code-editor-syntax-theme/resolve-scope-color-hex": "workspace:*",
-    "@immersive-tech-text/assert-non-empty": "workspace:*",
-    "@immersive-ui-view-code-editor/editor-foreground": "workspace:*",
-    "@immersive-ui-component-view-code-editor/highlighter": "workspace:*",
-    "@immersive-tech-color-hex/valid": "workspace:*",
-    "@immersive-tech-color-hex/normalize": "workspace:*",
-    "@immersive-ui-component-view-code-editor/validate": "workspace:*",
-    "@immersive-ui-component-view/code-editor": "workspace:*",
-    "@immersive-ui-component/badge": "workspace:*",
-    "@immersive-tech/text-editor": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-resolve-scope-color-hex": "workspace:*",
+    "@zavx0z/immersive-tech-text-assert-non-empty": "workspace:*",
+    "@zavx0z/immersive-ui-view-code-editor-editor-foreground": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor-highlighter": "workspace:*",
+    "@zavx0z/immersive-tech-color-hex-valid": "workspace:*",
+    "@zavx0z/immersive-tech-color-hex-normalize": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor-validate": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
+    "@zavx0z/immersive-ui-component-badge": "workspace:*",
+    "@zavx0z/immersive-tech-text-editor": "workspace:*",
     "@zavx0z/highlighter": "^0.1.0"
   }
 }

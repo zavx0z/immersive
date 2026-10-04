@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldCollectionModelNormalizeItems as Contract} from "./contract"
+import type {Zavx0zImmersiveUiFieldCollectionModelNormalizeItems as Contract} from "./contract"
 import type {CollectionItemShape} from "./contract/types"
 
 export default function normalizeCollectionItems<T extends CollectionItemShape>(
@@ -26,4 +26,4 @@ export default function normalizeCollectionItems<T extends CollectionItemShape>(
   return Object.freeze(normalized)
 }
 
-export type {ImmersiveUiFieldCollectionModelNormalizeItems} from "./contract"
+export type {Zavx0zImmersiveUiFieldCollectionModelNormalizeItems} from "./contract"

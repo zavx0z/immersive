@@ -24,7 +24,7 @@ Markdown использует `height: auto`. Для трёх строк это 
 42 и 478 px, `maxScrollLeft = 0`. До исправления второй элемент получал
 478.0203437104936 px, а `maxScrollLeft` составлял около 0.02034 px.
 
-Владелец — `@immersive-renderer/html`, `renderer/html/src/renderer.ts`,
+Владелец — `@zavx0z/immersive-renderer-html`, `renderer/html/src/renderer.ts`,
 `distributeFlexSpace`. Теперь элементы, достигшие явного или автоматического
 минимума, исключаются из дальнейшего сжатия. Для остальных размеры заново
 рассчитываются от исходных внутренних flex bases с учётом `flex-shrink`.

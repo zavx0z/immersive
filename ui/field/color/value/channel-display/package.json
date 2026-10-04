@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-color-value/channel-display",
+  "name": "@zavx0z/immersive-ui-field-color-value-channel-display",
   "label": "colorChannelDisplayValue",
   "version": "0.0.0",
   "description": "Переводит тон HSVA в целые градусы, остальные каналы округляет до шести десятичных знаков",
@@ -11,11 +11,11 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-color-value/normalize": "workspace:*",
-    "@immersive-ui-field-color-value/to-hsva": "workspace:*"
+    "@zavx0z/immersive-ui-field-color-value-normalize": "workspace:*",
+    "@zavx0z/immersive-ui-field-color-value-to-hsva": "workspace:*"
   }
 }

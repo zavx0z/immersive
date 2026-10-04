@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
-import {createDocument, setDocumentTextHighlights, clearDocumentTextHighlights, type HTMLElement} from "@immersive/dom"
-import {Text, TrueTypeFont} from "@immersive/engine"
-import {createDocumentInteractionController, createDocumentRenderer} from "@immersive-renderer/html"
+import {createDocument, setDocumentTextHighlights, clearDocumentTextHighlights, type HTMLElement} from "@zavx0z/immersive-dom"
+import {Text, TrueTypeFont} from "@zavx0z/immersive-engine"
+import {createDocumentInteractionController, createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 
 test("selection side channel preserves retained text and geometry while adding moving and clearing clipped highlights", async () => {

@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/browser",
+  "name": "@zavx0z/immersive-browser",
   "label": "Браузер",
   "version": "0.0.0",
   "private": true,
@@ -21,46 +21,46 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@immersive/component": "workspace:*",
-    "@immersive/template": "workspace:*",
-    "@immersive/dom": "workspace:*",
-    "@immersive/engine": "workspace:*",
-    "@immersive-renderer/html": "workspace:*",
-    "@immersive/space": "workspace:*",
-    "@immersive/webgpu": "workspace:*"
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-engine": "workspace:*",
+    "@zavx0z/immersive-renderer-html": "workspace:*",
+    "@zavx0z/immersive-space": "workspace:*",
+    "@zavx0z/immersive-webgpu": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@immersive/component": {
+    "@zavx0z/immersive-component": {
       "optional": true
     },
-    "@immersive/template": {
+    "@zavx0z/immersive-template": {
       "optional": true
     },
-    "@immersive/dom": {
+    "@zavx0z/immersive-dom": {
       "optional": true
     },
-    "@immersive/engine": {
+    "@zavx0z/immersive-engine": {
       "optional": true
     },
-    "@immersive-renderer/html": {
+    "@zavx0z/immersive-renderer-html": {
       "optional": true
     },
-    "@immersive/space": {
+    "@zavx0z/immersive-space": {
       "optional": true
     },
-    "@immersive/webgpu": {
+    "@zavx0z/immersive-webgpu": {
       "optional": true
     }
   },
   "license": "MIT",
   "devDependencies": {
-    "@immersive-jsx-compiler/bun": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive/jsx": "workspace:*",
-    "@immersive-ui-component-menu/clipboard": "workspace:*",
-    "@immersive-ui-component-view/code-editor": "workspace:*",
-    "@immersive-ui/component": "workspace:*",
-    "@immersive-tech/text-editor": "workspace:*",
-    "@immersive-ui-component-widget/editor": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-jsx": "workspace:*",
+    "@zavx0z/immersive-ui-component-menu-clipboard": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*",
+    "@zavx0z/immersive-tech-text-editor": "workspace:*",
+    "@zavx0z/immersive-ui-component-widget-editor": "workspace:*"
   }
 }

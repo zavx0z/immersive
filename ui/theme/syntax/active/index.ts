@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiThemeSyntaxActive as Contract} from "./contract"
-import islandsDarkTheme from "@immersive-ui/component/theme/islands-dark.color-theme.json"
+import type {Zavx0zImmersiveUiThemeSyntaxActive as Contract} from "./contract"
+import islandsDarkTheme from "@zavx0z/immersive-ui-component/theme/islands-dark.color-theme.json"
 
-export type {ImmersiveUiThemeSyntaxActive} from "./contract"
+export type {Zavx0zImmersiveUiThemeSyntaxActive} from "./contract"
 
 const activeSyntaxTheme = islandsDarkTheme as Contract.Output
 

@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@immersive/component"
-import {createDocument} from "@immersive/dom"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument} from "@zavx0z/immersive-dom"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({
@@ -12,7 +12,7 @@ Bun.plugin(createJsxBunPlugin({
   sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")],
 }))
 
-const {Frame} = await import("@immersive/nodes/frame")
+const {Frame} = await import("@zavx0z/immersive-nodes/frame")
 
 test("[NODES-TITLE-001-FRAME] Frame не распространяет tooltip на всю поверхность", () => {
   const frame = mount(Frame, {

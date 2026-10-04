@@ -1,6 +1,6 @@
-import {component} from "@immersive/component"
-import {composeSlot, type ComposeSlotInput} from "@immersive/component/slot"
-import {bindConditional, bindText, defineCompiledTemplate, slotContents, writeBinding} from "@immersive/template/compiled"
+import {component} from "@zavx0z/immersive-component"
+import {composeSlot, type ComposeSlotInput} from "@zavx0z/immersive-component/slot"
+import {bindConditional, bindText, defineCompiledTemplate, slotContents, writeBinding} from "@zavx0z/immersive-template/compiled"
 
 /** Настоящий готовый шаблон текста для native protocol, без авторского runtime JSX. */
 export const textTemplate = defineCompiledTemplate<{text: string}>({

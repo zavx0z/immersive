@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-layout/color-picker",
+  "name": "@zavx0z/immersive-ui-field-layout-color-picker",
   "label": "colorPickerFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров colorPickerField",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-metric/color-picker-height": "workspace:*"
+    "@zavx0z/immersive-ui-field-metric-color-picker-height": "workspace:*"
   }
 }

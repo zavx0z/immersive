@@ -20,9 +20,9 @@ import {
   type NodeTreeDelta,
   type NodeTreeSnapshot,
   type NodeValueType,
-} from "@immersive-nodes/tree"
+} from "@zavx0z/immersive-nodes-tree"
 
-export type StorybookAppWebPagePackageScenarioResult = Readonly<{
+export type Zavx0zStorybookAppWebPagePackageScenarioResult = Readonly<{
   input: Readonly<Record<string, unknown>>
   result: Readonly<Record<string, unknown>>
 }>
@@ -100,7 +100,7 @@ function rejection(action: () => unknown): Readonly<{name: string; message: stri
   throw new Error("Сценарий ожидал отказ public API, но вызов завершился успешно")
 }
 
-function topology(): StorybookAppWebPagePackageScenarioResult {
+function topology(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const definition = basicDefinition()
   const tree = createNodeTree(definition)
   try {
@@ -117,7 +117,7 @@ function topology(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function scopes(): StorybookAppWebPagePackageScenarioResult {
+function scopes(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(nestedDefinition())
   try {
     return {
@@ -127,7 +127,7 @@ function scopes(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function groups(): StorybookAppWebPagePackageScenarioResult {
+function groups(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(nestedDefinition())
   try {
     return {
@@ -137,7 +137,7 @@ function groups(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function snapshots(): StorybookAppWebPagePackageScenarioResult {
+function snapshots(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   try {
     const first = tree.getSnapshot()
@@ -159,7 +159,7 @@ function snapshots(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function lifecycle(): StorybookAppWebPagePackageScenarioResult {
+function lifecycle(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const value = tree.parameter("source", "value")
   let notifications = 0
@@ -180,7 +180,7 @@ function lifecycle(): StorybookAppWebPagePackageScenarioResult {
   }
 }
 
-function updates(): StorybookAppWebPagePackageScenarioResult {
+function updates(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const value = new Parameter("value", {amount: 1})
   let notifications = 0
   const unsubscribe = value.subscribe(() => notifications += 1)
@@ -196,7 +196,7 @@ function updates(): StorybookAppWebPagePackageScenarioResult {
   }
 }
 
-function shared(): StorybookAppWebPagePackageScenarioResult {
+function shared(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const sharedValue = new Parameter<number>("value", 1)
   const independent = new Parameter<number>("value", 1)
   const aliasingRejected = rejection(() => createNodeTree({nodes: [
@@ -226,7 +226,7 @@ function shared(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function ownership(): StorybookAppWebPagePackageScenarioResult {
+function ownership(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const input = {nested: {value: 1}, list: [1, 2]}
   const owned = ownNodeJsonValue(input)
   const value = new Parameter("json", input)
@@ -245,7 +245,7 @@ function ownership(): StorybookAppWebPagePackageScenarioResult {
   }
 }
 
-function valueValidation(): StorybookAppWebPagePackageScenarioResult {
+function valueValidation(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const value = createValidatedParameter<NodeJsonValue>("value", 1, null, floatType,
     (type, candidate) => type.id === "float" && typeof candidate === "number")
   let notifications = 0
@@ -262,7 +262,7 @@ function valueValidation(): StorybookAppWebPagePackageScenarioResult {
   } finally { unsubscribe() }
 }
 
-function subscriptions(): StorybookAppWebPagePackageScenarioResult {
+function subscriptions(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const store = createNodeTreeExternalStore(tree)
   const target = store.parameter("target", "value")
@@ -290,7 +290,7 @@ function subscriptions(): StorybookAppWebPagePackageScenarioResult {
   }
 }
 
-function topologyUpdates(): StorybookAppWebPagePackageScenarioResult {
+function topologyUpdates(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const store = createNodeTreeExternalStore(tree)
   const modes = [store.getTopologyUpdate().mode]
@@ -314,7 +314,7 @@ function topologyUpdates(): StorybookAppWebPagePackageScenarioResult {
   }
 }
 
-function reconcileIdentity(): StorybookAppWebPagePackageScenarioResult {
+function reconcileIdentity(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const value = tree.parameter("source", "value")
   try {
@@ -330,7 +330,7 @@ function reconcileIdentity(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function reconcileConflict(): StorybookAppWebPagePackageScenarioResult {
+function reconcileConflict(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const value = tree.parameter("source", "value")
   try {
@@ -348,7 +348,7 @@ function reconcileConflict(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function deltas(): StorybookAppWebPagePackageScenarioResult {
+function deltas(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const events: NodeTreeDelta[] = []
   const unsubscribe = tree.subscribeDelta(delta => events.push(delta))
@@ -367,7 +367,7 @@ function deltas(): StorybookAppWebPagePackageScenarioResult {
   }
 }
 
-async function projectionCache(): Promise<StorybookAppWebPagePackageScenarioResult> {
+async function projectionCache(): Promise<Zavx0zStorybookAppWebPagePackageScenarioResult> {
   const tree = createNodeTree(basicDefinition())
   let calls = 0
   const previousRevisions: (number | null)[] = []
@@ -393,7 +393,7 @@ async function projectionCache(): Promise<StorybookAppWebPagePackageScenarioResu
   } finally { tree.dispose() }
 }
 
-async function projectionStale(): Promise<StorybookAppWebPagePackageScenarioResult> {
+async function projectionStale(): Promise<Zavx0zStorybookAppWebPagePackageScenarioResult> {
   const tree = createNodeTree(basicDefinition())
   let resolveProjection: (value: number) => void = () => { throw new Error("Projection has not started") }
   let capturedRevision = -1
@@ -421,7 +421,7 @@ async function projectionStale(): Promise<StorybookAppWebPagePackageScenarioResu
   } finally { tree.dispose() }
 }
 
-function nodeReference(): StorybookAppWebPagePackageScenarioResult {
+function nodeReference(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const first = new Parameter<number>("value", 1)
   const second = new Parameter<number>("value", 1)
   const a = instantiateNodeTemplate(nodeTemplate, {id: "instance:a", localId: "number"}, {id: "a", parameters: [first]})
@@ -436,7 +436,7 @@ function nodeReference(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function graphReference(): StorybookAppWebPagePackageScenarioResult {
+function graphReference(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const scope = instantiateGraphTemplate(graphTemplate, {id: "instance:graph", localId: "graph"}, {id: "nested", parentScopeId: "root"})
   const tree = createNodeTree({templates: [graphTemplate], scopes: [{id: "root", kind: "graph"}, scope], nodes: []})
   try {
@@ -447,7 +447,7 @@ function graphReference(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function roundtrip(): StorybookAppWebPagePackageScenarioResult {
+function roundtrip(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(nestedDefinition())
   const serialized = serializeNodeTreeDocument(tree.document())
   const restored = hydrateNodeTree(serialized, {validateParameterValue: (type, value) => type.id === "float" && typeof value === "number"})
@@ -475,7 +475,7 @@ function roundtrip(): StorybookAppWebPagePackageScenarioResult {
   }
 }
 
-function invalidDocument(): StorybookAppWebPagePackageScenarioResult {
+function invalidDocument(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   try {
     const source = JSON.parse(serializeNodeTreeDocument(tree.document())) as NodeJsonValue
@@ -488,7 +488,7 @@ function invalidDocument(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function patchOperations(): StorybookAppWebPagePackageScenarioResult {
+function patchOperations(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const source = {"a/b~c": [1, 2], obsolete: true}
   const path = `/${encodeJsonPointerToken("a/b~c")}`
   const result = applyJsonPatch(source, [
@@ -500,7 +500,7 @@ function patchOperations(): StorybookAppWebPagePackageScenarioResult {
   return {input: {source, operations: ["test", "replace", "add", "remove"], escapedPath: path}, result: {patched: result, source, frozen: Object.isFrozen(result), limits: JSON_PATCH_LIMITS}}
 }
 
-function patchAtomicError(): StorybookAppWebPagePackageScenarioResult {
+function patchAtomicError(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const source = {value: 1}
   const atomic = rejection(() => applyJsonPatch(source, [
     {op: "replace", path: "/value", value: 2},
@@ -510,7 +510,7 @@ function patchAtomicError(): StorybookAppWebPagePackageScenarioResult {
   return {input: {source, steps: ["replace 1 → 2", "test value = 99 fails"]}, result: {atomic, unchangedSource: source, limit}}
 }
 
-function linkTypes(): StorybookAppWebPagePackageScenarioResult {
+function linkTypes(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const definition: NodeTreeDefinition = {
     nodes: [
       {id: "source", sockets: [{id: "out", direction: "output", valueType: floatType}]},
@@ -530,7 +530,7 @@ function linkTypes(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function cycles(): StorybookAppWebPagePackageScenarioResult {
+function cycles(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const definition: NodeTreeDefinition = {
     nodes: ["a", "b"].map(id => ({id, sockets: [{id: "io", direction: "bidirectional"}]})),
     links: [
@@ -544,7 +544,7 @@ function cycles(): StorybookAppWebPagePackageScenarioResult {
   } finally { tree.dispose() }
 }
 
-function references(): StorybookAppWebPagePackageScenarioResult {
+function references(): Zavx0zStorybookAppWebPagePackageScenarioResult {
   const definition = basicDefinition()
   const invalidEndpoint = {...definition, links: [{id: "missing", from: {nodeId: "unknown", socketId: "out"}, to: {nodeId: "target", socketId: "in"}}]}
   const reversed = {...definition, links: [{id: "reversed", from: {nodeId: "target", socketId: "in"}, to: {nodeId: "source", socketId: "out"}}]}

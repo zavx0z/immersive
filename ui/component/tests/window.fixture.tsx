@@ -1,6 +1,6 @@
-import {useState} from "@immersive/component"
-import Window from "@immersive-ui-component-surface/window"
-import WindowControl from "@immersive-ui-component-surface/window-control"
+import {useState} from "@zavx0z/immersive-component"
+import Window from "@zavx0z/immersive-ui-component-surface-window"
+import WindowControl from "@zavx0z/immersive-ui-component-surface-window-control"
 
 /** Независимая кнопка и оболочка разделяют только controlled-видимость. */
 export function WindowPairFixture() {

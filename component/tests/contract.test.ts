@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import {Text, createDocument} from "@immersive/dom"
+import {Text, createDocument} from "@zavx0z/immersive-dom"
 import {
   component,
   createContext,
@@ -9,17 +9,17 @@ import {
   useEffect,
   useState,
   useSyncExternalStore,
-} from "@immersive/component"
+} from "@zavx0z/immersive-component"
 import type {
   ComponentValue,
   StateDispatch,
-} from "@immersive/component"
+} from "@zavx0z/immersive-component"
 import {
   bindChild,
   bindText,
   defineCompiledTemplate,
   writeBinding,
-} from "@immersive/template/compiled"
+} from "@zavx0z/immersive-template/compiled"
 
 function mountedRoot() {
   const document = createDocument()

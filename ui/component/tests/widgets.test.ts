@@ -1,32 +1,32 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@immersive/component"
-import {createDocument, Event, InputEvent, KeyboardEvent, MouseEvent, CompositionEvent, readDocumentScrollIntoViewRequests, type HTMLInputElement, type HTMLElement} from "@immersive/dom"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import CodeEditorModel from "@immersive-tech/text-editor"
-import TerminalModel from "@immersive-tech/terminal"
-import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
-type CodeEditorHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentViewCodeEditor.Input["onReady"]>>[0]>
-import type {ImmersiveUiComponentWidgetEditor} from "@immersive-ui-component-widget/editor"
-type EditorProps = ImmersiveUiComponentWidgetEditor.Input
-import type {ImmersiveUiComponentWidgetTerminal} from "@immersive-ui-component-widget/terminal"
-type TerminalProps = ImmersiveUiComponentWidgetTerminal.Input
-type TerminalHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentWidgetTerminal.Input["onReady"]>>[0]>
-import type {ImmersiveUiComponentWidgetTree} from "@immersive-ui-component-widget/tree"
-type TreeProps = ImmersiveUiComponentWidgetTree.Input
-import type {ImmersiveUiComponentSurfaceWindow} from "@immersive-ui-component-surface/window"
-type WindowProps = ImmersiveUiComponentSurfaceWindow.Input
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument, Event, InputEvent, KeyboardEvent, MouseEvent, CompositionEvent, readDocumentScrollIntoViewRequests, type HTMLInputElement, type HTMLElement} from "@zavx0z/immersive-dom"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
+import TerminalModel from "@zavx0z/immersive-tech-terminal"
+import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorHandle = NonNullable<Parameters<NonNullable<Zavx0zImmersiveUiComponentViewCodeEditor.Input["onReady"]>>[0]>
+import type {Zavx0zImmersiveUiComponentWidgetEditor} from "@zavx0z/immersive-ui-component-widget-editor"
+type EditorProps = Zavx0zImmersiveUiComponentWidgetEditor.Input
+import type {Zavx0zImmersiveUiComponentWidgetTerminal} from "@zavx0z/immersive-ui-component-widget-terminal"
+type TerminalProps = Zavx0zImmersiveUiComponentWidgetTerminal.Input
+type TerminalHandle = NonNullable<Parameters<NonNullable<Zavx0zImmersiveUiComponentWidgetTerminal.Input["onReady"]>>[0]>
+import type {Zavx0zImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-component-widget-tree"
+type TreeProps = Zavx0zImmersiveUiComponentWidgetTree.Input
+import type {Zavx0zImmersiveUiComponentSurfaceWindow} from "@zavx0z/immersive-ui-component-surface-window"
+type WindowProps = Zavx0zImmersiveUiComponentSurfaceWindow.Input
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
-import {textPositionAtOffset} from "@immersive/dom/text-position"
+import {textPositionAtOffset} from "@zavx0z/immersive-dom/text-position"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {default: Editor} = await import("@immersive-ui-component-widget/editor")
-const {default: Terminal} = await import("@immersive-ui-component-widget/terminal")
-const {default: Tree} = await import("@immersive-ui-component-widget/tree")
-const {default: Window} = await import("@immersive-ui-component-surface/window")
+const {default: Editor} = await import("@zavx0z/immersive-ui-component-widget-editor")
+const {default: Terminal} = await import("@zavx0z/immersive-ui-component-widget-terminal")
+const {default: Tree} = await import("@zavx0z/immersive-ui-component-widget-tree")
+const {default: Window} = await import("@zavx0z/immersive-ui-component-surface-window")
 
 function fixture() {
   const document = createDocument()

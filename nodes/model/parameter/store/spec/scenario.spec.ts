@@ -1,6 +1,6 @@
 /** Один Parameter сохраняет revision, снимки и жизненный цикл подписок. */
 import {describe, expect, test} from "bun:test"
-import Parameter from "@immersive-nodes-model-parameter/store"
+import Parameter from "@zavx0z/immersive-nodes-model-parameter-store"
 
 describe.each([
   {name: "Первый параметр", props: {id: "first", value: 1, next: 2}},

@@ -1,1 +1,1 @@
-export {Fragment, jsx} from "@immersive/jsx/jsx-runtime"
+export {Fragment, jsx} from "@zavx0z/immersive-jsx/jsx-runtime"

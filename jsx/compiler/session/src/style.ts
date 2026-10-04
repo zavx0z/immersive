@@ -25,9 +25,9 @@ import {
   isSpreadElement,
   isStringLiteral,
 } from "typescript/unstable/ast/is"
-import JsxCompileError from "@immersive-jsx-compiler/error"
-import {encodeCompiledStyleText} from "@immersive/template/compiled"
-import type {CssTemplateShape} from "@immersive/template/css-shape"
+import JsxCompileError from "@zavx0z/immersive-jsx-compiler-error"
+import {encodeCompiledStyleText} from "@zavx0z/immersive-template/compiled"
+import type {CssTemplateShape} from "@zavx0z/immersive-template/css-shape"
 type CssTemplateRule = CssTemplateShape["rules"][number]
 type CssTemplateDeclaration = CssTemplateRule["declarations"][number]
 type TaggedTemplateSegment = CssTemplateDeclaration["segments"][number]

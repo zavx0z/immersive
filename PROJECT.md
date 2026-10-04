@@ -104,7 +104,7 @@ ViewPoint владеет сохранением и возвратом обзор
 Это общий обязательный контракт авторских JSX/TSX: `Element`, `HTMLElement`,
 `Document`, события и refs используют стандартные глобальные браузерные типы.
 Нестандартные возможности добавляются централизованным расширением этих типов
-в platform owner. Нельзя импортировать типы реализации DOM из `@immersive/dom`
+в platform owner. Нельзя импортировать типы реализации DOM из `@zavx0z/immersive-dom`
 для обычных component props/refs/events или стыковать их через `as unknown`/
 `as any`. Реализация нашего DOM работает в runtime, но её типы остаются на
 платформенных, внутренних интеграционных и тестовых границах. Импорт публичных
@@ -122,7 +122,7 @@ Native `window.document` и код подключения страницы не 
 
 `createRoot` резервирует native Canvas/page, а render запускает подготовку
 ресурсов и общего кадра без Promise в авторском API. Диагностика
-`@immersive/browser/diagnostics` наблюдает готовность через inspectRoot(root).whenReady().
+`@zavx0z/immersive-browser/diagnostics` наблюдает готовность через inspectRoot(root).whenReady().
 Это технический рубеж отрисовки, не подтверждение визуальной корректности.
 Unmount отменяет подготовку и освобождает компоненты, links, ввод и кадры;
 завершившаяся позже асинхронная операция не восстанавливает приложение.
@@ -138,7 +138,7 @@ Browser составляет Component, DOM, Renderer, Space и WebGPU чере�
 App объявляет стили обычными `<link rel="stylesheet" href="…" />` рядом со Space.
 Явные links полностью задают author stylesheets в порядке дерева. Только при их
 отсутствии Browser подключает отдельный `./theme.css` приложения. Сборка выбирает
-его исходник; стандартная тема остаётся публичным `@immersive-ui/component/theme/theme.css`.
+его исходник; стандартная тема остаётся публичным `@zavx0z/immersive-ui-component/theme/theme.css`.
 Browser создаёт настоящие native links, читает загруженный CSSOM и освобождает
 свои links при удалении декларации или unmount. Смена href и порядка деклараций
 сохраняет identity остальных links и смонтированного приложения.
@@ -199,34 +199,34 @@ API и не зависит от Bun. `tsc` используется только
 скомпилированной TSX-реализации. Ручная парная реализация `Component + Layout`,
 центральный список видов Field и новая ветка в Nodes не являются конечным
 механизмом расширения. Пока такого формата результата компиляции нет, это общий
-пробел владельца `@immersive/template`, а не основание добавлять обход в UI или
+пробел владельца `@zavx0z/immersive-template`, а не основание добавлять обход в UI или
 Nodes.
 
 | Каталог | Пакет | Ответственность |
 | --- | --- | --- |
-| `engine` | `@immersive/engine` | Объекты сцены, геометрия, материалы, математика и анимация без WebGPU |
-| `dom` | `@immersive/dom` | `Document`, `SpaceElement`, `ViewPointElement`, `DisplayElement`, `HUDElement`, остальные элементы, атрибуты, события, фокус и состояние полей |
-| `template` | `@immersive/template` | HTML, CSS и общий формат готового шаблона |
-| `jsx` | `@immersive/jsx` | Авторский JSX и обязательные automatic protocol exports |
-| `jsx/compiler/session` | `@immersive-jsx-compiler/session` | Контракт авторского JSX и семантическая компиляция TSX в generic compiled ABI Template |
-| `jsx/compiler/bun` | `@immersive-jsx-compiler/bun` | Штатная интеграция JSX compiler со сборкой Bun |
-| `component` | `@immersive/component` | Состояние компонентов, хуки, контекст, эффекты и очистка |
-| `renderer` | `@immersive/renderer` | Семейство рендереров документов |
-| `renderer/html` | `@immersive-renderer/html` | CSS, размеры, раскладка, прокрутка, список рисования и определение попаданий без GPU |
-| `markdown` | `@immersive/markdown` | Разбор Markdown и компоненты документа |
-| `typedoc` | `@immersive/typedoc` | Разбор TypeScript 7 и представление документации типов |
-| `webgpu` | `@immersive/webgpu` | Шейдеры, буферы, текстуры, загрузка данных и рисование |
-| `browser` | `@immersive/browser` | Canvas, изменение размера, ввод, RAF и общий цикл кадров |
-| `space` | `@immersive/space` | `Object`, `Asset`, `Group`, `Mesh`, `Line`, `Text`, `Light`, `Animation`, `Geometry`, `Material` |
-| `ui` | `@immersive-ui/component` | Универсальные UI-компоненты, тема и иконки |
-| `nodes` | `@immersive/nodes` | Композиция графа: GraphView, GraphEditor, Frame и Link |
-| `nodes/tree` | `@immersive-nodes/tree` | Живая модель `NodeTree`, хранилища Parameter, снимки и сохранение |
-| `nodes/layout` | `@immersive-nodes/layout` | Алгоритмы расположения нод и Worker |
-| `nodes/parameter` | `@immersive-nodes/parameter` | Представления параметров и проекция внешнего Parameter Store |
-| `nodes/socket` | `@immersive-nodes/socket` | Адресуемый Socket и его визуальные предустановки |
-| `nodes/node` | `@immersive-nodes/node` | DiagramNode, ParameterNode и ContentNode на основе Pane |
-| `headless` | `@immersive/headless` | Нативная отрисовка компонентов в живой DOM и PNG без браузера |
-| `devtool` | `@immersive/devtool` | Диагностика Document, состояния элементов и результатов Renderer |
+| `engine` | `@zavx0z/immersive-engine` | Объекты сцены, геометрия, материалы, математика и анимация без WebGPU |
+| `dom` | `@zavx0z/immersive-dom` | `Document`, `SpaceElement`, `ViewPointElement`, `DisplayElement`, `HUDElement`, остальные элементы, атрибуты, события, фокус и состояние полей |
+| `template` | `@zavx0z/immersive-template` | HTML, CSS и общий формат готового шаблона |
+| `jsx` | `@zavx0z/immersive-jsx` | Авторский JSX и обязательные automatic protocol exports |
+| `jsx/compiler/session` | `@zavx0z/immersive-jsx-compiler-session` | Контракт авторского JSX и семантическая компиляция TSX в generic compiled ABI Template |
+| `jsx/compiler/bun` | `@zavx0z/immersive-jsx-compiler-bun` | Штатная интеграция JSX compiler со сборкой Bun |
+| `component` | `@zavx0z/immersive-component` | Состояние компонентов, хуки, контекст, эффекты и очистка |
+| `renderer` | `@zavx0z/immersive-renderer` | Семейство рендереров документов |
+| `renderer/html` | `@zavx0z/immersive-renderer-html` | CSS, размеры, раскладка, прокрутка, список рисования и определение попаданий без GPU |
+| `markdown` | `@zavx0z/immersive-markdown` | Разбор Markdown и компоненты документа |
+| `typedoc` | `@zavx0z/immersive-typedoc` | Разбор TypeScript 7 и представление документации типов |
+| `webgpu` | `@zavx0z/immersive-webgpu` | Шейдеры, буферы, текстуры, загрузка данных и рисование |
+| `browser` | `@zavx0z/immersive-browser` | Canvas, изменение размера, ввод, RAF и общий цикл кадров |
+| `space` | `@zavx0z/immersive-space` | `Object`, `Asset`, `Group`, `Mesh`, `Line`, `Text`, `Light`, `Animation`, `Geometry`, `Material` |
+| `ui` | `@zavx0z/immersive-ui-component` | Универсальные UI-компоненты, тема и иконки |
+| `nodes` | `@zavx0z/immersive-nodes` | Композиция графа: GraphView, GraphEditor, Frame и Link |
+| `nodes/tree` | `@zavx0z/immersive-nodes-tree` | Живая модель `NodeTree`, хранилища Parameter, снимки и сохранение |
+| `nodes/layout` | `@zavx0z/immersive-nodes-layout` | Алгоритмы расположения нод и Worker |
+| `nodes/parameter` | `@zavx0z/immersive-nodes-parameter` | Представления параметров и проекция внешнего Parameter Store |
+| `nodes/socket` | `@zavx0z/immersive-nodes-socket` | Адресуемый Socket и его визуальные предустановки |
+| `nodes/node` | `@zavx0z/immersive-nodes-node` | DiagramNode, ParameterNode и ContentNode на основе Pane |
+| `headless` | `@zavx0z/immersive-headless` | Нативная отрисовка компонентов в живой DOM и PNG без браузера |
+| `devtool` | `@zavx0z/immersive-devtool` | Диагностика Document, состояния элементов и результатов Renderer |
 
 Состав и порядок пакетов задаются `package.json#workspaces`. Каждый пакет
 владеет собственным `package.json`, README, публичными TSDoc и проверками
@@ -234,14 +234,14 @@ Nodes.
 
 `fixed-layout-contract`: прежние публичные `FixedLayoutGraph` и
 `FixedLayoutResult` были alias общего `LayoutGraph` и `LayoutResult`. Пакет
-`@immersive-nodes/layout` теперь называет вход и результат фиксированной политики
+`@zavx0z/immersive-nodes-layout` теперь называет вход и результат фиксированной политики
 `FixedLayoutInput` и `FixedLayoutOutput`. Они экспортируются из `./fixed` и
 корня пакета; `layoutFixed` сохраняет числовое поведение и выбор сторон портов.
 
 `node-component-type-aliases`: старые типы `FrameComponent`, `LinkComponent` и
 `*ParameterComponent` дублировали типы функций с соответствующими `*Props`.
-Публичными остаются сами компоненты и их props в пакетах `@immersive/nodes` и
-`@immersive-nodes/parameter`; отдельные alias типов компонентов сняты. Проверки
+Публичными остаются сами компоненты и их props в пакетах `@zavx0z/immersive-nodes` и
+`@zavx0z/immersive-nodes-parameter`; отдельные alias типов компонентов сняты. Проверки
 компиляции публичных TSX и проекции всех готовых параметров сохраняют
 наблюдаемое поведение.
 
@@ -267,7 +267,7 @@ Nodes.
 ### UI
 
 UI — область универсальных элементов управления, поверхностей, представлений и
-составных виджетов. Корневой `@immersive-ui/component` и вложенные области собирают именованный
+составных виджетов. Корневой `@zavx0z/immersive-ui-component` и вложенные области собирают именованный
 API своих владельцев. Реализации доступны из самостоятельных пакетов;
 публичные подпути UI ведут непосредственно к их физическим входам.
 
@@ -302,7 +302,7 @@ ui/
 `Breadcrumbs` — `navigation`. Модели редактирования и терминального вывода
 сохраняют отдельные входы от их визуальных представлений.
 
-Самостоятельный Markdown принадлежит `@immersive/markdown`; общий parser
+Самостоятельный Markdown принадлежит `@zavx0z/immersive-markdown`; общий parser
 использует markdown-it и parse5, а отображение кода — существующий CodeEditor.
 Потребители используют публичный компонент и отдельно компонуют свои действия.
 Поддерживаемый синтаксис и ограничения описаны в [Markdown](markdown/README.md).
@@ -325,11 +325,11 @@ Renderer или Space. Отдельный порт буфера обмена п�
 
 ```text
 nodes/
-├── package.json               # @immersive/nodes и дочерние workspaces
+├── package.json               # @zavx0z/immersive-nodes и дочерние workspaces
 ├── node-tree/src/
 ├── node-editor/src/
 ├── frame/src/
-├── node/                      # @immersive-nodes/node
+├── node/                      # @zavx0z/immersive-nodes-node
 │   ├── diagram/index.tsx
 │   ├── parameter/index.tsx
 │   ├── content/index.tsx
@@ -339,7 +339,7 @@ nodes/
 │   └── shared/                # Общие типы, геометрия и правила представления
 ├── link/src/
 ├── shared/
-├── tree/                      # @immersive-nodes/tree
+├── tree/                      # @zavx0z/immersive-nodes-tree
 │   ├── model/
 │   │   ├── node-tree/src/
 │   │   ├── parameter/src/
@@ -349,7 +349,7 @@ nodes/
 │   │   └── json-patch/src/
 │   ├── shared/
 │   └── tests/
-├── layout/                    # @immersive-nodes/layout
+├── layout/                    # @zavx0z/immersive-nodes-layout
 │   ├── algorithms/
 │   │   ├── fixed/src/
 │   │   ├── adaptive/src/
@@ -359,7 +359,7 @@ nodes/
 │   ├── execution/worker/src/
 │   ├── shared/
 │   └── tests/
-├── parameter/                # @immersive-nodes/parameter
+├── parameter/                # @zavx0z/immersive-nodes-parameter
 │   ├── text/
 │   ├── numeric/
 │   ├── boolean/
@@ -369,7 +369,7 @@ nodes/
 │   ├── collection/
 │   ├── output/
 │   └── shared/
-├── socket/                   # @immersive-nodes/socket
+├── socket/                   # @zavx0z/immersive-nodes-socket
 │   ├── socket/src/
 │   └── shared/
 └── tests/
@@ -386,7 +386,7 @@ ParameterNode использует Pane и готовые Parameters; ContentNod
 Путь `nodes` выражает принадлежность подсистеме и не переносит состояние
 между пакетами: `tree` владеет моделью, `layout` — числовой геометрией,
 `parameters` и `sockets` — готовыми компонентами, `node` — конкретными нодами,
-`@immersive/nodes` — отображением и взаимодействием всего графа.
+`@zavx0z/immersive-nodes` — отображением и взаимодействием всего графа.
 У NodeTree и NodeEditor сохраняется одна принятая пара snapshot/layout;
 pending блокирует старый ввод с сохранением Element и Parameter Store identity.
 NodeType остаётся отдельным проектом договора, без новой материализации типов.
@@ -484,7 +484,7 @@ Assertions и deadlines от этого не меняются.
 
 ### node-composition
 
-Пакет `@immersive-nodes/node` содержит конкретные DiagramNode, ParameterNode и ContentNode.
+Пакет `@zavx0z/immersive-nodes-node` содержит конкретные DiagramNode, ParameterNode и ContentNode.
 ParameterNode использует Pane и готовые параметры. ContentNode составляет его
 с произвольным содержимым: обе части сворачиваются независимо, сохраняя Stores,
 элементы сокетов и подключения. Квадрат содержимого имеет сторону, равную ширине
@@ -498,7 +498,7 @@ ParameterNode использует Pane и готовые параметры. Co
 
 
 Markdown распознаёт fenced Mermaid flowchart и загружает официальный parser
-по требованию. Владелец композиции — `@immersive/markdown`; он использует DiagramNode,
+по требованию. Владелец композиции — `@zavx0z/immersive-markdown`; он использует DiagramNode,
 Link и Layout, не создавая отдельный Canvas/Document и не преобразуя диаграмму
 в SVG-картинку. Mermaid-поддержка не переносится в UI.
 
@@ -507,7 +507,7 @@ Link и Layout, не создавая отдельный Canvas/Document и не
 
 `graph-view-composition`: визуальные NodeTree/NodeEditor заменены на
 GraphView/GraphEditor в `nodes/view/index.tsx` и `nodes/editor/index.tsx`.
-Модель @immersive-nodes/tree остаётся прежней. GraphEditor использует общий GraphView;
+Модель @zavx0z/immersive-nodes-tree остаётся прежней. GraphEditor использует общий GraphView;
 Mermaid использует тот же просмотр без редакторского набора нод.
 Готовые числовые планы сохранены как публичный вход scene. Новый input/layout
 и GraphEditor.measureLayout используют реальные CSS-размеры и локальные anchors

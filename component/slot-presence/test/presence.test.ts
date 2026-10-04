@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import {hasSlot} from "@immersive/component/slot-presence"
-import {composeSlot, type ComposeSlotInput} from "@immersive/component/slot"
-import {bindConditional, bindText, defineCompiledTemplate, slotContents, writeBinding} from "@immersive/template/compiled"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import {composeSlot, type ComposeSlotInput} from "@zavx0z/immersive-component/slot"
+import {bindConditional, bindText, defineCompiledTemplate, slotContents, writeBinding} from "@zavx0z/immersive-template/compiled"
 
 /** Данные настоящего скомпилированного шаблона для проверки текущего render. */
 interface PresenceProps {

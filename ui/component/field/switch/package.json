@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-field/switch",
+  "name": "@zavx0z/immersive-ui-component-field-switch",
   "label": "SwitchField",
   "version": "0.0.0",
   "description": "Поле интерфейса: переключатель",
@@ -11,14 +11,14 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-component/field": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component-field": "workspace:*"
   }
 }

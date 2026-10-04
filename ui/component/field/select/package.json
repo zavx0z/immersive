@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-field/select",
+  "name": "@zavx0z/immersive-ui-component-field-select",
   "label": "SelectField",
   "version": "0.0.0",
   "description": "Поле интерфейса: выбор значения",
@@ -11,19 +11,19 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-ui-selection/find-option": "workspace:*",
-    "@immersive-ui-selection/exceptional-label": "workspace:*",
-    "@immersive-ui-selection/validate-options": "workspace:*",
-    "@immersive-ui-selection/validate-state": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-selection-find-option": "workspace:*",
+    "@zavx0z/immersive-ui-selection-exceptional-label": "workspace:*",
+    "@zavx0z/immersive-ui-selection-validate-options": "workspace:*",
+    "@zavx0z/immersive-ui-selection-validate-state": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-component/field": "workspace:*",
-    "@immersive-ui-selection/validate-state": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component-field": "workspace:*",
+    "@zavx0z/immersive-ui-selection-validate-state": "workspace:*"
   }
 }

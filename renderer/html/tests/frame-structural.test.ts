@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
+import {createDocument} from "@zavx0z/immersive-dom"
 import {structuralFrameRanges, type StructuralSourceBlock} from "../src/frame-structural.ts"
 
 test("head trim and append produce exact ordered retained/inserted/removed display ranges", () => {

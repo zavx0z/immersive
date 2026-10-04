@@ -1,7 +1,7 @@
 /** Проверяет публичные данные и правила операции над сокетами. */
 import {describe, expect, test} from "bun:test"
-import value from "@immersive-nodes-model-socket/shapes"
-import presets from "@immersive-nodes-model-socket/presets"
+import value from "@zavx0z/immersive-nodes-model-socket-shapes"
+import presets from "@zavx0z/immersive-nodes-model-socket-presets"
 
 describe.each([{name: "Формы предустановок", props: {presets: Object.values(presets)}}])("$name", ({props}) => {
   const result = value

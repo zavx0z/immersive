@@ -5,17 +5,17 @@
 @packageDocumentation
 */
 import {ColorChannelField} from "./src/helpers.tsx"
-import type {ImmersiveUiComponentFieldColorPicker as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentFieldColorPicker as Contract} from "./contract"
 import {ColorSwatch} from "./src/helpers.tsx"
 import {channels} from "./src/helpers.tsx"
-import colorValueToHsva from "@immersive-ui-field-color-value/to-hsva"
-import formatColorValue from "@immersive-ui-field-color-value/format"
-import normalizeColorValue from "@immersive-ui-field-color-value/normalize"
-import parseColorValue from "@immersive-ui-field-color-value/parse"
-import TextField from "@immersive-ui-component-field/text"
+import colorValueToHsva from "@zavx0z/immersive-ui-field-color-value-to-hsva"
+import formatColorValue from "@zavx0z/immersive-ui-field-color-value-format"
+import normalizeColorValue from "@zavx0z/immersive-ui-field-color-value-normalize"
+import parseColorValue from "@zavx0z/immersive-ui-field-color-value-parse"
+import TextField from "@zavx0z/immersive-ui-component-field-text"
 
 
-export type {ImmersiveUiComponentFieldColorPicker} from "./contract"
+export type {Zavx0zImmersiveUiComponentFieldColorPicker} from "./contract"
 
 export default function ColorPickerField(props: Contract.Input): Contract.Output {
   if (!props.value || typeof props.value !== "object") throw new TypeError("ColorPickerField value must be an object")

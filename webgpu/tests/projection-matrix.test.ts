@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {Object3D, Ray, Vector3} from "@immersive/engine"
+import {Object3D, Ray, Vector3} from "@zavx0z/immersive-engine"
 import {RendererWebGpuDocumentPlane} from "../src/document-plane.ts"
 import {RendererWebGpuDisplayPlane} from "../src/display-plane.ts"
 

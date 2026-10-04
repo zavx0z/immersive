@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, Event, type Element} from "@immersive/dom"
+import {createDocument, Event, type Element} from "@zavx0z/immersive-dom"
 import {createApplicationStyleSheets} from "../src/application-stylesheets.ts"
 import {createBrowserLinkedAuthorStyleSheetHostWithSeams} from "../src/linked-author-style-sheet-host.ts"
 

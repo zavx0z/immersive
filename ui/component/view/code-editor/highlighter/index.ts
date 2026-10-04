@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentViewCodeEditorHighlighter as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentViewCodeEditorHighlighter as Contract} from "./contract"
 import {resolveLanguageHighlighter} from "@zavx0z/highlighter"
 
 export default function resolveCodeEditorHighlighter(languageId?: Contract.Input[0], path?: Contract.Input[1]): Contract.Output {
@@ -15,4 +15,4 @@ export default function resolveCodeEditorHighlighter(languageId?: Contract.Input
   })
 }
 
-export type {ImmersiveUiComponentViewCodeEditorHighlighter} from "./contract"
+export type {Zavx0zImmersiveUiComponentViewCodeEditorHighlighter} from "./contract"

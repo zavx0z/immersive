@@ -1,14 +1,14 @@
 # Модель редактирования кода
 
-`@immersive-tech/text-editor` владеет текстовыми транзакциями редактора.
+`@zavx0z/immersive-tech-text-editor` владеет текстовыми транзакциями редактора.
 Она не создаёт DOM, обработчики событий DOM, clipboard, раскладку или GPU-ресурсы.
 CodeEditor и Interpreter используют одну и ту же модель; стандартный
 `Document.Selection` не расширяется до несовместимого multicursor API.
 
 ## Состояние и выделения
 
-Конструктор `new CodeEditorModel(input)` принимает `ImmersiveTechTextEditor.Input`
-и предоставляет `ImmersiveTechTextEditor.Output`. `snapshot` и содержащиеся в нём диапазоны заморожены.
+Конструктор `new CodeEditorModel(input)` принимает `Zavx0zImmersiveTechTextEditor.Input`
+и предоставляет `Zavx0zImmersiveTechTextEditor.Output`. `snapshot` и содержащиеся в нём диапазоны заморожены.
 `subscribe` сообщает только последующие изменения, возвращает функцию отписки.
 `revision` монотонно увеличивается только при изменении текста, включая preview IME,
 undo, redo и отмену composition. Изменение выделения сообщает новый snapshot,

@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement, HTMLInputElement, HTMLTextAreaElement, InputEvent as SemanticInputEvent, textPositionAtOffset} from "@immersive/dom"
+import {createDocument, HTMLElement, HTMLInputElement, HTMLTextAreaElement, InputEvent as SemanticInputEvent, textPositionAtOffset} from "@zavx0z/immersive-dom"
 import {createDocumentNativeInputHostWithSeams} from "../src/native-input-host.ts"
 
 class NativeProxy extends EventTarget {
@@ -94,7 +94,7 @@ test("native text dispatch replaces input selection through beforeinput and inpu
   input.setSelectionRange(1, 4, "backward")
   f.activate(input)
   const events: Array<Readonly<{type: string; data: string | null; trusted: boolean}>> = []
-  const observe = (event: import("@immersive/dom").Event) => {
+  const observe = (event: import("@zavx0z/immersive-dom").Event) => {
     if (event instanceof SemanticInputEvent) events.push({type: event.type, data: event.data, trusted: event.isTrusted})
   }
   input.addEventListener("beforeinput", observe)

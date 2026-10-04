@@ -1,15 +1,15 @@
-import socketKey from "@immersive-nodes-model-socket/key"
+import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@immersive/component"
-import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElement} from "@immersive/dom"
-import {Parameter as ParameterModel, type ParameterSnapshot} from "@immersive-nodes/tree"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElement} from "@zavx0z/immersive-dom"
+import {Parameter as ParameterModel, type ParameterSnapshot} from "@zavx0z/immersive-nodes-tree"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import type {ParameterEndpoint} from "./parameter-endpoint"
-import type {ImmersiveNodesProjectionParameter} from "@immersive-nodes-projection/parameter"
-type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
-type ParameterProps = ImmersiveNodesProjectionParameter.Input
+import type {Zavx0zImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
+type ParameterInput = Parameters<NonNullable<Zavx0zImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+type ParameterProps = Zavx0zImmersiveNodesProjectionParameter.Input
 import {PARAMETER_EXAMPLES, parameterFixture, type ParameterMechanism} from "./parameter.fixture.ts"
 
 const root = resolve(import.meta.dir, "../../../..")
@@ -19,8 +19,8 @@ Bun.plugin(createJsxBunPlugin({
   sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
 }))
 
-const {default: Parameter} = await import("@immersive-nodes-projection/parameter")
-const {default: resolveProjectedParameterPresentation} = await import("@immersive-nodes-projection-parameter/presentation")
+const {default: Parameter} = await import("@zavx0z/immersive-nodes-projection-parameter")
+const {default: resolveProjectedParameterPresentation} = await import("@zavx0z/immersive-nodes-projection-parameter-presentation")
 const authored = await import("./authored.fixture")
 const components = {
   "text": authored.AuthoredText,

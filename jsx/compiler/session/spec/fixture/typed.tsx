@@ -1,4 +1,4 @@
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 interface PanelSlots { default?: typeof Caption }
 

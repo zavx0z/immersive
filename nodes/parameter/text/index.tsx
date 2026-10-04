@@ -6,14 +6,14 @@ TextParameter соединяет публичный TextField с компози�
 @packageDocumentation
 */
 
-import TextField from "@immersive-ui-component-field/text"
-import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
-import type {ImmersiveNodesParameterText as Contract} from "./contract"
+import TextField from "@zavx0z/immersive-ui-component-field-text"
+import ParameterLayout from "@zavx0z/immersive-nodes-parameter-shared-layout"
+import type {Zavx0zImmersiveNodesParameterText as Contract} from "./contract"
 
-export type {ImmersiveNodesParameterText} from "./contract"
+export type {Zavx0zImmersiveNodesParameterText} from "./contract"
 
 /**
-Авторский контракт TextParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
+Авторский контракт TextParameter; общий протокол описан в Zavx0zImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property value - Текущее строковое значение; изменение публикуется через onInput/onChange.
 */

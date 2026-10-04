@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentFieldReference} from "@immersive-ui-component-field/reference"
-type ReferenceFieldDensity = NonNullable<ImmersiveUiComponentFieldReference.Input["density"]>
-import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
-import fieldMetric from "@immersive-ui-field-metric/read"
-import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
+import type {Zavx0zImmersiveUiComponentFieldReference} from "@zavx0z/immersive-ui-component-field-reference"
+type ReferenceFieldDensity = NonNullable<Zavx0zImmersiveUiComponentFieldReference.Input["density"]>
+import fieldDensityHeight from "@zavx0z/immersive-ui-field-metric-density-height"
+import fieldMetric from "@zavx0z/immersive-ui-field-metric-read"
+import labelledFieldHeight from "@zavx0z/immersive-ui-field-metric-labelled-height"
 
 const referenceFieldLayout = Object.freeze({
   height(options: Readonly<{

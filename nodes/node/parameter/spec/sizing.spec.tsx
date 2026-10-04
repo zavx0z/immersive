@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import ParameterNode from "@immersive-nodes-node/parameter"
-import Typography from "@immersive-ui-component/typography"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import ParameterNode from "@zavx0z/immersive-nodes-node-parameter"
+import Typography from "@zavx0z/immersive-ui-component-typography"
 import {parameters} from "../../spec/fixture/parameters"
 
 test("нода определяет высоту по полям и состоянию без расчёта у вызывающего", async () => {

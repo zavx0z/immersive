@@ -1,6 +1,6 @@
 /** Общая подпись и подсказка не зависят от конкретного типа значения поля. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
+import {createHeadless} from "@zavx0z/immersive-headless"
 import FieldExamples from "./fixture"
 
 describe.each([{name: "Поля одного Document", props: {label: "Значение", title: "Подсказка"}}])("$name", async ({props}) => {

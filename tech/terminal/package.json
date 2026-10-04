@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-tech/terminal",
+  "name": "@zavx0z/immersive-tech-terminal",
   "label": "TerminalModel",
   "version": "0.0.0",
   "description": "Модель терминального вывода, управляющих последовательностей и ответов",

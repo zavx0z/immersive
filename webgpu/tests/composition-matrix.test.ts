@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {BufferGeometry, Matrix4, Mesh, MeshBasicMaterial, Object3D, Skeleton, SkinnedMesh, Space, ViewPoint} from "@immersive/engine"
+import {BufferGeometry, Matrix4, Mesh, MeshBasicMaterial, Object3D, Skeleton, SkinnedMesh, Space, ViewPoint} from "@zavx0z/immersive-engine"
 import {RendererWebGpuScreenOverlay} from "../src/screen-overlay.ts"
 import {
   planRenderComposition,

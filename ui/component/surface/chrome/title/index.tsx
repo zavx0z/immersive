@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentSurfaceChromeTitle as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentSurfaceChromeTitle as Contract} from "./contract"
 
-export type {ImmersiveUiComponentSurfaceChromeTitle} from "./contract"
+export type {Zavx0zImmersiveUiComponentSurfaceChromeTitle} from "./contract"
 
 
 export default function SurfaceTitle(props: Contract.Input): Contract.Output {

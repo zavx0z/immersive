@@ -1,7 +1,7 @@
-import {useMemo, useRef} from "@immersive/component"
-import Button from "@immersive-ui-component-button/basic"
-import CodeEditorModel from "@immersive-tech/text-editor"
-import CodeEditor from "@immersive-ui-component-view/code-editor"
+import {useMemo, useRef} from "@zavx0z/immersive-component"
+import Button from "@zavx0z/immersive-ui-component-button-basic"
+import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
+import CodeEditor from "@zavx0z/immersive-ui-component-view-code-editor"
 
 const editableSource = [
   'const first = "Привет"',

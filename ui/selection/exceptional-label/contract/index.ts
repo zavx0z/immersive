@@ -1,11 +1,11 @@
-import type {ImmersiveUiSelectionValidateOptions} from "@immersive-ui-selection/validate-options"
-type SelectionOptionShape = ImmersiveUiSelectionValidateOptions.Input[0][number]
-import type {ImmersiveUiSelectionValidateState} from "@immersive-ui-selection/validate-state"
-type SelectionState = NonNullable<ImmersiveUiSelectionValidateState.Input[0]>
+import type {Zavx0zImmersiveUiSelectionValidateOptions} from "@zavx0z/immersive-ui-selection-validate-options"
+type SelectionOptionShape = Zavx0zImmersiveUiSelectionValidateOptions.Input[0][number]
+import type {Zavx0zImmersiveUiSelectionValidateState} from "@zavx0z/immersive-ui-selection-validate-state"
+type SelectionState = NonNullable<Zavx0zImmersiveUiSelectionValidateState.Input[0]>
 
 
 /** Обработка selection-exceptional-label. */
-export declare namespace ImmersiveUiSelectionExceptionalLabel {
+export declare namespace Zavx0zImmersiveUiSelectionExceptionalLabel {
   /** Аргументы публичной операции selectionExceptionalLabel; порядок сохраняет её форму вызова. */
   type Input = readonly [
     state: SelectionState | undefined,

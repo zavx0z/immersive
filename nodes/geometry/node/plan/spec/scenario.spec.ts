@@ -1,11 +1,11 @@
 /** План строк сохраняет порядок, центры сокетов и неизменяемость результата. */
 import {describe, expect, test} from "bun:test"
-import plan, {type ImmersiveNodesGeometryNodePlan} from "@immersive-nodes-geometry-node/plan"
+import plan, {type Zavx0zImmersiveNodesGeometryNodePlan} from "@zavx0z/immersive-nodes-geometry-node-plan"
 
 describe.each([
   {name: "Строки", props: {width: 180, rows: [{height: 22, socketIds: ["first"]}, {height: 30, spacingBefore: 5, socketIds: ["second"]}]}},
   {name: "Свёрнутое представление", props: {width: 180, rows: [{height: 22, socketIds: ["first"]}, {height: 30, socketIds: ["second"]}], collapsed: true}},
-] satisfies readonly {name: string, props: ImmersiveNodesGeometryNodePlan.Input}[])("$name", ({props}) => {
+] satisfies readonly {name: string, props: Zavx0zImmersiveNodesGeometryNodePlan.Input}[])("$name", ({props}) => {
   const before = JSON.stringify(props)
   const result = plan(props)
   test("Геометрия строки и сокетов", () => {

@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentDivider} from "./contract"
+import type {Zavx0zImmersiveUiComponentDivider} from "./contract"
 
 
-export type {ImmersiveUiComponentDivider} from "./contract"
+export type {Zavx0zImmersiveUiComponentDivider} from "./contract"
 
-export default function Divider(props: ImmersiveUiComponentDivider.Input): ImmersiveUiComponentDivider.Output {
+export default function Divider(props: Zavx0zImmersiveUiComponentDivider.Input): Zavx0zImmersiveUiComponentDivider.Output {
   const variant = props.variant ?? "full-width"
   return <hr
     title={props.title}

@@ -11,7 +11,7 @@ import {
   Node as SemanticNode,
   textOffsetAtPosition,
   textPositionAtOffset,
-} from "@immersive/dom"
+} from "@zavx0z/immersive-dom"
 import type {DocumentClipboardController} from "../clipboard.ts"
 
 export type DocumentNativeInputTarget = SemanticHTMLElement

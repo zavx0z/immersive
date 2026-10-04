@@ -1,8 +1,8 @@
-import type {NodeJsonValue, NodeTreeNodeSnapshot, ParameterReference} from "@immersive-nodes/tree"
-import type {ImmersiveNodesGeometryNodePlan} from "@immersive-nodes-geometry-node/plan"
+import type {NodeJsonValue, NodeTreeNodeSnapshot, ParameterReference} from "@zavx0z/immersive-nodes-tree"
+import type {Zavx0zImmersiveNodesGeometryNodePlan} from "@zavx0z/immersive-nodes-geometry-node-plan"
 
 /** Планирует геометрию снимка ноды по представлениям параметров. */
-export declare namespace ImmersiveNodesGeometryNodeProject {
+export declare namespace Zavx0zImmersiveNodesGeometryNodeProject {
   type Input = readonly [
     snapshot: NodeTreeNodeSnapshot<ParameterReference, NodeJsonValue, NodeJsonValue>,
     width?: number,
@@ -16,5 +16,5 @@ export declare namespace ImmersiveNodesGeometryNodeProject {
       height?: number | undefined
     }>
   ]
-  type Output = ImmersiveNodesGeometryNodePlan.Output
+  type Output = Zavx0zImmersiveNodesGeometryNodePlan.Output
 }

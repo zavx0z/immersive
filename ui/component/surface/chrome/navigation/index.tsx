@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentSurfaceChromeNavigation as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentSurfaceChromeNavigation as Contract} from "./contract"
 
-export type {ImmersiveUiComponentSurfaceChromeNavigation} from "./contract"
+export type {Zavx0zImmersiveUiComponentSurfaceChromeNavigation} from "./contract"
 
 
 export default function SurfaceNavigation(props: Contract.Input): Contract.Output {

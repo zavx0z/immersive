@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-layout/path",
+  "name": "@zavx0z/immersive-ui-field-layout-path",
   "label": "pathFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров pathField",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-metric/density-height": "workspace:*",
-    "@immersive-ui-field-metric/read": "workspace:*",
-    "@immersive-ui-field-metric/labelled-height": "workspace:*",
-    "@immersive-ui-component-field/path": "workspace:*"
+    "@zavx0z/immersive-ui-field-metric-density-height": "workspace:*",
+    "@zavx0z/immersive-ui-field-metric-read": "workspace:*",
+    "@zavx0z/immersive-ui-field-metric-labelled-height": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-path": "workspace:*"
   }
 }

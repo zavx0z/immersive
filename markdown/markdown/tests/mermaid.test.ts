@@ -1,11 +1,11 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
-import {createDocument, type Element} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import {flushDocumentLayoutObservers} from "@immersive/dom/geometry"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
+import {createDocument, type Element} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {parseMermaidFlowchart} from "../../mermaid/src/parser.ts"
 import type {MermaidGraph} from "../../mermaid/types/graph.ts"
 import type {MarkdownProps} from "../contract/input.ts"
@@ -14,7 +14,7 @@ const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: ["markdown", "nodes", "ui"].map(path => resolve(root, path))}))
 const {Markdown} = await import("../index.tsx")
 const {layoutMermaidGraph} = await import("../../mermaid/src/layout.ts")
-const {projectLinkArrowheads, projectLinkRoute, projectLinkMarkers} = await import("@immersive/nodes/routing/link-path")
+const {projectLinkArrowheads, projectLinkRoute, projectLinkMarkers} = await import("@zavx0z/immersive-nodes/routing/link-path")
 
 async function settled(owner: Element, renderer: ReturnType<typeof createDocumentRenderer>, component: ReturnType<typeof createRoot>) {
   const deadline = Date.now() + 8000
@@ -122,7 +122,7 @@ test("[MARKDOWN-MEASURED-REFERENCE] семь нод исходного обсу�
     document,
     root: owner,
     viewport: {width: 1600, height: 1200},
-    styleSheets: [await Bun.file(Bun.resolveSync("@immersive-ui/component/theme/theme.css", import.meta.dir)).text()],
+    styleSheets: [await Bun.file(Bun.resolveSync("@zavx0z/immersive-ui-component/theme/theme.css", import.meta.dir)).text()],
   })
   try {
     component.render(Markdown as unknown as CompiledTemplate<MarkdownProps>, {source: "```mermaid\n" + source + "\n```"})

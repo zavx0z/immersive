@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentFieldVector} from "@immersive-ui-component-field/vector"
-type VectorFieldDensity = NonNullable<ImmersiveUiComponentFieldVector.Input["density"]>
-import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
-import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
+import type {Zavx0zImmersiveUiComponentFieldVector} from "@zavx0z/immersive-ui-component-field-vector"
+type VectorFieldDensity = NonNullable<Zavx0zImmersiveUiComponentFieldVector.Input["density"]>
+import fieldDensityHeight from "@zavx0z/immersive-ui-field-metric-density-height"
+import labelledFieldHeight from "@zavx0z/immersive-ui-field-metric-labelled-height"
 
 const vectorFieldLayout = Object.freeze({
   height(options: Readonly<{

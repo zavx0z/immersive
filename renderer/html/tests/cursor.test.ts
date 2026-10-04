@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
+import {createDocument} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, createDocumentInteractionController, createDocumentInteractionState} from "../src/index.ts"
 
 /** Проверяет вычисленный CSS и hit metadata, не создавая нативного Canvas. */

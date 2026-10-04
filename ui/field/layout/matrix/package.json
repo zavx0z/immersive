@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-layout/matrix",
+  "name": "@zavx0z/immersive-ui-field-layout-matrix",
   "label": "matrixFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров matrixField",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-metric/matrix-height": "workspace:*",
-    "@immersive-ui-component-field/matrix": "workspace:*"
+    "@zavx0z/immersive-ui-field-metric-matrix-height": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-matrix": "workspace:*"
   }
 }

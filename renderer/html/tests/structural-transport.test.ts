@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement, setDocumentTextHighlights, clearDocumentTextHighlights} from "@immersive/dom"
+import {createDocument, HTMLElement, setDocumentTextHighlights, clearDocumentTextHighlights} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, createDocumentInteractionController} from "../src/index.ts"
 import {isRendererOwnedFrame, readCanonicalRenderFrameChanges} from "../src/frame-changes.ts"
 

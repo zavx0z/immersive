@@ -6,7 +6,7 @@ import {
   Text,
   type Document,
   type EventListener
-} from "@immersive/dom"
+} from "@zavx0z/immersive-dom"
 import {
   containsTaggedTemplateMarker,
   getTaggedTemplateShape,
@@ -16,9 +16,9 @@ import {
   type TaggedTemplateSlotSegment,
 } from "./tagged-template.ts"
 
-const templateResultType = Symbol("@immersive/template/result")
+const templateResultType = Symbol("@zavx0z/immersive-template/result")
 const templateAnchors = new WeakSet<Comment>()
-const htmlBlueprintFrontend = Symbol("@immersive/template/html-blueprint")
+const htmlBlueprintFrontend = Symbol("@zavx0z/immersive-template/html-blueprint")
 
 const voidElements = new Set([
   "area",
@@ -88,7 +88,7 @@ export function html(strings: TemplateStringsArray, ...values: readonly unknown[
 }
 
 /**
-Compiles a stable template shape into addressed operations on `@immersive/dom`.
+Compiles a stable template shape into addressed operations on `@zavx0z/immersive-dom`.
 
 The view is executed at mount and update time. Its top-level tagged-template
 callsite must stay the same. Conditional structure belongs in child bindings,

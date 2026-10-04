@@ -1,8 +1,8 @@
 /** Готовый параметр сохраняет общий адрес и сокеты при подключении. */
 import {afterAll, describe, expect, test} from "bun:test"
-import Socket from "@immersive-nodes/socket"
-import {createHeadless} from "@immersive/headless"
-import Component, {type ImmersiveNodesParameterNumericSlider} from "@immersive-nodes-parameter-numeric/slider"
+import Socket from "@zavx0z/immersive-nodes-socket"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import Component, {type Zavx0zImmersiveNodesParameterNumericSlider} from "@zavx0z/immersive-nodes-parameter-numeric-slider"
 
 describe.each([false, true].map(connected => ({
   name: connected ? "Поле с подключённым сокетом" : "Поле без подключения",
@@ -12,7 +12,7 @@ describe.each([false, true].map(connected => ({
     label: "Значение",
     connected,
     value: .4, min: 0, max: 1,
-  } satisfies ImmersiveNodesParameterNumericSlider.Input,
+  } satisfies Zavx0zImmersiveNodesParameterNumericSlider.Input,
   slots: {
     left: <Socket
       slot="left"

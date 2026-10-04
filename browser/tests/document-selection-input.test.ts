@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement, textOffsetAtPosition} from "@immersive/dom"
-import {createDocumentRenderer, readRenderedSelectionText} from "@immersive-renderer/html"
+import {createDocument, HTMLElement, textOffsetAtPosition} from "@zavx0z/immersive-dom"
+import {createDocumentRenderer, readRenderedSelectionText} from "@zavx0z/immersive-renderer-html"
 import {createDocumentSelectionInput, type DocumentSelectionKeyInput} from "../src/document-selection-input.ts"
 
 function fixture(style = "width:120px") {

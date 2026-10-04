@@ -1,7 +1,7 @@
 import type {TerminalQueryMode, TerminalSnapshot} from "./types"
 
 /** Протокол модели терминального вывода без процесса, DOM или собственных устройств ввода. */
-export declare namespace ImmersiveTechTerminal {
+export declare namespace Zavx0zImmersiveTechTerminal {
   /** Хранение строк и передача служебных ответов принимающему владельцу. */
   interface Input {
     /** Положительное целое число строк, по умолчанию 40. */

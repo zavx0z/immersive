@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldMetricCollectionHeight as Contract} from "./contract"
-import collectionVisibleRowsHeight from "@immersive-ui-field-metric/collection-visible-rows-height"
-import fieldMetric from "@immersive-ui-field-metric/read"
+import type {Zavx0zImmersiveUiFieldMetricCollectionHeight as Contract} from "./contract"
+import collectionVisibleRowsHeight from "@zavx0z/immersive-ui-field-metric-collection-visible-rows-height"
+import fieldMetric from "@zavx0z/immersive-ui-field-metric-read"
 
 export default function collectionFieldHeight(visibleRows: Contract.Input[0], movable: Contract.Input[1]): Contract.Output {
   const visibleHeight = collectionVisibleRowsHeight(visibleRows)
@@ -16,4 +16,4 @@ export default function collectionFieldHeight(visibleRows: Contract.Input[0], mo
   return Math.max(visibleHeight, actionsHeight)
 }
 
-export type {ImmersiveUiFieldMetricCollectionHeight} from "./contract"
+export type {Zavx0zImmersiveUiFieldMetricCollectionHeight} from "./contract"

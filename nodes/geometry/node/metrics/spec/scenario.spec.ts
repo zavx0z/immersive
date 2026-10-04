@@ -1,7 +1,7 @@
 /** Размеры ноды образуют один неизменяемый набор логических CSS-пикселей. */
 import {describe, expect, test} from "bun:test"
-import metrics from "@immersive-nodes-geometry-node/metrics"
-import socketMetrics from "@immersive-nodes-model-socket/metrics"
+import metrics from "@zavx0z/immersive-nodes-geometry-node-metrics"
+import socketMetrics from "@zavx0z/immersive-nodes-model-socket-metrics"
 
 describe.each([{name: "Базовая геометрия", props: {border: socketMetrics.NODE_BORDER_WIDTH}}])("$name", ({props}) => {
   const result = metrics

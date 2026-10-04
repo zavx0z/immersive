@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentFieldSwitch as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentFieldSwitch as Contract} from "./contract"
 
 
-export type {ImmersiveUiComponentFieldSwitch} from "./contract"
+export type {Zavx0zImmersiveUiComponentFieldSwitch} from "./contract"
 
 export default function SwitchField(props: Contract.Input): Contract.Output {
   const hasLabel = props.label !== undefined

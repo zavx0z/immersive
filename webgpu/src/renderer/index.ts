@@ -1,22 +1,22 @@
 import {RendererWebGpuDisplayPlane, DisplayRasterMaterial} from "../display-plane.ts"
 import {selectDisplayRaster} from "../display-render-mode.ts"
-import {Space} from "@immersive/engine"
-import {ViewPoint} from "@immersive/engine"
-import {Mesh} from "@immersive/engine"
-import {InstancedMesh} from "@immersive/engine"
-import {InstancedRoundedRect} from "@immersive/engine"
+import {Space} from "@zavx0z/immersive-engine"
+import {ViewPoint} from "@zavx0z/immersive-engine"
+import {Mesh} from "@zavx0z/immersive-engine"
+import {InstancedMesh} from "@zavx0z/immersive-engine"
+import {InstancedRoundedRect} from "@zavx0z/immersive-engine"
 import {
   InstancedStrokedPath,
   StrokedPathInstanceLayer,
-} from "@immersive/engine"
-import {SkinnedMesh} from "@immersive/engine"
-import {BufferAttribute, BufferGeometry} from "@immersive/engine"
-import {WireframeInstancedMesh} from "@immersive/engine"
-import {ColorPickerMaterial, HolographicMaterial, ImageMaterial, LineBasicMaterial, LineGlowMaterial, MeshBasicMaterial, MeshLambertMaterial, RadialBackdropMaterial, RoundedRectMaterial, TextMaterial, ThinFilmMaterial} from "@immersive/engine"
-import {Matrix4, Vector3, Frustum} from "@immersive/engine"
-import {LineSegments} from "@immersive/engine"
-import {Text} from "@immersive/engine"
-import {Object3D} from "@immersive/engine"
+} from "@zavx0z/immersive-engine"
+import {SkinnedMesh} from "@zavx0z/immersive-engine"
+import {BufferAttribute, BufferGeometry} from "@zavx0z/immersive-engine"
+import {WireframeInstancedMesh} from "@zavx0z/immersive-engine"
+import {ColorPickerMaterial, HolographicMaterial, ImageMaterial, LineBasicMaterial, LineGlowMaterial, MeshBasicMaterial, MeshLambertMaterial, RadialBackdropMaterial, RoundedRectMaterial, TextMaterial, ThinFilmMaterial} from "@zavx0z/immersive-engine"
+import {Matrix4, Vector3, Frustum} from "@zavx0z/immersive-engine"
+import {LineSegments} from "@zavx0z/immersive-engine"
+import {Text} from "@zavx0z/immersive-engine"
+import {Object3D} from "@zavx0z/immersive-engine"
 import thinFilmWGSL from "./shader/thin-film.wgsl" with {type: "text"}
 import holographicWGSL from "./shader/holographic.wgsl" with {type: "text"}
 import meshStaticWGSL from "./shader/mesh-static.wgsl" with {type: "text"}
@@ -43,7 +43,7 @@ import {
   LINE_SILHOUETTE_DEPTH_STATE,
 } from "./line-pipeline"
 import {classifyRenderItems, collectSpaceObjects, type LightItem, type RenderItem} from "./utils/render-list"
-import {GlassMaterial} from "@immersive/engine"
+import {GlassMaterial} from "@zavx0z/immersive-engine"
 import {TextureLoader} from "../texture-loader"
 import {
   alignedGpuFrameBytesPerRow,

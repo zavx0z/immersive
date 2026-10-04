@@ -1,6 +1,6 @@
-import type {ImmersiveUiThemeIcon} from "@immersive-ui-theme/icon/contract"
+import type {Zavx0zImmersiveUiThemeIcon} from "@zavx0z/immersive-ui-theme-icon/contract"
 
 /** SVG-значок picker в формате data URL. */
-export declare namespace ImmersiveUiThemeIconPicker {
-  type Output = ImmersiveUiThemeIcon.Output
+export declare namespace Zavx0zImmersiveUiThemeIconPicker {
+  type Output = Zavx0zImmersiveUiThemeIcon.Output
 }

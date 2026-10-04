@@ -1,8 +1,8 @@
 /** Готовый параметр сохраняет общий адрес и сокеты при подключении. */
 import {afterAll, describe, expect, test} from "bun:test"
-import Socket from "@immersive-nodes/socket"
-import {createHeadless} from "@immersive/headless"
-import Component, {type ImmersiveNodesParameterBooleanCheckbox} from "@immersive-nodes-parameter-boolean/checkbox"
+import Socket from "@zavx0z/immersive-nodes-socket"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import Component, {type Zavx0zImmersiveNodesParameterBooleanCheckbox} from "@zavx0z/immersive-nodes-parameter-boolean-checkbox"
 
 describe.each([false, true].map(connected => ({
   name: connected ? "Поле с подключённым сокетом" : "Поле без подключения",
@@ -12,7 +12,7 @@ describe.each([false, true].map(connected => ({
     label: "Значение",
     connected,
     checked: true,
-  } satisfies ImmersiveNodesParameterBooleanCheckbox.Input,
+  } satisfies Zavx0zImmersiveNodesParameterBooleanCheckbox.Input,
   slots: {
     left: <Socket
       slot="left"

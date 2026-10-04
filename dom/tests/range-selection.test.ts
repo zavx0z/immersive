@@ -10,7 +10,7 @@ import {
   clearDocumentTextHighlights,
   readDocumentTextHighlights,
   subscribeDocumentTextHighlights,
-} from "@immersive/dom"
+} from "@zavx0z/immersive-dom"
 
 function sample() {
   const document = createDocument()

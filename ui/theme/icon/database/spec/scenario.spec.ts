@@ -1,6 +1,6 @@
 /** databaseIcon показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import icon from "@immersive-ui-theme-icon/database"
+import icon from "@zavx0z/immersive-ui-theme-icon-database"
 
 describe.each([{name: "Векторный ресурс", props: {}}])("$name", () => {
   test("SVG", () => {

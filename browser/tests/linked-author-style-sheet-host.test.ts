@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {acquireDocumentAuthorStyleSheetOwner, createDocument} from "@immersive/dom"
+import {acquireDocumentAuthorStyleSheetOwner, createDocument} from "@zavx0z/immersive-dom"
 import {createBrowserLinkedAuthorStyleSheetHostWithSeams} from "../src/linked-author-style-sheet-host.ts"
 
 test("a rejected inactive link does not retain semantic stylesheet ownership", () => {

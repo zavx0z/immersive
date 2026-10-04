@@ -1,6 +1,6 @@
 /** Порт Layout различает границы любых идентификаторов и отвергает пустой адрес. */
 import {describe, expect, test} from "bun:test"
-import portId from "@immersive-nodes-geometry-node/port-id"
+import portId from "@zavx0z/immersive-nodes-geometry-node-port-id"
 
 describe.each([
   {name: "Обычный адрес", props: {nodeId: "node", socketId: "out"}},

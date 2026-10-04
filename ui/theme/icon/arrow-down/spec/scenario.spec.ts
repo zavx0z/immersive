@@ -1,6 +1,6 @@
 /** arrowDownIcon показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import icon from "@immersive-ui-theme-icon/arrow-down"
+import icon from "@zavx0z/immersive-ui-theme-icon-arrow-down"
 
 describe.each([{name: "Векторный ресурс", props: {}}])("$name", () => {
   test("SVG", () => {

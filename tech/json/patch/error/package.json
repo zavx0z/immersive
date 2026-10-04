@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-tech-json-patch/error",
+  "name": "@zavx0z/immersive-tech-json-patch-error",
   "label": "error",
   "version": "0.0.0",
   "description": "Сообщает причину, операцию и путь отклонённого JSON Patch",

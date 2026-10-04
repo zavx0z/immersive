@@ -1,6 +1,6 @@
-import type {ImmersiveUiComponentFieldCycle} from "../contract"
+import type {Zavx0zImmersiveUiComponentFieldCycle} from "../contract"
 
-type CycleFieldOption = ImmersiveUiComponentFieldCycle.Input["options"][number]
+type CycleFieldOption = Zavx0zImmersiveUiComponentFieldCycle.Input["options"][number]
 
 /**
 Тип CycleOptionProps принадлежит контракту своего владельца.

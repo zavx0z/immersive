@@ -1,6 +1,6 @@
 /** resolveCodeEditorHighlighter показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@immersive-ui-component-view-code-editor/highlighter"
+import operation from "@zavx0z/immersive-ui-component-view-code-editor-highlighter"
 
 describe.each([{name: "Публичный вызов", props: {args: ["plaintext"] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

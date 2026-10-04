@@ -7,8 +7,8 @@ import {
   HTMLSpanElement,
   Text,
   createDocument,
-} from "@immersive/dom"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
+} from "@zavx0z/immersive-dom"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 import {
   bindEvent,
   bindProperty,
@@ -16,7 +16,7 @@ import {
   defineCompiledTemplate,
   isCompiledTemplate,
   writeBinding,
-} from "@immersive/template/compiled"
+} from "@zavx0z/immersive-template/compiled"
 
 type InteractiveTemplateProps = Readonly<{
   disabled: boolean
@@ -64,7 +64,7 @@ describe("Compiled Template contract", () => {
       compilerOptions: {
         exactOptionalPropertyTypes: true,
         jsx: "preserve",
-        jsxImportSource: "@immersive/jsx",
+        jsxImportSource: "@zavx0z/immersive-jsx",
         lib: ["ESNext", "DOM"],
         module: "Preserve",
         moduleResolution: "bundler",
@@ -92,7 +92,7 @@ describe("Compiled Template contract", () => {
         "TPL-001: compiler output не должен содержать runtime JSX",
       ).toBe(false)
       expect(
-        result.code.includes('from "@immersive/template/compiled"'),
+        result.code.includes('from "@zavx0z/immersive-template/compiled"'),
         "TPL-001: compiler output должен использовать public compiled ABI",
       ).toBe(true)
       expect(

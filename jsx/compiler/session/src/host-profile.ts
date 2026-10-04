@@ -13,7 +13,7 @@ import {
   isStringLiteral,
   isTrueLiteral,
 } from "typescript/unstable/ast/is"
-import jsxEventNames, {type JsxEventName} from "@immersive-jsx/event"
+import jsxEventNames, {type JsxEventName} from "@zavx0z/immersive-jsx-event"
 
 const propertyNames: ReadonlySet<string> = new Set([
   "checked",

@@ -1,6 +1,6 @@
 /** Проверяет публичные данные и правила операции над сокетами. */
 import {describe, expect, test} from "bun:test"
-import value from "@immersive-nodes-model-socket/metrics"
+import value from "@zavx0z/immersive-nodes-model-socket-metrics"
 
 describe.each([{name: "Геометрия строки", props: {unit: "CSS px"}}])("$name", ({props}) => {
   const result = value

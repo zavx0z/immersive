@@ -1,7 +1,7 @@
 import {expect, spyOn, test} from "bun:test"
 import {resolve} from "node:path"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
 test("Bun компилирует повторно без проверки контрактов и вывода предупреждений", async () => {
   const directory = resolve(import.meta.dir, "../spec/fixture")
@@ -14,7 +14,7 @@ test("Bun компилирует повторно без проверки кон
       entrypoints: [resolve(directory, "untyped.tsx")],
       plugins: [plugin],
       target: "bun" as const,
-      external: ["@immersive/template/compiled", "@immersive/component", "@immersive/component/slot"],
+      external: ["@zavx0z/immersive-template/compiled", "@zavx0z/immersive-component", "@zavx0z/immersive-component/slot"],
     }
     expect((await Bun.build(config)).success).toBeTrue()
     expect((await Bun.build(config)).success).toBeTrue()

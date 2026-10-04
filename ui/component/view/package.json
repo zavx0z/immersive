@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component/view",
+  "name": "@zavx0z/immersive-ui-component-view",
   "label": "view",
   "version": "0.0.0",
   "description": "Представления показывают данные и предоставляют их собственные способы взаимодействия.",
@@ -11,18 +11,18 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@immersive-ui-component-view/code-editor": "workspace:*",
-    "@immersive-ui-component-view/list": "workspace:*",
-    "@immersive-ui-component-view/table": "workspace:*",
-    "@immersive-ui-component-view/timeline": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-list": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-table": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-timeline": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui/component": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*"
   },
   "scripts": {
-    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

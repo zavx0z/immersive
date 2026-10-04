@@ -1,12 +1,12 @@
 import type {FrameEdge} from "../contract/types.ts"
-import type {ImmersiveUiComponentSurfaceFrame} from "../contract"
+import type {Zavx0zImmersiveUiComponentSurfaceFrame} from "../contract"
 
 /** Частный вход кнопки команды рамки. */
 type FrameHandleButtonProps = Readonly<{
-  handle: ImmersiveUiComponentSurfaceFrame.Input["handles"][number]
-  onHandle?: ImmersiveUiComponentSurfaceFrame.Input["onHandle"]
+  handle: Zavx0zImmersiveUiComponentSurfaceFrame.Input["handles"][number]
+  onHandle?: Zavx0zImmersiveUiComponentSurfaceFrame.Input["onHandle"]
 }>
-import SurfaceButton from "@immersive-ui-component-surface-chrome/button"
+import SurfaceButton from "@zavx0z/immersive-ui-component-surface-chrome-button"
 
 /** Частная подготовка рамка рабочей области с заголовком и элементами управления. */
 export function FrameHandleButton(props: FrameHandleButtonProps) {

@@ -1,12 +1,12 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@immersive/component"
-import {createDocument} from "@immersive/dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument} from "@zavx0z/immersive-dom"
 import {registerLanguageHighlighter} from "@zavx0z/highlighter"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import type {MarkdownProps} from "../contract/input.ts"
-import {createDocumentRenderer} from "@immersive-renderer/html"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({
@@ -86,7 +86,7 @@ describe("Markdown production owner", () => {
     }
   })
   test("CodeEditor memoizes automatic syntax but observes replacement of its language definition", async () => {
-    const {default: CodeEditor} = await import("@immersive-ui-component-view/code-editor")
+    const {default: CodeEditor} = await import("@zavx0z/immersive-ui-component-view-code-editor")
     const languageId = "code-editor-memo-test"
     let calls = 0
     const language = (increment: number) => ({id: languageId, name: languageId, tokenize(lines: readonly string[]) {
@@ -98,7 +98,7 @@ describe("Markdown production owner", () => {
     const host = document.createElement("div")
     document.append(host)
     const component = createRoot(host)
-    const editor = CodeEditor as unknown as CompiledTemplate<import("@immersive-ui-component-view/code-editor").ImmersiveUiComponentViewCodeEditor.Input>
+    const editor = CodeEditor as unknown as CompiledTemplate<import("@zavx0z/immersive-ui-component-view-code-editor").Zavx0zImmersiveUiComponentViewCodeEditor.Input>
     try {
       component.render(editor, {value: "code", readOnly: true, languageId, title: "First"})
       const line = host.querySelector('code [data-line-index="0"]')
@@ -288,13 +288,13 @@ describe("Markdown production owner", () => {
   })
 
   test("the shared editor retains fixed viewports and real overflow on both axes", async () => {
-    const {default: CodeEditor} = await import("@immersive-ui-component-view/code-editor")
+    const {default: CodeEditor} = await import("@zavx0z/immersive-ui-component-view-code-editor")
     const document = createDocument()
     const container = document.createElement("div")
     document.append(container)
     const component = createRoot(container)
     const value = Array.from({length: 30}, () => "long line ".repeat(20)).join("\n")
-    component.render(CodeEditor as unknown as CompiledTemplate<import("@immersive-ui-component-view/code-editor").ImmersiveUiComponentViewCodeEditor.Input>, {
+    component.render(CodeEditor as unknown as CompiledTemplate<import("@zavx0z/immersive-ui-component-view-code-editor").Zavx0zImmersiveUiComponentViewCodeEditor.Input>, {
       value,
       readOnly: true,
     })

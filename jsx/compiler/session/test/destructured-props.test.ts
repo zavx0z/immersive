@@ -2,10 +2,10 @@ import {expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createDocument, HTMLButtonElement, MouseEvent} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
+import {createDocument, HTMLButtonElement, MouseEvent} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 test("слоты и деструктурированный style сохраняют DOM identity, focus, state и cleanup", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".destructured-props-"))

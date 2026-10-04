@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {ImmersiveTechColorHexNormalize as Contract} from "./contract"
+import type {Zavx0zImmersiveTechColorHexNormalize as Contract} from "./contract"
 
 export default function normalizeHexColor(value: Contract.Input[0]): Contract.Output {
   const body = value.trim().slice(1).toLowerCase()
@@ -12,4 +12,4 @@ export default function normalizeHexColor(value: Contract.Input[0]): Contract.Ou
   return `#${body.split("").map(character => character + character).join("")}`
 }
 
-export type {ImmersiveTechColorHexNormalize} from "./contract"
+export type {Zavx0zImmersiveTechColorHexNormalize} from "./contract"

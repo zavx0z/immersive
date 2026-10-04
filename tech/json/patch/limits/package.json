@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-tech-json-patch/limits",
+  "name": "@zavx0z/immersive-tech-json-patch-limits",
   "label": "limits",
   "version": "0.0.0",
   "description": "Задаёт допустимые размеры операций JSON Patch",

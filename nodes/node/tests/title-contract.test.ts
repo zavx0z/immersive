@@ -1,11 +1,11 @@
 import {expect, test} from "bun:test"
-import {createRoot} from "@immersive/component"
-import {createDocument} from "@immersive/dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument} from "@zavx0z/immersive-dom"
 import "./compiler.ts"
-import type {CompiledTemplate} from "@immersive/template/compiled"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 
 
-const {default: ParameterNode} = await import("@immersive-nodes-node/parameter")
+const {default: ParameterNode} = await import("@zavx0z/immersive-nodes-node-parameter")
 
 test("[NODES-TITLE-001-NODE] ParameterNode не распространяет tooltip на всю поверхность", () => {
   const node = mount(ParameterNode, {

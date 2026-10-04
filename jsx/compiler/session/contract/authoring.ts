@@ -8,7 +8,7 @@ native интерфейсом TypeScript JSX и дополняется объя�
 Контракт принадлежит языку JSX. Отдельная проверка типов использует его для
 элементов, свойств и расширений; сборочный проход не повторяет эту проверку.
 */
-import type {} from "@immersive/template"
+import type {} from "@zavx0z/immersive-template"
 import type {Element as AuthoredElement} from "./element.ts"
 import type {IntrinsicProperties as AuthoredProperties} from "./intrinsic.ts"
 import type {
@@ -19,7 +19,7 @@ import type {
   StandardIntrinsicElements as StandardElements,
 } from "../src/authoring-dom.ts"
 
-import type {DomEventFor, DomEventHandler, EventTargetValue} from "@immersive-jsx/event"
+import type {DomEventFor, DomEventHandler, EventTargetValue} from "@zavx0z/immersive-jsx-event"
 
 /** Native namespace объединяет контракт автора и расширения intrinsic тегов. */
 export namespace JSX {

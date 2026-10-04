@@ -1,5 +1,5 @@
-import {layoutAdaptiveWithDiagnostics} from "@immersive-nodes/layout/adaptive/diagnostics"
-import {AdaptiveLayoutError} from "@immersive-nodes/layout/adaptive/error"
+import {layoutAdaptiveWithDiagnostics} from "@zavx0z/immersive-nodes-layout/adaptive/diagnostics"
+import {AdaptiveLayoutError} from "@zavx0z/immersive-nodes-layout/adaptive/error"
 import {createWorkerExecutor, serializeWorkerError} from "../../../../execution/worker/src/executor.ts"
 import type {
   AdaptiveWorkerFailure,

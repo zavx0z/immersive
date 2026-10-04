@@ -160,7 +160,7 @@ Canvas, Document, Space, ViewPoint, проекция Display и ввод ост�
 Границу действующих пространственных компонентов сохраняет
 [контракт Space](../../space/README.md).
 
-Публичный импорт класса и типов: `@immersive/dom/display`.
+Публичный импорт класса и типов: `@zavx0z/immersive-dom/display`.
 В JSX тег `<display>` доступен без импорта компонента.
 
 ## Проверки

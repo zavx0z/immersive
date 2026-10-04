@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-geometry-node/port-id",
+  "name": "@zavx0z/immersive-nodes-geometry-node-port-id",
   "label": "port-id",
   "version": "0.0.0",
   "description": "Создаёт адрес порта Layout из непустых идентификаторов ноды и сокета",
@@ -10,7 +10,7 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@immersive-nodes-model-socket/key": "workspace:*"
+    "@zavx0z/immersive-nodes-model-socket-key": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",

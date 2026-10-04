@@ -1,5 +1,5 @@
-import type {TopDownLayoutOutput} from "@immersive-nodes/layout/top-down"
-import type {TopDownInput} from "@immersive-nodes/layout/types"
+import type {TopDownLayoutOutput} from "@zavx0z/immersive-nodes-layout/top-down"
+import type {TopDownInput} from "@zavx0z/immersive-nodes-layout/types"
 import {WorkerTransportClient} from "../../../../execution/worker/src/transport.ts"
 import type {
   TopDownWorkerEndpoint,

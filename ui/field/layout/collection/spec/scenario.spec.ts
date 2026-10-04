@@ -1,6 +1,6 @@
 /** collectionFieldLayout показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import layout from "@immersive-ui-field-layout/collection"
+import layout from "@zavx0z/immersive-ui-field-layout-collection"
 
 describe.each([{name: "Базовый размер", props: {}}])("$name", () => {
   const height = layout.height()

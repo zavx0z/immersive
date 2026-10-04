@@ -1,5 +1,5 @@
 /**
-Локальная проекция базы flowchart для {@link @immersive/markdown/mermaid#Mermaid | Mermaid}.
+Локальная проекция базы flowchart для {@link @zavx0z/immersive-markdown/mermaid#Mermaid | Mermaid}.
 Используется внутри последовательной очереди разбора; не задаёт полную API-модель Mermaid.
 
 @property getVertices - Даёт узлы базы до [нормализации модели](../src/parser.ts).

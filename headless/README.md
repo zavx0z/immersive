@@ -3,7 +3,7 @@
 Пакет находится в корневом каталоге `headless` проекта Immersive и обслуживает
 компоненты разных пакетов.
 
-`@immersive/headless` монтирует компоненты пакетов проекта через настоящий
+`@zavx0z/immersive-headless` монтирует компоненты пакетов проекта через настоящий
 JSX compiler, Component, DOM, HTML Renderer и нативный WebGPU/Dawn.
 `render` возвращает живой внешний элемент компонента, `screenshot` — PNG
 по его актуальному border-box без внешних полей. По умолчанию `screenshot`
@@ -19,7 +19,7 @@ BMP V5 с альфа-каналом. Этот путь проверен на mac
 загрузки тестовых модулей:
 
 ```sh
-bun test --preload @immersive/headless/preload
+bun test --preload @zavx0z/immersive-headless/preload
 ```
 
 Preload регистрирует JSX compiler от Git-корня текущего рабочего каталога.
@@ -27,8 +27,8 @@ Preload регистрирует JSX compiler от Git-корня текущег
 
 ```tsx
 import {afterAll, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import Typography from "@immersive-ui-component/typography"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import Typography from "@zavx0z/immersive-ui-component-typography"
 
 const headless = createHeadless({width: 320, height: 180})
 afterAll(() => headless.dispose())
@@ -45,11 +45,11 @@ test("показывает переданный текст", async () => {
 })
 ```
 
-Загрузчик компилирует production TSX через `@immersive-jsx-compiler/session` в пределах Git-корня test host.
-JSX в spec/test использует общий `@immersive/jsx` automatic protocol без авторской файловой
+Загрузчик компилирует production TSX через `@zavx0z/immersive-jsx-compiler-session` в пределах Git-корня test host.
+JSX в spec/test использует общий `@zavx0z/immersive-jsx` automatic protocol без авторской файловой
 pragma и создаёт инертный `ComponentValue`; Document, Canvas, Renderer и
 DOM-элемент появляются только после `createHeadless()` и `render()`.
-Headless не владеет отдельным JSX runtime. Штатный persistent plugin `@immersive-jsx-compiler/bun` сохраняет одну сессию компилятора на Git-корень
+Headless не владеет отдельным JSX runtime. Штатный persistent plugin `@zavx0z/immersive-jsx-compiler-bun` сохраняет одну сессию компилятора на Git-корень
 в пределах тестового процесса. Production-модули используют её общий кэш и
 последовательную обработку; новый запуск Bun получает собственную сессию.
 Для программной передачи компонента и props отдельно используется

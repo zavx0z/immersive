@@ -1,4 +1,4 @@
-import {Event, type Document, type Element, type Node} from "@immersive/dom"
+import {Event, type Document, type Element, type Node} from "@zavx0z/immersive-dom"
 import {
   createBrowserLinkedAuthorStyleSheetHost,
   type BrowserLinkedAuthorStyleSheetHost,

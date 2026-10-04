@@ -1,12 +1,12 @@
-import type {ImmersiveUiComponentWidget} from "@immersive-ui-component/widget/contract"
+import type {Zavx0zImmersiveUiComponentWidget} from "@zavx0z/immersive-ui-component-widget/contract"
 import type {InspectorAction} from "./types.ts"
 import type {InspectorCategory} from "./types.ts"
 import type {InspectorContext} from "./types.ts"
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace ImmersiveUiComponentWidgetInspector {
+export declare namespace Zavx0zImmersiveUiComponentWidgetInspector {
   /**
   Входные данные Inspector.
   */
@@ -33,5 +33,5 @@ export declare namespace ImmersiveUiComponentWidgetInspector {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = ImmersiveUiComponentWidget.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveUiComponentWidget.Output & JSX.Element<Slots>
 }

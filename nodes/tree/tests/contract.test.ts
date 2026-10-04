@@ -7,7 +7,7 @@ import {
   hydrateNodeTree,
   serializeNodeTreeDocument,
   type NodeTreeChange,
-} from "@immersive-nodes/tree"
+} from "@zavx0z/immersive-nodes-tree"
 
 const packageRoot = resolve(import.meta.dir, "..")
 
@@ -100,17 +100,17 @@ test("[NODETREE-004] NodeTree остаётся headless и предметно-н
   const forbiddenImports = [
     "@engine/",
     "@metafor/",
-    "@immersive/browser",
-    "@immersive/dom",
-    "@immersive/engine",
-    "@immersive-nodes/layout",
-    "@immersive/nodes",
-    "@immersive-nodes/parameter",
-    "@immersive-nodes/socket",
-    "@immersive-renderer/html",
-    "@immersive/space",
-    "@immersive-ui/component",
-    "@immersive/webgpu",
+    "@zavx0z/immersive-browser",
+    "@zavx0z/immersive-dom",
+    "@zavx0z/immersive-engine",
+    "@zavx0z/immersive-nodes-layout",
+    "@zavx0z/immersive-nodes",
+    "@zavx0z/immersive-nodes-parameter",
+    "@zavx0z/immersive-nodes-socket",
+    "@zavx0z/immersive-renderer-html",
+    "@zavx0z/immersive-space",
+    "@zavx0z/immersive-ui-component",
+    "@zavx0z/immersive-webgpu",
   ]
   for (const specifier of importSpecifiers(source)) {
     expect(forbiddenImports.some(prefix => specifier.startsWith(prefix))).toBe(false)

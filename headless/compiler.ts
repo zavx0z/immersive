@@ -1,7 +1,7 @@
 import {existsSync} from "node:fs"
 import {dirname, relative, resolve, sep} from "node:path"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 const registered = new Set<string>()
 
@@ -34,9 +34,9 @@ export function registerHeadlessCompiler(projectRoot: string): void {
       builder.onLoad({filter: /\.(?:spec|test)\.tsx$/}, async ({path}) => {
         const local = relative(root, path)
         if (local.startsWith(`..${sep}`) || local === ".." || local.split(sep).includes("node_modules")) return undefined
-        const contents = await session.prepareSlotAuthoringFile(path, Bun.resolveSync("@immersive-jsx-slot/child", import.meta.dir))
+        const contents = await session.prepareSlotAuthoringFile(path, Bun.resolveSync("@zavx0z/immersive-jsx-slot-child", import.meta.dir))
         return {
-          contents: `/** @jsxImportSource @immersive/jsx */\n${contents}`,
+          contents: `/** @jsxImportSource @zavx0z/immersive-jsx */\n${contents}`,
           loader: "tsx",
         }
       })

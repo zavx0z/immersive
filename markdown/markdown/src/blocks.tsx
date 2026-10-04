@@ -5,8 +5,8 @@ import type {
   MarkdownTableRow,
   MarkdownTableCell,
 } from "../../shared/types/model.ts"
-import Divider from "@immersive-ui-component/divider"
-import CodeEditor from "@immersive-ui-component-view/code-editor"
+import Divider from "@zavx0z/immersive-ui-component-divider"
+import CodeEditor from "@zavx0z/immersive-ui-component-view-code-editor"
 import type {InlineListProps, ListProps} from "../types/blocks.ts"
 
 const headingStyle = css`

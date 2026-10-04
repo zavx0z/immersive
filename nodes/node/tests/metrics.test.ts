@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import planNodeGeometry from "@immersive-nodes-geometry-node/plan"
-import nodeMetrics from "@immersive-nodes-geometry-node/metrics"
+import planNodeGeometry from "@zavx0z/immersive-nodes-geometry-node-plan"
+import nodeMetrics from "@zavx0z/immersive-nodes-geometry-node-metrics"
 const {NODE_MINIMUM_WIDTH} = nodeMetrics
 
 test("[NODES-METRICS-001] пустая Node имеет фиксированную высоту и минимальную ширину", () => {

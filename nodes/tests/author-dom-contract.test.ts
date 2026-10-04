@@ -25,7 +25,7 @@ test("[NODES-AUTHOR-DOM] авторские компоненты не импор
       for (const statement of source.statements) {
         if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier)) continue
         const owner = statement.moduleSpecifier.text
-        if (owner !== "@immersive/dom" && !owner.startsWith("@immersive/dom/")) continue
+        if (owner !== "@zavx0z/immersive-dom" && !owner.startsWith("@zavx0z/immersive-dom/")) continue
         const bindings = statement.importClause?.namedBindings
         if (bindings !== undefined && isNamespaceImport(bindings)) violations.push(`${file}: namespace ${owner}`)
         if (bindings === undefined || !isNamedImports(bindings)) continue

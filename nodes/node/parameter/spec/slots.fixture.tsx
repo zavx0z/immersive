@@ -1,9 +1,9 @@
 /** Авторская композиция самостоятельных параметров и готовых Socket. */
-import ParameterNode from "@immersive-nodes-node/parameter"
-import TextParameter from "@immersive-nodes-parameter/text"
-import NumberParameter from "@immersive-nodes-parameter-numeric/number"
-import CheckboxParameter from "@immersive-nodes-parameter-boolean/checkbox"
-import Socket from "@immersive-nodes/socket"
+import ParameterNode from "@zavx0z/immersive-nodes-node-parameter"
+import TextParameter from "@zavx0z/immersive-nodes-parameter-text"
+import NumberParameter from "@zavx0z/immersive-nodes-parameter-numeric-number"
+import CheckboxParameter from "@zavx0z/immersive-nodes-parameter-boolean-checkbox"
+import Socket from "@zavx0z/immersive-nodes-socket"
 
 export default function AuthoredParameterNode(props: Readonly<{
   socketIds: readonly string[]

@@ -1,5 +1,5 @@
 /** Учитывает базовую высоту подписи при планировании строки поля. */
-export declare namespace ImmersiveUiFieldMetricLabelledHeight {
+export declare namespace Zavx0zImmersiveUiFieldMetricLabelledHeight {
   /** Аргументы публичной операции labelledFieldHeight; порядок сохраняет её форму вызова. */
   type Input = readonly [
     controlHeight: number,

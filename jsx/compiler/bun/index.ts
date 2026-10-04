@@ -6,12 +6,12 @@ import {mkdir, writeFile} from "node:fs/promises"
 import {dirname, extname, resolve} from "node:path"
 import {discoverSourceFiles, commonCwd, sourceLoader} from "./src/files.ts"
 import type {JsxPlugin} from "./contract/output.ts"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 import {
   createCapabilityUsageManifest,
   serializeCapabilityUsageManifest,
 } from "./src/capability-manifest.ts"
-import type {JsxCompileResult} from "@immersive-jsx-compiler/session"
+import type {JsxCompileResult} from "@zavx0z/immersive-jsx-compiler-session"
 type CapabilityUsage = JsxCompileResult["capabilityUsages"][number]
 
 import type {CreateJsxPluginOptions} from "./contract/input.ts"

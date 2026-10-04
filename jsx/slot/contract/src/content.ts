@@ -16,7 +16,7 @@ import {
   isPropertyAccessExpression,
   isSpreadElement,
 } from "typescript/unstable/ast/is"
-import SlotAuthoring from "@immersive-jsx-slot/authoring"
+import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
 import {componentAtom, receiverAt} from "./symbols.ts"
 import {isElementType} from "./schema.ts"
 import type {ContentProof, Receiver, ValidationContext} from "./model.ts"

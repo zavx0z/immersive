@@ -1,9 +1,9 @@
-import type {RenderImageSize} from "@immersive-renderer/html"
-import type {RendererFontFace} from "@immersive/webgpu"
+import type {RenderImageSize} from "@zavx0z/immersive-renderer-html"
+import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
 import type {
   BufferGeometry,
   TrueTypeFont,
-} from "@immersive/engine"
+} from "@zavx0z/immersive-engine"
 import {
   subscribeDocumentAuthorStyleSheets,
   subscribeDocumentCompiledStyleSheets,
@@ -13,7 +13,7 @@ import {
   type Document,
   type Element,
   type Node,
-} from "@immersive/dom"
+} from "@zavx0z/immersive-dom"
 import {
   createDocumentInteractionController,
   hitTestProjection,
@@ -28,14 +28,14 @@ import {
   type RenderFrame,
   type RenderViewport,
   type WheelInput,
-} from "@immersive-renderer/html"
+} from "@zavx0z/immersive-renderer-html"
 import {
   RendererWebGpuBackend,
   RendererWebGpuDocumentPlane,
   RendererWebGpuDisplayPlane,
   type RendererWebGpuBackendOptions,
   type RendererWebGpuDocumentPlaneOptions,
-} from "@immersive/webgpu"
+} from "@zavx0z/immersive-webgpu"
 
 export type CreateDocumentPlaneRuntimeOptions = Readonly<{
   projectClientPoint?: CreateDocumentRendererOptions["projectClientPoint"]
@@ -371,10 +371,10 @@ export function createDocumentPlaneRuntimeWithSeams(
 const validateOptions = (options: CreateDocumentPlaneRuntimeOptions): void => {
   if (options === null || typeof options !== "object") throw new TypeError("Runtime options are required")
   if (options.document === null || typeof options.document !== "object") {
-    throw new TypeError("document must be an @immersive/dom Document")
+    throw new TypeError("document must be an @zavx0z/immersive-dom Document")
   }
   if (options.root === null || typeof options.root !== "object") {
-    throw new TypeError("root must be an @immersive/dom Node")
+    throw new TypeError("root must be an @zavx0z/immersive-dom Node")
   }
   if (options.root !== options.document && options.root.ownerDocument !== options.document) {
     throw new Error("root belongs to another Document")

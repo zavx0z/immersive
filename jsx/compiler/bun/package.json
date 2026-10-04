@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-jsx-compiler/bun",
+  "name": "@zavx0z/immersive-jsx-compiler-bun",
   "label": "JSX в Bun",
   "version": "0.0.0",
   "private": true,
@@ -13,11 +13,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "description": "Интеграция компилятора JSX со сборкой Bun",
   "sideEffects": false,
   "devDependencies": {
-    "@immersive/jsx": "workspace:*"
+    "@zavx0z/immersive-jsx": "workspace:*"
   }
 }

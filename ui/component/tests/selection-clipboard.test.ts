@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, MouseEvent, readDocumentTextHighlights, type HTMLElement} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import {createDocument, MouseEvent, readDocumentTextHighlights, type HTMLElement} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 
 const workspace = resolve(import.meta.dir, "../../..")

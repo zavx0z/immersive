@@ -1,13 +1,13 @@
-import type {ImmersiveUiComponentWidget} from "@immersive-ui-component/widget/contract"
+import type {Zavx0zImmersiveUiComponentWidget} from "@zavx0z/immersive-ui-component-widget/contract"
 import type {TreeHandle} from "./types.ts"
 import type {TreeItem} from "./types.ts"
-import type {ImmersiveUiComponentWidgetHeader} from "@immersive-ui-component-widget/header"
-type WidgetHeaderProps = ImmersiveUiComponentWidgetHeader.Input
+import type {Zavx0zImmersiveUiComponentWidgetHeader} from "@zavx0z/immersive-ui-component-widget-header"
+type WidgetHeaderProps = Zavx0zImmersiveUiComponentWidgetHeader.Input
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace ImmersiveUiComponentWidgetTree {
+export declare namespace Zavx0zImmersiveUiComponentWidgetTree {
   /**
   Входные данные Tree.
   */
@@ -37,5 +37,5 @@ export declare namespace ImmersiveUiComponentWidgetTree {
     style?: CssStyle | undefined
   }>
 
-  type Output = ImmersiveUiComponentWidget.Output & JSX.Element
+  type Output = Zavx0zImmersiveUiComponentWidget.Output & JSX.Element
 }

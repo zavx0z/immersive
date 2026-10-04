@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiFieldColorValueClampUnit as Contract} from "./contract"
+import type {Zavx0zImmersiveUiFieldColorValueClampUnit as Contract} from "./contract"
 
 export default function clampUnit(value: Contract.Input[0]): Contract.Output {
   return Math.min(1, Math.max(0, Number.isFinite(value) ? value : 0))
 }
 
-export type {ImmersiveUiFieldColorValueClampUnit} from "./contract"
+export type {Zavx0zImmersiveUiFieldColorValueClampUnit} from "./contract"

@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentWidgetEditor as Contract} from "./contract"
-import {useMemo} from "@immersive/component"
-import CodeEditor from "@immersive-ui-component-view/code-editor"
-import CodeEditorModel from "@immersive-tech/text-editor"
-import WidgetHeader from "@immersive-ui-component-widget/header"
+import type {Zavx0zImmersiveUiComponentWidgetEditor as Contract} from "./contract"
+import {useMemo} from "@zavx0z/immersive-component"
+import CodeEditor from "@zavx0z/immersive-ui-component-view-code-editor"
+import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
+import WidgetHeader from "@zavx0z/immersive-ui-component-widget-header"
 
-export type {ImmersiveUiComponentWidgetEditor} from "./contract"
+export type {Zavx0zImmersiveUiComponentWidgetEditor} from "./contract"
 
 
 export default function Editor(props: Contract.Input): Contract.Output {

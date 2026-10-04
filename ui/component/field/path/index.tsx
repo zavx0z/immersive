@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentFieldPath as Contract} from "./contract"
-import IconButton from "@immersive-ui-component-button/icon"
-import folderIcon from "@immersive-ui-theme-icon/folder"
-import TextField from "@immersive-ui-component-field/text"
+import type {Zavx0zImmersiveUiComponentFieldPath as Contract} from "./contract"
+import IconButton from "@zavx0z/immersive-ui-component-button-icon"
+import folderIcon from "@zavx0z/immersive-ui-theme-icon-folder"
+import TextField from "@zavx0z/immersive-ui-component-field-text"
 
 
-export type {ImmersiveUiComponentFieldPath} from "./contract"
+export type {Zavx0zImmersiveUiComponentFieldPath} from "./contract"
 
 export default function PathField(props: Contract.Input): Contract.Output {
   if (typeof props.value !== "string") throw new TypeError("PathField value must be a string")

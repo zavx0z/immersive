@@ -9,7 +9,7 @@ import {
   type NodeTemplate,
   type NodeTreeChange,
   type NodeValueType,
-} from "@immersive-nodes/tree"
+} from "@zavx0z/immersive-nodes-tree"
 
 const numberType: NodeValueType = {id: "float", version: 1}
 const numberTemplate: NodeTemplate = {id: "example/number-source", version: 1, kind: "node"}

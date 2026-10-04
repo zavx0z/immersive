@@ -7,6 +7,6 @@ test("browser JavaScript does not bundle CSS or depend on a concrete UI theme", 
   expect(built.outputs.filter(output => output.path.endsWith(".css"))).toHaveLength(0)
   const javascript = await built.outputs.find(output => output.path.endsWith(".js"))!.text()
   expect(javascript).not.toContain("--widget-popup-background:")
-  expect(javascript).not.toContain("@immersive-ui/component")
+  expect(javascript).not.toContain("@zavx0z/immersive-ui-component")
   expect(javascript).toContain("./theme.css")
 })

@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/webgpu",
+  "name": "@zavx0z/immersive-webgpu",
   "label": "WebGPU",
   "version": "0.0.0",
   "private": true,
@@ -18,24 +18,24 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@immersive/engine": "workspace:*",
-    "@immersive-renderer/html": "workspace:*"
+    "@zavx0z/immersive-engine": "workspace:*",
+    "@zavx0z/immersive-renderer-html": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@immersive/engine": {
+    "@zavx0z/immersive-engine": {
       "optional": true
     },
-    "@immersive-renderer/html": {
+    "@zavx0z/immersive-renderer-html": {
       "optional": true
     }
   },
   "devDependencies": {
     "@webgpu/types": "^0.1.72",
-    "@immersive-jsx-compiler/bun": "workspace:*",
-    "@immersive-ui-component-view/code-editor": "workspace:*",
-    "@immersive/dom": "workspace:*",
-    "@immersive/component": "workspace:*",
-    "@immersive/template": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*"
   },
   "license": "MIT",
   "dependencies": {}

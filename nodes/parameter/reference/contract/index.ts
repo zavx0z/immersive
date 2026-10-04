@@ -1,10 +1,10 @@
-import type {ImmersiveUiComponentFieldReference} from "@immersive-ui-component-field/reference"
-type ReferenceFieldProps = ImmersiveUiComponentFieldReference.Input
-import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {Zavx0zImmersiveUiComponentFieldReference} from "@zavx0z/immersive-ui-component-field-reference"
+type ReferenceFieldProps = Zavx0zImmersiveUiComponentFieldReference.Input
+import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace ImmersiveNodesParameterReference {
+export declare namespace Zavx0zImmersiveNodesParameterReference {
   /**
   Входные данные ссылочного параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace ImmersiveNodesParameterReference {
 
   @example
   ```ts
-  const input: ImmersiveNodesParameterReference.Input = {
+  const input: Zavx0zImmersiveNodesParameterReference.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace ImmersiveNodesParameterReference {
   }
   ```
   */
-  interface Input extends ImmersiveNodesParameter.Input {
+  interface Input extends Zavx0zImmersiveNodesParameter.Input {
     readonly value: ReferenceFieldProps["value"]
     readonly placeholder?: ReferenceFieldProps["placeholder"]
     readonly density?: ReferenceFieldProps["density"]
@@ -44,7 +44,7 @@ export declare namespace ImmersiveNodesParameterReference {
     readonly onClear?: ReferenceFieldProps["onClear"]
   }
 
-  type Slots = ImmersiveNodesParameter.Slots
+  type Slots = Zavx0zImmersiveNodesParameter.Slots
 
-  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

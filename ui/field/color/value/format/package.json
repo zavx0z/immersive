@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-color-value/format",
+  "name": "@zavx0z/immersive-ui-field-color-value-format",
   "label": "formatColorValue",
   "version": "0.0.0",
   "description": "Нормализует цвет и форматирует его как HEX со включаемым альфа-каналом",
@@ -11,10 +11,10 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-color-value/normalize": "workspace:*"
+    "@zavx0z/immersive-ui-field-color-value-normalize": "workspace:*"
   }
 }

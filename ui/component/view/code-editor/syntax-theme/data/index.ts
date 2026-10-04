@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentViewCodeEditorSyntaxThemeData as Contract} from "./contract"
-export type {ImmersiveUiComponentViewCodeEditorSyntaxThemeData} from "./contract"
+import type {Zavx0zImmersiveUiComponentViewCodeEditorSyntaxThemeData as Contract} from "./contract"
+export type {Zavx0zImmersiveUiComponentViewCodeEditorSyntaxThemeData} from "./contract"
 
 const codeEditorSyntaxTheme = Object.freeze({
   "colors": {

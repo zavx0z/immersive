@@ -6,13 +6,13 @@
 */
 import {TimelineBody} from "./src/helpers.tsx"
 import {TimelineOutput} from "./src/helpers.tsx"
-import type {ImmersiveUiComponentViewTimeline as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentViewTimeline as Contract} from "./contract"
 import {normalizeTimelineProps} from "./src/helpers.tsx"
-import SurfaceHeader from "@immersive-ui-component-surface-chrome/header"
-import SurfaceOwner from "@immersive-ui-component-surface-chrome/owner"
-import SurfaceTitle from "@immersive-ui-component-surface-chrome/title"
+import SurfaceHeader from "@zavx0z/immersive-ui-component-surface-chrome-header"
+import SurfaceOwner from "@zavx0z/immersive-ui-component-surface-chrome-owner"
+import SurfaceTitle from "@zavx0z/immersive-ui-component-surface-chrome-title"
 
-export type {ImmersiveUiComponentViewTimeline} from "./contract"
+export type {Zavx0zImmersiveUiComponentViewTimeline} from "./contract"
 
 
 export default function Timeline(props: Contract.Input): Contract.Output {

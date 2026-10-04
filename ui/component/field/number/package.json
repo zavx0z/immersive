@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-field/number",
+  "name": "@zavx0z/immersive-ui-component-field-number",
   "label": "NumberField",
   "version": "0.0.0",
   "description": "Поле интерфейса: числовое значение",
@@ -11,26 +11,26 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-ui-field-number-scrub/range": "workspace:*",
-    "@immersive-ui-field-number-scrub/raw": "workspace:*",
-    "@immersive-ui-field-number-scrub/snap": "workspace:*",
-    "@immersive-ui-field-number-value/format": "workspace:*",
-    "@immersive-ui-field-number-value/normalize": "workspace:*",
-    "@immersive-ui-field-number-value/fill-percentage": "workspace:*",
-    "@immersive-ui-field-number-value/pointer-step": "workspace:*",
-    "@immersive-ui-field-number-value/soft-range": "workspace:*",
-    "@immersive-ui-field-number-value/step": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-scrub-range": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-scrub-raw": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-scrub-snap": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-format": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-fill-percentage": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-pointer-step": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-soft-range": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-step": "workspace:*"
   },
   "peerDependencies": {
-    "@immersive/component": "workspace:*"
+    "@zavx0z/immersive-component": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-component/field": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component-field": "workspace:*"
   }
 }

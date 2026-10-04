@@ -1,10 +1,10 @@
-import type {ImmersiveUiComponentSurface} from "@immersive-ui-component/surface/contract"
+import type {Zavx0zImmersiveUiComponentSurface} from "@zavx0z/immersive-ui-component-surface/contract"
 
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный вход и JSX-результат компонента. */
-export declare namespace ImmersiveUiComponentSurfaceWindowControl {
+export declare namespace Zavx0zImmersiveUiComponentSurfaceWindowControl {
   /**
   Управляющая кнопка окна. Может находиться в статус-баре, Tab или другой части того же Document.
 
@@ -24,5 +24,5 @@ export declare namespace ImmersiveUiComponentSurfaceWindowControl {
     readonly style?: CssStyle | undefined
   }
 
-  type Output = ImmersiveUiComponentSurface.Output & JSX.Element
+  type Output = Zavx0zImmersiveUiComponentSurface.Output & JSX.Element
 }

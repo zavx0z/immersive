@@ -1,26 +1,26 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {component, createRoot as createComponentRoot} from "@immersive/component"
-import {Element as SemanticElement, acquireDocumentAuthorStyleSheetOwner} from "@immersive/dom"
-import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@immersive/engine"
-import type {Renderer} from "@immersive/webgpu"
+import {component, createRoot as createComponentRoot} from "@zavx0z/immersive-component"
+import {Element as SemanticElement, acquireDocumentAuthorStyleSheetOwner} from "@zavx0z/immersive-dom"
+import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engine"
+import type {Renderer} from "@zavx0z/immersive-webgpu"
 import type {DocumentNativeInputHost} from "../../../browser/src/native-input-host.ts"
 import {createDocumentSpaceRuntimeWithSeams} from "../../../browser/src/space-runtime.ts"
 import {createDocumentPlaneRuntime} from "../../../browser/src/plane-runtime.ts"
 import {createDocumentOverlayRuntime} from "../../../browser/src/overlay-runtime.ts"
 import {createRootWithSeams} from "../../../browser/create-root.ts"
 import {inspectRoot} from "../../../browser/diagnostics.ts"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import type {GraphMeasuredLayout, GraphMeasurement, GraphViewProps} from "@immersive/nodes/view"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {GraphMeasuredLayout, GraphMeasurement, GraphViewProps} from "@zavx0z/immersive-nodes/view"
 import type {BrowserGraphControls} from "./browser.fixture.tsx"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: ["nodes", "ui", "markdown"].map(path => resolve(workspace, path))}))
 const {BrowserMeasuredGraph} = await import("./browser.fixture.tsx")
 const {graphInput, measuredLayout} = await import("./measured.fixture.tsx")
-const {GraphView} = await import("@immersive/nodes/view")
-const {Markdown} = await import("@immersive/markdown")
+const {GraphView} = await import("@zavx0z/immersive-nodes/view")
+const {Markdown} = await import("@zavx0z/immersive-markdown")
 
 test.each(([
   {kind: "hud", async: false, borrowed: false}, {kind: "display", async: false, borrowed: false},

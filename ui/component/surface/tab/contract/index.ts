@@ -1,10 +1,10 @@
-import type {ImmersiveUiComponentSurface} from "@immersive-ui-component/surface/contract"
+import type {Zavx0zImmersiveUiComponentSurface} from "@zavx0z/immersive-ui-component-surface/contract"
 
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный вход и JSX-результат компонента. */
-export declare namespace ImmersiveUiComponentSurfaceTab {
+export declare namespace Zavx0zImmersiveUiComponentSurfaceTab {
   /**
   Вход пристыкованного Tab. Компонент занимает область своего позиционированного
   родителя; сам таб остаётся на её периметре. Родитель задаёт размеры области
@@ -48,5 +48,5 @@ export declare namespace ImmersiveUiComponentSurfaceTab {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = ImmersiveUiComponentSurface.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveUiComponentSurface.Output & JSX.Element<Slots>
 }

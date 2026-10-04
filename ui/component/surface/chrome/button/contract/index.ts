@@ -1,10 +1,10 @@
-import type {ImmersiveUiComponentSurfaceChrome} from "@immersive-ui-component-surface/chrome/contract"
-import type {ImmersiveUiComponentButtonBasic} from "@immersive-ui-component-button/basic"
+import type {Zavx0zImmersiveUiComponentSurfaceChrome} from "@zavx0z/immersive-ui-component-surface-chrome/contract"
+import type {Zavx0zImmersiveUiComponentButtonBasic} from "@zavx0z/immersive-ui-component-button-basic"
 
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный вход и JSX-результат компонента. */
-export declare namespace ImmersiveUiComponentSurfaceChromeButton {
+export declare namespace Zavx0zImmersiveUiComponentSurfaceChromeButton {
   /**
   Входные данные SurfaceButton.
   */
@@ -19,8 +19,8 @@ export declare namespace ImmersiveUiComponentSurfaceChromeButton {
     readonly controls?: string | undefined
     readonly disabled?: boolean | undefined
     readonly style?: CssStyle | undefined
-    readonly onClick?: ImmersiveUiComponentButtonBasic.Input["onClick"]
+    readonly onClick?: Zavx0zImmersiveUiComponentButtonBasic.Input["onClick"]
   }
 
-  type Output = ImmersiveUiComponentSurfaceChrome.Output & JSX.Element
+  type Output = Zavx0zImmersiveUiComponentSurfaceChrome.Output & JSX.Element
 }

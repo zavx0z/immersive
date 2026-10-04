@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-jsx/event",
+  "name": "@zavx0z/immersive-jsx-event",
   "label": "События JSX",
   "version": "0.0.0",
   "description": "Соответствие JSX event props и нативных DOM событий",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive/dom": "workspace:*"
+    "@zavx0z/immersive-dom": "workspace:*"
   }
 }

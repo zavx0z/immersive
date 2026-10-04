@@ -1,27 +1,27 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@immersive/component"
-import {createDocument, type HTMLElement, readDocumentTextHighlights} from "@immersive/dom"
-import {InputEvent} from "@immersive/dom/input-event"
-import {CompositionEvent} from "@immersive/dom/composition-event"
-import {KeyboardEvent} from "@immersive/dom/keyboard-event"
-import {PointerEvent} from "@immersive/dom/pointer-event"
-import {MouseEvent} from "@immersive/dom/mouse-event"
-import {ClipboardEvent} from "@immersive/dom/clipboard-event"
-import {DataTransfer} from "@immersive/dom/data-transfer"
-import {textPositionAtOffset} from "@immersive/dom/text-position"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument, type HTMLElement, readDocumentTextHighlights} from "@zavx0z/immersive-dom"
+import {InputEvent} from "@zavx0z/immersive-dom/input-event"
+import {CompositionEvent} from "@zavx0z/immersive-dom/composition-event"
+import {KeyboardEvent} from "@zavx0z/immersive-dom/keyboard-event"
+import {PointerEvent} from "@zavx0z/immersive-dom/pointer-event"
+import {MouseEvent} from "@zavx0z/immersive-dom/mouse-event"
+import {ClipboardEvent} from "@zavx0z/immersive-dom/clipboard-event"
+import {DataTransfer} from "@zavx0z/immersive-dom/data-transfer"
+import {textPositionAtOffset} from "@zavx0z/immersive-dom/text-position"
 import {registerLanguageHighlighter} from "@zavx0z/highlighter"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import {createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "@immersive-renderer/html"
-import CodeEditorModel from "@immersive-tech/text-editor"
-import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
-type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import {createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "@zavx0z/immersive-renderer-html"
+import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
+import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorProps = Zavx0zImmersiveUiComponentViewCodeEditor.Input
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "ui")]}))
-const {default: CodeEditor} = await import("@immersive-ui-component-view/code-editor")
+const {default: CodeEditor} = await import("@zavx0z/immersive-ui-component-view-code-editor")
 const template = CodeEditor as unknown as CompiledTemplate<CodeEditorProps>
 
 function mount(value: string, options: Partial<CodeEditorProps> = {}) {

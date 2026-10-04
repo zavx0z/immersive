@@ -1,5 +1,5 @@
-import {HTMLElement, textOffsetAtPosition, textPositionAtOffset, type Document, type Node, type Range} from "@immersive/dom"
-import {caretPositionAtPoint, getRangeClientRects, readCanonicalRenderFrameChanges, type PointerInput, type RenderFrame} from "@immersive-renderer/html"
+import {HTMLElement, textOffsetAtPosition, textPositionAtOffset, type Document, type Node, type Range} from "@zavx0z/immersive-dom"
+import {caretPositionAtPoint, getRangeClientRects, readCanonicalRenderFrameChanges, type PointerInput, type RenderFrame} from "@zavx0z/immersive-renderer-html"
 
 export type DocumentSelectionKeyInput = Readonly<{
   key: string

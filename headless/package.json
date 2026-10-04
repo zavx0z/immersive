@@ -1,5 +1,5 @@
 {
-  "name": "@immersive/headless",
+  "name": "@zavx0z/immersive-headless",
   "label": "Без браузера",
   "version": "0.0.0",
   "description": "Без браузера: нативная отрисовка компонентов в живой DOM и PNG",
@@ -18,39 +18,39 @@
     "bun-webgpu": "^0.1.7"
   },
   "peerDependencies": {
-    "@immersive-renderer/html": "workspace:*",
-    "@immersive/component": "workspace:*",
-    "@immersive/dom": "workspace:*",
-    "@immersive/engine": "workspace:*",
-    "@immersive/template": "workspace:*",
-    "@immersive-ui/component": "workspace:*",
-    "@immersive/webgpu": "workspace:*",
-    "@immersive-jsx-compiler/bun": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive/jsx": "workspace:*",
-    "@immersive-jsx-slot/child": "workspace:*",
-    "@immersive-ui-component/typography": "workspace:*"
+    "@zavx0z/immersive-renderer-html": "workspace:*",
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-engine": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*",
+    "@zavx0z/immersive-webgpu": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-jsx": "workspace:*",
+    "@zavx0z/immersive-jsx-slot-child": "workspace:*",
+    "@zavx0z/immersive-ui-component-typography": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@immersive-renderer/html": {
+    "@zavx0z/immersive-renderer-html": {
       "optional": true
     },
-    "@immersive/component": {
+    "@zavx0z/immersive-component": {
       "optional": true
     },
-    "@immersive/dom": {
+    "@zavx0z/immersive-dom": {
       "optional": true
     },
-    "@immersive/engine": {
+    "@zavx0z/immersive-engine": {
       "optional": true
     },
-    "@immersive/template": {
+    "@zavx0z/immersive-template": {
       "optional": true
     },
-    "@immersive-ui/component": {
+    "@zavx0z/immersive-ui-component": {
       "optional": true
     },
-    "@immersive/webgpu": {
+    "@zavx0z/immersive-webgpu": {
       "optional": true
     }
   }

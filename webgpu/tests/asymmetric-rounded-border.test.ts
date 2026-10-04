@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
-import {InstancedRoundedRect, Mesh, RoundedRectMaterial, ROUNDED_RECT_INSTANCE_OFFSETS} from "@immersive/engine"
-import {createDocumentRenderer} from "@immersive-renderer/html"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {InstancedRoundedRect, Mesh, RoundedRectMaterial, ROUNDED_RECT_INSTANCE_OFFSETS} from "@zavx0z/immersive-engine"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 import {roundedShader, roundedInstancedShader} from "../src/renderer/shader/ui-shaders.ts"
 import commonBorder from "../src/renderer/shader/rounded-border.wgsl" with {type: "text"}

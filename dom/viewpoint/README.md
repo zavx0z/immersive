@@ -1,7 +1,7 @@
 # ViewPoint
 
 `<viewpoint>` — базовая камера одного Space. Класс `ViewPointElement`
-экспортируется из `@immersive/dom/viewpoint` и доступен без регистрации фабрик.
+экспортируется из `@zavx0z/immersive-dom/viewpoint` и доступен без регистрации фабрик.
 Элемент не создаёт Renderer, Canvas, подписки или отдельный цикл кадров.
 
 ## Текущий API

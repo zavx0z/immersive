@@ -1,4 +1,4 @@
-import {CodeEditor, List, Table, Timeline} from "@immersive-ui-component/view"
+import {CodeEditor, List, Table, Timeline} from "@zavx0z/immersive-ui-component-view"
 
 export default function ClusterExamples(props: Readonly<{label: string}>) {
   return <section>

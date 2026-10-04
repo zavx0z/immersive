@@ -1,10 +1,10 @@
-import DiagramNode from "@immersive-nodes-node/diagram"
-import type {GraphNodeProps} from "@immersive/nodes/view"
+import DiagramNode from "@zavx0z/immersive-nodes-node-diagram"
+import type {GraphNodeProps} from "@zavx0z/immersive-nodes/view"
 import type {MermaidGraph} from "../types/graph.ts"
 
 /**
 Адаптирует узел {@link MermaidGraph} к {@link DiagramNode}.
-Измерение, положение и lifecycle ноды остаются у {@link @immersive/nodes/view#GraphView | GraphView}.
+Измерение, положение и lifecycle ноды остаются у {@link @zavx0z/immersive-nodes/view#GraphView | GraphView}.
 
 @param props - Вход {@link GraphNodeProps}, у которого `data` является элементом
 {@link MermaidGraph}.nodes`; `id` соответствует этой записи. Приведение типа внутри

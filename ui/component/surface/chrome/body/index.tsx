@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentSurfaceChromeBody as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentSurfaceChromeBody as Contract} from "./contract"
 
-export type {ImmersiveUiComponentSurfaceChromeBody} from "./contract"
+export type {Zavx0zImmersiveUiComponentSurfaceChromeBody} from "./contract"
 
 
 export default function SurfaceBody(props: Contract.Input): Contract.Output {

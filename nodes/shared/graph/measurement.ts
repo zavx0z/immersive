@@ -1,4 +1,4 @@
-import {observeElementLayout, readElementLayoutRect} from "@immersive/dom/geometry"
+import {observeElementLayout, readElementLayoutRect} from "@zavx0z/immersive-dom/geometry"
 import {normalizeLinkRoute} from "../routing/link-path.ts"
 import type {GraphInput, GraphLayoutComputer, GraphMeasuredLayout, GraphMeasurement, GraphScene} from "./contracts.ts"
 

@@ -1,14 +1,14 @@
 import type {ColorFieldValue} from "./types.ts"
 
-import type {JSX} from "@immersive-jsx-compiler/session"
-import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
+import type {Zavx0zImmersiveUiComponentField} from "@zavx0z/immersive-ui-component-field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace ImmersiveUiComponentFieldColor {
+export declare namespace Zavx0zImmersiveUiComponentFieldColor {
   /**
   Входные данные ColorField.
   */
-  interface Input extends ImmersiveUiComponentField.Input {
+  interface Input extends Zavx0zImmersiveUiComponentField.Input {
     readonly value: ColorFieldValue
     readonly open?: boolean | undefined
     readonly disabled?: boolean | undefined
@@ -18,5 +18,5 @@ export declare namespace ImmersiveUiComponentFieldColor {
     readonly onOpenChange?: ((open: boolean, event: Event) => void) | undefined
   }
 
-  type Output = ImmersiveUiComponentField.Output & JSX.Element
+  type Output = Zavx0zImmersiveUiComponentField.Output & JSX.Element
 }

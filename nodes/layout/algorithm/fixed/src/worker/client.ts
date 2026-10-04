@@ -4,7 +4,7 @@ import type {
   FixedWorkerFailure,
   FixedWorkerSuccess,
 } from "../../../../execution/worker/src/types/worker.ts"
-import type {FixedLayoutInput, FixedLayoutOutput} from "@immersive-nodes/layout/fixed"
+import type {FixedLayoutInput, FixedLayoutOutput} from "@zavx0z/immersive-nodes-layout/fixed"
 
 /** Main-thread client for a physically separate fixed-policy Worker. */
 export class FixedWorkerClient extends WorkerTransportClient<

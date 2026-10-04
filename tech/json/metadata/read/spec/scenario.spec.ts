@@ -1,11 +1,11 @@
 /** Проверяет смысловой результат чтения одного поля метаданных. */
 import {describe, expect, test} from "bun:test"
-import operation, {type ImmersiveTechJsonMetadataRead} from "@immersive-tech-json-metadata/read"
+import operation, {type Zavx0zImmersiveTechJsonMetadataRead} from "@zavx0z/immersive-tech-json-metadata-read"
 
 const variants: readonly {
   name: string
-  props: {value: ImmersiveTechJsonMetadataRead.Input[0], key: ImmersiveTechJsonMetadataRead.Input[1]}
-  expected: ImmersiveTechJsonMetadataRead.Output
+  props: {value: Zavx0zImmersiveTechJsonMetadataRead.Input[0], key: Zavx0zImmersiveTechJsonMetadataRead.Input[1]}
+  expected: Zavx0zImmersiveTechJsonMetadataRead.Output
 }[] = [
   {name: "Собственное поле", props: {value: {field: 0}, key: "field"}, expected: 0},
   {name: "Не поле JSON", props: {value: {}, key: "constructor"}, expected: undefined},

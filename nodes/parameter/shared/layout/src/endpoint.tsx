@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type Socket from "@immersive-nodes/socket"
-import type {JSX} from "@immersive-jsx-compiler/session"
-import {hasSlot} from "@immersive/component/slot-presence"
+import type Socket from "@zavx0z/immersive-nodes-socket"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
+import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
 
 export function ParameterEndpoints(props: Readonly<{
   side: "left" | "right"

@@ -1,15 +1,15 @@
 # Проекция Parameter
 
-`@immersive-nodes-projection/parameter` предоставляет default-компонент `Parameter`
-и протокол `ImmersiveNodesProjectionParameter.Input` / `Output`.
+`@zavx0z/immersive-nodes-projection-parameter` предоставляет default-компонент `Parameter`
+и протокол `Zavx0zImmersiveNodesProjectionParameter.Input` / `Output`.
 
 Снимок задаёт начальное представление; переданный Store остаётся источником
 обновлений. Компонент заимствует подписку и завершает её при удалении своего
 представления. Он не создаёт второй Store и не записывает в исходную модель:
 изменения адресуются вызывающему владельцу через `onInput` и `onChange`.
 
-Вид поля и данные предоставляет `@immersive-nodes-projection-parameter/presentation`, представления —
-Cluster `@immersive-nodes/parameter`. Идентификаторы и состояние сокетов сохраняются в том же Document.
+Вид поля и данные предоставляет `@zavx0z/immersive-nodes-projection-parameter-presentation`, представления —
+Cluster `@zavx0z/immersive-nodes-parameter`. Идентификаторы и состояние сокетов сохраняются в том же Document.
 
 `sockets` во входе адаптера сохраняет снимки модели. Адаптер создаёт готовые
 Socket с адресами и обработчиками в слотах `left` и `right` выбранного

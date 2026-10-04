@@ -1,8 +1,8 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, MouseEvent, type Element} from "@immersive/dom"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import {createDocument, MouseEvent, type Element} from "@zavx0z/immersive-dom"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")]}))

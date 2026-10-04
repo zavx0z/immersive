@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component/surface",
+  "name": "@zavx0z/immersive-ui-component-surface",
   "label": "surface",
   "version": "0.0.0",
   "description": "Поверхности размещают содержимое и управление в Document приложения.",
@@ -11,21 +11,21 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@immersive-ui-component-surface/chrome": "workspace:*",
-    "@immersive-ui-component-surface/frame": "workspace:*",
-    "@immersive-ui-component-surface/pane": "workspace:*",
-    "@immersive-ui-component-surface/panel": "workspace:*",
-    "@immersive-ui-component-surface/tab": "workspace:*",
-    "@immersive-ui-component-surface/window": "workspace:*",
-    "@immersive-ui-component-surface/window-control": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-frame": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-pane": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-panel": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-tab": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-window": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-window-control": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui/component": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*"
   },
   "scripts": {
-    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

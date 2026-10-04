@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, type HTMLElement} from "@immersive/dom"
-import {createRoot} from "@immersive/component"
-import type {CompiledTemplate} from "@immersive/template/compiled"
-import {createDocumentRenderer} from "@immersive-renderer/html"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import {createDocument, type HTMLElement} from "@zavx0z/immersive-dom"
+import {createRoot} from "@zavx0z/immersive-component"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))

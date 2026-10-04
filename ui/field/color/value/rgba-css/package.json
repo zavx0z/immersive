@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-field-color-value/rgba-css",
+  "name": "@zavx0z/immersive-ui-field-color-value-rgba-css",
   "label": "rgbaCss",
   "version": "0.0.0",
   "description": "Форматирует цвет как CSS rgba с байтовыми RGB-каналами и альфой до трёх десятичных знаков",
@@ -11,10 +11,10 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-ui-field-color-value/normalize": "workspace:*"
+    "@zavx0z/immersive-ui-field-color-value-normalize": "workspace:*"
   }
 }

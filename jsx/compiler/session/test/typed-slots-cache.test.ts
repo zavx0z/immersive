@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
 import {mkdtemp, mkdir, rm, writeFile} from "node:fs/promises"
 import {join, resolve} from "node:path"
-import JsxCompilerSession from "@immersive-jsx-compiler/session"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 test("изменение только правил слотов не повторяет проверку при компиляции готового компонента", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".slot-types-"))
@@ -19,7 +19,7 @@ export function OtherButton(props: {text: string}) { return <button>{props.text}
   await writeFile(join(definitions, "public.ts"), 'export type {Allowed as Action} from "./allowed"\n')
   await writeFile(join(definitions, "panel.ts"), 'import type {Action} from "./public"\nexport interface PanelSlots {default: Action}\n')
   await writeFile(join(authored, "panel.tsx"), `
-import type {JSX} from "@immersive-jsx-compiler/session"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {PanelSlots} from "../definitions/panel"
 export function Panel(): JSX.Element<PanelSlots> { return <section><slot /></section> }
 `)

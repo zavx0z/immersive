@@ -3,9 +3,9 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentViewTimeline} from "@immersive-ui-component-view/timeline"
+import type {Zavx0zImmersiveUiComponentViewTimeline} from "@zavx0z/immersive-ui-component-view-timeline"
 
-const timelineDefaultProps: ImmersiveUiComponentViewTimeline.Input = Object.freeze({
+const timelineDefaultProps: Zavx0zImmersiveUiComponentViewTimeline.Input = Object.freeze({
   title: "Timeline",
   frameStart: 1,
   frameEnd: 100,

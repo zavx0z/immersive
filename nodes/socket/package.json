@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes/socket",
+  "name": "@zavx0z/immersive-nodes-socket",
   "label": "Сокет",
   "version": "0.0.0",
   "description": "Адресуемый визуальный сокет с внешним состоянием и обработчиком активации",
@@ -11,36 +11,36 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests spec/deps.spec.ts && bun test --preload @immersive/headless/preload spec/scenario.spec.tsx",
+    "test": "bun test --parallel tests spec/deps.spec.ts && bun test --preload @zavx0z/immersive-headless/preload spec/scenario.spec.tsx",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependenciesMeta": {
-    "@immersive-nodes/tree": {
+    "@zavx0z/immersive-nodes-tree": {
       "optional": true
     },
-    "@immersive/component": {
+    "@zavx0z/immersive-component": {
       "optional": true
     },
-    "@immersive/template": {
+    "@zavx0z/immersive-template": {
       "optional": true
     }
   },
   "peerDependencies": {
-    "@immersive-nodes/tree": "workspace:*",
-    "@immersive/component": "workspace:*",
-    "@immersive/template": "workspace:*",
-    "@immersive/jsx": "workspace:*"
+    "@zavx0z/immersive-nodes-tree": "workspace:*",
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-jsx": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-jsx-compiler/bun": "workspace:*",
-    "@immersive/headless": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-headless": "workspace:*"
   },
   "dependencies": {
-    "@immersive-nodes-model-socket/kinds": "workspace:*",
-    "@immersive-nodes-model-socket/shapes": "workspace:*",
-    "@immersive-nodes-model-socket/presets": "workspace:*",
-    "@immersive-nodes-model-socket/preset": "workspace:*",
-    "@immersive-nodes-model-socket/metrics": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*"
+    "@zavx0z/immersive-nodes-model-socket-kinds": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-shapes": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-presets": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-preset": "workspace:*",
+    "@zavx0z/immersive-nodes-model-socket-metrics": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   }
 }

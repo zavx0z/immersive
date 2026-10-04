@@ -256,7 +256,7 @@ export declare namespace Command {
     expect(declaration.members.map(member => member.name)).toEqual(["document", "sources"])
     expect(declaration.members[0]!.description).toContain("{@link TypeDocDocument}")
     expect(declaration.members[1]!.description).toContain("{@link TypeDocSource}")
-    expect(declaration.comment.summary).toContain("{@link @immersive/typedoc/parser#analyzeTypeDoc | analyzeTypeDoc}")
+    expect(declaration.comment.summary).toContain("{@link @zavx0z/immersive-typedoc/parser#analyzeTypeDoc | analyzeTypeDoc}")
     expect(declaration.comment.summary).toContain("Promise отклоняется с Error")
     expect(declaration.comment.examples[0]).toContain("analysis.sources")
     expect(analysis.sources.some(source => source.path === join(repository, "typedoc/parser/contract/output.ts"))).toBe(true)

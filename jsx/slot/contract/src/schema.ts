@@ -17,7 +17,7 @@ export async function readSlotSchema(
   const {checker} = context.project
   const result = await checker.getTypeFromTypeNode(declaration.type)
   if (!result || !await isElementType(result, context)) return null
-  const marker = await checker.getPropertyOfType(result, "@immersive/jsx/slots")
+  const marker = await checker.getPropertyOfType(result, "@zavx0z/immersive-jsx/slots")
   if (!marker) return null
   const markerType = await checker.getTypeOfSymbol(marker)
   if (!markerType) return null
@@ -75,7 +75,7 @@ export async function readSlotSchema(
 
 /** Проверяет действующий бренд авторского JSX через checker, включая импортированные aliases. */
 export async function isElementType(type: Type, context: ValidationContext): Promise<boolean> {
-  const property = await context.project.checker.getPropertyOfType(type, "@immersive/jsx/element")
+  const property = await context.project.checker.getPropertyOfType(type, "@zavx0z/immersive-jsx/element")
   if (!property) return false
   const marker = await context.project.checker.getTypeOfSymbol(property)
   return marker?.isBooleanLiteralType() === true && marker.value === true

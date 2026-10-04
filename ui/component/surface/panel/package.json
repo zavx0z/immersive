@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-surface/panel",
+  "name": "@zavx0z/immersive-ui-component-surface-panel",
   "label": "Panel",
   "version": "0.0.0",
   "description": "Панель содержимого с заголовком и действиями",
@@ -11,22 +11,22 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-ui-component-button/basic": "workspace:*",
-    "@immersive-ui-component-button/icon": "workspace:*",
-    "@immersive-ui-theme-icon/chevron-down": "workspace:*",
-    "@immersive-ui-theme-icon/chevron-right": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-icon": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-chevron-down": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*"
   },
   "peerDependencies": {
-    "@immersive/component": "workspace:*"
+    "@zavx0z/immersive-component": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-component/typography": "workspace:*",
-    "@immersive-ui-component/surface": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component-typography": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface": "workspace:*"
   }
 }

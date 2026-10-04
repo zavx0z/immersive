@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
 describe.each([
   {name: "Сборка компонента", props: {cwd: resolve(import.meta.dir, "../../../.."), sourceRoots: [resolve(import.meta.dir, "fixture")]}},
@@ -10,7 +10,7 @@ describe.each([
     entrypoints: [resolve(import.meta.dir, "fixture/plain.tsx")],
     plugins: [plugin],
     target: "bun",
-    external: ["@immersive/template/compiled", "@immersive/component"],
+    external: ["@zavx0z/immersive-template/compiled", "@zavx0z/immersive-component"],
   })
   const output = await actual.outputs[0]?.text()
   test("Результат сборки", () => {

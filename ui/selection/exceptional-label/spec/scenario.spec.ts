@@ -1,6 +1,6 @@
 /** selectionExceptionalLabel показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@immersive-ui-selection/exceptional-label"
+import operation from "@zavx0z/immersive-ui-selection-exceptional-label"
 
 describe.each([{name: "Публичный вызов", props: {args: ["ready", []] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

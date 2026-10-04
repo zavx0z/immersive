@@ -4,11 +4,11 @@ SVG-значок settings в формате data URL.
 
 @packageDocumentation
 */
-import type {ImmersiveUiThemeIconSetting as Contract} from "./contract"
-import iconSvg from "@immersive-ui-theme-icon/compose"
+import type {Zavx0zImmersiveUiThemeIconSetting as Contract} from "./contract"
+import iconSvg from "@zavx0z/immersive-ui-theme-icon-compose"
 
 const settingsIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z\"/><path d=\"M19.4 15a1.7 1.7 0 0 0 .34 1.88l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.88-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.03-1.56 1.7 1.7 0 0 0-1.88.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8a1.7 1.7 0 0 0-.34-1.88l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 8.97 3.6 1.7 1.7 0 0 0 10 2.04V2a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.88-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 8a1.7 1.7 0 0 0 1.56 1.03H21a2 2 0 1 1 0 4h-.09A1.7 1.7 0 0 0 19.4 15Z\"/>")
 
 export default settingsIcon
 
-export type {ImmersiveUiThemeIconSetting} from "./contract"
+export type {Zavx0zImmersiveUiThemeIconSetting} from "./contract"

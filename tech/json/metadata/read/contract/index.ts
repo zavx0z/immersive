@@ -1,8 +1,8 @@
-import type {ImmersiveTechJsonMetadata} from "@immersive-tech-json/metadata/contract"
-type NodeJsonValue = ImmersiveTechJsonMetadata.Input[0]
+import type {Zavx0zImmersiveTechJsonMetadata} from "@zavx0z/immersive-tech-json-metadata/contract"
+type NodeJsonValue = Zavx0zImmersiveTechJsonMetadata.Input[0]
 
 /** Читает собственное поле JSON-объекта. */
-export declare namespace ImmersiveTechJsonMetadataRead {
-  type Input = readonly [value: ImmersiveTechJsonMetadata.Input[0], key: ImmersiveTechJsonMetadata.Input[1]]
+export declare namespace Zavx0zImmersiveTechJsonMetadataRead {
+  type Input = readonly [value: Zavx0zImmersiveTechJsonMetadata.Input[0], key: Zavx0zImmersiveTechJsonMetadata.Input[1]]
   type Output = NodeJsonValue | undefined
 }

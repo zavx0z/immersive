@@ -1,4 +1,4 @@
-import type {DOMRectInit, Element} from "@immersive/dom"
+import type {DOMRectInit, Element} from "@zavx0z/immersive-dom"
 import type {CreateDocumentRendererOptions, RenderFrame} from "./types.ts"
 
 /** Border geometry only: overflow clips, shadows, opacity and hit inflation do not alter it. */

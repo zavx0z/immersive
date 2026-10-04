@@ -1,6 +1,6 @@
 /** Общая семантика меню сохраняется у самостоятельной команды, списка и командного порта. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
+import {createHeadless} from "@zavx0z/immersive-headless"
 import MenuExamples from "./fixture"
 
 describe.each([

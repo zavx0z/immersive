@@ -1,8 +1,8 @@
-import type {ImmersiveNodesGeometryNodeProject} from "@immersive-nodes-geometry-node/project"
-type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
+import type {Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+type NodeShape = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
 
 /**
-Нормализованная модель flowchart между Mermaid parser, раскладкой и {@link @immersive/nodes/view#GraphView | GraphView}.
+Нормализованная модель flowchart между Mermaid parser, раскладкой и {@link @zavx0z/immersive-nodes/view#GraphView | GraphView}.
 Parser замораживает граф, массивы и записи; геометрия добавляется отдельным планом.
 
 @property direction - Направление потока; исходное TD нормализуется в TB.

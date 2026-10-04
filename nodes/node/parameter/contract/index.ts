@@ -5,18 +5,18 @@ import type {
   ParameterReference,
   ParameterSnapshot,
   Socket,
-} from "@immersive-nodes/tree"
-import type {ImmersiveNodesProjectionParameter} from "@immersive-nodes-projection/parameter"
-type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+} from "@zavx0z/immersive-nodes-tree"
+import type {Zavx0zImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
+type ParameterInput = Parameters<NonNullable<Zavx0zImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
 
-import type {ImmersiveNodesNode} from "@immersive-nodes/node/contract"
-import type {JSX} from "@immersive-jsx-compiler/session"
-import type {ImmersiveNodesLayout} from "@immersive-nodes/layout/contract"
-type NodeRect = ImmersiveNodesLayout.Output["bounds"]
+import type {Zavx0zImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
+import type {Zavx0zImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
+type NodeRect = Zavx0zImmersiveNodesLayout.Output["bounds"]
 import type {NodeAction} from "./types"
 
 /** Собственные данные представления и общий протокол ноды. */
-export declare namespace ImmersiveNodesNodeParameter {
+export declare namespace Zavx0zImmersiveNodesNodeParameter {
   /**
   Входные данные ноды с заголовком, параметрами и адресуемыми сокетами.
 
@@ -93,7 +93,7 @@ export declare namespace ImmersiveNodesNodeParameter {
   </ParameterNode>
   ```
   */
-  interface Input extends ImmersiveNodesNode.Input {
+  interface Input extends Zavx0zImmersiveNodesNode.Input {
     readonly frameId?: string | undefined
     readonly label: string
     readonly rect?: Pick<NodeRect, "x" | "y"> | undefined
@@ -118,5 +118,5 @@ export declare namespace ImmersiveNodesNodeParameter {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = ImmersiveNodesNode.Output & JSX.Element<Slots>
+  type Output = Zavx0zImmersiveNodesNode.Output & JSX.Element<Slots>
 }

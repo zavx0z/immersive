@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-nodes-parameter-choice/option-group",
+  "name": "@zavx0z/immersive-nodes-parameter-choice-option-group",
   "label": "OptionGroupParameter",
   "version": "0.0.0",
   "description": "OptionGroupParameter соединяет публичный ToggleButtonGroup с композицией сокетов ноды",
@@ -10,18 +10,18 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@immersive-ui-component-field/group": "workspace:*",
-    "@immersive-nodes-parameter-shared/layout": "workspace:*",
-    "@immersive-ui-component-button/toggle-group": "workspace:*"
+    "@zavx0z/immersive-ui-component-field-group": "workspace:*",
+    "@zavx0z/immersive-nodes-parameter-shared-layout": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-toggle-group": "workspace:*"
   },
   "devDependencies": {
-    "@immersive-nodes/parameter": "workspace:*",
-    "@immersive/headless": "workspace:*",
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-nodes/socket": "workspace:*"
+    "@zavx0z/immersive-nodes-parameter": "workspace:*",
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-nodes-socket": "workspace:*"
   },
   "scripts": {
-    "test": "bun test --preload @immersive/headless/preload ./spec",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   }
 }

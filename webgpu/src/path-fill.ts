@@ -1,4 +1,4 @@
-import type {PathDisplayItem} from "@immersive-renderer/html"
+import type {PathDisplayItem} from "@zavx0z/immersive-renderer-html"
 
 type Geometry = PathDisplayItem["geometry"]
 type Edge = Geometry["segments"][number]

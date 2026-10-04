@@ -1,4 +1,4 @@
-import {Parameter, type NodeJsonValue} from "@immersive-nodes/tree"
+import {Parameter, type NodeJsonValue} from "@zavx0z/immersive-nodes-tree"
 
 export const PARAMETER_EXAMPLES = Object.freeze({
   text: {label: "Текст", api: "TextParameter", valueType: "string", value: "Пример", presentation: {placeholder: "Введите текст"}},

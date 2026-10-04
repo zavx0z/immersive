@@ -1,6 +1,6 @@
 /** Равенство учитывает структуру, порядок элементов и семантику чисел. */
 import {describe, expect, test} from "bun:test"
-import equal from "@immersive-tech-json-value/equal"
+import equal from "@zavx0z/immersive-tech-json-value-equal"
 
 describe.each([
   {name: "Одинаковая структура", props: {left: {items: [1, 2]}, right: {items: [1, 2]}}, expected: true},

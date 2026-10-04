@@ -1,5 +1,5 @@
-import {Arrow} from "@immersive/nodes/marker/arrow"
-import type {MarkerProps} from "@immersive/nodes/marker"
+import {Arrow} from "@zavx0z/immersive-nodes/marker/arrow"
+import type {MarkerProps} from "@zavx0z/immersive-nodes/marker"
 
 export function FilledMarker(props: MarkerProps) {
   return <Arrow

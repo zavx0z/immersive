@@ -16,12 +16,12 @@
 import {API, type Snapshot} from "typescript/unstable/async"
 import {readFile} from "node:fs/promises"
 import {resolve} from "node:path"
-import JsxCompileError from "@immersive-jsx-compiler/error"
+import JsxCompileError from "@zavx0z/immersive-jsx-compiler-error"
 import {GovernedFiles, selectGovernedCompilerSource} from "./src/governed-paths.ts"
 import {transformJsxSourceFile} from "./src/transform.ts"
 import {buildJsxTransformSymbols} from "./src/symbols.ts"
 import {normalizeStyleSourceRootIds, sourceHash, assertConfiguredProject} from "./src/session-support.ts"
-import SlotAuthoring from "@immersive-jsx-slot/authoring"
+import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
 import {
   collectCapabilityUsages,
 } from "./src/capability-usage.ts"

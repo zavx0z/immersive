@@ -23,12 +23,12 @@
     "check": "bun run --parallel typecheck test"
   },
   "devDependencies": {
-    "@immersive/browser": "workspace:*",
+    "@zavx0z/immersive-browser": "workspace:*",
     "@types/bun": "^1.4.2",
     "@webgpu/types": "^0.1.74",
     "typescript": "^7.0.2",
-    "@immersive/jsx": "workspace:*",
-    "@immersive/dom": "workspace:*"
+    "@zavx0z/immersive-jsx": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*"
   },
   "overrides": {
     "@zavx0z/highlighter": "link:@zavx0z/highlighter"

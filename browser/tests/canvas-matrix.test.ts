@@ -1,8 +1,8 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@immersive/dom"
-import {Space, TrueTypeFont, ViewPoint} from "@immersive/engine"
-import {createDocumentInteractionController, createDocumentRenderer} from "@immersive-renderer/html"
-import {RendererWebGpuBackend, RendererWebGpuScreenOverlay, type Renderer} from "@immersive/webgpu"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engine"
+import {createDocumentInteractionController, createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import {RendererWebGpuBackend, RendererWebGpuScreenOverlay, type Renderer} from "@zavx0z/immersive-webgpu"
 import type {DocumentNativeInputHost} from "../src/native-input-host.ts"
 import {createDocumentCanvasRuntimeWithSeams} from "../src/runtime.ts"
 

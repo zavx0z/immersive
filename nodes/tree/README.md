@@ -1,14 +1,14 @@
 # Дерево нодов
 
-`@immersive-nodes/tree` владеет живой моделью графа: Node, Socket, Link, Frame,
+`@zavx0z/immersive-nodes-tree` владеет живой моделью графа: Node, Socket, Link, Frame,
 Parameter Store, областями графа, группами, ссылками шаблонов, изменениями,
 проекциями и переносимым документом. Модель работает без DOM, Layout и Renderer.
-Визуальное представление модели принадлежит `@immersive/nodes`.
+Визуальное представление модели принадлежит `@zavx0z/immersive-nodes`.
 
 ## Модель и значения
 
 ```typescript
-import {Parameter, createNodeTree} from "@immersive-nodes/tree"
+import {Parameter, createNodeTree} from "@zavx0z/immersive-nodes-tree"
 
 const value = new Parameter("value", 1)
 const tree = createNodeTree({

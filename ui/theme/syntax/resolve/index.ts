@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiThemeSyntaxResolve as Contract} from "./contract"
-import activeSyntaxTheme from "@immersive-ui-theme-syntax/active"
+import type {Zavx0zImmersiveUiThemeSyntaxResolve as Contract} from "./contract"
+import activeSyntaxTheme from "@zavx0z/immersive-ui-theme-syntax-active"
 import {foregroundFor} from "./src/helpers.ts"
 import {normalizeHexColor} from "./src/helpers.ts"
 
@@ -20,4 +20,4 @@ export default function resolveSyntaxScopeColorHex(
   return normalized === undefined ? undefined : `#${normalized}`
 }
 
-export type {ImmersiveUiThemeSyntaxResolve} from "./contract"
+export type {Zavx0zImmersiveUiThemeSyntaxResolve} from "./contract"

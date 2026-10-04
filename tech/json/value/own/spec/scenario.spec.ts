@@ -1,6 +1,6 @@
 /** Собственная копия сохраняет JSON и не разделяет изменяемые объекты с источником. */
 import {describe, expect, test} from "bun:test"
-import own from "@immersive-tech-json-value/own"
+import own from "@zavx0z/immersive-tech-json-value-own"
 
 describe.each([
   {name: "Вложенные значения", props: {value: {rows: [1, 2], enabled: true}, label: "Данные"}},

@@ -1,4 +1,4 @@
-import type {ImmersiveUiComponentViewTableSelectionAfterClick} from "@immersive-ui-component-view-table/selection-after-click"
+import type {Zavx0zImmersiveUiComponentViewTableSelectionAfterClick} from "@zavx0z/immersive-ui-component-view-table-selection-after-click"
 
 /**
 Тип TableColumn принадлежит контракту своего владельца.
@@ -32,4 +32,4 @@ export type TableCellContext = Readonly<{
 }>
 
 /** Результат операции выбора строк передаётся владельцу таблицы без копирования полей. */
-export type TableSelectionUpdate = ImmersiveUiComponentViewTableSelectionAfterClick.Output
+export type TableSelectionUpdate = Zavx0zImmersiveUiComponentViewTableSelectionAfterClick.Output

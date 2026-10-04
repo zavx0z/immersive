@@ -3,8 +3,8 @@ import {
   Object3D,
   Vector3,
   type ViewPoint,
-} from "@immersive/engine"
-import type {RenderViewport} from "@immersive-renderer/html"
+} from "@zavx0z/immersive-engine"
+import type {RenderViewport} from "@zavx0z/immersive-renderer-html"
 
 export type RendererWebGpuScreenOverlayOptions = Readonly<{
   content: Object3D
@@ -30,7 +30,7 @@ export class RendererWebGpuScreenOverlay extends Object3D {
     this.content = options.content
     this.distance = positive(options.distance ?? 600, "distance")
     this.#viewport = validateViewport(options.viewport)
-    this.name = "@immersive/webgpu:screen-overlay"
+    this.name = "@zavx0z/immersive-webgpu:screen-overlay"
     this.renderLayer = "ui"
     this.frustumCulled = false
     this.add(this.content)

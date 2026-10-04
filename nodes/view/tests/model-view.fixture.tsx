@@ -1,5 +1,5 @@
-import {GraphView} from "@immersive/nodes/view"
-import {useNodeTreePresentation, type NodeTreeProps} from "@immersive/nodes/view/tree"
+import {GraphView} from "@zavx0z/immersive-nodes/view"
+import {useNodeTreePresentation, type NodeTreeProps} from "@zavx0z/immersive-nodes/view/tree"
 
 /** Собирает пример просмотра существующей модели без GraphEditor. */
 export function ModelGraphView(props: NodeTreeProps) {

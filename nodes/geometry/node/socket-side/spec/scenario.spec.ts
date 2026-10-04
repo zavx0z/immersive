@@ -1,7 +1,7 @@
 /** Принятая сторона раскладки имеет приоритет над исходной стороной модели. */
 import {describe, expect, test} from "bun:test"
-import side from "@immersive-nodes-geometry-node/socket-side"
-import key from "@immersive-nodes-model-socket/key"
+import side from "@zavx0z/immersive-nodes-geometry-node-socket-side"
+import key from "@zavx0z/immersive-nodes-model-socket-key"
 
 describe.each([
   {name: "Модель", props: {nodeId: "node", socket: {id: "out", direction: "output" as const}}, expected: "right"},

@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-ui-component-widget/tree",
+  "name": "@zavx0z/immersive-ui-component-widget-tree",
   "label": "Tree",
   "version": "0.0.0",
   "description": "Дерево с выбором, навигацией и ограниченным окном материализованных строк",
@@ -11,24 +11,24 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload @immersive/headless/preload --parallel --max-concurrency=2 ./spec ./test",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@immersive-jsx-compiler/session": "workspace:*",
-    "@immersive-ui-component-button/basic": "workspace:*",
-    "@immersive-ui-theme-icon/chevron-down": "workspace:*",
-    "@immersive-ui-theme-icon/chevron-right": "workspace:*",
-    "@immersive-ui-component-widget-header/action": "workspace:*",
-    "@immersive-ui-component-widget/header": "workspace:*",
-    "@immersive-ui-component/badge": "workspace:*"
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-chevron-down": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*",
+    "@zavx0z/immersive-ui-component-widget-header-action": "workspace:*",
+    "@zavx0z/immersive-ui-component-widget-header": "workspace:*",
+    "@zavx0z/immersive-ui-component-badge": "workspace:*"
   },
   "peerDependencies": {
-    "@immersive/component": "workspace:*",
-    "@immersive/dom": "workspace:*"
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*"
   },
   "devDependencies": {
-    "@immersive/headless": "workspace:*",
-    "@immersive-ui-component/widget": "workspace:*"
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component-widget": "workspace:*"
   }
 }

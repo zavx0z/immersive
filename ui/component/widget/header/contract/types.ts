@@ -1,5 +1,5 @@
-import type {ImmersiveUiComponentBadge} from "@immersive-ui-component/badge"
-import type {ImmersiveUiComponentButtonBasic} from "@immersive-ui-component-button/basic"
+import type {Zavx0zImmersiveUiComponentBadge} from "@zavx0z/immersive-ui-component-badge"
+import type {Zavx0zImmersiveUiComponentButtonBasic} from "@zavx0z/immersive-ui-component-button-basic"
 
 /**
 Тип WidgetAction принадлежит контракту своего владельца.
@@ -11,8 +11,8 @@ export type WidgetAction = Readonly<{
   badge?: string | undefined
   disabled?: boolean | undefined
   selected?: boolean | undefined
-  tone?: ImmersiveUiComponentButtonBasic.Input["tone"] | undefined
-  badgeTone?: ImmersiveUiComponentBadge.Input["tone"] | undefined
+  tone?: Zavx0zImmersiveUiComponentButtonBasic.Input["tone"] | undefined
+  badgeTone?: Zavx0zImmersiveUiComponentBadge.Input["tone"] | undefined
   dividerAfter?: boolean | undefined
   onAction?: ((event: Event) => void) | undefined
 }>

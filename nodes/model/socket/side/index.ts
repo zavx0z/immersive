@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {ImmersiveNodesModelSocketSide as Contract} from "./contract"
-export type {ImmersiveNodesModelSocketSide} from "./contract"
+import type {Zavx0zImmersiveNodesModelSocketSide as Contract} from "./contract"
+export type {Zavx0zImmersiveNodesModelSocketSide} from "./contract"
 
 export default function socketSide(socket: Contract.Input): Contract.Output {
   return socket.side ?? (socket.direction === "output" ? "right" : "left")

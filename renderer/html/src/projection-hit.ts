@@ -1,4 +1,4 @@
-import type {Node} from "@immersive/dom"
+import type {Node} from "@zavx0z/immersive-dom"
 import {hitTest, pointInClip} from "./interaction.ts"
 import {readCanonicalRenderFrameChanges} from "./frame-changes.ts"
 import type {DisplayItem, HitMetadata, RenderFrame} from "./types.ts"

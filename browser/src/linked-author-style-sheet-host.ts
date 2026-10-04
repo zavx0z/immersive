@@ -3,7 +3,7 @@ import {
   type Document,
   type DocumentAuthorStyleSheet,
   type DocumentAuthorStyleSheetOwner
-} from "@immersive/dom"
+} from "@zavx0z/immersive-dom"
 
 export type BrowserLinkedAuthorStyleSheetSource = Readonly<{
   id: string

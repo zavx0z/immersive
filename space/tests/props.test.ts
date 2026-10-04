@@ -2,11 +2,11 @@ import {afterAll, beforeAll, expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createRoot} from "@immersive/component"
-import {createDocument} from "@immersive/dom"
-import {Object3D, Quaternion, Vector3} from "@immersive/engine"
-import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
-import type {CompiledTemplate} from "@immersive/template/compiled"
+import {createRoot} from "@zavx0z/immersive-component"
+import {createDocument} from "@zavx0z/immersive-dom"
+import {Object3D, Quaternion, Vector3} from "@zavx0z/immersive-engine"
+import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {createSpaceElementFactories, type XRObjectElement} from "../src/index.ts"
 import type {GroupProps} from "../abstraction/group.tsx"
 
@@ -26,7 +26,7 @@ beforeAll(async () => {
     entrypoints: entries.map(([path]) => join(space, `${path}.tsx`)),
     outdir: directory,
     target: "bun",
-    external: ["@immersive/component", "@immersive/dom", "@immersive/engine", "@immersive/template/compiled"],
+    external: ["@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-engine", "@zavx0z/immersive-template/compiled"],
     plugins: [createJsxBunPlugin({cwd: resolve(space, ".."), sourceRoots: [space]})],
   })
   if (!result.success) throw new AggregateError(result.logs, "Space props compilation failed")

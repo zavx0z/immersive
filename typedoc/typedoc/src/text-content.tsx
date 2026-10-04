@@ -1,4 +1,4 @@
-import {Markdown} from "@immersive/markdown"
+import {Markdown} from "@zavx0z/immersive-markdown"
 
 /**
 Показывает авторское описание или пример через общий {@link Markdown} в текущем Document.

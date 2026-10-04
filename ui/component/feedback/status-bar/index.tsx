@@ -5,12 +5,12 @@
 @packageDocumentation
 */
 import {StatusBarItems} from "./src/helpers.tsx"
-import type {ImmersiveUiComponentFeedbackStatusBar as Contract} from "./contract"
+import type {Zavx0zImmersiveUiComponentFeedbackStatusBar as Contract} from "./contract"
 import {normalizeStatusBarItems} from "./src/helpers.tsx"
-import {hasSlot} from "@immersive/component/slot-presence"
+import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
 
 
-export type {ImmersiveUiComponentFeedbackStatusBar} from "./contract"
+export type {Zavx0zImmersiveUiComponentFeedbackStatusBar} from "./contract"
 
 export default function StatusBar(props: Contract.Input): Contract.Output {
   const start = normalizeStatusBarItems(props.start ?? [])

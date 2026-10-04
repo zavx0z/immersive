@@ -1,5 +1,5 @@
-import type {LayoutResult} from "@immersive-nodes/layout/types"
-import type {NodeTreeSnapshot} from "@immersive-nodes/tree"
+import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
+import type {NodeTreeSnapshot} from "@zavx0z/immersive-nodes-tree"
 import type {NodeTreeLayout, NodeTreeStore} from "../node-tree/contracts.ts"
 import {nodeSocketLayoutPortId} from "./geometry.ts"
 

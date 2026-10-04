@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import {Event, createDocument} from "@immersive/dom"
+import {Event, createDocument} from "@zavx0z/immersive-dom"
 
 describe("Semantic DOM contract", () => {
   test("[DOM-001] Каждый Element принадлежит ровно одному Document", () => {

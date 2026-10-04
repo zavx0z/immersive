@@ -1,10 +1,10 @@
-import DiagramNode from "@immersive-nodes-node/diagram"
-import type {GraphNodeProps, GraphInput, GraphLayoutComputer} from "@immersive/nodes/view"
-import {layoutTopDown} from "@immersive-nodes/layout/top-down"
-import {createCubicLinkRoute} from "@immersive/nodes/routing/link-path"
-import {GraphEditor, type GraphEditorProps} from "@immersive/nodes/editor"
-import type {NodeTreeStore} from "@immersive/nodes/view/tree"
-import {layoutFixed} from "@immersive-nodes/layout/fixed"
+import DiagramNode from "@zavx0z/immersive-nodes-node-diagram"
+import type {GraphNodeProps, GraphInput, GraphLayoutComputer} from "@zavx0z/immersive-nodes/view"
+import {layoutTopDown} from "@zavx0z/immersive-nodes-layout/top-down"
+import {createCubicLinkRoute} from "@zavx0z/immersive-nodes/routing/link-path"
+import {GraphEditor, type GraphEditorProps} from "@zavx0z/immersive-nodes/editor"
+import type {NodeTreeStore} from "@zavx0z/immersive-nodes/view/tree"
+import {layoutFixed} from "@zavx0z/immersive-nodes-layout/fixed"
 
 export function MeasuredDiagram(props: GraphNodeProps) {
   return <DiagramNode

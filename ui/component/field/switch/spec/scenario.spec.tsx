@@ -1,7 +1,7 @@
 /** SwitchField показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
-import {createHeadless} from "@immersive/headless"
-import SwitchField from "@immersive-ui-component-field/switch"
+import {createHeadless} from "@zavx0z/immersive-headless"
+import SwitchField from "@zavx0z/immersive-ui-component-field-switch"
 
 describe.each([{name: "Основное представление", props: {checked: true, label: "Параметр"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

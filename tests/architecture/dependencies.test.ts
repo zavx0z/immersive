@@ -6,121 +6,121 @@ import {readUiWorkspaces} from "./ui-workspaces"
 const root = join(import.meta.dir, "../..")
 
 const basePackageDirectories = Object.freeze({
-  "@immersive/engine": "engine",
-  "@immersive/dom": "dom",
-  "@immersive/template": "template",
-  "@immersive/jsx": "jsx",
-  "@immersive-jsx/compiler": "jsx/compiler",
-  "@immersive-jsx/runtime": "jsx/runtime",
-  "@immersive-jsx/development": "jsx/development",
-  "@immersive-jsx/slot": "jsx/slot",
-  "@immersive-jsx-runtime/fragment": "jsx/runtime/fragment",
-  "@immersive-jsx-runtime/create": "jsx/runtime/create",
-  "@immersive-jsx-development/create": "jsx/development/create",
-  "@immersive-jsx/event": "jsx/event",
-  "@immersive-jsx-slot/plan": "jsx/slot/plan",
-  "@immersive-jsx-slot/child": "jsx/slot/child",
-  "@immersive-jsx-compiler/session": "jsx/compiler/session",
-  "@immersive-jsx-compiler/bun": "jsx/compiler/bun",
-  "@immersive-jsx-slot/authoring": "jsx/slot/authoring",
-  "@immersive-jsx-compiler/error": "jsx/compiler/error",
-  "@immersive-jsx-slot/contract": "jsx/slot/contract",
-  "@immersive/component": "component",
-  "@immersive/renderer": "renderer",
-  "@immersive-renderer/html": "renderer/html",
-  "@immersive/markdown": "markdown",
-  "@immersive/typedoc": "typedoc",
-  "@immersive/webgpu": "webgpu",
-  "@immersive/browser": "browser",
-  "@immersive/space": "space",
-  "@immersive-ui/component": "ui",
-  "@immersive-nodes/node": "nodes/node",
-  "@immersive/headless": "headless",
-  "@immersive-nodes/parameter": "nodes/parameter",
-  "@immersive-nodes/socket": "nodes/socket",
-  "@immersive-nodes/tree": "nodes/tree",
-  "@immersive-nodes/layout": "nodes/layout",
-  "@immersive/nodes": "nodes",
-  "@immersive/devtool": "devtool",
+  "@zavx0z/immersive-engine": "engine",
+  "@zavx0z/immersive-dom": "dom",
+  "@zavx0z/immersive-template": "template",
+  "@zavx0z/immersive-jsx": "jsx",
+  "@zavx0z/immersive-jsx-compiler": "jsx/compiler",
+  "@zavx0z/immersive-jsx-runtime": "jsx/runtime",
+  "@zavx0z/immersive-jsx-development": "jsx/development",
+  "@zavx0z/immersive-jsx-slot": "jsx/slot",
+  "@zavx0z/immersive-jsx-runtime-fragment": "jsx/runtime/fragment",
+  "@zavx0z/immersive-jsx-runtime-create": "jsx/runtime/create",
+  "@zavx0z/immersive-jsx-development-create": "jsx/development/create",
+  "@zavx0z/immersive-jsx-event": "jsx/event",
+  "@zavx0z/immersive-jsx-slot-plan": "jsx/slot/plan",
+  "@zavx0z/immersive-jsx-slot-child": "jsx/slot/child",
+  "@zavx0z/immersive-jsx-compiler-session": "jsx/compiler/session",
+  "@zavx0z/immersive-jsx-compiler-bun": "jsx/compiler/bun",
+  "@zavx0z/immersive-jsx-slot-authoring": "jsx/slot/authoring",
+  "@zavx0z/immersive-jsx-compiler-error": "jsx/compiler/error",
+  "@zavx0z/immersive-jsx-slot-contract": "jsx/slot/contract",
+  "@zavx0z/immersive-component": "component",
+  "@zavx0z/immersive-renderer": "renderer",
+  "@zavx0z/immersive-renderer-html": "renderer/html",
+  "@zavx0z/immersive-markdown": "markdown",
+  "@zavx0z/immersive-typedoc": "typedoc",
+  "@zavx0z/immersive-webgpu": "webgpu",
+  "@zavx0z/immersive-browser": "browser",
+  "@zavx0z/immersive-space": "space",
+  "@zavx0z/immersive-ui-component": "ui",
+  "@zavx0z/immersive-nodes-node": "nodes/node",
+  "@zavx0z/immersive-headless": "headless",
+  "@zavx0z/immersive-nodes-parameter": "nodes/parameter",
+  "@zavx0z/immersive-nodes-socket": "nodes/socket",
+  "@zavx0z/immersive-nodes-tree": "nodes/tree",
+  "@zavx0z/immersive-nodes-layout": "nodes/layout",
+  "@zavx0z/immersive-nodes": "nodes",
+  "@zavx0z/immersive-devtool": "devtool",
 } as const)
 
 const uiWorkspaces = await readUiWorkspaces(root)
-const uiNames = ["@immersive-ui/component", ...uiWorkspaces.map(([, name]) => name)]
+const uiNames = ["@zavx0z/immersive-ui-component", ...uiWorkspaces.map(([, name]) => name)]
 const packageDirectories: Readonly<Record<string, string>> = Object.freeze({
   ...basePackageDirectories,
   ...Object.fromEntries(uiWorkspaces.map(([directory, name]) => [name, directory])),
 })
 
 
-type StorybookPackageName = keyof typeof packageDirectories
+type Zavx0zStorybookPackageName = keyof typeof packageDirectories
 
-const packageNames = Object.freeze(Object.keys(packageDirectories) as StorybookPackageName[])
+const packageNames = Object.freeze(Object.keys(packageDirectories) as Zavx0zStorybookPackageName[])
 
-const baseAllowedInternalDependencies: Readonly<Record<StorybookPackageName, readonly StorybookPackageName[]>> =
+const baseAllowedInternalDependencies: Readonly<Record<Zavx0zStorybookPackageName, readonly Zavx0zStorybookPackageName[]>> =
   Object.freeze({
-    "@immersive/engine": [],
-    "@immersive/dom": [],
-    "@immersive/template": ["@immersive/dom"],
-    "@immersive/jsx": ["@immersive-jsx/runtime", "@immersive-jsx/development", "@immersive-jsx/slot", "@immersive-jsx-compiler/session", "@immersive-jsx/event", "@immersive-jsx/compiler"],
-    "@immersive-jsx/compiler": ["@immersive-jsx-compiler/session", "@immersive-jsx-compiler/bun", "@immersive-jsx-compiler/error"],
-    "@immersive-jsx/runtime": ["@immersive-jsx-runtime/create", "@immersive-jsx-runtime/fragment"],
-    "@immersive-jsx/development": ["@immersive-jsx-development/create", "@immersive-jsx-runtime/fragment"],
-    "@immersive-jsx/slot": ["@immersive-jsx-slot/plan", "@immersive-jsx-slot/child", "@immersive-jsx-slot/authoring", "@immersive-jsx-slot/contract"],
-    "@immersive-jsx-runtime/fragment": [],
-    "@immersive-jsx-runtime/create": ["@immersive-jsx-runtime/fragment", "@immersive-jsx-compiler/session", "@immersive-jsx-slot/plan", "@immersive-jsx-slot/child", "@immersive/component", "@immersive/template"],
-    "@immersive-jsx-development/create": ["@immersive-jsx-runtime/create", "@immersive-jsx-compiler/session", "@immersive/component"],
-    "@immersive-jsx/event": ["@immersive/dom"],
-    "@immersive-jsx-slot/plan": [],
-    "@immersive-jsx-slot/child": [],
-    "@immersive-jsx-compiler/session": ["@immersive/dom", "@immersive-jsx/event", "@immersive-jsx-slot/plan", "@immersive-jsx-slot/contract", "@immersive-jsx-slot/authoring", "@immersive-jsx-compiler/error", "@immersive/template"],
-    "@immersive-jsx-compiler/bun": ["@immersive-jsx-compiler/session"],
-    "@immersive-jsx-slot/authoring": ["@immersive-jsx-slot/plan", "@immersive-jsx-compiler/error"],
-    "@immersive-jsx-compiler/error": [],
-    "@immersive-jsx-slot/contract": ["@immersive-jsx-slot/authoring", "@immersive-jsx-compiler/error"],
-    "@immersive/component": ["@immersive/dom", "@immersive/template", "@immersive-jsx-compiler/session"],
-    "@immersive/renderer": [],
-    "@immersive-renderer/html": ["@immersive/dom"],
-    "@immersive/typedoc": ["@immersive/component", "@immersive/template", "@immersive-ui/component", "@immersive/markdown", "@immersive/jsx"],
-    "@immersive/markdown": ["@immersive/component", "@immersive/dom", "@immersive/template", "@immersive-ui/component", "@immersive-nodes/node", "@immersive-nodes/layout", "@immersive/nodes", "@immersive/jsx", "@immersive-jsx-compiler/session"],
-    "@immersive/devtool": ["@immersive/dom", "@immersive-renderer/html"],
-    "@immersive/webgpu": ["@immersive/engine", "@immersive-renderer/html"],
-    "@immersive/browser": [
-      "@immersive/component",
-      "@immersive/template",
-      "@immersive/dom",
-      "@immersive/engine",
-      "@immersive-renderer/html",
-      "@immersive/space",
-      "@immersive/webgpu",
-      "@immersive-jsx-compiler/session",
+    "@zavx0z/immersive-engine": [],
+    "@zavx0z/immersive-dom": [],
+    "@zavx0z/immersive-template": ["@zavx0z/immersive-dom"],
+    "@zavx0z/immersive-jsx": ["@zavx0z/immersive-jsx-runtime", "@zavx0z/immersive-jsx-development", "@zavx0z/immersive-jsx-slot", "@zavx0z/immersive-jsx-compiler-session", "@zavx0z/immersive-jsx-event", "@zavx0z/immersive-jsx-compiler"],
+    "@zavx0z/immersive-jsx-compiler": ["@zavx0z/immersive-jsx-compiler-session", "@zavx0z/immersive-jsx-compiler-bun", "@zavx0z/immersive-jsx-compiler-error"],
+    "@zavx0z/immersive-jsx-runtime": ["@zavx0z/immersive-jsx-runtime-create", "@zavx0z/immersive-jsx-runtime-fragment"],
+    "@zavx0z/immersive-jsx-development": ["@zavx0z/immersive-jsx-development-create", "@zavx0z/immersive-jsx-runtime-fragment"],
+    "@zavx0z/immersive-jsx-slot": ["@zavx0z/immersive-jsx-slot-plan", "@zavx0z/immersive-jsx-slot-child", "@zavx0z/immersive-jsx-slot-authoring", "@zavx0z/immersive-jsx-slot-contract"],
+    "@zavx0z/immersive-jsx-runtime-fragment": [],
+    "@zavx0z/immersive-jsx-runtime-create": ["@zavx0z/immersive-jsx-runtime-fragment", "@zavx0z/immersive-jsx-compiler-session", "@zavx0z/immersive-jsx-slot-plan", "@zavx0z/immersive-jsx-slot-child", "@zavx0z/immersive-component", "@zavx0z/immersive-template"],
+    "@zavx0z/immersive-jsx-development-create": ["@zavx0z/immersive-jsx-runtime-create", "@zavx0z/immersive-jsx-compiler-session", "@zavx0z/immersive-component"],
+    "@zavx0z/immersive-jsx-event": ["@zavx0z/immersive-dom"],
+    "@zavx0z/immersive-jsx-slot-plan": [],
+    "@zavx0z/immersive-jsx-slot-child": [],
+    "@zavx0z/immersive-jsx-compiler-session": ["@zavx0z/immersive-dom", "@zavx0z/immersive-jsx-event", "@zavx0z/immersive-jsx-slot-plan", "@zavx0z/immersive-jsx-slot-contract", "@zavx0z/immersive-jsx-slot-authoring", "@zavx0z/immersive-jsx-compiler-error", "@zavx0z/immersive-template"],
+    "@zavx0z/immersive-jsx-compiler-bun": ["@zavx0z/immersive-jsx-compiler-session"],
+    "@zavx0z/immersive-jsx-slot-authoring": ["@zavx0z/immersive-jsx-slot-plan", "@zavx0z/immersive-jsx-compiler-error"],
+    "@zavx0z/immersive-jsx-compiler-error": [],
+    "@zavx0z/immersive-jsx-slot-contract": ["@zavx0z/immersive-jsx-slot-authoring", "@zavx0z/immersive-jsx-compiler-error"],
+    "@zavx0z/immersive-component": ["@zavx0z/immersive-dom", "@zavx0z/immersive-template", "@zavx0z/immersive-jsx-compiler-session"],
+    "@zavx0z/immersive-renderer": [],
+    "@zavx0z/immersive-renderer-html": ["@zavx0z/immersive-dom"],
+    "@zavx0z/immersive-typedoc": ["@zavx0z/immersive-component", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-markdown", "@zavx0z/immersive-jsx"],
+    "@zavx0z/immersive-markdown": ["@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-nodes-node", "@zavx0z/immersive-nodes-layout", "@zavx0z/immersive-nodes", "@zavx0z/immersive-jsx", "@zavx0z/immersive-jsx-compiler-session"],
+    "@zavx0z/immersive-devtool": ["@zavx0z/immersive-dom", "@zavx0z/immersive-renderer-html"],
+    "@zavx0z/immersive-webgpu": ["@zavx0z/immersive-engine", "@zavx0z/immersive-renderer-html"],
+    "@zavx0z/immersive-browser": [
+      "@zavx0z/immersive-component",
+      "@zavx0z/immersive-template",
+      "@zavx0z/immersive-dom",
+      "@zavx0z/immersive-engine",
+      "@zavx0z/immersive-renderer-html",
+      "@zavx0z/immersive-space",
+      "@zavx0z/immersive-webgpu",
+      "@zavx0z/immersive-jsx-compiler-session",
     ],
-    "@immersive/space": [
-      "@immersive/component",
-      "@immersive/dom",
-      "@immersive/engine",
-      "@immersive/template",
-      "@immersive/jsx",
-      "@immersive-jsx-compiler/session",
+    "@zavx0z/immersive-space": [
+      "@zavx0z/immersive-component",
+      "@zavx0z/immersive-dom",
+      "@zavx0z/immersive-engine",
+      "@zavx0z/immersive-template",
+      "@zavx0z/immersive-jsx",
+      "@zavx0z/immersive-jsx-compiler-session",
     ],
-    "@immersive-ui/component": ["@immersive/component", "@immersive/dom", "@immersive/template", "@immersive/jsx"],
-    "@immersive-nodes/node": ["@immersive-nodes/tree", "@immersive-nodes/parameter", "@immersive-nodes/socket", "@immersive/component", "@immersive/template", "@immersive-ui/component", "@immersive/jsx", "@immersive-jsx-compiler/session"],
-    "@immersive/headless": ["@immersive-renderer/html", "@immersive/component", "@immersive/dom", "@immersive/engine", "@immersive/template", "@immersive-ui/component", "@immersive/webgpu", "@immersive/jsx", "@immersive-jsx-compiler/session", "@immersive-jsx-slot/child", "@immersive-jsx-compiler/bun"],
-    "@immersive-nodes/parameter": ["@immersive-nodes/tree", "@immersive-nodes/socket", "@immersive/component", "@immersive/dom", "@immersive/template", "@immersive-ui/component", "@immersive/jsx"],
-    "@immersive-nodes/socket": ["@immersive-nodes/tree", "@immersive/component", "@immersive/template", "@immersive/jsx"],
-    "@immersive-nodes/tree": [],
-    "@immersive-nodes/layout": [],
-    "@immersive/nodes": [
-      "@immersive-nodes/node",
-      "@immersive-nodes/parameter",
-      "@immersive-nodes/socket",
-      "@immersive/component",
-      "@immersive/dom",
-      "@immersive-nodes/layout",
-      "@immersive-nodes/tree",
-      "@immersive/template",
-      "@immersive-ui/component",
-      "@immersive/jsx",
-      "@immersive-jsx-compiler/session",
+    "@zavx0z/immersive-ui-component": ["@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template", "@zavx0z/immersive-jsx"],
+    "@zavx0z/immersive-nodes-node": ["@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-nodes-parameter", "@zavx0z/immersive-nodes-socket", "@zavx0z/immersive-component", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-jsx", "@zavx0z/immersive-jsx-compiler-session"],
+    "@zavx0z/immersive-headless": ["@zavx0z/immersive-renderer-html", "@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-engine", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-webgpu", "@zavx0z/immersive-jsx", "@zavx0z/immersive-jsx-compiler-session", "@zavx0z/immersive-jsx-slot-child", "@zavx0z/immersive-jsx-compiler-bun"],
+    "@zavx0z/immersive-nodes-parameter": ["@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-nodes-socket", "@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-jsx"],
+    "@zavx0z/immersive-nodes-socket": ["@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-component", "@zavx0z/immersive-template", "@zavx0z/immersive-jsx"],
+    "@zavx0z/immersive-nodes-tree": [],
+    "@zavx0z/immersive-nodes-layout": [],
+    "@zavx0z/immersive-nodes": [
+      "@zavx0z/immersive-nodes-node",
+      "@zavx0z/immersive-nodes-parameter",
+      "@zavx0z/immersive-nodes-socket",
+      "@zavx0z/immersive-component",
+      "@zavx0z/immersive-dom",
+      "@zavx0z/immersive-nodes-layout",
+      "@zavx0z/immersive-nodes-tree",
+      "@zavx0z/immersive-template",
+      "@zavx0z/immersive-ui-component",
+      "@zavx0z/immersive-jsx",
+      "@zavx0z/immersive-jsx-compiler-session",
     ],
   })
 
@@ -132,16 +132,16 @@ type PackageManifest = Readonly<{
 
 type SourceImport = Readonly<{
   file: string
-  packageName: StorybookPackageName
+  packageName: Zavx0zStorybookPackageName
   specifier: string
 }>
 
 const sourceGlob = new Bun.Glob("**/*.{ts,tsx,js,jsx,mjs,cjs}")
-const uiPlatform = ["@immersive/component", "@immersive/dom", "@immersive/template", "@immersive/jsx", "@immersive-jsx-compiler/session"]
+const uiPlatform = ["@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template", "@zavx0z/immersive-jsx", "@zavx0z/immersive-jsx-compiler-session"]
 const allowedInternalDependencies = Object.fromEntries(packageNames.map(name => [name,
   uiNames.includes(name) ? [...uiNames, ...uiPlatform] : [
     ...(baseAllowedInternalDependencies[name] ?? []),
-    ...(baseAllowedInternalDependencies[name]?.includes("@immersive-ui/component") ? uiNames : []),
+    ...(baseAllowedInternalDependencies[name]?.includes("@zavx0z/immersive-ui-component") ? uiNames : []),
   ],
 ])) as Readonly<Record<string, readonly string[]>>
 
@@ -153,9 +153,9 @@ const excludedSourceSegments = new Set([
   "test",
   "tests",
 ])
-const sourceImportCache = new Map<StorybookPackageName, Promise<readonly SourceImport[]>>()
+const sourceImportCache = new Map<Zavx0zStorybookPackageName, Promise<readonly SourceImport[]>>()
 
-async function readManifest(packageName: StorybookPackageName): Promise<PackageManifest> {
+async function readManifest(packageName: Zavx0zStorybookPackageName): Promise<PackageManifest> {
   return Bun.file(join(root, packageDirectories[packageName]!, "package.json")).json()
 }
 
@@ -167,7 +167,7 @@ function declaredDependencies(manifest: PackageManifest): ReadonlySet<string> {
   ])
 }
 
-function internalPackageName(specifier: string): StorybookPackageName | null {
+function internalPackageName(specifier: string): Zavx0zStorybookPackageName | null {
   for (const packageName of packageNames) {
     if (specifier === packageName || specifier.startsWith(`${packageName}/`)) {
       return packageName
@@ -190,7 +190,7 @@ function loaderFor(file: string): "js" | "jsx" | "ts" | "tsx" {
   }
 }
 
-function scanPackageImports(packageName: StorybookPackageName): Promise<readonly SourceImport[]> {
+function scanPackageImports(packageName: Zavx0zStorybookPackageName): Promise<readonly SourceImport[]> {
   const cached = sourceImportCache.get(packageName)
   if (cached) return cached
   const scanning = scanPackageImportsUncached(packageName)
@@ -198,14 +198,14 @@ function scanPackageImports(packageName: StorybookPackageName): Promise<readonly
   return scanning
 }
 
-function belongsToPackage(packageName: StorybookPackageName, file: string): boolean {
+function belongsToPackage(packageName: Zavx0zStorybookPackageName, file: string): boolean {
   const packageRoot = resolve(root, packageDirectories[packageName]!)
   return !Object.values(packageDirectories).some(directory =>
     directory !== packageDirectories[packageName]! && resolve(packageRoot, file).startsWith(resolve(root, directory) + sep))
 }
 
 async function scanPackageImportsUncached(
-  packageName: StorybookPackageName,
+  packageName: Zavx0zStorybookPackageName,
 ): Promise<readonly SourceImport[]> {
   const packageRoot = join(root, packageDirectories[packageName]!)
   const imports: SourceImport[] = []
@@ -225,15 +225,15 @@ async function scanPackageImportsUncached(
   return Object.freeze(imports)
 }
 
-async function internalDependencyGraph(): Promise<ReadonlyMap<StorybookPackageName, readonly StorybookPackageName[]>> {
-  const graph = new Map<StorybookPackageName, readonly StorybookPackageName[]>()
+async function internalDependencyGraph(): Promise<ReadonlyMap<Zavx0zStorybookPackageName, readonly Zavx0zStorybookPackageName[]>> {
+  const graph = new Map<Zavx0zStorybookPackageName, readonly Zavx0zStorybookPackageName[]>()
   for (const packageName of packageNames) {
     const dependencies = new Set((await scanPackageImports(packageName)).map(item => item.specifier))
     graph.set(
       packageName,
       Object.freeze([...dependencies]
         .map(internalPackageName)
-        .filter((dependency): dependency is StorybookPackageName => dependency !== null && dependency !== packageName)),
+        .filter((dependency): dependency is Zavx0zStorybookPackageName => dependency !== null && dependency !== packageName)),
     )
   }
   return graph
@@ -242,10 +242,10 @@ async function internalDependencyGraph(): Promise<ReadonlyMap<StorybookPackageNa
 describe("Направление производственных зависимостей", () => {
   test("[PKG-003] производственные зависимости пакетов не образуют циклов", async () => {
     const graph = await internalDependencyGraph()
-    const visiting = new Set<StorybookPackageName>()
-    const visited = new Set<StorybookPackageName>()
+    const visiting = new Set<Zavx0zStorybookPackageName>()
+    const visited = new Set<Zavx0zStorybookPackageName>()
 
-    const visit = (packageName: StorybookPackageName, path: readonly StorybookPackageName[]): void => {
+    const visit = (packageName: Zavx0zStorybookPackageName, path: readonly Zavx0zStorybookPackageName[]): void => {
       if (visited.has(packageName)) return
       assertRequirement(
         !visiting.has(packageName),
@@ -299,18 +299,18 @@ describe("Направление производственных зависим
   })
 
   test("[PKG-005] Engine не зависит от DOM, UI, Node и WebGPU", async () => {
-    const dependencies = declaredDependencies(await readManifest("@immersive/engine"))
+    const dependencies = declaredDependencies(await readManifest("@zavx0z/immersive-engine"))
     for (const forbidden of [
-      "@immersive/dom",
-      "@immersive-ui/component",
-      "@immersive-nodes/tree",
-      "@immersive/nodes",
-      "@immersive/webgpu",
+      "@zavx0z/immersive-dom",
+      "@zavx0z/immersive-ui-component",
+      "@zavx0z/immersive-nodes-tree",
+      "@zavx0z/immersive-nodes",
+      "@zavx0z/immersive-webgpu",
     ]) {
       assertRequirement(
         !dependencies.has(forbidden),
         "PKG-005",
-        `@immersive/engine не должен зависеть от ${forbidden}`,
+        `@zavx0z/immersive-engine не должен зависеть от ${forbidden}`,
       )
     }
   })
@@ -318,7 +318,7 @@ describe("Направление производственных зависим
   test("[PKG-006] UI не зависит от Engine, Renderer, WebGPU и Nodes", async () => {
     for (const name of uiNames) {
       const dependencies = declaredDependencies(await readManifest(name))
-      for (const forbidden of ["@immersive/browser", "@immersive/engine", "@immersive-renderer/html", "@immersive/webgpu", "@immersive/nodes", "@immersive-nodes/tree", "@immersive/space"]) {
+      for (const forbidden of ["@zavx0z/immersive-browser", "@zavx0z/immersive-engine", "@zavx0z/immersive-renderer-html", "@zavx0z/immersive-webgpu", "@zavx0z/immersive-nodes", "@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-space"]) {
         assertRequirement(!dependencies.has(forbidden), "PKG-006", `${name} не должен зависеть от ${forbidden}`)
       }
     }
@@ -332,7 +332,7 @@ describe("Направление производственных зависим
       ["Space", /(?:<space(?:\s|>)|\b(?:createSpace|new\s+Space)\s*\()/u],
     ] as const
 
-    for (const packageName of packageNames.filter(name => name === "@immersive/nodes" || /^@immersive-nodes(?:-|\/)/u.test(name))) {
+    for (const packageName of packageNames.filter(name => name === "@zavx0z/immersive-nodes" || /^@zavx0z\/immersive-nodes(?:-|\/)/u.test(name))) {
       const packageRoot = join(root, packageDirectories[packageName]!)
       for await (const file of sourceGlob.scan({cwd: packageRoot, onlyFiles: true})) {
         if (!isProductionSource(file) || !belongsToPackage(packageName, file)) continue

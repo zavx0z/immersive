@@ -1,5 +1,5 @@
 {
-  "name": "@immersive-jsx-slot/child",
+  "name": "@zavx0z/immersive-jsx-slot-child",
   "label": "Позиция JSX-слота",
   "version": "0.0.0",
   "description": "Статическое назначение условной позиции и keyed JSX expression",

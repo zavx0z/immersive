@@ -1,6 +1,6 @@
 /** textFieldLayout показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import layout from "@immersive-ui-field-layout/text"
+import layout from "@zavx0z/immersive-ui-field-layout-text"
 
 describe.each([{name: "Базовый размер", props: {}}])("$name", () => {
   const height = layout.height()

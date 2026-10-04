@@ -1,6 +1,6 @@
 /** codeEditorSyntaxTheme показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import value from "@immersive-ui-component-view-code-editor-syntax-theme/data"
+import value from "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-data"
 
 describe.each([{name: "Публичное значение", props: {}}])("$name", () => {
   test("Данные", () => {

@@ -11,12 +11,12 @@ Link отображает маршрут владельца Layout через с
 import {
   useMemo,
   useSyncExternalStore,
-} from "@immersive/component"
+} from "@zavx0z/immersive-component"
 import {
   projectLinkRoute,
   projectLinkEndpoints,
 } from "../shared/routing/link-path.ts"
-import socketPreset from "@immersive-nodes-model-socket/preset"
+import socketPreset from "@zavx0z/immersive-nodes-model-socket-preset"
 import type {LinkProps} from "./contract/input.ts"
 import type {LinkDefinition} from "./types/link.ts"
 

@@ -67,7 +67,7 @@ import {
   isAssignmentOperator,
   skipOuterExpressions,
 } from "typescript/unstable/ast/is"
-import JsxCompileError from "@immersive-jsx-compiler/error"
+import JsxCompileError from "@zavx0z/immersive-jsx-compiler-error"
 import {
   hostAttributeTransport,
   hostAttributeValue,
@@ -79,9 +79,9 @@ import {
   type CompiledStyleFragment,
   type JsxStylePrimitiveKind,
 } from "./style.ts"
-import {parseCssTemplateShape} from "@immersive/template/css-shape"
-import planSlots from "@immersive-jsx-slot/plan"
-import SlotAuthoring from "@immersive-jsx-slot/authoring"
+import {parseCssTemplateShape} from "@zavx0z/immersive-template/css-shape"
+import planSlots from "@zavx0z/immersive-jsx-slot-plan"
+import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
 
 type Edit = Readonly<{start: number; end: number; text: string}>
 
@@ -304,7 +304,7 @@ export function transformJsxSourceFile(
     edits.push({
       start: importInsertionOffset(source),
       end: importInsertionOffset(source),
-      text: `import {useDocument as ${helper}Document} from "@immersive/component"\n`,
+      text: `import {useDocument as ${helper}Document} from "@zavx0z/immersive-component"\n`,
     })
     for (const declaration of customHookDeclarations) {
       if (!documentOwners.has(declaration)) continue
@@ -518,14 +518,14 @@ export function transformJsxSourceFile(
         `  encodeCompiledStyleText as ${helper}EncodeStyle,`,
         `  slotContents as ${helper}SlotsKey,`,
         `  writeBinding as ${helper}Write`,
-        `} from "@immersive/template/compiled"`,
+        `} from "@zavx0z/immersive-template/compiled"`,
         `import {`,
         `  component as ${helper}Component,`,
         `  fixedChildren as ${helper}FixedChildren,`,
         `  normalizeChildren as ${helper}Children,`,
         `  keyedComponents as ${helper}Keyed`,
-        `} from "@immersive/component"`,
-        ...(componentSlots.size > 0 ? [`import {composeSlot as ${helper}Slot} from "@immersive/component/slot"`] : []),
+        `} from "@zavx0z/immersive-component"`,
+        ...(componentSlots.size > 0 ? [`import {composeSlot as ${helper}Slot} from "@zavx0z/immersive-component/slot"`] : []),
         "",
       ].join("\n"),
     })
@@ -744,7 +744,7 @@ function compileStaticStyle(
         .slice(0, 16)
       return Object.freeze({
         attributeName: `data-z-${hash}` as const,
-        id: `@immersive/template/style/${hash}`,
+        id: `@zavx0z/immersive-template/style/${hash}`,
       })
     },
     primitiveKinds: context.stylePrimitiveKinds,
@@ -1544,8 +1544,8 @@ function runtimeImportBindings(
   const memo = new Set<number>()
   for (const statement of sourceFile.statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier)) continue
-    if (statement.moduleSpecifier.text === "@immersive/browser" ||
-      statement.moduleSpecifier.text === "@immersive/browser/integration") {
+    if (statement.moduleSpecifier.text === "@zavx0z/immersive-browser" ||
+      statement.moduleSpecifier.text === "@zavx0z/immersive-browser/integration") {
       const named = statement.importClause?.namedBindings
       if (named && isNamedImports(named)) {
         for (const specifier of named.elements) {
@@ -1565,10 +1565,10 @@ function runtimeImportBindings(
       }
       continue
     }
-    if (statement.moduleSpecifier.text === "@immersive/template") {
+    if (statement.moduleSpecifier.text === "@zavx0z/immersive-template") {
       const named = statement.importClause?.namedBindings
       if (named && !isNamedImports(named)) {
-        throw compileError(sourcePath, "@immersive/template namespace imports are unsupported for css")
+        throw compileError(sourcePath, "@zavx0z/immersive-template namespace imports are unsupported for css")
       }
       for (const specifier of named?.elements ?? []) {
         if ((specifier.propertyName?.text ?? specifier.name.text) !== "css") continue
@@ -1576,13 +1576,13 @@ function runtimeImportBindings(
       }
       continue
     }
-    if (statement.moduleSpecifier.text !== "@immersive/component") continue
+    if (statement.moduleSpecifier.text !== "@zavx0z/immersive-component") continue
     if (statement.importClause?.name) {
-      throw compileError(sourcePath, "@immersive/component has no default compiler import")
+      throw compileError(sourcePath, "@zavx0z/immersive-component has no default compiler import")
     }
     const named = statement.importClause?.namedBindings
     if (named && !isNamedImports(named)) {
-      throw compileError(sourcePath, "@immersive/component namespace imports are unsupported")
+      throw compileError(sourcePath, "@zavx0z/immersive-component namespace imports are unsupported")
     }
     if (!named) continue
     for (const specifier of named.elements) {
@@ -1834,7 +1834,7 @@ function assertNoReactRuntimeReferences(sourceFile: SourceFile, sourcePath: stri
     if (!isReactRuntimeModule(moduleName)) return
     throw compileError(
       sourcePath,
-      "React runtime references are forbidden; import hooks and createRoot from @immersive/component",
+      "React runtime references are forbidden; import hooks and createRoot from @zavx0z/immersive-component",
     )
   }
   visit(sourceFile, node => {

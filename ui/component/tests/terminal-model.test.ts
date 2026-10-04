@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import TerminalModel from "@immersive-tech/terminal"
+import TerminalModel from "@zavx0z/immersive-tech-terminal"
 
 test("generic terminal preserves streaming ANSI colors, cursor replies and UTF-8 chunks", () => {
   const replies: string[] = []

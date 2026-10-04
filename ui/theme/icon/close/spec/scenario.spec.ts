@@ -1,6 +1,6 @@
 /** closeIcon показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import icon from "@immersive-ui-theme-icon/close"
+import icon from "@zavx0z/immersive-ui-theme-icon-close"
 
 describe.each([{name: "Векторный ресурс", props: {}}])("$name", () => {
   test("SVG", () => {
