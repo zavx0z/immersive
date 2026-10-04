@@ -660,6 +660,7 @@
       "devDependencies": {
         "@immersive/headless": "workspace:*",
         "@jsx-compiler/bun": "workspace:*",
+        "@nodes-node/parameter": "workspace:*",
         "@nodes/parameter-presentation": "workspace:*",
         "@nodes/parameter-projection": "workspace:*",
         "@nodes/sockets": "workspace:*",

@@ -15,6 +15,7 @@
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
+    "@nodes-node/parameter": "workspace:*",
     "@immersive/headless": "workspace:*",
     "@nodes/sockets": "workspace:*",
     "@nodes/tree": "workspace:*",
