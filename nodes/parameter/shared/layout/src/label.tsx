@@ -1,5 +1,5 @@
 /**
-Подпись строки параметра сохраняет связность с сокетом при скрытом поле.
+Подпись строки параметра размещается рядом с полем и сокетами.
 Описание получает одну видимую цель по действующему контракту всплывающей подсказки.
 
 @packageDocumentation
@@ -7,14 +7,12 @@
 
 export function ParameterLabel(props: Readonly<{
   label: string
-  connected: boolean
   hidden?: boolean | undefined
   expanded?: boolean | undefined
   title?: string | undefined
 }>) {
   return <span
     data-parameter-label=""
-    data-connected={props.connected ? "true" : undefined}
     data-expanded={props.expanded === true ? "true" : undefined}
     hidden={props.hidden === true}
     title={props.title}
@@ -27,11 +25,6 @@ export function ParameterLabel(props: Readonly<{
       font-size: var(--font-size-xs);
       white-space: nowrap;
       text-overflow: ellipsis;
-
-      &[data-connected="true"] {
-        width: 0;
-        flex-grow: 1;
-      }
 
       &[data-expanded="true"] {
         width: 0;

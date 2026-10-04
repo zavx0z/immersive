@@ -17,7 +17,7 @@ export declare namespace NodesParametersMatrix {
 
   @remarks Socket передаются JSX-содержимым в именованные слоты `left` и `right`.
 
-  @property [connected=false] - Скрывает поле, сохраняя строку, подпись и сокеты.
+  @property [connected=false] - Состояние подключения; поле и его обработчики остаются доступными.
 
   @property value - Квадратная матрица размером 2, 3 или 4.
 

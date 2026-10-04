@@ -59,7 +59,7 @@ test.each([
     expect(updated.querySelector('[data-parameter-id="text"]')).toBe(text)
     expect(text.querySelector("input")).toBe(input)
     expect(input.value).toBe("Внешнее обновление")
-    expect(text.querySelector("[data-parameter-field]")!.hasAttribute("hidden")).toBe(true)
+    expect(text.querySelector("[data-parameter-field]")!.hasAttribute("hidden")).toBe(false)
     expect([...text.querySelectorAll("[data-socket-id]")]).toEqual([...sockets])
     expect(inputs).toHaveLength(1)
   } finally {

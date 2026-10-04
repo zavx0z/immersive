@@ -1,6 +1,6 @@
 /**
 NumberParameter соединяет публичный NumberField с композицией сокетов ноды.
-Подключённый параметр сохраняет подпись и Socket, скрывая собственное поле.
+Поле и Socket доступны одновременно независимо от состояния подключения.
 Значение и обработчики принадлежат вызывающей стороне; компонент не создаёт Store.
 
 @packageDocumentation
@@ -54,7 +54,7 @@ export default function NumberParameter(props: Contract.Input): Contract.Output 
       precision={props.precision}
       disabled={props.disabled}
       readOnly={props.readOnly}
-      title={props.connected === true ? undefined : props.title}
+      title={props.title}
       onInput={props.onInput}
       onChange={props.onChange}
     />

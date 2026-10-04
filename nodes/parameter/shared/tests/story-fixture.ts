@@ -85,7 +85,7 @@ export async function verifyParameterMechanism(mechanism: ParameterMechanism) {
         : ["input", "output", "connected"].includes(variant) ? 1 : 0
       const sockets = row.querySelectorAll("[data-socket-id]")
       expect(sockets).toHaveLength(expectedSockets)
-      expect(row.querySelector("[data-parameter-field]")?.hasAttribute("hidden")).toBe(variant === "connected")
+      expect(row.querySelector("[data-parameter-field]")?.hasAttribute("hidden")).toBe(false)
       if (sockets.length > 0) {
         const socket = sockets[0]!
         const socketId = socket.getAttribute("data-socket-id")!

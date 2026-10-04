@@ -1,6 +1,6 @@
 /**
 CheckboxParameter соединяет публичный CheckboxField с композицией сокетов ноды.
-Подключённый параметр сохраняет подпись и Socket, скрывая собственное поле.
+Поле и Socket доступны одновременно независимо от состояния подключения.
 Значение и обработчики принадлежат вызывающей стороне; компонент не создаёт Store.
 
 @packageDocumentation
@@ -46,7 +46,7 @@ export default function CheckboxParameter(props: Contract.Input): Contract.Outpu
       indeterminate={props.indeterminate}
       disabled={props.disabled}
       readOnly={props.readOnly}
-      title={props.labelHidden === true && props.connected !== true ? props.title : undefined}
+      title={props.labelHidden === true ? props.title : undefined}
       onChange={props.onChange}
     />
   </ParameterLayout>

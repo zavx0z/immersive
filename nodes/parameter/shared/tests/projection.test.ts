@@ -85,6 +85,8 @@ test("[PARAMETERS-PROJECTION-001] все виды из модели исполь
       try {
         expect(semantic(parameter(projected.element)), `${kind}/${variant}`).toEqual(semantic(parameter(direct.element)))
         expect(styles(projected), `${kind}/${variant}: CSS owners`).toEqual(styles(direct))
+        expect(parameter(projected.element).querySelector("[data-parameter-field]")?.hasAttribute("hidden"),
+          `${kind}/${variant}: поле доступно вместе с сокетами`).toBe(false)
       } finally {
         direct.dispose()
         projected.dispose()
@@ -150,13 +152,27 @@ test("[PARAMETERS-PROJECTION-002] обновления Store, ввод и под
     expect(row.querySelector("input")).toBe(input)
 
     mounted.render({...props, connectedSocketKeys: new Set([socketKey("node", "in")])})
-    expect(row.querySelector("[data-parameter-field]")?.hasAttribute("hidden")).toBe(true)
+    expect(row.querySelector("[data-parameter-field]")?.hasAttribute("hidden")).toBe(false)
     expect(row.querySelector("input")).toBe(input)
+    expect(input.disabled).toBe(false)
+    expect(input.readOnly).toBe(false)
+    expect(socket.getAttribute("aria-pressed")).toBe("true")
+    input.value = "Ввод при подключении"
+    const connectedEvent = new InputEvent("input", {bubbles: true, data: "Ввод при подключении", inputType: "insertText"})
+    input.dispatchEvent(connectedEvent)
+    await settle()
+    expect(changes.at(-1)).toEqual({nodeId: "node", parameterId: "value", value: "Ввод при подключении"})
+    expect(events.at(-1)).toBe(connectedEvent)
+    expect(model.value).toBe("Ввод при подключении")
+    expect(row.querySelector("input")).toBe(input)
+    expect(row.querySelector('[data-socket-id="in"]')).toBe(socket)
+    socket.dispatchEvent(new MouseEvent("click", {bubbles: true}))
+    expect(sockets).toEqual(["in"])
     mounted.render(props)
     expect(row.querySelector("[data-parameter-field]")?.hasAttribute("hidden")).toBe(false)
     expect(row.querySelector('[data-socket-id="in"]')).toBe(socket)
     socket.dispatchEvent(new MouseEvent("click", {bubbles: true}))
-    expect(sockets).toEqual(["in"])
+    expect(sockets).toEqual(["in", "in"])
   } finally {
     mounted.dispose()
   }

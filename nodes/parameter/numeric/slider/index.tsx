@@ -1,6 +1,6 @@
 /**
 SliderParameter соединяет публичный SliderField с композицией сокетов ноды.
-Подключённый параметр сохраняет подпись и Socket, скрывая собственное поле.
+Поле и Socket доступны одновременно независимо от состояния подключения.
 Значение и обработчики принадлежат вызывающей стороне; компонент не создаёт Store.
 
 @packageDocumentation
@@ -50,7 +50,7 @@ export default function SliderParameter(props: Contract.Input): Contract.Output 
       density={props.density ?? "compact"}
       disabled={props.disabled}
       readOnly={props.readOnly}
-      title={props.connected === true ? undefined : props.title}
+      title={props.title}
       style={css`
         width: 0;
         min-width: 0;

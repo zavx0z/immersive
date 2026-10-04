@@ -3,7 +3,7 @@ import {InputEvent, type HTMLInputElement} from "@zavx0z/dom"
 import {mountParameterStory} from "../../shared/tests/story-fixture.ts"
 
 test("[PARAMETERS-TEXT-INPUT] authored and projected input update the canonical Store without replacing controls", async () => {
-  for (const variant of ["field", "projected"]) {
+  for (const variant of ["field", "projected", "connected"]) {
     const mounted = await mountParameterStory("text", variant)
     try {
       const input = mounted.owner.querySelector("input") as HTMLInputElement

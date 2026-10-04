@@ -1,6 +1,6 @@
 /**
 PathParameter соединяет публичный PathField с композицией сокетов ноды.
-Подключённый параметр сохраняет подпись и Socket, скрывая собственное поле.
+Поле и Socket доступны одновременно независимо от состояния подключения.
 Значение и обработчики принадлежат вызывающей стороне; компонент не создаёт Store.
 
 @packageDocumentation
@@ -46,7 +46,7 @@ export default function PathParameter(props: Contract.Input): Contract.Output {
       disabled={props.disabled}
       readOnly={props.readOnly}
       density="compact"
-      title={props.connected === true ? undefined : props.title}
+      title={props.title}
       browseTitle={props.browseTitle}
       style={css`
         width: 0;

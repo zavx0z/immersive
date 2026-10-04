@@ -1,6 +1,6 @@
 /**
 OutputParameter соединяет публичный текстовый вывод с композицией сокетов ноды.
-Подключённый параметр сохраняет подпись и Socket, скрывая собственное поле.
+Поле и Socket доступны одновременно независимо от состояния подключения.
 Значение и обработчики принадлежат вызывающей стороне; компонент не создаёт Store.
 Показывает значение только для чтения; направление соединения задаётся у Socket.
 
@@ -43,7 +43,7 @@ export default function OutputParameter(props: Contract.Input): Contract.Output 
     />
     <ParameterOutput
       value={props.value}
-      title={props.connected === true ? undefined : props.title}
+      title={props.title}
     />
   </ParameterLayout>
 }

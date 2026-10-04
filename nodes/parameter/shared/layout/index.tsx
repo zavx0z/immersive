@@ -1,6 +1,6 @@
 /**
 Общая композиция готовых параметров: подпись, содержимое и сокеты.
-Подключение скрывает поле, сохраняя ту же семантическую структуру.
+Подключение не меняет доступность поля и размещение подписи.
 
 @packageDocumentation
 */
@@ -19,15 +19,15 @@ import {ParameterLabel} from "./src/label"
 
 /**
 Компонует подпись и сокеты вокруг поля, назначенного безымянному слоту.
-При подключении скрывает область поля, сохраняя его экземпляр и семантические узлы.
+Поле и сокеты остаются доступны одновременно; подключение сохраняет их экземпляры и геометрию.
 */
 export default function ParameterLayout(props: Contract.Input): Contract.Output {
   validateBaseProps(props)
   const left = hasSlot("left")
   const right = hasSlot("right")
   const connected = props.connected === true
-  const leadingField = props.fieldBeforeLabel === true && !connected
-  const fieldOwnsLabel = props.fieldOwnsLabel === true && !connected
+  const leadingField = props.fieldBeforeLabel === true
+  const fieldOwnsLabel = props.fieldOwnsLabel === true
   const insetField = fieldOwnsLabel && left && !right
   return <div
     role="group"
@@ -90,14 +90,11 @@ export default function ParameterLayout(props: Contract.Input): Contract.Output 
     </ParameterEndpoints>
     <ParameterLabel
       label={props.label}
-      connected={connected}
       hidden={props.labelHidden === true || leadingField || fieldOwnsLabel}
-      title={connected ? props.title : undefined}
     />
     <span
       data-parameter-field=""
       data-leading={leadingField ? "true" : undefined}
-      hidden={connected}
       style={css`
         box-sizing: border-box;
         display: flex;
@@ -106,17 +103,12 @@ export default function ParameterLayout(props: Contract.Input): Contract.Output 
         min-width: 0;
         min-height: ${NODE_ROW_HEIGHT}px;
         flex-grow: ${leadingField ? 0 : 1};
-
-        &[hidden] {
-          display: none;
-        }
       `}
     >
       <slot />
     </span>
     {leadingField ? <ParameterLabel
       label={props.label}
-      connected={false}
       hidden={props.labelHidden}
       expanded
       title={props.title}

@@ -14,7 +14,6 @@ import resolveProjectedParameterPresentation from "@nodes/parameter-presentation
 import parameterMetrics from "@nodes/parameter-metrics"
 const {NODE_PARAMETER_SPACING_SMALL, NODE_PARAMETER_SPACING_MEDIUM} = parameterMetrics
 import projectedParameterFieldHeight from "@node-geometry/field-height"
-import socketKey from "@socket-values/key"
 import parameterSpacingBefore from "@node-geometry/spacing"
 import projectedSocketSide from "@node-geometry/socket-side"
 import nodeSocketLayoutPortId from "@node-geometry/port-id"
@@ -27,7 +26,7 @@ const {NODE_ROW_HEIGHT} = socketMetrics
 export default function planProjectedNodeGeometry(
   snapshot: Contract.Input[0],
   width?: Contract.Input[1],
-  connectedSocketKeys?: Contract.Input[2],
+  _connectedSocketKeys?: Contract.Input[2],
   resolvedSocketSides?: Contract.Input[3],
   presentation: NonNullable<Contract.Input[4]> = {},
 ): Contract.Output {
@@ -57,13 +56,9 @@ export default function planProjectedNodeGeometry(
     ...right.map(socket => projectedSocketRow(snapshot.id, socket)),
     ...snapshot.parameters.map(parameter => {
       const sockets = socketsByParameter.get(parameter.id) ?? []
-      const connected = sockets.some(socket =>
-        connectedSocketKeys?.has(socketKey(snapshot.id, socket.id)) === true)
       const resolved = resolveProjectedParameterPresentation(parameter)
       return Object.freeze({
-        height: connected
-          ? NODE_ROW_HEIGHT
-          : Math.max(NODE_ROW_HEIGHT, projectedParameterFieldHeight(resolved)),
+        height: Math.max(NODE_ROW_HEIGHT, projectedParameterFieldHeight(resolved)),
         spacingBefore: parameterSpacingBeforePixels(parameter),
         socketIds: Object.freeze(sockets.map(socket =>
           nodeSocketLayoutPortId(snapshot.id, socket.id))),

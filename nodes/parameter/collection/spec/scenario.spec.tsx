@@ -5,7 +5,7 @@ import {createHeadless} from "@immersive/headless"
 import Component, {type NodesParametersCollection} from "@nodes-parameters/collection"
 
 describe.each([false, true].map(connected => ({
-  name: connected ? "Подключённый параметр" : "Редактируемый параметр",
+  name: connected ? "Поле с подключённым сокетом" : "Поле без подключения",
   props: {
     id: "value",
     nodeId: "source",
@@ -22,6 +22,7 @@ describe.each([false, true].map(connected => ({
       direction="input"
       side="left"
       label="Вход"
+      connected={connected}
     />,
   },
 })))("$name", async ({props, slots}) => {
@@ -37,9 +38,10 @@ describe.each([false, true].map(connected => ({
   test("Общая строка параметра", () => {
     expect(element.getAttribute("data-parameter-id"), "Адрес параметра сохраняется").toBe(props.id)
     expect(element.textContent, "Подпись остаётся частью представления").toContain(props.label)
-    expect(element.querySelector("[data-parameter-field]")?.hasAttribute("hidden"), "Подключение скрывает поле, сохраняя строку").toBe(props.connected)
+    expect(element.querySelector("[data-parameter-field]")?.hasAttribute("hidden"), "Ручное поле остаётся видимым при подключённом сокете").toBe(false)
     const socket = element.querySelector('[data-socket-id="in"]')!
     expect(socket.getAttribute("data-node-id"), "Сокет сохраняет адрес ноды").toBe(props.nodeId)
+    expect(socket.getAttribute("aria-pressed"), "Состояние подключения относится к сокету, не скрывая поле").toBe(String(props.connected))
     expect(socket.ownerDocument, "Параметр и сокет используют один Document").toBe(element.ownerDocument)
   })
 })

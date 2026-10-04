@@ -1,6 +1,6 @@
 /**
 SelectParameter соединяет публичный SelectField с композицией сокетов ноды.
-Подключённый параметр сохраняет подпись и Socket, скрывая собственное поле.
+Поле и Socket доступны одновременно независимо от состояния подключения.
 Значение и обработчики принадлежат вызывающей стороне; компонент не создаёт Store.
 
 @packageDocumentation
@@ -46,7 +46,7 @@ export default function SelectParameter(props: Contract.Input): Contract.Output 
       state={props.state}
       disabled={props.disabled}
       readOnly={props.readOnly}
-      title={props.connected === true ? undefined : props.title}
+      title={props.title}
       onChange={props.onChange}
     />
   </ParameterLayout>

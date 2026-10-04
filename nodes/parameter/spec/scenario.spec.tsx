@@ -32,6 +32,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </TextParameter>
       <NumberParameter
@@ -49,6 +50,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </NumberParameter>
       <SliderParameter
@@ -68,6 +70,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </SliderParameter>
       <CheckboxParameter
@@ -85,6 +88,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </CheckboxParameter>
       <SwitchParameter
@@ -102,6 +106,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </SwitchParameter>
       <SelectParameter
@@ -120,6 +125,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </SelectParameter>
       <CycleParameter
@@ -138,6 +144,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </CycleParameter>
       <OptionGroupParameter
@@ -156,6 +163,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </OptionGroupParameter>
       <ColorParameter
@@ -173,6 +181,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </ColorParameter>
       <VectorParameter
@@ -190,6 +199,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </VectorParameter>
       <MatrixParameter
@@ -207,6 +217,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </MatrixParameter>
       <PathParameter
@@ -224,6 +235,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </PathParameter>
       <ReferenceParameter
@@ -241,6 +253,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </ReferenceParameter>
       <CollectionParameter
@@ -259,6 +272,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </CollectionParameter>
       <OutputParameter
@@ -276,6 +290,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </OutputParameter>
       <ParameterLayout
@@ -296,6 +311,7 @@ describe.each([{name: "Поля", props: {connected: false}}, {
           direction="input"
           side="left"
           label="Вход"
+          connected={props.connected}
         />
       </ParameterLayout>
     </ParameterNode>
@@ -304,9 +320,11 @@ describe.each([{name: "Поля", props: {connected: false}}, {
     const parameters = [...element.querySelectorAll("[data-parameter-id]")]
     expect(parameters, "Пятнадцать полей и пользовательская композиция участвуют в одном сценарии").toHaveLength(16)
     expect(new Set(parameters.map(parameter => parameter.getAttribute("data-parameter-id"))).size, "Исходные адреса не смешиваются").toBe(16)
-    expect(parameters.every(parameter => parameter.querySelector("[data-parameter-field]")?.hasAttribute("hidden") === props.connected), "Подключение скрывает поле каждого участника").toBeTrue()
+    expect(parameters.every(parameter => parameter.querySelector("[data-parameter-field]")?.hasAttribute("hidden") === false), "Поле каждого участника доступно одновременно с подключением").toBeTrue()
     const sockets = [...element.querySelectorAll("[data-socket-id]")]
     expect(sockets, "Каждый участник сохраняет свой сокет").toHaveLength(16)
     expect(sockets.every(socket => socket.getAttribute("data-node-id") === "source" && socket.ownerDocument === element.ownerDocument), "Общий адрес ноды и Document сохраняются").toBeTrue()
+    expect(sockets.every(socket => socket.getAttribute("aria-pressed") === String(props.connected)),
+      "Подключение отмечается на сокетах при постоянно видимых полях").toBeTrue()
   })
 })

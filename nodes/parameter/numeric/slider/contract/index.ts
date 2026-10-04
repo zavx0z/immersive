@@ -17,7 +17,7 @@ export declare namespace NodesParametersSlider {
 
   @remarks Socket передаются JSX-содержимым в именованные слоты `left` и `right`.
 
-  @property [connected=false] - Скрывает поле, сохраняя строку, подпись и сокеты.
+  @property [connected=false] - Состояние подключения; поле и его обработчики остаются доступными.
 
   @property value - Текущее значение внутри объявленного диапазона.
 

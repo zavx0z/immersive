@@ -10,6 +10,7 @@ export declare namespace NodesParameters {
     readonly label: string
     readonly labelHidden?: boolean | undefined
     readonly spacingBefore?: "small" | "medium" | undefined
+    /** Состояние подключения не переключает видимость или доступность поля. */
     readonly connected?: boolean | undefined
     readonly hidden?: boolean | undefined
     readonly disabled?: boolean | undefined

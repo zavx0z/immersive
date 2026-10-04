@@ -46,7 +46,7 @@ test("[NODES-TITLE-003] Parameter проецирует description ровно н
     }],
   })
   expect(titleTargets(connected.element, "Описание связи")).toHaveLength(1)
-  expect(connected.element.querySelector('[data-parameter-label]')?.getAttribute("title")).toBe("Описание связи")
+  expect(connected.element.querySelector('[data-parameter-field] [title="Описание связи"]')).not.toBeNull()
   connected.dispose()
 
   const model = new ParameterModel<NodeJsonValue, NodeJsonValue>(
