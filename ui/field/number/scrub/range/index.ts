@@ -4,14 +4,14 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldNumberScrubRange as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberScrubRange as Contract} from "./contract"
 import normalizeNumberValue from "@zavx0z/immersive-ui-field-number-value-normalize"
 import numberPointerAdaptiveSpan from "@zavx0z/immersive-ui-field-number-value-pointer-adaptive-span"
 import resolveNumberSoftRange from "@zavx0z/immersive-ui-field-number-value-soft-range"
-import type {Zavx0zImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
-type NumberRange = Zavx0zImmersiveUiFieldNumberValueSoftRange.Output
-import type {Zavx0zImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
-type NumberValueOptions = NonNullable<Zavx0zImmersiveUiFieldNumberValueNormalize.Input[1]>
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
+import type {ImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 
 export default function resolveNumberDragRange(
   value: Contract.Input[0],
@@ -35,4 +35,4 @@ export default function resolveNumberDragRange(
   return Object.freeze({min: minimum, max: maximum})
 }
 
-export type {Zavx0zImmersiveUiFieldNumberScrubRange} from "./contract"
+export type {ImmersiveUiFieldNumberScrubRange} from "./contract"

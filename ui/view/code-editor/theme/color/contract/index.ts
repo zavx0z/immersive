@@ -1,5 +1,5 @@
 /** Возвращает нормализованный HEX-цвет темы редактора либо переданный запасной цвет. */
-export declare namespace Zavx0zImmersiveUiViewCodeEditorThemeColor {
+export declare namespace ImmersiveUiViewCodeEditorThemeColor {
   /** Аргументы публичной операции themeColor; порядок сохраняет её форму вызова. */
   type Input = readonly [
     key: string,

@@ -5,9 +5,9 @@ import {createDocument, HTMLElement, KeyboardEvent, readDocumentScrollIntoViewRe
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {createDocumentInteractionController, createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
-import type {Zavx0zImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-component-widget-tree"
-type TreeProps = Zavx0zImmersiveUiComponentWidgetTree.Input
-type TreeHandle = NonNullable<Parameters<NonNullable<Zavx0zImmersiveUiComponentWidgetTree.Input["onReady"]>>[0]>
+import type {ImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-component-widget-tree"
+type TreeProps = ImmersiveUiComponentWidgetTree.Input
+type TreeHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentWidgetTree.Input["onReady"]>>[0]>
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))

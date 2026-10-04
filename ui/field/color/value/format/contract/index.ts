@@ -1,8 +1,8 @@
-import type {Zavx0zImmersiveUiFieldColorValueNormalize} from "@zavx0z/immersive-ui-field-color-value-normalize"
-type ColorValue = Zavx0zImmersiveUiFieldColorValueNormalize.Output
+import type {ImmersiveUiFieldColorValueNormalize} from "@zavx0z/immersive-ui-field-color-value-normalize"
+type ColorValue = ImmersiveUiFieldColorValueNormalize.Output
 
 /** Нормализует цвет и форматирует его как HEX со включаемым альфа-каналом. */
-export declare namespace Zavx0zImmersiveUiFieldColorValueFormat {
+export declare namespace ImmersiveUiFieldColorValueFormat {
   /** Аргументы публичной операции formatColorValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: Partial<ColorValue>,

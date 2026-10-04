@@ -1,7 +1,7 @@
-import type {Zavx0zImmersiveNodesModelSocketShapes} from "@zavx0z/immersive-nodes-model-socket-shapes"
+import type {ImmersiveNodesModelSocketShapes} from "@zavx0z/immersive-nodes-model-socket-shapes"
 
 /** Сохраняет известную форму сокета, оставляя неизвестную неопределённой. */
-export declare namespace Zavx0zImmersiveNodesModelSocketResolveShape {
+export declare namespace ImmersiveNodesModelSocketResolveShape {
   type Input = string
-  type Output = Zavx0zImmersiveNodesModelSocketShapes.Output[number] | undefined
+  type Output = ImmersiveNodesModelSocketShapes.Output[number] | undefined
 }

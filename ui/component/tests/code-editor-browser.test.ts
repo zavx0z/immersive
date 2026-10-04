@@ -8,9 +8,9 @@ import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 import {createDocumentNativeInputHostWithSeams} from "../../../browser/src/native-input-host.ts"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
-import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
-type CodeEditorProps = Zavx0zImmersiveUiComponentViewCodeEditor.Input
-import type {Zavx0zImmersiveUiComponentMenuClipboard} from "@zavx0z/immersive-ui-component-menu-clipboard"
+import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
+import type {ImmersiveUiComponentMenuClipboard} from "@zavx0z/immersive-ui-component-menu-clipboard"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
@@ -65,7 +65,7 @@ test("global production menu preserves multicursor paste target across focus and
     },
   }})
   const menu = createRoot(f.menuHost)
-  menu.render(ClipboardMenu as unknown as CompiledTemplate<{controller: Zavx0zImmersiveUiComponentMenuClipboard.Input["controller"]}>, {controller: clipboard})
+  menu.render(ClipboardMenu as unknown as CompiledTemplate<{controller: ImmersiveUiComponentMenuClipboard.Input["controller"]}>, {controller: clipboard})
   try {
     expect(clipboard.openContextMenu(f.code, {x: 30, y: 40})).toBe(true)
     const paste = f.menuHost.querySelectorAll('[role="menuitem"]')[1] as HTMLElement

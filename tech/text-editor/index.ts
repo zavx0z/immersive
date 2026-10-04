@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechTextEditor as Contract} from "./contract"
+import type {ImmersiveTechTextEditor as Contract} from "./contract"
 import type {MovementUnit} from "./contract/types.ts"
 import type {Range} from "./contract/types.ts"
 import type {Snapshot} from "./contract/types.ts"
@@ -18,7 +18,7 @@ import {sameSelections} from "./src/helpers.ts"
 import {sameState} from "./src/helpers.ts"
 import {textValue} from "./src/helpers.ts"
 
-export type {Zavx0zImmersiveTechTextEditor} from "./contract"
+export type {ImmersiveTechTextEditor} from "./contract"
 
 export default class CodeEditorModel implements Contract.Output {
   #state: State

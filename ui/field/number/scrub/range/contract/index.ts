@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
-type NumberValueOptions = NonNullable<Zavx0zImmersiveUiFieldNumberValueNormalize.Input[1]>
+import type {ImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 
-import type {Zavx0zImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
 
 /** Определение диапазона числового перетаскивания. */
-export declare namespace Zavx0zImmersiveUiFieldNumberScrubRange {
+export declare namespace ImmersiveUiFieldNumberScrubRange {
   /** Аргументы публичной операции resolveNumberDragRange; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,
@@ -12,5 +12,5 @@ export declare namespace Zavx0zImmersiveUiFieldNumberScrubRange {
   ]
 
   /** Результат публичной операции. */
-  type Output = Zavx0zImmersiveUiFieldNumberValueSoftRange.Output
+  type Output = ImmersiveUiFieldNumberValueSoftRange.Output
 }

@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentFieldSlider} from "@zavx0z/immersive-ui-component-field-slider"
-type SliderFieldProps = Zavx0zImmersiveUiComponentFieldSlider.Input
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveUiComponentFieldSlider} from "@zavx0z/immersive-ui-component-field-slider"
+type SliderFieldProps = ImmersiveUiComponentFieldSlider.Input
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterNumericSlider {
+export declare namespace ImmersiveNodesParameterNumericSlider {
   /**
   Входные данные параметра-ползунка, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace Zavx0zImmersiveNodesParameterNumericSlider {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterNumericSlider.Input = {
+  const input: ImmersiveNodesParameterNumericSlider.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -37,7 +37,7 @@ export declare namespace Zavx0zImmersiveNodesParameterNumericSlider {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: SliderFieldProps["value"]
     readonly min: SliderFieldProps["min"]
     readonly max: SliderFieldProps["max"]
@@ -47,7 +47,7 @@ export declare namespace Zavx0zImmersiveNodesParameterNumericSlider {
     readonly onChange?: SliderFieldProps["onChange"]
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

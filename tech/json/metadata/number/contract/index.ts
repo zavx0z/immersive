@@ -1,7 +1,7 @@
-import type {Zavx0zImmersiveTechJsonMetadata} from "@zavx0z/immersive-tech-json-metadata/contract"
+import type {ImmersiveTechJsonMetadata} from "@zavx0z/immersive-tech-json-metadata/contract"
 
 /** Читает конечное число, сохраняя ноль. */
-export declare namespace Zavx0zImmersiveTechJsonMetadataNumber {
-  type Input = readonly [value: Zavx0zImmersiveTechJsonMetadata.Input[0], key: Zavx0zImmersiveTechJsonMetadata.Input[1]]
+export declare namespace ImmersiveTechJsonMetadataNumber {
+  type Input = readonly [value: ImmersiveTechJsonMetadata.Input[0], key: ImmersiveTechJsonMetadata.Input[1]]
   type Output = number | undefined
 }

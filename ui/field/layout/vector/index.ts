@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentFieldVector} from "@zavx0z/immersive-ui-component-field-vector"
-type VectorFieldDensity = NonNullable<Zavx0zImmersiveUiComponentFieldVector.Input["density"]>
+import type {ImmersiveUiComponentFieldVector} from "@zavx0z/immersive-ui-component-field-vector"
+type VectorFieldDensity = NonNullable<ImmersiveUiComponentFieldVector.Input["density"]>
 import fieldDensityHeight from "@zavx0z/immersive-ui-field-metric-density-height"
 import labelledFieldHeight from "@zavx0z/immersive-ui-field-metric-labelled-height"
 

@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiViewCodeEditorThemeColor as Contract} from "./contract"
+import type {ImmersiveUiViewCodeEditorThemeColor as Contract} from "./contract"
 import isHexColor from "@zavx0z/immersive-tech-color-hex-valid"
 import normalizeHexColor from "@zavx0z/immersive-tech-color-hex-normalize"
 import codeEditorSyntaxTheme from "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-data"
@@ -14,4 +14,4 @@ export default function themeColor(key: Contract.Input[0], fallback: Contract.In
   return value === undefined || !isHexColor(value) ? fallback : normalizeHexColor(value)
 }
 
-export type {Zavx0zImmersiveUiViewCodeEditorThemeColor} from "./contract"
+export type {ImmersiveUiViewCodeEditorThemeColor} from "./contract"

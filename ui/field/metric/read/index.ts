@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldMetricRead as Contract} from "./contract"
+import type {ImmersiveUiFieldMetricRead as Contract} from "./contract"
 import fieldMetrics from "@zavx0z/immersive-ui-component/theme/field-metrics.json"
 
 export default function fieldMetric(name: Contract.Input[0]): Contract.Output {
@@ -15,4 +15,4 @@ export default function fieldMetric(name: Contract.Input[0]): Contract.Output {
   return value
 }
 
-export type {Zavx0zImmersiveUiFieldMetricRead} from "./contract"
+export type {ImmersiveUiFieldMetricRead} from "./contract"

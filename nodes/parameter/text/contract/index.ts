@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentFieldText} from "@zavx0z/immersive-ui-component-field-text"
-type TextFieldProps = Zavx0zImmersiveUiComponentFieldText.Input
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveUiComponentFieldText} from "@zavx0z/immersive-ui-component-field-text"
+type TextFieldProps = ImmersiveUiComponentFieldText.Input
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterText {
+export declare namespace ImmersiveNodesParameterText {
   /**
   Входные данные строкового параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace Zavx0zImmersiveNodesParameterText {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterText.Input = {
+  const input: ImmersiveNodesParameterText.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace Zavx0zImmersiveNodesParameterText {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: TextFieldProps["value"]
     readonly type?: TextFieldProps["type"]
     readonly placeholder?: TextFieldProps["placeholder"]
@@ -43,7 +43,7 @@ export declare namespace Zavx0zImmersiveNodesParameterText {
     readonly onChange?: TextFieldProps["onChange"]
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

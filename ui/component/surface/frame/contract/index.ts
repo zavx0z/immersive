@@ -1,9 +1,9 @@
-import type {Zavx0zImmersiveUiComponentSurface} from "@zavx0z/immersive-ui-component-surface/contract"
+import type {ImmersiveUiComponentSurface} from "@zavx0z/immersive-ui-component-surface/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {FrameEdge, FrameHandle} from "./types"
 
 /** Рамка рабочей области сохраняет заголовок, команды и содержимое вызывающего владельца. */
-export declare namespace Zavx0zImmersiveUiComponentSurfaceFrame {
+export declare namespace ImmersiveUiComponentSurfaceFrame {
   interface Input {
     readonly title: string
     readonly edge: FrameEdge
@@ -16,5 +16,5 @@ export declare namespace Zavx0zImmersiveUiComponentSurfaceFrame {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = Zavx0zImmersiveUiComponentSurface.Output & JSX.Element<Slots>
+  type Output = ImmersiveUiComponentSurface.Output & JSX.Element<Slots>
 }

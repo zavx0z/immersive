@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldCollectionModelNormalizeVisibleRows as Contract} from "./contract"
+import type {ImmersiveUiFieldCollectionModelNormalizeVisibleRows as Contract} from "./contract"
 import COLLECTION_DEFAULT_VISIBLE_ROWS from "@zavx0z/immersive-ui-field-collection-model-default-visible-rows"
 import COLLECTION_MAX_VISIBLE_ROWS from "@zavx0z/immersive-ui-field-collection-model-max-visible-rows"
 import COLLECTION_MIN_VISIBLE_ROWS from "@zavx0z/immersive-ui-field-collection-model-min-visible-rows"
@@ -14,4 +14,4 @@ export default function normalizeCollectionVisibleRows(value: Contract.Input[0] 
   return Math.max(COLLECTION_MIN_VISIBLE_ROWS, Math.min(COLLECTION_MAX_VISIBLE_ROWS, Math.trunc(value)))
 }
 
-export type {Zavx0zImmersiveUiFieldCollectionModelNormalizeVisibleRows} from "./contract"
+export type {ImmersiveUiFieldCollectionModelNormalizeVisibleRows} from "./contract"

@@ -5,12 +5,12 @@
 @packageDocumentation
 */
 import {HeaderCell} from "./src/helpers.tsx"
-import type {Zavx0zImmersiveUiComponentViewTable as Contract} from "./contract"
+import type {ImmersiveUiComponentViewTable as Contract} from "./contract"
 import {TableRowView} from "./src/helpers.tsx"
 import {assertTableProps} from "./src/helpers.tsx"
 
 
-export type {Zavx0zImmersiveUiComponentViewTable} from "./contract"
+export type {ImmersiveUiComponentViewTable} from "./contract"
 
 export default function Table(props: Contract.Input): Contract.Output {
   const selection = assertTableProps(props)

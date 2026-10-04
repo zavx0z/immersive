@@ -1,5 +1,5 @@
 /** Заменяет совпавшую по индексу координату в неизменяемой копии вектора. */
-export declare namespace Zavx0zImmersiveUiFieldVectorValueUpdate {
+export declare namespace ImmersiveUiFieldVectorValueUpdate {
   /** Аргументы публичной операции updateVectorValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: readonly number[],

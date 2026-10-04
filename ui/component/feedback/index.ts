@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 export {default as Notification} from "@zavx0z/immersive-ui-component-feedback-notification"
-export type {Zavx0zImmersiveUiComponentFeedbackNotification} from "@zavx0z/immersive-ui-component-feedback-notification"
+export type {ImmersiveUiComponentFeedbackNotification} from "@zavx0z/immersive-ui-component-feedback-notification"
 export {default as StatusBar} from "@zavx0z/immersive-ui-component-feedback-status-bar"
-export type {Zavx0zImmersiveUiComponentFeedbackStatusBar} from "@zavx0z/immersive-ui-component-feedback-status-bar"
-export type {Zavx0zImmersiveUiComponentFeedback} from "./contract"
+export type {ImmersiveUiComponentFeedbackStatusBar} from "@zavx0z/immersive-ui-component-feedback-status-bar"
+export type {ImmersiveUiComponentFeedback} from "./contract"

@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechTextAssertNonEmpty as Contract} from "./contract"
+import type {ImmersiveTechTextAssertNonEmpty as Contract} from "./contract"
 
 export default function assertNonEmpty(value: Contract.Input[0], label: Contract.Input[1]): asserts value is string {
   if (typeof value !== "string" || value.trim().length === 0) throw new TypeError(`${label} must not be empty`)
 }
 
-export type {Zavx0zImmersiveTechTextAssertNonEmpty} from "./contract"
+export type {ImmersiveTechTextAssertNonEmpty} from "./contract"

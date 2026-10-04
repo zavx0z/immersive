@@ -52,11 +52,11 @@ const packageDirectories: Readonly<Record<string, string>> = Object.freeze({
 })
 
 
-type Zavx0zStorybookPackageName = keyof typeof packageDirectories
+type StorybookPackageName = keyof typeof packageDirectories
 
-const packageNames = Object.freeze(Object.keys(packageDirectories) as Zavx0zStorybookPackageName[])
+const packageNames = Object.freeze(Object.keys(packageDirectories) as StorybookPackageName[])
 
-const baseAllowedInternalDependencies: Readonly<Record<Zavx0zStorybookPackageName, readonly Zavx0zStorybookPackageName[]>> =
+const baseAllowedInternalDependencies: Readonly<Record<StorybookPackageName, readonly StorybookPackageName[]>> =
   Object.freeze({
     "@zavx0z/immersive-engine": [],
     "@zavx0z/immersive-dom": [],
@@ -132,7 +132,7 @@ type PackageManifest = Readonly<{
 
 type SourceImport = Readonly<{
   file: string
-  packageName: Zavx0zStorybookPackageName
+  packageName: StorybookPackageName
   specifier: string
 }>
 
@@ -153,9 +153,9 @@ const excludedSourceSegments = new Set([
   "test",
   "tests",
 ])
-const sourceImportCache = new Map<Zavx0zStorybookPackageName, Promise<readonly SourceImport[]>>()
+const sourceImportCache = new Map<StorybookPackageName, Promise<readonly SourceImport[]>>()
 
-async function readManifest(packageName: Zavx0zStorybookPackageName): Promise<PackageManifest> {
+async function readManifest(packageName: StorybookPackageName): Promise<PackageManifest> {
   return Bun.file(join(root, packageDirectories[packageName]!, "package.json")).json()
 }
 
@@ -167,7 +167,7 @@ function declaredDependencies(manifest: PackageManifest): ReadonlySet<string> {
   ])
 }
 
-function internalPackageName(specifier: string): Zavx0zStorybookPackageName | null {
+function internalPackageName(specifier: string): StorybookPackageName | null {
   for (const packageName of packageNames) {
     if (specifier === packageName || specifier.startsWith(`${packageName}/`)) {
       return packageName
@@ -190,7 +190,7 @@ function loaderFor(file: string): "js" | "jsx" | "ts" | "tsx" {
   }
 }
 
-function scanPackageImports(packageName: Zavx0zStorybookPackageName): Promise<readonly SourceImport[]> {
+function scanPackageImports(packageName: StorybookPackageName): Promise<readonly SourceImport[]> {
   const cached = sourceImportCache.get(packageName)
   if (cached) return cached
   const scanning = scanPackageImportsUncached(packageName)
@@ -198,14 +198,14 @@ function scanPackageImports(packageName: Zavx0zStorybookPackageName): Promise<re
   return scanning
 }
 
-function belongsToPackage(packageName: Zavx0zStorybookPackageName, file: string): boolean {
+function belongsToPackage(packageName: StorybookPackageName, file: string): boolean {
   const packageRoot = resolve(root, packageDirectories[packageName]!)
   return !Object.values(packageDirectories).some(directory =>
     directory !== packageDirectories[packageName]! && resolve(packageRoot, file).startsWith(resolve(root, directory) + sep))
 }
 
 async function scanPackageImportsUncached(
-  packageName: Zavx0zStorybookPackageName,
+  packageName: StorybookPackageName,
 ): Promise<readonly SourceImport[]> {
   const packageRoot = join(root, packageDirectories[packageName]!)
   const imports: SourceImport[] = []
@@ -225,15 +225,15 @@ async function scanPackageImportsUncached(
   return Object.freeze(imports)
 }
 
-async function internalDependencyGraph(): Promise<ReadonlyMap<Zavx0zStorybookPackageName, readonly Zavx0zStorybookPackageName[]>> {
-  const graph = new Map<Zavx0zStorybookPackageName, readonly Zavx0zStorybookPackageName[]>()
+async function internalDependencyGraph(): Promise<ReadonlyMap<StorybookPackageName, readonly StorybookPackageName[]>> {
+  const graph = new Map<StorybookPackageName, readonly StorybookPackageName[]>()
   for (const packageName of packageNames) {
     const dependencies = new Set((await scanPackageImports(packageName)).map(item => item.specifier))
     graph.set(
       packageName,
       Object.freeze([...dependencies]
         .map(internalPackageName)
-        .filter((dependency): dependency is Zavx0zStorybookPackageName => dependency !== null && dependency !== packageName)),
+        .filter((dependency): dependency is StorybookPackageName => dependency !== null && dependency !== packageName)),
     )
   }
   return graph
@@ -242,10 +242,10 @@ async function internalDependencyGraph(): Promise<ReadonlyMap<Zavx0zStorybookPac
 describe("Направление производственных зависимостей", () => {
   test("[PKG-003] производственные зависимости пакетов не образуют циклов", async () => {
     const graph = await internalDependencyGraph()
-    const visiting = new Set<Zavx0zStorybookPackageName>()
-    const visited = new Set<Zavx0zStorybookPackageName>()
+    const visiting = new Set<StorybookPackageName>()
+    const visited = new Set<StorybookPackageName>()
 
-    const visit = (packageName: Zavx0zStorybookPackageName, path: readonly Zavx0zStorybookPackageName[]): void => {
+    const visit = (packageName: StorybookPackageName, path: readonly StorybookPackageName[]): void => {
       if (visited.has(packageName)) return
       assertRequirement(
         !visiting.has(packageName),

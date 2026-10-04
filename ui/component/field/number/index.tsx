@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 import type {ActiveScrub} from "./src/types.ts"
-import type {Zavx0zImmersiveUiComponentFieldNumber as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldNumber as Contract} from "./contract"
 import {releaseScrubCapture} from "./src/helpers.tsx"
 import {useRef} from "@zavx0z/immersive-component"
 import resolveNumberDragRange from "@zavx0z/immersive-ui-field-number-scrub-range"
@@ -18,7 +18,7 @@ import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-pointer-s
 import stepNumberValue from "@zavx0z/immersive-ui-field-number-value-step"
 
 
-export type {Zavx0zImmersiveUiComponentFieldNumber} from "./contract"
+export type {ImmersiveUiComponentFieldNumber} from "./contract"
 
 export default function NumberField(props: Contract.Input): Contract.Output {
   const scrub = useRef<ActiveScrub | null>(null)

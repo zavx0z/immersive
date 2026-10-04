@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechTerminal} from "@zavx0z/immersive-tech-terminal"
-type TerminalLine = Zavx0zImmersiveTechTerminal.Output["snapshot"]["lines"][number]
+import type {ImmersiveTechTerminal} from "@zavx0z/immersive-tech-terminal"
+type TerminalLine = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]
 import {MemoTerminalLine} from "./src/helpers.tsx"
-import type {Zavx0zImmersiveUiComponentWidgetTerminal as Contract} from "./contract"
+import type {ImmersiveUiComponentWidgetTerminal as Contract} from "./contract"
 import type {TerminalSelectionSnapshot} from "./contract/types.ts"
 import type {TerminalTextPosition} from "./contract/types.ts"
 import {emptyLines} from "./src/helpers.tsx"
@@ -21,7 +21,7 @@ import TextField from "@zavx0z/immersive-ui-component-field-text"
 import WidgetHeader from "@zavx0z/immersive-ui-component-widget-header"
 
 
-export type {Zavx0zImmersiveUiComponentWidgetTerminal} from "./contract"
+export type {ImmersiveUiComponentWidgetTerminal} from "./contract"
 
 export default function Terminal(props: Contract.Input): Contract.Output {
   const inputHost = useRef<HTMLDivElement | null>(null)

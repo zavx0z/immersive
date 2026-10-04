@@ -2,14 +2,14 @@ import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {ToggleButtonGroupDensity} from "./types.ts"
 import type {ToggleButtonGroupOption} from "./types.ts"
 
-import type {Zavx0zImmersiveUiComponentButton} from "@zavx0z/immersive-ui-component-button/contract"
+import type {ImmersiveUiComponentButton} from "@zavx0z/immersive-ui-component-button/contract"
 
 /** Протокол выбора одного строкового значения из внешнего набора кнопок. */
-export declare namespace Zavx0zImmersiveUiComponentButtonToggleGroup {
+export declare namespace ImmersiveUiComponentButtonToggleGroup {
   /**
   Входные данные ToggleButtonGroup.
   */
-  interface Input extends Zavx0zImmersiveUiComponentButton.Input {
+  interface Input extends ImmersiveUiComponentButton.Input {
     readonly value: string
     readonly options: readonly ToggleButtonGroupOption[]
     readonly density?: ToggleButtonGroupDensity | undefined
@@ -18,5 +18,5 @@ export declare namespace Zavx0zImmersiveUiComponentButtonToggleGroup {
   }
 
   /** Представление сохраняет общий JSX-результат группы. */
-  type Output = Zavx0zImmersiveUiComponentButton.Output & JSX.Element
+  type Output = ImmersiveUiComponentButton.Output & JSX.Element
 }

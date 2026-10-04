@@ -7,8 +7,8 @@ import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeJsonVal
 import {GraphEditor} from "@zavx0z/immersive-nodes/editor"
 import planProjectedNodeGeometry from "@zavx0z/immersive-nodes-geometry-node-project"
 import {nodeSocketLayoutPortId, socketKey, type NodeTreeLayout, type NodeTreeSelection, type NodeTreeTransform} from "@zavx0z/immersive-nodes/view/tree"
-import type {Zavx0zImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
-type ParameterInput = Parameters<NonNullable<Zavx0zImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+import type {ImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
+type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
 
 export function textParameter(value: string) {
   return new Parameter<NodeJsonValue, NodeJsonValue>("message", value, {label: "Сообщение"}, {id: "string", version: 1})

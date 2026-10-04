@@ -1,23 +1,23 @@
 /** Настоящая авторская JSX-композиция для сравнения с модельной проекцией. */
 import Socket from "@zavx0z/immersive-nodes-socket"
 import type {ParameterEndpoint} from "./parameter-endpoint"
-import TextParameter, {type Zavx0zImmersiveNodesParameterText} from "@zavx0z/immersive-nodes-parameter-text"
-import NumberParameter, {type Zavx0zImmersiveNodesParameterNumericNumber} from "@zavx0z/immersive-nodes-parameter-numeric-number"
-import SliderParameter, {type Zavx0zImmersiveNodesParameterNumericSlider} from "@zavx0z/immersive-nodes-parameter-numeric-slider"
-import CheckboxParameter, {type Zavx0zImmersiveNodesParameterBooleanCheckbox} from "@zavx0z/immersive-nodes-parameter-boolean-checkbox"
-import SwitchParameter, {type Zavx0zImmersiveNodesParameterBooleanSwitch} from "@zavx0z/immersive-nodes-parameter-boolean-switch"
-import SelectParameter, {type Zavx0zImmersiveNodesParameterChoiceSelect} from "@zavx0z/immersive-nodes-parameter-choice-select"
-import CycleParameter, {type Zavx0zImmersiveNodesParameterChoiceCycle} from "@zavx0z/immersive-nodes-parameter-choice-cycle"
-import OptionGroupParameter, {type Zavx0zImmersiveNodesParameterChoiceOptionGroup} from "@zavx0z/immersive-nodes-parameter-choice-option-group"
-import ColorParameter, {type Zavx0zImmersiveNodesParameterCompositeColor} from "@zavx0z/immersive-nodes-parameter-composite-color"
-import VectorParameter, {type Zavx0zImmersiveNodesParameterCompositeVector} from "@zavx0z/immersive-nodes-parameter-composite-vector"
-import MatrixParameter, {type Zavx0zImmersiveNodesParameterCompositeMatrix} from "@zavx0z/immersive-nodes-parameter-composite-matrix"
-import PathParameter, {type Zavx0zImmersiveNodesParameterPath} from "@zavx0z/immersive-nodes-parameter-path"
-import ReferenceParameter, {type Zavx0zImmersiveNodesParameterReference} from "@zavx0z/immersive-nodes-parameter-reference"
-import CollectionParameter, {type Zavx0zImmersiveNodesParameterCollection} from "@zavx0z/immersive-nodes-parameter-collection"
-import OutputParameter, {type Zavx0zImmersiveNodesParameterOutput} from "@zavx0z/immersive-nodes-parameter-output"
+import TextParameter, {type ImmersiveNodesParameterText} from "@zavx0z/immersive-nodes-parameter-text"
+import NumberParameter, {type ImmersiveNodesParameterNumericNumber} from "@zavx0z/immersive-nodes-parameter-numeric-number"
+import SliderParameter, {type ImmersiveNodesParameterNumericSlider} from "@zavx0z/immersive-nodes-parameter-numeric-slider"
+import CheckboxParameter, {type ImmersiveNodesParameterBooleanCheckbox} from "@zavx0z/immersive-nodes-parameter-boolean-checkbox"
+import SwitchParameter, {type ImmersiveNodesParameterBooleanSwitch} from "@zavx0z/immersive-nodes-parameter-boolean-switch"
+import SelectParameter, {type ImmersiveNodesParameterChoiceSelect} from "@zavx0z/immersive-nodes-parameter-choice-select"
+import CycleParameter, {type ImmersiveNodesParameterChoiceCycle} from "@zavx0z/immersive-nodes-parameter-choice-cycle"
+import OptionGroupParameter, {type ImmersiveNodesParameterChoiceOptionGroup} from "@zavx0z/immersive-nodes-parameter-choice-option-group"
+import ColorParameter, {type ImmersiveNodesParameterCompositeColor} from "@zavx0z/immersive-nodes-parameter-composite-color"
+import VectorParameter, {type ImmersiveNodesParameterCompositeVector} from "@zavx0z/immersive-nodes-parameter-composite-vector"
+import MatrixParameter, {type ImmersiveNodesParameterCompositeMatrix} from "@zavx0z/immersive-nodes-parameter-composite-matrix"
+import PathParameter, {type ImmersiveNodesParameterPath} from "@zavx0z/immersive-nodes-parameter-path"
+import ReferenceParameter, {type ImmersiveNodesParameterReference} from "@zavx0z/immersive-nodes-parameter-reference"
+import CollectionParameter, {type ImmersiveNodesParameterCollection} from "@zavx0z/immersive-nodes-parameter-collection"
+import OutputParameter, {type ImmersiveNodesParameterOutput} from "@zavx0z/immersive-nodes-parameter-output"
 
-export function AuthoredText(props: Zavx0zImmersiveNodesParameterText.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredText(props: ImmersiveNodesParameterText.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <TextParameter
     id={input.id}
@@ -70,7 +70,7 @@ export function AuthoredText(props: Zavx0zImmersiveNodesParameterText.Input & Re
   </TextParameter>
 }
 
-export function AuthoredNumber(props: Zavx0zImmersiveNodesParameterNumericNumber.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredNumber(props: ImmersiveNodesParameterNumericNumber.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <NumberParameter
     id={input.id}
@@ -127,7 +127,7 @@ export function AuthoredNumber(props: Zavx0zImmersiveNodesParameterNumericNumber
   </NumberParameter>
 }
 
-export function AuthoredSlider(props: Zavx0zImmersiveNodesParameterNumericSlider.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredSlider(props: ImmersiveNodesParameterNumericSlider.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <SliderParameter
     id={input.id}
@@ -181,7 +181,7 @@ export function AuthoredSlider(props: Zavx0zImmersiveNodesParameterNumericSlider
   </SliderParameter>
 }
 
-export function AuthoredCheckbox(props: Zavx0zImmersiveNodesParameterBooleanCheckbox.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredCheckbox(props: ImmersiveNodesParameterBooleanCheckbox.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <CheckboxParameter
     id={input.id}
@@ -231,7 +231,7 @@ export function AuthoredCheckbox(props: Zavx0zImmersiveNodesParameterBooleanChec
   </CheckboxParameter>
 }
 
-export function AuthoredSwitch(props: Zavx0zImmersiveNodesParameterBooleanSwitch.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredSwitch(props: ImmersiveNodesParameterBooleanSwitch.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <SwitchParameter
     id={input.id}
@@ -281,7 +281,7 @@ export function AuthoredSwitch(props: Zavx0zImmersiveNodesParameterBooleanSwitch
   </SwitchParameter>
 }
 
-export function AuthoredSelect(props: Zavx0zImmersiveNodesParameterChoiceSelect.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredSelect(props: ImmersiveNodesParameterChoiceSelect.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <SelectParameter
     id={input.id}
@@ -332,7 +332,7 @@ export function AuthoredSelect(props: Zavx0zImmersiveNodesParameterChoiceSelect.
   </SelectParameter>
 }
 
-export function AuthoredCycle(props: Zavx0zImmersiveNodesParameterChoiceCycle.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredCycle(props: ImmersiveNodesParameterChoiceCycle.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <CycleParameter
     id={input.id}
@@ -383,7 +383,7 @@ export function AuthoredCycle(props: Zavx0zImmersiveNodesParameterChoiceCycle.In
   </CycleParameter>
 }
 
-export function AuthoredOptionGroup(props: Zavx0zImmersiveNodesParameterChoiceOptionGroup.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredOptionGroup(props: ImmersiveNodesParameterChoiceOptionGroup.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <OptionGroupParameter
     id={input.id}
@@ -434,7 +434,7 @@ export function AuthoredOptionGroup(props: Zavx0zImmersiveNodesParameterChoiceOp
   </OptionGroupParameter>
 }
 
-export function AuthoredColor(props: Zavx0zImmersiveNodesParameterCompositeColor.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredColor(props: ImmersiveNodesParameterCompositeColor.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <ColorParameter
     id={input.id}
@@ -485,7 +485,7 @@ export function AuthoredColor(props: Zavx0zImmersiveNodesParameterCompositeColor
   </ColorParameter>
 }
 
-export function AuthoredVector(props: Zavx0zImmersiveNodesParameterCompositeVector.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredVector(props: ImmersiveNodesParameterCompositeVector.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <VectorParameter
     id={input.id}
@@ -540,7 +540,7 @@ export function AuthoredVector(props: Zavx0zImmersiveNodesParameterCompositeVect
   </VectorParameter>
 }
 
-export function AuthoredMatrix(props: Zavx0zImmersiveNodesParameterCompositeMatrix.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredMatrix(props: ImmersiveNodesParameterCompositeMatrix.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <MatrixParameter
     id={input.id}
@@ -592,7 +592,7 @@ export function AuthoredMatrix(props: Zavx0zImmersiveNodesParameterCompositeMatr
   </MatrixParameter>
 }
 
-export function AuthoredPath(props: Zavx0zImmersiveNodesParameterPath.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredPath(props: ImmersiveNodesParameterPath.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <PathParameter
     id={input.id}
@@ -644,7 +644,7 @@ export function AuthoredPath(props: Zavx0zImmersiveNodesParameterPath.Input & Re
   </PathParameter>
 }
 
-export function AuthoredReference(props: Zavx0zImmersiveNodesParameterReference.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredReference(props: ImmersiveNodesParameterReference.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <ReferenceParameter
     id={input.id}
@@ -693,7 +693,7 @@ export function AuthoredReference(props: Zavx0zImmersiveNodesParameterReference.
   </ReferenceParameter>
 }
 
-export function AuthoredCollection(props: Zavx0zImmersiveNodesParameterCollection.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredCollection(props: ImmersiveNodesParameterCollection.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <CollectionParameter
     id={input.id}
@@ -744,7 +744,7 @@ export function AuthoredCollection(props: Zavx0zImmersiveNodesParameterCollectio
   </CollectionParameter>
 }
 
-export function AuthoredOutput(props: Zavx0zImmersiveNodesParameterOutput.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredOutput(props: ImmersiveNodesParameterOutput.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <OutputParameter
     id={input.id}

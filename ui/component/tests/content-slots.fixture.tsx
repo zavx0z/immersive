@@ -3,8 +3,8 @@ import StatusBar from "@zavx0z/immersive-ui-component-feedback-status-bar"
 import FieldGroup from "@zavx0z/immersive-ui-component-field-group"
 import Frame from "@zavx0z/immersive-ui-component-surface-frame"
 import Pane from "@zavx0z/immersive-ui-component-surface-pane"
-import type {Zavx0zImmersiveUiComponentSurfacePane} from "@zavx0z/immersive-ui-component-surface-pane"
-type PaneTextContent = Zavx0zImmersiveUiComponentSurfacePane.Input["content"]
+import type {ImmersiveUiComponentSurfacePane} from "@zavx0z/immersive-ui-component-surface-pane"
+type PaneTextContent = ImmersiveUiComponentSurfacePane.Input["content"]
 import Panel from "@zavx0z/immersive-ui-component-surface-panel"
 import Tab from "@zavx0z/immersive-ui-component-surface-tab"
 import Window from "@zavx0z/immersive-ui-component-surface-window"

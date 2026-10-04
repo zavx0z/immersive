@@ -1,6 +1,6 @@
-import type {Zavx0zImmersiveUiComponentBadge} from "@zavx0z/immersive-ui-component-badge"
-import type {Zavx0zImmersiveTechTextEditor} from "@zavx0z/immersive-tech-text-editor"
-type CodeEditorRange = Zavx0zImmersiveTechTextEditor.Output["snapshot"]["selections"][number]
+import type {ImmersiveUiComponentBadge} from "@zavx0z/immersive-ui-component-badge"
+import type {ImmersiveTechTextEditor} from "@zavx0z/immersive-tech-text-editor"
+type CodeEditorRange = ImmersiveTechTextEditor.Output["snapshot"]["selections"][number]
 
 /** CodeEditorHandle описывает данные публичного контракта своего владельца. */
 export type CodeEditorHandle = Readonly<{
@@ -17,8 +17,8 @@ export type CodeEditorSelectionSet = Readonly<{selections: readonly CodeEditorRa
 /** CodeEditorLineDecoration описывает данные публичного контракта своего владельца. */
 export type CodeEditorLineDecoration = Readonly<{
   line: number
-  lineTone?: Zavx0zImmersiveUiComponentBadge.Input["tone"] | undefined
-  markerTone?: Zavx0zImmersiveUiComponentBadge.Input["tone"] | undefined
-  gutterTone?: Zavx0zImmersiveUiComponentBadge.Input["tone"] | undefined
+  lineTone?: ImmersiveUiComponentBadge.Input["tone"] | undefined
+  markerTone?: ImmersiveUiComponentBadge.Input["tone"] | undefined
+  gutterTone?: ImmersiveUiComponentBadge.Input["tone"] | undefined
   title?: string | undefined
 }>

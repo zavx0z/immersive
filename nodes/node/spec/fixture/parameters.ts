@@ -1,5 +1,5 @@
-import type {Zavx0zImmersiveNodesNodeParameter} from "@zavx0z/immersive-nodes-node-parameter"
-type ParameterNodeProps = Zavx0zImmersiveNodesNodeParameter.Input
+import type {ImmersiveNodesNodeParameter} from "@zavx0z/immersive-nodes-node-parameter"
+type ParameterNodeProps = ImmersiveNodesNodeParameter.Input
 
 /** Неизменяемые исходные данные числового поля для вариантов ноды. */
 export const parameters: NonNullable<ParameterNodeProps["parameters"]> = [

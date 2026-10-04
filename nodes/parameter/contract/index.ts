@@ -2,7 +2,7 @@ import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type Socket from "@zavx0z/immersive-nodes-socket"
 
 /** Авторские параметры разделяют адрес ноды, подпись, сокеты и внешнее состояние. */
-export declare namespace Zavx0zImmersiveNodesParameter {
+export declare namespace ImmersiveNodesParameter {
   /** Общая строка параметра; конкретное значение и его события определяет участник. */
   interface Input {
     readonly id: string

@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentFieldColor} from "@zavx0z/immersive-ui-component-field-color"
-type ColorFieldProps = Zavx0zImmersiveUiComponentFieldColor.Input
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveUiComponentFieldColor} from "@zavx0z/immersive-ui-component-field-color"
+type ColorFieldProps = ImmersiveUiComponentFieldColor.Input
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterCompositeColor {
+export declare namespace ImmersiveNodesParameterCompositeColor {
   /**
   Входные данные цветового параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace Zavx0zImmersiveNodesParameterCompositeColor {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterCompositeColor.Input = {
+  const input: ImmersiveNodesParameterCompositeColor.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace Zavx0zImmersiveNodesParameterCompositeColor {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: ColorFieldProps["value"]
     readonly open?: ColorFieldProps["open"]
     readonly onInput?: ColorFieldProps["onInput"]
@@ -43,7 +43,7 @@ export declare namespace Zavx0zImmersiveNodesParameterCompositeColor {
     readonly onOpenChange?: ColorFieldProps["onOpenChange"]
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

@@ -4,7 +4,7 @@ SVG-значок select-opened-item в формате data URL.
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiThemeIconSelectOpenedItem as Contract} from "./contract"
+import type {ImmersiveUiThemeIconSelectOpenedItem as Contract} from "./contract"
 import iconSvg from "@zavx0z/immersive-ui-theme-icon-compose"
 
 
@@ -12,4 +12,4 @@ const selectOpenedItemIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\
 
 export default selectOpenedItemIcon
 
-export type {Zavx0zImmersiveUiThemeIconSelectOpenedItem} from "./contract"
+export type {ImmersiveUiThemeIconSelectOpenedItem} from "./contract"

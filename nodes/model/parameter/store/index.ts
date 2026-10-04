@@ -5,14 +5,14 @@
 
 @packageDocumentation
 */
-import ownNodeJsonValue, {type Zavx0zImmersiveTechJsonValueOwn} from "@zavx0z/immersive-tech-json-value-own"
-import ownNodeValueType, {type Zavx0zImmersiveNodesModelParameterValueType} from "@zavx0z/immersive-nodes-model-parameter-value-type"
+import ownNodeJsonValue, {type ImmersiveTechJsonValueOwn} from "@zavx0z/immersive-tech-json-value-own"
+import ownNodeValueType, {type ImmersiveNodesModelParameterValueType} from "@zavx0z/immersive-nodes-model-parameter-value-type"
 import equalNodeJsonValue from "@zavx0z/immersive-tech-json-value-equal"
-import type {Zavx0zImmersiveNodesModelParameterStore as Contract} from "./contract"
+import type {ImmersiveNodesModelParameterStore as Contract} from "./contract"
 import type {ParameterSnapshot} from "./contract/types"
-export type {Zavx0zImmersiveNodesModelParameterStore} from "./contract"
-type NodeJsonValue = Zavx0zImmersiveTechJsonValueOwn.Input[0]
-type NodeValueType = Zavx0zImmersiveNodesModelParameterValueType.Output
+export type {ImmersiveNodesModelParameterStore} from "./contract"
+type NodeJsonValue = ImmersiveTechJsonValueOwn.Input[0]
+type NodeValueType = ImmersiveNodesModelParameterValueType.Output
 
 /**
 Отдельное значение одного параметра без зависимости от его визуального представления.

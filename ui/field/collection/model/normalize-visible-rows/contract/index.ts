@@ -1,5 +1,5 @@
 /** Выбирает целое число видимых строк в пределах коллекции и применяет значение по умолчанию для неконечных чисел. */
-export declare namespace Zavx0zImmersiveUiFieldCollectionModelNormalizeVisibleRows {
+export declare namespace ImmersiveUiFieldCollectionModelNormalizeVisibleRows {
   /** Аргументы публичной операции normalizeCollectionVisibleRows; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value?: number

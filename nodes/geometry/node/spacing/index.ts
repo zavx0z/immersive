@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveNodesGeometryNodeSpacing as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesGeometryNodeSpacing} from "./contract"
+import type {ImmersiveNodesGeometryNodeSpacing as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodeSpacing} from "./contract"
 
 import {metadataString} from "@zavx0z/immersive-tech-json-metadata"
 

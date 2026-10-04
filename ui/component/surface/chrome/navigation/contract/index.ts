@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentSurfaceChrome} from "@zavx0z/immersive-ui-component-surface-chrome/contract"
+import type {ImmersiveUiComponentSurfaceChrome} from "@zavx0z/immersive-ui-component-surface-chrome/contract"
 
 
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный вход и JSX-результат компонента. */
-export declare namespace Zavx0zImmersiveUiComponentSurfaceChromeNavigation {
+export declare namespace ImmersiveUiComponentSurfaceChromeNavigation {
   /**
   Входные данные SurfaceNavigation.
   */
@@ -18,5 +18,5 @@ export declare namespace Zavx0zImmersiveUiComponentSurfaceChromeNavigation {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = Zavx0zImmersiveUiComponentSurfaceChrome.Output & JSX.Element<Slots>
+  type Output = ImmersiveUiComponentSurfaceChrome.Output & JSX.Element<Slots>
 }

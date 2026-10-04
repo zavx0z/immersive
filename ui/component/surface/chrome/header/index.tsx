@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentSurfaceChromeHeader as Contract} from "./contract"
+import type {ImmersiveUiComponentSurfaceChromeHeader as Contract} from "./contract"
 
-export type {Zavx0zImmersiveUiComponentSurfaceChromeHeader} from "./contract"
+export type {ImmersiveUiComponentSurfaceChromeHeader} from "./contract"
 
 
 export default function SurfaceHeader(props: Contract.Input): Contract.Output {

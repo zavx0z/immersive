@@ -1,11 +1,11 @@
 import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
-import type {Zavx0zImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
-type ParameterInput = Parameters<NonNullable<Zavx0zImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
-import type {Zavx0zImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
-type NodeChildren = Zavx0zImmersiveNodesNode.Output | readonly Zavx0zImmersiveNodesNode.Output[] | null | undefined
-import type {Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
-type NodeKind = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["kind"]>
-type NodeShape = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
+import type {ImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
+type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+import type {ImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
+type NodeChildren = ImmersiveNodesNode.Output | readonly ImmersiveNodesNode.Output[] | null | undefined
+import type {ImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+type NodeKind = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["kind"]>
+type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
 import type {
   GraphSelection,
   GraphTransform,

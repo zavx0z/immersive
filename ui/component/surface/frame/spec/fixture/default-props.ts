@@ -3,9 +3,9 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentSurfaceFrame} from "@zavx0z/immersive-ui-component-surface-frame"
+import type {ImmersiveUiComponentSurfaceFrame} from "@zavx0z/immersive-ui-component-surface-frame"
 
-const frameDefaultProps: Zavx0zImmersiveUiComponentSurfaceFrame.Input = Object.freeze({
+const frameDefaultProps: ImmersiveUiComponentSurfaceFrame.Input = Object.freeze({
   title: "Frame",
   edge: "right",
   handles: Object.freeze([

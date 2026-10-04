@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
-import project, {type Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+import project, {type ImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
 import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 
 test("подключение матрицы не сокращает поле и не сдвигает следующие сокеты", () => {
-  const snapshot: Zavx0zImmersiveNodesGeometryNodeProject.Input[0] = {
+  const snapshot: ImmersiveNodesGeometryNodeProject.Input[0] = {
     id: "node",
     parameters: [
       {id: "matrix", revision: 0, value: [[1, 0], [0, 1]], presentation: {}, valueType: {id: "matrix", version: 1}},

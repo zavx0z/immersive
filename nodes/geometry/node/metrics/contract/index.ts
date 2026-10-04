@@ -1,6 +1,6 @@
 
 /** Размеры ноды и строки без чтения DOM. */
-export declare namespace Zavx0zImmersiveNodesGeometryNodeMetrics {
+export declare namespace ImmersiveNodesGeometryNodeMetrics {
   type Output = Readonly<{
     NODE_MINIMUM_WIDTH: number
     NODE_HEADER_HEIGHT: number

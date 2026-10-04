@@ -10,12 +10,12 @@ OutputParameter соединяет публичный текстовый выв�
 import FieldGroup from "@zavx0z/immersive-ui-component-field-group"
 import {ParameterOutput} from "./src/output"
 import ParameterLayout from "@zavx0z/immersive-nodes-parameter-shared-layout"
-import type {Zavx0zImmersiveNodesParameterOutput as Contract} from "./contract"
+import type {ImmersiveNodesParameterOutput as Contract} from "./contract"
 
-export type {Zavx0zImmersiveNodesParameterOutput} from "./contract"
+export type {ImmersiveNodesParameterOutput} from "./contract"
 
 /**
-Авторский контракт OutputParameter; общий протокол описан в Zavx0zImmersiveNodesParameter, сокеты назначаются слотам left/right.
+Авторский контракт OutputParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property value - Отображается как текст или JSON; не изменяется этим компонентом.
 */

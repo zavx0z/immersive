@@ -5,10 +5,10 @@
 
 @packageDocumentation
 */
-export type {Zavx0zImmersiveNodesNode} from "./contract"
+export type {ImmersiveNodesNode} from "./contract"
 export {default as DiagramNode} from "@zavx0z/immersive-nodes-node-diagram"
-export type {Zavx0zImmersiveNodesNodeDiagram} from "@zavx0z/immersive-nodes-node-diagram"
+export type {ImmersiveNodesNodeDiagram} from "@zavx0z/immersive-nodes-node-diagram"
 export {default as ParameterNode} from "@zavx0z/immersive-nodes-node-parameter"
-export type {Zavx0zImmersiveNodesNodeParameter} from "@zavx0z/immersive-nodes-node-parameter"
+export type {ImmersiveNodesNodeParameter} from "@zavx0z/immersive-nodes-node-parameter"
 export {default as ContentNode} from "@zavx0z/immersive-nodes-node-content"
-export type {Zavx0zImmersiveNodesNodeContent} from "@zavx0z/immersive-nodes-node-content"
+export type {ImmersiveNodesNodeContent} from "@zavx0z/immersive-nodes-node-content"

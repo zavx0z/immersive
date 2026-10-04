@@ -1,5 +1,5 @@
 /** Округляет число до шести знаков после десятичной точки. */
-export declare namespace Zavx0zImmersiveUiFieldNumberValueRound {
+export declare namespace ImmersiveUiFieldNumberValueRound {
   /** Аргументы публичной операции roundedNumber; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number

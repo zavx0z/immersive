@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechJsonPointerToken as Contract} from "./contract"
-export type {Zavx0zImmersiveTechJsonPointerToken} from "./contract"
+import type {ImmersiveTechJsonPointerToken as Contract} from "./contract"
+export type {ImmersiveTechJsonPointerToken} from "./contract"
 
 export default function encodeJsonPointerToken(value: Contract.Input): Contract.Output {
   if (typeof value !== "string") throw new TypeError("JSON Pointer token must be a string")

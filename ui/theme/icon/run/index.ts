@@ -4,11 +4,11 @@ SVG-значок run в формате data URL.
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiThemeIconRun as Contract} from "./contract"
+import type {ImmersiveUiThemeIconRun as Contract} from "./contract"
 import iconSvg from "@zavx0z/immersive-ui-theme-icon-compose"
 
 const runIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"M8 5v14l11-7-11-7Z\"/>")
 
 export default runIcon
 
-export type {Zavx0zImmersiveUiThemeIconRun} from "./contract"
+export type {ImmersiveUiThemeIconRun} from "./contract"

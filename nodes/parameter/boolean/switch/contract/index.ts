@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentFieldSwitch} from "@zavx0z/immersive-ui-component-field-switch"
-type SwitchFieldProps = Zavx0zImmersiveUiComponentFieldSwitch.Input
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveUiComponentFieldSwitch} from "@zavx0z/immersive-ui-component-field-switch"
+type SwitchFieldProps = ImmersiveUiComponentFieldSwitch.Input
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterBooleanSwitch {
+export declare namespace ImmersiveNodesParameterBooleanSwitch {
   /**
   Входные данные логического параметра-переключателя, связанного с нодой и её сокетами.
 
@@ -25,7 +25,7 @@ export declare namespace Zavx0zImmersiveNodesParameterBooleanSwitch {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterBooleanSwitch.Input = {
+  const input: ImmersiveNodesParameterBooleanSwitch.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -33,12 +33,12 @@ export declare namespace Zavx0zImmersiveNodesParameterBooleanSwitch {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly checked: SwitchFieldProps["checked"]
     readonly onChange?: SwitchFieldProps["onChange"]
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

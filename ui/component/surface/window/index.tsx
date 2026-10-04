@@ -17,10 +17,10 @@ import {WindowActionButton} from "./src/action.tsx"
 import {WindowResizeHandles} from "./src/resize-handles.tsx"
 import {useWindowGeometry} from "./src/use-geometry.ts"
 import {validateWindow} from "./src/validate.ts"
-import type {Zavx0zImmersiveUiComponentSurfaceWindow as Contract} from "./contract"
+import type {ImmersiveUiComponentSurfaceWindow as Contract} from "./contract"
 
 
-export type {Zavx0zImmersiveUiComponentSurfaceWindow} from "./contract"
+export type {ImmersiveUiComponentSurfaceWindow} from "./contract"
 
 export default function Window(props: Contract.Input): Contract.Output {
   validateWindow(props)

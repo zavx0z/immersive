@@ -1,14 +1,14 @@
 import type {VectorFieldDensity} from "./types.ts"
 
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
-import type {Zavx0zImmersiveUiComponentField} from "@zavx0z/immersive-ui-component-field/contract"
+import type {ImmersiveUiComponentField} from "@zavx0z/immersive-ui-component-field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace Zavx0zImmersiveUiComponentFieldVector {
+export declare namespace ImmersiveUiComponentFieldVector {
   /**
   Входные данные VectorField.
   */
-  interface Input extends Zavx0zImmersiveUiComponentField.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly value: readonly number[]
     readonly axes?: readonly string[] | undefined
     readonly min?: number | undefined
@@ -21,5 +21,5 @@ export declare namespace Zavx0zImmersiveUiComponentFieldVector {
     readonly onChange?: ((value: readonly number[], event: Event) => void) | undefined
   }
 
-  type Output = Zavx0zImmersiveUiComponentField.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

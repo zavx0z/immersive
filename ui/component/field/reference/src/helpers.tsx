@@ -1,5 +1,5 @@
-import type {Zavx0zImmersiveUiComponentFieldReference} from "../contract/index"
-type ReferenceFieldProps = Zavx0zImmersiveUiComponentFieldReference.Input
+import type {ImmersiveUiComponentFieldReference} from "../contract/index"
+type ReferenceFieldProps = ImmersiveUiComponentFieldReference.Input
 
 /** Частная подготовка поле интерфейса: ссылка на ресурс. */
 export function validateReferenceField(props: ReferenceFieldProps): void {

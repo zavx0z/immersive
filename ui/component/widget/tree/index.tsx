@@ -7,7 +7,7 @@
 import type {TreeContext} from "./src/types"
 import type {TreeItem} from "./contract/types.ts"
 import {TreePlainRows} from "./src/helpers.tsx"
-import type {Zavx0zImmersiveUiComponentWidgetTree as Contract} from "./contract"
+import type {ImmersiveUiComponentWidgetTree as Contract} from "./contract"
 import type {TreeRow} from "./src/types"
 import {TreeWindowedRows} from "./src/helpers.tsx"
 import {isTreeDescendant} from "./src/helpers.tsx"
@@ -24,7 +24,7 @@ import {windowedTreeBlocks} from "./src/windowing.ts"
 import type {WindowedTreeBlock} from "./src/windowing.ts"
 
 
-export type {Zavx0zImmersiveUiComponentWidgetTree} from "./contract"
+export type {ImmersiveUiComponentWidgetTree} from "./contract"
 
 export default function Tree(props: Contract.Input): Contract.Output {
   const refs = useRef(new Map<string, HTMLLIElement>())

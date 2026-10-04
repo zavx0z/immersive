@@ -1,12 +1,12 @@
 /** Изменения публикуются только целиком; отказ сохраняет исходный документ. */
 import {describe, expect, test} from "bun:test"
-import patch, {type Zavx0zImmersiveTechJsonPatch} from "@zavx0z/immersive-tech-json-patch"
+import patch, {type ImmersiveTechJsonPatch} from "@zavx0z/immersive-tech-json-patch"
 import JsonPatchError from "@zavx0z/immersive-tech-json-patch-error"
 
 describe.each([
   {name: "Замена значения", props: {source: {value: 1}, operations: [{op: "replace", path: "/value", value: 2}]}},
   {name: "Проверка и замена", props: {source: {value: 1}, operations: [{op: "test", path: "/value", value: 1}, {op: "replace", path: "/value", value: 2}]}},
-] satisfies readonly {name: string, props: {source: Zavx0zImmersiveTechJsonPatch.Input[0], operations: Zavx0zImmersiveTechJsonPatch.Input[1]}}[])("$name", ({props}) => {
+] satisfies readonly {name: string, props: {source: ImmersiveTechJsonPatch.Input[0], operations: ImmersiveTechJsonPatch.Input[1]}}[])("$name", ({props}) => {
   const result = patch(props.source, props.operations)
   test("Атомарный результат", () => {
     expect(result, "Операции дают полный новый документ").toEqual({value: 2})

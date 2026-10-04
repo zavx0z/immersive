@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentBadge} from "./contract"
+import type {ImmersiveUiComponentBadge} from "./contract"
 
 
-export type {Zavx0zImmersiveUiComponentBadge} from "./contract"
+export type {ImmersiveUiComponentBadge} from "./contract"
 
-export default function Badge(props: Zavx0zImmersiveUiComponentBadge.Input): Zavx0zImmersiveUiComponentBadge.Output {
+export default function Badge(props: ImmersiveUiComponentBadge.Input): ImmersiveUiComponentBadge.Output {
   const tone = props.tone ?? "neutral"
   return <span
     title={props.title}

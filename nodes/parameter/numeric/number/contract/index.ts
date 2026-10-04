@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentFieldNumber} from "@zavx0z/immersive-ui-component-field-number"
-type NumberFieldProps = Zavx0zImmersiveUiComponentFieldNumber.Input
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveUiComponentFieldNumber} from "@zavx0z/immersive-ui-component-field-number"
+type NumberFieldProps = ImmersiveUiComponentFieldNumber.Input
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterNumericNumber {
+export declare namespace ImmersiveNodesParameterNumericNumber {
   /**
   Входные данные числового параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace Zavx0zImmersiveNodesParameterNumericNumber {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterNumericNumber.Input = {
+  const input: ImmersiveNodesParameterNumericNumber.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace Zavx0zImmersiveNodesParameterNumericNumber {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: NumberFieldProps["value"]
     readonly min?: NumberFieldProps["min"]
     readonly max?: NumberFieldProps["max"]
@@ -47,7 +47,7 @@ export declare namespace Zavx0zImmersiveNodesParameterNumericNumber {
     readonly onChange?: NumberFieldProps["onChange"]
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

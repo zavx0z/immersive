@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentViewCodeEditorValidate as Contract} from "./contract"
-import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
-type CodeEditorProps = Zavx0zImmersiveUiComponentViewCodeEditor.Input
+import type {ImmersiveUiComponentViewCodeEditorValidate as Contract} from "./contract"
+import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
 import assertNonEmpty from "@zavx0z/immersive-tech-text-assert-non-empty"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
 
@@ -34,4 +34,4 @@ export default function assertCodeEditorProps(props: Contract.Input[0]): Contrac
   if (props.title !== undefined && typeof props.title !== "string") throw new TypeError("CodeEditor title must be a string")
 }
 
-export type {Zavx0zImmersiveUiComponentViewCodeEditorValidate} from "./contract"
+export type {ImmersiveUiComponentViewCodeEditorValidate} from "./contract"

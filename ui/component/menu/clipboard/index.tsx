@@ -8,11 +8,11 @@ import {useSyncExternalStore} from "@zavx0z/immersive-component"
 import Menu from "@zavx0z/immersive-ui-component-menu-basic"
 
 
-export type {Zavx0zImmersiveUiComponentMenuClipboard} from "./contract"
+export type {ImmersiveUiComponentMenuClipboard} from "./contract"
 
-import type {Zavx0zImmersiveUiComponentMenuClipboard} from "./contract"
+import type {ImmersiveUiComponentMenuClipboard} from "./contract"
 
-export default function ClipboardMenu(props: Zavx0zImmersiveUiComponentMenuClipboard.Input): Zavx0zImmersiveUiComponentMenuClipboard.Output {
+export default function ClipboardMenu(props: ImmersiveUiComponentMenuClipboard.Input): ImmersiveUiComponentMenuClipboard.Output {
   const state = useSyncExternalStore(props.controller.subscribe, props.controller.getSnapshot)
   return <Menu
     open={state.open}

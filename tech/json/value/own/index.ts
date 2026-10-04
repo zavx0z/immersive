@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechJsonValueOwn as Contract} from "./contract"
-export type {Zavx0zImmersiveTechJsonValueOwn} from "./contract"
+import type {ImmersiveTechJsonValueOwn as Contract} from "./contract"
+export type {ImmersiveTechJsonValueOwn} from "./contract"
 type NodeJsonValue = Contract.Input[0]
 
 /** Копирует и замораживает JSON, отклоняя неоднозначные runtime-данные. */

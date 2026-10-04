@@ -1,8 +1,8 @@
-import {Button, IconButton, ToggleButtonGroup, type Zavx0zImmersiveUiComponentButton} from "@zavx0z/immersive-ui-component-button"
+import {Button, IconButton, ToggleButtonGroup, type ImmersiveUiComponentButton} from "@zavx0z/immersive-ui-component-button"
 import runIcon from "@zavx0z/immersive-ui-theme-icon-run"
 
 /** Совместное представление реальных участников Cluster для одного Experience. */
-export default function ButtonExamples(props: Zavx0zImmersiveUiComponentButton.Input & {label: string}): Zavx0zImmersiveUiComponentButton.Output {
+export default function ButtonExamples(props: ImmersiveUiComponentButton.Input & {label: string}): ImmersiveUiComponentButton.Output {
   return <section>
       <Button
         label={props.label}

@@ -1,10 +1,10 @@
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {MenuAction} from "./types.ts"
 
-import type {Zavx0zImmersiveUiComponentMenu} from "@zavx0z/immersive-ui-component-menu/contract"
+import type {ImmersiveUiComponentMenu} from "@zavx0z/immersive-ui-component-menu/contract"
 
 /** Собственный вход Menu и общий результат меню. */
-export declare namespace Zavx0zImmersiveUiComponentMenuBasic {
+export declare namespace ImmersiveUiComponentMenuBasic {
   /**
   Входные данные Menu.
   */
@@ -18,5 +18,5 @@ export declare namespace Zavx0zImmersiveUiComponentMenuBasic {
     readonly onClose: () => void
   }
 
-  type Output = Zavx0zImmersiveUiComponentMenu.Output & JSX.Element
+  type Output = ImmersiveUiComponentMenu.Output & JSX.Element
 }

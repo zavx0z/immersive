@@ -4,11 +4,11 @@ SVG-значок visibility-on в формате data URL.
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiThemeIconVisibilityOn as Contract} from "./contract"
+import type {ImmersiveUiThemeIconVisibilityOn as Contract} from "./contract"
 import iconSvg from "@zavx0z/immersive-ui-theme-icon-compose"
 
 const visibilityOnIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"M2.5 12s3.5-5 9.5-5 9.5 5 9.5 5-3.5 5-9.5 5-9.5-5-9.5-5Z\"/><circle cx=\"12\" cy=\"12\" r=\"2.5\"/>")
 
 export default visibilityOnIcon
 
-export type {Zavx0zImmersiveUiThemeIconVisibilityOn} from "./contract"
+export type {ImmersiveUiThemeIconVisibilityOn} from "./contract"

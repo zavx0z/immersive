@@ -10,13 +10,13 @@ import {textOffsetAtPosition} from "@zavx0z/immersive-dom/text-position"
 import {textPositionAtOffset} from "@zavx0z/immersive-dom/text-position"
 import {clearDocumentTextHighlights} from "@zavx0z/immersive-dom/text-highlights"
 import {setDocumentTextHighlights} from "@zavx0z/immersive-dom/text-highlights"
-import type {Zavx0zImmersiveTechTextEditor} from "@zavx0z/immersive-tech-text-editor"
+import type {ImmersiveTechTextEditor} from "@zavx0z/immersive-tech-text-editor"
 import type CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
-type CodeEditorRange = Zavx0zImmersiveTechTextEditor.Output["snapshot"]["selections"][number]
+type CodeEditorRange = ImmersiveTechTextEditor.Output["snapshot"]["selections"][number]
 import {Range} from "@zavx0z/immersive-dom/range"
-import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
-type CodeEditorHandle = NonNullable<Parameters<NonNullable<Zavx0zImmersiveUiComponentViewCodeEditor.Input["onReady"]>>[0]>
-type CodeEditorSelectionSet = Parameters<NonNullable<Zavx0zImmersiveUiComponentViewCodeEditor.Input["onSelectionChange"]>>[0]
+import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentViewCodeEditor.Input["onReady"]>>[0]>
+type CodeEditorSelectionSet = Parameters<NonNullable<ImmersiveUiComponentViewCodeEditor.Input["onSelectionChange"]>>[0]
 
 export type CodeEditorInteraction = Readonly<{sync(): void; dispose(): void}>
 

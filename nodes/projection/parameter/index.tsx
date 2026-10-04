@@ -25,11 +25,11 @@ import parameterMetrics from "@zavx0z/immersive-nodes-geometry-parameter"
 const {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} = parameterMetrics
 import resolveSocketKind from "@zavx0z/immersive-nodes-model-socket-resolve-kind"
 import resolveSocketShape from "@zavx0z/immersive-nodes-model-socket-resolve-shape"
-import type {Zavx0zImmersiveNodesProjectionParameter as Contract} from "./contract"
-import type {Zavx0zImmersiveNodesSocket} from "@zavx0z/immersive-nodes-socket"
-type ParameterEndpoint = Readonly<Pick<Zavx0zImmersiveNodesSocket.Input, "id" | "kind" | "direction" | "side" | "label" | "title" | "shape" | "connected" | "disabled">>
+import type {ImmersiveNodesProjectionParameter as Contract} from "./contract"
+import type {ImmersiveNodesSocket} from "@zavx0z/immersive-nodes-socket"
+type ParameterEndpoint = Readonly<Pick<ImmersiveNodesSocket.Input, "id" | "kind" | "direction" | "side" | "label" | "title" | "shape" | "connected" | "disabled">>
 import Socket from "@zavx0z/immersive-nodes-socket"
-export type {Zavx0zImmersiveNodesProjectionParameter} from "./contract"
+export type {ImmersiveNodesProjectionParameter} from "./contract"
 
 
 /** Проецирует переданный Store параметра модели без копирования его значения. */

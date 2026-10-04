@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechJsonPatchLimits as Contract} from "./contract"
-export type {Zavx0zImmersiveTechJsonPatchLimits} from "./contract"
+import type {ImmersiveTechJsonPatchLimits as Contract} from "./contract"
+export type {ImmersiveTechJsonPatchLimits} from "./contract"
 
 const JSON_PATCH_LIMITS: Contract.Output = Object.freeze({
   operations: 256,

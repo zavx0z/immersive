@@ -1,6 +1,6 @@
 import type {ListItem} from "../contract/types"
-import type {Zavx0zImmersiveUiComponentViewList} from "../contract"
-type ListProps = Zavx0zImmersiveUiComponentViewList.Input
+import type {ImmersiveUiComponentViewList} from "../contract"
+type ListProps = ImmersiveUiComponentViewList.Input
 
 /**
 Тип ListRowProps принадлежит контракту своего владельца.

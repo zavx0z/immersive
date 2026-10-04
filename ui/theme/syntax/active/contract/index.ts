@@ -1,7 +1,7 @@
 import type {SyntaxTokenColorRule} from "./types"
 
 /** Активная цветовая тема и правила синтаксической подсветки. */
-export declare namespace Zavx0zImmersiveUiThemeSyntaxActive {
+export declare namespace ImmersiveUiThemeSyntaxActive {
   type Output = Readonly<{
     name?: string
     type?: string

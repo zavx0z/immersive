@@ -1,7 +1,7 @@
 # Проекция Parameter
 
 `@zavx0z/immersive-nodes-projection-parameter` предоставляет default-компонент `Parameter`
-и протокол `Zavx0zImmersiveNodesProjectionParameter.Input` / `Output`.
+и протокол `ImmersiveNodesProjectionParameter.Input` / `Output`.
 
 Снимок задаёт начальное представление; переданный Store остаётся источником
 обновлений. Компонент заимствует подписку и завершает её при удалении своего

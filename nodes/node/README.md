@@ -3,8 +3,8 @@
 ## Компоненты
 
 `@zavx0z/immersive-nodes-node` — Cluster трёх самостоятельных представлений. Именованный API
-сохраняет их реализации; общий `Zavx0zImmersiveNodesNode.Input` задаёт адрес, выбор, видимость
-и активацию, `Zavx0zImmersiveNodesNode.Output` — JSX в Document приложения.
+сохраняет их реализации; общий `ImmersiveNodesNode.Input` задаёт адрес, выбор, видимость
+и активацию, `ImmersiveNodesNode.Output` — JSX в Document приложения.
 Каждый участник также предоставляет default-реализацию и собственный namespace
 по точному публичному адресу ниже.
 
@@ -25,7 +25,7 @@
 Каталоги компонентов находятся непосредственно в корне `@zavx0z/immersive-nodes-node`.
 Протокол DiagramNode с описанием полей находится в
 [diagram/contract/index.ts](diagram/contract/index.ts) и доступен как
-`Zavx0zImmersiveNodesNodeDiagram.Input` / `Output` из `@zavx0z/immersive-nodes-node-diagram`.
+`ImmersiveNodesNodeDiagram.Input` / `Output` из `@zavx0z/immersive-nodes-node-diagram`.
 Сам DiagramNode остаётся в `diagram/index.tsx`.
 Каждый содержит `index.tsx` и `spec/deps.spec.ts`: тест сравнивает полный
 статический граф компонентов и нативных JSX-тегов через общий
@@ -64,7 +64,7 @@ ContentNode задаётся `aspect-ratio: 1`. Обе ноды использу
 раскладку и состояния снаружи вместе.
 
 Геометрия не является визуальным компонентом. Общий прямоугольник происходит
-из результата `Zavx0zImmersiveNodesLayout.Output`, а формы отдельных представлений — из их
+из результата `ImmersiveNodesLayout.Output`, а формы отдельных представлений — из их
 собственных протоколов. Числовой план и ParameterNode используют общие
 `@zavx0z/immersive-nodes-geometry-node-spacing` и `@zavx0z/immersive-nodes-geometry-node-socket-side`.
 

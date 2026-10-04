@@ -1,5 +1,5 @@
-import type {Zavx0zImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
-type NumberRange = Zavx0zImmersiveUiFieldNumberValueSoftRange.Output
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
 
 /**
 Тип ActiveScrub принадлежит контракту своего владельца.

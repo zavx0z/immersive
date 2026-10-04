@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldMatrixValueUpdate as Contract} from "./contract"
-export type {Zavx0zImmersiveUiFieldMatrixValueUpdate} from "./contract"
+import type {ImmersiveUiFieldMatrixValueUpdate as Contract} from "./contract"
+export type {ImmersiveUiFieldMatrixValueUpdate} from "./contract"
 
 
 export default function updateMatrixValue(

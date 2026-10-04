@@ -8,12 +8,12 @@ ColorParameter соединяет публичный ColorField с композ�
 
 import ColorField from "@zavx0z/immersive-ui-component-field-color"
 import ParameterLayout from "@zavx0z/immersive-nodes-parameter-shared-layout"
-import type {Zavx0zImmersiveNodesParameterCompositeColor as Contract} from "./contract"
+import type {ImmersiveNodesParameterCompositeColor as Contract} from "./contract"
 
-export type {Zavx0zImmersiveNodesParameterCompositeColor} from "./contract"
+export type {ImmersiveNodesParameterCompositeColor} from "./contract"
 
 /**
-Авторский контракт ColorParameter; общий протокол описан в Zavx0zImmersiveNodesParameter, сокеты назначаются слотам left/right.
+Авторский контракт ColorParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property value - Одно RGBA-значение; всплывающий выбор цвета остаётся композицией UI.
 

@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveNodesModelSocketPresets as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesModelSocketPresets} from "./contract"
+import type {ImmersiveNodesModelSocketPresets as Contract} from "./contract"
+export type {ImmersiveNodesModelSocketPresets} from "./contract"
 
 const SOCKET_PRESETS: Contract.Output = Object.freeze({
   boolean: preset("boolean", "Boolean", "#dc5485", "circle"),

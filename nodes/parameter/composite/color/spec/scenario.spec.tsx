@@ -2,7 +2,7 @@
 import {afterAll, describe, expect, test} from "bun:test"
 import Socket from "@zavx0z/immersive-nodes-socket"
 import {createHeadless} from "@zavx0z/immersive-headless"
-import Component, {type Zavx0zImmersiveNodesParameterCompositeColor} from "@zavx0z/immersive-nodes-parameter-composite-color"
+import Component, {type ImmersiveNodesParameterCompositeColor} from "@zavx0z/immersive-nodes-parameter-composite-color"
 
 describe.each([false, true].map(connected => ({
   name: connected ? "Поле с подключённым сокетом" : "Поле без подключения",
@@ -12,7 +12,7 @@ describe.each([false, true].map(connected => ({
     label: "Значение",
     connected,
     value: {r: .25, g: .55, b: .85, a: 1},
-  } satisfies Zavx0zImmersiveNodesParameterCompositeColor.Input,
+  } satisfies ImmersiveNodesParameterCompositeColor.Input,
   slots: {
     left: <Socket
       slot="left"

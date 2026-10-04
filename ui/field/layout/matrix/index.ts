@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentFieldMatrix} from "@zavx0z/immersive-ui-component-field-matrix"
-type MatrixFieldDensity = NonNullable<Zavx0zImmersiveUiComponentFieldMatrix.Input["density"]>
+import type {ImmersiveUiComponentFieldMatrix} from "@zavx0z/immersive-ui-component-field-matrix"
+type MatrixFieldDensity = NonNullable<ImmersiveUiComponentFieldMatrix.Input["density"]>
 import matrixFieldHeight from "@zavx0z/immersive-ui-field-metric-matrix-height"
 
 const matrixFieldLayout = Object.freeze({

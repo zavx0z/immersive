@@ -1,4 +1,4 @@
-import type {Zavx0zImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
+import type {ImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
 
 /** Направление слоёв, выбранное engine по форме viewport. */
 export type LayoutDirection = "RIGHT" | "DOWN"
@@ -10,7 +10,7 @@ export type LayoutSize = Readonly<{width: number; height: number}>
 export type LayoutPoint = Readonly<{x: number; y: number}>
 
 /** Прямоугольник в логических пикселях. */
-export type LayoutRectangle = Zavx0zImmersiveNodesLayout.Output["bounds"]
+export type LayoutRectangle = ImmersiveNodesLayout.Output["bounds"]
 
 /** Resolved horizontal side of a measured socket. */
 export type LayoutPortSide = "WEST" | "EAST"
@@ -93,7 +93,7 @@ export type ResolvedLayoutGraph = Readonly<Omit<LayoutGraph, "ports"> & {
 }>
 
 /** Окончательная геометрия ноды или compound-контейнера. */
-export type LayoutNodeGeometry = Zavx0zImmersiveNodesLayout.Output["nodes"][number]
+export type LayoutNodeGeometry = ImmersiveNodesLayout.Output["nodes"][number]
 
 /** Абсолютный центр исходного видимого порта и выбранная policy сторона. */
 export type LayoutPortGeometry = Readonly<{id: string; x: number; y: number; side: LayoutPortSide}>

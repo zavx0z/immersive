@@ -7,17 +7,17 @@ import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
 import TerminalModel from "@zavx0z/immersive-tech-terminal"
-import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
-type CodeEditorHandle = NonNullable<Parameters<NonNullable<Zavx0zImmersiveUiComponentViewCodeEditor.Input["onReady"]>>[0]>
-import type {Zavx0zImmersiveUiComponentWidgetEditor} from "@zavx0z/immersive-ui-component-widget-editor"
-type EditorProps = Zavx0zImmersiveUiComponentWidgetEditor.Input
-import type {Zavx0zImmersiveUiComponentWidgetTerminal} from "@zavx0z/immersive-ui-component-widget-terminal"
-type TerminalProps = Zavx0zImmersiveUiComponentWidgetTerminal.Input
-type TerminalHandle = NonNullable<Parameters<NonNullable<Zavx0zImmersiveUiComponentWidgetTerminal.Input["onReady"]>>[0]>
-import type {Zavx0zImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-component-widget-tree"
-type TreeProps = Zavx0zImmersiveUiComponentWidgetTree.Input
-import type {Zavx0zImmersiveUiComponentSurfaceWindow} from "@zavx0z/immersive-ui-component-surface-window"
-type WindowProps = Zavx0zImmersiveUiComponentSurfaceWindow.Input
+import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentViewCodeEditor.Input["onReady"]>>[0]>
+import type {ImmersiveUiComponentWidgetEditor} from "@zavx0z/immersive-ui-component-widget-editor"
+type EditorProps = ImmersiveUiComponentWidgetEditor.Input
+import type {ImmersiveUiComponentWidgetTerminal} from "@zavx0z/immersive-ui-component-widget-terminal"
+type TerminalProps = ImmersiveUiComponentWidgetTerminal.Input
+type TerminalHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentWidgetTerminal.Input["onReady"]>>[0]>
+import type {ImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-component-widget-tree"
+type TreeProps = ImmersiveUiComponentWidgetTree.Input
+import type {ImmersiveUiComponentSurfaceWindow} from "@zavx0z/immersive-ui-component-surface-window"
+type WindowProps = ImmersiveUiComponentSurfaceWindow.Input
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 import {textPositionAtOffset} from "@zavx0z/immersive-dom/text-position"
 

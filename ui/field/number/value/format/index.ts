@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldNumberValueFormat as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueFormat as Contract} from "./contract"
 
 
 
@@ -16,4 +16,4 @@ export default function formatNumberValue(value: Contract.Input[0], precision: C
   return value.toFixed(precision)
 }
 
-export type {Zavx0zImmersiveUiFieldNumberValueFormat} from "./contract"
+export type {ImmersiveUiFieldNumberValueFormat} from "./contract"

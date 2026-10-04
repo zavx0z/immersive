@@ -3,7 +3,7 @@ import type {ParameterInput} from "./types"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Проекция заимствованного снимка или Store в готовые параметры того же Document. */
-export declare namespace Zavx0zImmersiveNodesProjectionParameter {
+export declare namespace ImmersiveNodesProjectionParameter {
   type Input = Readonly<{
     nodeId: string
     snapshot: ParameterSnapshot

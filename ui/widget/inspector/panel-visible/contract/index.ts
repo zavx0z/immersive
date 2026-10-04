@@ -1,9 +1,9 @@
-import type {Zavx0zImmersiveUiComponentWidgetInspector} from "@zavx0z/immersive-ui-component-widget-inspector"
+import type {ImmersiveUiComponentWidgetInspector} from "@zavx0z/immersive-ui-component-widget-inspector"
 
 /** Протокол самостоятельной операции. */
-export declare namespace Zavx0zImmersiveUiWidgetInspectorPanelVisible {
+export declare namespace ImmersiveUiWidgetInspectorPanelVisible {
   type Input = readonly [
-    categories: Zavx0zImmersiveUiComponentWidgetInspector.Input["categories"],
+    categories: ImmersiveUiComponentWidgetInspector.Input["categories"],
     selectedCategoryId: string,
     query: string,
     panel: Readonly<{id: string, label: string}>

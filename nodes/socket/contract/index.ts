@@ -1,10 +1,10 @@
 import type {Socket as CoreSocket} from "@zavx0z/immersive-nodes-tree"
-import type {Zavx0zImmersiveNodesModelSocketKinds} from "@zavx0z/immersive-nodes-model-socket-kinds"
-import type {Zavx0zImmersiveNodesModelSocketShapes} from "@zavx0z/immersive-nodes-model-socket-shapes"
+import type {ImmersiveNodesModelSocketKinds} from "@zavx0z/immersive-nodes-model-socket-kinds"
+import type {ImmersiveNodesModelSocketShapes} from "@zavx0z/immersive-nodes-model-socket-shapes"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Адресуемый Socket сохраняет состояние и взаимодействие в Document приложения. */
-export declare namespace Zavx0zImmersiveNodesSocket {
+export declare namespace ImmersiveNodesSocket {
   /**
   Вход адресуемого {@link @zavx0z/immersive-nodes-socket#default | Socket} в общем Document приложения.
   Состояние соединения и обработчик активации принадлежат вызывающему компоненту.
@@ -52,12 +52,12 @@ export declare namespace Zavx0zImmersiveNodesSocket {
   interface Input {
     readonly id: string
     readonly nodeId: string
-    readonly kind: Zavx0zImmersiveNodesModelSocketKinds.Output[number]
+    readonly kind: ImmersiveNodesModelSocketKinds.Output[number]
     readonly direction: CoreSocket["direction"]
     readonly side: NonNullable<CoreSocket["side"]>
     readonly label: string
     readonly title?: string | undefined
-    readonly shape?: Zavx0zImmersiveNodesModelSocketShapes.Output[number] | undefined
+    readonly shape?: ImmersiveNodesModelSocketShapes.Output[number] | undefined
     readonly connected?: boolean | undefined
     readonly selected?: boolean | undefined
     readonly disabled?: boolean | undefined

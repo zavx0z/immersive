@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentView} from "@zavx0z/immersive-ui-component-view/contract"
+import type {ImmersiveUiComponentView} from "@zavx0z/immersive-ui-component-view/contract"
 import type {ListItem} from "./types.ts"
 
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace Zavx0zImmersiveUiComponentViewList {
+export declare namespace ImmersiveUiComponentViewList {
   /**
   Входные данные List.
   */
@@ -20,5 +20,5 @@ export declare namespace Zavx0zImmersiveUiComponentViewList {
     readonly onSelect?: ((key: string, event: Event) => void) | undefined
   }
 
-  type Output = Zavx0zImmersiveUiComponentView.Output & JSX.Element
+  type Output = ImmersiveUiComponentView.Output & JSX.Element
 }

@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveNodesModelParameterValueType as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesModelParameterValueType} from "./contract"
+import type {ImmersiveNodesModelParameterValueType as Contract} from "./contract"
+export type {ImmersiveNodesModelParameterValueType} from "./contract"
 
 /** Проверяет идентичность переносимого типа и возвращает собственную копию. */
 export default function ownNodeValueType(value: Contract.Input[0], label: Contract.Input[1] = "Node value type"): Contract.Output {

@@ -1,6 +1,6 @@
-import type {Zavx0zImmersiveUiComponentViewTimeline} from "../contract"
+import type {ImmersiveUiComponentViewTimeline} from "../contract"
 import type {TimelineKeyframe, TimelineMarker} from "../contract/types"
-type TimelineProps = Zavx0zImmersiveUiComponentViewTimeline.Input
+type TimelineProps = ImmersiveUiComponentViewTimeline.Input
 
 /**
 Тип NormalizedTimelineKeyframe принадлежит контракту своего владельца.

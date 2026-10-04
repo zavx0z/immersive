@@ -2,7 +2,7 @@
 
 
 /** Обработка number-fill-percentage. */
-export declare namespace Zavx0zImmersiveUiFieldNumberValueFillPercentage {
+export declare namespace ImmersiveUiFieldNumberValueFillPercentage {
   /** Аргументы публичной операции numberFillPercentage; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,

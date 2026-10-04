@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechJsonMetadataStringArray as Contract} from "./contract"
-export type {Zavx0zImmersiveTechJsonMetadataStringArray} from "./contract"
+import type {ImmersiveTechJsonMetadataStringArray as Contract} from "./contract"
+export type {ImmersiveTechJsonMetadataStringArray} from "./contract"
 import metadata from "@zavx0z/immersive-tech-json-metadata-read"
 
 export default function metadataStringArray(value: Contract.Input[0], key: Contract.Input[1]): Contract.Output {

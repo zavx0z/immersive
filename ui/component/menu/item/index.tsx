@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentMenuItem} from "./contract"
+import type {ImmersiveUiComponentMenuItem} from "./contract"
 
 
-export type {Zavx0zImmersiveUiComponentMenuItem} from "./contract"
+export type {ImmersiveUiComponentMenuItem} from "./contract"
 
-export default function MenuItem(props: Zavx0zImmersiveUiComponentMenuItem.Input): Zavx0zImmersiveUiComponentMenuItem.Output {
+export default function MenuItem(props: ImmersiveUiComponentMenuItem.Input): ImmersiveUiComponentMenuItem.Output {
   return <button
     type="button"
     role="menuitem"

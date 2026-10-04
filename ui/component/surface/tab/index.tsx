@@ -12,14 +12,14 @@ import {useState} from "@zavx0z/immersive-component"
 import {observeElementLayout} from "@zavx0z/immersive-dom/geometry"
 import {readElementLayoutRect} from "@zavx0z/immersive-dom/geometry"
 import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
-import type {Zavx0zImmersiveUiComponentSurfaceTab as Contract} from "./contract"
+import type {ImmersiveUiComponentSurfaceTab as Contract} from "./contract"
 import {dockTab} from "./src/placement.ts"
 import {readTabPosition} from "./src/placement.ts"
 import {tabRect} from "./src/placement.ts"
 import type {TabArea} from "./src/placement.ts"
 import type {TabPosition} from "./src/placement.ts"
 
-export type {Zavx0zImmersiveUiComponentSurfaceTab} from "./contract"
+export type {ImmersiveUiComponentSurfaceTab} from "./contract"
 
 
 export default function Tab(props: Contract.Input): Contract.Output {

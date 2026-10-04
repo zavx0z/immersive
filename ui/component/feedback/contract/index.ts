@@ -1,7 +1,7 @@
-import type {Zavx0zImmersiveUiComponent} from "@zavx0z/immersive-ui-component/contract"
+import type {ImmersiveUiComponent} from "@zavx0z/immersive-ui-component/contract"
 
 /** Уведомления и строки состояния представляют обратную связь в Document приложения. */
-export declare namespace Zavx0zImmersiveUiComponentFeedback {
+export declare namespace ImmersiveUiComponentFeedback {
   /** JSX-элемент; точные входы, слоты и события принадлежат участникам. */
-  type Output = Zavx0zImmersiveUiComponent.Output
+  type Output = ImmersiveUiComponent.Output
 }

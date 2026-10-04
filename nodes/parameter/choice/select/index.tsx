@@ -8,12 +8,12 @@ SelectParameter соединяет публичный SelectField с компо�
 
 import SelectField from "@zavx0z/immersive-ui-component-field-select"
 import ParameterLayout from "@zavx0z/immersive-nodes-parameter-shared-layout"
-import type {Zavx0zImmersiveNodesParameterChoiceSelect as Contract} from "./contract"
+import type {ImmersiveNodesParameterChoiceSelect as Contract} from "./contract"
 
-export type {Zavx0zImmersiveNodesParameterChoiceSelect} from "./contract"
+export type {ImmersiveNodesParameterChoiceSelect} from "./contract"
 
 /**
-Авторский контракт SelectParameter; общий протокол описан в Zavx0zImmersiveNodesParameter, сокеты назначаются слотам left/right.
+Авторский контракт SelectParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property [state] - Передаёт особое состояние выбора публичному SelectField.
 */

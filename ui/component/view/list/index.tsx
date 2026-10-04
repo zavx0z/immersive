@@ -5,12 +5,12 @@
 @packageDocumentation
 */
 import {EmptyListRow} from "./src/helpers.tsx"
-import type {Zavx0zImmersiveUiComponentViewList as Contract} from "./contract"
+import type {ImmersiveUiComponentViewList as Contract} from "./contract"
 import {ListRow} from "./src/helpers.tsx"
 import {assertListProps} from "./src/helpers.tsx"
 
 
-export type {Zavx0zImmersiveUiComponentViewList} from "./contract"
+export type {ImmersiveUiComponentViewList} from "./contract"
 
 export default function List(props: Contract.Input): Contract.Output {
   const selectedKey = assertListProps(props)

@@ -4,8 +4,8 @@ import {createDocument} from "@zavx0z/immersive-dom"
 import {createRoot} from "@zavx0z/immersive-component"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
-import type {Zavx0zImmersiveNodesNodeDiagram} from "@zavx0z/immersive-nodes-node-diagram"
-type DiagramNodeProps = Zavx0zImmersiveNodesNodeDiagram.Input
+import type {ImmersiveNodesNodeDiagram} from "@zavx0z/immersive-nodes-node-diagram"
+type DiagramNodeProps = ImmersiveNodesNodeDiagram.Input
 import "./compiler.ts"
 
 const {default: DiagramNode} = await import("@zavx0z/immersive-nodes-node-diagram")

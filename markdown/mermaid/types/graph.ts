@@ -1,5 +1,5 @@
-import type {Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
-type NodeShape = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
+import type {ImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
 
 /**
 Нормализованная модель flowchart между Mermaid parser, раскладкой и {@link @zavx0z/immersive-nodes/view#GraphView | GraphView}.

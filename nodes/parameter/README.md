@@ -2,9 +2,9 @@
 
 `@zavx0z/immersive-nodes-parameter` — Cluster готовых параметров и `ParameterLayout` для собственного поля.
 Именованный вход сохраняет самостоятельные реализации участников. Общий протокол
-`Zavx0zImmersiveNodesParameter.Input` задаёт адрес, подпись и внешнее состояние;
-участники расширяют его типом значения и событиями. `Zavx0zImmersiveNodesParameter.Output`
-сохраняет JSX-представление в Document приложения. Общий `Zavx0zImmersiveNodesParameter.Slots`
+`ImmersiveNodesParameter.Input` задаёт адрес, подпись и внешнее состояние;
+участники расширяют его типом значения и событиями. `ImmersiveNodesParameter.Output`
+сохраняет JSX-представление в Document приложения. Общий `ImmersiveNodesParameter.Slots`
 принимает независимые `Socket` в именованные области `left` и `right`; Socket
 владеет своим адресом, состоянием и обработчиком. Пустой слот не создаёт сокет.
 

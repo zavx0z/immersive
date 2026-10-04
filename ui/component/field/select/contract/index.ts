@@ -3,14 +3,14 @@ import type {SelectFieldOption} from "./types.ts"
 import type {SelectFieldState} from "./types.ts"
 
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
-import type {Zavx0zImmersiveUiComponentField} from "@zavx0z/immersive-ui-component-field/contract"
+import type {ImmersiveUiComponentField} from "@zavx0z/immersive-ui-component-field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace Zavx0zImmersiveUiComponentFieldSelect {
+export declare namespace ImmersiveUiComponentFieldSelect {
   /**
   Входные данные SelectField.
   */
-  interface Input extends Zavx0zImmersiveUiComponentField.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly value: string
     readonly options?: readonly SelectFieldOption[] | undefined
     readonly state?: SelectFieldState | undefined
@@ -20,5 +20,5 @@ export declare namespace Zavx0zImmersiveUiComponentFieldSelect {
     readonly onChange?: ((value: string, event: Event) => void) | undefined
   }
 
-  type Output = Zavx0zImmersiveUiComponentField.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

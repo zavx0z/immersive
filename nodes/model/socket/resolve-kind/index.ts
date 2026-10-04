@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveNodesModelSocketResolveKind as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesModelSocketResolveKind} from "./contract"
+import type {ImmersiveNodesModelSocketResolveKind as Contract} from "./contract"
+export type {ImmersiveNodesModelSocketResolveKind} from "./contract"
 
 import SOCKET_KINDS from "@zavx0z/immersive-nodes-model-socket-kinds"
 

@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveNodesGeometryNodeFieldHeight as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesGeometryNodeFieldHeight} from "./contract"
+import type {ImmersiveNodesGeometryNodeFieldHeight as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodeFieldHeight} from "./contract"
 
 import checkboxFieldLayout from "@zavx0z/immersive-ui-field-layout-checkbox"
 import collectionFieldLayout from "@zavx0z/immersive-ui-field-layout-collection"

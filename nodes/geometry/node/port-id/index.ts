@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveNodesGeometryNodePortId as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesGeometryNodePortId} from "./contract"
+import type {ImmersiveNodesGeometryNodePortId as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodePortId} from "./contract"
 
 import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 

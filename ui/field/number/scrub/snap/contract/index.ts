@@ -1,8 +1,8 @@
-import type {Zavx0zImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
-type NumberRange = Zavx0zImmersiveUiFieldNumberValueSoftRange.Output
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
 
 /** Привязывает число к шагу диапазона, сохраняя его граничные и неконечные значения. */
-export declare namespace Zavx0zImmersiveUiFieldNumberScrubSnap {
+export declare namespace ImmersiveUiFieldNumberScrubSnap {
   /** Аргументы публичной операции snapNumberValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,

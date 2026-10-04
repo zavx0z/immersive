@@ -12,8 +12,8 @@ import SOCKET_KINDS from "@zavx0z/immersive-nodes-model-socket-kinds"
 import SOCKET_SHAPES from "@zavx0z/immersive-nodes-model-socket-shapes"
 import SOCKET_PRESETS from "@zavx0z/immersive-nodes-model-socket-presets"
 
-import type {Zavx0zImmersiveNodesSocket as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesSocket} from "./contract"
+import type {ImmersiveNodesSocket as Contract} from "./contract"
+export type {ImmersiveNodesSocket} from "./contract"
 
 /** Проецирует адрес, вид и состояние сокета; изменение связей остаётся у вызывающего кода. */
 

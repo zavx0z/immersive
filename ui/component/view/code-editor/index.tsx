@@ -15,7 +15,7 @@ import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
 import assertCodeEditorProps from "@zavx0z/immersive-ui-component-view-code-editor-validate"
 import buildCodeEditorViewModel from "@zavx0z/immersive-ui-component-view-code-editor-view-model"
 import resolveCodeEditorHighlighter from "@zavx0z/immersive-ui-component-view-code-editor-highlighter"
-import type {Zavx0zImmersiveUiComponentViewCodeEditor as Contract} from "./contract"
+import type {ImmersiveUiComponentViewCodeEditor as Contract} from "./contract"
 import type {CodeEditorHandle} from "./contract/types"
 import type {CodeEditorLineDecoration} from "./contract/types"
 import {codeEditorVisualRows} from "./src/visual-rows.ts"
@@ -24,7 +24,7 @@ import {createCodeEditorHandle} from "./src/interaction.ts"
 import type {CodeEditorInteraction} from "./src/interaction.ts"
 
 
-export type {Zavx0zImmersiveUiComponentViewCodeEditor} from "./contract"
+export type {ImmersiveUiComponentViewCodeEditor} from "./contract"
 
 export default function CodeEditor(props: Contract.Input): Contract.Output {
   assertCodeEditorProps(props)

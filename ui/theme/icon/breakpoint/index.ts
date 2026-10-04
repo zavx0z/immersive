@@ -4,11 +4,11 @@ SVG-значок breakpoint в формате data URL.
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiThemeIconBreakpoint as Contract} from "./contract"
+import type {ImmersiveUiThemeIconBreakpoint as Contract} from "./contract"
 import iconSvg from "@zavx0z/immersive-ui-theme-icon-compose"
 
 const breakpointIcon: Contract.Output = /* @__PURE__ */ iconSvg("<circle cx=\"12\" cy=\"12\" r=\"6\"/><path d=\"M12 6v12\"/><path d=\"M6 12h12\"/>")
 
 export default breakpointIcon
 
-export type {Zavx0zImmersiveUiThemeIconBreakpoint} from "./contract"
+export type {ImmersiveUiThemeIconBreakpoint} from "./contract"

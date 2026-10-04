@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldColorValueParse as Contract} from "./contract"
-export type {Zavx0zImmersiveUiFieldColorValueParse} from "./contract"
+import type {ImmersiveUiFieldColorValueParse as Contract} from "./contract"
+export type {ImmersiveUiFieldColorValueParse} from "./contract"
 
 import normalizeColorValue from "@zavx0z/immersive-ui-field-color-value-normalize"
 

@@ -1,6 +1,6 @@
 
 /** Проверка и выбор плотности размещения поля. */
-export declare namespace Zavx0zImmersiveUiFieldMetricResolveDensity {
+export declare namespace ImmersiveUiFieldMetricResolveDensity {
   /** Аргументы публичной операции resolveOutput; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: Output | undefined,

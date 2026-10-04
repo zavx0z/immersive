@@ -1,8 +1,8 @@
 import type {DataCellProps} from "./types"
 import type {HeaderCellProps} from "./types"
 import type {TableCellContext} from "../contract/types.ts"
-import type {Zavx0zImmersiveUiComponentViewTable} from "../contract/index"
-type TableProps = Zavx0zImmersiveUiComponentViewTable.Input
+import type {ImmersiveUiComponentViewTable} from "../contract/index"
+type TableProps = ImmersiveUiComponentViewTable.Input
 import type {TableRowViewProps} from "./types"
 import normalizeTableSelection from "@zavx0z/immersive-ui-view-table-normalize-table-selection"
 import tableSelectionAfterClick from "@zavx0z/immersive-ui-component-view-table-selection-after-click"

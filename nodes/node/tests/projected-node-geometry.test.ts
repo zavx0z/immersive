@@ -6,8 +6,8 @@ import type {
   Socket,
 } from "@zavx0z/immersive-nodes-tree"
 import "./compiler.ts"
-import type {Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
-type ProjectedNodeSnapshot = Zavx0zImmersiveNodesGeometryNodeProject.Input[0]
+import type {ImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+type ProjectedNodeSnapshot = ImmersiveNodesGeometryNodeProject.Input[0]
 
 
 

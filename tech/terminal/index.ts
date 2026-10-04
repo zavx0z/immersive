@@ -6,7 +6,7 @@
 */
 import type {Cell} from "./src/types"
 import type {TerminalLine} from "./contract/types.ts"
-import type {Zavx0zImmersiveTechTerminal as Contract} from "./contract"
+import type {ImmersiveTechTerminal as Contract} from "./contract"
 import type {TerminalQueryMode} from "./contract/types.ts"
 import type {TerminalRun} from "./contract/types.ts"
 import type {TerminalSnapshot} from "./contract/types.ts"
@@ -14,7 +14,7 @@ import {normal} from "./src/helpers.ts"
 import {sameStyle} from "./src/helpers.ts"
 import {sgr} from "./src/helpers.ts"
 
-export type {Zavx0zImmersiveTechTerminal} from "./contract"
+export type {ImmersiveTechTerminal} from "./contract"
 
 export default class TerminalModel implements Contract.Output {
   #cells: Cell[][] = [[]]

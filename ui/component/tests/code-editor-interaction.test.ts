@@ -15,8 +15,8 @@ import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "@zavx0z/immersive-renderer-html"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
-import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
-type CodeEditorProps = Zavx0zImmersiveUiComponentViewCodeEditor.Input
+import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 
 const root = resolve(import.meta.dir, "../../..")

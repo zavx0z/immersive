@@ -8,8 +8,8 @@ import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engin
 import type {Renderer} from "@zavx0z/immersive-webgpu"
 import {caretPositionAtPoint} from "@zavx0z/immersive-renderer-html"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
-import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
-type CodeEditorProps = Zavx0zImmersiveUiComponentViewCodeEditor.Input
+import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
 import {createDocumentNativeInputHostWithSeams} from "../src/native-input-host.ts"
 import {createDocumentSpaceRuntimeWithSeams} from "../src/space-runtime.ts"
 import {createDocumentPlaneRuntime} from "../src/plane-runtime.ts"

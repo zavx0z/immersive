@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentFieldCycle} from "@zavx0z/immersive-ui-component-field-cycle"
-type CycleFieldDensity = NonNullable<Zavx0zImmersiveUiComponentFieldCycle.Input["density"]>
+import type {ImmersiveUiComponentFieldCycle} from "@zavx0z/immersive-ui-component-field-cycle"
+type CycleFieldDensity = NonNullable<ImmersiveUiComponentFieldCycle.Input["density"]>
 import fieldDensityHeight from "@zavx0z/immersive-ui-field-metric-density-height"
 import labelledFieldHeight from "@zavx0z/immersive-ui-field-metric-labelled-height"
 

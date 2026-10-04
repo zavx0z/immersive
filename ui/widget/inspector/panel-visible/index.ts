@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiWidgetInspectorPanelVisible as Contract} from "./contract"
+import type {ImmersiveUiWidgetInspectorPanelVisible as Contract} from "./contract"
 
 export default function isInspectorPanelVisible(
   categories: Contract.Input[0],
@@ -18,4 +18,4 @@ export default function isInspectorPanelVisible(
   const normalizedQuery = query.trim().toLocaleLowerCase()
   return categoryVisible && (normalizedQuery.length === 0 || panel.label.toLocaleLowerCase().includes(normalizedQuery))
 }
-export type {Zavx0zImmersiveUiWidgetInspectorPanelVisible} from "./contract"
+export type {ImmersiveUiWidgetInspectorPanelVisible} from "./contract"

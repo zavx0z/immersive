@@ -1,7 +1,7 @@
 
 
 /** Проверка состояния выбора. */
-export declare namespace Zavx0zImmersiveUiSelectionValidateState {
+export declare namespace ImmersiveUiSelectionValidateState {
   /** Аргументы публичной операции validateSelectionState; порядок сохраняет её форму вызова. */
   type Input = readonly [
     state: "ready" | "undefined" | "error" | undefined

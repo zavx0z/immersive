@@ -1,4 +1,4 @@
-import type {Zavx0zImmersiveUiComponentView} from "@zavx0z/immersive-ui-component-view/contract"
+import type {ImmersiveUiComponentView} from "@zavx0z/immersive-ui-component-view/contract"
 import type {CodeEditorHandle} from "./types"
 import type {CodeEditorLineDecoration} from "./types"
 import type {CodeEditorSelectionSet} from "./types"
@@ -8,7 +8,7 @@ import type CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace Zavx0zImmersiveUiComponentViewCodeEditor {
+export declare namespace ImmersiveUiComponentViewCodeEditor {
   /**
   Исходный текст, оформление и взаимодействие редактора.
 
@@ -39,5 +39,5 @@ export declare namespace Zavx0zImmersiveUiComponentViewCodeEditor {
     readonly style?: CssStyle | undefined
   }
 
-  type Output = Zavx0zImmersiveUiComponentView.Output & JSX.Element
+  type Output = ImmersiveUiComponentView.Output & JSX.Element
 }

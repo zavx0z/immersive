@@ -3,12 +3,12 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveNodesGeometryNodeProject as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesGeometryNodeProject} from "./contract"
+import type {ImmersiveNodesGeometryNodeProject as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodeProject} from "./contract"
 
 import type {Socket as CoreSocket} from "@zavx0z/immersive-nodes-tree"
-import type {Zavx0zImmersiveNodesGeometryNodePlan} from "@zavx0z/immersive-nodes-geometry-node-plan"
-type NodeGeometryRowInput = Zavx0zImmersiveNodesGeometryNodePlan.Input["rows"][number]
+import type {ImmersiveNodesGeometryNodePlan} from "@zavx0z/immersive-nodes-geometry-node-plan"
+type NodeGeometryRowInput = ImmersiveNodesGeometryNodePlan.Input["rows"][number]
 type ProjectedNodeSnapshot = Contract.Input[0]
 import resolveProjectedParameterPresentation from "@zavx0z/immersive-nodes-projection-parameter-presentation"
 import parameterMetrics from "@zavx0z/immersive-nodes-geometry-parameter"

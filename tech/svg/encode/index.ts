@@ -4,11 +4,11 @@ SVG-значок svg в формате data URL.
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechSvgEncode as Contract} from "./contract"
+import type {ImmersiveTechSvgEncode as Contract} from "./contract"
 
 const svgIcon = (source: Contract.Input): Contract.Output =>
   `data:image/svg+xml;charset=utf-8,${encodeURIComponent(source)}`
 
 export default svgIcon
 
-export type {Zavx0zImmersiveTechSvgEncode} from "./contract"
+export type {ImmersiveTechSvgEncode} from "./contract"

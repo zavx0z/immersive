@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentSurfacePane as Contract} from "./contract"
+import type {ImmersiveUiComponentSurfacePane as Contract} from "./contract"
 import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
 
 
-export type {Zavx0zImmersiveUiComponentSurfacePane} from "./contract"
+export type {ImmersiveUiComponentSurfacePane} from "./contract"
 
 export default function Pane(props: Contract.Input): Contract.Output {
   if (hasSlot() && props.content != null) {

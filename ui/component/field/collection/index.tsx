@@ -7,7 +7,7 @@
 import {CollectionActionButton} from "./src/action-button"
 
 import type {CollectionFieldMoveDirection} from "./contract/types.ts"
-import type {Zavx0zImmersiveUiComponentFieldCollection as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldCollection as Contract} from "./contract"
 import IconButton from "@zavx0z/immersive-ui-component-button-icon"
 import arrowDownIcon from "@zavx0z/immersive-ui-theme-icon-arrow-down"
 import arrowUpIcon from "@zavx0z/immersive-ui-theme-icon-arrow-up"
@@ -19,7 +19,7 @@ import normalizeCollectionItems from "@zavx0z/immersive-ui-field-collection-mode
 import normalizeCollectionVisibleRows from "@zavx0z/immersive-ui-field-collection-model-normalize-visible-rows"
 
 
-export type {Zavx0zImmersiveUiComponentFieldCollection} from "./contract"
+export type {ImmersiveUiComponentFieldCollection} from "./contract"
 
 export default function CollectionField(props: Contract.Input): Contract.Output {
   const items = normalizeCollectionItems(props.items, props.selectedId)

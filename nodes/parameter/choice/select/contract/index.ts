@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentFieldSelect} from "@zavx0z/immersive-ui-component-field-select"
-type SelectFieldProps = Zavx0zImmersiveUiComponentFieldSelect.Input
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveUiComponentFieldSelect} from "@zavx0z/immersive-ui-component-field-select"
+type SelectFieldProps = ImmersiveUiComponentFieldSelect.Input
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterChoiceSelect {
+export declare namespace ImmersiveNodesParameterChoiceSelect {
   /**
   Входные данные параметра выбора, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace Zavx0zImmersiveNodesParameterChoiceSelect {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterChoiceSelect.Input = {
+  const input: ImmersiveNodesParameterChoiceSelect.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace Zavx0zImmersiveNodesParameterChoiceSelect {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: SelectFieldProps["value"]
     readonly options?: SelectFieldProps["options"]
     readonly state?: SelectFieldProps["state"]
@@ -43,7 +43,7 @@ export declare namespace Zavx0zImmersiveNodesParameterChoiceSelect {
     readonly onChange?: SelectFieldProps["onChange"]
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

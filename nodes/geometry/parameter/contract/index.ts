@@ -1,5 +1,5 @@
 /** Размеры дополнительного интервала и текстового вывода параметра в CSS px. */
-export declare namespace Zavx0zImmersiveNodesGeometryParameter {
+export declare namespace ImmersiveNodesGeometryParameter {
   type Output = Readonly<{
     NODE_PARAMETER_SPACING_SMALL: number
     NODE_PARAMETER_SPACING_MEDIUM: number

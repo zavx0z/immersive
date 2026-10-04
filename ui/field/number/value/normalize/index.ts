@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldNumberValueNormalize as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueNormalize as Contract} from "./contract"
 import type {NumberValueOptions} from "./contract/types"
 import finiteBound from "@zavx0z/immersive-ui-field-number-value-finite-bound"
 import roundedNumber from "@zavx0z/immersive-ui-field-number-value-round"
@@ -26,4 +26,4 @@ export default function normalizeNumberValue(
   return roundedNumber(Math.min(maximum, Math.max(minimum, stepped)))
 }
 
-export type {Zavx0zImmersiveUiFieldNumberValueNormalize} from "./contract"
+export type {ImmersiveUiFieldNumberValueNormalize} from "./contract"

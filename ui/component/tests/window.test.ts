@@ -6,8 +6,8 @@ import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, type RenderCursor} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
-import type {Zavx0zImmersiveUiComponentSurfaceWindow} from "@zavx0z/immersive-ui-component-surface-window"
-type WindowProps = Zavx0zImmersiveUiComponentSurfaceWindow.Input
+import type {ImmersiveUiComponentSurfaceWindow} from "@zavx0z/immersive-ui-component-surface-window"
+type WindowProps = ImmersiveUiComponentSurfaceWindow.Input
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))

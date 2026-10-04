@@ -1,13 +1,13 @@
 /**
-Описание и форма узла диаграммы. Протокол Zavx0zImmersiveNodesNodeDiagram принадлежит contract/index.ts;
+Описание и форма узла диаграммы. Протокол ImmersiveNodesNodeDiagram принадлежит contract/index.ts;
 этот модуль владеет разметкой и поведением компонента.
 
 @packageDocumentation
 */
 import Pane from "@zavx0z/immersive-ui-component-surface-pane"
 import Typography from "@zavx0z/immersive-ui-component-typography"
-import type {Zavx0zImmersiveNodesNodeDiagram as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesNodeDiagram} from "./contract"
+import type {ImmersiveNodesNodeDiagram as Contract} from "./contract"
+export type {ImmersiveNodesNodeDiagram} from "./contract"
 
 /** Описание заполняет Pane выбранной формы без полей редактора и видимых сокетов. */
 export default function DiagramNode(props: Contract.Input): Contract.Output {

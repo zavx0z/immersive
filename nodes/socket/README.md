@@ -1,7 +1,7 @@
 # Сокет
 
 `@zavx0z/immersive-nodes-socket` предоставляет одну реализацию `Socket` через default и протокол
-`Zavx0zImmersiveNodesSocket.Input` / `Zavx0zImmersiveNodesSocket.Output`. Он отображает переданные адрес,
+`ImmersiveNodesSocket.Input` / `ImmersiveNodesSocket.Output`. Он отображает переданные адрес,
 вид и состояние в семантической кнопке Document приложения. Значение соединения
 и обработчик активации остаются у вызывающего компонента.
 

@@ -9,12 +9,12 @@ OptionGroupParameter соединяет публичный ToggleButtonGroup с 
 import FieldGroup from "@zavx0z/immersive-ui-component-field-group"
 import ToggleButtonGroup from "@zavx0z/immersive-ui-component-button-toggle-group"
 import ParameterLayout from "@zavx0z/immersive-nodes-parameter-shared-layout"
-import type {Zavx0zImmersiveNodesParameterChoiceOptionGroup as Contract} from "./contract"
+import type {ImmersiveNodesParameterChoiceOptionGroup as Contract} from "./contract"
 
-export type {Zavx0zImmersiveNodesParameterChoiceOptionGroup} from "./contract"
+export type {ImmersiveNodesParameterChoiceOptionGroup} from "./contract"
 
 /**
-Авторский контракт OptionGroupParameter; общий протокол описан в Zavx0zImmersiveNodesParameter, сокеты назначаются слотам left/right.
+Авторский контракт OptionGroupParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property options - Полный набор вариантов; в каждый момент выбран одно строковое значение.
 */

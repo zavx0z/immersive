@@ -3,7 +3,7 @@
 import type {resolveLanguageHighlighter} from "@zavx0z/highlighter"
 
 /** Выбор подсветки по языку и пути исходного текста. */
-export declare namespace Zavx0zImmersiveUiComponentViewCodeEditorHighlighter {
+export declare namespace ImmersiveUiComponentViewCodeEditorHighlighter {
   /** Аргументы публичной операции resolveCodeEditorHighlighter; порядок сохраняет её форму вызова. */
   type Input = readonly [
     languageId?: string,

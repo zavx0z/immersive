@@ -6,14 +6,14 @@ import type {ButtonSize} from "./types.ts"
 import type {ButtonTone} from "./types.ts"
 import type {ButtonVariant} from "./types.ts"
 
-import type {Zavx0zImmersiveUiComponentButton} from "@zavx0z/immersive-ui-component-button/contract"
+import type {ImmersiveUiComponentButton} from "@zavx0z/immersive-ui-component-button/contract"
 
 /** Протокол текстовой кнопки: внешний вид, доступность и исходные события действия. */
-export declare namespace Zavx0zImmersiveUiComponentButtonBasic {
+export declare namespace ImmersiveUiComponentButtonBasic {
   /**
   Входные данные Button.
   */
-  interface Input extends Zavx0zImmersiveUiComponentButton.Input {
+  interface Input extends ImmersiveUiComponentButton.Input {
     readonly label: string
     readonly variant?: ButtonVariant | undefined
     readonly tone?: ButtonTone | undefined
@@ -37,5 +37,5 @@ export declare namespace Zavx0zImmersiveUiComponentButtonBasic {
   }
 
   /** Представление сохраняет общий JSX-результат группы. */
-  type Output = Zavx0zImmersiveUiComponentButton.Output & JSX.Element
+  type Output = ImmersiveUiComponentButton.Output & JSX.Element
 }

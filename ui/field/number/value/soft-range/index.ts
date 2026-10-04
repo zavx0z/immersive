@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldNumberValueSoftRange as Contract} from "./contract"
-import type {Zavx0zImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
-type NumberValueOptions = NonNullable<Zavx0zImmersiveUiFieldNumberValueNormalize.Input[1]>
+import type {ImmersiveUiFieldNumberValueSoftRange as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 import finiteBound from "@zavx0z/immersive-ui-field-number-value-finite-bound"
 import normalizeNumberValue from "@zavx0z/immersive-ui-field-number-value-normalize"
 import numberPointerAdaptiveSpan from "@zavx0z/immersive-ui-field-number-value-pointer-adaptive-span"
@@ -42,4 +42,4 @@ export default function resolveNumberSoftRange(
   return Object.freeze({min: minimum, max: maximum})
 }
 
-export type {Zavx0zImmersiveUiFieldNumberValueSoftRange} from "./contract"
+export type {ImmersiveUiFieldNumberValueSoftRange} from "./contract"

@@ -6,7 +6,7 @@ import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, readCanonicalRenderFrameChanges} from "@zavx0z/immersive-renderer-html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
-import type {Zavx0zImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
+import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
 
 // A CPU-only diagnostic using the actual compiled production component.
 const workspace = resolve(import.meta.dir, "../..")
@@ -27,7 +27,7 @@ for (const tooltip of [false, true]) {
   panel.setAttribute("style", "width:540px;height:220px;overflow:hidden;border-radius:8px")
   root.append(panel)
   const component = createRoot(panel)
-  component.render(CodeEditor as unknown as CompiledTemplate<Zavx0zImmersiveUiComponentViewCodeEditor.Input>, {
+  component.render(CodeEditor as unknown as CompiledTemplate<ImmersiveUiComponentViewCodeEditor.Input>, {
     value: source, languageId: "html", title: tooltip ? "HTML source" : undefined, readOnly: true,
   })
   const editor = panel.querySelector("section") as HTMLElement

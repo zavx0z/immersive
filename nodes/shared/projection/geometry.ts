@@ -14,8 +14,8 @@ import {
 
 export type NodePoint = Readonly<{x: number; y: number}>
 import nodeSocketLayoutPortId from "@zavx0z/immersive-nodes-geometry-node-port-id"
-import type {Zavx0zImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
-type NodeRect = Zavx0zImmersiveNodesLayout.Output["bounds"]
+import type {ImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
+type NodeRect = ImmersiveNodesLayout.Output["bounds"]
 export {default as nodeSocketLayoutPortId} from "@zavx0z/immersive-nodes-geometry-node-port-id"
 export type {NodeRect}
 

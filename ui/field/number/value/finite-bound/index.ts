@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldNumberValueFiniteBound as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueFiniteBound as Contract} from "./contract"
 
 export default function finiteBound(value: Contract.Input[0], fallback: Contract.Input[1]): Contract.Output {
   return Number.isFinite(value) ? value! : fallback
 }
 
-export type {Zavx0zImmersiveUiFieldNumberValueFiniteBound} from "./contract"
+export type {ImmersiveUiFieldNumberValueFiniteBound} from "./contract"

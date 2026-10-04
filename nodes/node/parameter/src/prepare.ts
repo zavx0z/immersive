@@ -1,5 +1,5 @@
-import type {Zavx0zImmersiveNodesNodeParameter} from "@zavx0z/immersive-nodes-node-parameter"
-type ParameterNodeProps = Zavx0zImmersiveNodesNodeParameter.Input
+import type {ImmersiveNodesNodeParameter} from "@zavx0z/immersive-nodes-node-parameter"
+type ParameterNodeProps = ImmersiveNodesNodeParameter.Input
 import projectedSocketSide from "@zavx0z/immersive-nodes-geometry-node-socket-side"
 
 /**

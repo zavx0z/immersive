@@ -6,17 +6,17 @@ import type {
   ParameterSnapshot,
   Socket,
 } from "@zavx0z/immersive-nodes-tree"
-import type {Zavx0zImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
-type ParameterInput = Parameters<NonNullable<Zavx0zImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+import type {ImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
+type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
 
-import type {Zavx0zImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
+import type {ImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
-import type {Zavx0zImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
-type NodeRect = Zavx0zImmersiveNodesLayout.Output["bounds"]
+import type {ImmersiveNodesLayout} from "@zavx0z/immersive-nodes-layout/contract"
+type NodeRect = ImmersiveNodesLayout.Output["bounds"]
 import type {NodeAction} from "./types"
 
 /** Собственные данные представления и общий протокол ноды. */
-export declare namespace Zavx0zImmersiveNodesNodeParameter {
+export declare namespace ImmersiveNodesNodeParameter {
   /**
   Входные данные ноды с заголовком, параметрами и адресуемыми сокетами.
 
@@ -93,7 +93,7 @@ export declare namespace Zavx0zImmersiveNodesNodeParameter {
   </ParameterNode>
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesNode.Input {
+  interface Input extends ImmersiveNodesNode.Input {
     readonly frameId?: string | undefined
     readonly label: string
     readonly rect?: Pick<NodeRect, "x" | "y"> | undefined
@@ -118,5 +118,5 @@ export declare namespace Zavx0zImmersiveNodesNodeParameter {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = Zavx0zImmersiveNodesNode.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesNode.Output & JSX.Element<Slots>
 }

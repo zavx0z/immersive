@@ -9,10 +9,10 @@ import socketMetrics from "@zavx0z/immersive-nodes-model-socket-metrics"
 const {NODE_ROW_HEIGHT} = socketMetrics
 import parameterMetrics from "@zavx0z/immersive-nodes-geometry-parameter"
 const {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} = parameterMetrics
-import type {Zavx0zImmersiveNodesParameterSharedLayout as Contract} from "./contract"
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
-type ParameterBaseProps = Zavx0zImmersiveNodesParameter.Input
-export type {Zavx0zImmersiveNodesParameterSharedLayout} from "./contract"
+import type {ImmersiveNodesParameterSharedLayout as Contract} from "./contract"
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+type ParameterBaseProps = ImmersiveNodesParameter.Input
+export type {ImmersiveNodesParameterSharedLayout} from "./contract"
 import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
 import {ParameterEndpoints} from "./src/endpoint"
 

@@ -1,7 +1,7 @@
 /// <reference path="../types/mermaid-vendor.d.ts" />
 import {parseFragment, type DefaultTreeAdapterTypes} from "parse5"
-import type {Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
-type NodeShape = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
+import type {ImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
 import type {MermaidGraph} from "../types/graph.ts"
 import type {FlowDatabase} from "../types/parser.ts"
 

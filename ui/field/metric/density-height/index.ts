@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldMetricDensityHeight as Contract} from "./contract"
-import type {Zavx0zImmersiveUiFieldMetricResolveDensity} from "@zavx0z/immersive-ui-field-metric-resolve-density"
-type FieldDensity = Zavx0zImmersiveUiFieldMetricResolveDensity.Output
+import type {ImmersiveUiFieldMetricDensityHeight as Contract} from "./contract"
+import type {ImmersiveUiFieldMetricResolveDensity} from "@zavx0z/immersive-ui-field-metric-resolve-density"
+type FieldDensity = ImmersiveUiFieldMetricResolveDensity.Output
 import fieldMetric from "@zavx0z/immersive-ui-field-metric-read"
 
 export default function fieldDensityHeight(density: Contract.Input[0]): Contract.Output {
   return fieldMetric(`field-height-${density}`)
 }
 
-export type {Zavx0zImmersiveUiFieldMetricDensityHeight} from "./contract"
+export type {ImmersiveUiFieldMetricDensityHeight} from "./contract"

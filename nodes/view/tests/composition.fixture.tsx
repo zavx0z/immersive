@@ -9,9 +9,9 @@ import type {NodeViewProps, NodeView} from "@zavx0z/immersive-nodes/view/tree"
 import {GraphEditor} from "@zavx0z/immersive-nodes/editor"
 import {socketKey, type NodePresentationState} from "@zavx0z/immersive-nodes/view/tree"
 import planProjectedNodeGeometry from "@zavx0z/immersive-nodes-geometry-node-project"
-import type {Zavx0zImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
-type NodeKind = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["kind"]>
-type NodeShape = NonNullable<NonNullable<Zavx0zImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
+import type {ImmersiveNodesGeometryNodeProject} from "@zavx0z/immersive-nodes-geometry-node-project"
+type NodeKind = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["kind"]>
+type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
 import {layoutFixed} from "@zavx0z/immersive-nodes-layout/fixed"
 import {InteractiveContent} from "../../node/tests/composition.fixture.tsx"
 

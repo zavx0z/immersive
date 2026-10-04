@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiComponentFieldCheckbox as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldCheckbox as Contract} from "./contract"
 
 
-export type {Zavx0zImmersiveUiComponentFieldCheckbox} from "./contract"
+export type {ImmersiveUiComponentFieldCheckbox} from "./contract"
 
 export default function CheckboxField(props: Contract.Input): Contract.Output {
   const hasLabel = props.label !== undefined

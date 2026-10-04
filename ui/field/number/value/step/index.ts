@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiFieldNumberValueStep as Contract} from "./contract"
-import type {Zavx0zImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
-type NumberValueOptions = NonNullable<Zavx0zImmersiveUiFieldNumberValueNormalize.Input[1]>
+import type {ImmersiveUiFieldNumberValueStep as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 import normalizeNumberValue from "@zavx0z/immersive-ui-field-number-value-normalize"
 import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-pointer-step"
 import resolveNumberSoftRange from "@zavx0z/immersive-ui-field-number-value-soft-range"
@@ -21,4 +21,4 @@ export default function stepNumberValue(
   return direction < 0 ? Math.max(range.min, candidate) : Math.min(range.max, candidate)
 }
 
-export type {Zavx0zImmersiveUiFieldNumberValueStep} from "./contract"
+export type {ImmersiveUiFieldNumberValueStep} from "./contract"

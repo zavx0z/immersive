@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveNodesGeometryNodeMetrics as Contract} from "./contract"
-export type {Zavx0zImmersiveNodesGeometryNodeMetrics} from "./contract"
+import type {ImmersiveNodesGeometryNodeMetrics as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodeMetrics} from "./contract"
 
 import socketMetrics from "@zavx0z/immersive-nodes-model-socket-metrics"
 const {NODE_BORDER_WIDTH, NODE_ROW_HEIGHT, SOCKET_GLYPH_SIZE} = socketMetrics

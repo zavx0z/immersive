@@ -1,5 +1,5 @@
-import type {Zavx0zImmersiveUiComponentSurfaceTab} from "@zavx0z/immersive-ui-component-surface-tab"
-type TabProps = Zavx0zImmersiveUiComponentSurfaceTab.Input
+import type {ImmersiveUiComponentSurfaceTab} from "@zavx0z/immersive-ui-component-surface-tab"
+type TabProps = ImmersiveUiComponentSurfaceTab.Input
 
 /** Сторона и нормализованное положение не зависят от HUD, Display или масштаба камеры. */
 export type TabPosition = NonNullable<TabProps["position"]>

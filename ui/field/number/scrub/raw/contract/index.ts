@@ -1,8 +1,8 @@
-import type {Zavx0zImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
-type NumberRange = Zavx0zImmersiveUiFieldNumberValueSoftRange.Output
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@zavx0z/immersive-ui-field-number-value-soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
 
 /** Переводит движение указателя в ограниченное диапазоном число с замедлением при Shift. */
-export declare namespace Zavx0zImmersiveUiFieldNumberScrubRaw {
+export declare namespace ImmersiveUiFieldNumberScrubRaw {
   /** Аргументы публичной операции scrubNumberRawValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,

@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveUiThemeIconSet as Contract} from "./contract"
-export type {Zavx0zImmersiveUiThemeIconSet} from "./contract"
+import type {ImmersiveUiThemeIconSet as Contract} from "./contract"
+export type {ImmersiveUiThemeIconSet} from "./contract"
 import {autoscrollSvg} from "./src/helpers.ts"
 import {breakpointActiveSvg} from "./src/helpers.ts"
 import {breakpointDisabledSvg} from "./src/helpers.ts"

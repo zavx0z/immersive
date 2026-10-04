@@ -7,9 +7,9 @@ import {Parameter as ParameterModel, type ParameterSnapshot} from "@zavx0z/immer
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import type {ParameterEndpoint} from "./parameter-endpoint"
-import type {Zavx0zImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
-type ParameterInput = Parameters<NonNullable<Zavx0zImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
-type ParameterProps = Zavx0zImmersiveNodesProjectionParameter.Input
+import type {ImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
+type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+type ParameterProps = ImmersiveNodesProjectionParameter.Input
 import {PARAMETER_EXAMPLES, parameterFixture, type ParameterMechanism} from "./parameter.fixture.ts"
 
 const root = resolve(import.meta.dir, "../../../..")

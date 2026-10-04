@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentFieldCollection} from "@zavx0z/immersive-ui-component-field-collection"
-type CollectionFieldProps = Zavx0zImmersiveUiComponentFieldCollection.Input
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveUiComponentFieldCollection} from "@zavx0z/immersive-ui-component-field-collection"
+type CollectionFieldProps = ImmersiveUiComponentFieldCollection.Input
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterCollection {
+export declare namespace ImmersiveNodesParameterCollection {
   /**
   Входные данные параметра-коллекции, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace Zavx0zImmersiveNodesParameterCollection {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterCollection.Input = {
+  const input: ImmersiveNodesParameterCollection.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -36,7 +36,7 @@ export declare namespace Zavx0zImmersiveNodesParameterCollection {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly items: CollectionFieldProps["items"]
     readonly selectedId: CollectionFieldProps["selectedId"]
     readonly visibleRows?: CollectionFieldProps["visibleRows"]
@@ -48,7 +48,7 @@ export declare namespace Zavx0zImmersiveNodesParameterCollection {
     readonly onMove?: CollectionFieldProps["onMove"]
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

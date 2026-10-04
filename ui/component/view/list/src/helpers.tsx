@@ -1,5 +1,5 @@
-import type {Zavx0zImmersiveUiComponentViewList} from "../contract/index"
-type ListProps = Zavx0zImmersiveUiComponentViewList.Input
+import type {ImmersiveUiComponentViewList} from "../contract/index"
+type ListProps = ImmersiveUiComponentViewList.Input
 import type {ListRowProps} from "./types"
 
 /** Частная подготовка список элементов с выбором и доступным пустым состоянием. */

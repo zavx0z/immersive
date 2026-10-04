@@ -1,5 +1,5 @@
-import type {Zavx0zImmersiveUiFieldColorValueNormalize} from "@zavx0z/immersive-ui-field-color-value-normalize"
-type ColorValue = Zavx0zImmersiveUiFieldColorValueNormalize.Output
+import type {ImmersiveUiFieldColorValueNormalize} from "@zavx0z/immersive-ui-field-color-value-normalize"
+type ColorValue = ImmersiveUiFieldColorValueNormalize.Output
 
 /**
 Тип ColorFieldValue принадлежит контракту своего владельца.

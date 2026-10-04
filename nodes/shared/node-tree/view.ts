@@ -3,8 +3,8 @@ import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
 import {metadata, metadataBoolean, metadataNumber, metadataString} from "@zavx0z/immersive-tech-json-metadata"
 import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 import SOCKET_KINDS from "@zavx0z/immersive-nodes-model-socket-kinds"
-import type {Zavx0zImmersiveNodesModelSocketKinds} from "@zavx0z/immersive-nodes-model-socket-kinds"
-type SocketKind = Zavx0zImmersiveNodesModelSocketKinds.Output[number]
+import type {ImmersiveNodesModelSocketKinds} from "@zavx0z/immersive-nodes-model-socket-kinds"
+type SocketKind = ImmersiveNodesModelSocketKinds.Output[number]
 import {
   appendNodeGeometryIndex,
   createNodeGeometryIndex,

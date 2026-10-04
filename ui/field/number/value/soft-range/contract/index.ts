@@ -1,9 +1,9 @@
-import type {Zavx0zImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
-type NumberValueOptions = NonNullable<Zavx0zImmersiveUiFieldNumberValueNormalize.Input[1]>
+import type {ImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 
 
 /** Определение мягкого числового диапазона. */
-export declare namespace Zavx0zImmersiveUiFieldNumberValueSoftRange {
+export declare namespace ImmersiveUiFieldNumberValueSoftRange {
   /** Аргументы публичной операции resolveNumberSoftRange; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,

@@ -1,9 +1,9 @@
 import type {NodeJsonValue} from "@zavx0z/immersive-nodes-tree"
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterOutput {
+export declare namespace ImmersiveNodesParameterOutput {
   /**
   Входные данные выходного параметра только для чтения, связанного с нодой и её сокетами.
 
@@ -22,7 +22,7 @@ export declare namespace Zavx0zImmersiveNodesParameterOutput {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterOutput.Input = {
+  const input: ImmersiveNodesParameterOutput.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -30,11 +30,11 @@ export declare namespace Zavx0zImmersiveNodesParameterOutput {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: NodeJsonValue
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

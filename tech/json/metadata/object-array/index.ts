@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {Zavx0zImmersiveTechJsonMetadataObjectArray as Contract} from "./contract"
-export type {Zavx0zImmersiveTechJsonMetadataObjectArray} from "./contract"
+import type {ImmersiveTechJsonMetadataObjectArray as Contract} from "./contract"
+export type {ImmersiveTechJsonMetadataObjectArray} from "./contract"
 import metadata from "@zavx0z/immersive-tech-json-metadata-read"
 type NodeJsonObject = NonNullable<Contract.Output>[number]
 

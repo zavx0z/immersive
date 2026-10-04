@@ -1,10 +1,10 @@
-import type {Zavx0zImmersiveUiComponentFieldCheckbox} from "@zavx0z/immersive-ui-component-field-checkbox"
-type CheckboxFieldProps = Zavx0zImmersiveUiComponentFieldCheckbox.Input
-import type {Zavx0zImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
+import type {ImmersiveUiComponentFieldCheckbox} from "@zavx0z/immersive-ui-component-field-checkbox"
+type CheckboxFieldProps = ImmersiveUiComponentFieldCheckbox.Input
+import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace Zavx0zImmersiveNodesParameterBooleanCheckbox {
+export declare namespace ImmersiveNodesParameterBooleanCheckbox {
   /**
   Входные данные логического параметра-флажка, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace Zavx0zImmersiveNodesParameterBooleanCheckbox {
 
   @example
   ```ts
-  const input: Zavx0zImmersiveNodesParameterBooleanCheckbox.Input = {
+  const input: ImmersiveNodesParameterBooleanCheckbox.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,13 +35,13 @@ export declare namespace Zavx0zImmersiveNodesParameterBooleanCheckbox {
   }
   ```
   */
-  interface Input extends Zavx0zImmersiveNodesParameter.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly checked: CheckboxFieldProps["checked"]
     readonly indeterminate?: CheckboxFieldProps["indeterminate"]
     readonly onChange?: CheckboxFieldProps["onChange"]
   }
 
-  type Slots = Zavx0zImmersiveNodesParameter.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = Zavx0zImmersiveNodesParameter.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

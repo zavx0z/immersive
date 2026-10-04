@@ -3,12 +3,12 @@ import type {Document} from "@zavx0z/immersive-dom"
 import Socket from "@zavx0z/immersive-nodes-socket"
 import SOCKET_SHAPES from "@zavx0z/immersive-nodes-model-socket-shapes"
 import socketPreset from "@zavx0z/immersive-nodes-model-socket-preset"
-import type {Zavx0zImmersiveNodesModelSocketKinds} from "@zavx0z/immersive-nodes-model-socket-kinds"
-type SocketKind = Zavx0zImmersiveNodesModelSocketKinds.Output[number]
-import type {Zavx0zImmersiveNodesSocket} from "@zavx0z/immersive-nodes-socket"
-type SocketDirection = Zavx0zImmersiveNodesSocket.Input["direction"]
-import type {Zavx0zImmersiveNodesModelSocketShapes} from "@zavx0z/immersive-nodes-model-socket-shapes"
-type SocketShape = Zavx0zImmersiveNodesModelSocketShapes.Output[number]
+import type {ImmersiveNodesModelSocketKinds} from "@zavx0z/immersive-nodes-model-socket-kinds"
+type SocketKind = ImmersiveNodesModelSocketKinds.Output[number]
+import type {ImmersiveNodesSocket} from "@zavx0z/immersive-nodes-socket"
+type SocketDirection = ImmersiveNodesSocket.Input["direction"]
+import type {ImmersiveNodesModelSocketShapes} from "@zavx0z/immersive-nodes-model-socket-shapes"
+type SocketShape = ImmersiveNodesModelSocketShapes.Output[number]
 
 export function mountSocketFixture(document: Document, kind: SocketKind, variant: string) {
   const element = document.createElement("div")
