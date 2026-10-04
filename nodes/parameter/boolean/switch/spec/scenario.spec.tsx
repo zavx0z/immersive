@@ -30,7 +30,11 @@ describe.each([false, true].map(connected => ({
   afterAll(() => headless.dispose())
   const element = await headless.render(
     <Component
-      {...props}
+      id={props.id}
+      nodeId={props.nodeId}
+      label={props.label}
+      connected={props.connected}
+      checked={props.checked}
     >
       {slots.left}
     </Component>
