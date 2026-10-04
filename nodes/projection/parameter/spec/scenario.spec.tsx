@@ -1,10 +1,10 @@
 /** Проекция использует настоящий внешний Store и сохраняет Element при обновлении значения. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import type {HTMLInputElement} from "@zavx0z/dom"
-import ParameterProjection from "@nodes/parameter-projection"
-import ParameterStore from "@nodes/parameter-store"
-import {createNodeTree, createNodeTreeExternalStore} from "@nodes/tree"
+import type {HTMLInputElement} from "@immersive/dom"
+import ParameterProjection from "@immersive-nodes-projection/parameter"
+import ParameterStore from "@immersive-nodes-model-parameter/store"
+import {createNodeTree, createNodeTreeExternalStore} from "@immersive-nodes/tree"
 
 describe.each([
   {name: "Числовое значение", props: {value: 2, next: 3}},

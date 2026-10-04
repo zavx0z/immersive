@@ -1,10 +1,10 @@
-import type {UiFieldsVectorField} from "@ui-fields/vector-field"
-type VectorFieldProps = UiFieldsVectorField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldVector} from "@immersive-ui-component-field/vector"
+type VectorFieldProps = ImmersiveUiComponentFieldVector.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersVector {
+export declare namespace ImmersiveNodesParameterCompositeVector {
   /**
   Входные данные векторного параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersVector {
 
   @example
   ```ts
-  const input: NodesParametersVector.Input = {
+  const input: ImmersiveNodesParameterCompositeVector.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace NodesParametersVector {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: VectorFieldProps["value"]
     readonly axes?: VectorFieldProps["axes"]
     readonly min?: VectorFieldProps["min"]
@@ -46,7 +46,7 @@ export declare namespace NodesParametersVector {
     readonly onChange?: VectorFieldProps["onChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

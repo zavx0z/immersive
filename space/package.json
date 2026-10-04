@@ -1,5 +1,5 @@
 {
-  "name": "@zavx0z/space",
+  "name": "@immersive/space",
   "label": "Пространство",
   "version": "0.0.0",
   "description": "Объекты сцены, ресурсы, группы, сетки, линии, текст, свет, анимация, геометрия и материалы",
@@ -25,28 +25,28 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*",
-    "@zavx0z/engine": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@zavx0z/jsx": "workspace:*"
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*",
+    "@immersive/engine": "workspace:*",
+    "@immersive/template": "workspace:*",
+    "@immersive/jsx": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@zavx0z/component": {
+    "@immersive/component": {
       "optional": true
     },
-    "@zavx0z/dom": {
+    "@immersive/dom": {
       "optional": true
     },
-    "@zavx0z/engine": {
+    "@immersive/engine": {
       "optional": true
     },
-    "@zavx0z/template": {
+    "@immersive/template": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@jsx-compiler/bun": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/bun": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   }
 }

@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
-import {createDocument, Element, type Document, type Node} from "@zavx0z/dom"
-import {createRoot, type Ref} from "@zavx0z/component"
-import {bindProperty, bindRef, bindText, defineCompiledTemplate, writeBinding} from "@zavx0z/template/compiled"
+import {createDocument, Element, type Document, type Node} from "@immersive/dom"
+import {createRoot, type Ref} from "@immersive/component"
+import {bindProperty, bindRef, bindText, defineCompiledTemplate, writeBinding} from "@immersive/template/compiled"
 
 class TestObject extends Element {
   reads = 0

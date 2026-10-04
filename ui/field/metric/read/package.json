@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-metrics/field-metric",
+  "name": "@immersive-ui-field-metric/read",
   "label": "fieldMetric",
   "version": "0.0.0",
   "description": "Читает конечную неотрицательную числовую метрику поля по её точному имени",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   }
 }

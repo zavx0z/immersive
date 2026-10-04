@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@zavx0z/dom"
+import {createDocument} from "@immersive/dom"
 import {createDocumentRenderer, type RenderFrame} from "../src/index.ts"
 import {readCanonicalRenderFrameChanges} from "../src/frame-changes.ts"
 

@@ -1,6 +1,6 @@
 import type {DocumentInteractionState} from "./pseudo-state.ts"
-import type {Document, Element} from "@zavx0z/dom"
-import {DisplayElement} from "@zavx0z/dom/display"
+import type {Document, Element} from "@immersive/dom"
+import {DisplayElement} from "@immersive/dom/display"
 import {computeStyle, type ComputedStyle} from "./css.ts"
 import {cachedDocumentStyleRules, prepareHostStyleSheets} from "./stylesheet-cache.ts"
 

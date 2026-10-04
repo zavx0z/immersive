@@ -1,18 +1,18 @@
-import nodeSocketLayoutPortId from "@node-geometry/port-id"
-import {createRoot, component} from "@zavx0z/component"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx-compiler/session"
-import type {Document} from "@zavx0z/dom"
-import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeTreeSnapshot} from "@nodes/tree"
-import DiagramNode from "@nodes-node/diagram"
+import nodeSocketLayoutPortId from "@immersive-nodes-geometry-node/port-id"
+import {createRoot, component} from "@immersive/component"
+import type {CompiledTemplate} from "@immersive/template/compiled"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {Document} from "@immersive/dom"
+import {Parameter, createNodeTree, createNodeTreeExternalStore, type NodeTreeSnapshot} from "@immersive-nodes/tree"
+import DiagramNode from "@immersive-nodes-node/diagram"
 import type {NodeViewProps, NodeView} from "@immersive/nodes/view/tree"
 import {GraphEditor} from "@immersive/nodes/editor"
 import {socketKey, type NodePresentationState} from "@immersive/nodes/view/tree"
-import planProjectedNodeGeometry from "@node-geometry/project"
-import type {NodeGeometryProject} from "@node-geometry/project"
-type NodeKind = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["kind"]>
-type NodeShape = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["shape"]>
-import {layoutFixed} from "@nodes/layout/fixed"
+import planProjectedNodeGeometry from "@immersive-nodes-geometry-node/project"
+import type {ImmersiveNodesGeometryNodeProject} from "@immersive-nodes-geometry-node/project"
+type NodeKind = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["kind"]>
+type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
+import {layoutFixed} from "@immersive-nodes/layout/fixed"
 import {InteractiveContent} from "../../node/tests/composition.fixture.tsx"
 
 const kinds: ReadonlyMap<string, NodeKind> = new Map([["source", "content"], ["target", "diagram"]])

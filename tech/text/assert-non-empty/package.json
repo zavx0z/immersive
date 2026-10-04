@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/assert-non-empty",
+  "name": "@immersive-tech-text/assert-non-empty",
   "label": "assertNonEmpty",
   "version": "0.0.0",
   "description": "Обработка assert-non-empty",

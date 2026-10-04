@@ -2,7 +2,7 @@ import type {CssSourceValue, CssTemplateValue} from "./css.ts"
 
 /** Compile-time intrinsic настоящего CSS document, которым владеет Template. */
 export interface CssCompilerIntrinsic {
-  readonly "@zavx0z/template/css-compiler-intrinsic": true
+  readonly "@immersive/template/css-compiler-intrinsic": true
   (strings: TemplateStringsArray, ...values: readonly CssTemplateValue[]): CssSourceValue & string
 }
 

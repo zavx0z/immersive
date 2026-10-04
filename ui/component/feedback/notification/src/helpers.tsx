@@ -1,5 +1,5 @@
-import type {UiFeedbackNotification} from "../contract/index"
-type NotificationProps = UiFeedbackNotification.Input
+import type {ImmersiveUiComponentFeedbackNotification} from "../contract/index"
+type NotificationProps = ImmersiveUiComponentFeedbackNotification.Input
 
 /** Частная подготовка уведомление о событии с действиями и закрытием. */
 export function assertNotificationProps(props: NotificationProps): void {

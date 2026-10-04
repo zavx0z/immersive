@@ -1,10 +1,10 @@
-import type {UiFieldsSwitchField} from "@ui-fields/switch-field"
-type SwitchFieldProps = UiFieldsSwitchField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldSwitch} from "@immersive-ui-component-field/switch"
+type SwitchFieldProps = ImmersiveUiComponentFieldSwitch.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersSwitch {
+export declare namespace ImmersiveNodesParameterBooleanSwitch {
   /**
   Входные данные логического параметра-переключателя, связанного с нодой и её сокетами.
 
@@ -25,7 +25,7 @@ export declare namespace NodesParametersSwitch {
 
   @example
   ```ts
-  const input: NodesParametersSwitch.Input = {
+  const input: ImmersiveNodesParameterBooleanSwitch.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -33,12 +33,12 @@ export declare namespace NodesParametersSwitch {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly checked: SwitchFieldProps["checked"]
     readonly onChange?: SwitchFieldProps["onChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

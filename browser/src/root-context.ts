@@ -1,7 +1,7 @@
-import {createContext, useContext, useLayoutEffect, useRef, useSyncExternalStore} from "@zavx0z/component"
-import type {Document} from "@zavx0z/dom"
-import type {SpaceElement} from "@zavx0z/dom/space"
-import type {ViewPointElement} from "@zavx0z/dom/viewpoint"
+import {createContext, useContext, useLayoutEffect, useRef, useSyncExternalStore} from "@immersive/component"
+import type {Document} from "@immersive/dom"
+import type {SpaceElement} from "@immersive/dom/space"
+import type {ViewPointElement} from "@immersive/dom/viewpoint"
 import {createDocumentClipboardController, type DocumentClipboardController} from "../clipboard.ts"
 
 /** Размер и положение Canvas в CSS px; `dpr` переводит их в пиксели буфера. */

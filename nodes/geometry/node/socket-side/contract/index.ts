@@ -1,8 +1,8 @@
-import type {Socket as CoreSocket} from "@nodes/tree"
-import type {SocketValuesSide} from "@socket-values/side"
+import type {Socket as CoreSocket} from "@immersive-nodes/tree"
+import type {ImmersiveNodesModelSocketSide} from "@immersive-nodes-model-socket/side"
 
 /** Сохраняет принятую сторону Layout либо сторону модели сокета. */
-export declare namespace NodeGeometrySocketSide {
-  type Input = readonly [nodeId: string, socket: CoreSocket, resolvedSocketSides?: ReadonlyMap<string, SocketValuesSide.Output>]
-  type Output = SocketValuesSide.Output
+export declare namespace ImmersiveNodesGeometryNodeSocketSide {
+  type Input = readonly [nodeId: string, socket: CoreSocket, resolvedSocketSides?: ReadonlyMap<string, ImmersiveNodesModelSocketSide.Output>]
+  type Output = ImmersiveNodesModelSocketSide.Output
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/select-field",
+  "name": "@immersive-ui-component-field/select",
   "label": "SelectField",
   "version": "0.0.0",
   "description": "Поле интерфейса: выбор значения",
@@ -15,15 +15,15 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-selection/find-selection-option": "workspace:*",
-    "@ui-selection/selection-exceptional-label": "workspace:*",
-    "@ui-selection/validate-selection-options": "workspace:*",
-    "@ui-selection/validate-selection-state": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-selection/find-option": "workspace:*",
+    "@immersive-ui-selection/exceptional-label": "workspace:*",
+    "@immersive-ui-selection/validate-options": "workspace:*",
+    "@immersive-ui-selection/validate-state": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*",
-    "@ui-selection/validate-selection-state": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*",
+    "@immersive-ui-selection/validate-state": "workspace:*"
   }
 }

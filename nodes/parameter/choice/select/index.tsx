@@ -6,14 +6,14 @@ SelectParameter соединяет публичный SelectField с компо�
 @packageDocumentation
 */
 
-import SelectField from "@ui-fields/select-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersSelect as Contract} from "./contract"
+import SelectField from "@immersive-ui-component-field/select"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterChoiceSelect as Contract} from "./contract"
 
-export type {NodesParametersSelect} from "./contract"
+export type {ImmersiveNodesParameterChoiceSelect} from "./contract"
 
 /**
-Авторский контракт SelectParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт SelectParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property [state] - Передаёт особое состояние выбора публичному SelectField.
 */

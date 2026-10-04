@@ -6,14 +6,14 @@ SwitchParameter соединяет публичный SwitchField с компо�
 @packageDocumentation
 */
 
-import SwitchField from "@ui-fields/switch-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersSwitch as Contract} from "./contract"
+import SwitchField from "@immersive-ui-component-field/switch"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterBooleanSwitch as Contract} from "./contract"
 
-export type {NodesParametersSwitch} from "./contract"
+export type {ImmersiveNodesParameterBooleanSwitch} from "./contract"
 
 /**
-Авторский контракт SwitchParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт SwitchParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property onChange - Запрашивает новое checked без записи во внешний Store.
 */

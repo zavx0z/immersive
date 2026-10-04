@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-color-value/format-color-value",
+  "name": "@immersive-ui-field-color-value/format",
   "label": "formatColorValue",
   "version": "0.0.0",
   "description": "Нормализует цвет и форматирует его как HEX со включаемым альфа-каналом",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-color-value/normalize-color-value": "workspace:*"
+    "@immersive-ui-field-color-value/normalize": "workspace:*"
   }
 }

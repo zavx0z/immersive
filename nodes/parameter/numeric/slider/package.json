@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-parameters/slider",
+  "name": "@immersive-nodes-parameter-numeric/slider",
   "label": "SliderParameter",
   "version": "0.0.0",
   "description": "SliderParameter соединяет публичный SliderField с композицией сокетов ноды",
@@ -10,14 +10,14 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@nodes-parameters/layout": "workspace:*",
-    "@ui-fields/slider-field": "workspace:*"
+    "@immersive-nodes-parameter-shared/layout": "workspace:*",
+    "@immersive-ui-component-field/slider": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/parameters": "workspace:*",
+    "@immersive-nodes/parameter": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@nodes/sockets": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/socket": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

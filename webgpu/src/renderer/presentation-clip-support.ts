@@ -1,11 +1,11 @@
-import {Mesh} from "@zavx0z/engine"
+import {Mesh} from "@immersive/engine"
 import {
   ColorPickerMaterial,
   ImageMaterial,
   MeshBasicMaterial,
   RadialBackdropMaterial,
   RoundedRectMaterial,
-} from "@zavx0z/engine"
+} from "@immersive/engine"
 import type {RenderItem} from "./utils/render-list"
 
 /** Renderer-internal fail-closed gate for pipelines with clip-chain support. */

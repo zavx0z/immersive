@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import resolveCollectionFieldHeight from "@ui-fields-metrics/collection-field-height"
-import normalizeCollectionVisibleRows from "@ui-fields-collection-model/normalize-collection-visible-rows"
+import resolveCollectionFieldHeight from "@immersive-ui-field-metric/collection-height"
+import normalizeCollectionVisibleRows from "@immersive-ui-field-collection-model/normalize-visible-rows"
 
 const collectionFieldLayout = Object.freeze({
   height(options: Readonly<{

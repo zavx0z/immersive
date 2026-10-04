@@ -1,10 +1,10 @@
-import type {UiFieldsSelectField} from "@ui-fields/select-field"
-type SelectFieldProps = UiFieldsSelectField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldSelect} from "@immersive-ui-component-field/select"
+type SelectFieldProps = ImmersiveUiComponentFieldSelect.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersSelect {
+export declare namespace ImmersiveNodesParameterChoiceSelect {
   /**
   Входные данные параметра выбора, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersSelect {
 
   @example
   ```ts
-  const input: NodesParametersSelect.Input = {
+  const input: ImmersiveNodesParameterChoiceSelect.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace NodesParametersSelect {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: SelectFieldProps["value"]
     readonly options?: SelectFieldProps["options"]
     readonly state?: SelectFieldProps["state"]
@@ -43,7 +43,7 @@ export declare namespace NodesParametersSelect {
     readonly onChange?: SelectFieldProps["onChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

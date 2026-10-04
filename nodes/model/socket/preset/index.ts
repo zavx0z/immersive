@@ -3,11 +3,11 @@
 
 @packageDocumentation
 */
-import type {SocketValuesPreset as Contract} from "./contract"
-export type {SocketValuesPreset} from "./contract"
+import type {ImmersiveNodesModelSocketPreset as Contract} from "./contract"
+export type {ImmersiveNodesModelSocketPreset} from "./contract"
 
-import SOCKET_KINDS from "@socket-values/kinds"
-import SOCKET_PRESETS from "@socket-values/presets"
+import SOCKET_KINDS from "@immersive-nodes-model-socket/kinds"
+import SOCKET_PRESETS from "@immersive-nodes-model-socket/presets"
 
 export default function socketPreset(kind: Contract.Input): Contract.Output {
   if (!SOCKET_KINDS.includes(kind)) throw new TypeError(`Unsupported Socket kind: ${kind}`)

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-buttons/icon-button",
+  "name": "@immersive-ui-component-button/icon",
   "label": "IconButton",
   "version": "0.0.0",
   "description": "Квадратная кнопка действия со значком и доступным названием",
@@ -15,12 +15,12 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-themes-icons/run": "workspace:*",
-    "@ui/buttons": "workspace:*"
+    "@immersive-ui-theme-icon/run": "workspace:*",
+    "@immersive-ui-component/button": "workspace:*"
   }
 }

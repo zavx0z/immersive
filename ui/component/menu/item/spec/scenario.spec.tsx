@@ -1,7 +1,7 @@
 /** MenuItem показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import MenuItem from "@ui-menus/menu-item"
+import MenuItem from "@immersive-ui-component-menu/item"
 
 describe.each([{name: "Основное представление", props: {label: "Действие", onSelect() {}}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

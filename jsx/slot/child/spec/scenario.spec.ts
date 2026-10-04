@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import slotChild, {type SlotChildInput} from "@jsx-slot/child"
+import slotChild, {type SlotChildInput} from "@immersive-jsx-slot/child"
 
 describe.each([
   {name: "Пустая default позиция", props: ["", null, "conditional"]},
@@ -9,7 +9,7 @@ describe.each([
   const actual = slotChild(...props)
 
   test("Статическое назначение", () => {
-    expect(actual, "Descriptor сохраняет имя области и вид синтаксической позиции даже при пустом content").toEqual({"@zavx0z/jsx/slot-child": true, name: props[0], content: props[1], kind: props[2]})
+    expect(actual, "Descriptor сохраняет имя области и вид синтаксической позиции даже при пустом content").toEqual({"@immersive/jsx/slot-child": true, name: props[0], content: props[1], kind: props[2]})
   })
   test("Результат expression", () => {
     expect(actual.content, "Фабрика передаёт исходный результат для последующей проверки runtime").toBe(props[1])

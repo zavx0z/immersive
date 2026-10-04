@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-collection-model/normalize-collection-items",
+  "name": "@immersive-ui-field-collection-model/normalize-items",
   "label": "normalizeCollectionItems",
   "version": "0.0.0",
   "description": "Нормализация элементов коллекции",

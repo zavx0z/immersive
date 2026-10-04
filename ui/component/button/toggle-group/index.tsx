@@ -4,14 +4,14 @@
 
 @packageDocumentation
 */
-import type {UiButtonsToggleButtonGroup} from "./contract"
-import Button from "@ui-buttons/button"
-import validateSelectionOptions from "@ui-selection/validate-selection-options"
+import type {ImmersiveUiComponentButtonToggleGroup} from "./contract"
+import Button from "@immersive-ui-component-button/basic"
+import validateSelectionOptions from "@immersive-ui-selection/validate-options"
 
 
-export type {UiButtonsToggleButtonGroup} from "./contract"
+export type {ImmersiveUiComponentButtonToggleGroup} from "./contract"
 
-export default function ToggleButtonGroup(props: UiButtonsToggleButtonGroup.Input): UiButtonsToggleButtonGroup.Output {
+export default function ToggleButtonGroup(props: ImmersiveUiComponentButtonToggleGroup.Input): ImmersiveUiComponentButtonToggleGroup.Output {
   if (typeof props.value !== "string") throw new TypeError("ToggleButtonGroup value must be a string")
   const options = validateSelectionOptions(props.options)
   const density = props.density ?? "regular"

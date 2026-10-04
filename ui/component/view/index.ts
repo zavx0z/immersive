@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-export {default as CodeEditor} from "@ui-views/code-editor"
-export type {UiViewsCodeEditor} from "@ui-views/code-editor"
-export {default as List} from "@ui-views/list"
-export type {UiViewsList} from "@ui-views/list"
-export {default as Table} from "@ui-views/table"
-export type {UiViewsTable} from "@ui-views/table"
-export {default as Timeline} from "@ui-views/timeline"
-export type {UiViewsTimeline} from "@ui-views/timeline"
-export type {UiViews} from "./contract"
+export {default as CodeEditor} from "@immersive-ui-component-view/code-editor"
+export type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+export {default as List} from "@immersive-ui-component-view/list"
+export type {ImmersiveUiComponentViewList} from "@immersive-ui-component-view/list"
+export {default as Table} from "@immersive-ui-component-view/table"
+export type {ImmersiveUiComponentViewTable} from "@immersive-ui-component-view/table"
+export {default as Timeline} from "@immersive-ui-component-view/timeline"
+export type {ImmersiveUiComponentViewTimeline} from "@immersive-ui-component-view/timeline"
+export type {ImmersiveUiComponentView} from "./contract"

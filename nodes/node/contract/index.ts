@@ -1,7 +1,7 @@
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Представления ноды сохраняют адрес, выбор, видимость и действия в Document графа. */
-export declare namespace NodesNode {
+export declare namespace ImmersiveNodesNode {
   interface Input {
     readonly id: string
     readonly elementRef?: JSX.Ref<HTMLElement> | undefined

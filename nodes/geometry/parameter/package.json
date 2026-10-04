@@ -1,5 +1,5 @@
 {
-  "name": "@nodes/parameter-metrics",
+  "name": "@immersive-nodes-geometry/parameter",
   "label": "Размеры параметра",
   "version": "0.0.0",
   "description": "Общие размеры интервалов и текстового вывода параметра в CSS px",

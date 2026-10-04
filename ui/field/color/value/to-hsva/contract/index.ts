@@ -1,8 +1,8 @@
-import type {UiFieldsColorValueNormalizeColorValue} from "@ui-fields-color-value/normalize-color-value"
+import type {ImmersiveUiFieldColorValueNormalize} from "@immersive-ui-field-color-value/normalize"
 
 /** Преобразует нормализованный RGBA-цвет в неизменяемое представление HSVA. */
-export declare namespace UiFieldsColorValueColorValueToHsva {
-  type Input = readonly [value: Partial<UiFieldsColorValueNormalizeColorValue.Output>]
+export declare namespace ImmersiveUiFieldColorValueToHsva {
+  type Input = readonly [value: Partial<ImmersiveUiFieldColorValueNormalize.Output>]
 
   /** Нормализованные тон, насыщенность, яркость и прозрачность. */
   type Output = Readonly<{

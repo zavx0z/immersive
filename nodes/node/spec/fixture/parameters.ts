@@ -1,5 +1,5 @@
-import type {NodesNodeParameter} from "@nodes-node/parameter"
-type ParameterNodeProps = NodesNodeParameter.Input
+import type {ImmersiveNodesNodeParameter} from "@immersive-nodes-node/parameter"
+type ParameterNodeProps = ImmersiveNodesNodeParameter.Input
 
 /** Неизменяемые исходные данные числового поля для вариантов ноды. */
 export const parameters: NonNullable<ParameterNodeProps["parameters"]> = [

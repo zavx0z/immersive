@@ -1,3 +1,3 @@
-import {createContext} from "@zavx0z/component"
+import {createContext} from "@immersive/component"
 
 export const MermaidHorizontal = createContext(false)

@@ -1,12 +1,12 @@
-import type {SocketValuesKinds} from "@socket-values/kinds"
-import type {SocketValuesShapes} from "@socket-values/shapes"
+import type {ImmersiveNodesModelSocketKinds} from "@immersive-nodes-model-socket/kinds"
+import type {ImmersiveNodesModelSocketShapes} from "@immersive-nodes-model-socket/shapes"
 
 /** Именованные цветовые и геометрические предустановки сокетов. */
-export declare namespace SocketValuesPresets {
-  type Output = Readonly<Record<SocketValuesKinds.Output[number], Readonly<{
-    kind: SocketValuesKinds.Output[number]
+export declare namespace ImmersiveNodesModelSocketPresets {
+  type Output = Readonly<Record<ImmersiveNodesModelSocketKinds.Output[number], Readonly<{
+    kind: ImmersiveNodesModelSocketKinds.Output[number]
     label: string
     color: string
-    shape: SocketValuesShapes.Output[number]
+    shape: ImmersiveNodesModelSocketShapes.Output[number]
   }>>>
 }

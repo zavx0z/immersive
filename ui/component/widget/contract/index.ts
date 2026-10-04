@@ -1,7 +1,7 @@
-import type {Zavx0zUi} from "@zavx0z/ui/contract"
+import type {ImmersiveUiComponent} from "@immersive-ui/component/contract"
 
 /** Виджеты составляют законченные панели с управлением и содержимым. */
-export declare namespace UiWidgets {
+export declare namespace ImmersiveUiComponentWidget {
   /** JSX-элемент; точные входы, слоты и события принадлежат участникам. */
-  type Output = Zavx0zUi.Output
+  type Output = ImmersiveUiComponent.Output
 }

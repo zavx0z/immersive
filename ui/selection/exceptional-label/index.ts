@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {UiSelectionSelectionExceptionalLabel as Contract} from "./contract"
-import type {UiSelectionValidateSelectionOptions} from "@ui-selection/validate-selection-options"
-type SelectionOptionShape = UiSelectionValidateSelectionOptions.Input[0][number]
-import type {UiSelectionValidateSelectionState} from "@ui-selection/validate-selection-state"
-type SelectionState = NonNullable<UiSelectionValidateSelectionState.Input[0]>
+import type {ImmersiveUiSelectionExceptionalLabel as Contract} from "./contract"
+import type {ImmersiveUiSelectionValidateOptions} from "@immersive-ui-selection/validate-options"
+type SelectionOptionShape = ImmersiveUiSelectionValidateOptions.Input[0][number]
+import type {ImmersiveUiSelectionValidateState} from "@immersive-ui-selection/validate-state"
+type SelectionState = NonNullable<ImmersiveUiSelectionValidateState.Input[0]>
 
 export default function selectionExceptionalLabel(
   state: Contract.Input[0],
@@ -20,4 +20,4 @@ export default function selectionExceptionalLabel(
   return undefined
 }
 
-export type {UiSelectionSelectionExceptionalLabel} from "./contract"
+export type {ImmersiveUiSelectionExceptionalLabel} from "./contract"

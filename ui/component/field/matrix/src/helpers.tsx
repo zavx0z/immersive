@@ -1,7 +1,7 @@
 import type {MatrixRowProps} from "./types.ts"
-import updateMatrixValue from "@ui-fields-matrix-value/update-matrix-value"
-import FieldGroup from "@ui-fields/field-group"
-import NumberField from "@ui-fields/number-field"
+import updateMatrixValue from "@immersive-ui-field-matrix-value/update"
+import FieldGroup from "@immersive-ui-component-field/group"
+import NumberField from "@immersive-ui-component-field/number"
 
 /** Частная подготовка поле интерфейса: матрица чисел. */
 export function MatrixRow(props: MatrixRowProps) {

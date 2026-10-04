@@ -1,5 +1,5 @@
 {
-  "name": "@ui-widgets/editor",
+  "name": "@immersive-ui-component-widget/editor",
   "label": "Editor",
   "version": "0.0.0",
   "description": "Составной редактор с заголовком и командами приложения",
@@ -15,16 +15,16 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-views/code-editor": "workspace:*",
-    "@ui-widgets/header": "workspace:*",
-    "@ui/code-editor-model": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-view/code-editor": "workspace:*",
+    "@immersive-ui-component-widget/header": "workspace:*",
+    "@immersive-tech/text-editor": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/widgets": "workspace:*"
+    "@immersive-ui-component/widget": "workspace:*"
   }
 }

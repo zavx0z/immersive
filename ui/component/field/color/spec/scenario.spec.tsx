@@ -1,7 +1,7 @@
 /** ColorField показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import ColorField from "@ui-fields/color-field"
+import ColorField from "@immersive-ui-component-field/color"
 
 describe.each([{name: "Основное представление", props: {value: {r: 1, g: 0, b: 0, a: 1}, label: "Параметр"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

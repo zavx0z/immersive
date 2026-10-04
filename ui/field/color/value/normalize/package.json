@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-color-value/normalize-color-value",
+  "name": "@immersive-ui-field-color-value/normalize",
   "label": "normalizeColorValue",
   "version": "0.0.0",
   "description": "Нормализует частичный RGBA-цвет и возвращает неизменяемые каналы от 0 до 1",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-color-value/clamp-unit": "workspace:*"
+    "@immersive-ui-field-color-value/clamp-unit": "workspace:*"
   }
 }

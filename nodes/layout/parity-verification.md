@@ -113,7 +113,7 @@ diamond, long edge, disconnected, multiedges, degree 12, numeric IDs и иной
 Проверены ellipse/circle equations, боковой rectangle intersection, квадрат
 circle после intrinsic bootstrap, reference rounding 90°, cubic extrema,
 analytic parabola arc length и раздельные marker tips / stroke gaps.
-Модель @nodes/tree, same-Document identity и lifecycle GraphView сохранены.
+Модель @immersive-nodes/tree, same-Document identity и lifecycle GraphView сохранены.
 
 В `03ede49` изменены только временные пределы двух compiled-story tests без
 изменения assertions: Markdown selection 5 → 30 s; один Nodes case с шестью

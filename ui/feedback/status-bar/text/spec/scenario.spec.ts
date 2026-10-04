@@ -1,6 +1,6 @@
 /** statusBarText показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@ui-feedback-status-bar/status-bar-text"
+import operation from "@immersive-ui-feedback-status-bar/text"
 
 describe.each([{name: "Публичный вызов", props: {args: [[]] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import activeSyntaxTheme from "@ui-themes-syntax-theme/active"
+import activeSyntaxTheme from "@immersive-ui-theme-syntax/active"
 
 const activeSyntaxThemeName = activeSyntaxTheme.name ?? "Islands Dark"
 

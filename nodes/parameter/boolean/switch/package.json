@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-parameters/switch",
+  "name": "@immersive-nodes-parameter-boolean/switch",
   "label": "SwitchParameter",
   "version": "0.0.0",
   "description": "SwitchParameter соединяет публичный SwitchField с композицией сокетов ноды",
@@ -10,14 +10,14 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@nodes-parameters/layout": "workspace:*",
-    "@ui-fields/switch-field": "workspace:*"
+    "@immersive-nodes-parameter-shared/layout": "workspace:*",
+    "@immersive-ui-component-field/switch": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/parameters": "workspace:*",
+    "@immersive-nodes/parameter": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@nodes/sockets": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/socket": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

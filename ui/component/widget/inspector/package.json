@@ -1,5 +1,5 @@
 {
-  "name": "@ui-widgets/inspector",
+  "name": "@immersive-ui-component-widget/inspector",
   "label": "Inspector",
   "version": "0.0.0",
   "description": "Инспектор категорий и панелей с поиском и сохраняемым содержимым",
@@ -15,16 +15,16 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-buttons/icon-button": "workspace:*",
-    "@ui-fields/text-field": "workspace:*",
-    "@ui-themes-icons/search": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-component-button/icon": "workspace:*",
+    "@immersive-ui-component-field/text": "workspace:*",
+    "@immersive-ui-theme-icon/search": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-themes-icons/run": "workspace:*",
-    "@ui/typography": "workspace:*",
-    "@ui/widgets": "workspace:*"
+    "@immersive-ui-theme-icon/run": "workspace:*",
+    "@immersive-ui-component/typography": "workspace:*",
+    "@immersive-ui-component/widget": "workspace:*"
   }
 }

@@ -4,24 +4,24 @@
 
 @packageDocumentation
 */
-import type {UiTerminalModel} from "@ui/terminal-model"
-type TerminalLine = UiTerminalModel.Output["snapshot"]["lines"][number]
+import type {ImmersiveTechTerminal} from "@immersive-tech/terminal"
+type TerminalLine = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]
 import {MemoTerminalLine} from "./src/helpers.tsx"
-import type {UiWidgetsTerminal as Contract} from "./contract"
+import type {ImmersiveUiComponentWidgetTerminal as Contract} from "./contract"
 import type {TerminalSelectionSnapshot} from "./contract/types.ts"
 import type {TerminalTextPosition} from "./contract/types.ts"
 import {emptyLines} from "./src/helpers.tsx"
 import {readTerminalSelectionOffsets} from "./src/selection.ts"
-import {useCallback} from "@zavx0z/component"
-import {useLayoutEffect} from "@zavx0z/component"
-import {useRef} from "@zavx0z/component"
-import {useState} from "@zavx0z/component"
-import {useSyncExternalStore} from "@zavx0z/component"
-import TextField from "@ui-fields/text-field"
-import WidgetHeader from "@ui-widgets/header"
+import {useCallback} from "@immersive/component"
+import {useLayoutEffect} from "@immersive/component"
+import {useRef} from "@immersive/component"
+import {useState} from "@immersive/component"
+import {useSyncExternalStore} from "@immersive/component"
+import TextField from "@immersive-ui-component-field/text"
+import WidgetHeader from "@immersive-ui-component-widget/header"
 
 
-export type {UiWidgetsTerminal} from "./contract"
+export type {ImmersiveUiComponentWidgetTerminal} from "./contract"
 
 export default function Terminal(props: Contract.Input): Contract.Output {
   const inputHost = useRef<HTMLDivElement | null>(null)

@@ -6,14 +6,14 @@ SliderParameter соединяет публичный SliderField с компо�
 @packageDocumentation
 */
 
-import SliderField from "@ui-fields/slider-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersSlider as Contract} from "./contract"
+import SliderField from "@immersive-ui-component-field/slider"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterNumericSlider as Contract} from "./contract"
 
-export type {NodesParametersSlider} from "./contract"
+export type {ImmersiveNodesParameterNumericSlider} from "./contract"
 
 /**
-Авторский контракт SliderParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт SliderParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property min - Обязательная нижняя граница диапазона.
 

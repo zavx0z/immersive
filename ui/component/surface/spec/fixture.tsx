@@ -1,4 +1,4 @@
-import {Frame, Pane, Panel, Tab, Window, WindowControl, SurfaceTitle} from "@ui/surfaces"
+import {Frame, Pane, Panel, Tab, Window, WindowControl, SurfaceTitle} from "@immersive-ui-component/surface"
 
 export default function ClusterExamples(props: Readonly<{label: string}>) {
   return <section>

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-menus/menu",
+  "name": "@immersive-ui-component-menu/basic",
   "label": "Menu",
   "version": "0.0.0",
   "description": "Контекстное меню действий в общем Document",
@@ -15,14 +15,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-menus/menu-item": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-menu/item": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/menus": "workspace:*"
+    "@immersive-ui-component/menu": "workspace:*"
   }
 }

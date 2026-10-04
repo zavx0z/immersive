@@ -1,7 +1,7 @@
 /**
  * GraphView показывает принятую сцену и обслуживает навигацию.
  * GraphEditor использует тот же просмотр и передаёт изменения модели приложению.
- * Модель @nodes/tree и числовые алгоритмы @nodes/layout остаются самостоятельными.
+ * Модель @immersive-nodes/tree и числовые алгоритмы @immersive-nodes/layout остаются самостоятельными.
  * @packageDocumentation
  */
 export {}

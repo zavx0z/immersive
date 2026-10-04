@@ -1,11 +1,11 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, MouseEvent, WheelEvent} from "@zavx0z/dom"
-import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
-import {createRoot} from "@zavx0z/component"
-import {createDocumentRenderer, createDocumentInteractionController} from "@renderer/html"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createDocument, MouseEvent, WheelEvent} from "@immersive/dom"
+import {flushDocumentLayoutObservers} from "@immersive/dom/geometry"
+import {createRoot} from "@immersive/component"
+import {createDocumentRenderer, createDocumentInteractionController} from "@immersive-renderer/html"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import type {GraphScene, GraphTransform, GraphViewProps} from "@immersive/nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")

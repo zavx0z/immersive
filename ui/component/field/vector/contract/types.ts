@@ -1,5 +1,5 @@
-import type {UiFieldsFieldGroup} from "@ui-fields/field-group"
-type FieldGroupDensity = NonNullable<UiFieldsFieldGroup.Input["density"]>
+import type {ImmersiveUiComponentFieldGroup} from "@immersive-ui-component-field/group"
+type FieldGroupDensity = NonNullable<ImmersiveUiComponentFieldGroup.Input["density"]>
 
 /**
 Тип VectorFieldDensity принадлежит контракту своего владельца.

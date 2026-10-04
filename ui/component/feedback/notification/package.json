@@ -1,5 +1,5 @@
 {
-  "name": "@ui-feedback/notification",
+  "name": "@immersive-ui-component-feedback/notification",
   "label": "Notification",
   "version": "0.0.0",
   "description": "Уведомление о событии с действиями и закрытием",
@@ -15,12 +15,12 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/icon-button": "workspace:*",
-    "@ui-themes-icons/close": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/icon": "workspace:*",
+    "@immersive-ui-theme-icon/close": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/feedback": "workspace:*"
+    "@immersive-ui-component/feedback": "workspace:*"
   }
 }

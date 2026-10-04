@@ -6,14 +6,14 @@ NumberParameter соединяет публичный NumberField с компо�
 @packageDocumentation
 */
 
-import NumberField from "@ui-fields/number-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersNumber as Contract} from "./contract"
+import NumberField from "@immersive-ui-component-field/number"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterNumericNumber as Contract} from "./contract"
 
-export type {NodesParametersNumber} from "./contract"
+export type {ImmersiveNodesParameterNumericNumber} from "./contract"
 
 /**
-Авторский контракт NumberParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт NumberParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property [softMin] - Мягкая нижняя граница перетаскивания; жёсткая валидация задаётся min.
 

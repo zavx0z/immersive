@@ -4,11 +4,11 @@ SVG-значок close в формате data URL.
 
 @packageDocumentation
 */
-import type {UiThemesIconsClose as Contract} from "./contract"
-import iconSvg from "@ui-themes-icons/compose"
+import type {ImmersiveUiThemeIconClose as Contract} from "./contract"
+import iconSvg from "@immersive-ui-theme-icon/compose"
 
 const closeIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"M6 6l12 12\"/><path d=\"M18 6 6 18\"/>")
 
 export default closeIcon
 
-export type {UiThemesIconsClose} from "./contract"
+export type {ImmersiveUiThemeIconClose} from "./contract"

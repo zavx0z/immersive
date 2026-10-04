@@ -1,5 +1,5 @@
 {
-  "name": "@nodes/json-pointer-token",
+  "name": "@immersive-tech-json-pointer/token",
   "label": "tech/json/pointer/token",
   "version": "0.0.0",
   "description": "Кодирует одну часть JSON Pointer без ведущего разделителя",

@@ -1,5 +1,5 @@
 {
-  "name": "@jsx-slot/plan",
+  "name": "@immersive-jsx-slot/plan",
   "label": "Слоты JSX",
   "version": "0.0.0",
   "description": "Распределение JSX содержимого по точкам вставки",

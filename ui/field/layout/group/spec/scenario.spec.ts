@@ -1,6 +1,6 @@
 /** fieldGroupLayout показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import layout from "@ui-fields-field-group/layout"
+import layout from "@immersive-ui-field-layout/group"
 
 describe.each([{name: "Базовый размер", props: {}}])("$name", () => {
   const height = layout.height()

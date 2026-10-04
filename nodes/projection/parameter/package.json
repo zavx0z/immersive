@@ -1,5 +1,5 @@
 {
-  "name": "@nodes/parameter-projection",
+  "name": "@immersive-nodes-projection/parameter",
   "label": "Проекция Parameter",
   "version": "0.0.0",
   "description": "Проецирует заимствованный Store или снимок Parameter в готовое поле с сокетами",
@@ -10,24 +10,24 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@nodes/parameters": "workspace:*",
-    "@nodes/metadata": "workspace:*",
-    "@nodes/parameter-presentation": "workspace:*",
-    "@nodes/parameter-metrics": "workspace:*",
-    "@socket-values/key": "workspace:*",
-    "@socket-values/side": "workspace:*",
-    "@socket-values/resolve-kind": "workspace:*",
-    "@socket-values/resolve-shape": "workspace:*",
-    "@zavx0z/component": "workspace:*",
-    "@nodes/sockets": "workspace:*"
+    "@immersive-nodes/parameter": "workspace:*",
+    "@immersive-tech-json/metadata": "workspace:*",
+    "@immersive-nodes-projection-parameter/presentation": "workspace:*",
+    "@immersive-nodes-geometry/parameter": "workspace:*",
+    "@immersive-nodes-model-socket/key": "workspace:*",
+    "@immersive-nodes-model-socket/side": "workspace:*",
+    "@immersive-nodes-model-socket/resolve-kind": "workspace:*",
+    "@immersive-nodes-model-socket/resolve-shape": "workspace:*",
+    "@immersive/component": "workspace:*",
+    "@immersive-nodes/socket": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/tree": "workspace:*",
-    "@node-values/own": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/tree": "workspace:*",
+    "@immersive-tech-json-value/own": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@nodes/parameter-store": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@immersive-nodes-model-parameter/store": "workspace:*",
+    "@immersive/dom": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

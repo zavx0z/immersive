@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces/pane",
+  "name": "@immersive-ui-component-surface/pane",
   "label": "Pane",
   "version": "0.0.0",
   "description": "Поверхность содержимого с вариантом оформления и безымянным слотом",
@@ -15,14 +15,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/typography": "workspace:*",
-    "@ui/surfaces": "workspace:*"
+    "@immersive-ui-component/typography": "workspace:*",
+    "@immersive-ui-component/surface": "workspace:*"
   }
 }

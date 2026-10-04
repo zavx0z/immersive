@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {UiTypography} from "./contract"
+import type {ImmersiveUiComponentTypography} from "./contract"
 
 
-export type {UiTypography} from "./contract"
+export type {ImmersiveUiComponentTypography} from "./contract"
 
-export default function Typography(props: UiTypography.Input): UiTypography.Output {
+export default function Typography(props: ImmersiveUiComponentTypography.Input): ImmersiveUiComponentTypography.Output {
   const variant = props.variant ?? "body"
   return <span
     title={props.title}

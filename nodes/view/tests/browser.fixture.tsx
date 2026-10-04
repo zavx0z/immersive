@@ -1,5 +1,5 @@
 import {GraphView, type GraphInput, type GraphLayoutComputer} from "@immersive/nodes/view"
-import {useEffect, useLayoutEffect, useRef, useState} from "@zavx0z/component"
+import {useEffect, useLayoutEffect, useRef, useState} from "@immersive/component"
 import {Markdown} from "@immersive/markdown"
 
 export type BrowserGraphControls = Readonly<{

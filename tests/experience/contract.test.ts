@@ -1,4 +1,4 @@
-import {DisplayElement} from "@zavx0z/dom/display"
+import {DisplayElement} from "@immersive/dom/display"
 import {expect, test} from "bun:test"
 import {join} from "node:path"
 import {
@@ -8,8 +8,8 @@ import {
 } from "../../dom/src/index.ts"
 import {createSpaceElementFactories, readSpaceTree} from "../../space/src/index.ts"
 import {HUDElement} from "../../dom/hud/index.ts"
-import {SpaceElement} from "@zavx0z/dom/space"
-import {ViewPointElement} from "@zavx0z/dom/viewpoint"
+import {SpaceElement} from "@immersive/dom/space"
+import {ViewPointElement} from "@immersive/dom/viewpoint"
 
 const root = join(import.meta.dir, "../..")
 

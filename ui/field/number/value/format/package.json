@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/format-number-value",
+  "name": "@immersive-ui-field-number-value/format",
   "label": "formatNumberValue",
   "version": "0.0.0",
   "description": "Представление числового значения",

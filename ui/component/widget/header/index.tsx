@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import WidgetActionButton from "@ui-widgets-header/action"
-import type {UiWidgetsHeader as Contract} from "./contract"
-import Badge from "@ui/badge"
+import WidgetActionButton from "@immersive-ui-component-widget-header/action"
+import type {ImmersiveUiComponentWidgetHeader as Contract} from "./contract"
+import Badge from "@immersive-ui-component/badge"
 
 
-export type {UiWidgetsHeader} from "./contract"
+export type {ImmersiveUiComponentWidgetHeader} from "./contract"
 
 export default function WidgetHeader(props: Contract.Input): Contract.Output {
   return <header

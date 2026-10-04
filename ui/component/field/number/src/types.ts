@@ -1,5 +1,5 @@
-import type {UiFieldsNumberValueResolveNumberSoftRange} from "@ui-fields-number-value/resolve-number-soft-range"
-type NumberRange = UiFieldsNumberValueResolveNumberSoftRange.Output
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@immersive-ui-field-number-value/soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
 
 /**
 Тип ActiveScrub принадлежит контракту своего владельца.

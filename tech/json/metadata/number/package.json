@@ -1,5 +1,5 @@
 {
-  "name": "@node-metadata/number",
+  "name": "@immersive-tech-json-metadata/number",
   "label": "metadataNumber",
   "version": "0.0.0",
   "description": "Читает конечное число, сохраняя ноль",
@@ -14,9 +14,9 @@
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@nodes/metadata": "workspace:*"
+    "@immersive-tech-json/metadata": "workspace:*"
   },
   "dependencies": {
-    "@node-metadata/read": "workspace:*"
+    "@immersive-tech-json-metadata/read": "workspace:*"
   }
 }

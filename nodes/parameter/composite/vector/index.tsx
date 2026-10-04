@@ -6,14 +6,14 @@ VectorParameter соединяет публичный VectorField с компо�
 @packageDocumentation
 */
 
-import VectorField from "@ui-fields/vector-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersVector as Contract} from "./contract"
+import VectorField from "@immersive-ui-component-field/vector"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterCompositeVector as Contract} from "./contract"
 
-export type {NodesParametersVector} from "./contract"
+export type {ImmersiveNodesParameterCompositeVector} from "./contract"
 
 /**
-Авторский контракт VectorParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт VectorParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property value - От двух до четырёх числовых компонент.
 

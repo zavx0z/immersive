@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-vector-value/update-vector-value",
+  "name": "@immersive-ui-field-vector-value/update",
   "label": "updateVectorValue",
   "version": "0.0.0",
   "description": "Заменяет совпавшую по индексу координату в неизменяемой копии вектора",

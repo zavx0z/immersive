@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-parameters/collection",
+  "name": "@immersive-nodes-parameter/collection",
   "label": "CollectionParameter",
   "version": "0.0.0",
   "description": "CollectionParameter соединяет публичный CollectionField с композицией сокетов ноды",
@@ -10,14 +10,14 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@nodes-parameters/layout": "workspace:*",
-    "@ui-fields/collection-field": "workspace:*"
+    "@immersive-nodes-parameter-shared/layout": "workspace:*",
+    "@immersive-ui-component-field/collection": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/parameters": "workspace:*",
+    "@immersive-nodes/parameter": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@nodes/sockets": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/socket": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

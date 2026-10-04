@@ -1,4 +1,4 @@
-import type {FunctionComponent} from "@zavx0z/component"
+import type {FunctionComponent} from "@immersive/component"
 import type {FrameProps} from "@immersive/nodes/frame"
 import type {LinkDefinition} from "@immersive/nodes/link/types"
 

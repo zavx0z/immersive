@@ -1,22 +1,22 @@
-import {HTMLElement as SemanticHTMLElement} from "@zavx0z/dom/html-element"
-import type {InputEvent} from "@zavx0z/dom/input-event"
-import type {CompositionEvent} from "@zavx0z/dom/composition-event"
-import type {KeyboardEvent} from "@zavx0z/dom/keyboard-event"
-import type {PointerEvent} from "@zavx0z/dom/pointer-event"
-import type {ClipboardEvent} from "@zavx0z/dom/clipboard-event"
-import type {Event} from "@zavx0z/dom"
-import type {EventListener} from "@zavx0z/dom"
-import {textOffsetAtPosition} from "@zavx0z/dom/text-position"
-import {textPositionAtOffset} from "@zavx0z/dom/text-position"
-import {clearDocumentTextHighlights} from "@zavx0z/dom/text-highlights"
-import {setDocumentTextHighlights} from "@zavx0z/dom/text-highlights"
-import type {UiCodeEditorModel} from "@ui/code-editor-model"
-import type CodeEditorModel from "@ui/code-editor-model"
-type CodeEditorRange = UiCodeEditorModel.Output["snapshot"]["selections"][number]
-import {Range} from "@zavx0z/dom/range"
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
-type CodeEditorHandle = NonNullable<Parameters<NonNullable<UiViewsCodeEditor.Input["onReady"]>>[0]>
-type CodeEditorSelectionSet = Parameters<NonNullable<UiViewsCodeEditor.Input["onSelectionChange"]>>[0]
+import {HTMLElement as SemanticHTMLElement} from "@immersive/dom/html-element"
+import type {InputEvent} from "@immersive/dom/input-event"
+import type {CompositionEvent} from "@immersive/dom/composition-event"
+import type {KeyboardEvent} from "@immersive/dom/keyboard-event"
+import type {PointerEvent} from "@immersive/dom/pointer-event"
+import type {ClipboardEvent} from "@immersive/dom/clipboard-event"
+import type {Event} from "@immersive/dom"
+import type {EventListener} from "@immersive/dom"
+import {textOffsetAtPosition} from "@immersive/dom/text-position"
+import {textPositionAtOffset} from "@immersive/dom/text-position"
+import {clearDocumentTextHighlights} from "@immersive/dom/text-highlights"
+import {setDocumentTextHighlights} from "@immersive/dom/text-highlights"
+import type {ImmersiveTechTextEditor} from "@immersive-tech/text-editor"
+import type CodeEditorModel from "@immersive-tech/text-editor"
+type CodeEditorRange = ImmersiveTechTextEditor.Output["snapshot"]["selections"][number]
+import {Range} from "@immersive/dom/range"
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+type CodeEditorHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentViewCodeEditor.Input["onReady"]>>[0]>
+type CodeEditorSelectionSet = Parameters<NonNullable<ImmersiveUiComponentViewCodeEditor.Input["onSelectionChange"]>>[0]
 
 export type CodeEditorInteraction = Readonly<{sync(): void; dispose(): void}>
 

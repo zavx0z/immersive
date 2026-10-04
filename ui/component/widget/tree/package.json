@@ -1,5 +1,5 @@
 {
-  "name": "@ui-widgets/tree",
+  "name": "@immersive-ui-component-widget/tree",
   "label": "Tree",
   "version": "0.0.0",
   "description": "Дерево с выбором, навигацией и ограниченным окном материализованных строк",
@@ -15,20 +15,20 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-themes-icons/chevron-down": "workspace:*",
-    "@ui-themes-icons/chevron-right": "workspace:*",
-    "@ui-widgets-header/action": "workspace:*",
-    "@ui-widgets/header": "workspace:*",
-    "@ui/badge": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-theme-icon/chevron-down": "workspace:*",
+    "@immersive-ui-theme-icon/chevron-right": "workspace:*",
+    "@immersive-ui-component-widget-header/action": "workspace:*",
+    "@immersive-ui-component-widget/header": "workspace:*",
+    "@immersive-ui-component/badge": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/widgets": "workspace:*"
+    "@immersive-ui-component/widget": "workspace:*"
   }
 }

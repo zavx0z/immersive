@@ -1,10 +1,10 @@
-import type {UiFieldsCollectionField} from "@ui-fields/collection-field"
-type CollectionFieldProps = UiFieldsCollectionField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldCollection} from "@immersive-ui-component-field/collection"
+type CollectionFieldProps = ImmersiveUiComponentFieldCollection.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersCollection {
+export declare namespace ImmersiveNodesParameterCollection {
   /**
   Входные данные параметра-коллекции, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersCollection {
 
   @example
   ```ts
-  const input: NodesParametersCollection.Input = {
+  const input: ImmersiveNodesParameterCollection.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -36,7 +36,7 @@ export declare namespace NodesParametersCollection {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly items: CollectionFieldProps["items"]
     readonly selectedId: CollectionFieldProps["selectedId"]
     readonly visibleRows?: CollectionFieldProps["visibleRows"]
@@ -48,7 +48,7 @@ export declare namespace NodesParametersCollection {
     readonly onMove?: CollectionFieldProps["onMove"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

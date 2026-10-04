@@ -1,10 +1,10 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument, DOMRect, HTMLElement} from "@zavx0z/dom"
-import {createDocumentRenderer} from "@renderer/html"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createRoot} from "@immersive/component"
+import {createDocument, DOMRect, HTMLElement} from "@immersive/dom"
+import {createDocumentRenderer} from "@immersive-renderer/html"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import type {TypeDocProps} from "../typedoc/index.tsx"
 import {contractDocument, proseDocument} from "./view.fixture.ts"
 
@@ -17,7 +17,7 @@ Bun.plugin(createJsxBunPlugin({
 
 const {TypeDoc} = await import("../typedoc/index.tsx")
 const template = TypeDoc as unknown as CompiledTemplate<TypeDocProps>
-const {default: codeEditorPalette} = await import("@ui-views-code-editor/palette")
+const {default: codeEditorPalette} = await import("@immersive-ui-view-code-editor/palette")
 const theme = await Bun.file(resolve(root, "ui/theme/theme.css")).text()
 
 function mount(props: TypeDocProps = {document: contractDocument}) {

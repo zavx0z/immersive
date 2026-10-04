@@ -1,9 +1,9 @@
-import type {NodeJsonValue} from "@nodes/tree"
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {NodeJsonValue} from "@immersive-nodes/tree"
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersOutput {
+export declare namespace ImmersiveNodesParameterOutput {
   /**
   Входные данные выходного параметра только для чтения, связанного с нодой и её сокетами.
 
@@ -22,7 +22,7 @@ export declare namespace NodesParametersOutput {
 
   @example
   ```ts
-  const input: NodesParametersOutput.Input = {
+  const input: ImmersiveNodesParameterOutput.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -30,11 +30,11 @@ export declare namespace NodesParametersOutput {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: NodeJsonValue
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

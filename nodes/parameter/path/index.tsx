@@ -6,14 +6,14 @@ PathParameter соединяет публичный PathField с компози�
 @packageDocumentation
 */
 
-import PathField from "@ui-fields/path-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersPath as Contract} from "./contract"
+import PathField from "@immersive-ui-component-field/path"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterPath as Contract} from "./contract"
 
-export type {NodesParametersPath} from "./contract"
+export type {ImmersiveNodesParameterPath} from "./contract"
 
 /**
-Авторский контракт PathParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт PathParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property [onBrowse] - Запрашивает действие приложения; компонент не открывает файловую систему.
 */

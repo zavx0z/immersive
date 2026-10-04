@@ -1,7 +1,7 @@
-import type {NodeValuesOwn} from "@node-values/own"
+import type {ImmersiveTechJsonValueOwn} from "@immersive-tech-json-value/own"
 
 /** Структурное равенство уже переносимых JSON-значений. */
-export declare namespace NodeValuesEqual {
-  type Input = readonly [left: NodeValuesOwn.Input[0], right: NodeValuesOwn.Input[0]]
+export declare namespace ImmersiveTechJsonValueEqual {
+  type Input = readonly [left: ImmersiveTechJsonValueOwn.Input[0], right: ImmersiveTechJsonValueOwn.Input[0]]
   type Output = boolean
 }

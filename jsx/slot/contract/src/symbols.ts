@@ -1,7 +1,7 @@
 import {SymbolFlags, type Symbol as NativeSymbol} from "typescript/unstable/async"
 import {skipOuterExpressions, SyntaxKind, type Node} from "typescript/unstable/ast"
 import {isCallExpression, isFunctionDeclaration, isIdentifier, isImportDeclaration, isNamedImports, isStringLiteral, isVariableDeclaration} from "typescript/unstable/ast/is"
-import SlotAuthoring from "@jsx-slot/authoring"
+import SlotAuthoring from "@immersive-jsx-slot/authoring"
 import {readSlotSchema} from "./schema.ts"
 import type {Receiver, ValidationContext} from "./model.ts"
 
@@ -99,7 +99,7 @@ async function isRuntimeMemo(node: Node, context: ValidationContext): Promise<bo
   if (!symbol) return false
   for (const statement of node.getSourceFile().statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier) ||
-      statement.moduleSpecifier.text !== "@zavx0z/component") continue
+      statement.moduleSpecifier.text !== "@immersive/component") continue
     const clause = statement.importClause
     if (!clause || clause.phaseModifier === SyntaxKind.TypeKeyword ||
       !clause.namedBindings || !isNamedImports(clause.namedBindings)) continue

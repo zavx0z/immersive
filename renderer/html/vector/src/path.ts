@@ -5,7 +5,7 @@ import type {
   RenderPathPoint,
   RenderPathSegment,
 } from "../../src/types.ts"
-import {VECTOR_PATH_COORDINATE_LIMIT} from "@zavx0z/dom"
+import {VECTOR_PATH_COORDINATE_LIMIT} from "@immersive/dom"
 
 const CURVE_STEPS = 6
 const EPSILON = 1e-6

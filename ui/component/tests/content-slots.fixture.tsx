@@ -1,13 +1,13 @@
-import Button from "@ui-buttons/button"
-import StatusBar from "@ui-feedback/status-bar"
-import FieldGroup from "@ui-fields/field-group"
-import Frame from "@ui-surfaces/frame"
-import Pane from "@ui-surfaces/pane"
-import type {UiSurfacesPane} from "@ui-surfaces/pane"
-type PaneTextContent = UiSurfacesPane.Input["content"]
-import Panel from "@ui-surfaces/panel"
-import Tab from "@ui-surfaces/tab"
-import Window from "@ui-surfaces/window"
+import Button from "@immersive-ui-component-button/basic"
+import StatusBar from "@immersive-ui-component-feedback/status-bar"
+import FieldGroup from "@immersive-ui-component-field/group"
+import Frame from "@immersive-ui-component-surface/frame"
+import Pane from "@immersive-ui-component-surface/pane"
+import type {ImmersiveUiComponentSurfacePane} from "@immersive-ui-component-surface/pane"
+type PaneTextContent = ImmersiveUiComponentSurfacePane.Input["content"]
+import Panel from "@immersive-ui-component-surface/panel"
+import Tab from "@immersive-ui-component-surface/tab"
+import Window from "@immersive-ui-component-surface/window"
 
 /** Обновление вложенности отдельно от primitive content проверяет прежний конфликт Pane. */
 export function PaneSlotFixture(props: Readonly<{supplied: boolean; content?: PaneTextContent}>) {

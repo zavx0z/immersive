@@ -1,5 +1,5 @@
 /** Нормализует частичный RGBA-цвет и возвращает неизменяемые каналы от 0 до 1. */
-export declare namespace UiFieldsColorValueNormalizeColorValue {
+export declare namespace ImmersiveUiFieldColorValueNormalize {
   /** Недостающие RGB-каналы становятся нулевыми, альфа по умолчанию равна единице. */
   type Input = readonly [value: Partial<Output>]
 

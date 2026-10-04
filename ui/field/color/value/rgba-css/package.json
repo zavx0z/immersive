@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-color-value/rgba-css",
+  "name": "@immersive-ui-field-color-value/rgba-css",
   "label": "rgbaCss",
   "version": "0.0.0",
   "description": "Форматирует цвет как CSS rgba с байтовыми RGB-каналами и альфой до трёх десятичных знаков",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-color-value/normalize-color-value": "workspace:*"
+    "@immersive-ui-field-color-value/normalize": "workspace:*"
   }
 }

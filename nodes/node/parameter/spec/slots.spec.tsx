@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import {InputEvent, MouseEvent, type HTMLInputElement} from "@zavx0z/dom"
+import {InputEvent, MouseEvent, type HTMLInputElement} from "@immersive/dom"
 import AuthoredParameterNode from "./slots.fixture"
 
 test.each([

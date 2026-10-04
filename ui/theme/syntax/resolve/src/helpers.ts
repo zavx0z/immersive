@@ -1,5 +1,5 @@
-import type {UiThemesSyntaxThemeActive} from "@ui-themes-syntax-theme/active"
-type SyntaxColorTheme = UiThemesSyntaxThemeActive.Output
+import type {ImmersiveUiThemeSyntaxActive} from "@immersive-ui-theme-syntax/active"
+type SyntaxColorTheme = ImmersiveUiThemeSyntaxActive.Output
 
 /** Частная подготовка цвет синтаксической области активной темы. */
 export function foregroundFor(

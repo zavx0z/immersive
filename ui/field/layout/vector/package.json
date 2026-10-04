@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-vector-field/layout",
+  "name": "@immersive-ui-field-layout/vector",
   "label": "vectorFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров vectorField",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-density-height": "workspace:*",
-    "@ui-fields-metrics/labelled-field-height": "workspace:*",
-    "@ui-fields/vector-field": "workspace:*"
+    "@immersive-ui-field-metric/density-height": "workspace:*",
+    "@immersive-ui-field-metric/labelled-height": "workspace:*",
+    "@immersive-ui-component-field/vector": "workspace:*"
   }
 }

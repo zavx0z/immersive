@@ -1,5 +1,5 @@
 {
-  "name": "@ui-selection/selection-exceptional-label",
+  "name": "@immersive-ui-selection/exceptional-label",
   "label": "selectionExceptionalLabel",
   "version": "0.0.0",
   "description": "Обработка selection-exceptional-label",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-selection/validate-selection-options": "workspace:*"
+    "@immersive-ui-selection/validate-options": "workspace:*"
   },
   "devDependencies": {
-    "@ui-selection/validate-selection-state": "workspace:*"
+    "@immersive-ui-selection/validate-state": "workspace:*"
   }
 }

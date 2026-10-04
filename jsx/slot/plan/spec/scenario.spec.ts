@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import planSlots, {type PlanSlotsInput, type PlanSlotsOutput} from "@jsx-slot/plan"
+import planSlots, {type PlanSlotsInput, type PlanSlotsOutput} from "@immersive-jsx-slot/plan"
 
 describe.each([
   {

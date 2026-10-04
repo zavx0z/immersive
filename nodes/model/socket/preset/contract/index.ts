@@ -1,8 +1,8 @@
-import type {SocketValuesKinds} from "@socket-values/kinds"
-import type {SocketValuesPresets} from "@socket-values/presets"
+import type {ImmersiveNodesModelSocketKinds} from "@immersive-nodes-model-socket/kinds"
+import type {ImmersiveNodesModelSocketPresets} from "@immersive-nodes-model-socket/presets"
 
 /** Выбирает предустановку известного вида сокета. */
-export declare namespace SocketValuesPreset {
-  type Input = SocketValuesKinds.Output[number]
-  type Output = SocketValuesPresets.Output[Input]
+export declare namespace ImmersiveNodesModelSocketPreset {
+  type Input = ImmersiveNodesModelSocketKinds.Output[number]
+  type Output = ImmersiveNodesModelSocketPresets.Output[Input]
 }

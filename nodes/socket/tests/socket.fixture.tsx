@@ -1,14 +1,14 @@
-import {createRoot, useState} from "@zavx0z/component"
-import type {Document} from "@zavx0z/dom"
-import Socket from "@nodes/sockets"
-import SOCKET_SHAPES from "@socket-values/shapes"
-import socketPreset from "@socket-values/preset"
-import type {SocketValuesKinds} from "@socket-values/kinds"
-type SocketKind = SocketValuesKinds.Output[number]
-import type {NodesSockets} from "@nodes/sockets"
-type SocketDirection = NodesSockets.Input["direction"]
-import type {SocketValuesShapes} from "@socket-values/shapes"
-type SocketShape = SocketValuesShapes.Output[number]
+import {createRoot, useState} from "@immersive/component"
+import type {Document} from "@immersive/dom"
+import Socket from "@immersive-nodes/socket"
+import SOCKET_SHAPES from "@immersive-nodes-model-socket/shapes"
+import socketPreset from "@immersive-nodes-model-socket/preset"
+import type {ImmersiveNodesModelSocketKinds} from "@immersive-nodes-model-socket/kinds"
+type SocketKind = ImmersiveNodesModelSocketKinds.Output[number]
+import type {ImmersiveNodesSocket} from "@immersive-nodes/socket"
+type SocketDirection = ImmersiveNodesSocket.Input["direction"]
+import type {ImmersiveNodesModelSocketShapes} from "@immersive-nodes-model-socket/shapes"
+type SocketShape = ImmersiveNodesModelSocketShapes.Output[number]
 
 export function mountSocketFixture(document: Document, kind: SocketKind, variant: string) {
   const element = document.createElement("div")

@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {UiSelectionValidateSelectionState as Contract} from "./contract"
+import type {ImmersiveUiSelectionValidateState as Contract} from "./contract"
 
 export default function validateSelectionState(state: Contract.Input[0]): Contract.Output {
   if (state !== undefined && state !== "ready" && state !== "undefined" && state !== "error") {
@@ -12,4 +12,4 @@ export default function validateSelectionState(state: Contract.Input[0]): Contra
   }
 }
 
-export type {UiSelectionValidateSelectionState} from "./contract"
+export type {ImmersiveUiSelectionValidateState} from "./contract"

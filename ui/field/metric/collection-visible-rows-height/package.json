@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-metrics/collection-visible-rows-height",
+  "name": "@immersive-ui-field-metric/collection-visible-rows-height",
   "label": "collectionVisibleRowsHeight",
   "version": "0.0.0",
   "description": "Высота видимых строк коллекции",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-metric": "workspace:*"
+    "@immersive-ui-field-metric/read": "workspace:*"
   }
 }

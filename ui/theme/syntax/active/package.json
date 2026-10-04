@@ -1,5 +1,5 @@
 {
-  "name": "@ui-themes-syntax-theme/active",
+  "name": "@immersive-ui-theme-syntax/active",
   "label": "activeSyntaxTheme",
   "version": "0.0.0",
   "description": "Активная синтаксическая тема интерфейса",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   }
 }

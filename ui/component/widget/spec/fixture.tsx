@@ -1,4 +1,4 @@
-import {Editor, Inspector, Terminal, Tree, WidgetHeader} from "@ui/widgets"
+import {Editor, Inspector, Terminal, Tree, WidgetHeader} from "@immersive-ui-component/widget"
 
 export default function ClusterExamples(props: Readonly<{label: string}>) {
   return <section>

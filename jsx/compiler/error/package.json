@@ -1,5 +1,5 @@
 {
-  "name": "@jsx-compiler/error",
+  "name": "@immersive-jsx-compiler/error",
   "label": "Ошибка JSX",
   "version": "0.0.0",
   "private": true,

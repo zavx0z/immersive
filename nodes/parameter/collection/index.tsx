@@ -6,14 +6,14 @@ CollectionParameter соединяет публичный CollectionField с к�
 @packageDocumentation
 */
 
-import CollectionField from "@ui-fields/collection-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersCollection as Contract} from "./contract"
+import CollectionField from "@immersive-ui-component-field/collection"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterCollection as Contract} from "./contract"
 
-export type {NodesParametersCollection} from "./contract"
+export type {ImmersiveNodesParameterCollection} from "./contract"
 
 /**
-Авторский контракт CollectionParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт CollectionParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property items - Внешний список; компонент не сохраняет его локальную копию.
 

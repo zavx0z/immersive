@@ -1,6 +1,6 @@
 import {createCubicLinkRoute, type LinkPathPoint, type LinkRoute} from "@immersive/nodes/routing/link-path"
-import {layoutFixed} from "@nodes/layout/fixed"
-import {layoutTopDown} from "@nodes/layout/top-down"
+import {layoutFixed} from "@immersive-nodes/layout/fixed"
+import {layoutTopDown} from "@immersive-nodes/layout/top-down"
 import type {MermaidGraph} from "../types/graph.ts"
 import type {GraphMeasurement} from "@immersive/nodes/view"
 

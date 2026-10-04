@@ -1,7 +1,7 @@
 import {arrowGeometry} from "../marker/geometry.ts"
 import type {MarkerPlacement} from "../marker/contracts.ts"
 import {trimCubicCurves} from "./trim-curves.ts"
-import {VECTOR_PATH_COORDINATE_LIMIT} from "@zavx0z/dom/html/vector-path-element"
+import {VECTOR_PATH_COORDINATE_LIMIT} from "@immersive/dom/html/vector-path-element"
 
 export type LinkPathPoint = Readonly<{
   x: number

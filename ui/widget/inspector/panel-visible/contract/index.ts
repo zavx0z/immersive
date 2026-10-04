@@ -1,9 +1,9 @@
-import type {UiWidgetsInspector} from "@ui-widgets/inspector"
+import type {ImmersiveUiComponentWidgetInspector} from "@immersive-ui-component-widget/inspector"
 
 /** Протокол самостоятельной операции. */
-export declare namespace UiWidgetsInspectorIsInspectorPanelVisible {
+export declare namespace ImmersiveUiWidgetInspectorPanelVisible {
   type Input = readonly [
-    categories: UiWidgetsInspector.Input["categories"],
+    categories: ImmersiveUiComponentWidgetInspector.Input["categories"],
     selectedCategoryId: string,
     query: string,
     panel: Readonly<{id: string, label: string}>

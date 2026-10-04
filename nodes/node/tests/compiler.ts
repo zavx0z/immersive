@@ -1,5 +1,5 @@
 import {resolve} from "node:path"
-import createJsxBunPlugin from "@jsx-compiler/bun"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
 
 // Все тесты владельца используют один compiler с полным графом JSX-зависимостей.
 const root = resolve(import.meta.dir, "../../..")

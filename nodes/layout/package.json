@@ -1,5 +1,5 @@
 {
-  "name": "@nodes/layout",
+  "name": "@immersive-nodes/layout",
   "label": "Раскладка",
   "version": "0.0.0",
   "description": "Алгоритмы расположения нод и Worker",

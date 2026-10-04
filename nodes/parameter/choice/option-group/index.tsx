@@ -6,15 +6,15 @@ OptionGroupParameter соединяет публичный ToggleButtonGroup с 
 @packageDocumentation
 */
 
-import FieldGroup from "@ui-fields/field-group"
-import ToggleButtonGroup from "@ui-buttons/toggle-button-group"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersOptionGroup as Contract} from "./contract"
+import FieldGroup from "@immersive-ui-component-field/group"
+import ToggleButtonGroup from "@immersive-ui-component-button/toggle-group"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterChoiceOptionGroup as Contract} from "./contract"
 
-export type {NodesParametersOptionGroup} from "./contract"
+export type {ImmersiveNodesParameterChoiceOptionGroup} from "./contract"
 
 /**
-Авторский контракт OptionGroupParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт OptionGroupParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property options - Полный набор вариантов; в каждый момент выбран одно строковое значение.
 */

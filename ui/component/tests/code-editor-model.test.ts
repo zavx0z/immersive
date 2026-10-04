@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
-import buildCodeEditorViewModel from "@ui-views-code-editor/view-model"
+import buildCodeEditorViewModel from "@immersive-ui-component-view-code-editor/view-model"
 import {codeEditorPaintRuns} from "../view/code-editor/src/paint-runs.ts"
 import {codeEditorVisualRows} from "../view/code-editor/src/visual-rows.ts"
-import codeEditorSyntaxTheme from "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme"
-import resolveCodeEditorSyntaxScopeColorHex from "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex"
+import codeEditorSyntaxTheme from "@immersive-ui-component-view-code-editor-syntax-theme/data"
+import resolveCodeEditorSyntaxScopeColorHex from "@immersive-ui-component-view-code-editor-syntax-theme/resolve-scope-color-hex"
 
 test("JSX-компоненты получают цвет тегов через установленный highlighter", () => {
   const value = '<Tab label={null}><Button label="Инструменты" /></Tab>'

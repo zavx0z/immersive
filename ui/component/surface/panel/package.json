@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces/panel",
+  "name": "@immersive-ui-component-surface/panel",
   "label": "Panel",
   "version": "0.0.0",
   "description": "Панель содержимого с заголовком и действиями",
@@ -15,18 +15,18 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-buttons/icon-button": "workspace:*",
-    "@ui-themes-icons/chevron-down": "workspace:*",
-    "@ui-themes-icons/chevron-right": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-component-button/icon": "workspace:*",
+    "@immersive-ui-theme-icon/chevron-down": "workspace:*",
+    "@immersive-ui-theme-icon/chevron-right": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/typography": "workspace:*",
-    "@ui/surfaces": "workspace:*"
+    "@immersive-ui-component/typography": "workspace:*",
+    "@immersive-ui-component/surface": "workspace:*"
   }
 }

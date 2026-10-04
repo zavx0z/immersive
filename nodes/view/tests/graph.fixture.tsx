@@ -1,4 +1,4 @@
-import {useState} from "@zavx0z/component"
+import {useState} from "@immersive/component"
 import type {GraphNodeProps, GraphScene} from "@immersive/nodes/view"
 
 /** Состояние принадлежит настоящему компоненту, чтобы обнаруживать remount. */

@@ -1,6 +1,6 @@
-import type {UiThemesIcons} from "@ui-themes/icons/contract"
+import type {ImmersiveUiThemeIcon} from "@immersive-ui-theme/icon/contract"
 
 /** SVG-значок breakpoint в формате data URL. */
-export declare namespace UiThemesIconsBreakpoint {
-  type Output = UiThemesIcons.Output
+export declare namespace ImmersiveUiThemeIconBreakpoint {
+  type Output = ImmersiveUiThemeIcon.Output
 }

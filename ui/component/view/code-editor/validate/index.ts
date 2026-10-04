@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {UiViewsCodeEditorValidate as Contract} from "./contract"
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
-type CodeEditorProps = UiViewsCodeEditor.Input
-import assertNonEmpty from "@ui-views-code-editor/assert-non-empty"
-import CodeEditorModel from "@ui/code-editor-model"
+import type {ImmersiveUiComponentViewCodeEditorValidate as Contract} from "./contract"
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
+import assertNonEmpty from "@immersive-tech-text/assert-non-empty"
+import CodeEditorModel from "@immersive-tech/text-editor"
 
 export default function assertCodeEditorProps(props: Contract.Input[0]): Contract.Output {
   if (typeof props !== "object" || props === null) throw new TypeError("CodeEditor props must be an object")
@@ -34,4 +34,4 @@ export default function assertCodeEditorProps(props: Contract.Input[0]): Contrac
   if (props.title !== undefined && typeof props.title !== "string") throw new TypeError("CodeEditor title must be a string")
 }
 
-export type {UiViewsCodeEditorValidate} from "./contract"
+export type {ImmersiveUiComponentViewCodeEditorValidate} from "./contract"

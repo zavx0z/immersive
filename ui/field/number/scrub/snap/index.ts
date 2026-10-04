@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberScrubSnapNumberValue as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberScrubSnap as Contract} from "./contract"
 import {roundHalfAwayFromZero} from "./src/helpers.ts"
-import roundedNumber from "@ui-fields-number-value/rounded-number"
-import type {UiFieldsNumberValueResolveNumberSoftRange} from "@ui-fields-number-value/resolve-number-soft-range"
-type NumberRange = UiFieldsNumberValueResolveNumberSoftRange.Output
+import roundedNumber from "@immersive-ui-field-number-value/round"
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@immersive-ui-field-number-value/soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
 
 export default function snapNumberValue(
   value: Contract.Input[0],
@@ -24,4 +24,4 @@ export default function snapNumberValue(
   return roundedNumber(Math.min(range.max, Math.max(range.min, snapped)))
 }
 
-export type {UiFieldsNumberScrubSnapNumberValue} from "./contract"
+export type {ImmersiveUiFieldNumberScrubSnap} from "./contract"

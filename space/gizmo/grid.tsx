@@ -1,7 +1,7 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import {useMemo} from "@zavx0z/component"
-import {GridHelper} from "@zavx0z/engine"
-import type {JSX} from "@jsx-compiler/session"
+import {useMemo} from "@immersive/component"
+import {GridHelper} from "@immersive/engine"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {LineSegmentsProps} from "../shape/line-segments.tsx"
 import "../src/jsx.ts"
 

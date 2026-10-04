@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/finite-bound",
+  "name": "@immersive-ui-field-number-value/finite-bound",
   "label": "finiteBound",
   "version": "0.0.0",
   "description": "Сохраняет конечную числовую границу либо возвращает переданное запасное значение",

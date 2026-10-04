@@ -1,6 +1,6 @@
 /** Ограничения задают конечную стоимость одной транзакции. */
 import {describe, expect, test} from "bun:test"
-import limits from "@node-json-patch/limits"
+import limits from "@immersive-tech-json-patch/limits"
 
 describe.each([{name: "Ограниченная транзакция", props: {unit: "положительные целые"}}])("$name", ({props}) => {
   const result = limits

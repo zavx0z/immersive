@@ -4,15 +4,15 @@
 
 @packageDocumentation
 */
-import type {UiSurfacesPanel as Contract} from "./contract"
-import {useId} from "@zavx0z/component"
-import Button from "@ui-buttons/button"
-import IconButton from "@ui-buttons/icon-button"
-import chevronDownIcon from "@ui-themes-icons/chevron-down"
-import chevronRightIcon from "@ui-themes-icons/chevron-right"
+import type {ImmersiveUiComponentSurfacePanel as Contract} from "./contract"
+import {useId} from "@immersive/component"
+import Button from "@immersive-ui-component-button/basic"
+import IconButton from "@immersive-ui-component-button/icon"
+import chevronDownIcon from "@immersive-ui-theme-icon/chevron-down"
+import chevronRightIcon from "@immersive-ui-theme-icon/chevron-right"
 
 
-export type {UiSurfacesPanel} from "./contract"
+export type {ImmersiveUiComponentSurfacePanel} from "./contract"
 
 export default function Panel(props: Contract.Input): Contract.Output {
   if (props.label.length === 0) throw new Error("Panel label must not be empty")

@@ -5,11 +5,11 @@
 принимающего компонента для анализа TypeScript, без runtime-регистрации.
 При отсутствии контракта используется never. Значение не является DOM-узлом.
 
-@property @zavx0z/jsx/element - Бренд авторского JSX.
+@property @immersive/jsx/element - Бренд авторского JSX.
 
-@property @zavx0z/jsx/slots - Phantom-контракт принимающих областей.
+@property @immersive/jsx/slots - Phantom-контракт принимающих областей.
 */
 export interface Element<Slots extends object = never> {
-  readonly "@zavx0z/jsx/element": true
-  readonly "@zavx0z/jsx/slots"?: Slots
+  readonly "@immersive/jsx/element": true
+  readonly "@immersive/jsx/slots"?: Slots
 }

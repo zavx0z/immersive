@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@zavx0z/dom"
+import {createDocument} from "@immersive/dom"
 import {caretPositionAtPoint, createDocumentRenderer, getRangeClientRects, readRenderedSelectionText} from "../src/index.ts"
 
 function fixture(text: string, style = "width:40px;white-space:pre-wrap") {

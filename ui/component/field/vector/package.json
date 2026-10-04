@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/vector-field",
+  "name": "@immersive-ui-component-field/vector",
   "label": "VectorField",
   "version": "0.0.0",
   "description": "Поле интерфейса: вектор чисел",
@@ -15,14 +15,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-fields-vector-value/normalize-vector-value": "workspace:*",
-    "@ui-fields-vector-value/update-vector-value": "workspace:*",
-    "@ui-fields/field-group": "workspace:*",
-    "@ui-fields/number-field": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-field-vector-value/normalize": "workspace:*",
+    "@immersive-ui-field-vector-value/update": "workspace:*",
+    "@immersive-ui-component-field/group": "workspace:*",
+    "@immersive-ui-component-field/number": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

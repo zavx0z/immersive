@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-export type {UiButtons} from "./contract"
-export {default as Button} from "@ui-buttons/button"
-export type {UiButtonsButton} from "@ui-buttons/button"
-export {default as IconButton} from "@ui-buttons/icon-button"
-export type {UiButtonsIconButton} from "@ui-buttons/icon-button"
-export {default as ToggleButtonGroup} from "@ui-buttons/toggle-button-group"
-export type {UiButtonsToggleButtonGroup} from "@ui-buttons/toggle-button-group"
+export type {ImmersiveUiComponentButton} from "./contract"
+export {default as Button} from "@immersive-ui-component-button/basic"
+export type {ImmersiveUiComponentButtonBasic} from "@immersive-ui-component-button/basic"
+export {default as IconButton} from "@immersive-ui-component-button/icon"
+export type {ImmersiveUiComponentButtonIcon} from "@immersive-ui-component-button/icon"
+export {default as ToggleButtonGroup} from "@immersive-ui-component-button/toggle-group"
+export type {ImmersiveUiComponentButtonToggleGroup} from "@immersive-ui-component-button/toggle-group"

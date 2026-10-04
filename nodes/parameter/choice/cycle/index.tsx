@@ -6,14 +6,14 @@ CycleParameter соединяет публичный CycleField с композ�
 @packageDocumentation
 */
 
-import CycleField from "@ui-fields/cycle-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersCycle as Contract} from "./contract"
+import CycleField from "@immersive-ui-component-field/cycle"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterChoiceCycle as Contract} from "./contract"
 
-export type {NodesParametersCycle} from "./contract"
+export type {ImmersiveNodesParameterChoiceCycle} from "./contract"
 
 /**
-Авторский контракт CycleParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт CycleParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property [open] - Управляемое состояние списка; onOpenChange возвращает запрос изменения.
 */

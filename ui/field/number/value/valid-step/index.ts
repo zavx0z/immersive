@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberValueValidNumberStep as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueValidStep as Contract} from "./contract"
 
 export default function validNumberStep(value: Contract.Input[0]): Contract.Output {
   return Number.isFinite(value) && value! > 0 ? value : undefined
 }
 
-export type {UiFieldsNumberValueValidNumberStep} from "./contract"
+export type {ImmersiveUiFieldNumberValueValidStep} from "./contract"

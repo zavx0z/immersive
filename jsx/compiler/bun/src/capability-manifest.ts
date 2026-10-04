@@ -7,7 +7,7 @@ matrix resolution remain external platform-tooling responsibilities.
 @packageDocumentation
 */
 
-import type {JsxCompileResult} from "@jsx-compiler/session"
+import type {JsxCompileResult} from "@immersive-jsx-compiler/session"
 type CapabilityUsage = JsxCompileResult["capabilityUsages"][number]
 
 export const CAPABILITY_USAGE_SCHEMA_VERSION = 2 as const

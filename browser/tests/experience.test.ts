@@ -1,16 +1,16 @@
 import {attachFixture, createFakeRuntime, createFakeRuntimeState, presentFakeFrame, testApp} from "./experience.fixture.ts"
 import {expect, test} from "bun:test"
-import {component} from "@zavx0z/component"
+import {component} from "@immersive/component"
 import {useFrame, useSpace, type RootSize} from "../src/root-context.ts"
-import {defineCompiledTemplate} from "@zavx0z/template/compiled"
-import {bindRef, writeBinding} from "@zavx0z/template/compiled"
-import {acquireDocumentAuthorStyleSheetOwner, HTMLElement as SemanticHTMLElement, type Element as SemanticElement, type Node as SemanticNode} from "@zavx0z/dom"
-import {DisplayElement} from "@zavx0z/dom/display"
+import {defineCompiledTemplate} from "@immersive/template/compiled"
+import {bindRef, writeBinding} from "@immersive/template/compiled"
+import {acquireDocumentAuthorStyleSheetOwner, HTMLElement as SemanticHTMLElement, type Element as SemanticElement, type Node as SemanticNode} from "@immersive/dom"
+import {DisplayElement} from "@immersive/dom/display"
 import type {
   PointerInput,
   RenderFrame,
   WheelInput,
-} from "@renderer/html"
+} from "@immersive-renderer/html"
 import {
   AnimationClip,
   BoxGeometry,
@@ -34,7 +34,7 @@ import {
   TrueTypeFont,
   Vector3,
   ViewPoint,
-} from "@zavx0z/engine"
+} from "@immersive/engine"
 import {
   readSpaceTree,
   XRAnimationElement,
@@ -46,10 +46,10 @@ import {
   XRMaterialElement,
   XRMeshElement,
   XRTextElement,
-} from "@zavx0z/space"
+} from "@immersive/space"
 import {HUDElement} from "../../dom/hud/index.ts"
-import {SpaceElement} from "@zavx0z/dom/space"
-import {ViewPointElement} from "@zavx0z/dom/viewpoint"
+import {SpaceElement} from "@immersive/dom/space"
+import {ViewPointElement} from "@immersive/dom/viewpoint"
 import * as publicApi from "../src/index.ts"
 import {
   attachWithRuntimeFactory,
@@ -939,8 +939,8 @@ test("default URL link is inserted before an existing borrowed stylesheet", asyn
 // Browser author API: these use the same runtime seam as the projection evidence above.
 import {createRootWithSeams} from "../create-root.ts"
 import {inspectRoot} from "../diagnostics.ts"
-import {useState, useLayoutEffect} from "@zavx0z/component"
-import {bindText} from "@zavx0z/template/compiled"
+import {useState, useLayoutEffect} from "@immersive/component"
+import {bindText} from "@immersive/template/compiled"
 
 const browserRootFixture = (state = createFakeRuntimeState(), changes: Partial<Parameters<typeof createRootWithSeams>[2]> = {}) => {
   const canvas = {getContext: () => null, getBoundingClientRect: () => ({width: 800, height: 600, left: 0, top: 0})} as unknown as HTMLCanvasElement

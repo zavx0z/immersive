@@ -1,5 +1,5 @@
 {
-  "name": "@ui-themes-syntax-theme/name",
+  "name": "@immersive-ui-theme-syntax/name",
   "label": "activeSyntaxThemeName",
   "version": "0.0.0",
   "description": "Название активной синтаксической темы",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-themes-syntax-theme/active": "workspace:*"
+    "@immersive-ui-theme-syntax/active": "workspace:*"
   }
 }

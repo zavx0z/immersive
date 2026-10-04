@@ -1,10 +1,10 @@
-import type {Zavx0zUi} from "@zavx0z/ui/contract"
+import type {ImmersiveUiComponent} from "@immersive-ui/component/contract"
 import type {BreadcrumbsItem} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Протокол иерархического пути: сегменты, текущая позиция и намерение перехода. */
-export declare namespace UiNavigationBreadcrumbs {
+export declare namespace ImmersiveUiComponentNavigationBreadcrumb {
   /**
   Входные данные Breadcrumbs.
   */
@@ -16,5 +16,5 @@ export declare namespace UiNavigationBreadcrumbs {
   }
 
   /** Доступная навигационная область в Document приложения. */
-  type Output = Zavx0zUi.Output & JSX.Element
+  type Output = ImmersiveUiComponent.Output & JSX.Element
 }

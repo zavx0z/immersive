@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-metrics/collection-field-height",
+  "name": "@immersive-ui-field-metric/collection-height",
   "label": "collectionFieldHeight",
   "version": "0.0.0",
   "description": "Выбирает базовую высоту коллекции по видимым строкам и колонке доступных действий",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/collection-visible-rows-height": "workspace:*",
-    "@ui-fields-metrics/field-metric": "workspace:*"
+    "@immersive-ui-field-metric/collection-visible-rows-height": "workspace:*",
+    "@immersive-ui-field-metric/read": "workspace:*"
   }
 }

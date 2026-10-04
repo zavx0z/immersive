@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {Object3D, type PresentationClipShape} from "@zavx0z/engine"
+import {Object3D, type PresentationClipShape} from "@immersive/engine"
 import {
   encodePresentationClipChains,
   PRESENTATION_CLIP_RECORD_FLOATS,

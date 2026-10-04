@@ -5,17 +5,17 @@
 @packageDocumentation
 */
 import {ColorChannelField} from "./src/helpers.tsx"
-import type {UiFieldsColorPickerField as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldColorPicker as Contract} from "./contract"
 import {ColorSwatch} from "./src/helpers.tsx"
 import {channels} from "./src/helpers.tsx"
-import colorValueToHsva from "@ui-fields-color-value/color-value-to-hsva"
-import formatColorValue from "@ui-fields-color-value/format-color-value"
-import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
-import parseColorValue from "@ui-fields-color-value/parse-color-value"
-import TextField from "@ui-fields/text-field"
+import colorValueToHsva from "@immersive-ui-field-color-value/to-hsva"
+import formatColorValue from "@immersive-ui-field-color-value/format"
+import normalizeColorValue from "@immersive-ui-field-color-value/normalize"
+import parseColorValue from "@immersive-ui-field-color-value/parse"
+import TextField from "@immersive-ui-component-field/text"
 
 
-export type {UiFieldsColorPickerField} from "./contract"
+export type {ImmersiveUiComponentFieldColorPicker} from "./contract"
 
 export default function ColorPickerField(props: Contract.Input): Contract.Output {
   if (!props.value || typeof props.value !== "object") throw new TypeError("ColorPickerField value must be an object")

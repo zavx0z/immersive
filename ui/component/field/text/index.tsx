@@ -5,10 +5,10 @@
 @packageDocumentation
 */
 import type {TextFieldInputEvent} from "./contract/types.ts"
-import type {UiFieldsTextField as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldText as Contract} from "./contract"
 
 
-export type {UiFieldsTextField} from "./contract"
+export type {ImmersiveUiComponentFieldText} from "./contract"
 
 export default function TextField(props: Contract.Input): Contract.Output {
   const hasLabel = props.label !== undefined

@@ -1,7 +1,7 @@
-import type {NodesParameterPresentation} from "@nodes/parameter-presentation"
+import type {ImmersiveNodesProjectionParameterPresentation} from "@immersive-nodes-projection-parameter/presentation"
 
 /** Читает и проверяет интервал перед параметром. */
-export declare namespace NodeGeometrySpacing {
-  type Input = NodesParameterPresentation.Input
+export declare namespace ImmersiveNodesGeometryNodeSpacing {
+  type Input = ImmersiveNodesProjectionParameterPresentation.Input
   type Output = "small" | "medium" | undefined
 }

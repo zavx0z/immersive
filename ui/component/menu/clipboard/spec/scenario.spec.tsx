@@ -1,7 +1,7 @@
 /** ClipboardMenu показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import ClipboardMenu from "@ui-menus/clipboard-menu"
+import ClipboardMenu from "@immersive-ui-component-menu/clipboard"
 
 const state = Object.freeze({open: true, x: 0, y: 0, canCopy: true, canPaste: false, pending: false, error: null})
 const controller = {getSnapshot: () => state, subscribe() { return () => {} }, async copy() {}, async paste() {}, close() {}}

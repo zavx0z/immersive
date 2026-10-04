@@ -1,4 +1,4 @@
-import themeColor from "@ui-views-code-editor/theme-color"
+import themeColor from "@immersive-ui-view-code-editor-theme/color"
 
 /** Частная подготовка палитра редактора и его поля номеров строк. */
 export const editorBackground = themeColor("editor.background", "#191a1c")

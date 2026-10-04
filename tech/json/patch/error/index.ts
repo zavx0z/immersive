@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {NodeJsonPatchError as Contract} from "./contract"
-export type {NodeJsonPatchError} from "./contract"
+import type {ImmersiveTechJsonPatchError as Contract} from "./contract"
+export type {ImmersiveTechJsonPatchError} from "./contract"
 
 export default class JsonPatchError extends Error implements Contract.Output {
   constructor(

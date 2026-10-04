@@ -1,15 +1,15 @@
-import type {RendererFontFace} from "@zavx0z/webgpu"
+import type {RendererFontFace} from "@immersive/webgpu"
 import {
   Space,
   ViewPoint,
   type TrueTypeFont,
-} from "@zavx0z/engine"
+} from "@immersive/engine"
 import {
   subscribeDocumentAuthorStyleSheets,
   subscribeDocumentCompiledStyleSheets,
   type Document,
   type Node,
-} from "@zavx0z/dom"
+} from "@immersive/dom"
 import {
   createDocumentInteractionController,
   createDocumentInteractionState,
@@ -22,14 +22,14 @@ import {
   type RenderFrame,
   type RenderViewport,
   type WheelInput,
-} from "@renderer/html"
+} from "@immersive-renderer/html"
 import {
   Renderer as EngineRenderer,
   RendererWebGpuBackend,
   RendererWebGpuScreenOverlay,
   type RendererWebGpuBackendOptions,
   type RendererWebGpuScreenOverlayOptions,
-} from "@zavx0z/webgpu"
+} from "@immersive/webgpu"
 import {
   createDocumentNativeInputHost,
   type DocumentNativeInputHost,
@@ -542,10 +542,10 @@ function validateOptions(options: CreateDocumentCanvasRuntimeOptions): void {
     typeof options.canvas.getBoundingClientRect !== "function"
   ) throw new TypeError("canvas must be an HTMLCanvasElement-compatible owner")
   if (options.document === null || typeof options.document !== "object") {
-    throw new TypeError("document must be an @zavx0z/dom Document")
+    throw new TypeError("document must be an @immersive/dom Document")
   }
   if (options.root === null || typeof options.root !== "object") {
-    throw new TypeError("root must be an @zavx0z/dom Node")
+    throw new TypeError("root must be an @immersive/dom Node")
   }
   if (options.root !== options.document && options.root.ownerDocument !== options.document) {
     throw new Error("root belongs to another Document")

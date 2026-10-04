@@ -1,5 +1,5 @@
-import type {UiSurfacesWindow} from "../contract/index"
-type WindowProps = UiSurfacesWindow.Input
+import type {ImmersiveUiComponentSurfaceWindow} from "../contract/index"
+type WindowProps = ImmersiveUiComponentSurfaceWindow.Input
 
 /** Отклоняет неоднозначный адрес, неконечную геометрию и повторяющиеся ключи действий. */
 export function validateWindow(props: WindowProps): void {

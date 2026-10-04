@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces-chrome/assert-surface-actions",
+  "name": "@immersive-ui-surface/assert-actions",
   "label": "assertSurfaceActions",
   "version": "0.0.0",
   "description": "Проверка ключей и состояний действий поверхности",

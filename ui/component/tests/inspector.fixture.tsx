@@ -1,6 +1,6 @@
-import Inspector from "@ui-widgets/inspector"
-import Panel from "@ui-surfaces/panel"
-import uiIcons from "@ui-themes-icons/collection"
+import Inspector from "@immersive-ui-component-widget/inspector"
+import Panel from "@immersive-ui-component-surface/panel"
+import uiIcons from "@immersive-ui-theme/icon-set"
 
 export function InspectorFixture() {
   return <Inspector

@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
-import {createRoot} from "@zavx0z/component"
-import {Document, Event} from "@zavx0z/dom"
+import {createRoot} from "@immersive/component"
+import {Document, Event} from "@immersive/dom"
 import {ContentReceiver, SlotCounter, SlotNamedPanel, SlotPanel, SlotText} from "./fixtures/slot-panel.tsx"
 
 describe("Headless preload со скомпилированными слотами", () => {

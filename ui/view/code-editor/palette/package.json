@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/palette",
+  "name": "@immersive-ui-view-code-editor/palette",
   "label": "codeEditorPalette",
   "version": "0.0.0",
   "description": "Палитра редактора и его поля номеров строк",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-views-code-editor/editor-foreground": "workspace:*",
-    "@ui-views-code-editor/theme-color": "workspace:*"
+    "@immersive-ui-view-code-editor/editor-foreground": "workspace:*",
+    "@immersive-ui-view-code-editor-theme/color": "workspace:*"
   }
 }

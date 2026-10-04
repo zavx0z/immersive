@@ -1,10 +1,10 @@
 import {expect, setDefaultTimeout, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElement} from "@zavx0z/dom"
-import type {LayoutResult} from "@nodes/layout/types"
-import type {NodeTreeSnapshot} from "@nodes/tree"
-import {createSpaceElementFactories} from "@zavx0z/space"
-import createJsxBunPlugin from "@jsx-compiler/bun"
+import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElement} from "@immersive/dom"
+import type {LayoutResult} from "@immersive-nodes/layout/types"
+import type {NodeTreeSnapshot} from "@immersive-nodes/tree"
+import {createSpaceElementFactories} from "@immersive/space"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
 
 const root = resolve(import.meta.dir, "../../..")
 setDefaultTimeout(60_000)

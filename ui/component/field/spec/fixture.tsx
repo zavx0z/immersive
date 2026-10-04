@@ -1,7 +1,7 @@
-import {CheckboxField, CollectionField, ColorField, ColorPickerField, CycleField, FieldGroup, MatrixField, NumberField, PathField, ReferenceField, SelectField, SliderField, SwitchField, TextField, VectorField, type UiFields} from "@ui/fields"
+import {CheckboxField, CollectionField, ColorField, ColorPickerField, CycleField, FieldGroup, MatrixField, NumberField, PathField, ReferenceField, SelectField, SliderField, SwitchField, TextField, VectorField, type ImmersiveUiComponentField} from "@immersive-ui-component/field"
 
 /** Реальные участники общего протокола, каждый со своими обязательными данными. */
-export default function FieldExamples(props: UiFields.Input): UiFields.Output {
+export default function FieldExamples(props: ImmersiveUiComponentField.Input): ImmersiveUiComponentField.Output {
   return <div
     style={css`
       display: flex;

@@ -1,7 +1,7 @@
 /** MatrixField показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import MatrixField from "@ui-fields/matrix-field"
+import MatrixField from "@immersive-ui-component-field/matrix"
 
 describe.each([{name: "Основное представление", props: {value: [[1, 0], [0, 1]]}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

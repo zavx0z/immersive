@@ -1,7 +1,7 @@
 /** TextField показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import TextField from "@ui-fields/text-field"
+import TextField from "@immersive-ui-component-field/text"
 
 describe.each([{name: "Основное представление", props: {value: "Текст", label: "Параметр"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

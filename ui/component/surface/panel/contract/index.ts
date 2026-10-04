@@ -1,10 +1,10 @@
-import type {UiSurfaces} from "@ui/surfaces/contract"
+import type {ImmersiveUiComponentSurface} from "@immersive-ui-component/surface/contract"
 import type {PanelAction} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace UiSurfacesPanel {
+export declare namespace ImmersiveUiComponentSurfacePanel {
   /**
   Входные данные Panel.
   */
@@ -23,5 +23,5 @@ export declare namespace UiSurfacesPanel {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = UiSurfaces.Output & JSX.Element<Slots>
+  type Output = ImmersiveUiComponentSurface.Output & JSX.Element<Slots>
 }

@@ -1,5 +1,5 @@
-import type {UiSelectionValidateSelectionState} from "@ui-selection/validate-selection-state"
-type SelectionState = NonNullable<UiSelectionValidateSelectionState.Input[0]>
+import type {ImmersiveUiSelectionValidateState} from "@immersive-ui-selection/validate-state"
+type SelectionState = NonNullable<ImmersiveUiSelectionValidateState.Input[0]>
 
 /**
 Тип SelectFieldOption принадлежит контракту своего владельца.

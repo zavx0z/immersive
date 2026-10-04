@@ -4,14 +4,14 @@
 
 @packageDocumentation
 */
-import type {UiFieldsVectorField as Contract} from "./contract"
-import normalizeVectorValue from "@ui-fields-vector-value/normalize-vector-value"
-import updateVectorValue from "@ui-fields-vector-value/update-vector-value"
-import FieldGroup from "@ui-fields/field-group"
-import NumberField from "@ui-fields/number-field"
+import type {ImmersiveUiComponentFieldVector as Contract} from "./contract"
+import normalizeVectorValue from "@immersive-ui-field-vector-value/normalize"
+import updateVectorValue from "@immersive-ui-field-vector-value/update"
+import FieldGroup from "@immersive-ui-component-field/group"
+import NumberField from "@immersive-ui-component-field/number"
 
 
-export type {UiFieldsVectorField} from "./contract"
+export type {ImmersiveUiComponentFieldVector} from "./contract"
 
 export default function VectorField(props: Contract.Input): Contract.Output {
   const normalized = normalizeVectorValue(props.value, props.axes, props.step)

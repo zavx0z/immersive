@@ -1,5 +1,5 @@
 {
-  "name": "@ui-buttons/toggle-button-group",
+  "name": "@immersive-ui-component-button/toggle-group",
   "label": "ToggleButtonGroup",
   "version": "0.0.0",
   "description": "Группа кнопок выбора одного строкового значения из внешнего набора",
@@ -15,12 +15,12 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-selection/validate-selection-options": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-selection/validate-options": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/buttons": "workspace:*"
+    "@immersive-ui-component/button": "workspace:*"
   }
 }

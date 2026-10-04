@@ -4,11 +4,11 @@ SVG-значок search в формате data URL.
 
 @packageDocumentation
 */
-import type {UiThemesIconsSearch as Contract} from "./contract"
-import iconSvg from "@ui-themes-icons/compose"
+import type {ImmersiveUiThemeIconSearch as Contract} from "./contract"
+import iconSvg from "@immersive-ui-theme-icon/compose"
 
 const searchIcon: Contract.Output = /* @__PURE__ */ iconSvg("<circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"m15.5 15.5 5 5\"/>")
 
 export default searchIcon
 
-export type {UiThemesIconsSearch} from "./contract"
+export type {ImmersiveUiThemeIconSearch} from "./contract"

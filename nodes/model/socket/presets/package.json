@@ -1,5 +1,5 @@
 {
-  "name": "@socket-values/presets",
+  "name": "@immersive-nodes-model-socket/presets",
   "label": "presets",
   "version": "0.0.0",
   "description": "Именованные цветовые и геометрические предустановки сокетов",
@@ -14,7 +14,7 @@
     "test": "bun test ./spec"
   },
   "dependencies": {
-    "@socket-values/kinds": "workspace:*",
-    "@socket-values/shapes": "workspace:*"
+    "@immersive-nodes-model-socket/kinds": "workspace:*",
+    "@immersive-nodes-model-socket/shapes": "workspace:*"
   }
 }

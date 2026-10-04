@@ -7,19 +7,19 @@
 import {CollectionActionButton} from "./src/action-button"
 
 import type {CollectionFieldMoveDirection} from "./contract/types.ts"
-import type {UiFieldsCollectionField as Contract} from "./contract"
-import IconButton from "@ui-buttons/icon-button"
-import arrowDownIcon from "@ui-themes-icons/arrow-down"
-import arrowUpIcon from "@ui-themes-icons/arrow-up"
-import minusIcon from "@ui-themes-icons/minus"
-import plusIcon from "@ui-themes-icons/plus"
-import List from "@ui-views/list"
-import collectionVisibleRowsHeight from "@ui-fields-collection-model/collection-visible-rows-height"
-import normalizeCollectionItems from "@ui-fields-collection-model/normalize-collection-items"
-import normalizeCollectionVisibleRows from "@ui-fields-collection-model/normalize-collection-visible-rows"
+import type {ImmersiveUiComponentFieldCollection as Contract} from "./contract"
+import IconButton from "@immersive-ui-component-button/icon"
+import arrowDownIcon from "@immersive-ui-theme-icon/arrow-down"
+import arrowUpIcon from "@immersive-ui-theme-icon/arrow-up"
+import minusIcon from "@immersive-ui-theme-icon/minus"
+import plusIcon from "@immersive-ui-theme-icon/plus"
+import List from "@immersive-ui-component-view/list"
+import collectionVisibleRowsHeight from "@immersive-ui-field-collection-model/visible-rows-height"
+import normalizeCollectionItems from "@immersive-ui-field-collection-model/normalize-items"
+import normalizeCollectionVisibleRows from "@immersive-ui-field-collection-model/normalize-visible-rows"
 
 
-export type {UiFieldsCollectionField} from "./contract"
+export type {ImmersiveUiComponentFieldCollection} from "./contract"
 
 export default function CollectionField(props: Contract.Input): Contract.Output {
   const items = normalizeCollectionItems(props.items, props.selectedId)

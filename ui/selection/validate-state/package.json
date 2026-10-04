@@ -1,5 +1,5 @@
 {
-  "name": "@ui-selection/validate-selection-state",
+  "name": "@immersive-ui-selection/validate-state",
   "label": "validateSelectionState",
   "version": "0.0.0",
   "description": "Проверка состояния выбора",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-selection/validate-selection-options": "workspace:*"
+    "@immersive-ui-selection/validate-options": "workspace:*"
   }
 }

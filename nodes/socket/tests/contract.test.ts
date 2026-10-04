@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, MouseEvent, type Element} from "@zavx0z/dom"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import SOCKET_KINDS from "@socket-values/kinds"
-import SOCKET_SHAPES from "@socket-values/shapes"
+import {createDocument, MouseEvent, type Element} from "@immersive/dom"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import SOCKET_KINDS from "@immersive-nodes-model-socket/kinds"
+import SOCKET_SHAPES from "@immersive-nodes-model-socket/shapes"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({

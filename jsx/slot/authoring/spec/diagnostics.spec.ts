@@ -3,7 +3,7 @@ import {afterAll, describe, expect, test} from "bun:test"
 import {mkdir, mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {API} from "typescript/unstable/async"
-import SlotAuthoring from "@jsx-slot/authoring"
+import SlotAuthoring from "@immersive-jsx-slot/authoring"
 
 const cases = [
   {name: "Пустой children у slot", source: 'export function Panel() { return <slot children={null} /> }', error: "атрибут children запрещён"},

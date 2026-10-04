@@ -1,7 +1,7 @@
-import type {} from "@zavx0z/space"
-import {createRoot, useFrame, useSpace} from "@zavx0z/browser"
-import {createRoot as createHostRoot} from "@zavx0z/browser/integration"
-import {useDocument, useLayoutEffect, useRef, useState} from "@zavx0z/component"
+import type {} from "@immersive/space"
+import {createRoot, useFrame, useSpace} from "@immersive/browser"
+import {createRoot as createHostRoot} from "@immersive/browser/integration"
+import {useDocument, useLayoutEffect, useRef, useState} from "@immersive/component"
 
 function Container() {
   return (

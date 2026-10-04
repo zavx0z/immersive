@@ -28,69 +28,69 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*",
-    "@nodes/layout": "workspace:*",
-    "@nodes/tree": "workspace:*",
-    "@nodes/parameters": "workspace:*",
-    "@nodes/sockets": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@nodes/node": "workspace:*",
-    "@zavx0z/jsx": "workspace:*",
-    "@ui-buttons/button": "workspace:*"
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*",
+    "@immersive-nodes/layout": "workspace:*",
+    "@immersive-nodes/tree": "workspace:*",
+    "@immersive-nodes/parameter": "workspace:*",
+    "@immersive-nodes/socket": "workspace:*",
+    "@immersive/template": "workspace:*",
+    "@immersive-ui/component": "workspace:*",
+    "@immersive-nodes/node": "workspace:*",
+    "@immersive/jsx": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@nodes/parameters": {
+    "@immersive-nodes/parameter": {
       "optional": true
     },
-    "@nodes/sockets": {
+    "@immersive-nodes/socket": {
       "optional": true
     },
-    "@zavx0z/component": {
+    "@immersive/component": {
       "optional": true
     },
-    "@zavx0z/dom": {
+    "@immersive/dom": {
       "optional": true
     },
-    "@nodes/layout": {
+    "@immersive-nodes/layout": {
       "optional": true
     },
-    "@nodes/tree": {
+    "@immersive-nodes/tree": {
       "optional": true
     },
-    "@zavx0z/template": {
+    "@immersive/template": {
       "optional": true
     },
-    "@zavx0z/ui": {
+    "@immersive-ui/component": {
       "optional": true
     },
-    "@nodes/node": {
+    "@immersive-nodes/node": {
       "optional": true
     }
   },
   "devDependencies": {
     "@immersive/markdown": "workspace:*",
-    "@jsx-compiler/bun": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@renderer/html": "workspace:*",
-    "@zavx0z/engine": "workspace:*",
-    "@zavx0z/webgpu": "workspace:*",
-    "@zavx0z/space": "workspace:*",
-    "@nodes/parameter-presentation": "workspace:*",
-    "@node-geometry/project": "workspace:*",
-    "@nodes-node/diagram": "workspace:*",
-    "@node-geometry/port-id": "workspace:*"
+    "@immersive-jsx-compiler/bun": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-renderer/html": "workspace:*",
+    "@immersive/engine": "workspace:*",
+    "@immersive/webgpu": "workspace:*",
+    "@immersive/space": "workspace:*",
+    "@immersive-nodes-projection-parameter/presentation": "workspace:*",
+    "@immersive-nodes-geometry-node/project": "workspace:*",
+    "@immersive-nodes-node/diagram": "workspace:*",
+    "@immersive-nodes-geometry-node/port-id": "workspace:*"
   },
   "dependencies": {
-    "@socket-values/kinds": "workspace:*",
-    "@socket-values/preset": "workspace:*",
-    "@socket-values/key": "workspace:*",
-    "@nodes/metadata": "workspace:*",
-    "@nodes/parameter-projection": "workspace:*",
-    "@nodes-node/parameter": "workspace:*",
-    "@nodes-node/content": "workspace:*",
-    "@nodes-node/diagram": "workspace:*",
-    "@node-geometry/port-id": "workspace:*"
+    "@immersive-nodes-model-socket/kinds": "workspace:*",
+    "@immersive-nodes-model-socket/preset": "workspace:*",
+    "@immersive-nodes-model-socket/key": "workspace:*",
+    "@immersive-tech-json/metadata": "workspace:*",
+    "@immersive-nodes-projection/parameter": "workspace:*",
+    "@immersive-nodes-node/parameter": "workspace:*",
+    "@immersive-nodes-node/content": "workspace:*",
+    "@immersive-nodes-node/diagram": "workspace:*",
+    "@immersive-nodes-geometry-node/port-id": "workspace:*"
   }
 }

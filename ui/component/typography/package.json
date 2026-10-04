@@ -1,5 +1,5 @@
 {
-  "name": "@ui/typography",
+  "name": "@immersive-ui-component/typography",
   "label": "Typography",
   "version": "0.0.0",
   "description": "Текст интерфейса с выбранным типографическим вариантом",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   }
 }

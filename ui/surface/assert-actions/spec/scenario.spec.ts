@@ -1,6 +1,6 @@
 /** assertSurfaceActions показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@ui-surfaces-chrome/assert-surface-actions"
+import operation from "@immersive-ui-surface/assert-actions"
 
 describe.each([{name: "Публичный вызов", props: {args: [[], "Действие"] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

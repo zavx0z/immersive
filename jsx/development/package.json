@@ -1,5 +1,5 @@
 {
-  "name": "@jsx/development",
+  "name": "@immersive-jsx/development",
   "label": "Отладочный JSX",
   "version": "0.0.0",
   "description": "Отладочный automatic JSX protocol",
@@ -10,7 +10,7 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@jsx-development/create": "workspace:*",
-    "@jsx-runtime/fragment": "workspace:*"
+    "@immersive-jsx-development/create": "workspace:*",
+    "@immersive-jsx-runtime/fragment": "workspace:*"
   }
 }

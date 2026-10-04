@@ -1,5 +1,5 @@
 {
-  "name": "@ui-themes-icons/image",
+  "name": "@immersive-ui-theme-icon/image",
   "label": "imageIcon",
   "version": "0.0.0",
   "description": "SVG-значок image в формате data URL",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-themes-icons/compose": "workspace:*"
+    "@immersive-ui-theme-icon/compose": "workspace:*"
   },
   "devDependencies": {
-    "@ui-themes/icons": "workspace:*"
+    "@immersive-ui-theme/icon": "workspace:*"
   }
 }

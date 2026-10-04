@@ -4,18 +4,18 @@
 
 @packageDocumentation
 */
-import type {UiFieldsCycleField as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldCycle as Contract} from "./contract"
 import {CycleOption} from "./src/helpers.tsx"
-import {useCallback} from "@zavx0z/component"
-import {useId} from "@zavx0z/component"
-import {useState} from "@zavx0z/component"
-import Button from "@ui-buttons/button"
-import chevronDownIcon from "@ui-themes-icons/chevron-down"
-import findSelectionOption from "@ui-selection/find-selection-option"
-import validateSelectionOptions from "@ui-selection/validate-selection-options"
+import {useCallback} from "@immersive/component"
+import {useId} from "@immersive/component"
+import {useState} from "@immersive/component"
+import Button from "@immersive-ui-component-button/basic"
+import chevronDownIcon from "@immersive-ui-theme-icon/chevron-down"
+import findSelectionOption from "@immersive-ui-selection/find-option"
+import validateSelectionOptions from "@immersive-ui-selection/validate-options"
 
 
-export type {UiFieldsCycleField} from "./contract"
+export type {ImmersiveUiComponentFieldCycle} from "./contract"
 
 export default function CycleField(props: Contract.Input): Contract.Output {
   if (typeof props.value !== "string") throw new TypeError("CycleField value must be a string")

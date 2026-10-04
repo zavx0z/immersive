@@ -1,5 +1,5 @@
 {
-  "name": "@socket-values/metrics",
+  "name": "@immersive-nodes-model-socket/metrics",
   "label": "metrics",
   "version": "0.0.0",
   "description": "Общие размеры сокета и строки в логических CSS-пикселях",

@@ -1,4 +1,4 @@
-import type {UiFieldsColorValueNormalizeColorValue} from "@ui-fields-color-value/normalize-color-value"
+import type {ImmersiveUiFieldColorValueNormalize} from "@immersive-ui-field-color-value/normalize"
 
 /** Цвет поля в нормализованном формате RGBA. */
-export type ColorPickerFieldValue = UiFieldsColorValueNormalizeColorValue.Output
+export type ColorPickerFieldValue = ImmersiveUiFieldColorValueNormalize.Output

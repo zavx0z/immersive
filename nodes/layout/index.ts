@@ -16,4 +16,4 @@ export {
   type FixedLayoutOutput,
 } from "./algorithm/fixed/index.ts"
 
-export type {NodesLayout} from "./contract"
+export type {ImmersiveNodesLayout} from "./contract"

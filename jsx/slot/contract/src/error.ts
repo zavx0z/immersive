@@ -1,4 +1,4 @@
-import JsxCompileError from "@jsx-compiler/error"
+import JsxCompileError from "@immersive-jsx-compiler/error"
 import type {Node} from "typescript/unstable/ast"
 
 /**

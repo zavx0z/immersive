@@ -1,5 +1,5 @@
 {
-  "name": "@ui-selection/validate-selection-options",
+  "name": "@immersive-ui-selection/validate-options",
   "label": "validateSelectionOptions",
   "version": "0.0.0",
   "description": "Проверка вариантов выбора",

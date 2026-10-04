@@ -1,5 +1,5 @@
 /** Общий результат числовых политик раскладки измеренного графа. */
-export declare namespace NodesLayout {
+export declare namespace ImmersiveNodesLayout {
   /** Направление, границы и абсолютные прямоугольники нод; маршруты и порты уточняет политика. */
   interface Output {
     readonly direction: "RIGHT" | "DOWN"

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-collection-field/layout",
+  "name": "@immersive-ui-field-layout/collection",
   "label": "collectionFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров collectionField",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-collection-model/normalize-collection-visible-rows": "workspace:*",
-    "@ui-fields-metrics/collection-field-height": "workspace:*"
+    "@immersive-ui-field-collection-model/normalize-visible-rows": "workspace:*",
+    "@immersive-ui-field-metric/collection-height": "workspace:*"
   }
 }

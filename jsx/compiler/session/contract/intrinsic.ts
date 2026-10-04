@@ -1,5 +1,5 @@
 import type {Child, DataAndAriaProperties, ElementTarget, PrimitiveProperties, Ref} from "../src/authoring-dom.ts"
-import type {EventProperties} from "@jsx/events"
+import type {EventProperties} from "@immersive-jsx/event"
 
 /**
 Авторские свойства intrinsic Element: изменяемые DOM-значения, события,

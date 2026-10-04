@@ -1,4 +1,4 @@
-import {useEffect, useState} from "@zavx0z/component"
+import {useEffect, useState} from "@immersive/component"
 
 type Row = Readonly<{id: string; label: string}>
 type RowProps = Readonly<{

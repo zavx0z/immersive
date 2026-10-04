@@ -1,23 +1,23 @@
 /** Настоящая авторская JSX-композиция для сравнения с модельной проекцией. */
-import Socket from "@nodes/sockets"
+import Socket from "@immersive-nodes/socket"
 import type {ParameterEndpoint} from "./parameter-endpoint"
-import TextParameter, {type NodesParametersText} from "@nodes-parameters/text"
-import NumberParameter, {type NodesParametersNumber} from "@nodes-parameters/number"
-import SliderParameter, {type NodesParametersSlider} from "@nodes-parameters/slider"
-import CheckboxParameter, {type NodesParametersCheckbox} from "@nodes-parameters/checkbox"
-import SwitchParameter, {type NodesParametersSwitch} from "@nodes-parameters/switch"
-import SelectParameter, {type NodesParametersSelect} from "@nodes-parameters/select"
-import CycleParameter, {type NodesParametersCycle} from "@nodes-parameters/cycle"
-import OptionGroupParameter, {type NodesParametersOptionGroup} from "@nodes-parameters/option-group"
-import ColorParameter, {type NodesParametersColor} from "@nodes-parameters/color"
-import VectorParameter, {type NodesParametersVector} from "@nodes-parameters/vector"
-import MatrixParameter, {type NodesParametersMatrix} from "@nodes-parameters/matrix"
-import PathParameter, {type NodesParametersPath} from "@nodes-parameters/path"
-import ReferenceParameter, {type NodesParametersReference} from "@nodes-parameters/reference"
-import CollectionParameter, {type NodesParametersCollection} from "@nodes-parameters/collection"
-import OutputParameter, {type NodesParametersOutput} from "@nodes-parameters/output"
+import TextParameter, {type ImmersiveNodesParameterText} from "@immersive-nodes-parameter/text"
+import NumberParameter, {type ImmersiveNodesParameterNumericNumber} from "@immersive-nodes-parameter-numeric/number"
+import SliderParameter, {type ImmersiveNodesParameterNumericSlider} from "@immersive-nodes-parameter-numeric/slider"
+import CheckboxParameter, {type ImmersiveNodesParameterBooleanCheckbox} from "@immersive-nodes-parameter-boolean/checkbox"
+import SwitchParameter, {type ImmersiveNodesParameterBooleanSwitch} from "@immersive-nodes-parameter-boolean/switch"
+import SelectParameter, {type ImmersiveNodesParameterChoiceSelect} from "@immersive-nodes-parameter-choice/select"
+import CycleParameter, {type ImmersiveNodesParameterChoiceCycle} from "@immersive-nodes-parameter-choice/cycle"
+import OptionGroupParameter, {type ImmersiveNodesParameterChoiceOptionGroup} from "@immersive-nodes-parameter-choice/option-group"
+import ColorParameter, {type ImmersiveNodesParameterCompositeColor} from "@immersive-nodes-parameter-composite/color"
+import VectorParameter, {type ImmersiveNodesParameterCompositeVector} from "@immersive-nodes-parameter-composite/vector"
+import MatrixParameter, {type ImmersiveNodesParameterCompositeMatrix} from "@immersive-nodes-parameter-composite/matrix"
+import PathParameter, {type ImmersiveNodesParameterPath} from "@immersive-nodes-parameter/path"
+import ReferenceParameter, {type ImmersiveNodesParameterReference} from "@immersive-nodes-parameter/reference"
+import CollectionParameter, {type ImmersiveNodesParameterCollection} from "@immersive-nodes-parameter/collection"
+import OutputParameter, {type ImmersiveNodesParameterOutput} from "@immersive-nodes-parameter/output"
 
-export function AuthoredText(props: NodesParametersText.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredText(props: ImmersiveNodesParameterText.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <TextParameter
     id={input.id}
@@ -70,7 +70,7 @@ export function AuthoredText(props: NodesParametersText.Input & Readonly<{socket
   </TextParameter>
 }
 
-export function AuthoredNumber(props: NodesParametersNumber.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredNumber(props: ImmersiveNodesParameterNumericNumber.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <NumberParameter
     id={input.id}
@@ -127,7 +127,7 @@ export function AuthoredNumber(props: NodesParametersNumber.Input & Readonly<{so
   </NumberParameter>
 }
 
-export function AuthoredSlider(props: NodesParametersSlider.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredSlider(props: ImmersiveNodesParameterNumericSlider.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <SliderParameter
     id={input.id}
@@ -181,7 +181,7 @@ export function AuthoredSlider(props: NodesParametersSlider.Input & Readonly<{so
   </SliderParameter>
 }
 
-export function AuthoredCheckbox(props: NodesParametersCheckbox.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredCheckbox(props: ImmersiveNodesParameterBooleanCheckbox.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <CheckboxParameter
     id={input.id}
@@ -231,7 +231,7 @@ export function AuthoredCheckbox(props: NodesParametersCheckbox.Input & Readonly
   </CheckboxParameter>
 }
 
-export function AuthoredSwitch(props: NodesParametersSwitch.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredSwitch(props: ImmersiveNodesParameterBooleanSwitch.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <SwitchParameter
     id={input.id}
@@ -281,7 +281,7 @@ export function AuthoredSwitch(props: NodesParametersSwitch.Input & Readonly<{so
   </SwitchParameter>
 }
 
-export function AuthoredSelect(props: NodesParametersSelect.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredSelect(props: ImmersiveNodesParameterChoiceSelect.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <SelectParameter
     id={input.id}
@@ -332,7 +332,7 @@ export function AuthoredSelect(props: NodesParametersSelect.Input & Readonly<{so
   </SelectParameter>
 }
 
-export function AuthoredCycle(props: NodesParametersCycle.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredCycle(props: ImmersiveNodesParameterChoiceCycle.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <CycleParameter
     id={input.id}
@@ -383,7 +383,7 @@ export function AuthoredCycle(props: NodesParametersCycle.Input & Readonly<{sock
   </CycleParameter>
 }
 
-export function AuthoredOptionGroup(props: NodesParametersOptionGroup.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredOptionGroup(props: ImmersiveNodesParameterChoiceOptionGroup.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <OptionGroupParameter
     id={input.id}
@@ -434,7 +434,7 @@ export function AuthoredOptionGroup(props: NodesParametersOptionGroup.Input & Re
   </OptionGroupParameter>
 }
 
-export function AuthoredColor(props: NodesParametersColor.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredColor(props: ImmersiveNodesParameterCompositeColor.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <ColorParameter
     id={input.id}
@@ -485,7 +485,7 @@ export function AuthoredColor(props: NodesParametersColor.Input & Readonly<{sock
   </ColorParameter>
 }
 
-export function AuthoredVector(props: NodesParametersVector.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredVector(props: ImmersiveNodesParameterCompositeVector.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <VectorParameter
     id={input.id}
@@ -540,7 +540,7 @@ export function AuthoredVector(props: NodesParametersVector.Input & Readonly<{so
   </VectorParameter>
 }
 
-export function AuthoredMatrix(props: NodesParametersMatrix.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredMatrix(props: ImmersiveNodesParameterCompositeMatrix.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <MatrixParameter
     id={input.id}
@@ -592,7 +592,7 @@ export function AuthoredMatrix(props: NodesParametersMatrix.Input & Readonly<{so
   </MatrixParameter>
 }
 
-export function AuthoredPath(props: NodesParametersPath.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredPath(props: ImmersiveNodesParameterPath.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <PathParameter
     id={input.id}
@@ -644,7 +644,7 @@ export function AuthoredPath(props: NodesParametersPath.Input & Readonly<{socket
   </PathParameter>
 }
 
-export function AuthoredReference(props: NodesParametersReference.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredReference(props: ImmersiveNodesParameterReference.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <ReferenceParameter
     id={input.id}
@@ -693,7 +693,7 @@ export function AuthoredReference(props: NodesParametersReference.Input & Readon
   </ReferenceParameter>
 }
 
-export function AuthoredCollection(props: NodesParametersCollection.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredCollection(props: ImmersiveNodesParameterCollection.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <CollectionParameter
     id={input.id}
@@ -744,7 +744,7 @@ export function AuthoredCollection(props: NodesParametersCollection.Input & Read
   </CollectionParameter>
 }
 
-export function AuthoredOutput(props: NodesParametersOutput.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
+export function AuthoredOutput(props: ImmersiveNodesParameterOutput.Input & Readonly<{sockets: readonly ParameterEndpoint[]}>) {
   const {sockets, ...input} = props
   return <OutputParameter
     id={input.id}

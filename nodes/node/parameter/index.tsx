@@ -3,31 +3,31 @@
 
 @packageDocumentation
 */
-import socketKey from "@socket-values/key"
+import socketKey from "@immersive-nodes-model-socket/key"
 
-import socketMetrics from "@socket-values/metrics"
+import socketMetrics from "@immersive-nodes-model-socket/metrics"
 const {NODE_BORDER_WIDTH} = socketMetrics
-import {hasSlot} from "@zavx0z/component/slot-presence"
-import Button from "@ui-buttons/button"
-import IconButton from "@ui-buttons/icon-button"
-import chevronDownIcon from "@ui-themes-icons/chevron-down"
-import chevronRightIcon from "@ui-themes-icons/chevron-right"
-import Parameter from "@nodes/parameter-projection"
-import type {NodesParameterProjection} from "@nodes/parameter-projection"
-type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]
-import {metadataBoolean, metadataString} from "@nodes/metadata"
-import parameterSpacingBefore from "@node-geometry/spacing"
-import Socket from "@nodes/sockets"
-import resolveSocketKind from "@socket-values/resolve-kind"
-import resolveSocketShape from "@socket-values/resolve-shape"
-import nodeMetrics from "@node-geometry/metrics"
+import {hasSlot} from "@immersive/component/slot-presence"
+import Button from "@immersive-ui-component-button/basic"
+import IconButton from "@immersive-ui-component-button/icon"
+import chevronDownIcon from "@immersive-ui-theme-icon/chevron-down"
+import chevronRightIcon from "@immersive-ui-theme-icon/chevron-right"
+import Parameter from "@immersive-nodes-projection/parameter"
+import type {ImmersiveNodesProjectionParameter} from "@immersive-nodes-projection/parameter"
+type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+import {metadataBoolean, metadataString} from "@immersive-tech-json/metadata"
+import parameterSpacingBefore from "@immersive-nodes-geometry-node/spacing"
+import Socket from "@immersive-nodes/socket"
+import resolveSocketKind from "@immersive-nodes-model-socket/resolve-kind"
+import resolveSocketShape from "@immersive-nodes-model-socket/resolve-shape"
+import nodeMetrics from "@immersive-nodes-geometry-node/metrics"
 const {NODE_BODY_PADDING_TOP, NODE_BODY_PADDING_BOTTOM, NODE_ROW_GAP} = nodeMetrics
 import {prepareParameterNode} from "./src/prepare.ts"
-import type {NodesNodeParameter as Contract} from "./contract"
-import planProjectedNodeGeometry from "@node-geometry/project"
+import type {ImmersiveNodesNodeParameter as Contract} from "./contract"
+import planProjectedNodeGeometry from "@immersive-nodes-geometry-node/project"
 const {NODE_HEADER_HEIGHT, NODE_MINIMUM_WIDTH} = nodeMetrics
 
-export type {NodesNodeParameter} from "./contract"
+export type {ImmersiveNodesNodeParameter} from "./contract"
 
 /** Объединяет корпус, шапку, действия, параметры и сокеты. Ширина задаётся CSS, тень принадлежит общей теме или составной ContentNode. */
 export default function ParameterNode(props: Contract.Input): Contract.Output {

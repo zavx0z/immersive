@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/number-fill-percentage",
+  "name": "@immersive-ui-field-number-value/fill-percentage",
   "label": "numberFillPercentage",
   "version": "0.0.0",
   "description": "Обработка number-fill-percentage",

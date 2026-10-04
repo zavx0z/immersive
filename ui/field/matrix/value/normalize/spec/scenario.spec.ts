@@ -1,6 +1,6 @@
 /** normalizeMatrixValue показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@ui-fields-matrix-value/normalize-matrix-value"
+import operation from "@immersive-ui-field-matrix-value/normalize"
 
 describe.each([{name: "Публичный вызов", props: {args: [[[1, 0], [0, 1]], 1] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

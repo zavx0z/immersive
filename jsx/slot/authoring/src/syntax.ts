@@ -1,8 +1,8 @@
 import type {Expression, FunctionDeclaration, JsxChild, JsxElement, JsxSelfClosingElement, Node, SourceFile} from "typescript/unstable/ast"
 import {skipOuterExpressions} from "typescript/unstable/ast"
 import {isArrowFunction, isBlock, isCallExpression, isConditionalExpression, isFunctionDeclaration, isIdentifier, isJsxAttribute, isJsxElement, isJsxExpression, isJsxSelfClosingElement, isJsxSpreadAttribute, isNullLiteral, isPropertyAccessExpression, isStringLiteral} from "typescript/unstable/ast/is"
-import planSlots from "@jsx-slot/plan"
-import JsxCompileError from "@jsx-compiler/error"
+import planSlots from "@immersive-jsx-slot/plan"
+import JsxCompileError from "@immersive-jsx-compiler/error"
 
 /** Читает буквальное имя назначения или точки вставки без вычисления авторского кода. */
 export function slotAttribute(

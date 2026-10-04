@@ -1,6 +1,6 @@
 # DOM
 
-`@zavx0z/dom` — семантическая модель документа Immersive. Пакет хранит элементы,
+`@immersive/dom` — семантическая модель документа Immersive. Пакет хранит элементы,
 текст, атрибуты, отношения дерева и состояние взаимодействия, с которыми
 работают компоненты, Renderer и Browser.
 
@@ -20,9 +20,9 @@ DOM не вычисляет CSS-раскладку и не рисует в GPU. 
 
 ## Публичные точки входа
 
-Основной импорт — `@zavx0z/dom`: Document, элементы, события и работа с деревом.
+Основной импорт — `@immersive/dom`: Document, элементы, события и работа с деревом.
 Отдельные публичные пути перечислены в `package.json#exports`, включая
-`@zavx0z/dom/display`, `@zavx0z/dom/range` и `@zavx0z/dom/selection`.
+`@immersive/dom/display`, `@immersive/dom/range` и `@immersive/dom/selection`.
 
 Display является элементом этого документа. Его физические размеры задаются
 атрибутами, разрешение — CSS, а вычисленные параметры публикуются платформой.
@@ -52,7 +52,7 @@ const height = rect.height
 `visibility:hidden` сохраняет геометрию. Clipping не обрезает возвращаемую рамку.
 
 `DOMRect`, `DOMRectReadOnly` и `DOMRectInit` доступны из основного импорта.
-`@zavx0z/dom/geometry` содержит также подключение поставщика геометрии для
+`@immersive/dom/geometry` содержит также подключение поставщика геометрии для
 Renderer: один активный поставщик на projection root, освобождаемый при dispose.
 При вложенных регистрациях используется ближайший предок.
 
@@ -70,7 +70,7 @@ CSS transforms, SVG-геометрию или методы `getClientRects`/`off
 
 `Element.getLayoutRect(relativeTo?)` и `readElementLayoutRect` возвращают
 дробный `DOMRectReadOnly | null` до CSS transforms и Browser projection.
-`observeElementLayout` из `@zavx0z/dom/geometry` доставляет изменение рамки
+`observeElementLayout` из `@immersive/dom/geometry` доставляет изменение рамки
 перед кадром; подписку можно установить в первом `useLayoutEffect`, когда
 provider ещё не готов. Browser завершает вызванные callback обновления
 компонентов до GPU submission. `visibility:hidden` сохраняет измеряемый бокс.

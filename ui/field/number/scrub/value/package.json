@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-scrub/scrub-number-value",
+  "name": "@immersive-ui-field-number-scrub/value",
   "label": "scrubNumberValue",
   "version": "0.0.0",
   "description": "Изменение при перетаскивании числового значения",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-number-scrub/resolve-number-drag-range": "workspace:*",
-    "@ui-fields-number-scrub/scrub-number-raw-value": "workspace:*",
-    "@ui-fields-number-scrub/snap-number-value": "workspace:*",
-    "@ui-fields-number-value/normalize-number-value": "workspace:*"
+    "@immersive-ui-field-number-scrub/range": "workspace:*",
+    "@immersive-ui-field-number-scrub/raw": "workspace:*",
+    "@immersive-ui-field-number-scrub/snap": "workspace:*",
+    "@immersive-ui-field-number-value/normalize": "workspace:*"
   }
 }

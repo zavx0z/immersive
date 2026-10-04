@@ -26,8 +26,8 @@ import {
   TextMaterial,
   type PresentationClipShape,
   type TrueTypeFont,
-} from "@zavx0z/engine"
-import {isRendererOwnedFrame, readCanonicalRenderFrameChanges} from "@renderer/html/frame-changes"
+} from "@immersive/engine"
+import {isRendererOwnedFrame, readCanonicalRenderFrameChanges} from "@immersive-renderer/html/frame-changes"
 import {TextureLoader} from "./texture-loader.ts"
 import {PaintVisibilityIndex, type IndexedPaintBounds} from "./paint-visibility-index.ts"
 import {RetainedPlaneGeometryPool} from "./retained-plane-geometry-pool.ts"
@@ -43,7 +43,7 @@ import type {
   RenderTextMeasurer,
   RenderTransform,
   TextDisplayItem,
-} from "@renderer/html"
+} from "@immersive-renderer/html"
 
 export type RendererFontFace = Readonly<{
   family: string
@@ -454,7 +454,7 @@ export class RendererWebGpuBackend {
       initialSegmentCapacity: 0,
       maxSegmentCapacity: maxPathSegments,
     })
-    this.root.name = "@zavx0z/webgpu"
+    this.root.name = "@immersive/webgpu"
     this.root.renderLayer = "ui"
   }
 
@@ -3282,7 +3282,7 @@ function createRetainedClipSpace(root: Object3D): RetainedClipSpace {
   const coordinateSpace = new Object3D()
   const localMatrix = new Matrix4()
   const worldMatrix = new Matrix4()
-  coordinateSpace.name = "@zavx0z/webgpu:clip-space"
+  coordinateSpace.name = "@immersive/webgpu:clip-space"
   Object.defineProperty(coordinateSpace, "matrixWorld", {
     configurable: false,
     enumerable: true,

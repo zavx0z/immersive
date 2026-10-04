@@ -1,6 +1,6 @@
-import type {UiThemesIcons} from "@ui-themes/icons/contract"
+import type {ImmersiveUiThemeIcon} from "@immersive-ui-theme/icon/contract"
 
 /** SVG-значок collapse-all в формате data URL. */
-export declare namespace UiThemesIconsCollapseAll {
-  type Output = UiThemesIcons.Output
+export declare namespace ImmersiveUiThemeIconCollapseAll {
+  type Output = ImmersiveUiThemeIcon.Output
 }

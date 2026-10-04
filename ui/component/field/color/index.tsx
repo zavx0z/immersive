@@ -4,16 +4,16 @@
 
 @packageDocumentation
 */
-import type {UiFieldsColorField as Contract} from "./contract"
-import {useCallback} from "@zavx0z/component"
-import {useState} from "@zavx0z/component"
-import Button from "@ui-buttons/button"
-import formatColorValue from "@ui-fields-color-value/format-color-value"
-import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
-import ColorPickerField from "@ui-fields/color-picker-field"
+import type {ImmersiveUiComponentFieldColor as Contract} from "./contract"
+import {useCallback} from "@immersive/component"
+import {useState} from "@immersive/component"
+import Button from "@immersive-ui-component-button/basic"
+import formatColorValue from "@immersive-ui-field-color-value/format"
+import normalizeColorValue from "@immersive-ui-field-color-value/normalize"
+import ColorPickerField from "@immersive-ui-component-field/color-picker"
 
 
-export type {UiFieldsColorField} from "./contract"
+export type {ImmersiveUiComponentFieldColor} from "./contract"
 
 export default function ColorField(props: Contract.Input): Contract.Output {
   if (!props.value || typeof props.value !== "object") throw new TypeError("ColorField value must be an object")

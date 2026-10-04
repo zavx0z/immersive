@@ -1,5 +1,5 @@
 import {resolveTransform, validateVector, type TransformProps, type SpatialVector} from "../src/props.ts"
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {
   XRLightElement,
   XRObjectProjectionFactory,

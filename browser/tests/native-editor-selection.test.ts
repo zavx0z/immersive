@@ -1,27 +1,27 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {component, createRoot} from "@zavx0z/component"
-import {createDocument, type HTMLElement, textOffsetAtPosition} from "@zavx0z/dom"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/engine"
-import type {Renderer} from "@zavx0z/webgpu"
-import {caretPositionAtPoint} from "@renderer/html"
-import CodeEditorModel from "@ui/code-editor-model"
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
-type CodeEditorProps = UiViewsCodeEditor.Input
+import {component, createRoot} from "@immersive/component"
+import {createDocument, type HTMLElement, textOffsetAtPosition} from "@immersive/dom"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
+import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@immersive/engine"
+import type {Renderer} from "@immersive/webgpu"
+import {caretPositionAtPoint} from "@immersive-renderer/html"
+import CodeEditorModel from "@immersive-tech/text-editor"
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
 import {createDocumentNativeInputHostWithSeams} from "../src/native-input-host.ts"
 import {createDocumentSpaceRuntimeWithSeams} from "../src/space-runtime.ts"
 import {createDocumentPlaneRuntime} from "../src/plane-runtime.ts"
 import {createDocumentOverlayRuntime} from "../src/overlay-runtime.ts"
 import {createRootWithSeams} from "../create-root.ts"
 import {inspectRoot} from "../diagnostics.ts"
-import type {DisplayElement} from "@zavx0z/dom/display"
+import type {DisplayElement} from "@immersive/dom/display"
 
 const workspace = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui"), resolve(workspace, "space"), import.meta.dir]}))
-const {default: CodeEditor} = await import("@ui-views/code-editor")
-const {default: Editor} = await import("@ui-widgets/editor")
+const {default: CodeEditor} = await import("@immersive-ui-component-view/code-editor")
+const {default: Editor} = await import("@immersive-ui-component-widget/editor")
 const {NativeEditorSelectionFixture} = await import("./native-editor-selection.fixture.tsx")
 
 class NativeProxy extends EventTarget {
@@ -172,7 +172,7 @@ test.each([
     expect(captures.size).toBe(0)
     let modifierEvent: unknown = null
     code.addEventListener("pointerdown", event => {
-      const pointer = event as import("@zavx0z/dom").PointerEvent
+      const pointer = event as import("@immersive/dom").PointerEvent
       modifierEvent = {ctrlKey: pointer.ctrlKey, altKey: pointer.altKey, shiftKey: pointer.shiftKey, metaKey: pointer.metaKey}
     })
     pointer("pointerdown", origin.x + 20, origin.y, {ctrlKey: true, altKey: true, shiftKey: true, metaKey: true})

@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-node/diagram",
+  "name": "@immersive-nodes-node/diagram",
   "label": "DiagramNode",
   "version": "0.0.0",
   "description": "Показывает описание ноды диаграммы внутри выбранной формы",
@@ -10,15 +10,15 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@ui-surfaces/pane": "workspace:*",
-    "@ui/typography": "workspace:*"
+    "@immersive-ui-component-surface/pane": "workspace:*",
+    "@immersive-ui-component/typography": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/node": "workspace:*",
-    "@nodes/layout": "workspace:*",
+    "@immersive-nodes/node": "workspace:*",
+    "@immersive-nodes/layout": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@node-geometry/project": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-nodes-geometry-node/project": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

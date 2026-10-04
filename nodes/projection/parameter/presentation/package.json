@@ -1,5 +1,5 @@
 {
-  "name": "@nodes/parameter-presentation",
+  "name": "@immersive-nodes-projection-parameter/presentation",
   "label": "Представление Parameter",
   "version": "0.0.0",
   "description": "Определяет вид и значения представления снимка Parameter без JSX и Store",
@@ -10,15 +10,15 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@nodes/metadata": "workspace:*"
+    "@immersive-tech-json/metadata": "workspace:*"
   },
   "devDependencies": {
-    "@node-values/own": "workspace:*",
-    "@nodes/parameter-store": "workspace:*",
-    "@ui-fields/collection-field": "workspace:*",
-    "@ui-fields/color-field": "workspace:*",
-    "@ui-fields/reference-field": "workspace:*",
-    "@ui-fields/select-field": "workspace:*"
+    "@immersive-tech-json-value/own": "workspace:*",
+    "@immersive-nodes-model-parameter/store": "workspace:*",
+    "@immersive-ui-component-field/collection": "workspace:*",
+    "@immersive-ui-component-field/color": "workspace:*",
+    "@immersive-ui-component-field/reference": "workspace:*",
+    "@immersive-ui-component-field/select": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",

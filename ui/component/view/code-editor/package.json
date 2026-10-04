@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views/code-editor",
+  "name": "@immersive-ui-component-view/code-editor",
   "label": "CodeEditor",
   "version": "0.0.0",
   "description": "Редактор исходного текста с подсветкой, выделением и общей моделью редактирования",
@@ -15,20 +15,20 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-views-code-editor/highlighter": "workspace:*",
-    "@ui-views-code-editor/validate": "workspace:*",
-    "@ui-views-code-editor/view-model": "workspace:*",
-    "@ui/badge": "workspace:*",
-    "@ui/code-editor-model": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-view-code-editor/highlighter": "workspace:*",
+    "@immersive-ui-component-view-code-editor/validate": "workspace:*",
+    "@immersive-ui-component-view-code-editor/view-model": "workspace:*",
+    "@immersive-ui-component/badge": "workspace:*",
+    "@immersive-tech/text-editor": "workspace:*",
     "@zavx0z/highlighter": "^0.1.0"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/views": "workspace:*"
+    "@immersive-ui-component/view": "workspace:*"
   }
 }

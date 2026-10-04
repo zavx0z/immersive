@@ -1,15 +1,15 @@
-import { Object3D } from "@zavx0z/engine"
-import { Mesh } from "@zavx0z/engine"
-import { InstancedMesh } from "@zavx0z/engine"
-import {InstancedRoundedRect} from "@zavx0z/engine"
-import {InstancedStrokedPath} from "@zavx0z/engine"
-import { LineSegments } from "@zavx0z/engine"
-import { Text } from "@zavx0z/engine"
-import { Light } from "@zavx0z/engine"
-import {LineGlowMaterial} from "@zavx0z/engine"
-import { SkinnedMesh } from "@zavx0z/engine"
-import { WireframeInstancedMesh } from "@zavx0z/engine";
-import { Matrix4, Frustum, Sphere, Vector3 } from "@zavx0z/engine";
+import { Object3D } from "@immersive/engine"
+import { Mesh } from "@immersive/engine"
+import { InstancedMesh } from "@immersive/engine"
+import {InstancedRoundedRect} from "@immersive/engine"
+import {InstancedStrokedPath} from "@immersive/engine"
+import { LineSegments } from "@immersive/engine"
+import { Text } from "@immersive/engine"
+import { Light } from "@immersive/engine"
+import {LineGlowMaterial} from "@immersive/engine"
+import { SkinnedMesh } from "@immersive/engine"
+import { WireframeInstancedMesh } from "@immersive/engine";
+import { Matrix4, Frustum, Sphere, Vector3 } from "@immersive/engine";
 
 const _sphere = new Sphere();
 

@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {UiSurfacesChromeOwner as Contract} from "./contract"
+import type {ImmersiveUiComponentSurfaceChromeOwner as Contract} from "./contract"
 
-export type {UiSurfacesChromeOwner} from "./contract"
+export type {ImmersiveUiComponentSurfaceChromeOwner} from "./contract"
 
 
 export default function SurfaceOwner(props: Contract.Input): Contract.Output {

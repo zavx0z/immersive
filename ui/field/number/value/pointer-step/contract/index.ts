@@ -1,8 +1,8 @@
-import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
-type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
+import type {ImmersiveUiFieldNumberValueNormalize} from "@immersive-ui-field-number-value/normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 
 /** Выбирает допустимый шаг числового указателя, используя 0.1 при отсутствии корректного шага. */
-export declare namespace UiFieldsNumberValueNumberPointerStep {
+export declare namespace ImmersiveUiFieldNumberValuePointerStep {
   /** Аргументы публичной операции numberPointerStep; порядок сохраняет её форму вызова. */
   type Input = readonly [
     options: NumberValueOptions

@@ -1,4 +1,4 @@
-import {PlaneGeometry} from "@zavx0z/engine"
+import {PlaneGeometry} from "@immersive/engine"
 
 type RetainedPlane = {
   key: string

@@ -28,45 +28,45 @@
     "markdown-it": "^15.0.1",
     "mermaid": "^11.17.2",
     "parse5": "^8.0.1",
-    "@nodes-node/diagram": "workspace:*"
+    "@immersive-nodes-node/diagram": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@nodes/node": "workspace:*",
-    "@nodes/layout": "workspace:*",
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*",
+    "@immersive/template": "workspace:*",
+    "@immersive-ui/component": "workspace:*",
+    "@immersive-nodes/node": "workspace:*",
+    "@immersive-nodes/layout": "workspace:*",
     "@immersive/nodes": "workspace:*",
-    "@zavx0z/jsx": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@ui/divider": "workspace:*",
-    "@ui-views/code-editor": "workspace:*"
+    "@immersive/jsx": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component/divider": "workspace:*",
+    "@immersive-ui-component-view/code-editor": "workspace:*"
   },
   "devDependencies": {
-    "@renderer/html": "workspace:*",
+    "@immersive-renderer/html": "workspace:*",
     "@zavx0z/highlighter": "^0.1.0",
-    "@jsx-compiler/bun": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@node-geometry/project": "workspace:*"
+    "@immersive-jsx-compiler/bun": "workspace:*",
+    "@immersive-ui/component": "workspace:*",
+    "@immersive-nodes-geometry-node/project": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@zavx0z/component": {
+    "@immersive/component": {
       "optional": true
     },
-    "@zavx0z/dom": {
+    "@immersive/dom": {
       "optional": true
     },
-    "@zavx0z/template": {
+    "@immersive/template": {
       "optional": true
     },
-    "@zavx0z/ui": {
+    "@immersive-ui/component": {
       "optional": true
     },
-    "@nodes/node": {
+    "@immersive-nodes/node": {
       "optional": true
     },
-    "@nodes/layout": {
+    "@immersive-nodes/layout": {
       "optional": true
     },
     "@immersive/nodes": {

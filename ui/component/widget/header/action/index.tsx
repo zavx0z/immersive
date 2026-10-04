@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {UiWidgetsHeaderAction as Contract} from "./contract"
-import Badge from "@ui/badge"
-import Button from "@ui-buttons/button"
-import Divider from "@ui/divider"
+import type {ImmersiveUiComponentWidgetHeaderAction as Contract} from "./contract"
+import Badge from "@immersive-ui-component/badge"
+import Button from "@immersive-ui-component-button/basic"
+import Divider from "@immersive-ui-component/divider"
 
 export default function WidgetActionButton(props: Contract.Input): Contract.Output {
   const action = props.action
@@ -59,4 +59,4 @@ export default function WidgetActionButton(props: Contract.Input): Contract.Outp
   </div>
 }
 
-export type {UiWidgetsHeaderAction} from "./contract"
+export type {ImmersiveUiComponentWidgetHeaderAction} from "./contract"

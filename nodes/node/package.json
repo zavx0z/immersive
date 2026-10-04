@@ -1,5 +1,5 @@
 {
-  "name": "@nodes/node",
+  "name": "@immersive-nodes/node",
   "label": "Ноды",
   "version": "0.0.0",
   "description": "Представления нод с общим протоколом адреса, выбора, видимости и активации",
@@ -11,27 +11,27 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@nodes-node/diagram": "workspace:*",
-    "@nodes-node/parameter": "workspace:*",
-    "@nodes-node/content": "workspace:*"
+    "@immersive-nodes-node/diagram": "workspace:*",
+    "@immersive-nodes-node/parameter": "workspace:*",
+    "@immersive-nodes-node/content": "workspace:*"
   },
   "devDependencies": {
-    "@jsx-compiler/session": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/bun": "workspace:*",
-    "@zavx0z/dom": "workspace:*",
-    "@zavx0z/component": "workspace:*",
-    "@renderer/html": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@node-geometry/plan": "workspace:*",
-    "@node-geometry/metrics": "workspace:*",
-    "@ui/typography": "workspace:*",
-    "@node-geometry/project": "workspace:*",
-    "@socket-values/key": "workspace:*",
-    "@nodes/tree": "workspace:*",
-    "@nodes/parameter-presentation": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@node-geometry/port-id": "workspace:*"
+    "@immersive-jsx-compiler/bun": "workspace:*",
+    "@immersive/dom": "workspace:*",
+    "@immersive/component": "workspace:*",
+    "@immersive-renderer/html": "workspace:*",
+    "@immersive/template": "workspace:*",
+    "@immersive-nodes-geometry-node/plan": "workspace:*",
+    "@immersive-nodes-geometry-node/metrics": "workspace:*",
+    "@immersive-ui-component/typography": "workspace:*",
+    "@immersive-nodes-geometry-node/project": "workspace:*",
+    "@immersive-nodes-model-socket/key": "workspace:*",
+    "@immersive-nodes/tree": "workspace:*",
+    "@immersive-nodes-projection-parameter/presentation": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-nodes-geometry-node/port-id": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec ./tests",

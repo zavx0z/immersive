@@ -1,5 +1,5 @@
 {
-  "name": "@ui-widgets-header/action",
+  "name": "@immersive-ui-component-widget-header/action",
   "label": "WidgetActionButton",
   "version": "0.0.0",
   "description": "Действие заголовка виджета с необязательной меткой состояния",
@@ -15,11 +15,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-widgets/header": "workspace:*",
-    "@ui/badge": "workspace:*",
-    "@ui/divider": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-component-widget/header": "workspace:*",
+    "@immersive-ui-component/badge": "workspace:*",
+    "@immersive-ui-component/divider": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*"

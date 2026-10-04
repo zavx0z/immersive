@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberValueNormalizeNumberValue as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueNormalize as Contract} from "./contract"
 import type {NumberValueOptions} from "./contract/types"
-import finiteBound from "@ui-fields-number-value/finite-bound"
-import roundedNumber from "@ui-fields-number-value/rounded-number"
-import validNumberStep from "@ui-fields-number-value/valid-number-step"
+import finiteBound from "@immersive-ui-field-number-value/finite-bound"
+import roundedNumber from "@immersive-ui-field-number-value/round"
+import validNumberStep from "@immersive-ui-field-number-value/valid-step"
 
 export default function normalizeNumberValue(
   value: Contract.Input[0],
@@ -26,4 +26,4 @@ export default function normalizeNumberValue(
   return roundedNumber(Math.min(maximum, Math.max(minimum, stepped)))
 }
 
-export type {UiFieldsNumberValueNormalizeNumberValue} from "./contract"
+export type {ImmersiveUiFieldNumberValueNormalize} from "./contract"

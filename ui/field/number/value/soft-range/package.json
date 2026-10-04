@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/resolve-number-soft-range",
+  "name": "@immersive-ui-field-number-value/soft-range",
   "label": "resolveNumberSoftRange",
   "version": "0.0.0",
   "description": "Определение мягкого числового диапазона",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-number-value/finite-bound": "workspace:*",
-    "@ui-fields-number-value/normalize-number-value": "workspace:*",
-    "@ui-fields-number-value/number-pointer-adaptive-span": "workspace:*",
-    "@ui-fields-number-value/number-pointer-step": "workspace:*"
+    "@immersive-ui-field-number-value/finite-bound": "workspace:*",
+    "@immersive-ui-field-number-value/normalize": "workspace:*",
+    "@immersive-ui-field-number-value/pointer-adaptive-span": "workspace:*",
+    "@immersive-ui-field-number-value/pointer-step": "workspace:*"
   }
 }

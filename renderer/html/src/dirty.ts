@@ -1,4 +1,4 @@
-import type { Node } from "@zavx0z/dom"
+import type { Node } from "@immersive/dom"
 
 export class DirtyTracker {
   readonly #root: Node

@@ -1,15 +1,15 @@
-import type {UiWidgets} from "@ui/widgets/contract"
-import type {UiTerminalModel} from "@ui/terminal-model"
-type TerminalLine = UiTerminalModel.Output["snapshot"]["lines"][number]
-import type TerminalModel from "@ui/terminal-model"
+import type {ImmersiveUiComponentWidget} from "@immersive-ui-component/widget/contract"
+import type {ImmersiveTechTerminal} from "@immersive-tech/terminal"
+type TerminalLine = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]
+import type TerminalModel from "@immersive-tech/terminal"
 import type {TerminalHandle} from "./types.ts"
-import type {UiWidgetsHeader} from "@ui-widgets/header"
-type WidgetHeaderProps = UiWidgetsHeader.Input
+import type {ImmersiveUiComponentWidgetHeader} from "@immersive-ui-component-widget/header"
+type WidgetHeaderProps = ImmersiveUiComponentWidgetHeader.Input
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace UiWidgetsTerminal {
+export declare namespace ImmersiveUiComponentWidgetTerminal {
   /**
   Входные данные Terminal.
   */
@@ -31,5 +31,5 @@ export declare namespace UiWidgetsTerminal {
     style?: CssStyle | undefined
   }>
 
-  type Output = UiWidgets.Output & JSX.Element
+  type Output = ImmersiveUiComponentWidget.Output & JSX.Element
 }

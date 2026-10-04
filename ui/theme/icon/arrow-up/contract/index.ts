@@ -1,6 +1,6 @@
-import type {UiThemesIcons} from "@ui-themes/icons/contract"
+import type {ImmersiveUiThemeIcon} from "@immersive-ui-theme/icon/contract"
 
 /** SVG-значок arrow-up в формате data URL. */
-export declare namespace UiThemesIconsArrowUp {
-  type Output = UiThemesIcons.Output
+export declare namespace ImmersiveUiThemeIconArrowUp {
+  type Output = ImmersiveUiThemeIcon.Output
 }

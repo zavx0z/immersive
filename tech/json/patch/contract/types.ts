@@ -1,5 +1,5 @@
-import type {NodeValuesOwn} from "@node-values/own"
-type NodeJsonValue = NodeValuesOwn.Input[0]
+import type {ImmersiveTechJsonValueOwn} from "@immersive-tech-json-value/own"
+type NodeJsonValue = ImmersiveTechJsonValueOwn.Input[0]
 
 /** Поддерживаемые изменения и проверки одной части JSON-документа. */
 export type Operation =

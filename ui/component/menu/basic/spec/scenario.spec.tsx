@@ -1,7 +1,7 @@
 /** Menu показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import Menu from "@ui-menus/menu"
+import Menu from "@immersive-ui-component-menu/basic"
 
 describe.each([{name: "Основное представление", props: {open: true, x: 0, y: 0, items: [{key: "a", label: "Действие", onSelect() {}}], onClose() {}}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

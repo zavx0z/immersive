@@ -1,7 +1,7 @@
-import {Object3D} from "@zavx0z/engine"
-import {ViewPoint} from "@zavx0z/engine"
-import {Space} from "@zavx0z/engine"
-import {SkinnedMesh} from "@zavx0z/engine"
+import {Object3D} from "@immersive/engine"
+import {ViewPoint} from "@immersive/engine"
+import {Space} from "@immersive/engine"
+import {SkinnedMesh} from "@immersive/engine"
 import type {RenderItem} from "./utils/render-list"
 
 export const renderCompositionBackgroundShader = /* wgsl */ `

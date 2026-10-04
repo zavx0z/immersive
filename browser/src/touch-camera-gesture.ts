@@ -1,4 +1,4 @@
-import type {ViewPoint} from "@zavx0z/engine"
+import type {ViewPoint} from "@immersive/engine"
 
 export type TouchCameraPoint = Readonly<{
   pointerId: number

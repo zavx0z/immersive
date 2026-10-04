@@ -1,5 +1,5 @@
-import type {LayoutResult} from "@nodes/layout/types"
-import type {NodeTreeSnapshot} from "@nodes/tree"
+import type {LayoutResult} from "@immersive-nodes/layout/types"
+import type {NodeTreeSnapshot} from "@immersive-nodes/tree"
 import {nodeTreeLayoutBrand, type NodeTreeLayout, type NodeTreeStore} from "../node-tree/contracts.ts"
 import {createNodeGeometryIndex} from "./geometry.ts"
 import {registerNodeTreeLayout} from "./layout-state.ts"

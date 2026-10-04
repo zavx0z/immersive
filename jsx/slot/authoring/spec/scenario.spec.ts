@@ -2,7 +2,7 @@ import {afterAll, describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {API} from "typescript/unstable/async"
 import {isFunctionDeclaration} from "typescript/unstable/ast/is"
-import SlotAuthoring from "@jsx-slot/authoring"
+import SlotAuthoring from "@immersive-jsx-slot/authoring"
 
 describe.each([
   {name: "Безымянная область", file: "default.tsx", expected: [""]},

@@ -1,5 +1,5 @@
-import type {JSX} from "@jsx-compiler/session"
-import type {Ref} from "@zavx0z/component"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {Ref} from "@immersive/component"
 import type {
   XRAnimationElement,
   XRAnimationProjectionFactory,
@@ -93,7 +93,7 @@ export type XRMaterialIntrinsicProperties = Readonly<{
   ref?: SpaceRef<XRMaterialElement> | null | undefined
 }>
 
-declare module "@zavx0z/dom" {
+declare module "@immersive/dom" {
   interface HTMLElementTagNameMap {
     "xr-asset": XRAssetElement
     "xr-group": XRGroupElement
@@ -108,7 +108,7 @@ declare module "@zavx0z/dom" {
   }
 }
 
-declare module "@jsx-compiler/session" {
+declare module "@immersive-jsx-compiler/session" {
   namespace JSX {
     interface IntrinsicElements {
       "xr-asset": XRAssetIntrinsicProperties

@@ -1,5 +1,5 @@
 /** Проверяет координаты, оси и шаг вектора из 2–4 измерений и возвращает неизменяемую копию. */
-export declare namespace UiFieldsVectorValueNormalizeVectorValue {
+export declare namespace ImmersiveUiFieldVectorValueNormalize {
   /** Аргументы публичной операции normalizeVectorValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: readonly number[],

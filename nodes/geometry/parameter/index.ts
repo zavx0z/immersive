@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {NodesParameterMetrics as Contract} from "./contract"
-export type {NodesParameterMetrics} from "./contract"
+import type {ImmersiveNodesGeometryParameter as Contract} from "./contract"
+export type {ImmersiveNodesGeometryParameter} from "./contract"
 
 const metrics: Contract.Output = Object.freeze({
   NODE_PARAMETER_SPACING_SMALL: 1,

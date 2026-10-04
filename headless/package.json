@@ -18,39 +18,39 @@
     "bun-webgpu": "^0.1.7"
   },
   "peerDependencies": {
-    "@renderer/html": "workspace:*",
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*",
-    "@zavx0z/engine": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@zavx0z/webgpu": "workspace:*",
-    "@jsx-compiler/bun": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@zavx0z/jsx": "workspace:*",
-    "@jsx-slot/child": "workspace:*",
-    "@ui/typography": "workspace:*"
+    "@immersive-renderer/html": "workspace:*",
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*",
+    "@immersive/engine": "workspace:*",
+    "@immersive/template": "workspace:*",
+    "@immersive-ui/component": "workspace:*",
+    "@immersive/webgpu": "workspace:*",
+    "@immersive-jsx-compiler/bun": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive/jsx": "workspace:*",
+    "@immersive-jsx-slot/child": "workspace:*",
+    "@immersive-ui-component/typography": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@renderer/html": {
+    "@immersive-renderer/html": {
       "optional": true
     },
-    "@zavx0z/component": {
+    "@immersive/component": {
       "optional": true
     },
-    "@zavx0z/dom": {
+    "@immersive/dom": {
       "optional": true
     },
-    "@zavx0z/engine": {
+    "@immersive/engine": {
       "optional": true
     },
-    "@zavx0z/template": {
+    "@immersive/template": {
       "optional": true
     },
-    "@zavx0z/ui": {
+    "@immersive-ui/component": {
       "optional": true
     },
-    "@zavx0z/webgpu": {
+    "@immersive/webgpu": {
       "optional": true
     }
   }

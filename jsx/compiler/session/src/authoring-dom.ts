@@ -1,11 +1,11 @@
 import type {IntrinsicProperties} from "../contract/intrinsic.ts"
-import type {HUDElement} from "@zavx0z/dom/hud"
-import type {SpaceElement} from "@zavx0z/dom/space"
-import type {ViewPointElement} from "@zavx0z/dom/viewpoint"
+import type {HUDElement} from "@immersive/dom/hud"
+import type {SpaceElement} from "@immersive/dom/space"
+import type {ViewPointElement} from "@immersive/dom/viewpoint"
 import type {Element as AuthoredElement} from "../contract/element.ts"
-import type {EventTargetValue} from "@jsx/events"
-import type {Element as SemanticElement} from "@zavx0z/dom"
-import type {DisplayElement} from "@zavx0z/dom/display"
+import type {EventTargetValue} from "@immersive-jsx/event"
+import type {Element as SemanticElement} from "@immersive/dom"
+import type {DisplayElement} from "@immersive/dom/display"
 
 /** Значения обычных author attributes без объектов и runtime CSS. */
 type PrimitiveAttributeValue = string | number | bigint | boolean | null | undefined

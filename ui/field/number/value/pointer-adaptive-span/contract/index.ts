@@ -1,8 +1,8 @@
-import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
-type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
+import type {ImmersiveUiFieldNumberValueNormalize} from "@immersive-ui-field-number-value/normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 
 /** Определяет адаптивный диапазон указателя по ограниченному сверху шагу числа. */
-export declare namespace UiFieldsNumberValueNumberPointerAdaptiveSpan {
+export declare namespace ImmersiveUiFieldNumberValuePointerAdaptiveSpan {
   /** Аргументы публичной операции numberPointerAdaptiveSpan; порядок сохраняет её форму вызова. */
   type Input = readonly [
     options: NumberValueOptions

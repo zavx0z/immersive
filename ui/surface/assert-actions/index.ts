@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {UiSurfacesChromeAssertSurfaceActions as Contract} from "./contract"
+import type {ImmersiveUiSurfaceAssertActions as Contract} from "./contract"
 
 export default function assertSurfaceActions(
   items: Contract.Input[0],
@@ -22,4 +22,4 @@ export default function assertSurfaceActions(
     if (typeof item.disabled !== "boolean") throw new TypeError(`${owner} ${item.key} disabled must be a boolean`)
   }
 }
-export type {UiSurfacesChromeAssertSurfaceActions} from "./contract"
+export type {ImmersiveUiSurfaceAssertActions} from "./contract"

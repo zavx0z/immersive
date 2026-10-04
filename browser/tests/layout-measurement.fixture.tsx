@@ -1,5 +1,5 @@
-import {useLayoutEffect, useRef, useState} from "@zavx0z/component"
-import {observeElementLayout, readElementLayoutRect} from "@zavx0z/dom/geometry"
+import {useLayoutEffect, useRef, useState} from "@immersive/component"
+import {observeElementLayout, readElementLayoutRect} from "@immersive/dom/geometry"
 
 export type MeasurementControls = {
   element: HTMLElement | null

@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {UiFeedbackNotification as Contract} from "./contract"
+import type {ImmersiveUiComponentFeedbackNotification as Contract} from "./contract"
 import {assertNotificationProps} from "./src/helpers.tsx"
-import IconButton from "@ui-buttons/icon-button"
-import closeIcon from "@ui-themes-icons/close"
+import IconButton from "@immersive-ui-component-button/icon"
+import closeIcon from "@immersive-ui-theme-icon/close"
 
 
-export type {UiFeedbackNotification} from "./contract"
+export type {ImmersiveUiComponentFeedbackNotification} from "./contract"
 
 export default function Notification(props: Contract.Input): Contract.Output {
   assertNotificationProps(props)

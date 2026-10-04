@@ -4,15 +4,15 @@
 
 @packageDocumentation
 */
-import type {UiMenusMenu} from "./contract"
-import {useLayoutEffect} from "@zavx0z/component"
-import {useRef} from "@zavx0z/component"
-import MenuItem from "@ui-menus/menu-item"
+import type {ImmersiveUiComponentMenuBasic} from "./contract"
+import {useLayoutEffect} from "@immersive/component"
+import {useRef} from "@immersive/component"
+import MenuItem from "@immersive-ui-component-menu/item"
 
 
-export type {UiMenusMenu} from "./contract"
+export type {ImmersiveUiComponentMenuBasic} from "./contract"
 
-export default function Menu(props: UiMenusMenu.Input): UiMenusMenu.Output {
+export default function Menu(props: ImmersiveUiComponentMenuBasic.Input): ImmersiveUiComponentMenuBasic.Output {
   const element = useRef<HTMLDivElement | null>(null)
   useLayoutEffect(() => {
     const menu = element.current

@@ -1,13 +1,13 @@
 # Заливка vector-path
 
-Capability `VECTOR-FILL` принадлежит DOM, `@renderer/html` и WebGPU.
+Capability `VECTOR-FILL` принадлежит DOM, `@immersive-renderer/html` и WebGPU.
 HTMLVectorPathElement хранит `d`; Renderer разрешает CSS, строит paint и hit;
 WebGPU превращает нормализованный контур в retained Mesh.
 
 Физический модуль `vector/index.ts` объединяет разбор, нормализацию и
 проверку внутренней области; реализация находится в `vector/src/path.ts`.
 Публичные exports пакета задаются его `package.json` и остаются в ведении
-`@renderer/html`.
+`@immersive-renderer/html`.
 
 Поддерживается прежняя ограниченная грамматика **одного** контура: абсолютный
 начальный `M`, затем явные `L`, `Q`, `C`. Повторный `M`, `Z`, относительные
@@ -63,7 +63,7 @@ Unit-тесты backend проверяют данные и lifecycle, не им�
 ## Проверка структурной привязки — 2026-09-10
 
 После переноса в физический `vector` MCP search показывает subject с
-`parentId:package:@renderer/html`, без ручной category; route
+`parentId:package:@immersive-renderer/html`, без ручной category; route
 `vector/fill/geometry` сохранён. Реализация совпадает с прежней побайтно,
 кроме пути type import. Целевые parse/fill/consumer проверки: 14 pass;
 typecheck HTML Renderer и WebGPU проходит.

@@ -1,17 +1,17 @@
-import type {RendererFontFace} from "@zavx0z/webgpu"
+import type {RendererFontFace} from "@immersive/webgpu"
 import {
   Raycaster,
   Space,
   ViewPoint,
   type TrueTypeFont,
-} from "@zavx0z/engine"
+} from "@immersive/engine"
 import {
   MouseEvent as SemanticMouseEvent,
   KeyboardEvent as SemanticKeyboardEvent,
   type Document,
   type Element as DomElement,
   type Node,
-} from "@zavx0z/dom"
+} from "@immersive/dom"
 import {
   createDocumentInteractionState,
   hitTestProjection,
@@ -23,12 +23,12 @@ import {
   type RenderCursor,
   type RenderViewport,
   type WheelInput,
-} from "@renderer/html"
+} from "@immersive-renderer/html"
 import {
   Renderer as EngineRenderer,
   RendererWebGpuDisplayPlane,
   type RendererWebGpuDocumentPlaneIntersection,
-} from "@zavx0z/webgpu"
+} from "@immersive/webgpu"
 import {
   createDocumentPlaneRuntime,
   type CreateDocumentPlaneRuntimeOptions,

@@ -1,5 +1,5 @@
-import {loadSharedFont} from "@zavx0z/engine/default-font"
-import type {RendererFontFace} from "@zavx0z/webgpu"
+import {loadSharedFont} from "@immersive/engine/default-font"
+import type {RendererFontFace} from "@immersive/webgpu"
 
 export type BrowserFontFaceSource = Readonly<{
   family: string

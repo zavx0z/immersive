@@ -12,6 +12,6 @@ test("[SPC-005] Space не владеет Canvas, native input и frame lifecycl
 
   expect(source).not.toContain("HTMLCanvasElement")
   expect(source).not.toContain("requestAnimationFrame")
-  expect(source).not.toContain("@zavx0z/browser")
-  expect(source).not.toContain("@zavx0z/webgpu")
+  expect(source).not.toContain("@immersive/browser")
+  expect(source).not.toContain("@immersive/webgpu")
 })

@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {UiFieldsColorValueFormatColorValue as Contract} from "./contract"
-import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
+import type {ImmersiveUiFieldColorValueFormat as Contract} from "./contract"
+import normalizeColorValue from "@immersive-ui-field-color-value/normalize"
 
 export default function formatColorValue(value: Contract.Input[0], includeAlpha: Contract.Input[1] = true): Contract.Output {
   const color = normalizeColorValue(value)
@@ -13,4 +13,4 @@ export default function formatColorValue(value: Contract.Input[0], includeAlpha:
   return `#${channel(color.r)}${channel(color.g)}${channel(color.b)}${includeAlpha ? channel(color.a) : ""}`
 }
 
-export type {UiFieldsColorValueFormatColorValue} from "./contract"
+export type {ImmersiveUiFieldColorValueFormat} from "./contract"

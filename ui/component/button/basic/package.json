@@ -1,5 +1,5 @@
 {
-  "name": "@ui-buttons/button",
+  "name": "@immersive-ui-component-button/basic",
   "label": "Button",
   "version": "0.0.0",
   "description": "Кнопка действия с текстом, значком и состояниями взаимодействия",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/buttons": "workspace:*"
+    "@immersive-ui-component/button": "workspace:*"
   }
 }

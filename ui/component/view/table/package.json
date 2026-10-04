@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views/table",
+  "name": "@immersive-ui-component-view/table",
   "label": "Table",
   "version": "0.0.0",
   "description": "Таблица строк и столбцов с управляемым выбором",
@@ -15,12 +15,12 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-views-table/normalize-table-selection": "workspace:*",
-    "@ui-views-table/table-selection-after-click": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-view-table/normalize-table-selection": "workspace:*",
+    "@immersive-ui-component-view-table/selection-after-click": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/views": "workspace:*"
+    "@immersive-ui-component/view": "workspace:*"
   }
 }

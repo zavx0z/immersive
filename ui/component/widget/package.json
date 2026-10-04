@@ -1,5 +1,5 @@
 {
-  "name": "@ui/widgets",
+  "name": "@immersive-ui-component/widget",
   "label": "widget",
   "version": "0.0.0",
   "description": "Виджеты составляют законченные панели с управлением и содержимым.",
@@ -11,16 +11,16 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-widgets/editor": "workspace:*",
-    "@ui-widgets/header": "workspace:*",
-    "@ui-widgets/inspector": "workspace:*",
-    "@ui-widgets/terminal": "workspace:*",
-    "@ui-widgets/tree": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-ui-component-widget/editor": "workspace:*",
+    "@immersive-ui-component-widget/header": "workspace:*",
+    "@immersive-ui-component-widget/inspector": "workspace:*",
+    "@immersive-ui-component-widget/terminal": "workspace:*",
+    "@immersive-ui-component-widget/tree": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

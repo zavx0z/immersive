@@ -1,5 +1,5 @@
 {
-  "name": "@node-values/equal",
+  "name": "@immersive-tech-json-value/equal",
   "label": "equal",
   "version": "0.0.0",
   "description": "Сравнивает JSON-значения структурно для обнаружения изменений",
@@ -14,6 +14,6 @@
     "test": "bun test ./spec"
   },
   "dependencies": {
-    "@node-values/own": "workspace:*"
+    "@immersive-tech-json-value/own": "workspace:*"
   }
 }

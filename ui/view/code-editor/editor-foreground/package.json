@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/editor-foreground",
+  "name": "@immersive-ui-view-code-editor/editor-foreground",
   "label": "editorForeground",
   "version": "0.0.0",
   "description": "Обработка editor-foreground",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-views-code-editor/theme-color": "workspace:*"
+    "@immersive-ui-view-code-editor-theme/color": "workspace:*"
   }
 }

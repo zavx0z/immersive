@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberValueNumberPointerAdaptiveSpan as Contract} from "./contract"
-import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
-type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
-import numberPointerStep from "@ui-fields-number-value/number-pointer-step"
+import type {ImmersiveUiFieldNumberValuePointerAdaptiveSpan as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueNormalize} from "@immersive-ui-field-number-value/normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
+import numberPointerStep from "@immersive-ui-field-number-value/pointer-step"
 
 export default function numberPointerAdaptiveSpan(options: Contract.Input[0]): Contract.Output {
   return 20_000 * Math.min(numberPointerStep(options), 0.1)
 }
 
-export type {UiFieldsNumberValueNumberPointerAdaptiveSpan} from "./contract"
+export type {ImmersiveUiFieldNumberValuePointerAdaptiveSpan} from "./contract"

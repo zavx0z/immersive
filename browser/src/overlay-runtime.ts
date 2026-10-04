@@ -1,10 +1,10 @@
-import type {RenderImageSize} from "@renderer/html"
-import type {RendererFontFace} from "@zavx0z/webgpu"
+import type {RenderImageSize} from "@immersive-renderer/html"
+import type {RendererFontFace} from "@immersive/webgpu"
 import type {
   BufferGeometry,
   TrueTypeFont,
   ViewPoint,
-} from "@zavx0z/engine"
+} from "@immersive/engine"
 import {
   subscribeDocumentAuthorStyleSheets,
   subscribeDocumentCompiledStyleSheets,
@@ -14,7 +14,7 @@ import {
   type Document,
   type Element,
   type Node,
-} from "@zavx0z/dom"
+} from "@immersive/dom"
 import {
   createDocumentInteractionController,
   hitTestProjection,
@@ -29,13 +29,13 @@ import {
   type RenderFrame,
   type RenderViewport,
   type WheelInput,
-} from "@renderer/html"
+} from "@immersive-renderer/html"
 import {
   RendererWebGpuBackend,
   RendererWebGpuScreenOverlay,
   type RendererWebGpuBackendOptions,
   type RendererWebGpuScreenOverlayOptions,
-} from "@zavx0z/webgpu"
+} from "@immersive/webgpu"
 
 export type CreateDocumentOverlayRuntimeOptions = Readonly<{
   projectClientPoint?: CreateDocumentRendererOptions["projectClientPoint"]
@@ -346,10 +346,10 @@ export function createDocumentOverlayRuntimeWithSeams(
 const validateOptions = (options: CreateDocumentOverlayRuntimeOptions): void => {
   if (options === null || typeof options !== "object") throw new TypeError("Runtime options are required")
   if (options.document === null || typeof options.document !== "object") {
-    throw new TypeError("document must be an @zavx0z/dom Document")
+    throw new TypeError("document must be an @immersive/dom Document")
   }
   if (options.root === null || typeof options.root !== "object") {
-    throw new TypeError("root must be an @zavx0z/dom Node")
+    throw new TypeError("root must be an @immersive/dom Node")
   }
   if (options.root !== options.document && options.root.ownerDocument !== options.document) {
     throw new Error("root belongs to another Document")

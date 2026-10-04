@@ -1,7 +1,7 @@
-import type {UiTerminalModel} from "@ui/terminal-model"
-type TerminalLine = UiTerminalModel.Output["snapshot"]["lines"][number]
-type TerminalRun = UiTerminalModel.Output["snapshot"]["lines"][number]["runs"][number]
-import {memo} from "@zavx0z/component"
+import type {ImmersiveTechTerminal} from "@immersive-tech/terminal"
+type TerminalLine = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]
+type TerminalRun = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]["runs"][number]
+import {memo} from "@immersive/component"
 
 /** Частная подготовка представление терминального вывода и ввода команд. */
 export function TerminalTextRun(props: Readonly<{run: TerminalRun}>) {

@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement, Node} from "@zavx0z/dom"
+import {createDocument, HTMLElement, Node} from "@immersive/dom"
 import {createDocumentRenderer, fulfillScrollIntoViewRequests, getRangeClientRects,
   hitTestProjection, readRenderedSelectionText, createDocumentInteractionState, type RenderFrame} from "../src/index.ts"
 import {textStreamFrameStatistics} from "../src/renderer.ts"

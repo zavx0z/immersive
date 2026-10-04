@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-table/normalize-table-selection",
+  "name": "@immersive-ui-view-table/normalize-table-selection",
   "label": "normalizeTableSelection",
   "version": "0.0.0",
   "description": "Нормализация выбранных строк по составу таблицы",

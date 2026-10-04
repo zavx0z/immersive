@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/switch-field",
+  "name": "@immersive-ui-component-field/switch",
   "label": "SwitchField",
   "version": "0.0.0",
   "description": "Поле интерфейса: переключатель",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

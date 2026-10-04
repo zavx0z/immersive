@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex",
+  "name": "@immersive-ui-component-view-code-editor-syntax-theme/resolve-scope-color-hex",
   "label": "resolveCodeEditorSyntaxScopeColorHex",
   "version": "0.0.0",
   "description": "Цвет синтаксической области редактора",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*"
+    "@immersive-ui-component-view-code-editor-syntax-theme/data": "workspace:*"
   }
 }

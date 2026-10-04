@@ -1,5 +1,5 @@
 {
-  "name": "@ui/surfaces",
+  "name": "@immersive-ui-component/surface",
   "label": "surface",
   "version": "0.0.0",
   "description": "Поверхности размещают содержимое и управление в Document приложения.",
@@ -11,18 +11,18 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-surfaces/chrome": "workspace:*",
-    "@ui-surfaces/frame": "workspace:*",
-    "@ui-surfaces/pane": "workspace:*",
-    "@ui-surfaces/panel": "workspace:*",
-    "@ui-surfaces/tab": "workspace:*",
-    "@ui-surfaces/window": "workspace:*",
-    "@ui-surfaces-window/control": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-ui-component-surface/chrome": "workspace:*",
+    "@immersive-ui-component-surface/frame": "workspace:*",
+    "@immersive-ui-component-surface/pane": "workspace:*",
+    "@immersive-ui-component-surface/panel": "workspace:*",
+    "@immersive-ui-component-surface/tab": "workspace:*",
+    "@immersive-ui-component-surface/window": "workspace:*",
+    "@immersive-ui-component-surface/window-control": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

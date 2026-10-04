@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/reference-field",
+  "name": "@immersive-ui-component-field/reference",
   "label": "ReferenceField",
   "version": "0.0.0",
   "description": "Поле интерфейса: ссылка на ресурс",
@@ -15,15 +15,15 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-buttons/icon-button": "workspace:*",
-    "@ui-themes-icons/close": "workspace:*",
-    "@ui-themes-icons/picker": "workspace:*",
-    "@ui-themes-icons/resource": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-component-button/icon": "workspace:*",
+    "@immersive-ui-theme-icon/close": "workspace:*",
+    "@immersive-ui-theme-icon/picker": "workspace:*",
+    "@immersive-ui-theme-icon/resource": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

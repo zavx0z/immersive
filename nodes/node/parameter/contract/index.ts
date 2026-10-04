@@ -5,18 +5,18 @@ import type {
   ParameterReference,
   ParameterSnapshot,
   Socket,
-} from "@nodes/tree"
-import type {NodesParameterProjection} from "@nodes/parameter-projection"
-type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]
+} from "@immersive-nodes/tree"
+import type {ImmersiveNodesProjectionParameter} from "@immersive-nodes-projection/parameter"
+type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
 
-import type {NodesNode} from "@nodes/node/contract"
-import type {JSX} from "@jsx-compiler/session"
-import type {NodesLayout} from "@nodes/layout/contract"
-type NodeRect = NodesLayout.Output["bounds"]
+import type {ImmersiveNodesNode} from "@immersive-nodes/node/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveNodesLayout} from "@immersive-nodes/layout/contract"
+type NodeRect = ImmersiveNodesLayout.Output["bounds"]
 import type {NodeAction} from "./types"
 
 /** Собственные данные представления и общий протокол ноды. */
-export declare namespace NodesNodeParameter {
+export declare namespace ImmersiveNodesNodeParameter {
   /**
   Входные данные ноды с заголовком, параметрами и адресуемыми сокетами.
 
@@ -93,7 +93,7 @@ export declare namespace NodesNodeParameter {
   </ParameterNode>
   ```
   */
-  interface Input extends NodesNode.Input {
+  interface Input extends ImmersiveNodesNode.Input {
     readonly frameId?: string | undefined
     readonly label: string
     readonly rect?: Pick<NodeRect, "x" | "y"> | undefined
@@ -118,5 +118,5 @@ export declare namespace NodesNodeParameter {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = NodesNode.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesNode.Output & JSX.Element<Slots>
 }

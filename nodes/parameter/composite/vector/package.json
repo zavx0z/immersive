@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-parameters/vector",
+  "name": "@immersive-nodes-parameter-composite/vector",
   "label": "VectorParameter",
   "version": "0.0.0",
   "description": "VectorParameter соединяет публичный VectorField с композицией сокетов ноды",
@@ -10,14 +10,14 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@nodes-parameters/layout": "workspace:*",
-    "@ui-fields/vector-field": "workspace:*"
+    "@immersive-nodes-parameter-shared/layout": "workspace:*",
+    "@immersive-ui-component-field/vector": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/parameters": "workspace:*",
+    "@immersive-nodes/parameter": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@nodes/sockets": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/socket": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

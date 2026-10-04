@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/matrix-field",
+  "name": "@immersive-ui-component-field/matrix",
   "label": "MatrixField",
   "version": "0.0.0",
   "description": "Поле интерфейса: матрица чисел",
@@ -15,14 +15,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-fields-matrix-value/normalize-matrix-value": "workspace:*",
-    "@ui-fields-matrix-value/update-matrix-value": "workspace:*",
-    "@ui-fields/field-group": "workspace:*",
-    "@ui-fields/number-field": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-field-matrix-value/normalize": "workspace:*",
+    "@immersive-ui-field-matrix-value/update": "workspace:*",
+    "@immersive-ui-component-field/group": "workspace:*",
+    "@immersive-ui-component-field/number": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

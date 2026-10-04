@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/normalize-hex-color",
+  "name": "@immersive-tech-color-hex/normalize",
   "label": "normalizeHexColor",
   "version": "0.0.0",
   "description": "Приводит проверенную HEX-строку к нижнему регистру и раскрывает трёхзначную запись",

@@ -1,8 +1,8 @@
-import {useState} from "@zavx0z/component"
+import {useState} from "@immersive/component"
 import {TabContent} from "../surface/tab/spec/fixture/src/content.tsx"
-import Tab from "@ui-surfaces/tab"
-import type {UiSurfacesTab} from "@ui-surfaces/tab"
-type TabProps = UiSurfacesTab.Input
+import Tab from "@immersive-ui-component-surface/tab"
+import type {ImmersiveUiComponentSurfaceTab} from "@immersive-ui-component-surface/tab"
+type TabProps = ImmersiveUiComponentSurfaceTab.Input
 
 /** Дочерняя кнопка сохраняет собственное состояние и ввод внутри перемещаемого таба. */
 export function TabChildrenFixture(props: Pick<TabProps, "position">) {

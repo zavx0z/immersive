@@ -1,7 +1,7 @@
 /** Проверяет публичные данные и правила операции над сокетами. */
 import {describe, expect, test} from "bun:test"
-import value from "@socket-values/kinds"
-import presets from "@socket-values/presets"
+import value from "@immersive-nodes-model-socket/kinds"
+import presets from "@immersive-nodes-model-socket/presets"
 
 describe.each([{name: "Каталог видов", props: {keys: Object.keys(presets)}}])("$name", ({props}) => {
   const result: readonly string[] = value

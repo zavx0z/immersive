@@ -1,7 +1,7 @@
 import type {MovementUnit, Range, Snapshot} from "./types"
 
 /** Протокол самостоятельной модели текста, выделений и истории без зависимости от DOM. */
-export declare namespace UiCodeEditorModel {
+export declare namespace ImmersiveTechTextEditor {
   /** Начальный текст и правила хранения истории. Выделение по умолчанию находится в начале текста. */
   interface Input {
     readonly value: string

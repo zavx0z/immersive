@@ -1,10 +1,10 @@
 import {createGPUInstance, globalConstructors} from "bun-webgpu"
-import {createDocument, type Element} from "@zavx0z/dom"
-import {component, createRoot, normalizeChildren, type ComponentValue} from "@zavx0z/component"
-import {isCompiledTemplate} from "@zavx0z/template/compiled"
-import {createDocumentRenderer} from "@renderer/html"
-import {Space, ViewPoint, TrueTypeFont} from "@zavx0z/engine"
-import {Renderer, RendererWebGpuBackend, RendererWebGpuScreenOverlay, TextureLoader} from "@zavx0z/webgpu"
+import {createDocument, type Element} from "@immersive/dom"
+import {component, createRoot, normalizeChildren, type ComponentValue} from "@immersive/component"
+import {isCompiledTemplate} from "@immersive/template/compiled"
+import {createDocumentRenderer} from "@immersive-renderer/html"
+import {Space, ViewPoint, TrueTypeFont} from "@immersive/engine"
+import {Renderer, RendererWebGpuBackend, RendererWebGpuScreenOverlay, TextureLoader} from "@immersive/webgpu"
 import {NativeGpuCanvas, type CapturedFrame} from "./native-canvas.ts"
 import {installShaderCompilationDiagnostics} from "./shader-diagnostics.ts"
 import {createImageBitmap, ImageBitmap} from "./image-bitmap.ts"
@@ -38,7 +38,7 @@ TSX-импорты и JSX сценария компилировались Templa
 
 @example
 ```tsx
-import Typography from "@ui/typography"
+import Typography from "@immersive-ui-component/typography"
 
 const headless = createHeadless()
 const element = await headless.render(
@@ -106,8 +106,8 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
 
   async function initialize(): Promise<void> {
     if (ready) return
-    const fontSource = options.fontSource ?? new URL(import.meta.resolve("@zavx0z/engine/fonts/inter-regular.ttf"))
-    const sources = options.styleSheetSources ?? [new URL(import.meta.resolve("@zavx0z/ui/theme/theme.css"))]
+    const fontSource = options.fontSource ?? new URL(import.meta.resolve("@immersive/engine/fonts/inter-regular.ttf"))
+    const sources = options.styleSheetSources ?? [new URL(import.meta.resolve("@immersive-ui/component/theme/theme.css"))]
     const font = new TrueTypeFont(await Bun.file(fontSource).arrayBuffer())
     const styleSheets = await Promise.all(sources.map(source => Bun.file(source).text()))
     backend = new RendererWebGpuBackend({

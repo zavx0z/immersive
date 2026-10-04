@@ -1,16 +1,16 @@
 import {describe, expect, test} from "bun:test"
-import {component, createRoot, normalizeChildren, type ComponentValue, type KeyedComponentsValue} from "@zavx0z/component"
-import {composeSlot, type ComposeSlotInput} from "@zavx0z/component/slot"
-import {Document} from "@zavx0z/dom"
+import {component, createRoot, normalizeChildren, type ComponentValue, type KeyedComponentsValue} from "@immersive/component"
+import {composeSlot, type ComposeSlotInput} from "@immersive/component/slot"
+import {Document} from "@immersive/dom"
 import {
   bindConditional,
   bindText,
   defineCompiledTemplate,
   slotContents,
   writeBinding,
-} from "@zavx0z/template/compiled"
-import jsx from "@jsx-runtime/create"
-import slotChild from "@jsx-slot/child"
+} from "@immersive/template/compiled"
+import jsx from "@immersive-jsx-runtime/create"
+import slotChild from "@immersive-jsx-slot/child"
 
 /** Props минимального публичного template для наблюдения DOM identity. */
 type TextProps = Readonly<{

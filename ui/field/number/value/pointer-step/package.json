@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/number-pointer-step",
+  "name": "@immersive-ui-field-number-value/pointer-step",
   "label": "numberPointerStep",
   "version": "0.0.0",
   "description": "Выбирает допустимый шаг числового указателя, используя 0.1 при отсутствии корректного шага",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-number-value/normalize-number-value": "workspace:*",
-    "@ui-fields-number-value/valid-number-step": "workspace:*"
+    "@immersive-ui-field-number-value/normalize": "workspace:*",
+    "@immersive-ui-field-number-value/valid-step": "workspace:*"
   }
 }

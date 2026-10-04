@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-metrics/matrix-field-height",
+  "name": "@immersive-ui-field-metric/matrix-height",
   "label": "matrixFieldHeight",
   "version": "0.0.0",
   "description": "Вычисляет базовую высоту матрицы размером от 2×2 до 4×4 с промежутками между строками",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-density-height": "workspace:*",
-    "@ui-fields-metrics/field-metric": "workspace:*",
-    "@ui-fields-metrics/resolve-field-density": "workspace:*"
+    "@immersive-ui-field-metric/density-height": "workspace:*",
+    "@immersive-ui-field-metric/read": "workspace:*",
+    "@immersive-ui-field-metric/resolve-density": "workspace:*"
   }
 }

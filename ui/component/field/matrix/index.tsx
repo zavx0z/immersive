@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {UiFieldsMatrixField as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldMatrix as Contract} from "./contract"
 import {MatrixRow} from "./src/helpers.tsx"
-import normalizeMatrixValue from "@ui-fields-matrix-value/normalize-matrix-value"
+import normalizeMatrixValue from "@immersive-ui-field-matrix-value/normalize"
 
 
-export type {UiFieldsMatrixField} from "./contract"
+export type {ImmersiveUiComponentFieldMatrix} from "./contract"
 
 export default function MatrixField(props: Contract.Input): Contract.Output {
   const normalized = normalizeMatrixValue(props.value, props.step)

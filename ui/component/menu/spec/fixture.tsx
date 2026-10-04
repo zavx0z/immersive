@@ -1,9 +1,9 @@
-import {Menu, MenuItem, ClipboardMenu, type UiMenus, type UiMenusClipboardMenu} from "@ui/menus"
+import {Menu, MenuItem, ClipboardMenu, type ImmersiveUiComponentMenu, type ImmersiveUiComponentMenuClipboard} from "@immersive-ui-component/menu"
 
 /** Реальная композиция участников для проверки их общего представления. */
-export default function MenuExamples(props: {disabled: boolean}): UiMenus.Output {
+export default function MenuExamples(props: {disabled: boolean}): ImmersiveUiComponentMenu.Output {
   const state = Object.freeze({open: true, x: 180, y: 0, canCopy: !props.disabled, canPaste: false, pending: false, error: null})
-  const controller: UiMenusClipboardMenu.Input["controller"] = {
+  const controller: ImmersiveUiComponentMenuClipboard.Input["controller"] = {
     getSnapshot: () => state,
     subscribe: () => () => {},
     async copy() {},

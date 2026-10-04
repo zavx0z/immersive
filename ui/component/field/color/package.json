@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/color-field",
+  "name": "@immersive-ui-component-field/color",
   "label": "ColorField",
   "version": "0.0.0",
   "description": "Поле интерфейса: цвет",
@@ -15,17 +15,17 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-fields-color-value/format-color-value": "workspace:*",
-    "@ui-fields-color-value/normalize-color-value": "workspace:*",
-    "@ui-fields/color-picker-field": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-field-color-value/format": "workspace:*",
+    "@immersive-ui-field-color-value/normalize": "workspace:*",
+    "@immersive-ui-component-field/color-picker": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

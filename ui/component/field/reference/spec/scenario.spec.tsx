@@ -1,7 +1,7 @@
 /** ReferenceField показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import ReferenceField from "@ui-fields/reference-field"
+import ReferenceField from "@immersive-ui-component-field/reference"
 
 describe.each([{name: "Основное представление", props: {value: {id: "a", label: "Ресурс"}, label: "Параметр"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

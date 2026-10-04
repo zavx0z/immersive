@@ -1,7 +1,7 @@
-import type {SocketValuesKinds} from "@socket-values/kinds"
+import type {ImmersiveNodesModelSocketKinds} from "@immersive-nodes-model-socket/kinds"
 
 /** Сохраняет известный вид сокета, заменяя неизвестный на custom. */
-export declare namespace SocketValuesResolveKind {
+export declare namespace ImmersiveNodesModelSocketResolveKind {
   type Input = string
-  type Output = SocketValuesKinds.Output[number]
+  type Output = ImmersiveNodesModelSocketKinds.Output[number]
 }

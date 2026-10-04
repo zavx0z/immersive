@@ -6,7 +6,7 @@
 
 @packageDocumentation
 */
-import {useLayoutEffect, useRef} from "@zavx0z/component"
+import {useLayoutEffect, useRef} from "@immersive/component"
 import type {TypeDocProps} from "./contract/input.ts"
 import {Declaration} from "./src/declaration.tsx"
 import {createTypeDocNavigation} from "./src/navigation.ts"

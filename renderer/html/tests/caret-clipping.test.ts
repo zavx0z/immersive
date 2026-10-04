@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, type HTMLElement} from "@zavx0z/dom"
+import {createDocument, type HTMLElement} from "@immersive/dom"
 import {caretPositionAtPoint, createDocumentInteractionController, createDocumentRenderer} from "../src/index.ts"
 
 function scrolledSiblingFixture() {

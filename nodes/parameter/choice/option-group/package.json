@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-parameters/option-group",
+  "name": "@immersive-nodes-parameter-choice/option-group",
   "label": "OptionGroupParameter",
   "version": "0.0.0",
   "description": "OptionGroupParameter соединяет публичный ToggleButtonGroup с композицией сокетов ноды",
@@ -10,15 +10,15 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@ui-fields/field-group": "workspace:*",
-    "@nodes-parameters/layout": "workspace:*",
-    "@ui-buttons/toggle-button-group": "workspace:*"
+    "@immersive-ui-component-field/group": "workspace:*",
+    "@immersive-nodes-parameter-shared/layout": "workspace:*",
+    "@immersive-ui-component-button/toggle-group": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/parameters": "workspace:*",
+    "@immersive-nodes/parameter": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@nodes/sockets": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/socket": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

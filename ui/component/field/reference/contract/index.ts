@@ -1,15 +1,15 @@
 import type {ReferenceFieldDensity} from "./types.ts"
 import type {ReferenceFieldValue} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
-import type {UiFields} from "@ui/fields/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace UiFieldsReferenceField {
+export declare namespace ImmersiveUiComponentFieldReference {
   /**
   Входные данные ReferenceField.
   */
-  interface Input extends UiFields.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly value: ReferenceFieldValue | null
     readonly placeholder?: string | undefined
     readonly disabled?: boolean | undefined
@@ -20,5 +20,5 @@ export declare namespace UiFieldsReferenceField {
     readonly onClear?: ((event: Event) => void) | undefined
   }
 
-  type Output = UiFields.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

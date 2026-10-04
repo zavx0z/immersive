@@ -1,10 +1,10 @@
 /** Готовые поля и пользовательская композиция разделяют адрес, сокеты и состояние подключения. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import ParameterNode from "@nodes-node/parameter"
-import Socket from "@nodes/sockets"
-import TextField from "@ui-fields/text-field"
-import {TextParameter, NumberParameter, SliderParameter, CheckboxParameter, SwitchParameter, SelectParameter, CycleParameter, OptionGroupParameter, ColorParameter, VectorParameter, MatrixParameter, PathParameter, ReferenceParameter, CollectionParameter, OutputParameter, ParameterLayout} from "@nodes/parameters"
+import ParameterNode from "@immersive-nodes-node/parameter"
+import Socket from "@immersive-nodes/socket"
+import TextField from "@immersive-ui-component-field/text"
+import {TextParameter, NumberParameter, SliderParameter, CheckboxParameter, SwitchParameter, SelectParameter, CycleParameter, OptionGroupParameter, ColorParameter, VectorParameter, MatrixParameter, PathParameter, ReferenceParameter, CollectionParameter, OutputParameter, ParameterLayout} from "@immersive-nodes/parameter"
 
 describe.each([{name: "Поля", props: {connected: false}}, {
   name: "Подключённые параметры",

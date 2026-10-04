@@ -1,5 +1,5 @@
 {
-  "name": "@jsx-slot/authoring",
+  "name": "@immersive-jsx-slot/authoring",
   "label": "Авторство слотов",
   "version": "0.0.0",
   "private": true,
@@ -13,13 +13,13 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-slot/plan": "workspace:*",
-    "@jsx-compiler/error": "workspace:*",
+    "@immersive-jsx-slot/plan": "workspace:*",
+    "@immersive-jsx-compiler/error": "workspace:*",
     "typescript": "^7.0.2"
   },
   "description": "Синтаксис точек вставки и назначений JSX-слотов",
   "sideEffects": false,
   "devDependencies": {
-    "@zavx0z/jsx": "workspace:*"
+    "@immersive/jsx": "workspace:*"
   }
 }

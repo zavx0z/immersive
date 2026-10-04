@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import {parseCssTemplateShape} from "@zavx0z/template/css-shape"
+import {parseCssTemplateShape} from "@immersive/template/css-shape"
 
 describe.each([
   {name: "Статическая декларация", props: ["color: red;"], count: 1, slots: 0},

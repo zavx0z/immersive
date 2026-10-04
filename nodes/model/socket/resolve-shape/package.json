@@ -1,5 +1,5 @@
 {
-  "name": "@socket-values/resolve-shape",
+  "name": "@immersive-nodes-model-socket/resolve-shape",
   "label": "resolve-shape",
   "version": "0.0.0",
   "description": "Сохраняет известную форму сокета, оставляя неизвестную неопределённой",
@@ -14,6 +14,6 @@
     "test": "bun test ./spec"
   },
   "dependencies": {
-    "@socket-values/shapes": "workspace:*"
+    "@immersive-nodes-model-socket/shapes": "workspace:*"
   }
 }

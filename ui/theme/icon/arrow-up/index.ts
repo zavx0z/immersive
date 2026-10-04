@@ -4,11 +4,11 @@ SVG-значок arrow-up в формате data URL.
 
 @packageDocumentation
 */
-import type {UiThemesIconsArrowUp as Contract} from "./contract"
-import iconSvg from "@ui-themes-icons/compose"
+import type {ImmersiveUiThemeIconArrowUp as Contract} from "./contract"
+import iconSvg from "@immersive-ui-theme-icon/compose"
 
 const arrowUpIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"M12 19V5\"/><path d=\"m7 10 5-5 5 5\"/>")
 
 export default arrowUpIcon
 
-export type {UiThemesIconsArrowUp} from "./contract"
+export type {ImmersiveUiThemeIconArrowUp} from "./contract"

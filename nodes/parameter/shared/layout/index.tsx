@@ -5,15 +5,15 @@
 @packageDocumentation
 */
 
-import socketMetrics from "@socket-values/metrics"
+import socketMetrics from "@immersive-nodes-model-socket/metrics"
 const {NODE_ROW_HEIGHT} = socketMetrics
-import parameterMetrics from "@nodes/parameter-metrics"
+import parameterMetrics from "@immersive-nodes-geometry/parameter"
 const {NODE_PARAMETER_SPACING_MEDIUM, NODE_PARAMETER_SPACING_SMALL} = parameterMetrics
-import type {NodesParametersLayout as Contract} from "./contract"
-import type {NodesParameters} from "@nodes/parameters/contract"
-type ParameterBaseProps = NodesParameters.Input
-export type {NodesParametersLayout} from "./contract"
-import {hasSlot} from "@zavx0z/component/slot-presence"
+import type {ImmersiveNodesParameterSharedLayout as Contract} from "./contract"
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+type ParameterBaseProps = ImmersiveNodesParameter.Input
+export type {ImmersiveNodesParameterSharedLayout} from "./contract"
+import {hasSlot} from "@immersive/component/slot-presence"
 import {ParameterEndpoints} from "./src/endpoint"
 
 /**

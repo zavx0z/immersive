@@ -10,7 +10,7 @@
   а `NodeRect`/`NodeShape` — доменные типы; они разрешены.
 - TypeScript/JavaScript — без завершающих точек с запятой. JSX props и авторский
   CSS оформляются многострочно; `css` остаётся compile-time intrinsic.
-- `@nodes/tree` владеет моделью и значениями. GraphView показывает граф и
+- `@immersive-nodes/tree` владеет моделью и значениями. GraphView показывает граф и
   обслуживает навигацию; GraphEditor использует GraphView и добавляет управление
   изменениями. Просмотр не импортирует редактор и не создаёт вторую модель.
 - Измерение CSS принадлежит платформе. Nodes не читает private Renderer state,

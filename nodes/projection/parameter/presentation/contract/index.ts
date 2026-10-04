@@ -1,14 +1,14 @@
-import type {NodesParameterStore} from "@nodes/parameter-store"
-import type {NodeValuesOwn} from "@node-values/own"
-import type {UiFieldsCollectionField} from "@ui-fields/collection-field"
-import type {UiFieldsColorField} from "@ui-fields/color-field"
-import type {UiFieldsReferenceField} from "@ui-fields/reference-field"
-import type {UiFieldsSelectField} from "@ui-fields/select-field"
-type JsonValue = NodeValuesOwn.Input[0]
-type CollectionFieldProps = UiFieldsCollectionField.Input
-type ColorFieldValue = NonNullable<UiFieldsColorField.Input["value"]>
-type ReferenceFieldValue = NonNullable<UiFieldsReferenceField.Input["value"]>
-type SelectFieldOption = NonNullable<UiFieldsSelectField.Input["options"]>[number]
+import type {ImmersiveNodesModelParameterStore} from "@immersive-nodes-model-parameter/store"
+import type {ImmersiveTechJsonValueOwn} from "@immersive-tech-json-value/own"
+import type {ImmersiveUiComponentFieldCollection} from "@immersive-ui-component-field/collection"
+import type {ImmersiveUiComponentFieldColor} from "@immersive-ui-component-field/color"
+import type {ImmersiveUiComponentFieldReference} from "@immersive-ui-component-field/reference"
+import type {ImmersiveUiComponentFieldSelect} from "@immersive-ui-component-field/select"
+type JsonValue = ImmersiveTechJsonValueOwn.Input[0]
+type CollectionFieldProps = ImmersiveUiComponentFieldCollection.Input
+type ColorFieldValue = NonNullable<ImmersiveUiComponentFieldColor.Input["value"]>
+type ReferenceFieldValue = NonNullable<ImmersiveUiComponentFieldReference.Input["value"]>
+type SelectFieldOption = NonNullable<ImmersiveUiComponentFieldSelect.Input["options"]>[number]
 
 type Kind =
   | "checkbox"
@@ -28,8 +28,8 @@ type Kind =
   | "vector"
 
 /** Подготовленное представление одного снимка Parameter для UI и числового плана ноды. */
-export declare namespace NodesParameterPresentation {
-  type Input = ReturnType<NodesParameterStore.Output<JsonValue, JsonValue>["snapshot"]>
+export declare namespace ImmersiveNodesProjectionParameterPresentation {
+  type Input = ReturnType<ImmersiveNodesModelParameterStore.Output<JsonValue, JsonValue>["snapshot"]>
 
   type Output = Readonly<{
     kind: Kind

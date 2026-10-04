@@ -1,5 +1,5 @@
 {
-  "name": "@ui/code-editor-model",
+  "name": "@immersive-tech/text-editor",
   "label": "CodeEditorModel",
   "version": "0.0.0",
   "description": "Модель текста, нескольких выделений, IME и истории редактора",

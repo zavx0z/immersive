@@ -1,14 +1,14 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, MouseEvent, type Element} from "@zavx0z/dom"
-import {createRoot} from "@zavx0z/component"
-import {createDocumentRenderer} from "@renderer/html"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createDocument, MouseEvent, type Element} from "@immersive/dom"
+import {createRoot} from "@immersive/component"
+import {createDocumentRenderer} from "@immersive-renderer/html"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import type {LinkProps} from "@immersive/nodes/link"
 import type {LinkDefinition} from "@immersive/nodes/link/types"
-import SOCKET_KINDS from "@socket-values/kinds"
-import socketPreset from "@socket-values/preset"
+import SOCKET_KINDS from "@immersive-nodes-model-socket/kinds"
+import socketPreset from "@immersive-nodes-model-socket/preset"
 
 const root = resolve(import.meta.dir, "../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")]}))

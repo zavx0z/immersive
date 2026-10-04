@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument} from "@zavx0z/dom"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createRoot} from "@immersive/component"
+import {createDocument} from "@immersive/dom"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({

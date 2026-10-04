@@ -1,10 +1,10 @@
-import type {UiViews} from "@ui/views/contract"
+import type {ImmersiveUiComponentView} from "@immersive-ui-component/view/contract"
 import type {ListItem} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace UiViewsList {
+export declare namespace ImmersiveUiComponentViewList {
   /**
   Входные данные List.
   */
@@ -20,5 +20,5 @@ export declare namespace UiViewsList {
     readonly onSelect?: ((key: string, event: Event) => void) | undefined
   }
 
-  type Output = UiViews.Output & JSX.Element
+  type Output = ImmersiveUiComponentView.Output & JSX.Element
 }

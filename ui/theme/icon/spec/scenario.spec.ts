@@ -1,6 +1,6 @@
 /** Каждый участник предоставляет пригодный для img.src SVG-документ. */
 import {describe, expect, test} from "bun:test"
-import {applyIcon, arrowDownIcon, arrowUpIcon, breakpointIcon, chevronDownIcon, chevronRightIcon, clearIcon, closeIcon, collapseAllIcon, iconSvg, databaseIcon, executionPointIcon, expandIcon, expandAllIcon, folderIcon, homeIcon, imageIcon, languageIcon, minusIcon, pickerIcon, pinIcon, plusIcon, resourceIcon, runIcon, searchIcon, selectOpenedItemIcon, settingsIcon, visibilityOnIcon} from "@ui-themes/icons"
+import {applyIcon, arrowDownIcon, arrowUpIcon, breakpointIcon, chevronDownIcon, chevronRightIcon, clearIcon, closeIcon, collapseAllIcon, iconSvg, databaseIcon, executionPointIcon, expandIcon, expandAllIcon, folderIcon, homeIcon, imageIcon, languageIcon, minusIcon, pickerIcon, pinIcon, plusIcon, resourceIcon, runIcon, searchIcon, selectOpenedItemIcon, settingsIcon, visibilityOnIcon} from "@immersive-ui-theme/icon"
 
 describe.each([
   {name: "apply", props: {image: applyIcon}},

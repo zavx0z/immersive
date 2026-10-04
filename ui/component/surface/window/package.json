@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces/window",
+  "name": "@immersive-ui-component-surface/window",
   "label": "Window",
   "version": "0.0.0",
   "description": "Сохраняемое окно с перемещением, изменением размера и общим состоянием видимости",
@@ -15,17 +15,17 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-surfaces-chrome/button": "workspace:*",
-    "@ui-themes-icons/minus": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-surface-chrome/button": "workspace:*",
+    "@immersive-ui-theme-icon/minus": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-fields/text-field": "workspace:*",
-    "@ui/surfaces": "workspace:*"
+    "@immersive-ui-component-field/text": "workspace:*",
+    "@immersive-ui-component/surface": "workspace:*"
   }
 }

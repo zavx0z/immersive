@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {UiSelectionValidateSelectionOptions as Contract} from "./contract"
+import type {ImmersiveUiSelectionValidateOptions as Contract} from "./contract"
 import type {SelectionOptionShape} from "./contract/types.ts"
 
 
@@ -27,4 +27,4 @@ export default function validateSelectionOptions<T extends SelectionOptionShape>
   return options
 }
 
-export type {UiSelectionValidateSelectionOptions} from "./contract"
+export type {ImmersiveUiSelectionValidateOptions} from "./contract"

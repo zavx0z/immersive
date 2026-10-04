@@ -2,9 +2,9 @@ import {expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {tmpdir} from "node:os"
 import {resolve} from "node:path"
-import JsxCompilerSession from "@jsx-compiler/session"
+import JsxCompilerSession from "@immersive-jsx-compiler/session"
 
-test.each(["@jsx-compiler/session", "@zavx0z/jsx"])("compiles an external intrinsic through %s", async (typesModule) => {
+test.each(["@immersive-jsx-compiler/session", "@immersive/jsx"])("compiles an external intrinsic through %s", async (typesModule) => {
   const root = await mkdtemp(resolve(tmpdir(), "template-xr-intrinsic-"))
   const sourcePath = resolve(root, "scene.tsx")
   await Bun.write(resolve(root, "tsconfig.json"), JSON.stringify({
@@ -12,16 +12,16 @@ test.each(["@jsx-compiler/session", "@zavx0z/jsx"])("compiles an external intrin
       exactOptionalPropertyTypes: true,
       customConditions: ["node"],
       jsx: "preserve",
-      jsxImportSource: "@zavx0z/jsx",
+      jsxImportSource: "@immersive/jsx",
       lib: ["ESNext", "DOM"],
       module: "Preserve",
       moduleResolution: "bundler",
       noEmit: true,
       paths: {
-        "@zavx0z/dom": [resolve(import.meta.dir, "../../../../dom/src/index.ts")],
-        "@zavx0z/jsx/jsx-runtime": [resolve(import.meta.dir, "../../../runtime/index.ts")],
-        "@jsx-compiler/session": [resolve(import.meta.dir, "../index.ts")],
-        "@zavx0z/jsx": [resolve(import.meta.dir, "../../../index.ts")],
+        "@immersive/dom": [resolve(import.meta.dir, "../../../../dom/src/index.ts")],
+        "@immersive/jsx/jsx-runtime": [resolve(import.meta.dir, "../../../runtime/index.ts")],
+        "@immersive-jsx-compiler/session": [resolve(import.meta.dir, "../index.ts")],
+        "@immersive/jsx": [resolve(import.meta.dir, "../../../index.ts")],
       },
       skipLibCheck: false,
       strict: true,
@@ -30,7 +30,7 @@ test.each(["@jsx-compiler/session", "@zavx0z/jsx"])("compiles an external intrin
     files: ["scene.tsx"],
   }))
   await Bun.write(sourcePath, [
-    'import type {Element as SemanticElement} from "@zavx0z/dom"',
+    'import type {Element as SemanticElement} from "@immersive/dom"',
     `import type {JSX} from "${typesModule}"`,
     "",
     "interface XRElement extends SemanticElement {",
@@ -65,7 +65,7 @@ test.each(["@jsx-compiler/session", "@zavx0z/jsx"])("compiles an external intrin
   try {
     const result = await compiler.compileFile(sourcePath)
     expect(result.code).toContain('document.createElement("test-scene")')
-    expect(result.code).toContain('from "@zavx0z/component"')
+    expect(result.code).toContain('from "@immersive/component"')
     expect(result.capabilityUsages).toContainEqual(expect.objectContaining({
       kind: "intrinsic-element",
       profile: "template-extension",

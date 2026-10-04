@@ -1,4 +1,4 @@
-import {registerDocumentGeometryReader} from "@zavx0z/dom/geometry"
+import {registerDocumentGeometryReader} from "@immersive/dom/geometry"
 import {readFrameClientRects, readFrameLayoutRect} from "./client-rect.ts"
 import {
   HTMLElement,
@@ -18,8 +18,8 @@ import {
   type Node,
   type StateChangeBatch,
   type Text,
-} from "@zavx0z/dom"
-import {getPopoverSource} from "@zavx0z/dom/popover-state"
+} from "@immersive/dom"
+import {getPopoverSource} from "@immersive/dom/popover-state"
 import {
   EMPTY_CUSTOM_PROPERTIES,
   computeStyle,

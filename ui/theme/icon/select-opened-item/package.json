@@ -1,5 +1,5 @@
 {
-  "name": "@ui-themes-icons/select-opened-item",
+  "name": "@immersive-ui-theme-icon/select-opened-item",
   "label": "selectOpenedItemIcon",
   "version": "0.0.0",
   "description": "SVG-значок select-opened-item в формате data URL",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-themes-icons/collection": "workspace:*",
-    "@ui-themes-icons/compose": "workspace:*"
+    "@immersive-ui-theme/icon-set": "workspace:*",
+    "@immersive-ui-theme-icon/compose": "workspace:*"
   },
   "devDependencies": {
-    "@ui-themes/icons": "workspace:*"
+    "@immersive-ui-theme/icon": "workspace:*"
   }
 }

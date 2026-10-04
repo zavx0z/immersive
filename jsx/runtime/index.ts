@@ -5,6 +5,6 @@ Native имена jsx и jsxs обозначают одну операцию к�
 
 @packageDocumentation
 */
-export {default as jsx, default as jsxs} from "@jsx-runtime/create"
-export type {RuntimeInput, RuntimeOutput, JSX} from "@jsx-runtime/create"
-export {default as Fragment} from "@jsx-runtime/fragment"
+export {default as jsx, default as jsxs} from "@immersive-jsx-runtime/create"
+export type {RuntimeInput, RuntimeOutput, JSX} from "@immersive-jsx-runtime/create"
+export {default as Fragment} from "@immersive-jsx-runtime/fragment"

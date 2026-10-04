@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import themeColor from "@ui-views-code-editor/theme-color"
+import themeColor from "@immersive-ui-view-code-editor-theme/color"
 
 const editorForeground = themeColor("editor.foreground", "#bcbec4")
 

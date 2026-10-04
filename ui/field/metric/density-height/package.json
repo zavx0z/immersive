@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-metrics/field-density-height",
+  "name": "@immersive-ui-field-metric/density-height",
   "label": "fieldDensityHeight",
   "version": "0.0.0",
   "description": "Читает базовую высоту поля для выбранной плотности из числовой темы",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-metric": "workspace:*",
-    "@ui-fields-metrics/resolve-field-density": "workspace:*"
+    "@immersive-ui-field-metric/read": "workspace:*",
+    "@immersive-ui-field-metric/resolve-density": "workspace:*"
   }
 }

@@ -1,7 +1,7 @@
 import type {
   CoffmanGrahamLayoutInput,
   CoffmanGrahamLayoutOutput,
-} from "@nodes/layout/coffman-graham"
+} from "@immersive-nodes/layout/coffman-graham"
 import {WorkerTransportClient} from "../../../../execution/worker/src/transport.ts"
 import type {
   CoffmanGrahamWorkerEndpoint,

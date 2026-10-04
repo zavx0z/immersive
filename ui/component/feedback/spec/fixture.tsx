@@ -1,4 +1,4 @@
-import {Notification, StatusBar} from "@ui/feedback"
+import {Notification, StatusBar} from "@immersive-ui-component/feedback"
 
 export default function ClusterExamples(props: Readonly<{label: string}>) {
   return <section>

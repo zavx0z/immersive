@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {Object3D} from "@zavx0z/engine"
+import {Object3D} from "@immersive/engine"
 import {Renderer} from "../src/renderer/index.ts"
 import {
   RenderBundleCache,

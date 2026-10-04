@@ -1,11 +1,11 @@
-import socketKey from "@socket-values/key"
+import socketKey from "@immersive-nodes-model-socket/key"
 import {expect} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument, MouseEvent} from "@zavx0z/dom"
-import {createSpaceElementFactories} from "@zavx0z/space"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createRoot} from "@immersive/component"
+import {createDocument, MouseEvent} from "@immersive/dom"
+import {createSpaceElementFactories} from "@immersive/space"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import {PARAMETER_EXAMPLES, parameterFixture, type ParameterMechanism} from "./parameter.fixture.ts"
 
 const workspace = resolve(import.meta.dir, "../../../..")
@@ -14,8 +14,8 @@ Bun.plugin(createJsxBunPlugin({
   persistent: true,
   sourceRoots: [resolve(workspace, "nodes/projection/parameter"), resolve(workspace, "nodes/parameter"), resolve(workspace, "nodes/socket"), resolve(workspace, "ui")],
 }))
-const {default: Parameter} = await import("@nodes/parameter-projection")
-const {default: resolveProjectedParameterPresentation} = await import("@nodes/parameter-presentation")
+const {default: Parameter} = await import("@immersive-nodes-projection/parameter")
+const {default: resolveProjectedParameterPresentation} = await import("@immersive-nodes-projection-parameter/presentation")
 
 type Props = Parameters<typeof Parameter>[0]
 

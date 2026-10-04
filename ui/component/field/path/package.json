@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/path-field",
+  "name": "@immersive-ui-component-field/path",
   "label": "PathField",
   "version": "0.0.0",
   "description": "Поле интерфейса: путь",
@@ -15,13 +15,13 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/icon-button": "workspace:*",
-    "@ui-fields/text-field": "workspace:*",
-    "@ui-themes-icons/folder": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/icon": "workspace:*",
+    "@immersive-ui-component-field/text": "workspace:*",
+    "@immersive-ui-theme-icon/folder": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

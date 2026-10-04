@@ -1,9 +1,9 @@
-import type {UiButtonsToggleButtonGroup} from "@ui-buttons/toggle-button-group"
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentButtonToggleGroup} from "@immersive-ui-component-button/toggle-group"
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersOptionGroup {
+export declare namespace ImmersiveNodesParameterChoiceOptionGroup {
   /**
   Входные данные группы вариантов, связанного с нодой и её сокетами.
 
@@ -26,7 +26,7 @@ export declare namespace NodesParametersOptionGroup {
 
   @example
   ```ts
-  const input: NodesParametersOptionGroup.Input = {
+  const input: ImmersiveNodesParameterChoiceOptionGroup.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,14 +35,14 @@ export declare namespace NodesParametersOptionGroup {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
-    readonly value: UiButtonsToggleButtonGroup.Input["value"]
-    readonly options: UiButtonsToggleButtonGroup.Input["options"]
-    readonly density?: UiButtonsToggleButtonGroup.Input["density"]
-    readonly onChange?: UiButtonsToggleButtonGroup.Input["onChange"]
+  interface Input extends ImmersiveNodesParameter.Input {
+    readonly value: ImmersiveUiComponentButtonToggleGroup.Input["value"]
+    readonly options: ImmersiveUiComponentButtonToggleGroup.Input["options"]
+    readonly density?: ImmersiveUiComponentButtonToggleGroup.Input["density"]
+    readonly onChange?: ImmersiveUiComponentButtonToggleGroup.Input["onChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

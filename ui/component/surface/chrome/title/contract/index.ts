@@ -1,10 +1,10 @@
-import type {UiSurfacesChrome} from "@ui-surfaces/chrome/contract"
+import type {ImmersiveUiComponentSurfaceChrome} from "@immersive-ui-component-surface/chrome/contract"
 
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный вход и JSX-результат компонента. */
-export declare namespace UiSurfacesChromeTitle {
+export declare namespace ImmersiveUiComponentSurfaceChromeTitle {
   /**
   Входные данные SurfaceTitle.
   */
@@ -14,5 +14,5 @@ export declare namespace UiSurfacesChromeTitle {
     readonly style?: CssStyle | undefined
   }
 
-  type Output = UiSurfacesChrome.Output & JSX.Element
+  type Output = ImmersiveUiComponentSurfaceChrome.Output & JSX.Element
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/rounded-number",
+  "name": "@immersive-ui-field-number-value/round",
   "label": "roundedNumber",
   "version": "0.0.0",
   "description": "Округляет число до шести знаков после десятичной точки",

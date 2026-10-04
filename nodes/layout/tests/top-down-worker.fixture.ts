@@ -1,4 +1,4 @@
-import {runTopDownWorkerRequest} from "@nodes/layout/worker/top-down/executor"
+import {runTopDownWorkerRequest} from "@immersive-nodes/layout/worker/top-down/executor"
 const scope = globalThis as unknown as {
   postMessage?: (message: ReturnType<typeof runTopDownWorkerRequest>) => void
   addEventListener(type: "message", listener: (event: MessageEvent<Parameters<typeof runTopDownWorkerRequest>[0]>) => void): void

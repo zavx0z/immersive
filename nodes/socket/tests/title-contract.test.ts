@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument, type Element} from "@zavx0z/dom"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createRoot} from "@immersive/component"
+import {createDocument, type Element} from "@immersive/dom"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({
@@ -12,7 +12,7 @@ Bun.plugin(createJsxBunPlugin({
   sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
 }))
 
-const {default: Socket} = await import("@nodes/sockets")
+const {default: Socket} = await import("@immersive-nodes/socket")
 
 test("[NODES-TITLE-002] Socket учитывает видимую row-подпись и сохраняет endpoint/type/description", () => {
   const endpoint = mount(Socket, socketProps({presentation: "endpoint"}))

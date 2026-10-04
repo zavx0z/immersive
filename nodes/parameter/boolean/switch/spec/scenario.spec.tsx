@@ -1,8 +1,8 @@
 /** Готовый параметр сохраняет общий адрес и сокеты при подключении. */
 import {afterAll, describe, expect, test} from "bun:test"
-import Socket from "@nodes/sockets"
+import Socket from "@immersive-nodes/socket"
 import {createHeadless} from "@immersive/headless"
-import Component, {type NodesParametersSwitch} from "@nodes-parameters/switch"
+import Component, {type ImmersiveNodesParameterBooleanSwitch} from "@immersive-nodes-parameter-boolean/switch"
 
 describe.each([false, true].map(connected => ({
   name: connected ? "Поле с подключённым сокетом" : "Поле без подключения",
@@ -12,7 +12,7 @@ describe.each([false, true].map(connected => ({
     label: "Значение",
     connected,
     checked: false,
-  } satisfies NodesParametersSwitch.Input,
+  } satisfies ImmersiveNodesParameterBooleanSwitch.Input,
   slots: {
     left: <Socket
       slot="left"

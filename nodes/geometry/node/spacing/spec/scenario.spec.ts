@@ -1,6 +1,6 @@
 /** Интервал берётся из метаданных снимка и проверяется до расчёта геометрии. */
 import {describe, expect, test} from "bun:test"
-import spacing from "@node-geometry/spacing"
+import spacing from "@immersive-nodes-geometry-node/spacing"
 
 describe.each([
   {name: "Малый", props: {id: "value", revision: 0, value: 1, presentation: {spacingBefore: "small"}}, expected: "small"},

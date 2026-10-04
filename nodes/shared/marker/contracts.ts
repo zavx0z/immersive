@@ -1,4 +1,4 @@
-import type {FunctionComponent} from "@zavx0z/component"
+import type {FunctionComponent} from "@immersive/component"
 
 /** Локальные CSS-пиксели готового маршрута; direction — единичная ось наружу от конца пути. */
 export type MarkerPlacement = Readonly<{

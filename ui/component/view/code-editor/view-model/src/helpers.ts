@@ -1,17 +1,17 @@
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
-type CodeEditorProps = UiViewsCodeEditor.Input
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
 import type {CodeEditorSegment} from "../contract/types.ts"
-import type {UiViewsCodeEditorViewModel} from "../contract"
-type CodeEditorViewModel = UiViewsCodeEditorViewModel.Output
+import type {ImmersiveUiComponentViewCodeEditorViewModel} from "../contract"
+type CodeEditorViewModel = ImmersiveUiComponentViewCodeEditorViewModel.Output
 import type {NormalizedToken} from "./types"
-import assertNonEmpty from "@ui-views-code-editor/assert-non-empty"
-import editorForeground from "@ui-views-code-editor/editor-foreground"
-import isHexColor from "@ui-views-code-editor/is-hex-color"
-import normalizeHexColor from "@ui-views-code-editor/normalize-hex-color"
-import resolveCodeEditorHighlighter from "@ui-views-code-editor/highlighter"
+import assertNonEmpty from "@immersive-tech-text/assert-non-empty"
+import editorForeground from "@immersive-ui-view-code-editor/editor-foreground"
+import isHexColor from "@immersive-tech-color-hex/valid"
+import normalizeHexColor from "@immersive-tech-color-hex/normalize"
+import resolveCodeEditorHighlighter from "@immersive-ui-component-view-code-editor/highlighter"
 import type {Token} from "@zavx0z/highlighter"
 import type {Tokens} from "@zavx0z/highlighter"
-import resolveCodeEditorSyntaxScopeColorHex from "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex"
+import resolveCodeEditorSyntaxScopeColorHex from "@immersive-ui-component-view-code-editor-syntax-theme/resolve-scope-color-hex"
 
 /** Частная подготовка подготовка строк, токенов и оформления редактора. */
 export function buildViewModel(props: CodeEditorProps): CodeEditorViewModel {

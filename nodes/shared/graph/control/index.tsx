@@ -1,4 +1,4 @@
-import Button from "@ui-buttons/button"
+import Button from "@immersive-ui-component-button/basic"
 
 /** Необязательные кнопки навигации; в просмотре Markdown не монтируются. */
 export function GraphControls(props: Readonly<{

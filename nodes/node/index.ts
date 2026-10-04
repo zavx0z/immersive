@@ -5,10 +5,10 @@
 
 @packageDocumentation
 */
-export type {NodesNode} from "./contract"
-export {default as DiagramNode} from "@nodes-node/diagram"
-export type {NodesNodeDiagram} from "@nodes-node/diagram"
-export {default as ParameterNode} from "@nodes-node/parameter"
-export type {NodesNodeParameter} from "@nodes-node/parameter"
-export {default as ContentNode} from "@nodes-node/content"
-export type {NodesNodeContent} from "@nodes-node/content"
+export type {ImmersiveNodesNode} from "./contract"
+export {default as DiagramNode} from "@immersive-nodes-node/diagram"
+export type {ImmersiveNodesNodeDiagram} from "@immersive-nodes-node/diagram"
+export {default as ParameterNode} from "@immersive-nodes-node/parameter"
+export type {ImmersiveNodesNodeParameter} from "@immersive-nodes-node/parameter"
+export {default as ContentNode} from "@immersive-nodes-node/content"
+export type {ImmersiveNodesNodeContent} from "@immersive-nodes-node/content"

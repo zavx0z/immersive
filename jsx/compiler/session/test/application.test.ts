@@ -2,11 +2,11 @@ import {expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createDocument} from "@zavx0z/dom"
-import {createRoot} from "@zavx0z/component"
-import {createSpaceElementFactories, readSpaceTree} from "@zavx0z/space"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import JsxCompilerSession from "@jsx-compiler/session"
+import {createDocument} from "@immersive/dom"
+import {createRoot} from "@immersive/component"
+import {createSpaceElementFactories, readSpaceTree} from "@immersive/space"
+import type {CompiledTemplate} from "@immersive/template/compiled"
+import JsxCompilerSession from "@immersive-jsx-compiler/session"
 
 test("Browser createRoot компилирует App, фиксированные соседи обходятся без key и сохраняют состояние", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".application-"))
@@ -24,16 +24,16 @@ test("Browser createRoot компилирует App, фиксированные 
     expect(invalid.message).toContain("useSpace must be called unconditionally")
     const path = join(directory, "application.ts")
     await Bun.write(join(directory, "browser.ts"), `
-      import {createContext, provideContext} from "@zavx0z/component"
-      export {useSpace, useFrame} from "@zavx0z/browser"
+      import {createContext, provideContext} from "@immersive/component"
+      export {useSpace, useFrame} from "@immersive/browser"
       const context = createContext(null)
       export const calls = []
       export function createRoot() {
         return {render(value) { calls.push(provideContext(context, null, value)) }}
       }
     `)
-    await Bun.write(path, result.code.replaceAll('"@zavx0z/browser"', '"./browser.ts"')
-      .replaceAll('"@zavx0z/browser/integration"', '"./browser.ts"'))
+    await Bun.write(path, result.code.replaceAll('"@immersive/browser"', '"./browser.ts"')
+      .replaceAll('"@immersive/browser/integration"', '"./browser.ts"'))
     const module = await import(pathToFileURL(path).href) as {connect(canvas: HTMLCanvasElement): unknown; connectHost(canvas: HTMLCanvasElement): unknown; TestApp: CompiledTemplate<{label: string}>; ResourcesApp: CompiledTemplate<{href: string; frameloop: "demand" | "always"}>}
     module.connect({} as HTMLCanvasElement)
     module.connectHost({} as HTMLCanvasElement)
@@ -46,7 +46,7 @@ test("Browser createRoot компилирует App, фиксированные 
     const root = createRoot(document)
     root.render(module.TestApp, {label: "Первый"})
     const buttons = [...document.querySelectorAll("button")]
-    buttons[0]!.dispatchEvent(new (await import("@zavx0z/dom")).MouseEvent("click", {bubbles: true}))
+    buttons[0]!.dispatchEvent(new (await import("@immersive/dom")).MouseEvent("click", {bubbles: true}))
     root.flush()
     expect(buttons[0]!.textContent).toBe("Первый: 1")
     root.render(module.TestApp, {label: "Обновлённый"})

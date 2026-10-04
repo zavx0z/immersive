@@ -1,15 +1,15 @@
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {ToggleButtonGroupDensity} from "./types.ts"
 import type {ToggleButtonGroupOption} from "./types.ts"
 
-import type {UiButtons} from "@ui/buttons/contract"
+import type {ImmersiveUiComponentButton} from "@immersive-ui-component/button/contract"
 
 /** Протокол выбора одного строкового значения из внешнего набора кнопок. */
-export declare namespace UiButtonsToggleButtonGroup {
+export declare namespace ImmersiveUiComponentButtonToggleGroup {
   /**
   Входные данные ToggleButtonGroup.
   */
-  interface Input extends UiButtons.Input {
+  interface Input extends ImmersiveUiComponentButton.Input {
     readonly value: string
     readonly options: readonly ToggleButtonGroupOption[]
     readonly density?: ToggleButtonGroupDensity | undefined
@@ -18,5 +18,5 @@ export declare namespace UiButtonsToggleButtonGroup {
   }
 
   /** Представление сохраняет общий JSX-результат группы. */
-  type Output = UiButtons.Output & JSX.Element
+  type Output = ImmersiveUiComponentButton.Output & JSX.Element
 }

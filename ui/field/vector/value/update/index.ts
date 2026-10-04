@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {UiFieldsVectorValueUpdateVectorValue as Contract} from "./contract"
-export type {UiFieldsVectorValueUpdateVectorValue} from "./contract"
+import type {ImmersiveUiFieldVectorValueUpdate as Contract} from "./contract"
+export type {ImmersiveUiFieldVectorValueUpdate} from "./contract"
 
 
 export default function updateVectorValue(

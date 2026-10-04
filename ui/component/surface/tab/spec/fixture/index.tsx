@@ -1,6 +1,6 @@
-import Tab from "@ui-surfaces/tab"
-import type {UiSurfacesTab} from "@ui-surfaces/tab"
-type TabProps = UiSurfacesTab.Input
+import Tab from "@immersive-ui-component-surface/tab"
+import type {ImmersiveUiComponentSurfaceTab} from "@immersive-ui-component-surface/tab"
+type TabProps = ImmersiveUiComponentSurfaceTab.Input
 
 /** Один и тот же Tab получает область от принимающей проекции или позиционированного контейнера. */
 export function TabFixture(props: TabProps) {

@@ -1,8 +1,8 @@
-import {component, memo} from "@zavx0z/component"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx-compiler/session"
-import type {NodesNode} from "@nodes/node/contract"
-type NodeChildren = NodesNode.Output | readonly NodesNode.Output[] | null | undefined
+import {component, memo} from "@immersive/component"
+import type {CompiledTemplate} from "@immersive/template/compiled"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveNodesNode} from "@immersive-nodes/node/contract"
+type NodeChildren = ImmersiveNodesNode.Output | readonly ImmersiveNodesNode.Output[] | null | undefined
 import type {GraphRenderedNode, GraphNodeProps} from "../contracts.ts"
 import {GraphNodeSlot} from "./content/index.tsx"
 

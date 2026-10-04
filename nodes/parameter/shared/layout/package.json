@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-parameters/layout",
+  "name": "@immersive-nodes-parameter-shared/layout",
   "label": "ParameterLayout",
   "version": "0.0.0",
   "description": "Размещает пользовательское поле с собственной подписью между адресуемыми сокетами",
@@ -10,17 +10,17 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@nodes/sockets": "workspace:*",
-    "@socket-values/metrics": "workspace:*",
-    "@nodes/parameter-metrics": "workspace:*",
-    "@zavx0z/component": "workspace:*"
+    "@immersive-nodes/socket": "workspace:*",
+    "@immersive-nodes-model-socket/metrics": "workspace:*",
+    "@immersive-nodes-geometry/parameter": "workspace:*",
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/parameters": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/parameter": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@ui-fields/text-field": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@immersive-ui-component-field/text": "workspace:*",
+    "@immersive/dom": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

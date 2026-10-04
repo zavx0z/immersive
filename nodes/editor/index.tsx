@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import {useMemo, useState} from "@zavx0z/component"
-import {metadataBoolean} from "@nodes/metadata"
+import {useMemo, useState} from "@immersive/component"
+import {metadataBoolean} from "@immersive-tech-json/metadata"
 import {GraphView} from "../view/index.tsx"
 import {useNodeTreePresentation} from "../view/tree.ts"
 import {useMeasuredNodeTreePresentation} from "../shared/node-tree/measured.ts"

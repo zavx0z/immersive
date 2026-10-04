@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces/tab",
+  "name": "@immersive-ui-component-surface/tab",
   "label": "Tab",
   "version": "0.0.0",
   "description": "Перемещаемый таб на периметре принимающей области",
@@ -15,15 +15,15 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui/surfaces": "workspace:*"
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-component/surface": "workspace:*"
   }
 }

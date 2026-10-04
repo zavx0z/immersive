@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/color-picker-field",
+  "name": "@immersive-ui-component-field/color-picker",
   "label": "ColorPickerField",
   "version": "0.0.0",
   "description": "Поле интерфейса: каналы и палитра цвета",
@@ -15,22 +15,22 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-fields-color-value/clamp-unit": "workspace:*",
-    "@ui-fields-color-value/color-channel-display-value": "workspace:*",
-    "@ui-fields-color-value/color-hsva-to-value": "workspace:*",
-    "@ui-fields-color-value/color-value-to-hsva": "workspace:*",
-    "@ui-fields-color-value/format-color-value": "workspace:*",
-    "@ui-fields-color-value/normalize-color-value": "workspace:*",
-    "@ui-fields-color-value/parse-color-value": "workspace:*",
-    "@ui-fields-color-value/rgba-css": "workspace:*",
-    "@ui-fields-color-value/wrap-unit": "workspace:*",
-    "@ui-fields/number-field": "workspace:*",
-    "@ui-fields/slider-field": "workspace:*",
-    "@ui-fields/text-field": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-field-color-value/clamp-unit": "workspace:*",
+    "@immersive-ui-field-color-value/channel-display": "workspace:*",
+    "@immersive-ui-field-color-value/from-hsva": "workspace:*",
+    "@immersive-ui-field-color-value/to-hsva": "workspace:*",
+    "@immersive-ui-field-color-value/format": "workspace:*",
+    "@immersive-ui-field-color-value/normalize": "workspace:*",
+    "@immersive-ui-field-color-value/parse": "workspace:*",
+    "@immersive-ui-field-color-value/rgba-css": "workspace:*",
+    "@immersive-ui-field-color-value/wrap-unit": "workspace:*",
+    "@immersive-ui-component-field/number": "workspace:*",
+    "@immersive-ui-component-field/slider": "workspace:*",
+    "@immersive-ui-component-field/text": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

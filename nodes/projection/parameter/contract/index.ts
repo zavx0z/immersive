@@ -1,9 +1,9 @@
-import type {ExternalStore, ParameterSnapshot, Socket as CoreSocket} from "@nodes/tree"
+import type {ExternalStore, ParameterSnapshot, Socket as CoreSocket} from "@immersive-nodes/tree"
 import type {ParameterInput} from "./types"
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Проекция заимствованного снимка или Store в готовые параметры того же Document. */
-export declare namespace NodesParameterProjection {
+export declare namespace ImmersiveNodesProjectionParameter {
   type Input = Readonly<{
     nodeId: string
     snapshot: ParameterSnapshot

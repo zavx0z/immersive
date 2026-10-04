@@ -1,6 +1,6 @@
 import type {JsxElement, JsxSelfClosingElement, Node} from "typescript/unstable/ast"
 import {isJsxElement} from "typescript/unstable/ast/is"
-import SlotAuthoring from "@jsx-slot/authoring"
+import SlotAuthoring from "@immersive-jsx-slot/authoring"
 import {contentProof, emptyProof, joinedProof} from "./content.ts"
 import {SlotContractError} from "./error.ts"
 import type {ContentProof, Receiver, ValidationContext} from "./model.ts"

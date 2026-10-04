@@ -1,8 +1,8 @@
-import type {UiFieldsColorValueColorValueToHsva} from "@ui-fields-color-value/color-value-to-hsva"
-type ColorHsva = UiFieldsColorValueColorValueToHsva.Output
+import type {ImmersiveUiFieldColorValueToHsva} from "@immersive-ui-field-color-value/to-hsva"
+type ColorHsva = ImmersiveUiFieldColorValueToHsva.Output
 
 /** Переводит тон HSVA в целые градусы, остальные каналы округляет до шести десятичных знаков. */
-export declare namespace UiFieldsColorValueColorChannelDisplayValue {
+export declare namespace ImmersiveUiFieldColorValueChannelDisplay {
   /** Аргументы публичной операции colorChannelDisplayValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     channel: "h" | "s" | "v" | "a",

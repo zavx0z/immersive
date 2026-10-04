@@ -4,14 +4,14 @@
 
 @packageDocumentation
 */
-import type {UiButtonsToggleButtonGroup} from "@ui-buttons/toggle-button-group"
-import fieldMetric from "@ui-fields-metrics/field-metric"
-import labelledFieldHeight from "@ui-fields-metrics/labelled-field-height"
-import resolveFieldDensity from "@ui-fields-metrics/resolve-field-density"
+import type {ImmersiveUiComponentButtonToggleGroup} from "@immersive-ui-component-button/toggle-group"
+import fieldMetric from "@immersive-ui-field-metric/read"
+import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
+import resolveFieldDensity from "@immersive-ui-field-metric/resolve-density"
 
 const toggleButtonGroupLayout = Object.freeze({
   height(options: Readonly<{
-    density?: UiButtonsToggleButtonGroup.Input["density"] | undefined
+    density?: ImmersiveUiComponentButtonToggleGroup.Input["density"] | undefined
     label?: boolean | undefined
   }> = {}): number {
     resolveFieldDensity(options.density, "regular", "ToggleButtonGroup")

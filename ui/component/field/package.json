@@ -1,5 +1,5 @@
 {
-  "name": "@ui/fields",
+  "name": "@immersive-ui-component/field",
   "label": "field",
   "version": "0.0.0",
   "description": "Поля сохраняют общий протокол подписи, подсказки и представления.",
@@ -11,26 +11,26 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-fields/checkbox-field": "workspace:*",
-    "@ui-fields/collection-field": "workspace:*",
-    "@ui-fields/color-field": "workspace:*",
-    "@ui-fields/color-picker-field": "workspace:*",
-    "@ui-fields/cycle-field": "workspace:*",
-    "@ui-fields/field-group": "workspace:*",
-    "@ui-fields/matrix-field": "workspace:*",
-    "@ui-fields/number-field": "workspace:*",
-    "@ui-fields/path-field": "workspace:*",
-    "@ui-fields/reference-field": "workspace:*",
-    "@ui-fields/select-field": "workspace:*",
-    "@ui-fields/slider-field": "workspace:*",
-    "@ui-fields/switch-field": "workspace:*",
-    "@ui-fields/text-field": "workspace:*",
-    "@ui-fields/vector-field": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-ui-component-field/checkbox": "workspace:*",
+    "@immersive-ui-component-field/collection": "workspace:*",
+    "@immersive-ui-component-field/color": "workspace:*",
+    "@immersive-ui-component-field/color-picker": "workspace:*",
+    "@immersive-ui-component-field/cycle": "workspace:*",
+    "@immersive-ui-component-field/group": "workspace:*",
+    "@immersive-ui-component-field/matrix": "workspace:*",
+    "@immersive-ui-component-field/number": "workspace:*",
+    "@immersive-ui-component-field/path": "workspace:*",
+    "@immersive-ui-component-field/reference": "workspace:*",
+    "@immersive-ui-component-field/select": "workspace:*",
+    "@immersive-ui-component-field/slider": "workspace:*",
+    "@immersive-ui-component-field/switch": "workspace:*",
+    "@immersive-ui-component-field/text": "workspace:*",
+    "@immersive-ui-component-field/vector": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

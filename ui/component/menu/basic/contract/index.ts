@@ -1,10 +1,10 @@
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {MenuAction} from "./types.ts"
 
-import type {UiMenus} from "@ui/menus/contract"
+import type {ImmersiveUiComponentMenu} from "@immersive-ui-component/menu/contract"
 
 /** Собственный вход Menu и общий результат меню. */
-export declare namespace UiMenusMenu {
+export declare namespace ImmersiveUiComponentMenuBasic {
   /**
   Входные данные Menu.
   */
@@ -18,5 +18,5 @@ export declare namespace UiMenusMenu {
     readonly onClose: () => void
   }
 
-  type Output = UiMenus.Output & JSX.Element
+  type Output = ImmersiveUiComponentMenu.Output & JSX.Element
 }

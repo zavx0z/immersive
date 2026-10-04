@@ -1,7 +1,7 @@
 /** Badge показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import Badge from "@ui/badge"
+import Badge from "@immersive-ui-component/badge"
 
 describe.each([{name: "Основное представление", props: {label: "Готово"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement, getPopoverVisibilityState} from "@zavx0z/dom"
+import {createDocument, HTMLElement, getPopoverVisibilityState} from "@immersive/dom"
 import {createDocumentInteractionController, createDocumentInteractionState, createDocumentRenderer, hitTestProjection, readRenderedSelectionText} from "../src/index.ts"
 
 function fixture() {

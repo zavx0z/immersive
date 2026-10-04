@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces-chrome/owner",
+  "name": "@immersive-ui-component-surface-chrome/owner",
   "label": "SurfaceOwner",
   "version": "0.0.0",
   "description": "Общая поверхность составного компонента с рамкой и состоянием активности",
@@ -15,11 +15,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/typography": "workspace:*",
-    "@ui-surfaces/chrome": "workspace:*"
+    "@immersive-ui-component/typography": "workspace:*",
+    "@immersive-ui-component-surface/chrome": "workspace:*"
   }
 }

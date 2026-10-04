@@ -8,7 +8,7 @@ HTML Renderer вычисляет её из существующего CPU layout
 ## Публичный договор
 
 ```ts
-import {observeElementLayout, readElementLayoutRect} from "@zavx0z/dom/geometry"
+import {observeElementLayout, readElementLayoutRect} from "@immersive/dom/geometry"
 
 const rect = element.getLayoutRect(relativeTo)
 const same = readElementLayoutRect(element, relativeTo)

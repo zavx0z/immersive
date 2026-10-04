@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/is-hex-color",
+  "name": "@immersive-tech-color-hex/valid",
   "label": "isHexColor",
   "version": "0.0.0",
   "description": "Проверяет HEX-цвет из трёх, шести или восьми цифр с необязательными внешними пробелами",

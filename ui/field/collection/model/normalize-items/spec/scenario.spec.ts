@@ -1,6 +1,6 @@
 /** normalizeCollectionItems показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@ui-fields-collection-model/normalize-collection-items"
+import operation from "@immersive-ui-field-collection-model/normalize-items"
 
 describe.each([{name: "Публичный вызов", props: {args: [[{id: "a", label: "Первый"}], "a"] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

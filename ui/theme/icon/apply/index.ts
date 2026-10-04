@@ -4,11 +4,11 @@ SVG-значок apply в формате data URL.
 
 @packageDocumentation
 */
-import type {UiThemesIconsApply as Contract} from "./contract"
-import iconSvg from "@ui-themes-icons/compose"
+import type {ImmersiveUiThemeIconApply as Contract} from "./contract"
+import iconSvg from "@immersive-ui-theme-icon/compose"
 
 const applyIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"m5 13 4 4L19 7\"/>")
 
 export default applyIcon
 
-export type {UiThemesIconsApply} from "./contract"
+export type {ImmersiveUiThemeIconApply} from "./contract"

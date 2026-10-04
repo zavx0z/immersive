@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {SocketValuesKinds as Contract} from "./contract"
-export type {SocketValuesKinds} from "./contract"
+import type {ImmersiveNodesModelSocketKinds as Contract} from "./contract"
+export type {ImmersiveNodesModelSocketKinds} from "./contract"
 
 const SOCKET_KINDS: Contract.Output = Object.freeze([
   "boolean",

@@ -1,6 +1,6 @@
 /** Версия и идентификатор переносимого типа проверяются до публикации копии. */
 import {describe, expect, test} from "bun:test"
-import ownType from "@node-values/type"
+import ownType from "@immersive-nodes-model-parameter/value-type"
 
 describe.each([
   {name: "Первая версия", props: {value: {id: "number", version: 1}}},

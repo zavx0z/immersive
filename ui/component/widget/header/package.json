@@ -1,5 +1,5 @@
 {
-  "name": "@ui-widgets/header",
+  "name": "@immersive-ui-component-widget/header",
   "label": "WidgetHeader",
   "version": "0.0.0",
   "description": "Общий заголовок составного виджета со статусом и действиями",
@@ -15,13 +15,13 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-widgets-header/action": "workspace:*",
-    "@ui/badge": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-component-widget-header/action": "workspace:*",
+    "@immersive-ui-component/badge": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/widgets": "workspace:*"
+    "@immersive-ui-component/widget": "workspace:*"
   }
 }

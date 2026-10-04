@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {UiFieldsSliderField as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldSlider as Contract} from "./contract"
 import {validateSliderField} from "./src/helpers.tsx"
-import resolveFieldDensity from "@ui-fields-metrics/resolve-field-density"
+import resolveFieldDensity from "@immersive-ui-field-metric/resolve-density"
 
 
-export type {UiFieldsSliderField} from "./contract"
+export type {ImmersiveUiComponentFieldSlider} from "./contract"
 
 export default function SliderField(props: Contract.Input): Contract.Output {
   const step = validateSliderField(props)

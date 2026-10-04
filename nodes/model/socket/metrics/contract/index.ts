@@ -1,6 +1,6 @@
 
 /** Общие размеры сокета и строки в логических CSS-пикселях. */
-export declare namespace SocketValuesMetrics {
+export declare namespace ImmersiveNodesModelSocketMetrics {
   type Output = Readonly<{
     NODE_BORDER_WIDTH: number
     NODE_ROW_HEIGHT: number

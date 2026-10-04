@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {UiFieldsColorValueParseColorValue as Contract} from "./contract"
-export type {UiFieldsColorValueParseColorValue} from "./contract"
+import type {ImmersiveUiFieldColorValueParse as Contract} from "./contract"
+export type {ImmersiveUiFieldColorValueParse} from "./contract"
 
-import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
+import normalizeColorValue from "@immersive-ui-field-color-value/normalize"
 
 export default function parseColorValue(value: Contract.Input[0]): Contract.Output {
   const hex = value.trim().replace(/^#/, "")

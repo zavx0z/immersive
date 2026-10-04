@@ -1,4 +1,4 @@
-import {runCoffmanGrahamWorkerRequest} from "@nodes/layout/worker/coffman-graham/executor"
+import {runCoffmanGrahamWorkerRequest} from "@immersive-nodes/layout/worker/coffman-graham/executor"
 const scope = globalThis as unknown as {
   postMessage?: (message: ReturnType<typeof runCoffmanGrahamWorkerRequest>) => void
   addEventListener(type: "message", listener: (event: MessageEvent<Parameters<typeof runCoffmanGrahamWorkerRequest>[0]>) => void): void

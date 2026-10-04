@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/theme-color",
+  "name": "@immersive-ui-view-code-editor-theme/color",
   "label": "themeColor",
   "version": "0.0.0",
   "description": "Возвращает нормализованный HEX-цвет темы редактора либо переданный запасной цвет",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme": "workspace:*",
-    "@ui-views-code-editor/is-hex-color": "workspace:*",
-    "@ui-views-code-editor/normalize-hex-color": "workspace:*"
+    "@immersive-ui-component-view-code-editor-syntax-theme/data": "workspace:*",
+    "@immersive-tech-color-hex/valid": "workspace:*",
+    "@immersive-tech-color-hex/normalize": "workspace:*"
   }
 }

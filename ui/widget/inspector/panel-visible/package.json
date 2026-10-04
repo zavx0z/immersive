@@ -1,5 +1,5 @@
 {
-  "name": "@ui-widgets-inspector/is-inspector-panel-visible",
+  "name": "@immersive-ui-widget-inspector/panel-visible",
   "label": "isInspectorPanelVisible",
   "version": "0.0.0",
   "description": "Видимость панели инспектора при выборе категории и поиске",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-widgets/inspector": "workspace:*"
+    "@immersive-ui-component-widget/inspector": "workspace:*"
   },
   "devDependencies": {}
 }

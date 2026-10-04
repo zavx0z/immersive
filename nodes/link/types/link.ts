@@ -1,5 +1,5 @@
-import type {SocketValuesKinds} from "@socket-values/kinds"
-type SocketKind = SocketValuesKinds.Output[number]
+import type {ImmersiveNodesModelSocketKinds} from "@immersive-nodes-model-socket/kinds"
+type SocketKind = ImmersiveNodesModelSocketKinds.Output[number]
 import type {MarkerComponent} from "../../shared/marker/contracts.ts"
 import type {LinkMarkerGeometry, LinkRoute} from "../../shared/routing/link-path.ts"
 

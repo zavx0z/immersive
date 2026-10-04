@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {UiSelectionFindSelectionOption as Contract} from "./contract"
-import type {UiSelectionValidateSelectionOptions} from "@ui-selection/validate-selection-options"
-type SelectionOptionShape = UiSelectionValidateSelectionOptions.Input[0][number]
+import type {ImmersiveUiSelectionFindOption as Contract} from "./contract"
+import type {ImmersiveUiSelectionValidateOptions} from "@immersive-ui-selection/validate-options"
+type SelectionOptionShape = ImmersiveUiSelectionValidateOptions.Input[0][number]
 
 export default function findSelectionOption<T extends SelectionOptionShape>(
   value: Contract.Input<T>[0],
@@ -15,4 +15,4 @@ export default function findSelectionOption<T extends SelectionOptionShape>(
   return options.find(option => option.value === value)
 }
 
-export type {UiSelectionFindSelectionOption} from "./contract"
+export type {ImmersiveUiSelectionFindOption} from "./contract"

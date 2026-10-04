@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
 import {join} from "node:path"
-import validateSlotContracts from "@jsx-slot/contract"
+import validateSlotContracts from "@immersive-jsx-slot/contract"
 import {barrelSource, childSource, contractSource, createSlotContractFixture, receiverSource} from "./fixture/index.ts"
 
 test("новая версия type-only контракта повторно проверяется сценарием без компиляции", async () => {

@@ -2,12 +2,12 @@ import {afterAll, beforeAll, expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createRoot} from "@zavx0z/component"
-import {createDocument} from "@zavx0z/dom"
-import type {GridHelper} from "@zavx0z/engine"
-import {createSpaceElementFactories, XRLineSegmentsElement} from "@zavx0z/space"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createRoot} from "@immersive/component"
+import {createDocument} from "@immersive/dom"
+import type {GridHelper} from "@immersive/engine"
+import {createSpaceElementFactories, XRLineSegmentsElement} from "@immersive/space"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import type {GridProps} from "../gizmo/grid.tsx"
 
 let directory = ""
@@ -20,7 +20,7 @@ beforeAll(async () => {
     entrypoints: [join(space, "gizmo/grid.tsx")],
     outdir: directory,
     target: "bun",
-    external: ["@zavx0z/component", "@zavx0z/dom", "@zavx0z/engine", "@zavx0z/template/compiled"],
+    external: ["@immersive/component", "@immersive/dom", "@immersive/engine", "@immersive/template/compiled"],
     plugins: [createJsxBunPlugin({cwd: resolve(space, ".."), sourceRoots: [space]})],
   })
   if (!result.success) throw new AggregateError(result.logs, "Grid compilation failed")

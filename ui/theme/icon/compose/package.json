@@ -1,5 +1,5 @@
 {
-  "name": "@ui-themes-icons/compose",
+  "name": "@immersive-ui-theme-icon/compose",
   "label": "iconSvg",
   "version": "0.0.0",
   "description": "Собирает SVG data URL размером 24×24 из векторного содержимого и цвета штрихов",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-themes-icons/encode": "workspace:*"
+    "@immersive-tech-svg/encode": "workspace:*"
   },
   "devDependencies": {
-    "@ui-themes/icons": "workspace:*"
+    "@immersive-ui-theme/icon": "workspace:*"
   }
 }

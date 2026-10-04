@@ -1,7 +1,7 @@
 # Space
 
 `<space>` — базовый корень пространственной сцены одного semantic Document.
-Класс `SpaceElement` экспортируется из `@zavx0z/dom/space`.
+Класс `SpaceElement` экспортируется из `@immersive/dom/space`.
 Элемент создаётся без регистрации фабрик и не создаёт Canvas, Renderer или цикл кадров.
 
 ## Текущий API

@@ -1,6 +1,6 @@
-import type {UiThemesIcons} from "@ui-themes/icons/contract"
+import type {ImmersiveUiThemeIcon} from "@immersive-ui-theme/icon/contract"
 /** Собирает SVG data URL размером 24×24 из векторного содержимого и цвета штрихов. */
-export declare namespace UiThemesIconsCompose {
+export declare namespace ImmersiveUiThemeIconCompose {
   /** Аргументы публичной операции iconSvg; порядок сохраняет её форму вызова. */
   type Input = readonly [
     body: string,
@@ -8,5 +8,5 @@ export declare namespace UiThemesIconsCompose {
   ]
 
   /** Результат публичной операции. */
-  type Output = UiThemesIcons.Output
+  type Output = ImmersiveUiThemeIcon.Output
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-collection-model/collection-min-visible-rows",
+  "name": "@immersive-ui-field-collection-model/min-visible-rows",
   "label": "COLLECTION_MIN_VISIBLE_ROWS",
   "version": "0.0.0",
   "description": "Обработка collection-min-visible-rows",

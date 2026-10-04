@@ -4,11 +4,11 @@ SVG-значок plus в формате data URL.
 
 @packageDocumentation
 */
-import type {UiThemesIconsPlus as Contract} from "./contract"
-import iconSvg from "@ui-themes-icons/compose"
+import type {ImmersiveUiThemeIconPlus as Contract} from "./contract"
+import iconSvg from "@immersive-ui-theme-icon/compose"
 
 const plusIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"M12 5v14\"/><path d=\"M5 12h14\"/>")
 
 export default plusIcon
 
-export type {UiThemesIconsPlus} from "./contract"
+export type {ImmersiveUiThemeIconPlus} from "./contract"

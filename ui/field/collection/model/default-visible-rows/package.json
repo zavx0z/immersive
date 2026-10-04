@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-collection-model/collection-default-visible-rows",
+  "name": "@immersive-ui-field-collection-model/default-visible-rows",
   "label": "COLLECTION_DEFAULT_VISIBLE_ROWS",
   "version": "0.0.0",
   "description": "Обработка collection-default-visible-rows",

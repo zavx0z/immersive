@@ -1,5 +1,5 @@
 {
-  "name": "@zavx0z/jsx",
+  "name": "@immersive/jsx",
   "label": "JSX",
   "version": "0.0.0",
   "description": "Авторский JSX, автоматический protocol, слоты и компиляция",
@@ -15,11 +15,11 @@
     "./jsx-dev-runtime": "./development/index.ts"
   },
   "dependencies": {
-    "@jsx/runtime": "workspace:*",
-    "@jsx/development": "workspace:*",
-    "@jsx/slot": "workspace:*",
-    "@jsx/events": "workspace:*",
-    "@jsx/compiler": "workspace:*"
+    "@immersive-jsx/runtime": "workspace:*",
+    "@immersive-jsx/development": "workspace:*",
+    "@immersive-jsx/slot": "workspace:*",
+    "@immersive-jsx/event": "workspace:*",
+    "@immersive-jsx/compiler": "workspace:*"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
@@ -27,10 +27,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "devDependencies": {
-    "@jsx-runtime/create": "workspace:*",
-    "@jsx-runtime/fragment": "workspace:*",
-    "@jsx-slot/plan": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@jsx-compiler/bun": "workspace:*"
+    "@immersive-jsx-runtime/create": "workspace:*",
+    "@immersive-jsx-runtime/fragment": "workspace:*",
+    "@immersive-jsx-slot/plan": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-jsx-compiler/bun": "workspace:*"
   }
 }

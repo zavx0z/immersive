@@ -1,5 +1,5 @@
-import type {UiFieldsSliderField} from "../contract/index"
-type SliderFieldProps = UiFieldsSliderField.Input
+import type {ImmersiveUiComponentFieldSlider} from "../contract/index"
+type SliderFieldProps = ImmersiveUiComponentFieldSlider.Input
 
 /** Частная подготовка поле интерфейса: числовой диапазон. */
 export function validateSliderField(props: SliderFieldProps): number {

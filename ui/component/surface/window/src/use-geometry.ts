@@ -1,7 +1,7 @@
-import {useLayoutEffect, useRef, useState} from "@zavx0z/component"
-import {observeElementLayout, readElementLayoutRect} from "@zavx0z/dom/geometry"
-import type {UiSurfacesWindow} from "../contract/index"
-type WindowProps = UiSurfacesWindow.Input
+import {useLayoutEffect, useRef, useState} from "@immersive/component"
+import {observeElementLayout, readElementLayoutRect} from "@immersive/dom/geometry"
+import type {ImmersiveUiComponentSurfaceWindow} from "../contract/index"
+type WindowProps = ImmersiveUiComponentSurfaceWindow.Input
 import type {WindowGeometry} from "../contract/types"
 import {dragWindow, fitWindow, type WindowGesture} from "./geometry.ts"
 

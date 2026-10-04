@@ -3,10 +3,10 @@
 
 @packageDocumentation
 */
-import type {NodeGeometrySpacing as Contract} from "./contract"
-export type {NodeGeometrySpacing} from "./contract"
+import type {ImmersiveNodesGeometryNodeSpacing as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodeSpacing} from "./contract"
 
-import {metadataString} from "@nodes/metadata"
+import {metadataString} from "@immersive-tech-json/metadata"
 
 export default function parameterSpacingBefore(
   parameter: Contract.Input,

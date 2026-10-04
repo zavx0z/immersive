@@ -1,5 +1,5 @@
 {
-  "name": "@node-geometry/spacing",
+  "name": "@immersive-nodes-geometry-node/spacing",
   "label": "spacing",
   "version": "0.0.0",
   "description": "Читает и проверяет интервал перед параметром",
@@ -10,13 +10,13 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@nodes/metadata": "workspace:*"
+    "@immersive-tech-json/metadata": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@nodes/parameter-presentation": "workspace:*"
+    "@immersive-nodes-projection-parameter/presentation": "workspace:*"
   }
 }

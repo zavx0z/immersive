@@ -1,4 +1,4 @@
-import type {BufferAttribute} from "@zavx0z/engine"
+import type {BufferAttribute} from "@immersive/engine"
 
 export interface BufferAttributeUploadRange {
   readonly byteOffset: number

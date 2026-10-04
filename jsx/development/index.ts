@@ -5,6 +5,6 @@
 
 @packageDocumentation
 */
-export {default as jsxDEV} from "@jsx-development/create"
-export type {DevelopmentInput, DevelopmentOutput, JSX} from "@jsx-development/create"
-export {default as Fragment} from "@jsx-runtime/fragment"
+export {default as jsxDEV} from "@immersive-jsx-development/create"
+export type {DevelopmentInput, DevelopmentOutput, JSX} from "@immersive-jsx-development/create"
+export {default as Fragment} from "@immersive-jsx-runtime/fragment"

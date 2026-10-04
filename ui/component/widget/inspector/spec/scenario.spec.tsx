@@ -1,9 +1,9 @@
-import Typography from "@ui/typography"
-import runIcon from "@ui-themes-icons/run"
+import Typography from "@immersive-ui-component/typography"
+import runIcon from "@immersive-ui-theme-icon/run"
 /** Inspector показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import Inspector from "@ui-widgets/inspector"
+import Inspector from "@immersive-ui-component-widget/inspector"
 
 describe.each([
   {name: "Основное представление", props: {categories: [{id: "a", label: "Категория", iconSrc: runIcon}], selectedCategoryId: "a", query: "", showSearch: undefined}},

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views/list",
+  "name": "@immersive-ui-component-view/list",
   "label": "List",
   "version": "0.0.0",
   "description": "Список элементов с выбором и доступным пустым состоянием",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/views": "workspace:*"
+    "@immersive-ui-component/view": "workspace:*"
   }
 }

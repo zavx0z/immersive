@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import {createDocument, DOMRectReadOnly, acquireDocumentAuthorStyleSheetOwner, type HTMLElement, type Element} from "@zavx0z/dom"
-import {observeElementLayout, flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
+import {createDocument, DOMRectReadOnly, acquireDocumentAuthorStyleSheetOwner, type HTMLElement, type Element} from "@immersive/dom"
+import {observeElementLayout, flushDocumentLayoutObservers} from "@immersive/dom/geometry"
 import {createDocumentRenderer} from "../src/index.ts"
 
 function setStyle(element: Element, name: string, value: string) {

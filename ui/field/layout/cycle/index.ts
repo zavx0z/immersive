@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {UiFieldsCycleField} from "@ui-fields/cycle-field"
-type CycleFieldDensity = NonNullable<UiFieldsCycleField.Input["density"]>
-import fieldDensityHeight from "@ui-fields-metrics/field-density-height"
-import labelledFieldHeight from "@ui-fields-metrics/labelled-field-height"
+import type {ImmersiveUiComponentFieldCycle} from "@immersive-ui-component-field/cycle"
+type CycleFieldDensity = NonNullable<ImmersiveUiComponentFieldCycle.Input["density"]>
+import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
+import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
 
 const cycleFieldLayout = Object.freeze({
   height(options: Readonly<{

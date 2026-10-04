@@ -1,5 +1,5 @@
 {
-  "name": "@ui-navigation/breadcrumbs",
+  "name": "@immersive-ui-component-navigation/breadcrumb",
   "label": "Breadcrumbs",
   "version": "0.0.0",
   "description": "Навигация по иерархическому пути с текущим последним сегментом",
@@ -15,11 +15,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-themes-icons/chevron-right": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-theme-icon/chevron-right": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   }
 }

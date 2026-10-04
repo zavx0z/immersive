@@ -1,4 +1,4 @@
-import {layoutFixed} from "@nodes/layout/fixed"
+import {layoutFixed} from "@immersive-nodes/layout/fixed"
 import {createWorkerExecutor, serializeWorkerError} from "../../../../execution/worker/src/executor.ts"
 import type {
   FixedWorkerRequest,

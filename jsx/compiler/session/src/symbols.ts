@@ -39,8 +39,8 @@ import {
   isVariableDeclarationList,
 } from "typescript/unstable/ast/is"
 import {skipOuterExpressions, SyntaxKind} from "typescript/unstable/ast"
-import JsxCompileError from "@jsx-compiler/error"
-import SlotAuthoring from "@jsx-slot/authoring"
+import JsxCompileError from "@immersive-jsx-compiler/error"
+import SlotAuthoring from "@immersive-jsx-slot/authoring"
 import {GovernedFiles, sameRegularFile} from "./governed-paths.ts"
 import type {
   JsxChildrenExpressionKind,
@@ -48,8 +48,8 @@ import type {
 } from "./transform.ts"
 import type {JsxStylePrimitiveKind} from "./style.ts"
 
-const jsxElementMarker = "@zavx0z/jsx/element"
-const cssCompilerIntrinsicMarker = "@zavx0z/template/css-compiler-intrinsic"
+const jsxElementMarker = "@immersive/jsx/element"
+const cssCompilerIntrinsicMarker = "@immersive/template/css-compiler-intrinsic"
 
 /**
 Разрешает идентификаторы компонентов, hooks и выражений JSX.
@@ -178,7 +178,7 @@ export async function buildJsxTransformSymbols(
   for (const statement of sourceFile.statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier)) continue
     const moduleName = statement.moduleSpecifier.text
-    if (moduleName === "@zavx0z/component" || isReactRuntimeModule(moduleName)) continue
+    if (moduleName === "@immersive/component" || isReactRuntimeModule(moduleName)) continue
     const clause = statement.importClause
     if (!clause) continue
     const specifiers = [
@@ -186,7 +186,7 @@ export async function buildJsxTransformSymbols(
       ...(clause.namedBindings && isNamedImports(clause.namedBindings) ? clause.namedBindings.elements : []),
     ]
     for (const specifier of specifiers) {
-      if (moduleName === "@zavx0z/browser" &&
+      if (moduleName === "@immersive/browser" &&
         ["useSpace", "useFrame"].includes(specifier.propertyName?.text ?? specifier.name.text)) continue
       const componentCandidate = /^[A-Z]/.test(specifier.name.text)
       const hookCandidate = /^use[A-Z0-9]/.test(specifier.name.text)
@@ -325,7 +325,7 @@ async function isBrandedCssCompilerIntrinsic(
       const manifest = JSON.parse(readFileSync(resolve(packageDirectory, "package.json"), "utf8")) as {
         name?: unknown
       }
-      if (manifest.name === "@zavx0z/template") return true
+      if (manifest.name === "@immersive/template") return true
     } catch {
       // An unreadable package identity cannot authorize the compiler intrinsic.
     }
@@ -497,7 +497,7 @@ async function isExactRuntimeMemo(identifier: Identifier, project: Project): Pro
   if (!identifierSymbol) return false
   for (const statement of sourceFile.statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier) ||
-      statement.moduleSpecifier.text !== "@zavx0z/component") continue
+      statement.moduleSpecifier.text !== "@immersive/component") continue
     const named = statement.importClause?.namedBindings
     if (!named || !isNamedImports(named)) continue
     for (const specifier of named.elements) {

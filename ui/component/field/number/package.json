@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/number-field",
+  "name": "@immersive-ui-component-field/number",
   "label": "NumberField",
   "version": "0.0.0",
   "description": "Поле интерфейса: числовое значение",
@@ -15,22 +15,22 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-fields-number-scrub/resolve-number-drag-range": "workspace:*",
-    "@ui-fields-number-scrub/scrub-number-raw-value": "workspace:*",
-    "@ui-fields-number-scrub/snap-number-value": "workspace:*",
-    "@ui-fields-number-value/format-number-value": "workspace:*",
-    "@ui-fields-number-value/normalize-number-value": "workspace:*",
-    "@ui-fields-number-value/number-fill-percentage": "workspace:*",
-    "@ui-fields-number-value/number-pointer-step": "workspace:*",
-    "@ui-fields-number-value/resolve-number-soft-range": "workspace:*",
-    "@ui-fields-number-value/step-number-value": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-field-number-scrub/range": "workspace:*",
+    "@immersive-ui-field-number-scrub/raw": "workspace:*",
+    "@immersive-ui-field-number-scrub/snap": "workspace:*",
+    "@immersive-ui-field-number-value/format": "workspace:*",
+    "@immersive-ui-field-number-value/normalize": "workspace:*",
+    "@immersive-ui-field-number-value/fill-percentage": "workspace:*",
+    "@immersive-ui-field-number-value/pointer-step": "workspace:*",
+    "@immersive-ui-field-number-value/soft-range": "workspace:*",
+    "@immersive-ui-field-number-value/step": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

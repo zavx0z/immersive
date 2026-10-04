@@ -2,15 +2,15 @@ import type {SelectFieldDensity} from "./types.ts"
 import type {SelectFieldOption} from "./types.ts"
 import type {SelectFieldState} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
-import type {UiFields} from "@ui/fields/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace UiFieldsSelectField {
+export declare namespace ImmersiveUiComponentFieldSelect {
   /**
   Входные данные SelectField.
   */
-  interface Input extends UiFields.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly value: string
     readonly options?: readonly SelectFieldOption[] | undefined
     readonly state?: SelectFieldState | undefined
@@ -20,5 +20,5 @@ export declare namespace UiFieldsSelectField {
     readonly onChange?: ((value: string, event: Event) => void) | undefined
   }
 
-  type Output = UiFields.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

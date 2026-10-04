@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@zavx0z/dom"
+import {createDocument} from "@immersive/dom"
 import {createDocumentRenderer, createDocumentInteractionController, createDocumentInteractionState} from "../src/index.ts"
 
 function fixture(styleSheets: readonly string[]) {

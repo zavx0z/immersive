@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
-import JsxCompilerSession from "@jsx-compiler/session"
+import JsxCompilerSession from "@immersive-jsx-compiler/session"
 
 const root = resolve(import.meta.dir, "../..")
 const packageRoot = resolve(root, "nodes")
@@ -33,7 +33,7 @@ test("[NODES-001] каждый public TSX является compilable natural ow
       expect(source).not.toContain(`export {${owner}} from`)
       expect(source).not.toContain(`export { ${owner} } from`)
       const compiled = await compiler.compileFile(resolve(packageRoot, target))
-      expect(compiled.code).toContain('from "@zavx0z/component"')
+      expect(compiled.code).toContain('from "@immersive/component"')
     }
   } finally {
     await compiler.close()
@@ -53,11 +53,11 @@ test("[NODES-002] скрытые presentation substitutes отсутствуют
 test("[NODES-003] Nodes не создаёт platform owners", async () => {
   const packageJson = await readPackageJson(packageRoot)
   for (const dependency of [
-    "@zavx0z/browser",
-    "@zavx0z/engine",
-    "@renderer/html",
-    "@zavx0z/space",
-    "@zavx0z/webgpu",
+    "@immersive/browser",
+    "@immersive/engine",
+    "@immersive-renderer/html",
+    "@immersive/space",
+    "@immersive/webgpu",
   ]) {
     expect(packageJson.dependencies?.[dependency]).toBeUndefined()
   }
@@ -77,7 +77,7 @@ test("[NODES-003] Nodes не создаёт platform owners", async () => {
 
 test("[NODES-004] адаптер GraphView читает исходный Store без второй модели", async () => {
   const nodeTreeSource = await Bun.file(resolve(packageRoot, "view/tree.ts")).text() + await Bun.file(resolve(packageRoot, "shared/node-tree/contracts.ts")).text() + await Bun.file(resolve(packageRoot, "shared/node-tree/view.ts")).text()
-  const parameterSource = await Bun.file(Bun.resolveSync("@nodes/parameter-projection", packageRoot)).text()
+  const parameterSource = await Bun.file(Bun.resolveSync("@immersive-nodes-projection/parameter", packageRoot)).text()
   const propsStart = nodeTreeSource.indexOf("export type NodeTreeProps")
   const propsEnd = nodeTreeSource.indexOf("\n}>", propsStart)
   const propsContract = nodeTreeSource.slice(propsStart, propsEnd)
@@ -96,9 +96,9 @@ test("[NODES-004] адаптер GraphView читает исходный Store �
 
 test("[NODES-005] domain imports resolve only through public package contracts", async () => {
   const manifests = new Map([
-    ["@nodes/tree", await readPackageJson(resolve(root, "nodes/tree"))],
-    ["@nodes/layout", await readPackageJson(resolve(root, "nodes/layout"))],
-    ["@ui-buttons/button", await readPackageJson(resolve(root, "ui/component/button/basic"))],
+    ["@immersive-nodes/tree", await readPackageJson(resolve(root, "nodes/tree"))],
+    ["@immersive-nodes/layout", await readPackageJson(resolve(root, "nodes/layout"))],
+    ["@immersive-ui-component-button/basic", await readPackageJson(resolve(root, "ui/component/button/basic"))],
   ])
   const specifiers = importSpecifiers(await productionSource())
     .filter(specifier => [...manifests.keys()].some(name =>
@@ -119,15 +119,15 @@ test("[NODES-005] domain imports resolve only through public package contracts",
 })
 
 test("[NODES-006] projected Parameter render и геометрия используют один resolver", async () => {
-  const parameterSource = await Bun.file(Bun.resolveSync("@nodes/parameter-projection", packageRoot)).text()
-  const nodeSource = await Bun.file(Bun.resolveSync("@node-geometry/project", packageRoot)).text()
+  const parameterSource = await Bun.file(Bun.resolveSync("@immersive-nodes-projection/parameter", packageRoot)).text()
+  const nodeSource = await Bun.file(Bun.resolveSync("@immersive-nodes-geometry-node/project", packageRoot)).text()
 
   expect(parameterSource).toContain("const resolved = resolveProjectedParameterPresentation(snapshot)")
-  const heightSource = await Bun.file(Bun.resolveSync("@node-geometry/field-height", packageRoot)).text()
+  const heightSource = await Bun.file(Bun.resolveSync("@immersive-nodes-geometry-node/field-height", packageRoot)).text()
   expect(heightSource).toContain("projectedParameterFieldHeight(")
-  const heightContract = await Bun.file(resolve(Bun.resolveSync("@node-geometry/field-height", packageRoot), "../contract/index.ts")).text()
-  expect(heightContract).toContain('import type {NodesParameterPresentation} from "@nodes/parameter-presentation"')
-  expect(heightContract).toContain('type Input = NodesParameterPresentation.Output')
+  const heightContract = await Bun.file(resolve(Bun.resolveSync("@immersive-nodes-geometry-node/field-height", packageRoot), "../contract/index.ts")).text()
+  expect(heightContract).toContain('import type {ImmersiveNodesProjectionParameterPresentation} from "@immersive-nodes-projection-parameter/presentation"')
+  expect(heightContract).toContain('type Input = ImmersiveNodesProjectionParameterPresentation.Output')
   expect(parameterSource).not.toContain("booleanSwitch")
   expect(parameterSource).not.toContain("collectionEditor")
   expect(nodeSource).toContain("const resolved = resolveProjectedParameterPresentation(parameter)")
@@ -151,7 +151,7 @@ async function productionSource(): Promise<string> {
     sources.push(source)
     const imports = new Bun.Transpiler({loader: file.endsWith(".tsx") ? "tsx" : "ts"}).scan(source).imports
     for (const entry of imports) {
-      if (!entry.path.startsWith(".") && !entry.path.startsWith("@immersive/nodes/") && !/^@nodes\/(node|parameters|sockets)(?:\/|$)/u.test(entry.path)) continue
+      if (!entry.path.startsWith(".") && !entry.path.startsWith("@immersive/nodes/") && !/^@immersive-nodes(?:-|\/)/u.test(entry.path)) continue
       const target = Bun.resolveSync(entry.path, dirname(file))
       if (target.startsWith(`${packageRoot}/`) && /\.[jt]sx?$/u.test(target)) await visit(target)
     }

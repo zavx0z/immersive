@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/collection-field",
+  "name": "@immersive-ui-component-field/collection",
   "label": "CollectionField",
   "version": "0.0.0",
   "description": "Поле интерфейса: коллекция элементов",
@@ -15,19 +15,19 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/icon-button": "workspace:*",
-    "@ui-fields-collection-model/collection-visible-rows-height": "workspace:*",
-    "@ui-fields-collection-model/normalize-collection-items": "workspace:*",
-    "@ui-fields-collection-model/normalize-collection-visible-rows": "workspace:*",
-    "@ui-themes-icons/arrow-down": "workspace:*",
-    "@ui-themes-icons/arrow-up": "workspace:*",
-    "@ui-themes-icons/minus": "workspace:*",
-    "@ui-themes-icons/plus": "workspace:*",
-    "@ui-views/list": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/icon": "workspace:*",
+    "@immersive-ui-field-collection-model/visible-rows-height": "workspace:*",
+    "@immersive-ui-field-collection-model/normalize-items": "workspace:*",
+    "@immersive-ui-field-collection-model/normalize-visible-rows": "workspace:*",
+    "@immersive-ui-theme-icon/arrow-down": "workspace:*",
+    "@immersive-ui-theme-icon/arrow-up": "workspace:*",
+    "@immersive-ui-theme-icon/minus": "workspace:*",
+    "@immersive-ui-theme-icon/plus": "workspace:*",
+    "@immersive-ui-component-view/list": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

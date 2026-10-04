@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-color-value/wrap-unit",
+  "name": "@immersive-ui-field-color-value/wrap-unit",
   "label": "wrapUnit",
   "version": "0.0.0",
   "description": "Периодически приводит конечное значение к диапазону от 0 включительно до 1; неконечное заменяет нулём",

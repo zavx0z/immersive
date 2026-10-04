@@ -1,10 +1,10 @@
-import type {UiFieldsNumberField} from "@ui-fields/number-field"
-type NumberFieldProps = UiFieldsNumberField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldNumber} from "@immersive-ui-component-field/number"
+type NumberFieldProps = ImmersiveUiComponentFieldNumber.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersNumber {
+export declare namespace ImmersiveNodesParameterNumericNumber {
   /**
   Входные данные числового параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersNumber {
 
   @example
   ```ts
-  const input: NodesParametersNumber.Input = {
+  const input: ImmersiveNodesParameterNumericNumber.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace NodesParametersNumber {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: NumberFieldProps["value"]
     readonly min?: NumberFieldProps["min"]
     readonly max?: NumberFieldProps["max"]
@@ -47,7 +47,7 @@ export declare namespace NodesParametersNumber {
     readonly onChange?: NumberFieldProps["onChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

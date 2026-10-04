@@ -1,4 +1,4 @@
-import type {DocumentElementFactory} from "@zavx0z/dom"
+import type {DocumentElementFactory} from "@immersive/dom"
 import {
   XRAnimationElement,
   XRAssetElement,

@@ -6,16 +6,16 @@
 */
 import {MemoCodeLine} from "./src/helpers.tsx"
 import {MemoLineNumber} from "./src/helpers.tsx"
-import {useCallback} from "@zavx0z/component"
-import {useLayoutEffect} from "@zavx0z/component"
-import {useMemo} from "@zavx0z/component"
-import {useRef} from "@zavx0z/component"
-import {useSyncExternalStore} from "@zavx0z/component"
-import CodeEditorModel from "@ui/code-editor-model"
-import assertCodeEditorProps from "@ui-views-code-editor/validate"
-import buildCodeEditorViewModel from "@ui-views-code-editor/view-model"
-import resolveCodeEditorHighlighter from "@ui-views-code-editor/highlighter"
-import type {UiViewsCodeEditor as Contract} from "./contract"
+import {useCallback} from "@immersive/component"
+import {useLayoutEffect} from "@immersive/component"
+import {useMemo} from "@immersive/component"
+import {useRef} from "@immersive/component"
+import {useSyncExternalStore} from "@immersive/component"
+import CodeEditorModel from "@immersive-tech/text-editor"
+import assertCodeEditorProps from "@immersive-ui-component-view-code-editor/validate"
+import buildCodeEditorViewModel from "@immersive-ui-component-view-code-editor/view-model"
+import resolveCodeEditorHighlighter from "@immersive-ui-component-view-code-editor/highlighter"
+import type {ImmersiveUiComponentViewCodeEditor as Contract} from "./contract"
 import type {CodeEditorHandle} from "./contract/types"
 import type {CodeEditorLineDecoration} from "./contract/types"
 import {codeEditorVisualRows} from "./src/visual-rows.ts"
@@ -24,7 +24,7 @@ import {createCodeEditorHandle} from "./src/interaction.ts"
 import type {CodeEditorInteraction} from "./src/interaction.ts"
 
 
-export type {UiViewsCodeEditor} from "./contract"
+export type {ImmersiveUiComponentViewCodeEditor} from "./contract"
 
 export default function CodeEditor(props: Contract.Input): Contract.Output {
   assertCodeEditorProps(props)

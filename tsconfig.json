@@ -7,7 +7,7 @@
     "moduleDetection": "force",
     "moduleResolution": "bundler",
     "jsx": "preserve",
-    "jsxImportSource": "@zavx0z/jsx",
+    "jsxImportSource": "@immersive/jsx",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "resolveJsonModule": true,

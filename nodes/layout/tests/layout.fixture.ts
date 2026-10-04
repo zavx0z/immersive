@@ -1,7 +1,7 @@
-import type {FixedLayoutInput} from "@nodes/layout/fixed"
-import type {AdaptiveLayoutInput as AdaptiveLayoutGraph} from "@nodes/layout/adaptive"
-import type {TopDownLayoutGraph, TopDownContourGraph} from "@nodes/layout/types"
-import type {CoffmanGrahamLayoutInput} from "@nodes/layout/coffman-graham"
+import type {FixedLayoutInput} from "@immersive-nodes/layout/fixed"
+import type {AdaptiveLayoutInput as AdaptiveLayoutGraph} from "@immersive-nodes/layout/adaptive"
+import type {TopDownLayoutGraph, TopDownContourGraph} from "@immersive-nodes/layout/types"
+import type {CoffmanGrahamLayoutInput} from "@immersive-nodes/layout/coffman-graham"
 
 export function fixedGraph(direction: "RIGHT" | "DOWN" = "RIGHT", compound = false): FixedLayoutInput {
   return {

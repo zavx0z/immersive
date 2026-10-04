@@ -1,13 +1,13 @@
 
-import type {NodesNode} from "@nodes/node/contract"
-import type {JSX} from "@jsx-compiler/session"
-import type {NodesLayout} from "@nodes/layout/contract"
-type NodeRect = NodesLayout.Output["bounds"]
-import type {NodeGeometryProject} from "@node-geometry/project"
-type NodeShape = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["shape"]>
+import type {ImmersiveNodesNode} from "@immersive-nodes/node/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveNodesLayout} from "@immersive-nodes/layout/contract"
+type NodeRect = ImmersiveNodesLayout.Output["bounds"]
+import type {ImmersiveNodesGeometryNodeProject} from "@immersive-nodes-geometry-node/project"
+type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
 
 /** Собственные данные представления и общий протокол ноды. */
-export declare namespace NodesNodeDiagram {
+export declare namespace ImmersiveNodesNodeDiagram {
   /**
   Данные отображения диаграммной ноды. Компонент показывает описание внутри Pane,
   а выбор состояния и обработка действий остаются у вызывающей стороны.
@@ -46,7 +46,7 @@ export declare namespace NodesNodeDiagram {
 
   @example
   ```ts
-  const input: NodesNodeDiagram.Input = {
+  const input: ImmersiveNodesNodeDiagram.Input = {
     id: "example",
     description: "Описание узла",
     shape: "rectangle",
@@ -54,12 +54,12 @@ export declare namespace NodesNodeDiagram {
   }
   ```
   */
-  interface Input extends NodesNode.Input {
+  interface Input extends ImmersiveNodesNode.Input {
     readonly description: string
     readonly rect?: NodeRect | undefined
     readonly intrinsic?: boolean | undefined
     readonly shape?: NodeShape | undefined
   }
 
-  type Output = NodesNode.Output & JSX.Element
+  type Output = ImmersiveNodesNode.Output & JSX.Element
 }

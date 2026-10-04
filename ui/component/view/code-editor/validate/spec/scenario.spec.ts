@@ -1,6 +1,6 @@
 /** assertCodeEditorProps показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@ui-views-code-editor/validate"
+import operation from "@immersive-ui-component-view-code-editor/validate"
 
 describe.each([{name: "Публичный вызов", props: {args: [{value: "Текст", readOnly: true}] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

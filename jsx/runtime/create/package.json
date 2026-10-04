@@ -1,5 +1,5 @@
 {
-  "name": "@jsx-runtime/create",
+  "name": "@immersive-jsx-runtime/create",
   "label": "JSX runtime",
   "version": "0.0.0",
   "description": "Автоматический JSX protocol для подготовленных компонентов",
@@ -15,14 +15,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-slot/plan": "workspace:*",
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@jsx-slot/child": "workspace:*",
-    "@jsx-runtime/fragment": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-slot/plan": "workspace:*",
+    "@immersive/component": "workspace:*",
+    "@immersive/template": "workspace:*",
+    "@immersive-jsx-slot/child": "workspace:*",
+    "@immersive-jsx-runtime/fragment": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
-    "@zavx0z/dom": "workspace:*"
+    "@immersive/dom": "workspace:*"
   }
 }

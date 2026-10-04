@@ -26,13 +26,13 @@ export type DocumentAuthorStyleSheetOwner = Readonly<{
 }>
 
 export const acquireDocumentAuthorStyleSheetOwnerInternal = Symbol.for(
-  "@zavx0z/dom/acquire-document-author-style-sheet-owner"
+  "@immersive/dom/acquire-document-author-style-sheet-owner"
 )
 export const readDocumentAuthorStyleSheetsInternal = Symbol.for(
-  "@zavx0z/dom/read-document-author-style-sheets"
+  "@immersive/dom/read-document-author-style-sheets"
 )
 export const subscribeDocumentAuthorStyleSheetsInternal = Symbol.for(
-  "@zavx0z/dom/subscribe-document-author-style-sheets"
+  "@immersive/dom/subscribe-document-author-style-sheets"
 )
 
 type DocumentAuthorStyleSheetHost = Document & Readonly<{

@@ -1,8 +1,8 @@
-import type {JSX} from "@jsx-compiler/session"
-import type Socket from "@nodes/sockets"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type Socket from "@immersive-nodes/socket"
 
 /** Авторские параметры разделяют адрес ноды, подпись, сокеты и внешнее состояние. */
-export declare namespace NodesParameters {
+export declare namespace ImmersiveNodesParameter {
   /** Общая строка параметра; конкретное значение и его события определяет участник. */
   interface Input {
     readonly id: string

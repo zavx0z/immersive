@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument, type Element} from "@zavx0z/dom"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import {Parameter as ParameterModel, type NodeJsonValue} from "@nodes/tree"
+import {createRoot} from "@immersive/component"
+import {createDocument, type Element} from "@immersive/dom"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
+import {Parameter as ParameterModel, type NodeJsonValue} from "@immersive-nodes/tree"
 
 const root = resolve(import.meta.dir, "../../../..")
 Bun.plugin(createJsxBunPlugin({
@@ -13,8 +13,8 @@ Bun.plugin(createJsxBunPlugin({
   sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes/parameter"), resolve(root, "nodes/socket"), resolve(root, "ui")],
 }))
 
-const {default: Parameter} = await import("@nodes/parameter-projection")
-const {default: TextParameter} = await import("@nodes-parameters/text")
+const {default: Parameter} = await import("@immersive-nodes-projection/parameter")
+const {default: TextParameter} = await import("@immersive-nodes-parameter/text")
 const {AuthoredText} = await import("../../shared/tests/authored.fixture")
 
 test("[NODES-TITLE-003] Parameter проецирует description ровно на один видимый target", () => {

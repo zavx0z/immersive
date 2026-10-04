@@ -1,5 +1,5 @@
 {
-  "name": "@nodes/json-patch",
+  "name": "@immersive-tech-json/patch",
   "label": "tech/json/patch",
   "version": "0.0.0",
   "description": "Применяет ограниченный JSON Patch атомарно к собственной копии данных",
@@ -14,9 +14,9 @@
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "dependencies": {
-    "@node-values/own": "workspace:*",
-    "@node-values/equal": "workspace:*",
-    "@node-json-patch/error": "workspace:*",
-    "@node-json-patch/limits": "workspace:*"
+    "@immersive-tech-json-value/own": "workspace:*",
+    "@immersive-tech-json-value/equal": "workspace:*",
+    "@immersive-tech-json-patch/error": "workspace:*",
+    "@immersive-tech-json-patch/limits": "workspace:*"
   }
 }

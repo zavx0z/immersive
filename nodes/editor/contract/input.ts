@@ -1,11 +1,11 @@
-import type {LayoutResult} from "@nodes/layout/types"
-import type {NodesParameterProjection} from "@nodes/parameter-projection"
-type ParameterInput = Parameters<NonNullable<NodesParameterProjection.Input["onInput"]>>[0]
-import type {NodesNode} from "@nodes/node/contract"
-type NodeChildren = NodesNode.Output | readonly NodesNode.Output[] | null | undefined
-import type {NodeGeometryProject} from "@node-geometry/project"
-type NodeKind = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["kind"]>
-type NodeShape = NonNullable<NonNullable<NodeGeometryProject.Input[4]>["shape"]>
+import type {LayoutResult} from "@immersive-nodes/layout/types"
+import type {ImmersiveNodesProjectionParameter} from "@immersive-nodes-projection/parameter"
+type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
+import type {ImmersiveNodesNode} from "@immersive-nodes/node/contract"
+type NodeChildren = ImmersiveNodesNode.Output | readonly ImmersiveNodesNode.Output[] | null | undefined
+import type {ImmersiveNodesGeometryNodeProject} from "@immersive-nodes-geometry-node/project"
+type NodeKind = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["kind"]>
+type NodeShape = NonNullable<NonNullable<ImmersiveNodesGeometryNodeProject.Input[4]>["shape"]>
 import type {
   GraphSelection,
   GraphTransform,

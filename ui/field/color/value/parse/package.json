@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-color-value/parse-color-value",
+  "name": "@immersive-ui-field-color-value/parse",
   "label": "parseColorValue",
   "version": "0.0.0",
   "description": "Разбирает шестизначный или восьмизначный HEX-цвет, возвращая RGBA либо null",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-color-value/normalize-color-value": "workspace:*"
+    "@immersive-ui-field-color-value/normalize": "workspace:*"
   }
 }

@@ -5,11 +5,11 @@
 
 @packageDocumentation
 */
-export {default as planSlots} from "@jsx-slot/plan"
-export type {PlanSlotsInput, PlanSlotsOutput} from "@jsx-slot/plan"
-export {default as slotChild} from "@jsx-slot/child"
-export type {SlotChildInput, SlotChildOutput} from "@jsx-slot/child"
-export {default as SlotAuthoring} from "@jsx-slot/authoring"
-export type {SlotAuthoringInput, SlotAuthoringOutput} from "@jsx-slot/authoring"
-export {default as validateSlotContracts} from "@jsx-slot/contract"
-export type {ValidateSlotContractsInput, ValidateSlotContractsOutput} from "@jsx-slot/contract"
+export {default as planSlots} from "@immersive-jsx-slot/plan"
+export type {PlanSlotsInput, PlanSlotsOutput} from "@immersive-jsx-slot/plan"
+export {default as slotChild} from "@immersive-jsx-slot/child"
+export type {SlotChildInput, SlotChildOutput} from "@immersive-jsx-slot/child"
+export {default as SlotAuthoring} from "@immersive-jsx-slot/authoring"
+export type {SlotAuthoringInput, SlotAuthoringOutput} from "@immersive-jsx-slot/authoring"
+export {default as validateSlotContracts} from "@immersive-jsx-slot/contract"
+export type {ValidateSlotContractsInput, ValidateSlotContractsOutput} from "@immersive-jsx-slot/contract"

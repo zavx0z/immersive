@@ -1,4 +1,4 @@
-import type {Element} from "@zavx0z/dom"
+import type {Element} from "@immersive/dom"
 
 export type FrameIndexRange = Readonly<{start: number; end: number}>
 export type FrameSpliceRange = Readonly<{start: number; count: number}>

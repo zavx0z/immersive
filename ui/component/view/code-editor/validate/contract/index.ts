@@ -1,9 +1,9 @@
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
-type CodeEditorProps = UiViewsCodeEditor.Input
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
 
 
 /** Проверка входных данных редактора исходного текста. */
-export declare namespace UiViewsCodeEditorValidate {
+export declare namespace ImmersiveUiComponentViewCodeEditorValidate {
   /** Аргументы публичной операции assertCodeEditorProps; порядок сохраняет её форму вызова. */
   type Input = readonly [
     props: CodeEditorProps

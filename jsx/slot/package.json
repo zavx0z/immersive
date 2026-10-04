@@ -1,5 +1,5 @@
 {
-  "name": "@jsx/slot",
+  "name": "@immersive-jsx/slot",
   "label": "Слоты JSX",
   "version": "0.0.0",
   "description": "Авторство, контракты и распределение содержимого JSX-слотов",
@@ -13,9 +13,9 @@
     }
   },
   "dependencies": {
-    "@jsx-slot/plan": "workspace:*",
-    "@jsx-slot/child": "workspace:*",
-    "@jsx-slot/authoring": "workspace:*",
-    "@jsx-slot/contract": "workspace:*"
+    "@immersive-jsx-slot/plan": "workspace:*",
+    "@immersive-jsx-slot/child": "workspace:*",
+    "@immersive-jsx-slot/authoring": "workspace:*",
+    "@immersive-jsx-slot/contract": "workspace:*"
   }
 }

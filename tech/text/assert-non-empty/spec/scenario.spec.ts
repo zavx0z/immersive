@@ -1,6 +1,6 @@
 /** assertNonEmpty показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@ui-views-code-editor/assert-non-empty"
+import operation from "@immersive-tech-text/assert-non-empty"
 
 describe.each([{name: "Публичный вызов", props: {args: ["Имя", "Значение"] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

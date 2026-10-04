@@ -1,5 +1,5 @@
 {
-  "name": "@zavx0z/browser",
+  "name": "@immersive/browser",
   "label": "Браузер",
   "version": "0.0.0",
   "private": true,
@@ -21,46 +21,46 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/template": "workspace:*",
-    "@zavx0z/dom": "workspace:*",
-    "@zavx0z/engine": "workspace:*",
-    "@renderer/html": "workspace:*",
-    "@zavx0z/space": "workspace:*",
-    "@zavx0z/webgpu": "workspace:*"
+    "@immersive/component": "workspace:*",
+    "@immersive/template": "workspace:*",
+    "@immersive/dom": "workspace:*",
+    "@immersive/engine": "workspace:*",
+    "@immersive-renderer/html": "workspace:*",
+    "@immersive/space": "workspace:*",
+    "@immersive/webgpu": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@zavx0z/component": {
+    "@immersive/component": {
       "optional": true
     },
-    "@zavx0z/template": {
+    "@immersive/template": {
       "optional": true
     },
-    "@zavx0z/dom": {
+    "@immersive/dom": {
       "optional": true
     },
-    "@zavx0z/engine": {
+    "@immersive/engine": {
       "optional": true
     },
-    "@renderer/html": {
+    "@immersive-renderer/html": {
       "optional": true
     },
-    "@zavx0z/space": {
+    "@immersive/space": {
       "optional": true
     },
-    "@zavx0z/webgpu": {
+    "@immersive/webgpu": {
       "optional": true
     }
   },
   "license": "MIT",
   "devDependencies": {
-    "@jsx-compiler/bun": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@zavx0z/jsx": "workspace:*",
-    "@ui-menus/clipboard-menu": "workspace:*",
-    "@ui-views/code-editor": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@ui/code-editor-model": "workspace:*",
-    "@ui-widgets/editor": "workspace:*"
+    "@immersive-jsx-compiler/bun": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive/jsx": "workspace:*",
+    "@immersive-ui-component-menu/clipboard": "workspace:*",
+    "@immersive-ui-component-view/code-editor": "workspace:*",
+    "@immersive-ui/component": "workspace:*",
+    "@immersive-tech/text-editor": "workspace:*",
+    "@immersive-ui-component-widget/editor": "workspace:*"
   }
 }

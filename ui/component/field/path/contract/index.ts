@@ -1,14 +1,14 @@
 import type {PathFieldDensity} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
-import type {UiFields} from "@ui/fields/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace UiFieldsPathField {
+export declare namespace ImmersiveUiComponentFieldPath {
   /**
   Входные данные PathField.
   */
-  interface Input extends UiFields.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly value: string
     readonly placeholder?: string | undefined
     readonly disabled?: boolean | undefined
@@ -20,5 +20,5 @@ export declare namespace UiFieldsPathField {
     readonly onBrowse?: ((event: Event) => void) | undefined
   }
 
-  type Output = UiFields.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

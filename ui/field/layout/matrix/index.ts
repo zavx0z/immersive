@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {UiFieldsMatrixField} from "@ui-fields/matrix-field"
-type MatrixFieldDensity = NonNullable<UiFieldsMatrixField.Input["density"]>
-import matrixFieldHeight from "@ui-fields-metrics/matrix-field-height"
+import type {ImmersiveUiComponentFieldMatrix} from "@immersive-ui-component-field/matrix"
+type MatrixFieldDensity = NonNullable<ImmersiveUiComponentFieldMatrix.Input["density"]>
+import matrixFieldHeight from "@immersive-ui-field-metric/matrix-height"
 
 const matrixFieldLayout = Object.freeze({
   height(options: Readonly<{

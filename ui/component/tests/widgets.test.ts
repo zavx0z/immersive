@@ -1,32 +1,32 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument, Event, InputEvent, KeyboardEvent, MouseEvent, CompositionEvent, readDocumentScrollIntoViewRequests, type HTMLInputElement, type HTMLElement} from "@zavx0z/dom"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import {createDocumentRenderer} from "@renderer/html"
-import CodeEditorModel from "@ui/code-editor-model"
-import TerminalModel from "@ui/terminal-model"
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
-type CodeEditorHandle = NonNullable<Parameters<NonNullable<UiViewsCodeEditor.Input["onReady"]>>[0]>
-import type {UiWidgetsEditor} from "@ui-widgets/editor"
-type EditorProps = UiWidgetsEditor.Input
-import type {UiWidgetsTerminal} from "@ui-widgets/terminal"
-type TerminalProps = UiWidgetsTerminal.Input
-type TerminalHandle = NonNullable<Parameters<NonNullable<UiWidgetsTerminal.Input["onReady"]>>[0]>
-import type {UiWidgetsTree} from "@ui-widgets/tree"
-type TreeProps = UiWidgetsTree.Input
-import type {UiSurfacesWindow} from "@ui-surfaces/window"
-type WindowProps = UiSurfacesWindow.Input
+import {createRoot} from "@immersive/component"
+import {createDocument, Event, InputEvent, KeyboardEvent, MouseEvent, CompositionEvent, readDocumentScrollIntoViewRequests, type HTMLInputElement, type HTMLElement} from "@immersive/dom"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
+import {createDocumentRenderer} from "@immersive-renderer/html"
+import CodeEditorModel from "@immersive-tech/text-editor"
+import TerminalModel from "@immersive-tech/terminal"
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+type CodeEditorHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentViewCodeEditor.Input["onReady"]>>[0]>
+import type {ImmersiveUiComponentWidgetEditor} from "@immersive-ui-component-widget/editor"
+type EditorProps = ImmersiveUiComponentWidgetEditor.Input
+import type {ImmersiveUiComponentWidgetTerminal} from "@immersive-ui-component-widget/terminal"
+type TerminalProps = ImmersiveUiComponentWidgetTerminal.Input
+type TerminalHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentWidgetTerminal.Input["onReady"]>>[0]>
+import type {ImmersiveUiComponentWidgetTree} from "@immersive-ui-component-widget/tree"
+type TreeProps = ImmersiveUiComponentWidgetTree.Input
+import type {ImmersiveUiComponentSurfaceWindow} from "@immersive-ui-component-surface/window"
+type WindowProps = ImmersiveUiComponentSurfaceWindow.Input
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
-import {textPositionAtOffset} from "@zavx0z/dom/text-position"
+import {textPositionAtOffset} from "@immersive/dom/text-position"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {default: Editor} = await import("@ui-widgets/editor")
-const {default: Terminal} = await import("@ui-widgets/terminal")
-const {default: Tree} = await import("@ui-widgets/tree")
-const {default: Window} = await import("@ui-surfaces/window")
+const {default: Editor} = await import("@immersive-ui-component-widget/editor")
+const {default: Terminal} = await import("@immersive-ui-component-widget/terminal")
+const {default: Tree} = await import("@immersive-ui-component-widget/tree")
+const {default: Window} = await import("@immersive-ui-component-surface/window")
 
 function fixture() {
   const document = createDocument()

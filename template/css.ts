@@ -1,13 +1,13 @@
 import {parseCssTemplateShape} from "./css-shape/index.ts"
 import {getTaggedTemplateShape} from "./tagged-template.ts"
-const cssShapeFrontend = Symbol("@zavx0z/template/css-shape")
+const cssShapeFrontend = Symbol("@immersive/template/css-shape")
 
-const cssTemplateResultType = Symbol("@zavx0z/template/css-result")
-const cssRuntimeGuard = "@zavx0z/template/css-runtime-guard"
-const cssSourceValueMarker = "@zavx0z/template/css-source-value"
+const cssTemplateResultType = Symbol("@immersive/template/css-result")
+const cssRuntimeGuard = "@immersive/template/css-runtime-guard"
+const cssSourceValueMarker = "@immersive/template/css-source-value"
 
 export type CssSourceValue = Readonly<{
-  readonly "@zavx0z/template/css-source-value": true
+  readonly "@immersive/template/css-source-value": true
 }>
 
 export type CssStyleValue =

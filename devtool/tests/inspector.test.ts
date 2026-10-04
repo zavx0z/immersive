@@ -1,7 +1,7 @@
 import {describe, expect, it} from "bun:test"
-import {createDocument} from "@zavx0z/dom"
-import {createDocumentRenderer} from "@renderer/html"
-import {createDomInspector, type DomInspectorSnapshot} from "@zavx0z/devtools"
+import {createDocument} from "@immersive/dom"
+import {createDocumentRenderer} from "@immersive-renderer/html"
+import {createDomInspector, type DomInspectorSnapshot} from "@immersive/devtool"
 
 describe("DOM inspector identity and snapshots", () => {
   it("assigns stable realm-local IDs and returns an immutable serializable tree", () => {

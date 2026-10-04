@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces-window/control",
+  "name": "@immersive-ui-component-surface/window-control",
   "label": "WindowControl",
   "version": "0.0.0",
   "description": "Управление видимостью существующего окна",
@@ -15,12 +15,12 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/dom": "workspace:*",
-    "@ui/surfaces": "workspace:*"
+    "@immersive/dom": "workspace:*",
+    "@immersive-ui-component/surface": "workspace:*"
   }
 }

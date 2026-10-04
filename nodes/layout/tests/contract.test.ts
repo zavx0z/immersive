@@ -1,8 +1,8 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {layoutFixed, type FixedLayoutInput} from "@nodes/layout/fixed"
-import {layoutFixed as layoutFixedFromRoot, type FixedLayoutOutput} from "@nodes/layout"
-import {runFixedWorkerRequest} from "@nodes/layout/worker/fixed/executor"
+import {layoutFixed, type FixedLayoutInput} from "@immersive-nodes/layout/fixed"
+import {layoutFixed as layoutFixedFromRoot, type FixedLayoutOutput} from "@immersive-nodes/layout"
+import {runFixedWorkerRequest} from "@immersive-nodes/layout/worker/fixed/executor"
 
 const packageRoot = resolve(import.meta.dir, "..")
 
@@ -25,17 +25,17 @@ test("[LAYOUT-001] layout остаётся чистым numeric owner без UI/
   const source = await productionSource()
   for (const specifier of importSpecifiers(source)) {
     expect([
-      "@zavx0z/browser",
-      "@zavx0z/dom",
-      "@zavx0z/engine",
+      "@immersive/browser",
+      "@immersive/dom",
+      "@immersive/engine",
       "@immersive/nodes",
-      "@nodes/parameters",
-      "@nodes/sockets",
-      "@nodes/tree",
-      "@renderer/html",
-      "@zavx0z/space",
-      "@zavx0z/ui",
-      "@zavx0z/webgpu",
+      "@immersive-nodes/parameter",
+      "@immersive-nodes/socket",
+      "@immersive-nodes/tree",
+      "@immersive-renderer/html",
+      "@immersive/space",
+      "@immersive-ui/component",
+      "@immersive/webgpu",
     ].some(prefix => specifier === prefix || specifier.startsWith(`${prefix}/`))).toBe(false)
   }
 
@@ -73,7 +73,7 @@ test("[LAYOUT-003] exact Worker executor эквивалентен прямому
 
 test("[LAYOUT-004] Worker является stateless executor, а не вторым NodeTree", async () => {
   const workerSource = await productionSource()
-  expect(workerSource).not.toContain("@nodes/tree")
+  expect(workerSource).not.toContain("@immersive-nodes/tree")
   expect(workerSource).not.toMatch(/\bNodeTree\b/u)
   expect(workerSource).not.toContain("createDocument")
   expect(workerSource).not.toContain("requestAnimationFrame")

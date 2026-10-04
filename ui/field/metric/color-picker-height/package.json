@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-metrics/color-picker-field-height",
+  "name": "@immersive-ui-field-metric/color-picker-height",
   "label": "colorPickerFieldHeight",
   "version": "0.0.0",
   "description": "Проверяемая высота составного поля выбора цвета",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-metric": "workspace:*"
+    "@immersive-ui-field-metric/read": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces-chrome/button",
+  "name": "@immersive-ui-component-surface-chrome/button",
   "label": "SurfaceButton",
   "version": "0.0.0",
   "description": "Кнопка управления поверхностью с единым размером и доступностью",
@@ -15,11 +15,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-surfaces/chrome": "workspace:*"
+    "@immersive-ui-component-surface/chrome": "workspace:*"
   }
 }

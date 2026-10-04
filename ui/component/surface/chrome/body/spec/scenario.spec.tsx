@@ -1,8 +1,8 @@
-import Typography from "@ui/typography"
+import Typography from "@immersive-ui-component/typography"
 /** SurfaceBody показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import SurfaceBody from "@ui-surfaces-chrome/body"
+import SurfaceBody from "@immersive-ui-component-surface-chrome/body"
 
 describe.each([{name: "Основное представление", props: {}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

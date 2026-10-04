@@ -1,5 +1,5 @@
 {
-  "name": "@ui-themes-icons/expand-all",
+  "name": "@immersive-ui-theme-icon/expand-all",
   "label": "expandAllIcon",
   "version": "0.0.0",
   "description": "SVG-значок expand-all в формате data URL",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-themes-icons/compose": "workspace:*"
+    "@immersive-ui-theme-icon/compose": "workspace:*"
   },
   "devDependencies": {
-    "@ui-themes/icons": "workspace:*"
+    "@immersive-ui-theme/icon": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@zavx0z/dom"
+import {createDocument} from "@immersive/dom"
 import {createDocumentInteractionController, createDocumentRenderer} from "../src/index.ts"
 
 // Deliberately proportional metrics: equal character counts have different widths.

@@ -1,7 +1,7 @@
-import type {Element} from "@zavx0z/dom"
-import type {ComponentValue} from "@zavx0z/component"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx-compiler/session"
+import type {Element} from "@immersive/dom"
+import type {ComponentValue} from "@immersive/component"
+import type {CompiledTemplate} from "@immersive/template/compiled"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {CapturedFrame} from "../native-canvas.ts"
 
 /**
@@ -27,7 +27,7 @@ import type {CapturedFrame} from "../native-canvas.ts"
 
 @example
 ```tsx
-import Typography from "@ui/typography"
+import Typography from "@immersive-ui-component/typography"
 
 const headless = createHeadless()
 const element = await headless.render(

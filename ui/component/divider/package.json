@@ -1,5 +1,5 @@
 {
-  "name": "@ui/divider",
+  "name": "@immersive-ui-component/divider",
   "label": "Divider",
   "version": "0.0.0",
   "description": "Разделитель соседних областей интерфейса",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   }
 }

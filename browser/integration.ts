@@ -1,8 +1,8 @@
 import {createRootWithSeams, inspectBrowserRoot, type Root as ApplicationRoot, type RootOptions} from "./create-root.ts"
 import {createApplicationStyleSheets} from "./src/application-stylesheets.ts"
 import {createBrowserLinkedAuthorStyleSheetHost} from "./src/linked-author-style-sheet-host.ts"
-import {loadDocumentDefaultFont} from "@zavx0z/engine/default-font"
-import type {TrueTypeFont} from "@zavx0z/engine"
+import {loadDocumentDefaultFont} from "@immersive/engine/default-font"
+import type {TrueTypeFont} from "@immersive/engine"
 import {loadFontFaces, type BrowserFontFaceSource} from "./font-faces.ts"
 import type {Root as Presentation, RootLinkedAuthorStyleSheet} from "./src/attach.ts"
 

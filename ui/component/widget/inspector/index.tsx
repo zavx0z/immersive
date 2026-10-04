@@ -8,14 +8,14 @@ import {InspectorActionButton} from "./src/action-button"
 
 import {CategoryButton} from "./src/helpers.tsx"
 import {InspectorContextRowView} from "./src/helpers.tsx"
-import type {UiWidgetsInspector as Contract} from "./contract"
+import type {ImmersiveUiComponentWidgetInspector as Contract} from "./contract"
 import {assertInspectorProps} from "./src/helpers.tsx"
-import IconButton from "@ui-buttons/icon-button"
-import TextField from "@ui-fields/text-field"
-import searchIcon from "@ui-themes-icons/search"
+import IconButton from "@immersive-ui-component-button/icon"
+import TextField from "@immersive-ui-component-field/text"
+import searchIcon from "@immersive-ui-theme-icon/search"
 
 
-export type {UiWidgetsInspector} from "./contract"
+export type {ImmersiveUiComponentWidgetInspector} from "./contract"
 
 export default function Inspector(props: Contract.Input): Contract.Output {
   assertInspectorProps(props)

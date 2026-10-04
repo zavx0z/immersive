@@ -1,9 +1,9 @@
-import type {UiSurfaces} from "@ui/surfaces/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentSurface} from "@immersive-ui-component/surface/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {FrameEdge, FrameHandle} from "./types"
 
 /** Рамка рабочей области сохраняет заголовок, команды и содержимое вызывающего владельца. */
-export declare namespace UiSurfacesFrame {
+export declare namespace ImmersiveUiComponentSurfaceFrame {
   interface Input {
     readonly title: string
     readonly edge: FrameEdge
@@ -16,5 +16,5 @@ export declare namespace UiSurfacesFrame {
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = UiSurfaces.Output & JSX.Element<Slots>
+  type Output = ImmersiveUiComponentSurface.Output & JSX.Element<Slots>
 }

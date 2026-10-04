@@ -1,8 +1,8 @@
-import {Button, IconButton, ToggleButtonGroup, type UiButtons} from "@ui/buttons"
-import runIcon from "@ui-themes-icons/run"
+import {Button, IconButton, ToggleButtonGroup, type ImmersiveUiComponentButton} from "@immersive-ui-component/button"
+import runIcon from "@immersive-ui-theme-icon/run"
 
 /** Совместное представление реальных участников Cluster для одного Experience. */
-export default function ButtonExamples(props: UiButtons.Input & {label: string}): UiButtons.Output {
+export default function ButtonExamples(props: ImmersiveUiComponentButton.Input & {label: string}): ImmersiveUiComponentButton.Output {
   return <section>
       <Button
         label={props.label}

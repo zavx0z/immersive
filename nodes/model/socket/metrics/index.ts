@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {SocketValuesMetrics as Contract} from "./contract"
-export type {SocketValuesMetrics} from "./contract"
+import type {ImmersiveNodesModelSocketMetrics as Contract} from "./contract"
+export type {ImmersiveNodesModelSocketMetrics} from "./contract"
 
 const metrics: Contract.Output = Object.freeze({
   NODE_BORDER_WIDTH: 1,

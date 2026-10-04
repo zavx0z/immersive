@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-scrub/scrub-number-raw-value",
+  "name": "@immersive-ui-field-number-scrub/raw",
   "label": "scrubNumberRawValue",
   "version": "0.0.0",
   "description": "Переводит движение указателя в ограниченное диапазоном число с замедлением при Shift",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-number-value/resolve-number-soft-range": "workspace:*"
+    "@immersive-ui-field-number-value/soft-range": "workspace:*"
   }
 }

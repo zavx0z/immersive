@@ -1,10 +1,10 @@
-import type {UiFieldsMatrixField} from "@ui-fields/matrix-field"
-type MatrixFieldProps = UiFieldsMatrixField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldMatrix} from "@immersive-ui-component-field/matrix"
+type MatrixFieldProps = ImmersiveUiComponentFieldMatrix.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersMatrix {
+export declare namespace ImmersiveNodesParameterCompositeMatrix {
   /**
   Входные данные матричного параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersMatrix {
 
   @example
   ```ts
-  const input: NodesParametersMatrix.Input = {
+  const input: ImmersiveNodesParameterCompositeMatrix.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace NodesParametersMatrix {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: MatrixFieldProps["value"]
     readonly step?: MatrixFieldProps["step"]
     readonly density?: MatrixFieldProps["density"]
@@ -43,7 +43,7 @@ export declare namespace NodesParametersMatrix {
     readonly onChange?: MatrixFieldProps["onChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

@@ -1,8 +1,8 @@
-import {flushDocumentLayoutObservers, registerDocumentLayoutObserverScheduler} from "@zavx0z/dom/geometry"
-import {subscribeDocumentAuthorStyleSheets, subscribeDocumentCompiledStyleSheets} from "@zavx0z/dom"
-import {DisplayElement, publishDisplayMetrics} from "@zavx0z/dom/display"
-import {readDisplayStyle} from "@renderer/html"
-import type {RendererFontFace} from "@zavx0z/webgpu"
+import {flushDocumentLayoutObservers, registerDocumentLayoutObserverScheduler} from "@immersive/dom/geometry"
+import {subscribeDocumentAuthorStyleSheets, subscribeDocumentCompiledStyleSheets} from "@immersive/dom"
+import {DisplayElement, publishDisplayMetrics} from "@immersive/dom/display"
+import {readDisplayStyle} from "@immersive-renderer/html"
+import type {RendererFontFace} from "@immersive/webgpu"
 import {loadFontFaces, type BrowserFontFaceSource} from "../font-faces.ts"
 import {
   AnimationMixer,
@@ -29,24 +29,24 @@ import {
   TorusGeometry,
   type AnimationAction,
   type TrueTypeFont,
-} from "@zavx0z/engine"
+} from "@immersive/engine"
 import {
   createDocument,
   HTMLElement as SemanticHTMLElement,
   type Document,
   type Element,
   type Node,
-} from "@zavx0z/dom"
-import {createRoot, provideContext, type ComponentRoot, type ComponentValue} from "@zavx0z/component"
+} from "@immersive/dom"
+import {createRoot, provideContext, type ComponentRoot, type ComponentValue} from "@immersive/component"
 import {createRootEnvironment, rootContext, type RootEnvironment, type RootSize, type FrameLoop} from "./root-context.ts"
-import type {JSX} from "@jsx-compiler/session"
-import {loadDocumentDefaultFont} from "@zavx0z/engine/default-font"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import {loadDocumentDefaultFont} from "@immersive/engine/default-font"
 import {claimBrowserPresentationHost, type PresentationHostClaim} from "./presentation-host.ts"
 import type {
   PointerInput,
   RenderFrame,
   WheelInput,
-} from "@renderer/html"
+} from "@immersive-renderer/html"
 import {
   createSpaceElementFactories,
   readSpaceTree,
@@ -62,10 +62,10 @@ import {
   XRObjectElement,
   XRTextElement,
   type SpaceTree,
-} from "@zavx0z/space"
-import {HUDElement} from "@zavx0z/dom/hud"
-import {SpaceElement} from "@zavx0z/dom/space"
-import {ViewPointElement} from "@zavx0z/dom/viewpoint"
+} from "@immersive/space"
+import {HUDElement} from "@immersive/dom/hud"
+import {SpaceElement} from "@immersive/dom/space"
+import {ViewPointElement} from "@immersive/dom/viewpoint"
 import {
   createBrowserLinkedAuthorStyleSheetHost,
   type BrowserLinkedAuthorStyleSheetHost,
@@ -78,7 +78,7 @@ import type {
   DocumentSpaceViewPointSnapshot,
 } from "./space-runtime.ts"
 import type {DocumentClipboardController} from "../clipboard.ts"
-import {readRenderedSelectionText} from "@renderer/html"
+import {readRenderedSelectionText} from "@immersive-renderer/html"
 
 export type PresentationOptions = Readonly<{
   canvas: HTMLCanvasElement

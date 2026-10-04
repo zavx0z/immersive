@@ -1,14 +1,14 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
-import * as ui from "@zavx0z/ui"
-import Button from "@ui-buttons/button"
-import TextField from "@ui-fields/text-field"
-import MenuItem from "@ui-menus/menu-item"
-import Notification from "@ui-feedback/notification"
-import Window from "@ui-surfaces/window"
-import WindowControl from "@ui-surfaces-window/control"
-import List from "@ui-views/list"
-import Tree from "@ui-widgets/tree"
+import * as ui from "@immersive-ui/component"
+import Button from "@immersive-ui-component-button/basic"
+import TextField from "@immersive-ui-component-field/text"
+import MenuItem from "@immersive-ui-component-menu/item"
+import Notification from "@immersive-ui-component-feedback/notification"
+import Window from "@immersive-ui-component-surface/window"
+import WindowControl from "@immersive-ui-component-surface/window-control"
+import List from "@immersive-ui-component-view/list"
+import Tree from "@immersive-ui-component-widget/tree"
 
 const packageRoot = resolve(import.meta.dir, "..")
 
@@ -23,7 +23,7 @@ async function manifests() {
 
 test("UI публикует именованные компоненты, типовой протокол и ресурсы", async () => {
   const manifest = await Bun.file(resolve(packageRoot, "package.json")).json()
-  expect(manifest.name).toBe("@zavx0z/ui")
+  expect(manifest.name).toBe("@immersive-ui/component")
   expect(manifest.exports).toEqual({
     ".": "./index.ts",
     "./contract": "./contract/index.ts",
@@ -67,7 +67,7 @@ test("пакеты UI имеют собственные публичные вх�
 })
 
 test("UI сохраняет границу платформы во всех производственных пакетах", async () => {
-  const forbidden = ["@zavx0z/browser", "@zavx0z/engine", "@nodes/layout", "@immersive/nodes", "@nodes/tree", "@renderer/html", "@zavx0z/space", "@zavx0z/webgpu"]
+  const forbidden = ["@immersive/browser", "@immersive/engine", "@immersive-nodes/layout", "@immersive/nodes", "@immersive-nodes/tree", "@immersive-renderer/html", "@immersive/space", "@immersive/webgpu"]
   for (const {directory, manifest} of await manifests()) {
     for (const name of forbidden) {
       expect(manifest.dependencies?.[name], directory).toBeUndefined()

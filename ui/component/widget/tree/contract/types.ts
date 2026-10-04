@@ -1,6 +1,6 @@
-import type {UiWidgetsHeader} from "@ui-widgets/header"
-type WidgetAction = NonNullable<UiWidgetsHeader.Input["actions"]>[number]
-import type {UiBadge} from "@ui/badge"
+import type {ImmersiveUiComponentWidgetHeader} from "@immersive-ui-component-widget/header"
+type WidgetAction = NonNullable<ImmersiveUiComponentWidgetHeader.Input["actions"]>[number]
+import type {ImmersiveUiComponentBadge} from "@immersive-ui-component/badge"
 
 /**
 Тип TreeItem принадлежит контракту своего владельца.
@@ -18,7 +18,7 @@ export type TreeItem = Readonly<{
   selectable?: boolean | undefined
   /** Помечает текущую страницу независимо от выбранных ключей. */
   current?: boolean | undefined
-  tone?: UiBadge.Input["tone"] | undefined
+  tone?: ImmersiveUiComponentBadge.Input["tone"] | undefined
   children?: readonly TreeItem[] | undefined
   actions?: readonly WidgetAction[] | undefined
 }>

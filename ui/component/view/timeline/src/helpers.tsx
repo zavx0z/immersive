@@ -5,8 +5,8 @@ import type {TimelineKeyframeViewProps} from "./types"
 import type {TimelineMarker} from "../contract/types.ts"
 import type {TimelineMarkerViewProps} from "./types"
 import type {TimelineModel} from "./types"
-import type {UiViewsTimeline} from "../contract"
-type TimelineProps = UiViewsTimeline.Input
+import type {ImmersiveUiComponentViewTimeline} from "../contract"
+type TimelineProps = ImmersiveUiComponentViewTimeline.Input
 import type {TimelineTrack} from "../contract/types.ts"
 
 /** Частная подготовка временная шкала дорожек, ключевых кадров и маркеров. */

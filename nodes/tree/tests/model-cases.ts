@@ -20,9 +20,9 @@ import {
   type NodeTreeDelta,
   type NodeTreeSnapshot,
   type NodeValueType,
-} from "@nodes/tree"
+} from "@immersive-nodes/tree"
 
-export type ScenarioResult = Readonly<{
+export type StorybookAppWebPagePackageScenarioResult = Readonly<{
   input: Readonly<Record<string, unknown>>
   result: Readonly<Record<string, unknown>>
 }>
@@ -100,7 +100,7 @@ function rejection(action: () => unknown): Readonly<{name: string; message: stri
   throw new Error("Сценарий ожидал отказ public API, но вызов завершился успешно")
 }
 
-function topology(): ScenarioResult {
+function topology(): StorybookAppWebPagePackageScenarioResult {
   const definition = basicDefinition()
   const tree = createNodeTree(definition)
   try {
@@ -117,7 +117,7 @@ function topology(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function scopes(): ScenarioResult {
+function scopes(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(nestedDefinition())
   try {
     return {
@@ -127,7 +127,7 @@ function scopes(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function groups(): ScenarioResult {
+function groups(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(nestedDefinition())
   try {
     return {
@@ -137,7 +137,7 @@ function groups(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function snapshots(): ScenarioResult {
+function snapshots(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   try {
     const first = tree.getSnapshot()
@@ -159,7 +159,7 @@ function snapshots(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function lifecycle(): ScenarioResult {
+function lifecycle(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const value = tree.parameter("source", "value")
   let notifications = 0
@@ -180,7 +180,7 @@ function lifecycle(): ScenarioResult {
   }
 }
 
-function updates(): ScenarioResult {
+function updates(): StorybookAppWebPagePackageScenarioResult {
   const value = new Parameter("value", {amount: 1})
   let notifications = 0
   const unsubscribe = value.subscribe(() => notifications += 1)
@@ -196,7 +196,7 @@ function updates(): ScenarioResult {
   }
 }
 
-function shared(): ScenarioResult {
+function shared(): StorybookAppWebPagePackageScenarioResult {
   const sharedValue = new Parameter<number>("value", 1)
   const independent = new Parameter<number>("value", 1)
   const aliasingRejected = rejection(() => createNodeTree({nodes: [
@@ -226,7 +226,7 @@ function shared(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function ownership(): ScenarioResult {
+function ownership(): StorybookAppWebPagePackageScenarioResult {
   const input = {nested: {value: 1}, list: [1, 2]}
   const owned = ownNodeJsonValue(input)
   const value = new Parameter("json", input)
@@ -245,7 +245,7 @@ function ownership(): ScenarioResult {
   }
 }
 
-function valueValidation(): ScenarioResult {
+function valueValidation(): StorybookAppWebPagePackageScenarioResult {
   const value = createValidatedParameter<NodeJsonValue>("value", 1, null, floatType,
     (type, candidate) => type.id === "float" && typeof candidate === "number")
   let notifications = 0
@@ -262,7 +262,7 @@ function valueValidation(): ScenarioResult {
   } finally { unsubscribe() }
 }
 
-function subscriptions(): ScenarioResult {
+function subscriptions(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const store = createNodeTreeExternalStore(tree)
   const target = store.parameter("target", "value")
@@ -290,7 +290,7 @@ function subscriptions(): ScenarioResult {
   }
 }
 
-function topologyUpdates(): ScenarioResult {
+function topologyUpdates(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const store = createNodeTreeExternalStore(tree)
   const modes = [store.getTopologyUpdate().mode]
@@ -314,7 +314,7 @@ function topologyUpdates(): ScenarioResult {
   }
 }
 
-function reconcileIdentity(): ScenarioResult {
+function reconcileIdentity(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const value = tree.parameter("source", "value")
   try {
@@ -330,7 +330,7 @@ function reconcileIdentity(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function reconcileConflict(): ScenarioResult {
+function reconcileConflict(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const value = tree.parameter("source", "value")
   try {
@@ -348,7 +348,7 @@ function reconcileConflict(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function deltas(): ScenarioResult {
+function deltas(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   const events: NodeTreeDelta[] = []
   const unsubscribe = tree.subscribeDelta(delta => events.push(delta))
@@ -367,7 +367,7 @@ function deltas(): ScenarioResult {
   }
 }
 
-async function projectionCache(): Promise<ScenarioResult> {
+async function projectionCache(): Promise<StorybookAppWebPagePackageScenarioResult> {
   const tree = createNodeTree(basicDefinition())
   let calls = 0
   const previousRevisions: (number | null)[] = []
@@ -393,7 +393,7 @@ async function projectionCache(): Promise<ScenarioResult> {
   } finally { tree.dispose() }
 }
 
-async function projectionStale(): Promise<ScenarioResult> {
+async function projectionStale(): Promise<StorybookAppWebPagePackageScenarioResult> {
   const tree = createNodeTree(basicDefinition())
   let resolveProjection: (value: number) => void = () => { throw new Error("Projection has not started") }
   let capturedRevision = -1
@@ -421,7 +421,7 @@ async function projectionStale(): Promise<ScenarioResult> {
   } finally { tree.dispose() }
 }
 
-function nodeReference(): ScenarioResult {
+function nodeReference(): StorybookAppWebPagePackageScenarioResult {
   const first = new Parameter<number>("value", 1)
   const second = new Parameter<number>("value", 1)
   const a = instantiateNodeTemplate(nodeTemplate, {id: "instance:a", localId: "number"}, {id: "a", parameters: [first]})
@@ -436,7 +436,7 @@ function nodeReference(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function graphReference(): ScenarioResult {
+function graphReference(): StorybookAppWebPagePackageScenarioResult {
   const scope = instantiateGraphTemplate(graphTemplate, {id: "instance:graph", localId: "graph"}, {id: "nested", parentScopeId: "root"})
   const tree = createNodeTree({templates: [graphTemplate], scopes: [{id: "root", kind: "graph"}, scope], nodes: []})
   try {
@@ -447,7 +447,7 @@ function graphReference(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function roundtrip(): ScenarioResult {
+function roundtrip(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(nestedDefinition())
   const serialized = serializeNodeTreeDocument(tree.document())
   const restored = hydrateNodeTree(serialized, {validateParameterValue: (type, value) => type.id === "float" && typeof value === "number"})
@@ -475,7 +475,7 @@ function roundtrip(): ScenarioResult {
   }
 }
 
-function invalidDocument(): ScenarioResult {
+function invalidDocument(): StorybookAppWebPagePackageScenarioResult {
   const tree = createNodeTree(basicDefinition())
   try {
     const source = JSON.parse(serializeNodeTreeDocument(tree.document())) as NodeJsonValue
@@ -488,7 +488,7 @@ function invalidDocument(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function patchOperations(): ScenarioResult {
+function patchOperations(): StorybookAppWebPagePackageScenarioResult {
   const source = {"a/b~c": [1, 2], obsolete: true}
   const path = `/${encodeJsonPointerToken("a/b~c")}`
   const result = applyJsonPatch(source, [
@@ -500,7 +500,7 @@ function patchOperations(): ScenarioResult {
   return {input: {source, operations: ["test", "replace", "add", "remove"], escapedPath: path}, result: {patched: result, source, frozen: Object.isFrozen(result), limits: JSON_PATCH_LIMITS}}
 }
 
-function patchAtomicError(): ScenarioResult {
+function patchAtomicError(): StorybookAppWebPagePackageScenarioResult {
   const source = {value: 1}
   const atomic = rejection(() => applyJsonPatch(source, [
     {op: "replace", path: "/value", value: 2},
@@ -510,7 +510,7 @@ function patchAtomicError(): ScenarioResult {
   return {input: {source, steps: ["replace 1 → 2", "test value = 99 fails"]}, result: {atomic, unchangedSource: source, limit}}
 }
 
-function linkTypes(): ScenarioResult {
+function linkTypes(): StorybookAppWebPagePackageScenarioResult {
   const definition: NodeTreeDefinition = {
     nodes: [
       {id: "source", sockets: [{id: "out", direction: "output", valueType: floatType}]},
@@ -530,7 +530,7 @@ function linkTypes(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function cycles(): ScenarioResult {
+function cycles(): StorybookAppWebPagePackageScenarioResult {
   const definition: NodeTreeDefinition = {
     nodes: ["a", "b"].map(id => ({id, sockets: [{id: "io", direction: "bidirectional"}]})),
     links: [
@@ -544,7 +544,7 @@ function cycles(): ScenarioResult {
   } finally { tree.dispose() }
 }
 
-function references(): ScenarioResult {
+function references(): StorybookAppWebPagePackageScenarioResult {
   const definition = basicDefinition()
   const invalidEndpoint = {...definition, links: [{id: "missing", from: {nodeId: "unknown", socketId: "out"}, to: {nodeId: "target", socketId: "in"}}]}
   const reversed = {...definition, links: [{id: "reversed", from: {nodeId: "target", socketId: "in"}, to: {nodeId: "source", socketId: "out"}}]}

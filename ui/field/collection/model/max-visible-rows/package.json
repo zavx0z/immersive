@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-collection-model/collection-max-visible-rows",
+  "name": "@immersive-ui-field-collection-model/max-visible-rows",
   "label": "COLLECTION_MAX_VISIBLE_ROWS",
   "version": "0.0.0",
   "description": "Обработка collection-max-visible-rows",

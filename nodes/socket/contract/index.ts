@@ -1,12 +1,12 @@
-import type {Socket as CoreSocket} from "@nodes/tree"
-import type {SocketValuesKinds} from "@socket-values/kinds"
-import type {SocketValuesShapes} from "@socket-values/shapes"
-import type {JSX} from "@jsx-compiler/session"
+import type {Socket as CoreSocket} from "@immersive-nodes/tree"
+import type {ImmersiveNodesModelSocketKinds} from "@immersive-nodes-model-socket/kinds"
+import type {ImmersiveNodesModelSocketShapes} from "@immersive-nodes-model-socket/shapes"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Адресуемый Socket сохраняет состояние и взаимодействие в Document приложения. */
-export declare namespace NodesSockets {
+export declare namespace ImmersiveNodesSocket {
   /**
-  Вход адресуемого {@link @nodes/sockets#default | Socket} в общем Document приложения.
+  Вход адресуемого {@link @immersive-nodes/socket#default | Socket} в общем Document приложения.
   Состояние соединения и обработчик активации принадлежат вызывающему компоненту.
 
   @property id - Непустой идентификатор сокета внутри ноды; пробельное имя вызывает TypeError.
@@ -52,12 +52,12 @@ export declare namespace NodesSockets {
   interface Input {
     readonly id: string
     readonly nodeId: string
-    readonly kind: SocketValuesKinds.Output[number]
+    readonly kind: ImmersiveNodesModelSocketKinds.Output[number]
     readonly direction: CoreSocket["direction"]
     readonly side: NonNullable<CoreSocket["side"]>
     readonly label: string
     readonly title?: string | undefined
-    readonly shape?: SocketValuesShapes.Output[number] | undefined
+    readonly shape?: ImmersiveNodesModelSocketShapes.Output[number] | undefined
     readonly connected?: boolean | undefined
     readonly selected?: boolean | undefined
     readonly disabled?: boolean | undefined

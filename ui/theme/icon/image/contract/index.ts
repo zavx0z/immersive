@@ -1,6 +1,6 @@
-import type {UiThemesIcons} from "@ui-themes/icons/contract"
+import type {ImmersiveUiThemeIcon} from "@immersive-ui-theme/icon/contract"
 
 /** SVG-значок image в формате data URL. */
-export declare namespace UiThemesIconsImage {
-  type Output = UiThemesIcons.Output
+export declare namespace ImmersiveUiThemeIconImage {
+  type Output = ImmersiveUiThemeIcon.Output
 }

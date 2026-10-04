@@ -1,5 +1,5 @@
 {
-  "name": "@jsx-compiler/session",
+  "name": "@immersive-jsx-compiler/session",
   "label": "Компилятор JSX",
   "version": "0.0.0",
   "private": true,
@@ -13,20 +13,20 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx/events": "workspace:*",
-    "@jsx-slot/plan": "workspace:*",
-    "@zavx0z/template": "workspace:*",
+    "@immersive-jsx/event": "workspace:*",
+    "@immersive-jsx-slot/plan": "workspace:*",
+    "@immersive/template": "workspace:*",
     "typescript": "^7.0.2",
-    "@jsx-slot/authoring": "workspace:*",
-    "@jsx-compiler/error": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@immersive-jsx-slot/authoring": "workspace:*",
+    "@immersive-jsx-compiler/error": "workspace:*",
+    "@immersive/dom": "workspace:*"
   },
   "devDependencies": {
-    "@zavx0z/jsx": "workspace:*",
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/space": "workspace:*",
-    "@zavx0z/browser": "workspace:*",
-    "@jsx-compiler/bun": "workspace:*"
+    "@immersive/jsx": "workspace:*",
+    "@immersive/component": "workspace:*",
+    "@immersive/space": "workspace:*",
+    "@immersive/browser": "workspace:*",
+    "@immersive-jsx-compiler/bun": "workspace:*"
   },
   "description": "Семантическая компиляция JSX в готовые шаблоны",
   "sideEffects": false

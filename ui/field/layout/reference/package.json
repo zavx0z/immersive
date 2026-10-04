@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-reference-field/layout",
+  "name": "@immersive-ui-field-layout/reference",
   "label": "referenceFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров referenceField",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-density-height": "workspace:*",
-    "@ui-fields-metrics/field-metric": "workspace:*",
-    "@ui-fields-metrics/labelled-field-height": "workspace:*",
-    "@ui-fields/reference-field": "workspace:*"
+    "@immersive-ui-field-metric/density-height": "workspace:*",
+    "@immersive-ui-field-metric/read": "workspace:*",
+    "@immersive-ui-field-metric/labelled-height": "workspace:*",
+    "@immersive-ui-component-field/reference": "workspace:*"
   }
 }

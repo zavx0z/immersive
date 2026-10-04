@@ -1,4 +1,4 @@
-import type {Event, Node} from "@zavx0z/dom"
+import type {Event, Node} from "@immersive/dom"
 import {
   bindChild,
   bindKeyed,
@@ -7,14 +7,14 @@ import {
   isCompiledTemplate,
   slotContents,
   type CompiledTemplate
-} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx-compiler/session"
+} from "@immersive/template/compiled"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {CompiledStyleValue} from "./style.ts"
 
-const componentValueBrand = Symbol("@zavx0z/component/component-value")
-const keyedValueBrand = Symbol("@zavx0z/component/keyed-value")
-const contextBrand = Symbol("@zavx0z/component/context")
-const contextConsumerBrand = Symbol("@zavx0z/component/context-consumer")
+const componentValueBrand = Symbol("@immersive/component/component-value")
+const keyedValueBrand = Symbol("@immersive/component/keyed-value")
+const contextBrand = Symbol("@immersive/component/context")
+const contextConsumerBrand = Symbol("@immersive/component/context-consumer")
 const memoComparators = new WeakMap<CompiledTemplate<unknown>, MemoComparator<unknown>>()
 const emptyContextProvisions = Object.freeze([]) as readonly ContextProvision[]
 
@@ -94,7 +94,7 @@ export function memo<Props>(
 ): CompiledTemplate<Props> | FunctionComponent<Props> {
   if (!isCompiledTemplate(template)) {
     throw new TypeError(
-      "JSX component reached memo at runtime; enable @jsx-compiler/session",
+      "JSX component reached memo at runtime; enable @immersive-jsx-compiler/session",
     )
   }
   if (typeof comparator !== "function") throw new TypeError("memo comparator must be a function")

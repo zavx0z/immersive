@@ -1,9 +1,9 @@
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import Button from "@ui-buttons/button"
-import Tab from "@ui-surfaces/tab"
-import type {UiSurfacesTab} from "@ui-surfaces/tab"
-type TabProps = UiSurfacesTab.Input
+import Button from "@immersive-ui-component-button/basic"
+import Tab from "@immersive-ui-component-surface/tab"
+import type {ImmersiveUiComponentSurfaceTab} from "@immersive-ui-component-surface/tab"
+type TabProps = ImmersiveUiComponentSurfaceTab.Input
 
 /** Контент параметризуется снаружи; положение — во вложенной таблице того же примера. */
 type Content = Readonly<{name: string; props: TabProps & {button: boolean}}>

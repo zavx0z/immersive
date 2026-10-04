@@ -1,5 +1,5 @@
 /** Выбор строк после обычного, добавляющего или диапазонного жеста. */
-export declare namespace UiViewsTableTableSelectionAfterClick {
+export declare namespace ImmersiveUiComponentViewTableSelectionAfterClick {
   /** Порядок доступных строк, текущий выбор, цель, якорь и модификаторы жеста. */
   type Input = readonly [
     rowKeys: readonly string[],

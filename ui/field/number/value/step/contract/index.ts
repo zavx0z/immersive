@@ -1,9 +1,9 @@
-import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
-type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
+import type {ImmersiveUiFieldNumberValueNormalize} from "@immersive-ui-field-number-value/normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 
 
 /** Пошаговое изменение числового значения. */
-export declare namespace UiFieldsNumberValueStepNumberValue {
+export declare namespace ImmersiveUiFieldNumberValueStep {
   /** Аргументы публичной операции stepNumberValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,

@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import jsxDEV, {type DevelopmentInput} from "@jsx-development/create"
+import jsxDEV, {type DevelopmentInput} from "@immersive-jsx-development/create"
 import {textTemplate} from "./fixture/index.ts"
 
 describe.each([

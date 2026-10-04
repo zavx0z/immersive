@@ -1,8 +1,8 @@
 /** Готовый параметр сохраняет общий адрес и сокеты при подключении. */
 import {afterAll, describe, expect, test} from "bun:test"
-import Socket from "@nodes/sockets"
+import Socket from "@immersive-nodes/socket"
 import {createHeadless} from "@immersive/headless"
-import Component, {type NodesParametersColor} from "@nodes-parameters/color"
+import Component, {type ImmersiveNodesParameterCompositeColor} from "@immersive-nodes-parameter-composite/color"
 
 describe.each([false, true].map(connected => ({
   name: connected ? "Поле с подключённым сокетом" : "Поле без подключения",
@@ -12,7 +12,7 @@ describe.each([false, true].map(connected => ({
     label: "Значение",
     connected,
     value: {r: .25, g: .55, b: .85, a: 1},
-  } satisfies NodesParametersColor.Input,
+  } satisfies ImmersiveNodesParameterCompositeColor.Input,
   slots: {
     left: <Socket
       slot="left"

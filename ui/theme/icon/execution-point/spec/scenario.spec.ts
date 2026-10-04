@@ -1,6 +1,6 @@
 /** executionPointIcon показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import icon from "@ui-themes-icons/execution-point"
+import icon from "@immersive-ui-theme-icon/execution-point"
 
 describe.each([{name: "Векторный ресурс", props: {}}])("$name", () => {
   test("SVG", () => {

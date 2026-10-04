@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {UiFieldsMetricsResolveFieldDensity as Contract} from "./contract"
+import type {ImmersiveUiFieldMetricResolveDensity as Contract} from "./contract"
 
 
 export default function resolveFieldDensity(
@@ -19,4 +19,4 @@ export default function resolveFieldDensity(
   return density
 }
 
-export type {UiFieldsMetricsResolveFieldDensity} from "./contract"
+export type {ImmersiveUiFieldMetricResolveDensity} from "./contract"

@@ -1,5 +1,5 @@
 import {expect, spyOn, test} from "bun:test"
-import CodeEditorModel from "@ui/code-editor-model"
+import CodeEditorModel from "@immersive-tech/text-editor"
 
 test("normalization merges overlap and duplicate carets, preserving primary direction", () => {
   const model = new CodeEditorModel({value: "0123456789", selections: [

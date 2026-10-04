@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
-import jsx, {type RuntimeInput} from "@jsx-runtime/create"
-import {slotContents} from "@zavx0z/template/compiled"
+import jsx, {type RuntimeInput} from "@immersive-jsx-runtime/create"
+import {slotContents} from "@immersive/template/compiled"
 import {receiverTemplate, textTemplate} from "./fixture/index.ts"
 
 describe.each([

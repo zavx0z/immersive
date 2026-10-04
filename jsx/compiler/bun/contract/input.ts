@@ -1,4 +1,4 @@
-import type JsxCompilerSession from "@jsx-compiler/session"
+import type JsxCompilerSession from "@immersive-jsx-compiler/session"
 
 /**
 Подключение JSX к штатному циклу сборки Bun.

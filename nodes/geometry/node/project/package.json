@@ -1,5 +1,5 @@
 {
-  "name": "@node-geometry/project",
+  "name": "@immersive-nodes-geometry-node/project",
   "label": "project",
   "version": "0.0.0",
   "description": "Планирует геометрию снимка ноды по представлениям параметров",
@@ -10,22 +10,22 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@nodes/parameter-presentation": "workspace:*",
-    "@nodes/parameter-metrics": "workspace:*",
-    "@node-geometry/field-height": "workspace:*",
-    "@socket-values/key": "workspace:*",
-    "@node-geometry/spacing": "workspace:*",
-    "@node-geometry/socket-side": "workspace:*",
-    "@node-geometry/port-id": "workspace:*",
-    "@node-geometry/plan": "workspace:*",
-    "@node-geometry/metrics": "workspace:*",
-    "@socket-values/metrics": "workspace:*"
+    "@immersive-nodes-projection-parameter/presentation": "workspace:*",
+    "@immersive-nodes-geometry/parameter": "workspace:*",
+    "@immersive-nodes-geometry-node/field-height": "workspace:*",
+    "@immersive-nodes-model-socket/key": "workspace:*",
+    "@immersive-nodes-geometry-node/spacing": "workspace:*",
+    "@immersive-nodes-geometry-node/socket-side": "workspace:*",
+    "@immersive-nodes-geometry-node/port-id": "workspace:*",
+    "@immersive-nodes-geometry-node/plan": "workspace:*",
+    "@immersive-nodes-geometry-node/metrics": "workspace:*",
+    "@immersive-nodes-model-socket/metrics": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@nodes/tree": "workspace:*"
+    "@immersive-nodes/tree": "workspace:*"
   }
 }

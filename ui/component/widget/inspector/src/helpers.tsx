@@ -1,10 +1,10 @@
 import {InspectorActionButton} from "./action-button"
 import type {CategoryButtonProps} from "./types"
 import type {InspectorContextRow} from "../contract/types.ts"
-import type {UiWidgetsInspector} from "../contract/index"
-type InspectorProps = UiWidgetsInspector.Input
-import Button from "@ui-buttons/button"
-import IconButton from "@ui-buttons/icon-button"
+import type {ImmersiveUiComponentWidgetInspector} from "../contract/index"
+type InspectorProps = ImmersiveUiComponentWidgetInspector.Input
+import Button from "@immersive-ui-component-button/basic"
+import IconButton from "@immersive-ui-component-button/icon"
 
 
 

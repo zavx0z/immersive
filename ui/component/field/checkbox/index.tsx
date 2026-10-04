@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {UiFieldsCheckboxField as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldCheckbox as Contract} from "./contract"
 
 
-export type {UiFieldsCheckboxField} from "./contract"
+export type {ImmersiveUiComponentFieldCheckbox} from "./contract"
 
 export default function CheckboxField(props: Contract.Input): Contract.Output {
   const hasLabel = props.label !== undefined

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-feedback/status-bar",
+  "name": "@immersive-ui-component-feedback/status-bar",
   "label": "StatusBar",
   "version": "0.0.0",
   "description": "Строка состояния с областями текста и действий",
@@ -15,14 +15,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/typography": "workspace:*",
-    "@ui/feedback": "workspace:*"
+    "@immersive-ui-component/typography": "workspace:*",
+    "@immersive-ui-component/feedback": "workspace:*"
   }
 }

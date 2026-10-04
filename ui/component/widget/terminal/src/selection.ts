@@ -1,6 +1,6 @@
-import {HTMLElement as SemanticHTMLElement} from "@zavx0z/dom/html-element"
-import {Range} from "@zavx0z/dom/range"
-import {textOffsetAtPosition} from "@zavx0z/dom/text-position"
+import {HTMLElement as SemanticHTMLElement} from "@immersive/dom/html-element"
+import {Range} from "@immersive/dom/range"
+import {textOffsetAtPosition} from "@immersive/dom/text-position"
 
 /**
 Внутренняя граница терминала с semantic DOM. Читает пересечение общего выделения

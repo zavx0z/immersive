@@ -1,5 +1,5 @@
 {
-  "name": "@node-geometry/metrics",
+  "name": "@immersive-nodes-geometry-node/metrics",
   "label": "metrics",
   "version": "0.0.0",
   "description": "Размеры ноды и строки без чтения DOM",
@@ -10,7 +10,7 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@socket-values/metrics": "workspace:*"
+    "@immersive-nodes-model-socket/metrics": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec",

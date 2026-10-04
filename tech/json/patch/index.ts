@@ -3,16 +3,16 @@
 
 @packageDocumentation
 */
-import type {NodesJsonPatch as Contract} from "./contract"
-export type {NodesJsonPatch} from "./contract"
+import type {ImmersiveTechJsonPatch as Contract} from "./contract"
+export type {ImmersiveTechJsonPatch} from "./contract"
 
-import ownNodeJsonValue, {type NodeValuesOwn} from "@node-values/own"
-import equalNodeJsonValue from "@node-values/equal"
-import JsonPatchError, {type NodeJsonPatchError} from "@node-json-patch/error"
-import JSON_PATCH_LIMITS from "@node-json-patch/limits"
+import ownNodeJsonValue, {type ImmersiveTechJsonValueOwn} from "@immersive-tech-json-value/own"
+import equalNodeJsonValue from "@immersive-tech-json-value/equal"
+import JsonPatchError, {type ImmersiveTechJsonPatchError} from "@immersive-tech-json-patch/error"
+import JSON_PATCH_LIMITS from "@immersive-tech-json-patch/limits"
 import type {Operation} from "./contract/types"
-type NodeJsonValue = NodeValuesOwn.Input[0]
-type JsonPatchErrorCode = NodeJsonPatchError.Input[0]
+type NodeJsonValue = ImmersiveTechJsonValueOwn.Input[0]
+type JsonPatchErrorCode = ImmersiveTechJsonPatchError.Input[0]
 
 type MutableJsonObject = {[key: string]: NodeJsonValue}
 type MutableJsonContainer = NodeJsonValue[] | MutableJsonObject

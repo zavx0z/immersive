@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
-import {component} from "@zavx0z/component"
-import {jsx, Fragment, jsxs} from "@zavx0z/jsx/jsx-runtime"
+import {component} from "@immersive/component"
+import {jsx, Fragment, jsxs} from "@immersive/jsx/jsx-runtime"
 import {textTemplate} from "../spec/fixture/index.ts"
 
 test("jsxs передаёт native positional props и key", () => {

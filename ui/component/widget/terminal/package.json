@@ -1,5 +1,5 @@
 {
-  "name": "@ui-widgets/terminal",
+  "name": "@immersive-ui-component-widget/terminal",
   "label": "Terminal",
   "version": "0.0.0",
   "description": "Представление терминального вывода и ввода команд",
@@ -15,17 +15,17 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-fields/text-field": "workspace:*",
-    "@ui-widgets/header": "workspace:*",
-    "@ui/terminal-model": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-field/text": "workspace:*",
+    "@immersive-ui-component-widget/header": "workspace:*",
+    "@immersive-tech/terminal": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/dom": "workspace:*"
+    "@immersive/component": "workspace:*",
+    "@immersive/dom": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/widgets": "workspace:*"
+    "@immersive-ui-component/widget": "workspace:*"
   }
 }

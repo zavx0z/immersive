@@ -4,13 +4,13 @@
 @packageDocumentation
 */
 
-import Pane from "@ui-surfaces/pane"
-import visibilityOnIcon from "@ui-themes-icons/visibility-on"
-import ParameterNode from "@nodes-node/parameter"
-import type {NodesNodeContent as Contract} from "./contract"
-import planProjectedNodeGeometry from "@node-geometry/project"
+import Pane from "@immersive-ui-component-surface/pane"
+import visibilityOnIcon from "@immersive-ui-theme-icon/visibility-on"
+import ParameterNode from "@immersive-nodes-node/parameter"
+import type {ImmersiveNodesNodeContent as Contract} from "./contract"
+import planProjectedNodeGeometry from "@immersive-nodes-geometry-node/project"
 
-export type {NodesNodeContent} from "./contract"
+export type {ImmersiveNodesNodeContent} from "./contract"
 
 /** Квадратная область содержимого и ParameterNode образуют одну ноду графа с общей тенью из темы. */
 export default function ContentNode(props: Contract.Input): Contract.Output {

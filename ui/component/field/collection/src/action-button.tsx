@@ -1,9 +1,9 @@
-import IconButton from "@ui-buttons/icon-button"
-import type {UiButtonsIconButton} from "@ui-buttons/icon-button"
-import type {JSX} from "@jsx-compiler/session"
+import IconButton from "@immersive-ui-component-button/icon"
+import type {ImmersiveUiComponentButtonIcon} from "@immersive-ui-component-button/icon"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Действие коллекции сохраняет числовой размер и скрывает неприменимую перестановку. */
-export function CollectionActionButton(props: UiButtonsIconButton.Input & {hidden?: boolean}): JSX.Element {
+export function CollectionActionButton(props: ImmersiveUiComponentButtonIcon.Input & {hidden?: boolean}): JSX.Element {
   return <IconButton
     label={props.label}
     iconSrc={props.iconSrc}

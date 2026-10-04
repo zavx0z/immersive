@@ -1,4 +1,4 @@
-import {SurfaceOwner, SurfaceTitle, SurfaceBody, SurfaceNavigation, SurfaceButton, SurfaceHeader} from "@ui-surfaces/chrome"
+import {SurfaceOwner, SurfaceTitle, SurfaceBody, SurfaceNavigation, SurfaceButton, SurfaceHeader} from "@immersive-ui-component-surface/chrome"
 
 export default function ClusterExamples(props: Readonly<{label: string}>) {
   return <section>

@@ -1,7 +1,7 @@
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import ContentNode from "@nodes-node/content"
-import Typography from "@ui/typography"
+import ContentNode from "@immersive-nodes-node/content"
+import Typography from "@immersive-ui-component/typography"
 import {parameters, sockets} from "../../spec/fixture/parameters"
 
 describe.each([

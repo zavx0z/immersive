@@ -1,14 +1,14 @@
 
 
-import type {JSX} from "@jsx-compiler/session"
-import type {UiFields} from "@ui/fields/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace UiFieldsCheckboxField {
+export declare namespace ImmersiveUiComponentFieldCheckbox {
   /**
   Входные данные CheckboxField.
   */
-  interface Input extends UiFields.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly checked: boolean
     readonly indeterminate?: boolean | undefined
     readonly disabled?: boolean | undefined
@@ -16,5 +16,5 @@ export declare namespace UiFieldsCheckboxField {
     readonly onChange?: ((checked: boolean, event: Event) => void) | undefined
   }
 
-  type Output = UiFields.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

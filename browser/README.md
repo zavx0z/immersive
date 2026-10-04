@@ -3,7 +3,7 @@
 Публичный запуск следует React-shaped контракту createRoot/render/unmount.
 
 ```tsx
-import {createRoot} from "@zavx0z/browser"
+import {createRoot} from "@immersive/browser"
 import {App} from "./app.tsx"
 
 const root = createRoot(canvas)
@@ -43,14 +43,14 @@ function App() {
 `./theme.css`, предоставленный сборкой приложения. Подробности: [тема](theme.md).
 Default font читается из `<meta name="engine-default-font">` native страницы.
 CSS выбирает family/weight/style; готовые дополнительные font faces принадлежат
-специальному API внешнего окружения `@zavx0z/browser/integration`.
+специальному API внешнего окружения `@immersive/browser/integration`.
 
 createRoot резервирует native страницу/Canvas. render возвращает void и запускает
 подготовку ресурсов; `onUncaughtError` получает ошибки запуска. Unmount отменяет
 подготовку и освобождает ресурсы. Если GPU уже инициализируется, Canvas остаётся
 занят до завершения cleanup этой операции; старый запуск не может повредить новый.
 Для тестов и внешних инструментов `inspectRoot(root).whenReady()` из
-`@zavx0z/browser/diagnostics` ожидает кадр последнего render и возвращает
+`@immersive/browser/diagnostics` ожидает кадр последнего render и возвращает
 диагностику существующего приложения. Обычному App ожидание не требуется.
 
 Координаты сцены — мм в правой системе Z-up. Размеры CSS и viewport — CSS px;
@@ -148,7 +148,7 @@ Browser переводит его углы в CSS-пиксели нативно�
 ## Измерение перед первым показом
 
 Первый `useLayoutEffect` получает подключённые refs, но geometry provider
-ещё может отсутствовать. `observeElementLayout` из `@zavx0z/dom/geometry`
+ещё может отсутствовать. `observeElementLayout` из `@immersive/dom/geometry`
 можно установить в этом эффекте: Browser подключает проекции и доставляет
 измерение до первого GPU submission. Предварительный пустой кадр runtime
 при запуске через Root не рисуется.

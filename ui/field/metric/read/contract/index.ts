@@ -1,7 +1,7 @@
-import type fieldMetrics from "@zavx0z/ui/theme/field-metrics.json"
+import type fieldMetrics from "@immersive-ui/component/theme/field-metrics.json"
 
 /** Читает конечную неотрицательную числовую метрику поля по её точному имени. */
-export declare namespace UiFieldsMetricsFieldMetric {
+export declare namespace ImmersiveUiFieldMetricRead {
   /** Аргументы публичной операции fieldMetric; порядок сохраняет её форму вызова. */
   type Input = readonly [
     name: keyof typeof fieldMetrics

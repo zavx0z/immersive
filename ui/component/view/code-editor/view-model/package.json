@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/view-model",
+  "name": "@immersive-ui-component-view-code-editor/view-model",
   "label": "buildCodeEditorViewModel",
   "version": "0.0.0",
   "description": "Подготовка строк, токенов и оформления редактора",
@@ -15,16 +15,16 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-views-code-editor-syntax-theme/resolve-code-editor-syntax-scope-color-hex": "workspace:*",
-    "@ui-views-code-editor/assert-non-empty": "workspace:*",
-    "@ui-views-code-editor/editor-foreground": "workspace:*",
-    "@ui-views-code-editor/highlighter": "workspace:*",
-    "@ui-views-code-editor/is-hex-color": "workspace:*",
-    "@ui-views-code-editor/normalize-hex-color": "workspace:*",
-    "@ui-views-code-editor/validate": "workspace:*",
-    "@ui-views/code-editor": "workspace:*",
-    "@ui/badge": "workspace:*",
-    "@ui/code-editor-model": "workspace:*",
+    "@immersive-ui-component-view-code-editor-syntax-theme/resolve-scope-color-hex": "workspace:*",
+    "@immersive-tech-text/assert-non-empty": "workspace:*",
+    "@immersive-ui-view-code-editor/editor-foreground": "workspace:*",
+    "@immersive-ui-component-view-code-editor/highlighter": "workspace:*",
+    "@immersive-tech-color-hex/valid": "workspace:*",
+    "@immersive-tech-color-hex/normalize": "workspace:*",
+    "@immersive-ui-component-view-code-editor/validate": "workspace:*",
+    "@immersive-ui-component-view/code-editor": "workspace:*",
+    "@immersive-ui-component/badge": "workspace:*",
+    "@immersive-tech/text-editor": "workspace:*",
     "@zavx0z/highlighter": "^0.1.0"
   }
 }

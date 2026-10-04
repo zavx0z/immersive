@@ -1,5 +1,5 @@
 {
-  "name": "@ui-menus/clipboard-menu",
+  "name": "@immersive-ui-component-menu/clipboard",
   "label": "ClipboardMenu",
   "version": "0.0.0",
   "description": "Меню команд существующего контроллера буфера обмена",
@@ -15,14 +15,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-menus/menu": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-menu/basic": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/menus": "workspace:*"
+    "@immersive-ui-component/menu": "workspace:*"
   }
 }

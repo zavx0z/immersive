@@ -1,6 +1,6 @@
 /** cycleFieldLayout показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import layout from "@ui-fields-cycle-field/layout"
+import layout from "@immersive-ui-field-layout/cycle"
 
 describe.each([{name: "Базовый размер", props: {}}])("$name", () => {
   const height = layout.height()

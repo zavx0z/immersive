@@ -1,9 +1,9 @@
-import type {Document} from "@zavx0z/dom"
-import {DisplayElement} from "@zavx0z/dom/display"
+import type {Document} from "@immersive/dom"
+import {DisplayElement} from "@immersive/dom/display"
 import {XRMeshElement, XRObjectElement} from "./elements.ts"
-import {HUDElement} from "@zavx0z/dom/hud"
-import {SpaceElement} from "@zavx0z/dom/space"
-import {ViewPointElement} from "@zavx0z/dom/viewpoint"
+import {HUDElement} from "@immersive/dom/hud"
+import {SpaceElement} from "@immersive/dom/space"
+import {ViewPointElement} from "@immersive/dom/viewpoint"
 
 export type SpaceHUDProjection = Readonly<{
   element: HUDElement

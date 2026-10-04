@@ -1,5 +1,5 @@
 {
-  "name": "@zavx0z/devtools",
+  "name": "@immersive/devtool",
   "label": "Диагностика",
   "version": "0.0.0",
   "private": true,
@@ -18,14 +18,14 @@
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
-    "@zavx0z/dom": "workspace:*",
-    "@renderer/html": "workspace:*"
+    "@immersive/dom": "workspace:*",
+    "@immersive-renderer/html": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@zavx0z/dom": {
+    "@immersive/dom": {
       "optional": true
     },
-    "@renderer/html": {
+    "@immersive-renderer/html": {
       "optional": true
     }
   },

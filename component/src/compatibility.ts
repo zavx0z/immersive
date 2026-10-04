@@ -3,9 +3,9 @@ export type CompatibilityStatus = "supported" | "unsupported"
 export type CapabilityStatus = "implemented" | "partial" | "unsupported" | "not-applicable" | "unverified"
 
 const compatibilityData = {
-  "package": "@zavx0z/component",
+  "package": "@immersive/component",
   "reference": "React 19.2 complete reference profile",
-  "compilerOwner": "@zavx0z/template",
+  "compilerOwner": "@immersive/template",
   "runtimeModel": "compiled-static-template",
   "reactPackageAlias": false,
   "npmReactDependency": false,

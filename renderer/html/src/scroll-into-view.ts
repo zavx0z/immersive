@@ -1,4 +1,4 @@
-import {HTMLElement, completeDocumentScrollIntoViewRequest, readDocumentScrollIntoViewRequests, type ScrollLogicalPosition} from "@zavx0z/dom"
+import {HTMLElement, completeDocumentScrollIntoViewRequest, readDocumentScrollIntoViewRequests, type ScrollLogicalPosition} from "@immersive/dom"
 import type {DocumentRenderer, RenderBox, RenderFrame, RenderTransform} from "./types.ts"
 
 /** Fulfills a bounded snapshot of DOM requests through existing scroll state and retained layout. */

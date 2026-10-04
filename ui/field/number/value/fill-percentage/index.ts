@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberValueNumberFillPercentage as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueFillPercentage as Contract} from "./contract"
 
 export default function numberFillPercentage(
   value: Contract.Input[0],
@@ -17,4 +17,4 @@ export default function numberFillPercentage(
   return Math.min(100, Math.max(0, (value - minimum!) / (maximum! - minimum!) * 100))
 }
 
-export type {UiFieldsNumberValueNumberFillPercentage} from "./contract"
+export type {ImmersiveUiFieldNumberValueFillPercentage} from "./contract"

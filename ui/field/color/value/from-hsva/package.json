@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-color-value/color-hsva-to-value",
+  "name": "@immersive-ui-field-color-value/from-hsva",
   "label": "colorHsvaToValue",
   "version": "0.0.0",
   "description": "Преобразует частичный HSVA-цвет в нормализованный неизменяемый RGBA-цвет",
@@ -15,9 +15,9 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-color-value/clamp-unit": "workspace:*",
-    "@ui-fields-color-value/normalize-color-value": "workspace:*",
-    "@ui-fields-color-value/wrap-unit": "workspace:*",
-    "@ui-fields-color-value/color-value-to-hsva": "workspace:*"
+    "@immersive-ui-field-color-value/clamp-unit": "workspace:*",
+    "@immersive-ui-field-color-value/normalize": "workspace:*",
+    "@immersive-ui-field-color-value/wrap-unit": "workspace:*",
+    "@immersive-ui-field-color-value/to-hsva": "workspace:*"
   }
 }

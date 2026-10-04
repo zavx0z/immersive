@@ -1,10 +1,10 @@
-import type {UiFieldsReferenceField} from "@ui-fields/reference-field"
-type ReferenceFieldProps = UiFieldsReferenceField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldReference} from "@immersive-ui-component-field/reference"
+type ReferenceFieldProps = ImmersiveUiComponentFieldReference.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersReference {
+export declare namespace ImmersiveNodesParameterReference {
   /**
   Входные данные ссылочного параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersReference {
 
   @example
   ```ts
-  const input: NodesParametersReference.Input = {
+  const input: ImmersiveNodesParameterReference.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace NodesParametersReference {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: ReferenceFieldProps["value"]
     readonly placeholder?: ReferenceFieldProps["placeholder"]
     readonly density?: ReferenceFieldProps["density"]
@@ -44,7 +44,7 @@ export declare namespace NodesParametersReference {
     readonly onClear?: ReferenceFieldProps["onClear"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

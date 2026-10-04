@@ -1,4 +1,4 @@
-import {useEffect, useState} from "@zavx0z/component"
+import {useEffect, useState} from "@immersive/component"
 
 type SlotProps = Readonly<{
   style?: CssStyle | undefined

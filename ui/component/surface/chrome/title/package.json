@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces-chrome/title",
+  "name": "@immersive-ui-component-surface-chrome/title",
   "label": "SurfaceTitle",
   "version": "0.0.0",
   "description": "Заголовок или дополнительная подпись поверхности",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-surfaces/chrome": "workspace:*"
+    "@immersive-ui-component-surface/chrome": "workspace:*"
   }
 }

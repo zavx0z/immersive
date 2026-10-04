@@ -1,12 +1,12 @@
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
 import type {CodeEditorSegment} from "./types"
 
 /** Подготовленные строки и токены одного состояния редактора. */
-export declare namespace UiViewsCodeEditorViewModel {
-  type Input = readonly [props: UiViewsCodeEditor.Input]
+export declare namespace ImmersiveUiComponentViewCodeEditorViewModel {
+  type Input = readonly [props: ImmersiveUiComponentViewCodeEditor.Input]
 
   type Output = Readonly<{
-    props: UiViewsCodeEditor.Input
+    props: ImmersiveUiComponentViewCodeEditor.Input
     lines: readonly string[]
     lineEndings: readonly string[]
     segments: readonly (readonly CodeEditorSegment[])[]

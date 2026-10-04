@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-color-field/layout",
+  "name": "@immersive-ui-field-layout/color",
   "label": "colorFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров colorField",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-density-height": "workspace:*"
+    "@immersive-ui-field-metric/density-height": "workspace:*"
   }
 }

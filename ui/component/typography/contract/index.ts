@@ -1,10 +1,10 @@
-import type {Zavx0zUi} from "@zavx0z/ui/contract"
+import type {ImmersiveUiComponent} from "@immersive-ui/component/contract"
 import type {TypographyVariant} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Протокол текстового представления с выбранной типографикой. */
-export declare namespace UiTypography {
+export declare namespace ImmersiveUiComponentTypography {
   /**
   Входные данные Typography.
   */
@@ -16,5 +16,5 @@ export declare namespace UiTypography {
   }
 
   /** Готовое представление в Document приложения. */
-  type Output = Zavx0zUi.Output & JSX.Element
+  type Output = ImmersiveUiComponent.Output & JSX.Element
 }

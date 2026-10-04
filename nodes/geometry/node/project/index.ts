@@ -3,24 +3,24 @@
 
 @packageDocumentation
 */
-import type {NodeGeometryProject as Contract} from "./contract"
-export type {NodeGeometryProject} from "./contract"
+import type {ImmersiveNodesGeometryNodeProject as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodeProject} from "./contract"
 
-import type {Socket as CoreSocket} from "@nodes/tree"
-import type {NodeGeometryPlan} from "@node-geometry/plan"
-type NodeGeometryRowInput = NodeGeometryPlan.Input["rows"][number]
+import type {Socket as CoreSocket} from "@immersive-nodes/tree"
+import type {ImmersiveNodesGeometryNodePlan} from "@immersive-nodes-geometry-node/plan"
+type NodeGeometryRowInput = ImmersiveNodesGeometryNodePlan.Input["rows"][number]
 type ProjectedNodeSnapshot = Contract.Input[0]
-import resolveProjectedParameterPresentation from "@nodes/parameter-presentation"
-import parameterMetrics from "@nodes/parameter-metrics"
+import resolveProjectedParameterPresentation from "@immersive-nodes-projection-parameter/presentation"
+import parameterMetrics from "@immersive-nodes-geometry/parameter"
 const {NODE_PARAMETER_SPACING_SMALL, NODE_PARAMETER_SPACING_MEDIUM} = parameterMetrics
-import projectedParameterFieldHeight from "@node-geometry/field-height"
-import parameterSpacingBefore from "@node-geometry/spacing"
-import projectedSocketSide from "@node-geometry/socket-side"
-import nodeSocketLayoutPortId from "@node-geometry/port-id"
-import planNodeGeometry from "@node-geometry/plan"
-import nodeMetrics from "@node-geometry/metrics"
+import projectedParameterFieldHeight from "@immersive-nodes-geometry-node/field-height"
+import parameterSpacingBefore from "@immersive-nodes-geometry-node/spacing"
+import projectedSocketSide from "@immersive-nodes-geometry-node/socket-side"
+import nodeSocketLayoutPortId from "@immersive-nodes-geometry-node/port-id"
+import planNodeGeometry from "@immersive-nodes-geometry-node/plan"
+import nodeMetrics from "@immersive-nodes-geometry-node/metrics"
 const {NODE_MINIMUM_WIDTH} = nodeMetrics
-import socketMetrics from "@socket-values/metrics"
+import socketMetrics from "@immersive-nodes-model-socket/metrics"
 const {NODE_ROW_HEIGHT} = socketMetrics
 
 export default function planProjectedNodeGeometry(

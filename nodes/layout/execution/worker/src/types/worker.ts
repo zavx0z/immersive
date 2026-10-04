@@ -1,15 +1,15 @@
-import type {AdaptiveLayoutInput, AdaptiveLayoutOutput} from "@nodes/layout/adaptive"
-import type {AdaptiveLayoutDiagnostics, AdaptiveNoLegalSideWitness} from "@nodes/layout/adaptive/types"
+import type {AdaptiveLayoutInput, AdaptiveLayoutOutput} from "@immersive-nodes/layout/adaptive"
+import type {AdaptiveLayoutDiagnostics, AdaptiveNoLegalSideWitness} from "@immersive-nodes/layout/adaptive/types"
 import type {
   CoffmanGrahamLayoutInput,
   CoffmanGrahamLayoutOutput,
-} from "@nodes/layout/coffman-graham"
-import type {CoffmanGrahamCycleWitness} from "@nodes/layout/types"
-import type {FixedLayoutInput, FixedLayoutOutput} from "@nodes/layout/fixed"
+} from "@immersive-nodes/layout/coffman-graham"
+import type {CoffmanGrahamCycleWitness} from "@immersive-nodes/layout/types"
+import type {FixedLayoutInput, FixedLayoutOutput} from "@immersive-nodes/layout/fixed"
 import type {
   TopDownLayoutOutput,
-} from "@nodes/layout/top-down"
-import type {TopDownCycleWitness, TopDownInput} from "@nodes/layout/types"
+} from "@immersive-nodes/layout/top-down"
+import type {TopDownCycleWitness, TopDownInput} from "@immersive-nodes/layout/types"
 
 /** Policy-neutral request envelope for one long-lived layout Worker. */
 export type WorkerRequest<Graph = FixedLayoutInput> = Readonly<{

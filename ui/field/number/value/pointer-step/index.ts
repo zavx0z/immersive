@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberValueNumberPointerStep as Contract} from "./contract"
-import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
-type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
-import validNumberStep from "@ui-fields-number-value/valid-number-step"
+import type {ImmersiveUiFieldNumberValuePointerStep as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueNormalize} from "@immersive-ui-field-number-value/normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
+import validNumberStep from "@immersive-ui-field-number-value/valid-step"
 
 export default function numberPointerStep(options: Contract.Input[0]): Contract.Output {
   return validNumberStep(options.step) ?? 0.1
 }
 
-export type {UiFieldsNumberValueNumberPointerStep} from "./contract"
+export type {ImmersiveUiFieldNumberValuePointerStep} from "./contract"

@@ -1,14 +1,14 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createDocument, acquireDocumentAuthorStyleSheetOwner, MouseEvent} from "@zavx0z/dom"
-import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
-import {createRoot} from "@zavx0z/component"
-import {createDocumentRenderer} from "@renderer/html"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createDocument, acquireDocumentAuthorStyleSheetOwner, MouseEvent} from "@immersive/dom"
+import {flushDocumentLayoutObservers} from "@immersive/dom/geometry"
+import {createRoot} from "@immersive/component"
+import {createDocumentRenderer} from "@immersive-renderer/html"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import type {GraphViewProps, GraphMeasuredLayout, GraphMeasurement} from "@immersive/nodes/view"
 import type {NodeTreeStore} from "@immersive/nodes/view/tree"
-import {createNodeTree, createNodeTreeExternalStore, Parameter} from "@nodes/tree"
+import {createNodeTree, createNodeTreeExternalStore, Parameter} from "@immersive-nodes/tree"
 
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "nodes/projection/parameter"), resolve(root, "nodes"), resolve(root, "ui")]}))

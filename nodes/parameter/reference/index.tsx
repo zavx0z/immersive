@@ -6,14 +6,14 @@ ReferenceParameter соединяет публичный ReferenceField с ко�
 @packageDocumentation
 */
 
-import ReferenceField from "@ui-fields/reference-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersReference as Contract} from "./contract"
+import ReferenceField from "@immersive-ui-component-field/reference"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterReference as Contract} from "./contract"
 
-export type {NodesParametersReference} from "./contract"
+export type {ImmersiveNodesParameterReference} from "./contract"
 
 /**
-Авторский контракт ReferenceParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт ReferenceParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property value - Идентификатор выбранного объекта с подписью либо null.
 

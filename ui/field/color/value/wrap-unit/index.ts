@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {UiFieldsColorValueWrapUnit as Contract} from "./contract"
+import type {ImmersiveUiFieldColorValueWrapUnit as Contract} from "./contract"
 
 export default function wrapUnit(value: Contract.Input[0]): Contract.Output {
   if (!Number.isFinite(value)) return 0
   return ((value % 1) + 1) % 1
 }
 
-export type {UiFieldsColorValueWrapUnit} from "./contract"
+export type {ImmersiveUiFieldColorValueWrapUnit} from "./contract"

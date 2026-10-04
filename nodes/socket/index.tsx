@@ -5,15 +5,15 @@
 @packageDocumentation
 */
 
-import socketMetrics from "@socket-values/metrics"
+import socketMetrics from "@immersive-nodes-model-socket/metrics"
 const {NODE_BORDER_WIDTH, NODE_ROW_HEIGHT, SOCKET_GLYPH_SIZE} = socketMetrics
-import socketPreset from "@socket-values/preset"
-import SOCKET_KINDS from "@socket-values/kinds"
-import SOCKET_SHAPES from "@socket-values/shapes"
-import SOCKET_PRESETS from "@socket-values/presets"
+import socketPreset from "@immersive-nodes-model-socket/preset"
+import SOCKET_KINDS from "@immersive-nodes-model-socket/kinds"
+import SOCKET_SHAPES from "@immersive-nodes-model-socket/shapes"
+import SOCKET_PRESETS from "@immersive-nodes-model-socket/presets"
 
-import type {NodesSockets as Contract} from "./contract"
-export type {NodesSockets} from "./contract"
+import type {ImmersiveNodesSocket as Contract} from "./contract"
+export type {ImmersiveNodesSocket} from "./contract"
 
 /** Проецирует адрес, вид и состояние сокета; изменение связей остаётся у вызывающего кода. */
 

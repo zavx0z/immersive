@@ -1,6 +1,6 @@
 import {afterAll, describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import JsxCompilerSession from "@jsx-compiler/session"
+import JsxCompilerSession from "@immersive-jsx-compiler/session"
 
 describe.each([
   {name: "Компонент без слотов", file: "plain.tsx"},

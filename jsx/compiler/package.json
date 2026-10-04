@@ -1,5 +1,5 @@
 {
-  "name": "@jsx/compiler",
+  "name": "@immersive-jsx/compiler",
   "label": "Компиляция JSX",
   "description": "Сессия компиляции, интеграция Bun и диагностика JSX",
   "version": "0.0.0",
@@ -13,8 +13,8 @@
     }
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@jsx-compiler/bun": "workspace:*",
-    "@jsx-compiler/error": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-jsx-compiler/bun": "workspace:*",
+    "@immersive-jsx-compiler/error": "workspace:*"
   }
 }

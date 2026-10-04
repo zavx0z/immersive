@@ -1,5 +1,5 @@
-import {layoutCoffmanGraham} from "@nodes/layout/coffman-graham"
-import {CoffmanGrahamLayoutError} from "@nodes/layout/coffman-graham/error"
+import {layoutCoffmanGraham} from "@immersive-nodes/layout/coffman-graham"
+import {CoffmanGrahamLayoutError} from "@immersive-nodes/layout/coffman-graham/error"
 import {createWorkerExecutor, serializeWorkerError} from "../../../../execution/worker/src/executor.ts"
 import type {
   CoffmanGrahamWorkerFailure,

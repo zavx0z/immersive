@@ -1,14 +1,14 @@
 import type {FieldGroupDensity} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
-import type {UiFields} from "@ui/fields/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace UiFieldsFieldGroup {
+export declare namespace ImmersiveUiComponentFieldGroup {
   /**
   Входные данные FieldGroup.
   */
-  interface Input extends UiFields.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly density?: FieldGroupDensity | undefined
   }
 
@@ -17,5 +17,5 @@ export declare namespace UiFieldsFieldGroup {
     readonly default: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
-  type Output = UiFields.Output & JSX.Element<Slots>
+  type Output = ImmersiveUiComponentField.Output & JSX.Element<Slots>
 }

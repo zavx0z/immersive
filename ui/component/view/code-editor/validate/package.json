@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/validate",
+  "name": "@immersive-ui-component-view-code-editor/validate",
   "label": "assertCodeEditorProps",
   "version": "0.0.0",
   "description": "Проверка входных данных редактора исходного текста",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-views-code-editor/assert-non-empty": "workspace:*",
-    "@ui-views/code-editor": "workspace:*",
-    "@ui/code-editor-model": "workspace:*"
+    "@immersive-tech-text/assert-non-empty": "workspace:*",
+    "@immersive-ui-component-view/code-editor": "workspace:*",
+    "@immersive-tech/text-editor": "workspace:*"
   }
 }

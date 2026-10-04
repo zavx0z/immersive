@@ -1,6 +1,6 @@
 # WebGPU
 
-`@zavx0z/webgpu` выполняет отрисовку Immersive и управляет ресурсами GPU:
+`@immersive/webgpu` выполняет отрисовку Immersive и управляет ресурсами GPU:
 шейдерами, buffers, textures, загрузкой данных и командами рисования.
 Пакет связывает пространственные объекты Engine и display records Renderer
 с их графическим представлением.
@@ -21,7 +21,7 @@
 
 ## Публичный API
 
-Вход `@zavx0z/webgpu` экспортирует `Renderer`, `RendererWebGpuBackend`,
+Вход `@immersive/webgpu` экспортирует `Renderer`, `RendererWebGpuBackend`,
 `TextureLoader` и проекции `RendererWebGpuDocumentPlane`,
 `RendererWebGpuDisplayPlane`, `RendererWebGpuScreenOverlay`.
 Типы композиции описывают общий кадр, ограниченные виды и overlays.

@@ -1,7 +1,7 @@
-import type {Socket as CoreSocket} from "@nodes/tree"
+import type {Socket as CoreSocket} from "@immersive-nodes/tree"
 
 /** Определяет сторону сокета по явному значению и направлению. */
-export declare namespace SocketValuesSide {
+export declare namespace ImmersiveNodesModelSocketSide {
   type Input = Pick<CoreSocket, "direction" | "side">
   type Output = NonNullable<CoreSocket["side"]>
 }

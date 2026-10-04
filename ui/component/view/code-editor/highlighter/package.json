@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-code-editor/highlighter",
+  "name": "@immersive-ui-component-view-code-editor/highlighter",
   "label": "resolveCodeEditorHighlighter",
   "version": "0.0.0",
   "description": "Выбор подсветки по языку и пути исходного текста",

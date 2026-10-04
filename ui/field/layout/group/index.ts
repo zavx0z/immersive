@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {UiFieldsFieldGroup} from "@ui-fields/field-group"
-type FieldGroupDensity = NonNullable<UiFieldsFieldGroup.Input["density"]>
-import fieldDensityHeight from "@ui-fields-metrics/field-density-height"
-import labelledFieldHeight from "@ui-fields-metrics/labelled-field-height"
+import type {ImmersiveUiComponentFieldGroup} from "@immersive-ui-component-field/group"
+type FieldGroupDensity = NonNullable<ImmersiveUiComponentFieldGroup.Input["density"]>
+import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
+import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
 
 const fieldGroupLayout = Object.freeze({
   height(options: Readonly<{

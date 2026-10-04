@@ -1,4 +1,4 @@
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {ButtonIconPosition} from "./types.ts"
 import type {ButtonKeyboardEvent} from "./types.ts"
 import type {ButtonPointerEvent} from "./types.ts"
@@ -6,14 +6,14 @@ import type {ButtonSize} from "./types.ts"
 import type {ButtonTone} from "./types.ts"
 import type {ButtonVariant} from "./types.ts"
 
-import type {UiButtons} from "@ui/buttons/contract"
+import type {ImmersiveUiComponentButton} from "@immersive-ui-component/button/contract"
 
 /** Протокол текстовой кнопки: внешний вид, доступность и исходные события действия. */
-export declare namespace UiButtonsButton {
+export declare namespace ImmersiveUiComponentButtonBasic {
   /**
   Входные данные Button.
   */
-  interface Input extends UiButtons.Input {
+  interface Input extends ImmersiveUiComponentButton.Input {
     readonly label: string
     readonly variant?: ButtonVariant | undefined
     readonly tone?: ButtonTone | undefined
@@ -37,5 +37,5 @@ export declare namespace UiButtonsButton {
   }
 
   /** Представление сохраняет общий JSX-результат группы. */
-  type Output = UiButtons.Output & JSX.Element
+  type Output = ImmersiveUiComponentButton.Output & JSX.Element
 }

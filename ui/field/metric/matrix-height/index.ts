@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {UiFieldsMetricsMatrixFieldHeight as Contract} from "./contract"
-import type {UiFieldsMetricsResolveFieldDensity} from "@ui-fields-metrics/resolve-field-density"
-type FieldDensity = UiFieldsMetricsResolveFieldDensity.Output
-import fieldDensityHeight from "@ui-fields-metrics/field-density-height"
-import fieldMetric from "@ui-fields-metrics/field-metric"
+import type {ImmersiveUiFieldMetricMatrixHeight as Contract} from "./contract"
+import type {ImmersiveUiFieldMetricResolveDensity} from "@immersive-ui-field-metric/resolve-density"
+type FieldDensity = ImmersiveUiFieldMetricResolveDensity.Output
+import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
+import fieldMetric from "@immersive-ui-field-metric/read"
 
 export default function matrixFieldHeight(size: Contract.Input[0], density: Contract.Input[1]): Contract.Output {
   if (!Number.isInteger(size) || size < 2 || size > 4) {
@@ -17,4 +17,4 @@ export default function matrixFieldHeight(size: Contract.Input[0], density: Cont
   return size * fieldDensityHeight(density) + (size - 1) * fieldMetric("field-matrix-row-gap")
 }
 
-export type {UiFieldsMetricsMatrixFieldHeight} from "./contract"
+export type {ImmersiveUiFieldMetricMatrixHeight} from "./contract"

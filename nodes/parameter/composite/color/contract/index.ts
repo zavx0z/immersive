@@ -1,10 +1,10 @@
-import type {UiFieldsColorField} from "@ui-fields/color-field"
-type ColorFieldProps = UiFieldsColorField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldColor} from "@immersive-ui-component-field/color"
+type ColorFieldProps = ImmersiveUiComponentFieldColor.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersColor {
+export declare namespace ImmersiveNodesParameterCompositeColor {
   /**
   Входные данные цветового параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersColor {
 
   @example
   ```ts
-  const input: NodesParametersColor.Input = {
+  const input: ImmersiveNodesParameterCompositeColor.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace NodesParametersColor {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: ColorFieldProps["value"]
     readonly open?: ColorFieldProps["open"]
     readonly onInput?: ColorFieldProps["onInput"]
@@ -43,7 +43,7 @@ export declare namespace NodesParametersColor {
     readonly onOpenChange?: ColorFieldProps["onOpenChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

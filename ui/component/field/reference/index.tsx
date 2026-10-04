@@ -4,16 +4,16 @@
 
 @packageDocumentation
 */
-import type {UiFieldsReferenceField as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldReference as Contract} from "./contract"
 import {validateReferenceField} from "./src/helpers.tsx"
-import Button from "@ui-buttons/button"
-import IconButton from "@ui-buttons/icon-button"
-import closeIcon from "@ui-themes-icons/close"
-import pickerIcon from "@ui-themes-icons/picker"
-import resourceIcon from "@ui-themes-icons/resource"
+import Button from "@immersive-ui-component-button/basic"
+import IconButton from "@immersive-ui-component-button/icon"
+import closeIcon from "@immersive-ui-theme-icon/close"
+import pickerIcon from "@immersive-ui-theme-icon/picker"
+import resourceIcon from "@immersive-ui-theme-icon/resource"
 
 
-export type {UiFieldsReferenceField} from "./contract"
+export type {ImmersiveUiComponentFieldReference} from "./contract"
 
 export default function ReferenceField(props: Contract.Input): Contract.Output {
   validateReferenceField(props)

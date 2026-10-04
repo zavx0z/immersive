@@ -1,5 +1,5 @@
 /** Проверяет квадратную матрицу от 2×2 до 4×4 и положительный шаг, сохраняя неизменяемые строки. */
-export declare namespace UiFieldsMatrixValueNormalizeMatrixValue {
+export declare namespace ImmersiveUiFieldMatrixValueNormalize {
   /** Аргументы публичной операции normalizeMatrixValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: readonly (readonly number[])[],

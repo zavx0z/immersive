@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/step-number-value",
+  "name": "@immersive-ui-field-number-value/step",
   "label": "stepNumberValue",
   "version": "0.0.0",
   "description": "Пошаговое изменение числового значения",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-number-value/normalize-number-value": "workspace:*",
-    "@ui-fields-number-value/number-pointer-step": "workspace:*",
-    "@ui-fields-number-value/resolve-number-soft-range": "workspace:*"
+    "@immersive-ui-field-number-value/normalize": "workspace:*",
+    "@immersive-ui-field-number-value/pointer-step": "workspace:*",
+    "@immersive-ui-field-number-value/soft-range": "workspace:*"
   }
 }

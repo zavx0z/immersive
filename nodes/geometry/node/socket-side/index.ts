@@ -3,11 +3,11 @@
 
 @packageDocumentation
 */
-import type {NodeGeometrySocketSide as Contract} from "./contract"
-export type {NodeGeometrySocketSide} from "./contract"
+import type {ImmersiveNodesGeometryNodeSocketSide as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodeSocketSide} from "./contract"
 
-import socketKey from "@socket-values/key"
-import socketSide from "@socket-values/side"
+import socketKey from "@immersive-nodes-model-socket/key"
+import socketSide from "@immersive-nodes-model-socket/side"
 
 export default function projectedSocketSide(
   nodeId: Contract.Input[0],

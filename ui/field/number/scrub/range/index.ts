@@ -4,14 +4,14 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberScrubResolveNumberDragRange as Contract} from "./contract"
-import normalizeNumberValue from "@ui-fields-number-value/normalize-number-value"
-import numberPointerAdaptiveSpan from "@ui-fields-number-value/number-pointer-adaptive-span"
-import resolveNumberSoftRange from "@ui-fields-number-value/resolve-number-soft-range"
-import type {UiFieldsNumberValueResolveNumberSoftRange} from "@ui-fields-number-value/resolve-number-soft-range"
-type NumberRange = UiFieldsNumberValueResolveNumberSoftRange.Output
-import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
-type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
+import type {ImmersiveUiFieldNumberScrubRange as Contract} from "./contract"
+import normalizeNumberValue from "@immersive-ui-field-number-value/normalize"
+import numberPointerAdaptiveSpan from "@immersive-ui-field-number-value/pointer-adaptive-span"
+import resolveNumberSoftRange from "@immersive-ui-field-number-value/soft-range"
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@immersive-ui-field-number-value/soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
+import type {ImmersiveUiFieldNumberValueNormalize} from "@immersive-ui-field-number-value/normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 
 export default function resolveNumberDragRange(
   value: Contract.Input[0],
@@ -35,4 +35,4 @@ export default function resolveNumberDragRange(
   return Object.freeze({min: minimum, max: maximum})
 }
 
-export type {UiFieldsNumberScrubResolveNumberDragRange} from "./contract"
+export type {ImmersiveUiFieldNumberScrubRange} from "./contract"

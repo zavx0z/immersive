@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-export {default as JsxCompilerSession} from "@jsx-compiler/session"
-export type {JsxCompilerSessionOptions, JsxCompileResult} from "@jsx-compiler/session"
-export {default as createJsxBunPlugin} from "@jsx-compiler/bun"
-export type {CreateJsxPluginOptions, JsxPlugin} from "@jsx-compiler/bun"
-export {default as JsxCompileError} from "@jsx-compiler/error"
-export type {JsxErrorInput, JsxErrorOutput} from "@jsx-compiler/error"
+export {default as JsxCompilerSession} from "@immersive-jsx-compiler/session"
+export type {JsxCompilerSessionOptions, JsxCompileResult} from "@immersive-jsx-compiler/session"
+export {default as createJsxBunPlugin} from "@immersive-jsx-compiler/bun"
+export type {CreateJsxPluginOptions, JsxPlugin} from "@immersive-jsx-compiler/bun"
+export {default as JsxCompileError} from "@immersive-jsx-compiler/error"
+export type {JsxErrorInput, JsxErrorOutput} from "@immersive-jsx-compiler/error"
 
-export type {JSX} from "@jsx-compiler/session"
+export type {JSX} from "@immersive-jsx-compiler/session"

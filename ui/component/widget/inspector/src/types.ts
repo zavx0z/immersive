@@ -1,6 +1,6 @@
 import type {InspectorCategory} from "../contract/types"
-import type {UiWidgetsInspector} from "../contract"
-type InspectorProps = UiWidgetsInspector.Input
+import type {ImmersiveUiComponentWidgetInspector} from "../contract"
+type InspectorProps = ImmersiveUiComponentWidgetInspector.Input
 
 /**
 Тип CategoryButtonProps принадлежит контракту своего владельца.

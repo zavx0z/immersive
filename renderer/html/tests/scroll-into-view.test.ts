@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement, readDocumentScrollIntoViewRequests} from "@zavx0z/dom"
+import {createDocument, HTMLElement, readDocumentScrollIntoViewRequests} from "@immersive/dom"
 import {createDocumentRenderer, fulfillScrollIntoViewRequests} from "../src/index.ts"
 
 function fixture(style = "width:100px;height:60px;overflow:auto") {

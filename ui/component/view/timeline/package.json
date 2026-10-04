@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views/timeline",
+  "name": "@immersive-ui-component-view/timeline",
   "label": "Timeline",
   "version": "0.0.0",
   "description": "Временная шкала дорожек, ключевых кадров и маркеров",
@@ -15,13 +15,13 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-surfaces-chrome/header": "workspace:*",
-    "@ui-surfaces-chrome/owner": "workspace:*",
-    "@ui-surfaces-chrome/title": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-surface-chrome/header": "workspace:*",
+    "@immersive-ui-component-surface-chrome/owner": "workspace:*",
+    "@immersive-ui-component-surface-chrome/title": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/views": "workspace:*"
+    "@immersive-ui-component/view": "workspace:*"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-menus/menu-item",
+  "name": "@immersive-ui-component-menu/item",
   "label": "MenuItem",
   "version": "0.0.0",
   "description": "Строка действия контекстного меню",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/menus": "workspace:*"
+    "@immersive-ui-component/menu": "workspace:*"
   }
 }

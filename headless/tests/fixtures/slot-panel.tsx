@@ -1,4 +1,4 @@
-import {useState} from "@zavx0z/component"
+import {useState} from "@immersive/component"
 
 /** Текстовый компонент для проверки одного compiler и Headless transport. */
 export function SlotText(props: Readonly<{text: string}>) {

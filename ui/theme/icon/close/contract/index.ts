@@ -1,6 +1,6 @@
-import type {UiThemesIcons} from "@ui-themes/icons/contract"
+import type {ImmersiveUiThemeIcon} from "@immersive-ui-theme/icon/contract"
 
 /** SVG-значок close в формате data URL. */
-export declare namespace UiThemesIconsClose {
-  type Output = UiThemesIcons.Output
+export declare namespace ImmersiveUiThemeIconClose {
+  type Output = ImmersiveUiThemeIcon.Output
 }

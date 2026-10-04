@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {UiSurfacesChromeButton as Contract} from "./contract"
-import Button from "@ui-buttons/button"
+import type {ImmersiveUiComponentSurfaceChromeButton as Contract} from "./contract"
+import Button from "@immersive-ui-component-button/basic"
 
-export type {UiSurfacesChromeButton} from "./contract"
+export type {ImmersiveUiComponentSurfaceChromeButton} from "./contract"
 
 
 export default function SurfaceButton(props: Contract.Input): Contract.Output {

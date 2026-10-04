@@ -4,11 +4,11 @@ SVG-значок chevron-right в формате data URL.
 
 @packageDocumentation
 */
-import type {UiThemesIconsChevronRight as Contract} from "./contract"
-import iconSvg from "@ui-themes-icons/compose"
+import type {ImmersiveUiThemeIconChevronRight as Contract} from "./contract"
+import iconSvg from "@immersive-ui-theme-icon/compose"
 
 const chevronRightIcon: Contract.Output = /* @__PURE__ */ iconSvg("<path d=\"m10 7 5 5-5 5\"/>")
 
 export default chevronRightIcon
 
-export type {UiThemesIconsChevronRight} from "./contract"
+export type {ImmersiveUiThemeIconChevronRight} from "./contract"

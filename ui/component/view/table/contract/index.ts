@@ -1,13 +1,13 @@
-import type {UiViews} from "@ui/views/contract"
+import type {ImmersiveUiComponentView} from "@immersive-ui-component/view/contract"
 import type {TableCellContext} from "./types.ts"
 import type {TableColumn} from "./types.ts"
 import type {TableRow} from "./types.ts"
 import type {TableSelectionUpdate} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace UiViewsTable {
+export declare namespace ImmersiveUiComponentViewTable {
   /**
   Входные данные Table.
   */
@@ -26,5 +26,5 @@ export declare namespace UiViewsTable {
     readonly onCellActivate?: ((context: TableCellContext, event: Event) => void) | undefined
   }
 
-  type Output = UiViews.Output & JSX.Element
+  type Output = ImmersiveUiComponentView.Output & JSX.Element
 }

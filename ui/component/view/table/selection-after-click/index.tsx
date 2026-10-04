@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {UiViewsTableTableSelectionAfterClick as Contract} from "./contract"
-export type {UiViewsTableTableSelectionAfterClick} from "./contract"
-import normalizeTableSelection from "@ui-views-table/normalize-table-selection"
+import type {ImmersiveUiComponentViewTableSelectionAfterClick as Contract} from "./contract"
+export type {ImmersiveUiComponentViewTableSelectionAfterClick} from "./contract"
+import normalizeTableSelection from "@immersive-ui-view-table/normalize-table-selection"
 import {tableRangeKeys} from "./src/helpers.tsx"
 import {uniqueKeys} from "./src/helpers.tsx"
 

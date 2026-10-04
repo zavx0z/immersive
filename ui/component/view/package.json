@@ -1,5 +1,5 @@
 {
-  "name": "@ui/views",
+  "name": "@immersive-ui-component/view",
   "label": "view",
   "version": "0.0.0",
   "description": "Представления показывают данные и предоставляют их собственные способы взаимодействия.",
@@ -11,15 +11,15 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-views/code-editor": "workspace:*",
-    "@ui-views/list": "workspace:*",
-    "@ui-views/table": "workspace:*",
-    "@ui-views/timeline": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-ui-component-view/code-editor": "workspace:*",
+    "@immersive-ui-component-view/list": "workspace:*",
+    "@immersive-ui-component-view/table": "workspace:*",
+    "@immersive-ui-component-view/timeline": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

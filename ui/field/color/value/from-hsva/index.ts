@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {UiFieldsColorValueColorHsvaToValue as Contract} from "./contract"
-export type {UiFieldsColorValueColorHsvaToValue} from "./contract"
+import type {ImmersiveUiFieldColorValueFromHsva as Contract} from "./contract"
+export type {ImmersiveUiFieldColorValueFromHsva} from "./contract"
 
-import clampUnit from "@ui-fields-color-value/clamp-unit"
-import normalizeColorValue from "@ui-fields-color-value/normalize-color-value"
-import wrapUnit from "@ui-fields-color-value/wrap-unit"
+import clampUnit from "@immersive-ui-field-color-value/clamp-unit"
+import normalizeColorValue from "@immersive-ui-field-color-value/normalize"
+import wrapUnit from "@immersive-ui-field-color-value/wrap-unit"
 
 export default function colorHsvaToValue(value: Contract.Input[0]): Contract.Output {
   const hue = wrapUnit(value.h ?? 0) * 6

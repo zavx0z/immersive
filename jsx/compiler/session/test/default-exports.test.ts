@@ -2,9 +2,9 @@ import {expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import {createDocument} from "@zavx0z/dom"
-import {createRoot} from "@zavx0z/component"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import {createDocument} from "@immersive/dom"
+import {createRoot} from "@immersive/component"
 
 test("default компонента и именованный API домена сохраняют template, слоты и состояние", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".imports-"))
@@ -18,13 +18,13 @@ test("default компонента и именованный API домена с
       include: ["*.ts", "*.tsx"],
     }))
     await Bun.write(join(directory, "label.tsx"), `
-import {useMemo} from "@zavx0z/component"
+import {useMemo} from "@immersive/component"
 export default function useLabel(label: string) {
   return useMemo(() => label, [label])
 }
 `)
     await Bun.write(join(directory, "button.tsx"), `
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import useLabel from "./label"
 export interface ButtonProps {label: string}
 export default function Button(props: ButtonProps): JSX.Element {
@@ -37,7 +37,7 @@ export default function Button(props: ButtonProps): JSX.Element {
 }
 `)
     await Bun.write(join(directory, "panel.tsx"), `
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import Button from "./button"
 export default function Panel(): JSX.Element<{header: typeof Button}> {
   return (

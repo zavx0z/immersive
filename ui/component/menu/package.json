@@ -1,5 +1,5 @@
 {
-  "name": "@ui/menus",
+  "name": "@immersive-ui-component/menu",
   "label": "menu",
   "version": "0.0.0",
   "description": "Команды меню сохраняют семантику пунктов и представление в Document приложения.",
@@ -11,14 +11,14 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-menus/clipboard-menu": "workspace:*",
-    "@ui-menus/menu": "workspace:*",
-    "@ui-menus/menu-item": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-ui-component-menu/clipboard": "workspace:*",
+    "@immersive-ui-component-menu/basic": "workspace:*",
+    "@immersive-ui-component-menu/item": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

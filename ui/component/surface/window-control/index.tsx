@@ -5,10 +5,10 @@ WindowControl — элемент управления видимостью Windo
 
 @packageDocumentation
 */
-import Button from "@ui-buttons/button"
-import type {UiSurfacesWindowControl as Contract} from "./contract"
+import Button from "@immersive-ui-component-button/basic"
+import type {ImmersiveUiComponentSurfaceWindowControl as Contract} from "./contract"
 
-export type {UiSurfacesWindowControl} from "./contract"
+export type {ImmersiveUiComponentSurfaceWindowControl} from "./contract"
 
 
 export default function WindowControl(props: Contract.Input): Contract.Output {

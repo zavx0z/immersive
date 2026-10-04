@@ -35,7 +35,7 @@ import {
 import {
   parseCssTemplateShape,
   type CssTemplateShape,
-} from "@zavx0z/template/css-shape"
+} from "@immersive/template/css-shape"
 import {
   hostAttributeTransport,
   hostAttributeValue,

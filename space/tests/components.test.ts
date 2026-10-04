@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import JsxCompilerSession from "@jsx-compiler/session"
+import JsxCompilerSession from "@immersive-jsx-compiler/session"
 
 const root = resolve(import.meta.dir, "../..")
 const spaceRoot = resolve(root, "space")
@@ -35,7 +35,7 @@ describe("Публичные пространственные компонент
       for (const [file, tagName] of owners) {
         const result = await compiler.compileFile(resolve(spaceRoot, file))
         expect(result.code).toContain(`document.createElement("${tagName}")`)
-        expect(result.code).toContain('from "@zavx0z/component"')
+        expect(result.code).toContain('from "@immersive/component"')
       }
     } finally {
       await compiler.close()

@@ -1,17 +1,17 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument} from "@zavx0z/dom"
-import {flushDocumentLayoutObservers} from "@zavx0z/dom/geometry"
-import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@renderer/html"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
-import type {UiSurfacesTab} from "@ui-surfaces/tab"
-type TabProps = UiSurfacesTab.Input
+import {createRoot} from "@immersive/component"
+import {createDocument} from "@immersive/dom"
+import {flushDocumentLayoutObservers} from "@immersive/dom/geometry"
+import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@immersive-renderer/html"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
+import type {ImmersiveUiComponentSurfaceTab} from "@immersive-ui-component-surface/tab"
+type TabProps = ImmersiveUiComponentSurfaceTab.Input
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {default: Tab} = await import("@ui-surfaces/tab")
+const {default: Tab} = await import("@immersive-ui-component-surface/tab")
 const {TabChildrenFixture, TabVerticalLabelFixture} = await import("./tab.fixture.tsx")
 const theme = await Bun.file(resolve(workspace, "ui/component/theme/theme.css")).text()
 

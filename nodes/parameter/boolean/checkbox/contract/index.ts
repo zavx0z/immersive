@@ -1,10 +1,10 @@
-import type {UiFieldsCheckboxField} from "@ui-fields/checkbox-field"
-type CheckboxFieldProps = UiFieldsCheckboxField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldCheckbox} from "@immersive-ui-component-field/checkbox"
+type CheckboxFieldProps = ImmersiveUiComponentFieldCheckbox.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersCheckbox {
+export declare namespace ImmersiveNodesParameterBooleanCheckbox {
   /**
   Входные данные логического параметра-флажка, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersCheckbox {
 
   @example
   ```ts
-  const input: NodesParametersCheckbox.Input = {
+  const input: ImmersiveNodesParameterBooleanCheckbox.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,13 +35,13 @@ export declare namespace NodesParametersCheckbox {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly checked: CheckboxFieldProps["checked"]
     readonly indeterminate?: CheckboxFieldProps["indeterminate"]
     readonly onChange?: CheckboxFieldProps["onChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

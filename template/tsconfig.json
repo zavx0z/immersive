@@ -4,7 +4,7 @@
     "allowJs": true,
     "exactOptionalPropertyTypes": false,
     "jsx": "preserve",
-    "jsxImportSource": "@zavx0z/jsx"
+    "jsxImportSource": "@immersive/jsx"
   },
   "include": [
     "*.ts",

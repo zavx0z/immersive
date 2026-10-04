@@ -1,13 +1,13 @@
-import socketKey from "@socket-values/key"
+import socketKey from "@immersive-nodes-model-socket/key"
 import {expect, test} from "bun:test"
 import type {
   NodeJsonValue,
   ParameterSnapshot,
   Socket,
-} from "@nodes/tree"
+} from "@immersive-nodes/tree"
 import "./compiler.ts"
-import type {NodeGeometryProject} from "@node-geometry/project"
-type ProjectedNodeSnapshot = NodeGeometryProject.Input[0]
+import type {ImmersiveNodesGeometryNodeProject} from "@immersive-nodes-geometry-node/project"
+type ProjectedNodeSnapshot = ImmersiveNodesGeometryNodeProject.Input[0]
 
 
 
@@ -15,8 +15,8 @@ const [
   {default: planProjectedNodeGeometry},
   {default: resolveProjectedParameterPresentation},
 ] = await Promise.all([
-  import("@node-geometry/project"),
-  import("@nodes/parameter-presentation"),
+  import("@immersive-nodes-geometry-node/project"),
+  import("@immersive-nodes-projection-parameter/presentation"),
 ])
 
 test("[NODES-PROJECTED-GEOMETRY-001] каждый простой Parameter имеет точную высоту своего UI-владельца", () => {

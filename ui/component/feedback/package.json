@@ -1,5 +1,5 @@
 {
-  "name": "@ui/feedback",
+  "name": "@immersive-ui-component/feedback",
   "label": "feedback",
   "version": "0.0.0",
   "description": "Уведомления и строки состояния представляют обратную связь в Document приложения.",
@@ -11,13 +11,13 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-feedback/notification": "workspace:*",
-    "@ui-feedback/status-bar": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-ui-component-feedback/notification": "workspace:*",
+    "@immersive-ui-component-feedback/status-bar": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

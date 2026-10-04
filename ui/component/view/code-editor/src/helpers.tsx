@@ -1,8 +1,8 @@
-import {memo} from "@zavx0z/component"
-import type {UiViewsCodeEditorViewModel} from "@ui-views-code-editor/view-model"
-type CodeEditorSegment = UiViewsCodeEditorViewModel.Output["segments"][number][number]
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
-type CodeEditorLineDecoration = NonNullable<UiViewsCodeEditor.Input["lineDecorations"]>[number]
+import {memo} from "@immersive/component"
+import type {ImmersiveUiComponentViewCodeEditorViewModel} from "@immersive-ui-component-view-code-editor/view-model"
+type CodeEditorSegment = ImmersiveUiComponentViewCodeEditorViewModel.Output["segments"][number][number]
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+type CodeEditorLineDecoration = NonNullable<ImmersiveUiComponentViewCodeEditor.Input["lineDecorations"]>[number]
 import {codeEditorPaintRuns} from "./paint-runs.ts"
 import type {CodeEditorPaintRun} from "./paint-runs.ts"
 

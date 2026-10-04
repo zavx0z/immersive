@@ -1,7 +1,7 @@
-import type {Zavx0zUi} from "@zavx0z/ui/contract"
+import type {ImmersiveUiComponent} from "@immersive-ui/component/contract"
 
 /** Представления показывают данные и предоставляют их собственные способы взаимодействия. */
-export declare namespace UiViews {
+export declare namespace ImmersiveUiComponentView {
   /** JSX-элемент; точные входы, слоты и события принадлежат участникам. */
-  type Output = Zavx0zUi.Output
+  type Output = ImmersiveUiComponent.Output
 }

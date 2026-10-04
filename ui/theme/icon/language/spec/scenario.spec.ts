@@ -1,6 +1,6 @@
 /** languageIcon показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import icon from "@ui-themes-icons/language"
+import icon from "@immersive-ui-theme-icon/language"
 
 describe.each([{name: "Векторный ресурс", props: {}}])("$name", () => {
   test("SVG", () => {

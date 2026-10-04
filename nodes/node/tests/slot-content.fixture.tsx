@@ -1,5 +1,5 @@
-import ParameterNode from "@nodes-node/parameter"
-import Typography from "@ui/typography"
+import ParameterNode from "@immersive-nodes-node/parameter"
+import Typography from "@immersive-ui-component/typography"
 import {parameters} from "../spec/fixture/parameters.ts"
 
 /**

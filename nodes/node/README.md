@@ -2,17 +2,17 @@
 
 ## Компоненты
 
-`@nodes/node` — Cluster трёх самостоятельных представлений. Именованный API
-сохраняет их реализации; общий `NodesNode.Input` задаёт адрес, выбор, видимость
-и активацию, `NodesNode.Output` — JSX в Document приложения.
+`@immersive-nodes/node` — Cluster трёх самостоятельных представлений. Именованный API
+сохраняет их реализации; общий `ImmersiveNodesNode.Input` задаёт адрес, выбор, видимость
+и активацию, `ImmersiveNodesNode.Output` — JSX в Document приложения.
 Каждый участник также предоставляет default-реализацию и собственный namespace
 по точному публичному адресу ниже.
 
 | Компонент             | Назначение                                                 | Импорт                  |
 |-----------------------|------------------------------------------------------------|-------------------------|
-| DiagramNode           | Описание на всю ноду; прямоугольник, овал или круг         | `@nodes-node/diagram`   |
-| ParameterNode         | Корпус, шапка, действия, параметры и сокеты           | `@nodes-node/parameter` |
-| ContentNode           | ParameterNode плюс произвольный компонент содержимого      | `@nodes-node/content`   |
+| DiagramNode           | Описание на всю ноду; прямоугольник, овал или круг         | `@immersive-nodes-node/diagram`   |
+| ParameterNode         | Корпус, шапка, действия, параметры и сокеты           | `@immersive-nodes-node/parameter` |
+| ContentNode           | ParameterNode плюс произвольный компонент содержимого      | `@immersive-nodes-node/content`   |
 
 Варианты просмотра и проверки использования принадлежат каждому компоненту:
 [формы DiagramNode](diagram/spec/scenario.spec.tsx),
@@ -22,10 +22,10 @@
 непосредственно в единственном аргументе headless.render; варианты и проверки
 находятся рядом в scenario.spec.tsx.
 
-Каталоги компонентов находятся непосредственно в корне `@nodes/node`.
+Каталоги компонентов находятся непосредственно в корне `@immersive-nodes/node`.
 Протокол DiagramNode с описанием полей находится в
 [diagram/contract/index.ts](diagram/contract/index.ts) и доступен как
-`NodesNodeDiagram.Input` / `Output` из `@nodes-node/diagram`.
+`ImmersiveNodesNodeDiagram.Input` / `Output` из `@immersive-nodes-node/diagram`.
 Сам DiagramNode остаётся в `diagram/index.tsx`.
 Каждый содержит `index.tsx` и `spec/deps.spec.ts`: тест сравнивает полный
 статический граф компонентов и нативных JSX-тегов через общий
@@ -53,20 +53,20 @@ ContentNode задаётся `aspect-ratio: 1`. Обе ноды использу
 Содержимое скрывается без размонтирования. Квадратная область имеет сторону,
 равную ширине ноды, и входит в её полную высоту.
 
-Нода получает данные и обработчики. Значения принадлежат `@nodes/parameter-store`, topology — `@nodes/tree`;
+Нода получает данные и обработчики. Значения принадлежат `@immersive-nodes-model-parameter/store`, topology — `@immersive-nodes/tree`;
 визуальные компоненты не создают вторую модель. ContentNode составляет два
 компонента, но остаётся одной нодой графа.
 
-`@node-geometry/project` планирует геометрию снимка ноды,
-`@node-geometry/plan` — размеры строк и сокетов по числовым входам.
-`@node-geometry/metrics` хранит общие числовые размеры; эти владельцы не импортируют TSX.
+`@immersive-nodes-geometry-node/project` планирует геометрию снимка ноды,
+`@immersive-nodes-geometry-node/plan` — размеры строк и сокетов по числовым входам.
+`@immersive-nodes-geometry-node/metrics` хранит общие числовые размеры; эти владельцы не импортируют TSX.
 Для графа передайте вычисление в `GraphEditor.layout` либо обновляйте готовую
 раскладку и состояния снаружи вместе.
 
 Геометрия не является визуальным компонентом. Общий прямоугольник происходит
-из результата `NodesLayout.Output`, а формы отдельных представлений — из их
+из результата `ImmersiveNodesLayout.Output`, а формы отдельных представлений — из их
 собственных протоколов. Числовой план и ParameterNode используют общие
-`@node-geometry/spacing` и `@node-geometry/socket-side`.
+`@immersive-nodes-geometry-node/spacing` и `@immersive-nodes-geometry-node/socket-side`.
 
 Компоненты используют общую UI-тему текущего Experience. Подключение темы
 принадлежит приложению; пакет не создаёт отдельные Document, Canvas или Renderer.

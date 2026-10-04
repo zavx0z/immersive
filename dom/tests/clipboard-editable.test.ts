@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {ClipboardEvent, DataTransfer, InputEvent, createDocument, sealDataTransfer} from "@zavx0z/dom"
+import {ClipboardEvent, DataTransfer, InputEvent, createDocument, sealDataTransfer} from "@immersive/dom"
 
 test("clipboard events carry shared text/plain and text/html, bubble and can cancel the default", () => {
   const document = createDocument()

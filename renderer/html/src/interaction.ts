@@ -13,7 +13,7 @@ import {
   type Node,
   type Document,
   type Element,
-} from "@zavx0z/dom"
+} from "@immersive/dom"
 import type {
   DisplayItem,
   HitMetadata,

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-checkbox-field/layout",
+  "name": "@immersive-ui-field-layout/checkbox",
   "label": "checkboxFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров checkboxField",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-metric": "workspace:*",
-    "@ui-fields-metrics/labelled-field-height": "workspace:*"
+    "@immersive-ui-field-metric/read": "workspace:*",
+    "@immersive-ui-field-metric/labelled-height": "workspace:*"
   }
 }

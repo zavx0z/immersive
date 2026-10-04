@@ -1,6 +1,6 @@
 import {createHash} from "node:crypto"
 import type {Project} from "typescript/unstable/async"
-import JsxCompileError from "@jsx-compiler/error"
+import JsxCompileError from "@immersive-jsx-compiler/error"
 
 export function normalizeStyleSourceRootIds(
   source: readonly string[] | undefined,
@@ -27,7 +27,7 @@ export function assertConfiguredProject(project: Project, sourcePath: string): v
   const configFileName = project.configFileName.replaceAll("\\", "/")
   if (configFileName !== "/dev/null/inferred" || !/\.[cm]?tsx$/i.test(sourcePath)) return
   throw new JsxCompileError(
-    "governed JSX source has no configured TypeScript project; include it in a tsconfig.json with compilerOptions jsx: preserve and jsxImportSource: @zavx0z/jsx",
+    "governed JSX source has no configured TypeScript project; include it in a tsconfig.json with compilerOptions jsx: preserve and jsxImportSource: @immersive/jsx",
     sourcePath,
   )
 }

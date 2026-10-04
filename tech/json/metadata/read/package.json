@@ -1,5 +1,5 @@
 {
-  "name": "@node-metadata/read",
+  "name": "@immersive-tech-json-metadata/read",
   "label": "metadata",
   "version": "0.0.0",
   "description": "Читает собственное поле JSON-объекта",
@@ -14,6 +14,6 @@
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@nodes/metadata": "workspace:*"
+    "@immersive-tech-json/metadata": "workspace:*"
   }
 }

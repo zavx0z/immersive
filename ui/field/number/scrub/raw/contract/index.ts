@@ -1,8 +1,8 @@
-import type {UiFieldsNumberValueResolveNumberSoftRange} from "@ui-fields-number-value/resolve-number-soft-range"
-type NumberRange = UiFieldsNumberValueResolveNumberSoftRange.Output
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@immersive-ui-field-number-value/soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
 
 /** Переводит движение указателя в ограниченное диапазоном число с замедлением при Shift. */
-export declare namespace UiFieldsNumberScrubScrubNumberRawValue {
+export declare namespace ImmersiveUiFieldNumberScrubRaw {
   /** Аргументы публичной операции scrubNumberRawValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,

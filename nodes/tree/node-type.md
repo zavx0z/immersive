@@ -14,13 +14,13 @@ Parameter Store и развёрнутые Socket; его значения изм
 
 | Ответственность | Владелец |
 | --- | --- |
-| Декларация типа, создание экземпляров и проверка их структуры | `@nodes/tree` |
+| Декларация типа, создание экземпляров и проверка их структуры | `@immersive-nodes/tree` |
 | Значения, revisions, подписки, topology и сериализация | Существующие `Parameter` и `NodeTree` |
-| Production TSX-представление ноды, сокетов и параметров | `@immersive/nodes`, `@nodes/sockets`, `@nodes/parameters` |
-| Универсальные поля и их взаимодействия | `@zavx0z/ui` |
+| Production TSX-представление ноды, сокетов и параметров | `@immersive/nodes`, `@immersive-nodes/socket`, `@immersive-nodes/parameter` |
+| Универсальные поля и их взаимодействия | `@immersive-ui/component` |
 | Связь прикладного типа с прикладным компонентом | Приложение через публичную точку расширения Nodes |
-| Раскладка по готовой числовой геометрии | `@nodes/layout` |
-| Геометрия произвольного компонента из его TSX/CSS | `@zavx0z/template`, согласно [PROJECT](../../PROJECT.md#долгосрочная-цель-сборки-tsx) |
+| Раскладка по готовой числовой геометрии | `@immersive-nodes/layout` |
+| Геометрия произвольного компонента из его TSX/CSS | `@immersive/template`, согласно [PROJECT](../../PROJECT.md#долгосрочная-цель-сборки-tsx) |
 
 NodeType не выполняет вычисления графа. Семантика предметных операций остаётся
 у приложения. Тип не хранит Store, listeners, component functions или Renderer.

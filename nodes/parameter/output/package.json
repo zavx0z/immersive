@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-parameters/output",
+  "name": "@immersive-nodes-parameter/output",
   "label": "OutputParameter",
   "version": "0.0.0",
   "description": "OutputParameter соединяет публичный текстовый вывод с композицией сокетов ноды",
@@ -10,16 +10,16 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@ui-fields/field-group": "workspace:*",
-    "@nodes-parameters/layout": "workspace:*",
-    "@nodes/parameter-metrics": "workspace:*"
+    "@immersive-ui-component-field/group": "workspace:*",
+    "@immersive-nodes-parameter-shared/layout": "workspace:*",
+    "@immersive-nodes-geometry/parameter": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/parameters": "workspace:*",
+    "@immersive-nodes/parameter": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@nodes/tree": "workspace:*",
-    "@nodes/sockets": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/tree": "workspace:*",
+    "@immersive-nodes/socket": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

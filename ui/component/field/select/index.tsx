@@ -5,15 +5,15 @@
 @packageDocumentation
 */
 import type {SelectFieldOption} from "./contract/types.ts"
-import type {UiFieldsSelectField as Contract} from "./contract"
+import type {ImmersiveUiComponentFieldSelect as Contract} from "./contract"
 import {SelectOption} from "./src/helpers.tsx"
-import findSelectionOption from "@ui-selection/find-selection-option"
-import selectionExceptionalLabel from "@ui-selection/selection-exceptional-label"
-import validateSelectionOptions from "@ui-selection/validate-selection-options"
-import validateSelectionState from "@ui-selection/validate-selection-state"
+import findSelectionOption from "@immersive-ui-selection/find-option"
+import selectionExceptionalLabel from "@immersive-ui-selection/exceptional-label"
+import validateSelectionOptions from "@immersive-ui-selection/validate-options"
+import validateSelectionState from "@immersive-ui-selection/validate-state"
 
 
-export type {UiFieldsSelectField} from "./contract"
+export type {ImmersiveUiComponentFieldSelect} from "./contract"
 
 export default function SelectField(props: Contract.Input): Contract.Output {
   if (typeof props.value !== "string") throw new TypeError("SelectField value must be a string")

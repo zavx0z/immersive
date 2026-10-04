@@ -3,8 +3,8 @@
 
 @packageDocumentation
 */
-import type {NodeValuesEqual as Contract} from "./contract"
-export type {NodeValuesEqual} from "./contract"
+import type {ImmersiveTechJsonValueEqual as Contract} from "./contract"
+export type {ImmersiveTechJsonValueEqual} from "./contract"
 type NodeJsonValue = Contract.Input[0]
 
 /** Сравнивает структуру значений; неизменившийся Parameter не создаёт новую revision. */

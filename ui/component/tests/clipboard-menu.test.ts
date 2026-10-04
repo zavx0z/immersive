@@ -1,14 +1,14 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument, MouseEvent, KeyboardEvent, HTMLElement, getPopoverVisibilityState} from "@zavx0z/dom"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createRoot} from "@immersive/component"
+import {createDocument, MouseEvent, KeyboardEvent, HTMLElement, getPopoverVisibilityState} from "@immersive/dom"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {default: ClipboardMenu} = await import("@ui-menus/clipboard-menu")
+const {default: ClipboardMenu} = await import("@immersive-ui-component-menu/clipboard")
 
 test("global clipboard menu uses existing commands and retains the original selection target", async () => {
   const document = createDocument()

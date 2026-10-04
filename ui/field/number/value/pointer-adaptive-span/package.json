@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/number-pointer-adaptive-span",
+  "name": "@immersive-ui-field-number-value/pointer-adaptive-span",
   "label": "numberPointerAdaptiveSpan",
   "version": "0.0.0",
   "description": "Определяет адаптивный диапазон указателя по ограниченному сверху шагу числа",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-number-value/normalize-number-value": "workspace:*",
-    "@ui-fields-number-value/number-pointer-step": "workspace:*"
+    "@immersive-ui-field-number-value/normalize": "workspace:*",
+    "@immersive-ui-field-number-value/pointer-step": "workspace:*"
   }
 }

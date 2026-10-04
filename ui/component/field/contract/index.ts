@@ -1,8 +1,8 @@
-import type {Zavx0zUi} from "@zavx0z/ui/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponent} from "@immersive-ui/component/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Поля предоставляют подпись, подсказку и оформление; конкретное значение определяет их собственный протокол. */
-export declare namespace UiFields {
+export declare namespace ImmersiveUiComponentField {
   interface Input {
     readonly label?: string | undefined
     readonly title?: string | undefined
@@ -10,5 +10,5 @@ export declare namespace UiFields {
   }
 
   /** JSX-представление в Document приложения; точные Slots принадлежат конкретному полю. */
-  type Output = Zavx0zUi.Output
+  type Output = ImmersiveUiComponent.Output
 }

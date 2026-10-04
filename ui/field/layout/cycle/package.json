@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-cycle-field/layout",
+  "name": "@immersive-ui-field-layout/cycle",
   "label": "cycleFieldLayout",
   "version": "0.0.0",
   "description": "Числовой договор размеров cycleField",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-metrics/field-density-height": "workspace:*",
-    "@ui-fields-metrics/labelled-field-height": "workspace:*",
-    "@ui-fields/cycle-field": "workspace:*"
+    "@immersive-ui-field-metric/density-height": "workspace:*",
+    "@immersive-ui-field-metric/labelled-height": "workspace:*",
+    "@immersive-ui-component-field/cycle": "workspace:*"
   }
 }

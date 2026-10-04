@@ -4,11 +4,11 @@
 
 @packageDocumentation
 */
-import type {UiFieldsPathField} from "@ui-fields/path-field"
-type PathFieldDensity = NonNullable<UiFieldsPathField.Input["density"]>
-import fieldDensityHeight from "@ui-fields-metrics/field-density-height"
-import fieldMetric from "@ui-fields-metrics/field-metric"
-import labelledFieldHeight from "@ui-fields-metrics/labelled-field-height"
+import type {ImmersiveUiComponentFieldPath} from "@immersive-ui-component-field/path"
+type PathFieldDensity = NonNullable<ImmersiveUiComponentFieldPath.Input["density"]>
+import fieldDensityHeight from "@immersive-ui-field-metric/density-height"
+import fieldMetric from "@immersive-ui-field-metric/read"
+import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
 
 const pathFieldLayout = Object.freeze({
   height(options: Readonly<{

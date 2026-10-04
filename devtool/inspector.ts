@@ -7,14 +7,14 @@ import {
   type Element,
   type MutationBatch,
   type StateChangeBatch,
-} from "@zavx0z/dom"
+} from "@immersive/dom"
 import type {
   DisplayItem,
   HitMetadata,
   RenderBorder,
   RenderBox,
   RenderClip,
-} from "@renderer/html"
+} from "@immersive-renderer/html"
 import type {
   CreateDomInspectorOptions,
   DomInspector,
@@ -225,7 +225,7 @@ export const createDomInspector = (
 
 const validateNode = (document: Document, node: Node): void => {
   if (!(node instanceof Node))
-    throw new TypeError("DOM inspector requires the configured @zavx0z/dom realm")
+    throw new TypeError("DOM inspector requires the configured @immersive/dom realm")
   if (node !== document && node.ownerDocument !== document)
     throw new TypeError("DOM inspector node belongs to another Document")
 }

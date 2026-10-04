@@ -6,14 +6,14 @@ CheckboxParameter соединяет публичный CheckboxField с ком�
 @packageDocumentation
 */
 
-import CheckboxField from "@ui-fields/checkbox-field"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersCheckbox as Contract} from "./contract"
+import CheckboxField from "@immersive-ui-component-field/checkbox"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterBooleanCheckbox as Contract} from "./contract"
 
-export type {NodesParametersCheckbox} from "./contract"
+export type {ImmersiveNodesParameterBooleanCheckbox} from "./contract"
 
 /**
-Авторский контракт CheckboxParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт CheckboxParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property [indeterminate] - Смешанное отображение; checked остаётся логическим значением.
 */

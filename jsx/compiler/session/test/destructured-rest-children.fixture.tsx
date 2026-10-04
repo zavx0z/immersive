@@ -1,4 +1,4 @@
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 export function RestChildren({...props}: Readonly<{
   children: JSX.Element

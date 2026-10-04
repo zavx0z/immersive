@@ -7,15 +7,15 @@ OutputParameter соединяет публичный текстовый выв�
 @packageDocumentation
 */
 
-import FieldGroup from "@ui-fields/field-group"
+import FieldGroup from "@immersive-ui-component-field/group"
 import {ParameterOutput} from "./src/output"
-import ParameterLayout from "@nodes-parameters/layout"
-import type {NodesParametersOutput as Contract} from "./contract"
+import ParameterLayout from "@immersive-nodes-parameter-shared/layout"
+import type {ImmersiveNodesParameterOutput as Contract} from "./contract"
 
-export type {NodesParametersOutput} from "./contract"
+export type {ImmersiveNodesParameterOutput} from "./contract"
 
 /**
-Авторский контракт OutputParameter; общий протокол описан в NodesParameters, сокеты назначаются слотам left/right.
+Авторский контракт OutputParameter; общий протокол описан в ImmersiveNodesParameter, сокеты назначаются слотам left/right.
 
 @property value - Отображается как текст или JSON; не изменяется этим компонентом.
 */

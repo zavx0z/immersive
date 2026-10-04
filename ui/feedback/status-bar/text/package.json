@@ -1,5 +1,5 @@
 {
-  "name": "@ui-feedback-status-bar/status-bar-text",
+  "name": "@immersive-ui-feedback-status-bar/text",
   "label": "statusBarText",
   "version": "0.0.0",
   "description": "Текстовое представление областей строки состояния",
@@ -15,7 +15,7 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-feedback/status-bar": "workspace:*"
+    "@immersive-ui-component-feedback/status-bar": "workspace:*"
   },
   "devDependencies": {}
 }

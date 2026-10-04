@@ -11,16 +11,16 @@ Window не создаёт Document, Canvas, Display или HUD и не хран
 
 @packageDocumentation
 */
-import minusIcon from "@ui-themes-icons/minus"
-import SurfaceButton from "@ui-surfaces-chrome/button"
+import minusIcon from "@immersive-ui-theme-icon/minus"
+import SurfaceButton from "@immersive-ui-component-surface-chrome/button"
 import {WindowActionButton} from "./src/action.tsx"
 import {WindowResizeHandles} from "./src/resize-handles.tsx"
 import {useWindowGeometry} from "./src/use-geometry.ts"
 import {validateWindow} from "./src/validate.ts"
-import type {UiSurfacesWindow as Contract} from "./contract"
+import type {ImmersiveUiComponentSurfaceWindow as Contract} from "./contract"
 
 
-export type {UiSurfacesWindow} from "./contract"
+export type {ImmersiveUiComponentSurfaceWindow} from "./contract"
 
 export default function Window(props: Contract.Input): Contract.Output {
   validateWindow(props)

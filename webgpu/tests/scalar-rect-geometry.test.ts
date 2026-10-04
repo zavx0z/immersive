@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
-import {createDocument, type HTMLElement} from "@zavx0z/dom"
-import {BufferGeometry, Mesh, RoundedRectMaterial} from "@zavx0z/engine"
-import {createDocumentRenderer, readCanonicalRenderFrameChanges, type RenderFrame} from "@renderer/html"
+import {createDocument, type HTMLElement} from "@immersive/dom"
+import {BufferGeometry, Mesh, RoundedRectMaterial} from "@immersive/engine"
+import {createDocumentRenderer, readCanonicalRenderFrameChanges, type RenderFrame} from "@immersive-renderer/html"
 import {Renderer} from "../src/renderer/index.ts"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 

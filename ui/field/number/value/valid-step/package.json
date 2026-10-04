@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-number-value/valid-number-step",
+  "name": "@immersive-ui-field-number-value/valid-step",
   "label": "validNumberStep",
   "version": "0.0.0",
   "description": "Обработка valid-number-step",

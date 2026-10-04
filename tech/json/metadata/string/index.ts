@@ -3,9 +3,9 @@
 
 @packageDocumentation
 */
-import type {NodeMetadataString as Contract} from "./contract"
-export type {NodeMetadataString} from "./contract"
-import metadata from "@node-metadata/read"
+import type {ImmersiveTechJsonMetadataString as Contract} from "./contract"
+export type {ImmersiveTechJsonMetadataString} from "./contract"
+import metadata from "@immersive-tech-json-metadata/read"
 
 export default function metadataString(value: Contract.Input[0], key: Contract.Input[1], fallback: Contract.Input[2]): Contract.Output {
   const candidate = metadata(value, key)

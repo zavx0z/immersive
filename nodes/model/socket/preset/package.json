@@ -1,5 +1,5 @@
 {
-  "name": "@socket-values/preset",
+  "name": "@immersive-nodes-model-socket/preset",
   "label": "preset",
   "version": "0.0.0",
   "description": "Выбирает предустановку известного вида сокета",
@@ -14,7 +14,7 @@
     "test": "bun test ./spec"
   },
   "dependencies": {
-    "@socket-values/kinds": "workspace:*",
-    "@socket-values/presets": "workspace:*"
+    "@immersive-nodes-model-socket/kinds": "workspace:*",
+    "@immersive-nodes-model-socket/presets": "workspace:*"
   }
 }

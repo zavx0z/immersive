@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {InputEvent, type HTMLInputElement} from "@zavx0z/dom"
+import {InputEvent, type HTMLInputElement} from "@immersive/dom"
 import {mountParameterStory} from "../../shared/tests/story-fixture.ts"
 
 test("[PARAMETERS-TEXT-INPUT] authored and projected input update the canonical Store without replacing controls", async () => {

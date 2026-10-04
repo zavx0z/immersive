@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import slotChild from "@jsx-slot/child"
+import slotChild from "@immersive-jsx-slot/child"
 
 describe("Невалидный slot descriptor", () => {
   test.each([

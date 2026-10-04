@@ -1,4 +1,4 @@
-import type {Document, Node} from "@zavx0z/dom"
+import type {Document, Node} from "@immersive/dom"
 import type {
   DocumentRenderer,
   RenderFrame,
@@ -6,7 +6,7 @@ import type {
   RenderClip,
   RenderEdges,
   RenderTransform,
-} from "@renderer/html"
+} from "@immersive-renderer/html"
 
 export type DomInspectorAttribute = Readonly<{
   name: string

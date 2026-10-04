@@ -1,14 +1,14 @@
 
 
-import type {JSX} from "@jsx-compiler/session"
-import type {UiFields} from "@ui/fields/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace UiFieldsNumberField {
+export declare namespace ImmersiveUiComponentFieldNumber {
   /**
   Входные данные NumberField.
   */
-  interface Input extends UiFields.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly value: number
     readonly min?: number | undefined
     readonly max?: number | undefined
@@ -22,5 +22,5 @@ export declare namespace UiFieldsNumberField {
     readonly onChange?: ((value: number, event: Event) => void) | undefined
   }
 
-  type Output = UiFields.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

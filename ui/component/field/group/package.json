@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/field-group",
+  "name": "@immersive-ui-component-field/group",
   "label": "FieldGroup",
   "version": "0.0.0",
   "description": "Поле интерфейса: группа полей",
@@ -15,15 +15,15 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-fields-metrics/resolve-field-density": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-field-metric/resolve-density": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/typography": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/typography": "workspace:*",
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

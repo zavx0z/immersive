@@ -4,11 +4,11 @@ SVG-значок language в формате data URL.
 
 @packageDocumentation
 */
-import type {UiThemesIconsLanguage as Contract} from "./contract"
-import iconSvg from "@ui-themes-icons/compose"
+import type {ImmersiveUiThemeIconLanguage as Contract} from "./contract"
+import iconSvg from "@immersive-ui-theme-icon/compose"
 
 const languageIcon: Contract.Output = /* @__PURE__ */ iconSvg("<circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18\"/><path d=\"M12 3a14 14 0 0 1 0 18\"/><path d=\"M12 3a14 14 0 0 0 0 18\"/>")
 
 export default languageIcon
 
-export type {UiThemesIconsLanguage} from "./contract"
+export type {ImmersiveUiThemeIconLanguage} from "./contract"

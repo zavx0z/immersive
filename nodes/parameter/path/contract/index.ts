@@ -1,10 +1,10 @@
-import type {UiFieldsPathField} from "@ui-fields/path-field"
-type PathFieldProps = UiFieldsPathField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldPath} from "@immersive-ui-component-field/path"
+type PathFieldProps = ImmersiveUiComponentFieldPath.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersPath {
+export declare namespace ImmersiveNodesParameterPath {
   /**
   Входные данные параметра пути, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersPath {
 
   @example
   ```ts
-  const input: NodesParametersPath.Input = {
+  const input: ImmersiveNodesParameterPath.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace NodesParametersPath {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: PathFieldProps["value"]
     readonly placeholder?: PathFieldProps["placeholder"]
     readonly density?: PathFieldProps["density"]
@@ -45,7 +45,7 @@ export declare namespace NodesParametersPath {
     readonly onBrowse?: PathFieldProps["onBrowse"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

@@ -1,10 +1,10 @@
-import type {Zavx0zUi} from "@zavx0z/ui/contract"
+import type {ImmersiveUiComponent} from "@immersive-ui/component/contract"
 import type {DividerVariant} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Протокол разделителя областей интерфейса. */
-export declare namespace UiDivider {
+export declare namespace ImmersiveUiComponentDivider {
   /**
   Входные данные Divider.
   */
@@ -15,5 +15,5 @@ export declare namespace UiDivider {
   }
 
   /** Готовое представление в Document приложения. */
-  type Output = Zavx0zUi.Output & JSX.Element
+  type Output = ImmersiveUiComponent.Output & JSX.Element
 }

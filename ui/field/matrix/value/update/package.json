@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-matrix-value/update-matrix-value",
+  "name": "@immersive-ui-field-matrix-value/update",
   "label": "updateMatrixValue",
   "version": "0.0.0",
   "description": "Заменяет совпавшую по координатам ячейку в неизменяемой копии матрицы",

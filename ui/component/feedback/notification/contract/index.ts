@@ -1,10 +1,10 @@
-import type {UiFeedback} from "@ui/feedback/contract"
+import type {ImmersiveUiComponentFeedback} from "@immersive-ui-component/feedback/contract"
 import type {NotificationTone} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Вход компонента и его JSX-представление. */
-export declare namespace UiFeedbackNotification {
+export declare namespace ImmersiveUiComponentFeedbackNotification {
   /**
   Входные данные Notification.
   */
@@ -19,5 +19,5 @@ export declare namespace UiFeedbackNotification {
     readonly onDismiss?: ((event: Event) => void) | undefined
   }
 
-  type Output = UiFeedback.Output & JSX.Element
+  type Output = ImmersiveUiComponentFeedback.Output & JSX.Element
 }

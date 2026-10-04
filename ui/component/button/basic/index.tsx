@@ -4,12 +4,12 @@
 
 @packageDocumentation
 */
-import type {UiButtonsButton} from "./contract"
+import type {ImmersiveUiComponentButtonBasic} from "./contract"
 
 
-export type {UiButtonsButton} from "./contract"
+export type {ImmersiveUiComponentButtonBasic} from "./contract"
 
-export default function Button(props: UiButtonsButton.Input): UiButtonsButton.Output {
+export default function Button(props: ImmersiveUiComponentButtonBasic.Input): ImmersiveUiComponentButtonBasic.Output {
   const variant = props.variant ?? "contained"
   const tone = props.tone ?? "neutral"
   const size = props.size ?? "medium"

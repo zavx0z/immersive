@@ -1,4 +1,4 @@
-import type {RuntimeInput} from "@jsx-runtime/create"
+import type {RuntimeInput} from "@immersive-jsx-runtime/create"
 
 /** Позиционные аргументы native jsxDEV; source и self являются метаданными транслятора. */
 export type DevelopmentInput = readonly [

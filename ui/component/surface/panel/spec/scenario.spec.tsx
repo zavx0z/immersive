@@ -1,8 +1,8 @@
-import Typography from "@ui/typography"
+import Typography from "@immersive-ui-component/typography"
 /** Panel показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import Panel from "@ui-surfaces/panel"
+import Panel from "@immersive-ui-component-surface/panel"
 
 describe.each([{name: "Основное представление", props: {label: "Панель", expanded: true}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

@@ -1,5 +1,5 @@
-import {layoutTopDown} from "@nodes/layout/top-down"
-import {TopDownLayoutError} from "@nodes/layout/top-down/error"
+import {layoutTopDown} from "@immersive-nodes/layout/top-down"
+import {TopDownLayoutError} from "@immersive-nodes/layout/top-down/error"
 import {createWorkerExecutor, serializeWorkerError} from "../../../../execution/worker/src/executor.ts"
 import type {
   SerializedTopDownLayoutError,

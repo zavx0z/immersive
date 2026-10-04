@@ -1,5 +1,5 @@
 {
-  "name": "@ui-surfaces/chrome",
+  "name": "@immersive-ui-component-surface/chrome",
   "label": "chrome",
   "version": "0.0.0",
   "description": "Части оболочки поверхности создают её заголовок, навигацию, действия и тело.",
@@ -11,17 +11,17 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-surfaces-chrome/body": "workspace:*",
-    "@ui-surfaces-chrome/button": "workspace:*",
-    "@ui-surfaces-chrome/header": "workspace:*",
-    "@ui-surfaces-chrome/navigation": "workspace:*",
-    "@ui-surfaces-chrome/owner": "workspace:*",
-    "@ui-surfaces-chrome/title": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-ui-component-surface-chrome/body": "workspace:*",
+    "@immersive-ui-component-surface-chrome/button": "workspace:*",
+    "@immersive-ui-component-surface-chrome/header": "workspace:*",
+    "@immersive-ui-component-surface-chrome/navigation": "workspace:*",
+    "@immersive-ui-component-surface-chrome/owner": "workspace:*",
+    "@immersive-ui-component-surface-chrome/title": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/surfaces": "workspace:*"
+    "@immersive-ui-component/surface": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

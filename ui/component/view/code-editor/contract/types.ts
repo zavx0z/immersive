@@ -1,6 +1,6 @@
-import type {UiBadge} from "@ui/badge"
-import type {UiCodeEditorModel} from "@ui/code-editor-model"
-type CodeEditorRange = UiCodeEditorModel.Output["snapshot"]["selections"][number]
+import type {ImmersiveUiComponentBadge} from "@immersive-ui-component/badge"
+import type {ImmersiveTechTextEditor} from "@immersive-tech/text-editor"
+type CodeEditorRange = ImmersiveTechTextEditor.Output["snapshot"]["selections"][number]
 
 /** CodeEditorHandle описывает данные публичного контракта своего владельца. */
 export type CodeEditorHandle = Readonly<{
@@ -17,8 +17,8 @@ export type CodeEditorSelectionSet = Readonly<{selections: readonly CodeEditorRa
 /** CodeEditorLineDecoration описывает данные публичного контракта своего владельца. */
 export type CodeEditorLineDecoration = Readonly<{
   line: number
-  lineTone?: UiBadge.Input["tone"] | undefined
-  markerTone?: UiBadge.Input["tone"] | undefined
-  gutterTone?: UiBadge.Input["tone"] | undefined
+  lineTone?: ImmersiveUiComponentBadge.Input["tone"] | undefined
+  markerTone?: ImmersiveUiComponentBadge.Input["tone"] | undefined
+  gutterTone?: ImmersiveUiComponentBadge.Input["tone"] | undefined
   title?: string | undefined
 }>

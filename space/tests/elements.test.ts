@@ -1,15 +1,15 @@
-import {DisplayElement} from "@zavx0z/dom/display"
+import {DisplayElement} from "@immersive/dom/display"
 import {describe, expect, test} from "bun:test"
-import {Event, createDocument} from "@zavx0z/dom"
+import {Event, createDocument} from "@immersive/dom"
 import {
   Object3D,
   SphereGeometry,
   ThinFilmMaterial,
-} from "@zavx0z/engine"
+} from "@immersive/engine"
 import {XRAnimationElement, XRAssetElement, XRGeometryElement, XRGroupElement, XRLightElement, XRLineElement, XRLineSegmentsElement, XRMaterialElement, XRMeshElement, XRObjectElement, XRTextElement, createSpaceElementFactories, readSpaceTree} from "../src/index.ts"
 import {HUDElement} from "../../dom/hud/index.ts"
-import {SpaceElement} from "@zavx0z/dom/space"
-import {ViewPointElement} from "@zavx0z/dom/viewpoint"
+import {SpaceElement} from "@immersive/dom/space"
+import {ViewPointElement} from "@immersive/dom/viewpoint"
 
 const createSpaceDocument = () => createDocument({
   elementFactories: createSpaceElementFactories(),

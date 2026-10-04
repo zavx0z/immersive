@@ -1,14 +1,14 @@
 import type {ColorPickerFieldValue} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
-import type {UiFields} from "@ui/fields/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace UiFieldsColorPickerField {
+export declare namespace ImmersiveUiComponentFieldColorPicker {
   /**
   Входные данные ColorPickerField.
   */
-  interface Input extends UiFields.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly value: ColorPickerFieldValue
     readonly disabled?: boolean | undefined
     readonly readOnly?: boolean | undefined
@@ -16,5 +16,5 @@ export declare namespace UiFieldsColorPickerField {
     readonly onChange?: ((value: ColorPickerFieldValue, event: Event) => void) | undefined
   }
 
-  type Output = UiFields.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

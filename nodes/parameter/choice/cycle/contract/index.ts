@@ -1,10 +1,10 @@
-import type {UiFieldsCycleField} from "@ui-fields/cycle-field"
-type CycleFieldProps = UiFieldsCycleField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldCycle} from "@immersive-ui-component-field/cycle"
+type CycleFieldProps = ImmersiveUiComponentFieldCycle.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersCycle {
+export declare namespace ImmersiveNodesParameterChoiceCycle {
   /**
   Входные данные циклического выбора, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersCycle {
 
   @example
   ```ts
-  const input: NodesParametersCycle.Input = {
+  const input: ImmersiveNodesParameterChoiceCycle.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -36,7 +36,7 @@ export declare namespace NodesParametersCycle {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: CycleFieldProps["value"]
     readonly options: CycleFieldProps["options"]
     readonly density?: CycleFieldProps["density"]
@@ -45,7 +45,7 @@ export declare namespace NodesParametersCycle {
     readonly onOpenChange?: CycleFieldProps["onOpenChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

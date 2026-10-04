@@ -1,4 +1,4 @@
-import {HTMLElement, getPopoverVisibilityState, type MutationBatch, type Node, type StateChangeBatch} from "@zavx0z/dom"
+import {HTMLElement, getPopoverVisibilityState, type MutationBatch, type Node, type StateChangeBatch} from "@immersive/dom"
 
 /** Derived projection-local top-layer membership; existing Renderer subscriptions supply changes. */
 export function createPopoverIndex(root: Node) {

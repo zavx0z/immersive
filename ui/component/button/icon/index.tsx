@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import Button from "@ui-buttons/button"
-import type {UiButtonsIconButton} from "./contract"
+import Button from "@immersive-ui-component-button/basic"
+import type {ImmersiveUiComponentButtonIcon} from "./contract"
 
 
-export type {UiButtonsIconButton} from "./contract"
+export type {ImmersiveUiComponentButtonIcon} from "./contract"
 
-export default function IconButton(props: UiButtonsIconButton.Input): UiButtonsIconButton.Output {
+export default function IconButton(props: ImmersiveUiComponentButtonIcon.Input): ImmersiveUiComponentButtonIcon.Output {
   return <Button
     label={props.label}
     iconSrc={props.iconSrc}

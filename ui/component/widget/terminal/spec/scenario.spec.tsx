@@ -1,7 +1,7 @@
 /** Terminal показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import Terminal from "@ui-widgets/terminal"
+import Terminal from "@immersive-ui-component-widget/terminal"
 
 describe.each([{name: "Основное представление", props: {input: "", title: "Терминал"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

@@ -1,5 +1,5 @@
 import {afterAll, describe, expect, test} from "bun:test"
-import validateSlotContracts from "@jsx-slot/contract"
+import validateSlotContracts from "@immersive-jsx-slot/contract"
 import {barrelSource, childSource, contractSource, createSlotContractFixture, receiverSource} from "./fixture/index.ts"
 
 const fixture = await createSlotContractFixture({
@@ -36,7 +36,7 @@ export function Application(props: {visible: boolean}) {
   </Panel>
 }`,
   "optional-array.tsx": `
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import type {Button} from "./children"
 export function OptionalPanel(): JSX.Element<{default?: readonly typeof Button[]}> {
   return <slot />
@@ -53,7 +53,7 @@ export function Application(props: {items: readonly string[]}) {
   </Panel>
 }`,
   "forward.tsx": `
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import {Panel} from "./receiver"
 import type {Button, IconButton} from "./children"
 export function Forward(): JSX.Element<{header: typeof Button, default: readonly typeof IconButton[]}> {
@@ -63,7 +63,7 @@ export function Forward(): JSX.Element<{header: typeof Button, default: readonly
   </Panel>
 }`,
   "unrestricted.tsx": `
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import {TwinButton} from "./children"
 export function AnyPanel(): JSX.Element<{default: JSX.Element}> {
   return <slot />
@@ -72,7 +72,7 @@ export function Application() {
   return <AnyPanel><TwinButton /></AnyPanel>
 }`,
   "text.tsx": `
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 export function TextPanel(): JSX.Element<{default: string | number}> {
   return <slot />
 }
@@ -80,12 +80,12 @@ export function Application() {
   return <TextPanel>{0}</TextPanel>
 }`,
   "optional-text.tsx": `
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 export function TextPanel(): JSX.Element<{default?: string}> {return <slot />}
 export function Application(props: {text: string}) {return <TextPanel>{props.text}</TextPanel>}
 `,
   "memo.tsx": `
-import {memo} from "@zavx0z/component"
+import {memo} from "@immersive/component"
 import {Panel} from "./receiver"
 import {Button} from "./children"
 const RememberedPanel = memo(Panel)

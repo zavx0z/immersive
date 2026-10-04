@@ -1,21 +1,21 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/component"
-import {createDocument, type HTMLElement} from "@zavx0z/dom"
-import {DataTransfer} from "@zavx0z/dom/data-transfer"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createRoot} from "@immersive/component"
+import {createDocument, type HTMLElement} from "@immersive/dom"
+import {DataTransfer} from "@immersive/dom/data-transfer"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 import {createDocumentNativeInputHostWithSeams} from "../../../browser/src/native-input-host.ts"
-import CodeEditorModel from "@ui/code-editor-model"
-import type {UiViewsCodeEditor} from "@ui-views/code-editor"
-type CodeEditorProps = UiViewsCodeEditor.Input
-import type {UiMenusClipboardMenu} from "@ui-menus/clipboard-menu"
+import CodeEditorModel from "@immersive-tech/text-editor"
+import type {ImmersiveUiComponentViewCodeEditor} from "@immersive-ui-component-view/code-editor"
+type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
+import type {ImmersiveUiComponentMenuClipboard} from "@immersive-ui-component-menu/clipboard"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
-const {default: CodeEditor} = await import("@ui-views/code-editor")
-const {default: ClipboardMenu} = await import("@ui-menus/clipboard-menu")
+const {default: CodeEditor} = await import("@immersive-ui-component-view/code-editor")
+const {default: ClipboardMenu} = await import("@immersive-ui-component-menu/clipboard")
 
 class NativeProxy extends EventTarget {
   value = ""
@@ -65,7 +65,7 @@ test("global production menu preserves multicursor paste target across focus and
     },
   }})
   const menu = createRoot(f.menuHost)
-  menu.render(ClipboardMenu as unknown as CompiledTemplate<{controller: UiMenusClipboardMenu.Input["controller"]}>, {controller: clipboard})
+  menu.render(ClipboardMenu as unknown as CompiledTemplate<{controller: ImmersiveUiComponentMenuClipboard.Input["controller"]}>, {controller: clipboard})
   try {
     expect(clipboard.openContextMenu(f.code, {x: 30, y: 40})).toBe(true)
     const paste = f.menuHost.querySelectorAll('[role="menuitem"]')[1] as HTMLElement

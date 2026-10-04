@@ -13,7 +13,7 @@ import {
   Document,
   type DocumentCompiledStyleSheetLease,
   type EventListener
-} from "@zavx0z/dom"
+} from "@immersive/dom"
 import {
   isCompiledTemplate,
   isHostBinding,
@@ -21,8 +21,8 @@ import {
   type CompiledStyleSheet,
   type CompiledTemplate,
   type HostBinding
-} from "@zavx0z/template/compiled"
-import type {JSX} from "@jsx-compiler/session"
+} from "@immersive/template/compiled"
+import type {JSX} from "@immersive-jsx-compiler/session"
 import {
   isComponentValue,
   isContext,
@@ -42,7 +42,7 @@ import {
   type ResolvedStyleValue
 } from "./style.ts"
 
-const unset = Symbol("@zavx0z/component/unset")
+const unset = Symbol("@immersive/component/unset")
 const noContextProvisions = Object.freeze([]) as readonly ContextProvision[]
 const roots = new WeakMap<RootContainer, ComponentRoot>()
 const schedulers = new WeakMap<Document, DocumentScheduler>()
@@ -112,7 +112,7 @@ export class UnsupportedReactFeatureError extends Error {
   readonly feature: string
 
   constructor(feature: string) {
-    super(`${feature} is not supported by @zavx0z/component`)
+    super(`${feature} is not supported by @immersive/component`)
     this.feature = feature
   }
 }
@@ -1877,7 +1877,7 @@ let currentEffectPhase: EffectPhase | null = null
 
 export function createRoot(container: RootContainer, options: RootOptions = {}): ComponentRoot {
   if (!(container instanceof Element) && !(container instanceof DocumentFragment) && !(container instanceof Document)) {
-    throw new TypeError("createRoot expects an @zavx0z/dom Document, Element or DocumentFragment")
+    throw new TypeError("createRoot expects an @immersive/dom Document, Element or DocumentFragment")
   }
   const document = container instanceof Document ? container : container.ownerDocument
   if (!document) throw new TypeError("The component root container has no ownerDocument")
@@ -1914,7 +1914,7 @@ export function createRoot(container: RootContainer, options: RootOptions = {}):
       }
       if (!isCompiledTemplate(template)) {
         throw new TypeError(
-          "JSX reached @zavx0z/component at runtime; enable @jsx-compiler/session",
+          "JSX reached @immersive/component at runtime; enable @immersive-jsx-compiler/session",
         )
       }
       const key = normalizeKey(renderOptions.key)

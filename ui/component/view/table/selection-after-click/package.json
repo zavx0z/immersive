@@ -1,5 +1,5 @@
 {
-  "name": "@ui-views-table/table-selection-after-click",
+  "name": "@immersive-ui-component-view-table/selection-after-click",
   "label": "tableSelectionAfterClick",
   "version": "0.0.0",
   "description": "Изменение выбора строк таблицы после пользовательского жеста",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-views-table/normalize-table-selection": "workspace:*",
-    "@ui-views/table": "workspace:*"
+    "@immersive-ui-view-table/normalize-table-selection": "workspace:*",
+    "@immersive-ui-component-view/table": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*"

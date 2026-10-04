@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-collection-model/normalize-collection-visible-rows",
+  "name": "@immersive-ui-field-collection-model/normalize-visible-rows",
   "label": "normalizeCollectionVisibleRows",
   "version": "0.0.0",
   "description": "Выбирает целое число видимых строк в пределах коллекции и применяет значение по умолчанию для неконечных чисел",
@@ -15,8 +15,8 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-fields-collection-model/collection-default-visible-rows": "workspace:*",
-    "@ui-fields-collection-model/collection-max-visible-rows": "workspace:*",
-    "@ui-fields-collection-model/collection-min-visible-rows": "workspace:*"
+    "@immersive-ui-field-collection-model/default-visible-rows": "workspace:*",
+    "@immersive-ui-field-collection-model/max-visible-rows": "workspace:*",
+    "@immersive-ui-field-collection-model/min-visible-rows": "workspace:*"
   }
 }

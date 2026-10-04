@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/slider-field",
+  "name": "@immersive-ui-component-field/slider",
   "label": "SliderField",
   "version": "0.0.0",
   "description": "Поле интерфейса: числовой диапазон",
@@ -15,11 +15,11 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-fields-metrics/resolve-field-density": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-field-metric/resolve-density": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

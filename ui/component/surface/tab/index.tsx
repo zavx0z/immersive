@@ -6,20 +6,20 @@ Display и вложенных контейнерах; окон, камер и о
 
 @packageDocumentation
 */
-import {useLayoutEffect} from "@zavx0z/component"
-import {useRef} from "@zavx0z/component"
-import {useState} from "@zavx0z/component"
-import {observeElementLayout} from "@zavx0z/dom/geometry"
-import {readElementLayoutRect} from "@zavx0z/dom/geometry"
-import {hasSlot} from "@zavx0z/component/slot-presence"
-import type {UiSurfacesTab as Contract} from "./contract"
+import {useLayoutEffect} from "@immersive/component"
+import {useRef} from "@immersive/component"
+import {useState} from "@immersive/component"
+import {observeElementLayout} from "@immersive/dom/geometry"
+import {readElementLayoutRect} from "@immersive/dom/geometry"
+import {hasSlot} from "@immersive/component/slot-presence"
+import type {ImmersiveUiComponentSurfaceTab as Contract} from "./contract"
 import {dockTab} from "./src/placement.ts"
 import {readTabPosition} from "./src/placement.ts"
 import {tabRect} from "./src/placement.ts"
 import type {TabArea} from "./src/placement.ts"
 import type {TabPosition} from "./src/placement.ts"
 
-export type {UiSurfacesTab} from "./contract"
+export type {ImmersiveUiComponentSurfaceTab} from "./contract"
 
 
 export default function Tab(props: Contract.Input): Contract.Output {

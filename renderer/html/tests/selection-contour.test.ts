@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@zavx0z/dom"
+import {createDocument} from "@immersive/dom"
 import {caretPositionAtPoint, createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "../src/index.ts"
 
 /** Настоящие inline-фрагменты и соседние строки без отдельного редакторского выделения. */

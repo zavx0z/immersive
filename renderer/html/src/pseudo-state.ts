@@ -1,4 +1,4 @@
-import type {Document, Element} from "@zavx0z/dom"
+import type {Document, Element} from "@immersive/dom"
 
 export type DocumentInteractionStateChange = Readonly<{
   elements: readonly Element[]

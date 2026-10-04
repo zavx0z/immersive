@@ -1,4 +1,4 @@
-import type {JSX} from "@jsx-compiler/session"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /**
 Содержимое slot-моста для {@link @immersive/nodes/view#GraphView | GraphView}.

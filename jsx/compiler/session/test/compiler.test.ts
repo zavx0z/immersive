@@ -2,9 +2,9 @@ import {expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createDocument, HTMLButtonElement, MouseEvent} from "@zavx0z/dom"
-import {createRoot} from "@zavx0z/component"
-import JsxCompilerSession from "@jsx-compiler/session"
+import {createDocument, HTMLButtonElement, MouseEvent} from "@immersive/dom"
+import {createRoot} from "@immersive/component"
+import JsxCompilerSession from "@immersive-jsx-compiler/session"
 
 /** Проверяет общий путь компиляции и lifecycle, не подменяя размещение ручным DOM. */
 test("слоты: размещение, forwarding, fallback, keyed identity и cleanup", async () => {
@@ -90,7 +90,7 @@ test("контракт импортированного memo-получател�
   const compiler = new JsxCompilerSession({cwd: resolve(import.meta.dir, "../../../.."), sourceRoots: [directory]})
   const receiver = join(directory, "panel.tsx")
   const caller = join(directory, "caller.tsx")
-  const source = (name: string) => `import {memo} from "@zavx0z/component"\nfunction Panel() { return <slot name="${name}" /> }\nexport const MemoPanel = memo(Panel)`
+  const source = (name: string) => `import {memo} from "@immersive/component"\nfunction Panel() { return <slot name="${name}" /> }\nexport const MemoPanel = memo(Panel)`
   try {
     await Bun.write(receiver, source("header"))
     await Bun.write(caller, 'import {MemoPanel} from "./panel"\nfunction Child() { return <b /> }\nexport function App() { return <MemoPanel><Child slot="header" /></MemoPanel> }')

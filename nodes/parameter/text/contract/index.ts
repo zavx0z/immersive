@@ -1,10 +1,10 @@
-import type {UiFieldsTextField} from "@ui-fields/text-field"
-type TextFieldProps = UiFieldsTextField.Input
-import type {NodesParameters} from "@nodes/parameters/contract"
-import type {JSX} from "@jsx-compiler/session"
+import type {ImmersiveUiComponentFieldText} from "@immersive-ui-component-field/text"
+type TextFieldProps = ImmersiveUiComponentFieldText.Input
+import type {ImmersiveNodesParameter} from "@immersive-nodes/parameter/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
 
 /** Собственный тип значения и общие гарантии авторского параметра. */
-export declare namespace NodesParametersText {
+export declare namespace ImmersiveNodesParameterText {
   /**
   Входные данные строкового параметра, связанного с нодой и её сокетами.
 
@@ -27,7 +27,7 @@ export declare namespace NodesParametersText {
 
   @example
   ```ts
-  const input: NodesParametersText.Input = {
+  const input: ImmersiveNodesParameterText.Input = {
     id: "value",
     nodeId: "node",
     label: "Значение",
@@ -35,7 +35,7 @@ export declare namespace NodesParametersText {
   }
   ```
   */
-  interface Input extends NodesParameters.Input {
+  interface Input extends ImmersiveNodesParameter.Input {
     readonly value: TextFieldProps["value"]
     readonly type?: TextFieldProps["type"]
     readonly placeholder?: TextFieldProps["placeholder"]
@@ -43,7 +43,7 @@ export declare namespace NodesParametersText {
     readonly onChange?: TextFieldProps["onChange"]
   }
 
-  type Slots = NodesParameters.Slots
+  type Slots = ImmersiveNodesParameter.Slots
 
-  type Output = NodesParameters.Output & JSX.Element<Slots>
+  type Output = ImmersiveNodesParameter.Output & JSX.Element<Slots>
 }

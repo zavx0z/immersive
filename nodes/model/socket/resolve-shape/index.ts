@@ -3,10 +3,10 @@
 
 @packageDocumentation
 */
-import type {SocketValuesResolveShape as Contract} from "./contract"
-export type {SocketValuesResolveShape} from "./contract"
+import type {ImmersiveNodesModelSocketResolveShape as Contract} from "./contract"
+export type {ImmersiveNodesModelSocketResolveShape} from "./contract"
 
-import SOCKET_SHAPES from "@socket-values/shapes"
+import SOCKET_SHAPES from "@immersive-nodes-model-socket/shapes"
 
 type SocketShape = NonNullable<Contract.Output>
 

@@ -1,6 +1,6 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import createJsxBunPlugin from "@jsx-compiler/bun"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
 
 const uiRoot = resolve(import.meta.dir, "..")
 const root = resolve(uiRoot, "..")
@@ -28,21 +28,21 @@ const [
   {default: textFieldLayout},
   {default: vectorFieldLayout},
 ] = await Promise.all([
-  import("@ui-fields-checkbox-field/layout"),
-  import("@ui-fields-collection-field/layout"),
-  import("@ui-fields-color-field/layout"),
-  import("@ui-fields-color-picker-field/layout"),
-  import("@ui-fields-cycle-field/layout"),
-  import("@ui-fields-field-group/layout"),
-  import("@ui-fields-matrix-field/layout"),
-  import("@ui-fields-number-field/layout"),
-  import("@ui-fields-path-field/layout"),
-  import("@ui-fields-reference-field/layout"),
-  import("@ui-fields-select-field/layout"),
-  import("@ui-fields-slider-field/layout"),
-  import("@ui-fields-switch-field/layout"),
-  import("@ui-fields-text-field/layout"),
-  import("@ui-fields-vector-field/layout"),
+  import("@immersive-ui-field-layout/checkbox"),
+  import("@immersive-ui-field-layout/collection"),
+  import("@immersive-ui-field-layout/color"),
+  import("@immersive-ui-field-layout/color-picker"),
+  import("@immersive-ui-field-layout/cycle"),
+  import("@immersive-ui-field-layout/group"),
+  import("@immersive-ui-field-layout/matrix"),
+  import("@immersive-ui-field-layout/number"),
+  import("@immersive-ui-field-layout/path"),
+  import("@immersive-ui-field-layout/reference"),
+  import("@immersive-ui-field-layout/select"),
+  import("@immersive-ui-field-layout/slider"),
+  import("@immersive-ui-field-layout/switch"),
+  import("@immersive-ui-field-layout/text"),
+  import("@immersive-ui-field-layout/vector"),
 ])
 
 test("[UI-005] числовая тема полей и CSS содержат один набор точных метрик", async () => {
@@ -134,21 +134,21 @@ test("[UI-009] ColorPickerField учитывает образец, четыре 
 
 test("[UI-010] числовой план базовой темы соответствует CSS соответствующего поля", async () => {
   const owners = Object.freeze({
-    "field/checkbox/index.tsx": ["@ui-fields-checkbox-field/layout", "checkboxFieldLayout", "var(--field-checkbox-height)"],
-    "field/collection/index.tsx": ["@ui-fields-collection-field/layout", "collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
-    "field/color/index.tsx": ["@ui-fields-color-field/layout", "colorFieldLayout", "var(--field-height-regular)"],
-    "field/color-picker/index.tsx": ["@ui-fields-color-picker-field/layout", "colorPickerFieldLayout", "height: var(--field-color-picker-height)"],
-    "field/cycle/index.tsx": ["@ui-fields-cycle-field/layout", "cycleFieldLayout", "var(--control-height-medium)"],
-    "field/group/index.tsx": ["@ui-fields-field-group/layout", "fieldGroupLayout", "var(--field-height-compact)"],
-    "field/matrix/index.tsx": ["@ui-fields-matrix-field/layout", "matrixFieldLayout", "var(--field-matrix-row-gap)"],
-    "field/number/index.tsx": ["@ui-fields-number-field/layout", "numberFieldLayout", "var(--control-height-medium)"],
-    "field/path/index.tsx": ["@ui-fields-path-field/layout", "pathFieldLayout", "var(--field-path-height-compact)"],
-    "field/reference/index.tsx": ["@ui-fields-reference-field/layout", "referenceFieldLayout", "var(--field-reference-height-compact)"],
-    "field/select/index.tsx": ["@ui-fields-select-field/layout", "selectFieldLayout", "var(--control-height-medium)"],
-    "field/slider/index.tsx": ["@ui-fields-slider-field/layout", "sliderFieldLayout", "var(--field-height-compact)"],
-    "field/switch/index.tsx": ["@ui-fields-switch-field/layout", "switchFieldLayout", "var(--field-switch-height)"],
-    "field/text/index.tsx": ["@ui-fields-text-field/layout", "textFieldLayout", "var(--control-height-medium)"],
-    "field/vector/index.tsx": ["@ui-fields-vector-field/layout", "vectorFieldLayout", "var(--field-group-content-height)"],
+    "field/checkbox/index.tsx": ["@immersive-ui-field-layout/checkbox", "checkboxFieldLayout", "var(--field-checkbox-height)"],
+    "field/collection/index.tsx": ["@immersive-ui-field-layout/collection", "collectionFieldLayout", "collectionVisibleRowsHeight", "var(--field-collection-action-height)"],
+    "field/color/index.tsx": ["@immersive-ui-field-layout/color", "colorFieldLayout", "var(--field-height-regular)"],
+    "field/color-picker/index.tsx": ["@immersive-ui-field-layout/color-picker", "colorPickerFieldLayout", "height: var(--field-color-picker-height)"],
+    "field/cycle/index.tsx": ["@immersive-ui-field-layout/cycle", "cycleFieldLayout", "var(--control-height-medium)"],
+    "field/group/index.tsx": ["@immersive-ui-field-layout/group", "fieldGroupLayout", "var(--field-height-compact)"],
+    "field/matrix/index.tsx": ["@immersive-ui-field-layout/matrix", "matrixFieldLayout", "var(--field-matrix-row-gap)"],
+    "field/number/index.tsx": ["@immersive-ui-field-layout/number", "numberFieldLayout", "var(--control-height-medium)"],
+    "field/path/index.tsx": ["@immersive-ui-field-layout/path", "pathFieldLayout", "var(--field-path-height-compact)"],
+    "field/reference/index.tsx": ["@immersive-ui-field-layout/reference", "referenceFieldLayout", "var(--field-reference-height-compact)"],
+    "field/select/index.tsx": ["@immersive-ui-field-layout/select", "selectFieldLayout", "var(--control-height-medium)"],
+    "field/slider/index.tsx": ["@immersive-ui-field-layout/slider", "sliderFieldLayout", "var(--field-height-compact)"],
+    "field/switch/index.tsx": ["@immersive-ui-field-layout/switch", "switchFieldLayout", "var(--field-switch-height)"],
+    "field/text/index.tsx": ["@immersive-ui-field-layout/text", "textFieldLayout", "var(--control-height-medium)"],
+    "field/vector/index.tsx": ["@immersive-ui-field-layout/vector", "vectorFieldLayout", "var(--field-group-content-height)"],
   })
 
   for (const [relativePath, requiredFragments] of Object.entries(owners)) {

@@ -4,13 +4,13 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberValueResolveNumberSoftRange as Contract} from "./contract"
-import type {UiFieldsNumberValueNormalizeNumberValue} from "@ui-fields-number-value/normalize-number-value"
-type NumberValueOptions = NonNullable<UiFieldsNumberValueNormalizeNumberValue.Input[1]>
-import finiteBound from "@ui-fields-number-value/finite-bound"
-import normalizeNumberValue from "@ui-fields-number-value/normalize-number-value"
-import numberPointerAdaptiveSpan from "@ui-fields-number-value/number-pointer-adaptive-span"
-import numberPointerStep from "@ui-fields-number-value/number-pointer-step"
+import type {ImmersiveUiFieldNumberValueSoftRange as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueNormalize} from "@immersive-ui-field-number-value/normalize"
+type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
+import finiteBound from "@immersive-ui-field-number-value/finite-bound"
+import normalizeNumberValue from "@immersive-ui-field-number-value/normalize"
+import numberPointerAdaptiveSpan from "@immersive-ui-field-number-value/pointer-adaptive-span"
+import numberPointerStep from "@immersive-ui-field-number-value/pointer-step"
 
 export default function resolveNumberSoftRange(
   value: Contract.Input[0],
@@ -42,4 +42,4 @@ export default function resolveNumberSoftRange(
   return Object.freeze({min: minimum, max: maximum})
 }
 
-export type {UiFieldsNumberValueResolveNumberSoftRange} from "./contract"
+export type {ImmersiveUiFieldNumberValueSoftRange} from "./contract"

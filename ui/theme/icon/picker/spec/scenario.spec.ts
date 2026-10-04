@@ -1,6 +1,6 @@
 /** pickerIcon показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import icon from "@ui-themes-icons/picker"
+import icon from "@immersive-ui-theme-icon/picker"
 
 describe.each([{name: "Векторный ресурс", props: {}}])("$name", () => {
   test("SVG", () => {

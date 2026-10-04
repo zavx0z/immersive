@@ -1,4 +1,4 @@
-import {textOffsetAtPosition, type Node, type Range} from "@zavx0z/dom"
+import {textOffsetAtPosition, type Node, type Range} from "@immersive/dom"
 import type {RenderRangeRect} from "./text-selection.ts"
 import type {RenderFrame, RenderTextHighlight, TextDisplayItem, RenderPathGeometry, RenderPathPoint} from "./types.ts"
 

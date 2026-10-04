@@ -2,15 +2,15 @@ import type {CollectionFieldDensity} from "./types.ts"
 import type {CollectionFieldItem} from "./types.ts"
 import type {CollectionFieldMoveDirection} from "./types.ts"
 
-import type {JSX} from "@jsx-compiler/session"
-import type {UiFields} from "@ui/fields/contract"
+import type {JSX} from "@immersive-jsx-compiler/session"
+import type {ImmersiveUiComponentField} from "@immersive-ui-component/field/contract"
 
 /** Собственный протокол поля и общие гарантии его группы. */
-export declare namespace UiFieldsCollectionField {
+export declare namespace ImmersiveUiComponentFieldCollection {
   /**
   Входные данные CollectionField.
   */
-  interface Input extends UiFields.Input {
+  interface Input extends ImmersiveUiComponentField.Input {
     readonly items: readonly CollectionFieldItem[]
     readonly selectedId: string | null
     readonly visibleRows?: number | undefined
@@ -24,5 +24,5 @@ export declare namespace UiFieldsCollectionField {
     readonly onMove?: ((id: string, direction: CollectionFieldMoveDirection, event: Event) => void) | undefined
   }
 
-  type Output = UiFields.Output & JSX.Element
+  type Output = ImmersiveUiComponentField.Output & JSX.Element
 }

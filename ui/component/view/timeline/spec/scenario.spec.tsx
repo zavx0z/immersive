@@ -1,7 +1,7 @@
 /** Timeline показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import Timeline from "@ui-views/timeline"
+import Timeline from "@immersive-ui-component-view/timeline"
 import example from "./fixture/default-props"
 
 describe.each([

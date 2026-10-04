@@ -1,8 +1,8 @@
-import type {UiFieldsNumberValueResolveNumberSoftRange} from "@ui-fields-number-value/resolve-number-soft-range"
-type NumberRange = UiFieldsNumberValueResolveNumberSoftRange.Output
+import type {ImmersiveUiFieldNumberValueSoftRange} from "@immersive-ui-field-number-value/soft-range"
+type NumberRange = ImmersiveUiFieldNumberValueSoftRange.Output
 
 /** Привязывает число к шагу диапазона, сохраняя его граничные и неконечные значения. */
-export declare namespace UiFieldsNumberScrubSnapNumberValue {
+export declare namespace ImmersiveUiFieldNumberScrubSnap {
   /** Аргументы публичной операции snapNumberValue; порядок сохраняет её форму вызова. */
   type Input = readonly [
     value: number,

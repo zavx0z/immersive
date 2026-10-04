@@ -1,5 +1,5 @@
 {
-  "name": "@socket-values/key",
+  "name": "@immersive-nodes-model-socket/key",
   "label": "key",
   "version": "0.0.0",
   "description": "Составляет служебный ключ сокета из идентификаторов ноды и сокета",

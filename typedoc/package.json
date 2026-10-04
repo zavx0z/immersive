@@ -25,32 +25,32 @@
     "typescript": "^7.0.2"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*",
-    "@zavx0z/template": "workspace:*",
+    "@immersive/component": "workspace:*",
+    "@immersive/template": "workspace:*",
     "@immersive/markdown": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@zavx0z/jsx": "workspace:*",
-    "@ui-views/code-editor": "workspace:*"
+    "@immersive-ui/component": "workspace:*",
+    "@immersive/jsx": "workspace:*",
+    "@immersive-ui-component-view/code-editor": "workspace:*"
   },
   "peerDependenciesMeta": {
-    "@zavx0z/component": {
+    "@immersive/component": {
       "optional": true
     },
-    "@zavx0z/template": {
+    "@immersive/template": {
       "optional": true
     },
     "@immersive/markdown": {
       "optional": true
     },
-    "@zavx0z/ui": {
+    "@immersive-ui/component": {
       "optional": true
     }
   },
   "devDependencies": {
-    "@jsx-compiler/bun": "workspace:*",
-    "@zavx0z/ui": "workspace:*",
-    "@ui-views-code-editor/palette": "workspace:*",
-    "@zavx0z/dom": "workspace:*",
-    "@renderer/html": "workspace:*"
+    "@immersive-jsx-compiler/bun": "workspace:*",
+    "@immersive-ui/component": "workspace:*",
+    "@immersive-ui-view-code-editor/palette": "workspace:*",
+    "@immersive/dom": "workspace:*",
+    "@immersive-renderer/html": "workspace:*"
   }
 }

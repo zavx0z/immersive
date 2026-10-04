@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-import type {UiSurfacesChromeNavigation as Contract} from "./contract"
+import type {ImmersiveUiComponentSurfaceChromeNavigation as Contract} from "./contract"
 
-export type {UiSurfacesChromeNavigation} from "./contract"
+export type {ImmersiveUiComponentSurfaceChromeNavigation} from "./contract"
 
 
 export default function SurfaceNavigation(props: Contract.Input): Contract.Output {

@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument, HTMLElement} from "@zavx0z/dom"
+import {createDocument, HTMLElement} from "@immersive/dom"
 import {createDocumentRenderer} from "../src/index.ts"
 
 /** Обновление соседнего текста не меняет границы обрезки прокручиваемого содержимого. */

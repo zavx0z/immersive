@@ -4,10 +4,10 @@
 
 @packageDocumentation
 */
-import type {UiFieldsNumberValueRoundedNumber as Contract} from "./contract"
+import type {ImmersiveUiFieldNumberValueRound as Contract} from "./contract"
 
 export default function roundedNumber(value: Contract.Input[0]): Contract.Output {
   return Math.round(value * 1_000_000) / 1_000_000
 }
 
-export type {UiFieldsNumberValueRoundedNumber} from "./contract"
+export type {ImmersiveUiFieldNumberValueRound} from "./contract"

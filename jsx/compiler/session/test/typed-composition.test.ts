@@ -2,9 +2,9 @@ import {expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createDocument} from "@zavx0z/dom"
-import {createRoot} from "@zavx0z/component"
-import JsxCompilerSession from "@jsx-compiler/session"
+import {createDocument} from "@immersive/dom"
+import {createRoot} from "@immersive/component"
+import JsxCompilerSession from "@immersive-jsx-compiler/session"
 
 test("типизированная передача через два получателя сохраняет keyed identity и nullable footer", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".compiled-"))

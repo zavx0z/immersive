@@ -1,6 +1,6 @@
 /** COLLECTION_MAX_VISIBLE_ROWS показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import value from "@ui-fields-collection-model/collection-max-visible-rows"
+import value from "@immersive-ui-field-collection-model/max-visible-rows"
 
 describe.each([{name: "Публичное значение", props: {}}])("$name", () => {
   test("Данные", () => {

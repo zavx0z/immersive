@@ -1,5 +1,5 @@
 {
-  "name": "@ui/badge",
+  "name": "@immersive-ui-component/badge",
   "label": "Badge",
   "version": "0.0.0",
   "description": "Компактная подпись состояния с цветовым тоном",
@@ -15,10 +15,10 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui/component": "workspace:*"
   }
 }

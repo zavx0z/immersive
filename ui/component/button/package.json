@@ -1,5 +1,5 @@
 {
-  "name": "@ui/buttons",
+  "name": "@immersive-ui-component/button",
   "label": "button",
   "version": "0.0.0",
   "description": "Кнопки и переключатели сохраняют общий протокол доступности и представления.",
@@ -11,15 +11,15 @@
     "./contract": "./contract/index.ts"
   },
   "dependencies": {
-    "@ui-buttons/button": "workspace:*",
-    "@ui-buttons/icon-button": "workspace:*",
-    "@ui-buttons/toggle-button-group": "workspace:*",
-    "@jsx-compiler/session": "workspace:*"
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-component-button/icon": "workspace:*",
+    "@immersive-ui-component-button/toggle-group": "workspace:*",
+    "@immersive-jsx-compiler/session": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui-themes-icons/run": "workspace:*",
-    "@zavx0z/ui": "workspace:*"
+    "@immersive-ui-theme-icon/run": "workspace:*",
+    "@immersive-ui/component": "workspace:*"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",

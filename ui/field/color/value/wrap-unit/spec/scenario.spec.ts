@@ -1,6 +1,6 @@
 /** wrapUnit показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@ui-fields-color-value/wrap-unit"
+import operation from "@immersive-ui-field-color-value/wrap-unit"
 
 describe.each([{name: "Публичный вызов", props: {args: [1.25] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

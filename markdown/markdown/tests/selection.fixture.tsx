@@ -1,4 +1,4 @@
-import CodeEditor from "@ui-views/code-editor"
+import CodeEditor from "@immersive-ui-component-view/code-editor"
 import {Markdown} from "@immersive/markdown"
 
 const crossBlockMarkdown = [

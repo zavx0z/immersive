@@ -1,13 +1,13 @@
 /** Общий протокол кнопок сохраняется при разных способах выполнения действия. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import type {UiButtons} from "@ui/buttons"
+import type {ImmersiveUiComponentButton} from "@immersive-ui-component/button"
 import ButtonExamples from "./fixture"
 
 describe.each([
   {name: "Доступные действия", props: {label: "Запуск", disabled: false}},
   {name: "Запрещённые действия", props: {label: "Запуск", disabled: true}},
-] satisfies readonly {name: string, props: UiButtons.Input & {label: string}}[])("$name", async ({props}) => {
+] satisfies readonly {name: string, props: ImmersiveUiComponentButton.Input & {label: string}}[])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 280})
   afterAll(() => headless.dispose())
   const element = await headless.render(

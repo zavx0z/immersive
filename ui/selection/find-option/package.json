@@ -1,5 +1,5 @@
 {
-  "name": "@ui-selection/find-selection-option",
+  "name": "@immersive-ui-selection/find-option",
   "label": "findSelectionOption",
   "version": "0.0.0",
   "description": "Поиск варианта выбора",
@@ -15,6 +15,6 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@ui-selection/validate-selection-options": "workspace:*"
+    "@immersive-ui-selection/validate-options": "workspace:*"
   }
 }

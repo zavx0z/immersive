@@ -1,5 +1,5 @@
 {
-  "name": "@node-geometry/field-height",
+  "name": "@immersive-nodes-geometry-node/field-height",
   "label": "field-height",
   "version": "0.0.0",
   "description": "Определяет номинальную высоту подготовленного представления параметра",
@@ -10,30 +10,30 @@
     ".": "./index.ts"
   },
   "dependencies": {
-    "@ui-fields-checkbox-field/layout": "workspace:*",
-    "@ui-fields-collection-field/layout": "workspace:*",
-    "@ui-fields-color-field/layout": "workspace:*",
-    "@ui-fields-cycle-field/layout": "workspace:*",
-    "@ui-fields-matrix-field/layout": "workspace:*",
-    "@ui-fields-number-field/layout": "workspace:*",
-    "@ui-fields-path-field/layout": "workspace:*",
-    "@ui-fields-reference-field/layout": "workspace:*",
-    "@ui-fields-select-field/layout": "workspace:*",
-    "@ui-fields-slider-field/layout": "workspace:*",
-    "@ui-fields-switch-field/layout": "workspace:*",
-    "@ui-fields-text-field/layout": "workspace:*",
-    "@ui-fields-vector-field/layout": "workspace:*",
-    "@socket-values/metrics": "workspace:*",
-    "@ui-buttons/toggle-button-group": "workspace:*",
-    "@ui-fields-metrics/field-metric": "workspace:*",
-    "@ui-fields-metrics/labelled-field-height": "workspace:*",
-    "@ui-fields-metrics/resolve-field-density": "workspace:*"
+    "@immersive-ui-field-layout/checkbox": "workspace:*",
+    "@immersive-ui-field-layout/collection": "workspace:*",
+    "@immersive-ui-field-layout/color": "workspace:*",
+    "@immersive-ui-field-layout/cycle": "workspace:*",
+    "@immersive-ui-field-layout/matrix": "workspace:*",
+    "@immersive-ui-field-layout/number": "workspace:*",
+    "@immersive-ui-field-layout/path": "workspace:*",
+    "@immersive-ui-field-layout/reference": "workspace:*",
+    "@immersive-ui-field-layout/select": "workspace:*",
+    "@immersive-ui-field-layout/slider": "workspace:*",
+    "@immersive-ui-field-layout/switch": "workspace:*",
+    "@immersive-ui-field-layout/text": "workspace:*",
+    "@immersive-ui-field-layout/vector": "workspace:*",
+    "@immersive-nodes-model-socket/metrics": "workspace:*",
+    "@immersive-ui-component-button/toggle-group": "workspace:*",
+    "@immersive-ui-field-metric/read": "workspace:*",
+    "@immersive-ui-field-metric/labelled-height": "workspace:*",
+    "@immersive-ui-field-metric/resolve-density": "workspace:*"
   },
   "scripts": {
     "test": "bun test ./spec ./test",
     "typecheck": "tsc --project tsconfig.json --pretty false"
   },
   "devDependencies": {
-    "@nodes/parameter-presentation": "workspace:*"
+    "@immersive-nodes-projection-parameter/presentation": "workspace:*"
   }
 }

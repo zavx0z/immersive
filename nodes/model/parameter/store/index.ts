@@ -5,14 +5,14 @@
 
 @packageDocumentation
 */
-import ownNodeJsonValue, {type NodeValuesOwn} from "@node-values/own"
-import ownNodeValueType, {type NodeValuesType} from "@node-values/type"
-import equalNodeJsonValue from "@node-values/equal"
-import type {NodesParameterStore as Contract} from "./contract"
+import ownNodeJsonValue, {type ImmersiveTechJsonValueOwn} from "@immersive-tech-json-value/own"
+import ownNodeValueType, {type ImmersiveNodesModelParameterValueType} from "@immersive-nodes-model-parameter/value-type"
+import equalNodeJsonValue from "@immersive-tech-json-value/equal"
+import type {ImmersiveNodesModelParameterStore as Contract} from "./contract"
 import type {ParameterSnapshot} from "./contract/types"
-export type {NodesParameterStore} from "./contract"
-type NodeJsonValue = NodeValuesOwn.Input[0]
-type NodeValueType = NodeValuesType.Output
+export type {ImmersiveNodesModelParameterStore} from "./contract"
+type NodeJsonValue = ImmersiveTechJsonValueOwn.Input[0]
+type NodeValueType = ImmersiveNodesModelParameterValueType.Output
 
 /**
 Отдельное значение одного параметра без зависимости от его визуального представления.

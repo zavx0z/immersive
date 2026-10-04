@@ -3,10 +3,10 @@
 
 @packageDocumentation
 */
-import type {SocketValuesResolveKind as Contract} from "./contract"
-export type {SocketValuesResolveKind} from "./contract"
+import type {ImmersiveNodesModelSocketResolveKind as Contract} from "./contract"
+export type {ImmersiveNodesModelSocketResolveKind} from "./contract"
 
-import SOCKET_KINDS from "@socket-values/kinds"
+import SOCKET_KINDS from "@immersive-nodes-model-socket/kinds"
 
 type SocketKind = Contract.Output
 

@@ -1,6 +1,6 @@
 /** normalizeHexColor показывает публичное использование своего владельца. */
 import {describe, expect, test} from "bun:test"
-import operation from "@ui-views-code-editor/normalize-hex-color"
+import operation from "@immersive-tech-color-hex/normalize"
 
 describe.each([{name: "Публичный вызов", props: {args: ["#ABC"] as const}}])("$name", ({props}) => {
   const result = operation(...props.args)

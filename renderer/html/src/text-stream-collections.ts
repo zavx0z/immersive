@@ -1,4 +1,4 @@
-import type {Node} from "@zavx0z/dom"
+import type {Node} from "@immersive/dom"
 import type {DisplayItem, HitMetadata, RenderBox} from "./types.ts"
 import {immutableArrayFromReader, readImmutableArrayEntry} from "./immutable-array.ts"
 import {PersistentObjectMap} from "./persistent-object-map.ts"

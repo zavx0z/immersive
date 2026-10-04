@@ -3,24 +3,24 @@
 
 @packageDocumentation
 */
-import type {NodeGeometryFieldHeight as Contract} from "./contract"
-export type {NodeGeometryFieldHeight} from "./contract"
+import type {ImmersiveNodesGeometryNodeFieldHeight as Contract} from "./contract"
+export type {ImmersiveNodesGeometryNodeFieldHeight} from "./contract"
 
-import checkboxFieldLayout from "@ui-fields-checkbox-field/layout"
-import collectionFieldLayout from "@ui-fields-collection-field/layout"
-import colorFieldLayout from "@ui-fields-color-field/layout"
-import cycleFieldLayout from "@ui-fields-cycle-field/layout"
-import matrixFieldLayout from "@ui-fields-matrix-field/layout"
-import numberFieldLayout from "@ui-fields-number-field/layout"
+import checkboxFieldLayout from "@immersive-ui-field-layout/checkbox"
+import collectionFieldLayout from "@immersive-ui-field-layout/collection"
+import colorFieldLayout from "@immersive-ui-field-layout/color"
+import cycleFieldLayout from "@immersive-ui-field-layout/cycle"
+import matrixFieldLayout from "@immersive-ui-field-layout/matrix"
+import numberFieldLayout from "@immersive-ui-field-layout/number"
 import toggleButtonGroupLayout from "./src/toggle-button-group"
-import pathFieldLayout from "@ui-fields-path-field/layout"
-import referenceFieldLayout from "@ui-fields-reference-field/layout"
-import selectFieldLayout from "@ui-fields-select-field/layout"
-import sliderFieldLayout from "@ui-fields-slider-field/layout"
-import switchFieldLayout from "@ui-fields-switch-field/layout"
-import textFieldLayout from "@ui-fields-text-field/layout"
-import vectorFieldLayout from "@ui-fields-vector-field/layout"
-import socketMetrics from "@socket-values/metrics"
+import pathFieldLayout from "@immersive-ui-field-layout/path"
+import referenceFieldLayout from "@immersive-ui-field-layout/reference"
+import selectFieldLayout from "@immersive-ui-field-layout/select"
+import sliderFieldLayout from "@immersive-ui-field-layout/slider"
+import switchFieldLayout from "@immersive-ui-field-layout/switch"
+import textFieldLayout from "@immersive-ui-field-layout/text"
+import vectorFieldLayout from "@immersive-ui-field-layout/vector"
+import socketMetrics from "@immersive-nodes-model-socket/metrics"
 const {NODE_ROW_HEIGHT} = socketMetrics
 
 /** Высота поля для существующего числового плана Node с базовой темой; реальное размещение Graph использует измеренный DOM. */

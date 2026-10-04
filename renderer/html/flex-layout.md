@@ -54,7 +54,7 @@ grow/shrink; срез не объявляет полный CSS Flexbox реал�
 кадра. Общие проверки streaming, scroll и transform защищают существующее
 поведение кэшей. `ui/tests/markdown.test.ts` проверяет отсутствие наложения
 длинного текста в настоящей таблице Markdown; живое воспроизведение — README
-`@nodes/layout` и основной пример Markdown в UI.
+`@immersive-nodes/layout` и основной пример Markdown в UI.
 
 ## Размер по содержимому и пропорции
 

@@ -16,7 +16,7 @@ import {
   Skeleton,
   SkinnedMesh,
   ThinFilmMaterial,
-} from "@zavx0z/engine"
+} from "@immersive/engine"
 import {Renderer} from "../src/renderer/index.ts"
 import {BONE_MATRICES_SIZE, PER_OBJECT_UNIFORM_SIZE} from "../src/renderer/per-object-upload.ts"
 import type {RenderItem} from "../src/renderer/utils/render-list.ts"

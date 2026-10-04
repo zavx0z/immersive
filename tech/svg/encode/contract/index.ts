@@ -1,6 +1,6 @@
 
 /** SVG-значок svg в формате data URL. */
-export declare namespace UiThemesIconsEncode {
+export declare namespace ImmersiveTechSvgEncode {
   /** SVG-текст; кодирование сохраняет всё его содержимое. */
   type Input = string
 

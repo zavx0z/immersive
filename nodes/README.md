@@ -1,13 +1,13 @@
 # Нодовая система
 
 GraphView показывает согласованную числовую сцену: ноды, связи и рамки.
-GraphEditor использует тот же GraphView и добавляет управление изменениями. Состояние значений принадлежит `@nodes/tree`, числовая
-раскладка — `@nodes/layout`, универсальные поля — `@zavx0z/ui`.
+GraphEditor использует тот же GraphView и добавляет управление изменениями. Состояние значений принадлежит `@immersive-nodes/tree`, числовая
+раскладка — `@immersive-nodes/layout`, универсальные поля — `@immersive-ui/component`.
 
 ## Состав
 
 Пакеты сокетов и параметров владеют своими production-компонентами и проверками.
-DiagramNode, ParameterNode и ContentNode принадлежат `@nodes/node`. Frame, Link
+DiagramNode, ParameterNode и ContentNode принадлежат `@immersive-nodes/node`. Frame, Link
 и GraphView показывают переданную сцену; GraphEditor связывает просмотр со Store
 и числовой раскладкой.
 Публичные TSX и их стили служат источником для принадлежащих компонентам
@@ -40,7 +40,7 @@ NodeType остаётся отдельным будущим production-срез�
 
 ## Конкретные ноды
 
-Пакет [@nodes/node](node/README.md) владеет DiagramNode, ParameterNode и ContentNode.
+Пакет [@immersive-nodes/node](node/README.md) владеет DiagramNode, ParameterNode и ContentNode.
 Адаптер модели и GraphEditor принимают `nodeKinds`, `nodeShapes` и `nodeContent` как
 настройки представления существующего Store. `nodeViews` позволяет передать
 импортированный TSX-компонент для конкретной ноды. Он получает NodeViewProps: принятый
@@ -62,7 +62,7 @@ Store параметра и соединение при изменении об�
 ## Публичный просмотр и редактор
 
 Авторская реализация расположена в `view/index.tsx` и `editor/index.tsx`.
-Пакет `@nodes/tree` и имена его модели не переименованы.
+Пакет `@immersive-nodes/tree` и имена его модели не переименованы.
 
 | Импорт | Договор |
 | --- | --- |

@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields/cycle-field",
+  "name": "@immersive-ui-component-field/cycle",
   "label": "CycleField",
   "version": "0.0.0",
   "description": "Поле интерфейса: циклический выбор",
@@ -15,17 +15,17 @@
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@jsx-compiler/session": "workspace:*",
-    "@ui-buttons/button": "workspace:*",
-    "@ui-selection/find-selection-option": "workspace:*",
-    "@ui-selection/validate-selection-options": "workspace:*",
-    "@ui-themes-icons/chevron-down": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-ui-component-button/basic": "workspace:*",
+    "@immersive-ui-selection/find-option": "workspace:*",
+    "@immersive-ui-selection/validate-options": "workspace:*",
+    "@immersive-ui-theme-icon/chevron-down": "workspace:*"
   },
   "peerDependencies": {
-    "@zavx0z/component": "workspace:*"
+    "@immersive/component": "workspace:*"
   },
   "devDependencies": {
     "@immersive/headless": "workspace:*",
-    "@ui/fields": "workspace:*"
+    "@immersive-ui-component/field": "workspace:*"
   }
 }

@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
-import {createDocument, MouseEvent, PointerEvent, WheelEvent} from "@zavx0z/dom"
-import {createRoot} from "@zavx0z/component"
-import {createDocumentRenderer} from "@renderer/html"
-import createJsxBunPlugin from "@jsx-compiler/bun"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createDocument, MouseEvent, PointerEvent, WheelEvent} from "@immersive/dom"
+import {createRoot} from "@immersive/component"
+import {createDocumentRenderer} from "@immersive-renderer/html"
+import createJsxBunPlugin from "@immersive-jsx-compiler/bun"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 import type {GraphViewProps, GraphSelection} from "@immersive/nodes/view"
 
 const root = resolve(import.meta.dir, "../../..")

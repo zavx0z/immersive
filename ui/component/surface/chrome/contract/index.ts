@@ -1,7 +1,7 @@
-import type {UiSurfaces} from "@ui/surfaces/contract"
+import type {ImmersiveUiComponentSurface} from "@immersive-ui-component/surface/contract"
 
 /** Части оболочки поверхности создают её заголовок, навигацию, действия и тело. */
-export declare namespace UiSurfacesChrome {
+export declare namespace ImmersiveUiComponentSurfaceChrome {
   /** JSX-элемент; точные входы, слоты и события принадлежат участникам. */
-  type Output = UiSurfaces.Output
+  type Output = ImmersiveUiComponentSurface.Output
 }

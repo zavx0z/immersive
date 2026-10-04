@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import fieldMetric from "@ui-fields-metrics/field-metric"
-import labelledFieldHeight from "@ui-fields-metrics/labelled-field-height"
+import fieldMetric from "@immersive-ui-field-metric/read"
+import labelledFieldHeight from "@immersive-ui-field-metric/labelled-height"
 
 const switchFieldLayout = Object.freeze({
   height(options: Readonly<{label?: boolean | undefined}> = {}): number {

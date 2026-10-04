@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-metrics/resolve-field-density",
+  "name": "@immersive-ui-field-metric/resolve-density",
   "label": "resolveFieldDensity",
   "version": "0.0.0",
   "description": "Проверка и выбор плотности размещения поля",

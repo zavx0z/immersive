@@ -1,5 +1,5 @@
 {
-  "name": "@ui-fields-matrix-value/normalize-matrix-value",
+  "name": "@immersive-ui-field-matrix-value/normalize",
   "label": "normalizeMatrixValue",
   "version": "0.0.0",
   "description": "Проверяет квадратную матрицу от 2×2 до 4×4 и положительный шаг, сохраняя неизменяемые строки",

@@ -1,6 +1,6 @@
-import type {UiFieldsMatrixField} from "../contract"
+import type {ImmersiveUiComponentFieldMatrix} from "../contract"
 
-type MatrixFieldProps = UiFieldsMatrixField.Input
+type MatrixFieldProps = ImmersiveUiComponentFieldMatrix.Input
 type MatrixFieldDensity = NonNullable<MatrixFieldProps["density"]>
 
 /**

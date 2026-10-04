@@ -1,5 +1,5 @@
 import {describe, expect, test} from "bun:test"
-import Fragment from "@jsx-runtime/fragment"
+import Fragment from "@immersive-jsx-runtime/fragment"
 
 describe.each([
   {name: "Группа соседних значений", props: {}},

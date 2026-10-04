@@ -1,13 +1,13 @@
-import {createRoot, useState, useSyncExternalStore} from "@zavx0z/component"
-import type {Document} from "@zavx0z/dom"
-import {Parameter, createNodeTree, createNodeTreeExternalStore} from "@nodes/tree"
-import ParameterNode from "@nodes-node/parameter"
-import ContentNode from "@nodes-node/content"
-import DiagramNode from "@nodes-node/diagram"
-import planProjectedNodeGeometry from "@node-geometry/project"
-import Button from "@ui-buttons/button"
-import Typography from "@ui/typography"
-import type {CompiledTemplate} from "@zavx0z/template/compiled"
+import {createRoot, useState, useSyncExternalStore} from "@immersive/component"
+import type {Document} from "@immersive/dom"
+import {Parameter, createNodeTree, createNodeTreeExternalStore} from "@immersive-nodes/tree"
+import ParameterNode from "@immersive-nodes-node/parameter"
+import ContentNode from "@immersive-nodes-node/content"
+import DiagramNode from "@immersive-nodes-node/diagram"
+import planProjectedNodeGeometry from "@immersive-nodes-geometry-node/project"
+import Button from "@immersive-ui-component-button/basic"
+import Typography from "@immersive-ui-component/typography"
+import type {CompiledTemplate} from "@immersive/template/compiled"
 
 export function InteractiveContent() {
   const [count, setCount] = useState(0)

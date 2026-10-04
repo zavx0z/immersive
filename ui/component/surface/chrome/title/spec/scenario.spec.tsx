@@ -1,7 +1,7 @@
 /** SurfaceTitle показывает публичное использование своего владельца. */
 import {afterAll, describe, expect, test} from "bun:test"
 import {createHeadless} from "@immersive/headless"
-import SurfaceTitle from "@ui-surfaces-chrome/title"
+import SurfaceTitle from "@immersive-ui-component-surface-chrome/title"
 
 describe.each([{name: "Основное представление", props: {text: "Название"}}])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

@@ -1,5 +1,5 @@
 {
-  "name": "@nodes-node/content",
+  "name": "@immersive-nodes-node/content",
   "label": "ContentNode",
   "version": "0.0.0",
   "description": "Соединяет пользовательское содержимое и параметры в одной ноде",
@@ -10,19 +10,19 @@
     ".": "./index.tsx"
   },
   "dependencies": {
-    "@ui-surfaces/pane": "workspace:*",
-    "@ui-themes-icons/visibility-on": "workspace:*",
-    "@nodes-node/parameter": "workspace:*",
-    "@node-geometry/project": "workspace:*"
+    "@immersive-ui-component-surface/pane": "workspace:*",
+    "@immersive-ui-theme-icon/visibility-on": "workspace:*",
+    "@immersive-nodes-node/parameter": "workspace:*",
+    "@immersive-nodes-geometry-node/project": "workspace:*"
   },
   "devDependencies": {
-    "@nodes/node": "workspace:*",
-    "@nodes/layout": "workspace:*",
+    "@immersive-nodes/node": "workspace:*",
+    "@immersive-nodes/layout": "workspace:*",
     "@immersive/headless": "workspace:*",
-    "@jsx-compiler/session": "workspace:*",
-    "@nodes/tree": "workspace:*",
-    "@nodes/parameter-projection": "workspace:*",
-    "@ui/typography": "workspace:*"
+    "@immersive-jsx-compiler/session": "workspace:*",
+    "@immersive-nodes/tree": "workspace:*",
+    "@immersive-nodes-projection/parameter": "workspace:*",
+    "@immersive-ui-component/typography": "workspace:*"
   },
   "scripts": {
     "test": "bun test --preload @immersive/headless/preload ./spec",

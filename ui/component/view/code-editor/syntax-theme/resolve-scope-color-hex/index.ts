@@ -4,8 +4,8 @@
 
 @packageDocumentation
 */
-import type {UiViewsCodeEditorSyntaxThemeResolveCodeEditorSyntaxScopeColorHex as Contract} from "./contract"
-import codeEditorSyntaxTheme from "@ui-views-code-editor-syntax-theme/code-editor-syntax-theme"
+import type {ImmersiveUiComponentViewCodeEditorSyntaxThemeResolveScopeColorHex as Contract} from "./contract"
+import codeEditorSyntaxTheme from "@immersive-ui-component-view-code-editor-syntax-theme/data"
 import {foregroundFor} from "./src/helpers.ts"
 import {normalizeHexColor} from "./src/helpers.ts"
 
@@ -20,4 +20,4 @@ export default function resolveCodeEditorSyntaxScopeColorHex(
   return normalized === undefined ? undefined : `#${normalized}`
 }
 
-export type {UiViewsCodeEditorSyntaxThemeResolveCodeEditorSyntaxScopeColorHex} from "./contract"
+export type {ImmersiveUiComponentViewCodeEditorSyntaxThemeResolveScopeColorHex} from "./contract"

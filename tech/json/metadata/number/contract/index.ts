@@ -1,7 +1,7 @@
-import type {NodesMetadata} from "@nodes/metadata/contract"
+import type {ImmersiveTechJsonMetadata} from "@immersive-tech-json/metadata/contract"
 
 /** Читает конечное число, сохраняя ноль. */
-export declare namespace NodeMetadataNumber {
-  type Input = readonly [value: NodesMetadata.Input[0], key: NodesMetadata.Input[1]]
+export declare namespace ImmersiveTechJsonMetadataNumber {
+  type Input = readonly [value: ImmersiveTechJsonMetadata.Input[0], key: ImmersiveTechJsonMetadata.Input[1]]
   type Output = number | undefined
 }
