@@ -1,11 +1,13 @@
-# Авторский контракт Immersive
+# Вход в среду Завхоз
 
-Обязательные правила авторских DOM-типов находятся в
-[PROJECT.md](PROJECT.md), раздел «Авторство и подключение приложения».
+Все рабочие правила, знания и инструменты предоставляет среда. Перед работой
+получи `GET ${origin}/api/environment` и прочитай `result.instructions`.
+`origin` и `controlToken` возьми из
+`~/Library/Caches/zavx0z-external-storybook/server.json` (либо
+`${STORYBOOK_STATE_ROOT}/server.json`, если переменная задана).
+Авторизация: `Bearer <controlToken>`; токен не выводить и не сохранять в Git.
+Команды отправлять в тот же адрес: `POST {name, arguments}` по выданным схемам.
+Если вход недоступен, сообщи об этом; не считай старый контекст действующим.
 
-Авторский JSX/TSX использует глобальные типы `lib.dom` и централизованные
-platform-owned расширения. Не импортировать DOM implementation types для
-обычных props/refs/events; не соединять их с браузерными типами через
-`as unknown`/`as any`. Публичные geometry helpers, доменные типы и корректные
-объявления custom tags этим запретом не ограничиваются. Runtime/internal/test
-границы платформы сохраняют собственные implementation types.
+Правила этого владельца: `immersive/meta/notes/agent-rules.md` относительно Project. Перед правками
+прочитай их и правила предков через файловые инструменты среды.
