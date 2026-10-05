@@ -53,6 +53,7 @@ import {
 import type {
   CreateDocumentRendererOptions,
   DisplayItem,
+  TextDisplayItem,
   DocumentRenderer,
   HitMetadata,
   PathDisplayItem,
@@ -73,7 +74,7 @@ import type {
 } from "./types.ts"
 import {parseRenderPath} from "../vector/index.ts"
 import {layoutInlineFlow, type InlineInput, type InlinePlan} from "./inline-flow.ts"
-import {createTextSource} from "./text-selection.ts"
+import {createTextSource, textAdvanceAt} from "./text-selection.ts"
 import {createPopoverIndex} from "./popover-index.ts"
 import {structuralFrameRanges, type CanonicalStructuralSplice} from "./frame-structural.ts"
 import {createTextStreamCollections, SplicedNodeMap, type TextStreamCollections, type TextStreamIndex,
@@ -5195,13 +5196,24 @@ const projectElementScroll = (
     presentationFor(layoutNode.node, state),
     state,
   )
+  // Значение textarea рисуется самим контролом, а не дочерними DOM-узлами.
+  const controlLines = state.hits.get(layoutNode.node)?.textControl?.lines
+  const controlBox = state.boxByNode.get(layoutNode.node)
+  let controlRight = clientX
+  let controlBottom = clientY
+  if (controlBox && controlLines) for (const line of controlLines) {
+    controlRight = Math.max(controlRight, controlBox.contentX + line.x + (line.width ?? 0))
+    controlBottom = Math.max(controlBottom, controlBox.contentY + line.y + line.lineHeight)
+  }
   const contentRight = Math.max(
     clientX + clientWidth,
     descendantRight + layoutNode.style.padding.right,
+    controlRight + layoutNode.style.padding.right,
   )
   const contentBottom = Math.max(
     clientY + clientHeight,
     descendantBottom + layoutNode.style.padding.bottom,
+    controlBottom + layoutNode.style.padding.bottom,
   )
   const scrollWidth = normalizedScrollExtent(clientX, clientWidth, contentRight)
   const scrollHeight = normalizedScrollExtent(clientY, clientHeight, contentBottom)
@@ -6166,6 +6178,7 @@ const localRectStart = (
   ? (visualStart - translate) / scale
   : (visualStart + visualSize - translate) / scale
 
+/** Одна раскладка значения задаёт текст, каретку, выделение и позиции указателя. */
 const emitTextAreaPresentation = (
   textArea: HTMLTextAreaElement,
   layoutNode: LayoutNode,
@@ -6174,195 +6187,112 @@ const emitTextAreaPresentation = (
   state: BuildState,
 ): void => {
   if (box.contentWidth <= 0 || box.contentHeight <= 0) return
-  const liveValue = textArea.value
-  const placeholder = liveValue === "" ? textArea.placeholder : ""
-  const source = liveValue || placeholder
-  const capacity = textCapacity(layoutNode.style, box.contentWidth)
-  const lines = source === ""
-    ? Object.freeze([])
-    : textAreaVisualLines(
-        source,
-        layoutNode.style.whiteSpace,
-        textArea.wrap,
-        capacity,
-      )
-  const lineHeight = resolveLineHeight(layoutNode.style)
-  emitTextAreaSelection(textArea, layoutNode, box, clips, lineHeight, state)
-  for (let index = 0; index < lines.length; index++) {
-    const line = lines[index]
-    if (!line || !hasPaintableText(line)) continue
-    state.displayList.push(Object.freeze({
-      kind: "text",
-      key: `value:${index}`,
-      node: textArea,
-      text: line,
-      x: alignedTextX(
-        layoutNode.style,
-        box.contentX,
-        box.contentWidth,
-        textAdvance(line, layoutNode.style, state.textMeasurer),
-      ),
-      y: box.contentY + index * lineHeight,
-      color: layoutNode.style.color,
-      fontSize: layoutNode.style.fontSize,
-        fontFamily: layoutNode.style.fontFamily, fontWeight: layoutNode.style.fontWeight, fontStyle: layoutNode.style.fontStyle,
-      lineHeight,
-      letterSpacing: layoutNode.style.letterSpacing,
-      opacity: layoutNode.effectiveOpacity * (placeholder ? 0.55 : 1),
-      clips,
-      transform: presentationFor(textArea, state),
+  const style = layoutNode.style
+  const lineHeight = resolveLineHeight(style)
+  const preserves = style.whiteSpace === "pre" || style.whiteSpace === "pre-wrap"
+  const measure = (text: string) => textAdvance(text, style, state.textMeasurer)
+  const plan = (value: string): readonly TextDisplayItem[] => {
+    const collapsed = value.replace(/[\t\n\f\r ]+/g, " ").trim()
+    const lines = preserves
+      ? textAreaPreservedLines(value, textArea.wrap.trim().toLowerCase() !== "off", box.contentWidth, measure)
+      : (style.whiteSpace === "nowrap" ? [collapsed] : wrapCollapsedLine(collapsed, textCapacity(style, box.contentWidth)))
+        .map(text => ({text, start: 0}))
+    return Object.freeze(lines.map(({text, start}, index): TextDisplayItem => Object.freeze({
+      kind: "text", key: `value:${index}`, node: textArea, text, width: measure(text),
+      ...(preserves ? {source: createTextSource({
+        offsets: Array.from({length: text.length + 1}, (_, offset) => start + offset),
+        userSelect: "text", selectionRoot: textArea, whiteSpace: style.whiteSpace,
+      }, style, state.textMeasurer)} : {}),
+      x: alignedTextX(style, 0, box.contentWidth, measure(text)),
+      y: index * lineHeight,
+      color: style.color, fontSize: style.fontSize,
+      fontFamily: style.fontFamily, fontWeight: style.fontWeight, fontStyle: style.fontStyle,
+      lineHeight, letterSpacing: style.letterSpacing, opacity: layoutNode.effectiveOpacity,
+      clips, transform: presentationFor(textArea, state),
+    })))
+  }
+  const valueLines = plan(textArea.value)
+  const hit = state.hits.get(textArea)
+  if (hit?.textControl) state.hits.set(textArea, Object.freeze({...hit,
+    textControl: Object.freeze({...hit.textControl, exactOffsetMapping: preserves, lines: valueLines}),
+  }))
+  if (preserves) emitTextAreaSelection(textArea, valueLines, box, state)
+  const placeholder = textArea.value === "" && textArea.placeholder !== ""
+  for (const line of placeholder ? plan(textArea.placeholder.replace(/\r\n?/g, "\n")) : valueLines) {
+    if (!hasPaintableText(line.text)) continue
+    state.displayList.push(Object.freeze({...line,
+      x: box.contentX + line.x, y: box.contentY + line.y,
+      opacity: line.opacity * (placeholder ? 0.55 : 1),
     }))
   }
 }
 
 const emitTextAreaSelection = (
   textArea: HTMLTextAreaElement,
-  layoutNode: LayoutNode,
+  lines: readonly TextDisplayItem[],
   box: RenderBox,
-  clips: readonly RenderClip[],
-  lineHeight: number,
   state: BuildState,
 ): void => {
-  if (
-    textArea.disabled ||
-    textArea.ownerDocument?.activeElement !== textArea ||
-    textArea.wrap !== "off" ||
-    layoutNode.style.whiteSpace !== "pre" ||
-    lineHeight <= 0
-  ) return
-  const lines = textArea.value.split("\n")
+  if (textArea.disabled || textArea.ownerDocument?.activeElement !== textArea || !lines.length) return
   const start = textArea.selectionStart
   const end = textArea.selectionEnd
-  const transform = presentationFor(textArea, state)
-  if (start === end) {
-    const position = textAreaLinePosition(lines, end)
-    const line = lines[position.line] ?? ""
-    const lineX = alignedTextX(
-      layoutNode.style,
-      box.contentX,
-      box.contentWidth,
-      textAdvance(line, layoutNode.style, state.textMeasurer),
-    )
+  for (let index = 0; index < lines.length; index++) {
+    const line = lines[index]!
+    if (line.lineHeight <= 0) continue
+    const first = line.source!.offsets[0]!
+    const last = first + line.text.length
+    const next = lines[index + 1]?.source?.offsets[0]
+    const caret = start === end
+    // На мягком переносе граница принадлежит началу следующей визуальной строки.
+    const containsCaret = end >= first && end <= last && !(end === last && next === end)
+    const from = Math.max(start, first)
+    const to = Math.min(end, last)
+    const newline = next !== undefined && next > last && start <= last && end > last
+    if (caret ? !containsCaret : from >= to && !newline) continue
+    const startColumn = Math.max(0, (caret ? end : from) - first)
+    const endColumn = Math.max(startColumn, to - first)
+    const left = textAdvanceAt(line, startColumn)
     state.displayList.push(Object.freeze({
-      kind: "rect",
-      key: "caret",
-      node: textArea,
-      x: lineX + textAdvance(
-        line.slice(0, position.column),
-        layoutNode.style,
-        state.textMeasurer,
-      ),
-      y: box.contentY + position.line * lineHeight,
-      width: 1,
-      height: lineHeight,
-      color: TEXT_SELECTION_COLOR,
-      opacity: 1,
-      border: ZERO_BORDER,
-      shadow: null,
-      clips,
-      transform,
+      kind: "rect", key: caret ? "caret" : `selection:${index}`, node: textArea,
+      x: box.contentX + line.x + left, y: box.contentY + line.y,
+      width: caret ? 1 : Math.max(newline ? 2 : 1, textAdvanceAt(line, endColumn) - left),
+      height: line.lineHeight, color: TEXT_SELECTION_COLOR, opacity: caret ? 1 : 0.35,
+      border: ZERO_BORDER, shadow: null, clips: line.clips, transform: line.transform,
     }))
-    return
-  }
-  let lineStart = 0
-  for (let index = 0; index < lines.length; index += 1) {
-    const line = lines[index] ?? ""
-    const lineEnd = lineStart + line.length
-    const selectionStart = Math.max(start, lineStart)
-    const selectionEnd = Math.min(end, lineEnd)
-    const includesNewline = index < lines.length - 1 && start <= lineEnd && end > lineEnd
-    if (selectionStart < selectionEnd || includesNewline) {
-      const startColumn = Math.max(0, selectionStart - lineStart)
-      const endColumn = Math.max(startColumn, selectionEnd - lineStart)
-      const lineX = alignedTextX(
-        layoutNode.style,
-        box.contentX,
-        box.contentWidth,
-        textAdvance(line, layoutNode.style, state.textMeasurer),
-      )
-      const x = lineX + textAdvance(
-        line.slice(0, startColumn),
-        layoutNode.style,
-        state.textMeasurer,
-      )
-      const selectedWidth = textAdvance(
-        line.slice(startColumn, endColumn),
-        layoutNode.style,
-        state.textMeasurer,
-      )
-      state.displayList.push(Object.freeze({
-        kind: "rect",
-        key: `selection:${index}`,
-        node: textArea,
-        x,
-        y: box.contentY + index * lineHeight,
-        width: Math.max(includesNewline ? 2 : 1, selectedWidth),
-        height: lineHeight,
-        color: TEXT_SELECTION_COLOR,
-        opacity: 0.35,
-        border: ZERO_BORDER,
-        shadow: null,
-        clips,
-        transform,
-      }))
-    }
-    lineStart = lineEnd + 1
+    if (caret) return
   }
 }
 
-const textAreaLinePosition = (
-  lines: readonly string[],
-  offset: number,
-): Readonly<{line: number; column: number}> => {
-  let lineStart = 0
-  for (let index = 0; index < lines.length; index += 1) {
-    const line = lines[index] ?? ""
-    const lineEnd = lineStart + line.length
-    if (offset <= lineEnd || index === lines.length - 1) {
-      return Object.freeze({
-        line: index,
-        column: Math.max(0, Math.min(line.length, offset - lineStart)),
-      })
+/** Сохраняет исходные UTF-16 смещения; перенос не разрывает графемы. */
+const textAreaPreservedLines = (
+  value: string,
+  wraps: boolean,
+  width: number,
+  measure: (text: string) => number,
+): readonly Readonly<{text: string; start: number}>[] => {
+  const result: {text: string; start: number}[] = []
+  let sourceStart = 0
+  for (const logical of value.split("\n")) {
+    if (!wraps || logical === "") result.push({text: logical, start: sourceStart})
+    else {
+      const segments = graphemeSegmenter
+        ? Array.from(graphemeSegmenter.segment(logical), part => part.segment)
+        : Array.from(logical)
+      let text = ""
+      let start = sourceStart
+      for (const segment of segments) {
+        if (text !== "" && measure(text + segment) > width) {
+          result.push({text, start})
+          start += text.length
+          text = ""
+        }
+        text += segment
+      }
+      result.push({text, start})
     }
-    lineStart = lineEnd + 1
+    sourceStart += logical.length + 1
   }
-  return Object.freeze({line: 0, column: 0})
-}
-
-const textAreaVisualLines = (
-  source: string,
-  whiteSpace: ComputedStyle["whiteSpace"],
-  wrap: string,
-  capacity: number,
-): readonly string[] => {
-  if (whiteSpace === "normal" || whiteSpace === "nowrap") {
-    const collapsed = source.replace(/[\t\n\f\r ]+/g, " ").trim()
-    return collapsed === ""
-      ? Object.freeze([])
-      : whiteSpace === "nowrap"
-        ? Object.freeze([collapsed])
-        : Object.freeze(wrapCollapsedLine(collapsed, capacity))
-  }
-  const wraps = wrap.trim().toLowerCase() !== "off"
-  const lines: string[] = []
-  for (const line of splitTextLines(source)) {
-    if (!wraps) {
-      lines.push(line)
-      continue
-    }
-    lines.push(...wrapPreservedLine(line, capacity))
-  }
-  return Object.freeze(lines)
-}
-
-const wrapPreservedLine = (line: string, capacity: number): string[] => {
-  const characters = Array.from(line)
-  if (characters.length === 0) return [""]
-  const lines: string[] = []
-  for (let start = 0; start < characters.length; start += capacity) {
-    lines.push(characters.slice(start, start + capacity).join(""))
-  }
-  return lines
+  return result
 }
 
 const wrapCollapsedLine = (line: string, capacity: number): string[] => {

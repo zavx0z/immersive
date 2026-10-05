@@ -177,7 +177,7 @@ const boundariesFor = (item: TextDisplayItem): readonly number[] => {
   return boundaries
 }
 
-const advanceAt = (item: TextDisplayItem, offset: number): number => {
+export const textAdvanceAt = (item: TextDisplayItem, offset: number): number => {
   if (offset === 0) return 0
   const metrics = item.source === undefined ? undefined : metricsBySource.get(item.source)
   const cached = metrics?.advances?.get(offset)
@@ -342,7 +342,7 @@ export function caretPositionAtPoint(
     if (transform.scaleX === 0 || transform.scaleY === 0) return
     const px = (x - transform.translateX) / transform.scaleX
     const py = (y - transform.translateY) / transform.scaleY
-    const width = item.width ?? advanceAt(item, item.text.length)
+    const width = item.width ?? textAdvanceAt(item, item.text.length)
     const inside = px >= item.x && px <= item.x + width && py >= item.y && py < item.y + item.lineHeight
     const clipped = !item.clips.every(clip => pointInClip(frame, clip, x, y))
     if (!options.nearest && (!inside || clipped)) return
@@ -365,17 +365,23 @@ export function caretPositionAtPoint(
     for (const item of textCandidates(frame, 0, frame.viewport.height)) best = consider(item) ?? best
   }
   if (best === null || !(best.node instanceof Text) || best.source === undefined) return null
-  const boundaries = boundariesFor(best)
+  return Object.freeze({offsetNode: best.node, offset: textSourceOffsetAt(best, localX)})
+}
+
+/** Общие измеренные границы графем для DOM Text и value-based полей. */
+export function textSourceOffsetAt(item: TextDisplayItem, localX: number): number {
+  const boundaries = boundariesFor(item)
   let low = 0
   let high = boundaries.length - 1
   while (low < high) {
     const middle = (low + high) >>> 1
-    const left = advanceAt(best, boundaries[middle]!)
-    const right = advanceAt(best, boundaries[middle + 1]!)
+    const left = textAdvanceAt(item, boundaries[middle]!)
+    const right = textAdvanceAt(item, boundaries[middle + 1]!)
     if (localX > (left + right) / 2) low = middle + 1
     else high = middle
   }
-  return Object.freeze({offsetNode: best.node, offset: best.source.offsets[boundaries[low]!] ?? 0})
+  return item.source?.offsets[boundaries[low]!] ?? boundaries[low]!
+
 }
 
 /** Range geometry in the same local coordinate/clip contract as text paint. */
@@ -406,9 +412,9 @@ export function getRangeClientRects(frame: RenderFrame, range: Range, options: R
     const boundaries = boundariesFor(item)
     const left = boundaries.findLast(index => (offsets[index] ?? first) <= start) ?? 0
     const right = boundaries.find(index => (offsets[index] ?? last) >= end) ?? item.text.length
-    const width = end === start ? 1 / Math.max(Math.abs(item.transform.scaleX), 0.001) : advanceAt(item, right) - advanceAt(item, left)
+    const width = end === start ? 1 / Math.max(Math.abs(item.transform.scaleX), 0.001) : textAdvanceAt(item, right) - textAdvanceAt(item, left)
     if (width <= 0) continue
-    result.push(clientRect({node: item.node, x: item.x + advanceAt(item, left), y: item.y, width,
+    result.push(clientRect({node: item.node, x: item.x + textAdvanceAt(item, left), y: item.y, width,
       height: item.lineHeight, clips: item.clips, transform: item.transform}))
     if (range.collapsed) break
   }
@@ -442,7 +448,7 @@ const equivalentCaretRect = (frame: RenderFrame, range: Range): RenderRangeRect 
     const item = frame.displayList[candidate.index] as TextDisplayItem
     const local = offset - candidate.origin
     const boundary = boundariesFor(item).findLast(index => (item.source!.offsets[index] ?? 0) <= local) ?? 0
-    return clientRect({node: item.node, x: item.x + advanceAt(item, boundary), y: item.y,
+    return clientRect({node: item.node, x: item.x + textAdvanceAt(item, boundary), y: item.y,
       width: 1 / Math.max(Math.abs(item.transform.scaleX), 0.001), height: item.lineHeight,
       transform: item.transform, clips: item.clips})
   }

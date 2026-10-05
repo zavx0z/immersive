@@ -176,7 +176,7 @@ export type TextDisplayItem = Readonly<{
   key: string
   node: Node
   text: string
-  /** Exact source boundaries for ordinary DOM Text, absent for generated control labels. */
+  /** Исходные границы DOM Text либо значения textarea; обычные сгенерированные подписи их не имеют. */
   source?: RenderTextSource
   /** Exact advance of a line fragment, when projected by inline formatting. */
   width?: number
@@ -295,6 +295,8 @@ export type HitMetadata = Readonly<{
     lineHeight: number
     characterAdvance: number
     exactOffsetMapping: boolean
+    /** Value-based строки с координатами относительно content box до собственной прокрутки. */
+    lines?: readonly TextDisplayItem[]
   }>
 }>
 

@@ -30,7 +30,7 @@ import {readCanonicalRenderFrameChanges} from "./frame-changes.ts"
 import {isRendererOwnedFrame, markRendererOwnedFrame, recordCanonicalRenderFrameChanges} from "./frame-change-state.ts"
 import {scrollHitCandidates} from "./scroll-hit-index.ts"
 import type {DocumentInteractionState} from "./pseudo-state.ts"
-import {caretPositionAtPoint, rangeHighlightItems} from "./text-selection.ts"
+import {caretPositionAtPoint, rangeHighlightItems, textSourceOffsetAt} from "./text-selection.ts"
 
 export type PointerInput = Readonly<{
   clientX: number
@@ -701,22 +701,14 @@ const textAreaOffsetAtPoint = (
   if (!hit || !metrics?.exactOffsetMapping || !box || metrics.lineHeight <= 0) return null
   const point = inverseTransformPoint(hit.transform, input.clientX, input.clientY)
   if (point === null) return null
-  const lines = textArea.value.split("\n")
-  const lineIndex = Math.max(
-    0,
-    Math.min(lines.length - 1, Math.floor((point.y - box.contentY) / metrics.lineHeight)),
-  )
-  const line = lines[lineIndex] ?? ""
-  const lineItem = frame.displayList.find((item): item is Extract<DisplayItem, {kind: "text"}> =>
-    item.kind === "text" && item.node === textArea && item.key === `value:${lineIndex}`
-  )
-  const lineX = lineItem?.x ?? box.contentX
-  const column = metrics.characterAdvance <= 0
-    ? 0
-    : Math.max(0, Math.min(line.length, Math.round((point.x - lineX) / metrics.characterAdvance)))
-  let offset = column
-  for (let index = 0; index < lineIndex; index += 1) offset += (lines[index]?.length ?? 0) + 1
-  return offset
+  const lines = metrics.lines
+  if (!lines?.length) return null
+  const scroll = frame.scrolls.get(textArea)
+  const lineIndex = Math.max(0, Math.min(lines.length - 1,
+    Math.floor((point.y - box.contentY + (scroll?.scrollTop ?? 0)) / metrics.lineHeight)))
+  const line = lines[lineIndex]!
+  return textSourceOffsetAt(line, point.x - box.contentX + (scroll?.scrollLeft ?? 0) - line.x)
+
 }
 
 export const hitTest = (
