@@ -1,25 +1,21 @@
+import {InspectorHeader} from "./src/header"
 /**
 Инспектор категорий и панелей с поиском и сохраняемым содержимым.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
-import {InspectorActionButton} from "./src/action-button"
 
 import {CategoryButton} from "./src/helpers.tsx"
 import {InspectorContextRowView} from "./src/helpers.tsx"
 import type {ImmersiveUiComponentWidgetInspector as Contract} from "./contract"
 import {assertInspectorProps} from "./src/helpers.tsx"
-import IconButton from "@zavx0z/immersive-ui-component-button-icon"
-import TextField from "@zavx0z/immersive-ui-component-field-text"
-import searchIcon from "@zavx0z/immersive-ui-theme-icon-search"
 
 
 export type {ImmersiveUiComponentWidgetInspector} from "./contract"
 
 export default function Inspector(props: Contract.Input): Contract.Output {
   assertInspectorProps(props)
-  const onInput = (query: string, event: Event) => props.onQueryChange?.(query, event)
   return <aside
     aria-label={props.ariaLabel ?? "Inspector"}
     style={css`
@@ -38,115 +34,9 @@ export default function Inspector(props: Contract.Input): Contract.Output {
       ${props.style}
     `}
   >
-    <header
-      hidden={props.showSearch === false && (props.toolbarLeadingActions?.length ?? 0) === 0 && (props.toolbarActions?.length ?? 0) === 0}
-      style={css`
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width: 100%;
-        height: 30px;
-        gap: 4px;
-        padding: 4px;
-        background: var(--widget-number-background-readonly);
-
-        &[hidden] {
-          display: none;
-        }
-      `}
-    >
-      <div
-        style={css`
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          width: 0;
-          min-width: 22px;
-          flex-grow: 1;
-          gap: 2px;
-        `}
-      >
-        {(props.toolbarLeadingActions ?? []).map(action => <InspectorActionButton
-          key={action.id}
-          label={action.label}
-          iconSrc={action.iconSrc}
-          title={action.title}
-          disabled={action.disabled === true}
-          selected={action.selected}
-          iconSize={14}
-          onClick={action.action}
-        />)}
-      </div>
-      <div
-        hidden={props.showSearch === false}
-        style={css`
-          position: relative;
-          display: block;
-          width: 115px;
-          min-width: 115px;
-          height: 22px;
-
-          &[hidden] {
-            display: none;
-          }
-        `}
-      >
-        <img
-          src={searchIcon}
-          alt=""
-          aria-hidden="true"
-          width={13}
-          height={13}
-          style={css`
-            position: absolute;
-            left: 6px;
-            top: 4px;
-            width: 13px;
-            height: 13px;
-            object-fit: contain;
-            pointer-events: none;
-          `}
-        />
-        <TextField
-          type="search"
-          value={props.query}
-          placeholder={props.searchPlaceholder}
-          title={props.searchLabel}
-          style={css`
-            width: 100%;
-            height: 22px;
-            --text-field-width: 100%;
-            --text-field-height: 22px;
-            --text-field-padding: 2px 8px 2px 23px;
-          `}
-          onInput={onInput}
-        />
-      </div>
-      <div
-        style={css`
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: flex-end;
-          width: 0;
-          min-width: 22px;
-          flex-grow: 1;
-          gap: 2px;
-        `}
-      >
-        {(props.toolbarActions ?? []).map(action => <InspectorActionButton
-          key={action.id}
-          label={action.label}
-          iconSrc={action.iconSrc}
-          title={action.title}
-          disabled={action.disabled === true}
-          selected={action.selected}
-          iconSize={14}
-          onClick={action.action}
-        />)}
-      </div>
-    </header>
+    <slot name="header">
+      <InspectorHeader input={props} />
+    </slot>
     <div
       style={css`
         display: flex;

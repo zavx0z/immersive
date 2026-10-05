@@ -2129,10 +2129,13 @@
         "@zavx0z/immersive-ui-theme-icon-search": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
+        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-template": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
         "@zavx0z/immersive-ui-component-widget": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-run": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "ui/component/widget/terminal": {

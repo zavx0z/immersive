@@ -30,6 +30,8 @@ export declare namespace ImmersiveUiComponentWidgetInspector {
 
   /** Содержимое вызывающей стороны размещается в том же Document. */
   interface Slots {
+    /** Замещает штатную панель поиска содержимым приложения, сохраняя общий Inspector. */
+    readonly header?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
     readonly default?: readonly (JSX.Element | string | number | bigint | null | undefined)[]
   }
 
