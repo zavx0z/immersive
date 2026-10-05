@@ -6,26 +6,27 @@
     "executorLabel": "Основной",
     "address": "/immersive",
     "pending": [],
-    "historyComplete": true,
+    "historyComplete": false,
     "status": "idle",
     "error": null,
     "sessionId": "01a10a20-3975-7e72-90ad-d6b05177b285",
     "cwd": "/Users/zavx0z/repozitarium/zavx0z/immersive",
     "usage": {
-      "used": 44122,
+      "used": 51650,
       "size": 828400
     },
     "environmentContext": "33d13b836716cc8bc1bd807f7c9337231e193f1d1e2f1b27946a0fbc1d662fcb",
     "sessionLabel": "какие инструменты ты видешь у себя?",
     "sessionLabelSource": "auto",
-    "sessionLabelAssigned": true
+    "sessionLabelAssigned": true,
+    "controlVersion": 273
   },
   "history": {
-    "revision": 2,
-    "total": 15,
-    "lastSequence": 369
+    "revision": 270,
+    "total": 31,
+    "lastSequence": 605
   },
   "journal": "a253b5d6728b2703069231a9437b8aea1fa338081bc799b3bb9944dd38480bcd.json.journal.8612d91f-23bb-4b52-bf09-96ece43bcd68.ndjson",
-  "committedBytes": 223945,
-  "hash": "71dd11d33b72fd74d2165ad67a5c2b1aa56fe6eb3e5c8d1219b407effa981511"
+  "committedBytes": 3625299,
+  "hash": "ae5dfa8aa9b756b2e20cc020c265150176d2900a7a2526a5a180964fdb8dc639"
 }
