@@ -28,3 +28,12 @@ CodeEditor создаёт все строки и токены. `showLineNumbers=
 переносы/softBreaks, редактирование и восстановление scroll работают.
 Измерить память и время кадра при открытии и прокрутке. Обычные маленькие
 редакторы и интерактивность сохраняются.
+
+## Уточнение 5 октября 2026
+
+Для readonly windowing подтверждено ограничение общего clipboard reader:
+[граница source-text root у Renderer HTML](../../../../../renderer/html/meta/notes/source-text-root.md).
+Даже без softBreaks сохраняются дополнительные пробельные разделители в copy;
+[probe](research/2026-10-05/formatted-copy.ts.txt) запускается из Project `tmp/`.
+Он не заменяет compiled CodeEditor и живую Browser-проверку будущей capability.
+Виртуализация и точное исходное копирование в текущую порцию ещё не входят.

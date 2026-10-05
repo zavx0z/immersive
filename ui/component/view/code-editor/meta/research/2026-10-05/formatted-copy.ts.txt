@@ -1,0 +1,42 @@
+import {createDocument} from '../immersive/dom/src/index'
+import {createDocumentRenderer, readRenderedSelectionText} from '../immersive/renderer/html/src/index'
+import {createDocumentClipboardController} from '../immersive/browser/clipboard'
+import buildView from '../immersive/ui/component/view/code-editor/view-model/index'
+import {codeEditorVisualRows} from '../immersive/ui/component/view/code-editor/src/visual-rows'
+import formatJson from '../storybook/tech/json/format/index'
+const source = formatJson(JSON.stringify({text:'LEFT\nRIGHT', nested:{ok:true,items:[1,2]}, end:'Полный конец'})).text
+const document = createDocument()
+const root = document.createElement('pre')
+root.setAttribute('style','display:block;width:500px;height:240px;margin:0;font-size:14px;line-height:16px')
+const code = document.createElement('code')
+code.setAttribute('style','display:block;white-space:normal')
+root.append(code)
+document.append(root)
+for (const row of codeEditorVisualRows(buildView({value:source,readOnly:true,languageId:'json'}))) {
+  code.append(document.createTextNode(row.separator))
+  const line = document.createElement('span')
+  line.setAttribute('style','display:block;height:16px;white-space:pre')
+  for (const segment of row.segments) {
+    const span=document.createElement('span')
+    span.setAttribute('style','display:inline;white-space:pre')
+    span.textContent=segment.text
+    line.append(span)
+  }
+  code.append(line)
+}
+const renderer = createDocumentRenderer({document,root,viewport:{width:500,height:240}})
+const frame = renderer.flush()
+const range = document.createRange()
+range.selectNodeContents(code)
+document.getSelection().addRange(range)
+let written=''
+const clipboard = createDocumentClipboardController(document,{access:{readText:async()=>'',writeText:async text=>{written=text}}})
+clipboard.configure(()=>readRenderedSelectionText(frame,document.getSelection()),()=>{})
+const outcome=await clipboard.copy()
+const report={scenario:'Formatted multiline JSON; current visual rows and equivalent CodeLine DOM; real Browser clipboard with fake OS access; no softBreaks',outcome,exactSource:written===source,validJson:false,characters:source.length}
+try {report.validJson=JSON.stringify(JSON.parse(written))===JSON.stringify(JSON.parse(source))} catch {}
+await Bun.write('storybook/chat/view/meta/research/2026-10-05/formatted-copy.json',JSON.stringify(report,null,2))
+console.log(JSON.stringify({...report, source, written}))
+clipboard.dispose()
+renderer.dispose()
+if(!report.exactSource||!report.validJson)process.exitCode=1
