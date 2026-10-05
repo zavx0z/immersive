@@ -67,3 +67,32 @@ semantic Node и UTF-16 offset: для CharacterData смещение в дан�
 
 Behavioral evidence: `tests/range-selection.test.ts`,
 `tests/clipboard-editable.test.ts`; прежние DOM contracts продолжают проверяться.
+
+
+## Корень исходного текста
+
+`registerTextSourceRoot(root)` и `isTextSourceRoot(node)` доступны из основного
+импорта и `@zavx0z/immersive-dom/text-source`. Регистрация принимает semantic
+Element через стандартный авторский `Element` ref. Настоящий native DOM
+отклоняется на границе платформы.
+
+Единственный источник — существующие DOM Text этого корня. API не принимает
+строку или callback, не создаёт второй текстовый граф и не изменяет Range.
+Скрытые Text могут хранить неотрисованные промежутки документа, а видимые
+элементы — его оформление. Комментарии и визуальные переносы не входят в source.
+Декоративный текст размещается вне зарегистрированного корня: все его потомки
+Text, включая hidden и nested `user-select:none`, принадлежат исходнику.
+
+Каждый вызов возвращает независимое идемпотентное освобождение. Последняя lease
+снимает регистрацию; старое освобождение не снимает новую регистрацию после
+принятия другим Document. WeakMap и WeakRef не удерживают корень или документ,
+даже если caller сохранил release и не вызвал его. `isTextSourceRoot` проверяет
+сам зарегистрированный Element, не потомков; disconnected Element не активен.
+Same-Document reparent сохраняет регистрацию, перенос в другой Document требует
+повторной регистрации. DOM не решает видимость и CSS: Renderer дополнительно
+требует бокс этого корня в supplied frame того же Document и разрешённый
+root-wide `user-select`.
+
+Проверки: [lifecycle и слабое владение](tests/text-source.test.ts),
+[точный source и rendered границы](../renderer/html/tests/text-source.test.ts),
+[Browser menu/native copy](../browser/tests/text-source-clipboard.test.ts).

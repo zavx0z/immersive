@@ -111,3 +111,25 @@ IME, клавиатурные команды редактирования и о�
 
 Объединение и перекрытие: `tests/selection-contour.test.ts`,
 порядок слоёв и сохранение GPU-ресурсов: `../../webgpu/tests/text-highlights.test.ts`.
+
+
+## Исходный текст зарегистрированного корня
+
+`readRenderedSelectionText` читает DOM Text зарегистрированного
+`registerTextSourceRoot` корня без схлопывания whitespace и добавления LF между
+его visual blocks, включая скрытые промежутки и nested `user-select:none`.
+UTF-16 offsets Range, CRLF, табуляция и буквальные пробелы сохраняются точно.
+Source root должен иметь бокс в supplied frame того же Document; root-wide
+`user-select:none` запрещает весь source. Обычный hidden текст вне таких корней
+по-прежнему исключается. Регистрация не добавляет paint, hit или layout records.
+
+Внешние inline/block boundaries сохраняют rendered правила: два source blocks
+разделяются как два rendered blocks, inline root остаётся в окружающем потоке.
+Частичный Range может начинаться и заканчиваться в hidden Text, а его общий
+предок может быть самим Text. Изменение DOM немедленно меняет source без
+отдельной синхронизации строк; геометрия выделения остаётся производной от
+видимых records.
+
+[Контракт DOM и освобождение](../../dom/selection.md#корень-исходного-текста),
+[generic проверки](tests/text-source.test.ts),
+[Browser clipboard integration](../../browser/tests/text-source-clipboard.test.ts).

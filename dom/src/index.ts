@@ -42,6 +42,7 @@ export {
   subscribeDocumentTextHighlights,
 } from "../text-highlights.ts"
 export type {DocumentTextHighlight, DocumentTextHighlightOptions} from "../text-highlights.ts"
+export {registerTextSourceRoot, isTextSourceRoot} from "../text-source.ts"
 export {textOffsetAtPosition, textPositionAtOffset} from "../text-position.ts"
 export {readDocumentScrollIntoViewRequests, completeDocumentScrollIntoViewRequest,
   clearDocumentScrollIntoViewRequests, subscribeDocumentScrollIntoViewRequests} from "../scroll-into-view.ts"

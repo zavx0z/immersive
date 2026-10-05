@@ -1,4 +1,4 @@
-import {Text, textOffsetAtPosition, type Node, type Range, type Selection} from "@zavx0z/immersive-dom"
+import {Text, isTextSourceRoot, textOffsetAtPosition, type Node, type Range, type Selection} from "@zavx0z/immersive-dom"
 import type {RenderFrame, RenderTextMeasurer, RenderTextSource, TextDisplayItem, RenderClip, RenderTransform, RenderTextHighlight} from "./types.ts"
 import {buildTextHighlights} from "./text-highlight-geometry.ts"
 import {hitTestProjection} from "./projection-hit.ts"
@@ -513,7 +513,7 @@ const visibleRangeRect = (frame: RenderFrame, bounds: RenderRangeRect): boolean 
   return true
 }
 
-/** Source serialization follows rendered block boundaries, excluding non-selectable UI. */
+/** Сериализует rendered text и точный DOM Text зарегистрированных source roots одного Document. */
 export function readRenderedSelectionText(frames: RenderFrame | readonly RenderFrame[], selection?: Selection | Range): string {
   const list = Array.isArray(frames) ? frames as readonly RenderFrame[] : [frames as RenderFrame]
   const selected = selection ?? list[0]?.document.getSelection()
@@ -523,6 +523,7 @@ export function readRenderedSelectionText(frames: RenderFrame | readonly RenderF
   const sources = new Map<Node, RenderTextSource>()
   const boxes = new Map<Node, RenderFrame["boxes"][number]>()
   for (const frame of list) {
+    if (frame.document !== range.startContainer && frame.document !== range.startContainer.ownerDocument) continue
     for (const item of textItems(frame)) if (item.source) sources.set(item.node, item.source)
     for (const box of frame.boxes) boxes.set(box.node, box)
   }
@@ -533,51 +534,61 @@ export function readRenderedSelectionText(frames: RenderFrame | readonly RenderF
     }
     return null
   }
+  const sourceRootAt = (node: Node): Node | null => isTextSourceRoot(node) && boxes.has(node) ? node : null
+  let enclosingSource: Node | null = null
+  for (let node: Node | null = range.commonAncestorContainer; node; node = node.parentNode) {
+    enclosingSource = sourceRootAt(node) ?? enclosingSource
+  }
   let output = ""
   let previousBlock: Node | null = null
   let emptyBlocks = 0
   let started = false
   let ended = false
-  const visit = (node: Node): void => {
+  const visit = (node: Node, inheritedSource: Node | null): void => {
     if (ended) return
+    const sourceRoot = inheritedSource ?? sourceRootAt(node)
+    const sourceBox = sourceRoot === null ? undefined : boxes.get(sourceRoot)
+    const blocked = sourceBox?.userSelect === "none"
+    const blockForText = () => sourceRoot === null ? blockOf(node)
+      : sourceBox?.display === "inline" ? blockOf(sourceRoot) : sourceRoot
     if (node instanceof Text) {
       if (node === range.startContainer) started = true
       const included = started
       if (node === range.endContainer) ended = true
       if (!included) return
       const source = sources.get(node) ?? boxes.get(node)
-      if (source === undefined || source.userSelect === "none") return
+      if (blocked || sourceRoot === null && (source === undefined || source.userSelect === "none")) return
       const start = range.startContainer === node ? range.startOffset : 0
       const end = range.endContainer === node ? range.endOffset : node.data.length
       if (end <= start) {
-        if (node === range.endContainer && end === 0 && output !== "" && blockOf(node) !== previousBlock) {
+        if (node === range.endContainer && end === 0 && output !== "" && blockForText() !== previousBlock) {
           output += "\n".repeat(emptyBlocks + (output.endsWith("\n") ? 0 : 1))
           emptyBlocks = 0
         }
         return
       }
       const raw = node.data.slice(start, end)
-      const text = (source.whiteSpace === "pre" || source.whiteSpace === "pre-wrap") ? raw : raw.replace(/[\t\n\f\r ]+/gu, " ")
+      const text = (sourceRoot !== null || source?.whiteSpace === "pre" || source?.whiteSpace === "pre-wrap") ? raw : raw.replace(/[\t\n\f\r ]+/gu, " ")
       if (text === "") return
-      const block = blockOf(node)
+      const block = blockForText()
       if (output !== "" && block !== previousBlock) output += "\n".repeat(emptyBlocks + (output.endsWith("\n") ? 0 : 1))
       emptyBlocks = 0
       output += text
       previousBlock = block
     } else {
       const box = boxes.get(node)
-      if (started && output !== "" && box?.display === "block" && box.userSelect !== "none" && box.height > 0 && emptyTextBox(node)) emptyBlocks++
-      if (started && "localName" in node && node.localName === "br" && boxes.has(node) && !output.endsWith("\n")) output += "\n"
+      if (sourceRoot === null && started && output !== "" && box?.display === "block" && box.userSelect !== "none" && box.height > 0 && emptyTextBox(node)) emptyBlocks++
+      if (sourceRoot === null && started && "localName" in node && node.localName === "br" && boxes.has(node) && !output.endsWith("\n")) output += "\n"
       const children = node.childNodes
       for (let index = 0; index <= children.length; index++) {
         if (node === range.startContainer && index === range.startOffset) started = true
         if (node === range.endContainer && index === range.endOffset) ended = true
         if (ended) break
-        if (index < children.length) visit(children[index]!)
+        if (index < children.length) visit(children[index]!, sourceRoot)
       }
     }
   }
-  visit(range.commonAncestorContainer)
+  visit(range.commonAncestorContainer, enclosingSource)
   return output + "\n".repeat(emptyBlocks)
 }
 
