@@ -14,6 +14,7 @@ export type {
   PendingExternalSource,
   ReplaceExternalSourceOptions,
   TextureEntry,
+  TextureLease,
   TextureStatus,
 } from "./texture-loader.ts"
 export {RendererWebGpuBackend} from "./webgpu-backend.ts"

@@ -27,7 +27,7 @@ import {
   type TrueTypeFont,
 } from "@zavx0z/immersive-engine"
 import {isRendererOwnedFrame, readCanonicalRenderFrameChanges} from "@zavx0z/immersive-renderer-html/frame-changes"
-import {TextureLoader} from "./texture-loader.ts"
+import {TextureLoader, type TextureLease} from "./texture-loader.ts"
 import {PaintVisibilityIndex, type IndexedPaintBounds} from "./paint-visibility-index.ts"
 import {RetainedPlaneGeometryPool} from "./retained-plane-geometry-pool.ts"
 import type {
@@ -284,6 +284,7 @@ type ImageEntry = RetainedClipState & {
   node: Mesh
   geometry: PlaneGeometry
   material: ImageMaterial
+  textureLease: TextureLease
   src: string
   width: number
   height: number
@@ -2210,8 +2211,11 @@ export class RendererWebGpuBackend {
       opacity: value.opacity,
     })
     const node = new Mesh(geometry, material)
+    const changed = this.#textureChangeCallback(value.token, item.src)
+    const textureLease = TextureLoader.acquire(item.src, changed, {animate: false})
     const entry: ImageEntry = {
       kind: "image",
+      textureLease,
       node,
       geometry,
       material,
@@ -2219,9 +2223,8 @@ export class RendererWebGpuBackend {
       width: item.width,
       height: item.height,
     }
-    material.onTextureChange = this.#textureChangeCallback(value.token, item.src)
-    TextureLoader.addChangeListener(item.src, material.onTextureChange, {animate: false})
-    TextureLoader.setAnimationVisible(item.src, material.onTextureChange, value.visible)
+    material.onTextureChange = changed
+    textureLease.setVisible(value.visible)
     node.visible = value.visible
     node.name = `${item.node.nodeName}:${item.key}`
     this.#updateClips(entry, value.clips)
@@ -2318,19 +2321,17 @@ export class RendererWebGpuBackend {
         entry.height = value.item.height
       }
       if (entry.src !== value.item.src) {
-        if (entry.material.onTextureChange !== undefined) {
-          TextureLoader.removeChangeListener(entry.src, entry.material.onTextureChange)
-        }
+        entry.textureLease.release()
         entry.src = value.item.src
         entry.material.src = value.item.src
         entry.material.onTextureChange = this.#textureChangeCallback(value.token, value.item.src)
-        TextureLoader.addChangeListener(entry.src, entry.material.onTextureChange, {animate: false})
+        entry.textureLease = TextureLoader.acquire(entry.src, entry.material.onTextureChange, {animate: false})
       }
       entry.material.fit = value.item.fit
       entry.material.boxAspect = value.boxAspect
       entry.material.opacity = value.opacity
       entry.node.visible = value.visible
-      TextureLoader.setAnimationVisible(entry.src, entry.material.onTextureChange!, value.visible)
+      entry.textureLease.setVisible(value.visible)
       this.#updateClips(entry, value.clips)
       positionPlane(entry.node, value.item)
       return
@@ -2396,9 +2397,7 @@ export class RendererWebGpuBackend {
     delete entry.appliedClips
     entry.node.children = []
     if (entry.kind === "image") {
-      if (entry.material.onTextureChange !== undefined) {
-        TextureLoader.removeChangeListener(entry.src, entry.material.onTextureChange)
-      }
+      entry.textureLease.release()
       entry.material.onTextureChange = undefined
     }
     if (entry.kind === "text") entry.node.dispose()

@@ -44,7 +44,7 @@ import {
 } from "./line-pipeline"
 import {classifyRenderItems, collectSpaceObjects, type LightItem, type RenderItem} from "./utils/render-list"
 import {GlassMaterial} from "@zavx0z/immersive-engine"
-import {TextureLoader} from "../texture-loader"
+import {TextureLoader, type TextureLease, type TextureEntry} from "../texture-loader"
 import {
   alignedGpuFrameBytesPerRow,
   encodeRgbaFramePng,
@@ -219,40 +219,98 @@ export class Renderer {
   private disposed = false
   private ownedDevice: GPUDevice | null = null
   private unsubscribeTextEviction: (() => void) | null = null
-  private readonly imageSizeChangeListeners = new Map<string, () => void>()
+  private readonly imageSizeScopes = new Map<AbortSignal, {src: string; lease: TextureLease; release(): void}>()
+  private readonly transientImageSizes = new Map<string, {lease: TextureLease; callbacks: Set<() => void>}>()
+  private readonly imageMaterialLeases = new Map<ImageMaterial, {src: string; lease: TextureLease}>()
 
   constructor() {
     const renderer = new WeakRef(this)
     this.unsubscribeTextEviction = Text.onLayoutEvicted(geometry => renderer.deref()?.invalidateGeometry(geometry))
   }
 
-  private readonly imageSizeListeners = new Map<string, Set<() => void>>()
-
-  /** Shares the texture loader's decoded dimensions with CPU layout. */
-  public readImageSize(src: string, onChange: () => void): Readonly<{width: number; height: number}> | null {
-    if (src.length === 0) return null
+  /** Signal связывает image sizing с semantic node; без signal probe заканчивается при ready/failed. */
+  public readImageSize(src: string, onChange: () => void, signal?: AbortSignal): Readonly<{width: number; height: number}> | null {
+    if (src.length === 0 || signal?.aborted || this.disposed) return null
     const device = this.device
     if (device === null) throw new Error("Renderer must be initialized before loading an image")
-    const entry = TextureLoader.load(device, src)
-    if (entry.status === "ready") return {width: entry.width, height: entry.height}
-    if (entry.status === "failed") return null
-    let listeners = this.imageSizeListeners.get(src)
-    if (listeners === undefined) {
-      listeners = new Set()
-      this.imageSizeListeners.set(src, listeners)
-      const changed = () => {
-        if (TextureLoader.peek(src)?.status === "loading") return
-        TextureLoader.removeChangeListener(src, changed)
-        const callbacks = this.imageSizeListeners.get(src)
-        this.imageSizeListeners.delete(src)
-        this.imageSizeChangeListeners.delete(src)
-        for (const callback of callbacks ?? []) callback()
+    if (signal !== undefined) {
+      let current = this.imageSizeScopes.get(signal)
+      if (current !== undefined && current.src !== src) {
+        current.release()
+        current = undefined
       }
-      this.imageSizeChangeListeners.set(src, changed)
-      TextureLoader.addChangeListener(src, changed, {animate: false})
+      if (current === undefined) {
+        const existing = TextureLoader.peek(src, device)
+        let previous = existing?.status === "ready" ? `${existing.width}:${existing.height}` : existing?.status ?? "loading"
+        const lease = TextureLoader.acquire(src, () => {
+          const entry = lease.peek(device)
+          const next = entry?.status === "ready" ? `${entry.width}:${entry.height}` : entry?.status ?? "idle"
+          if (next !== previous && !signal.aborted && !this.disposed) {
+            previous = next
+            onChange()
+          }
+        }, {animate: false})
+        const release = () => {
+          signal.removeEventListener("abort", release)
+          lease.release()
+          if (this.imageSizeScopes.get(signal)?.lease === lease) this.imageSizeScopes.delete(signal)
+        }
+        current = {src, lease, release}
+        this.imageSizeScopes.set(signal, current)
+        signal.addEventListener("abort", release, {once: true})
+      }
+      const entry = current.lease.load(device)
+      return entry.status === "ready" ? {width: entry.width, height: entry.height} : null
     }
-    listeners.add(onChange)
+    const ready = TextureLoader.peek(src, device)
+    if (ready?.status === "ready") return {width: ready.width, height: ready.height}
+    if (ready?.status === "failed") return null
+    let pending = this.transientImageSizes.get(src)
+    if (pending === undefined) {
+      const callbacks = new Set<() => void>()
+      const lease = TextureLoader.acquire(src, () => {
+        const entry = lease.peek(device)
+        if (entry?.status === "loading") return
+        this.transientImageSizes.delete(src)
+        lease.release()
+        for (const callback of callbacks) if (!this.disposed) callback()
+        callbacks.clear()
+      }, {animate: false})
+      pending = {lease, callbacks}
+      this.transientImageSizes.set(src, pending)
+    }
+    pending.callbacks.add(onChange)
+    pending.lease.load(device)
     return null
+  }
+  private imageEntry(material: ImageMaterial): TextureEntry {
+    let current = this.imageMaterialLeases.get(material)
+    if (current?.src !== material.src) {
+      current?.lease.release()
+      const lease = TextureLoader.acquire(material.src, () => {
+        const callback = material.onTextureChange
+        if (callback !== undefined && this.device !== null && !TextureLoader.bindChangeListener(material.src, callback, this.device)) callback()
+      }, {animate: true})
+      current = {src: material.src, lease}
+      this.imageMaterialLeases.set(material, current)
+    }
+    const entry = current.lease.load(this.device!)
+    if (material.onTextureChange !== undefined) TextureLoader.bindChangeListener(material.src, material.onTextureChange, this.device!)
+    return entry
+  }
+  private synchronizeImageMaterials(items: readonly RenderItem[]): void {
+    const retained = new Set<ImageMaterial>()
+    for (const item of items) {
+      const object = item.object
+      if (object instanceof Mesh && object.material instanceof ImageMaterial && !(object.material instanceof DisplayRasterMaterial)) {
+        retained.add(object.material)
+        this.imageEntry(object.material)
+      }
+    }
+    for (const [material, current] of this.imageMaterialLeases) if (!retained.has(material)) {
+      current.lease.release()
+      this.imageMaterialLeases.delete(material)
+    }
   }
   private device: GPUDevice | null = null
   private context: GPUCanvasContext | null = null
@@ -1814,6 +1872,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     })
 
     prepareHiddenRenderDependencies(planned, frameRenderItems)
+    this.synchronizeImageMaterials(frameRenderItems)
     this.ensurePerObjectCapacity(frameRenderItems.length, frameRenderItems.reduce((count, item) => count + Number(item.type === "skinned-mesh"), 0))
     const presentationClipUpload = encodePresentationClipChains(
       frameRenderItems.map((item) => item.object),
@@ -2458,7 +2517,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         this.perObjectDataCPU!.set(material.clipBounds, offsetFloats + 36)
       }
       const vb = material.viewBox
-      const textureEntry = TextureLoader.peek(material.src)
+      const textureEntry = TextureLoader.peek(material.src, this.device ?? undefined)
       const sourceAspect = textureEntry !== undefined && textureEntry.width > 0 && textureEntry.height > 0
         ? textureEntry.width / textureEntry.height
         : 0
@@ -3215,7 +3274,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     }
     const raster = this.displayRasterImages.get(material)
     if (material instanceof DisplayRasterMaterial && !raster) throw new Error("Display raster is not allocated")
-    const entry = raster ? undefined : TextureLoader.load(this.device, material.src, material.onTextureChange)
+    const entry = raster ? undefined : this.imageEntry(material)
     const texture = raster ?? (entry?.status === "ready" && entry.texture ? entry.texture : TextureLoader.fallback(this.device))
     const cached = this.imageBindGroupCache.get(texture)
     if (cached) return cached
@@ -3231,7 +3290,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
   }
 
   private usesExternalImageTexture(material: ImageMaterial): boolean {
-    const source = TextureLoader.peek(material.src)?.externalTextureSource
+    const source = TextureLoader.peek(material.src, this.device ?? undefined)?.externalTextureSource
     if (source === undefined) return false
     if (typeof HTMLVideoElement !== "undefined" && source instanceof HTMLVideoElement) {
       return source.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA && source.videoWidth > 0 && source.videoHeight > 0
@@ -3243,7 +3302,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     if (!this.device || !this.externalImageBindGroupLayout || !this.imageSampler) {
       throw new Error("External image pipeline is not initialized")
     }
-    const entry = TextureLoader.load(this.device, material.src, material.onTextureChange)
+    const entry = this.imageEntry(material)
     const source = entry.externalTextureSource
     if (source === undefined) throw new Error(`External texture source is missing for ${material.src}`)
     const externalTexture = this.device.importExternalTexture({source})
@@ -3542,9 +3601,15 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.capacityTrimTimer = null
     this.unsubscribeTextEviction?.()
     this.unsubscribeTextEviction = null
-    for (const [src, callback] of this.imageSizeChangeListeners) TextureLoader.removeChangeListener(src, callback)
-    this.imageSizeChangeListeners.clear()
-    this.imageSizeListeners.clear()
+    for (const scope of this.imageSizeScopes.values()) scope.release()
+    this.imageSizeScopes.clear()
+    for (const pending of this.transientImageSizes.values()) {
+      pending.lease.release()
+      pending.callbacks.clear()
+    }
+    this.transientImageSizes.clear()
+    for (const current of this.imageMaterialLeases.values()) current.lease.release()
+    this.imageMaterialLeases.clear()
     this.clearRenderBundleCaches()
     const buffers = new Set<GPUBuffer>()
     for (const value of [this.perObjectUniformBuffer, this.boneMatricesBuffer, this.presentationClipBuffer]) if (value !== null) buffers.add(value)
@@ -3579,6 +3644,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       if (canvasConfigurationOwners.get(context) === device) canvasConfigurationOwners.delete(context)
     }
     this.ownedDevice = null
+    if (device !== null) TextureLoader.disposeDevice(device)
     device?.destroy()
     this.device = null
     this.context = null

@@ -44,7 +44,7 @@ export type CreateDocumentPlaneRuntimeOptions = Readonly<{
   styleSheets: readonly string[]
   font: TrueTypeFont
   fontFaces?: readonly RendererFontFace[] | undefined
-  measureImage?: (src: string, changed: () => void) => RenderImageSize | null
+  measureImage?: (src: string, changed: () => void, signal?: AbortSignal) => RenderImageSize | null
   viewport: RenderViewport
   worldUnitsPerPixel: number
   worldUnitsPerPixelY?: number
@@ -168,7 +168,7 @@ export function createDocumentPlaneRuntimeWithSeams(
   let imageSizeChanged = (): void => {}
   const onImageSizeChanged = (): void => imageSizeChanged()
   const imageMeasurer = options.measureImage === undefined ? undefined : {
-    measureImage: (src: string) => options.measureImage!(src, onImageSizeChanged),
+    measureImage: (src: string, signal?: AbortSignal) => options.measureImage!(src, onImageSizeChanged, signal),
   }
   const cleanupOwners = (): void => {
     requestBackendPresentation = (): void => {}

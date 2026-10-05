@@ -168,8 +168,12 @@ type BuildState = {
   readonly allowTextStream: boolean
   stream: BuiltTextStream | null
   readonly fixedBoundaries: Map<Node, PlacementContext["fixedBoundaries"]>
-  readonly imageMeasurer?: CreateDocumentRendererOptions["imageMeasurer"]
+  readonly imageMeasurer?: OwnedImageMeasurer | undefined
   readonly textMeasurer: CreateDocumentRendererOptions["textMeasurer"]
+}
+
+type OwnedImageMeasurer = NonNullable<CreateDocumentRendererOptions["imageMeasurer"]> & {
+  signal?(image: HTMLImageElement): AbortSignal
 }
 
 type RetainedTextPaint = Readonly<{
@@ -443,6 +447,34 @@ export const createDocumentRenderer = (
   const hostStyleSheets = prepareHostStyleSheets(options.styleSheets ?? [])
   let styleRuleEntry = cachedDocumentStyleRules(options.document, hostStyleSheets)
   let rules = styleRuleEntry.rules
+  let imageRootWasConnected = options.root.isConnected
+  const imageMeasurements = new Map<HTMLImageElement, {src: string, controller: AbortController, connected: boolean}>()
+  const imageMeasurer: OwnedImageMeasurer | undefined = options.imageMeasurer === undefined ? undefined : {
+    measureImage: (src, signal) => signal?.aborted ? null : options.imageMeasurer!.measureImage(src, signal),
+    signal(image) {
+      let entry = imageMeasurements.get(image)
+      if (entry !== undefined && (entry.src !== image.src || entry.controller.signal.aborted && image.isConnected)) {
+        entry.controller.abort(new DOMException("Источник изображения изменился", "AbortError"))
+        imageMeasurements.delete(image)
+        entry = undefined
+      }
+      if (entry === undefined) {
+        entry = {src: image.src, controller: new AbortController(), connected: image.isConnected}
+        imageMeasurements.set(image, entry)
+        if (imageRootWasConnected && !image.isConnected) entry.controller.abort(new DOMException("Изображение отключено от Document", "AbortError"))
+      }
+      return entry.controller.signal
+    },
+  }
+  const releaseRemovedImageMeasurements = (): void => {
+    imageRootWasConnected ||= options.root.isConnected
+    for (const [image, entry] of imageMeasurements) {
+      if (entry.src !== image.src || !options.root.contains(image) || entry.connected && !image.isConnected) {
+        entry.controller.abort(new DOMException("Владелец измерения изображения изменился", "AbortError"))
+        imageMeasurements.delete(image)
+      } else entry.connected ||= image.isConnected
+    }
+  }
   const dirty = new DirtyTracker(options.root)
   const layoutCache = new WeakMap<Node, LayoutNode>()
   const popovers = createPopoverIndex(options.root)
@@ -540,6 +572,8 @@ export const createDocumentRenderer = (
     dispose(): void {
       if (disposed) return
       disposed = true
+      for (const entry of imageMeasurements.values()) entry.controller.abort(new DOMException("Renderer освобождён", "AbortError"))
+      imageMeasurements.clear()
       releaseGeometry()
       unsubscribe()
       unsubscribeState()
@@ -708,7 +742,7 @@ export const createDocumentRenderer = (
       layoutCache,
       options.interactionState,
       options.textMeasurer,
-      options.imageMeasurer,
+      imageMeasurer,
       measured,
       inlinePlans,
       textPaint,
@@ -747,6 +781,7 @@ export const createDocumentRenderer = (
 
   function invalidateMutationBatch(batch: MutationBatch): void {
     if (disposed || batch.document !== options.document) return
+    releaseRemovedImageMeasurements()
     popovers.mutations(batch)
     for (const record of batch.records) {
       if (record.type === "childList" && [...record.addedNodes, ...record.removedNodes].some(node =>
@@ -2178,7 +2213,7 @@ const buildFrame = (
   layoutCache: WeakMap<Node, LayoutNode>,
   interactionState: CreateDocumentRendererOptions["interactionState"],
   textMeasurer: CreateDocumentRendererOptions["textMeasurer"],
-  imageMeasurer?: CreateDocumentRendererOptions["imageMeasurer"],
+  imageMeasurer?: OwnedImageMeasurer,
   measured = new WeakMap<LayoutNode, Map<string, Size>>(),
   inlinePlans = new WeakMap<LayoutNode, Map<string, InlineLayout | null>>(),
   textPaint = new WeakMap<LayoutNode, RetainedTextPaint>(),
@@ -2860,7 +2895,7 @@ const measure = (
   }
 
   if (layoutNode.node instanceof HTMLImageElement && state.imageMeasurer !== undefined) {
-    const natural = state.imageMeasurer.measureImage(layoutNode.node.src)
+    const natural = state.imageMeasurer.measureImage(layoutNode.node.src, state.imageMeasurer.signal?.(layoutNode.node))
     if (natural !== null && natural.width > 0 && natural.height > 0) {
       const style = layoutNode.style
       const edgeWidth = horizontalBoxEdges(style)
@@ -4547,7 +4582,7 @@ const automaticMainMinimum = (
 /** Размер по содержимому использует общие метрики потомков и правила переноса inline-текста. */
 const intrinsicContentWidth = (node: LayoutNode, minimum: boolean, availableHeight: number, state: BuildState): number => {
   if (node.node instanceof HTMLImageElement && state.imageMeasurer !== undefined) {
-    const natural = state.imageMeasurer.measureImage(node.node.src)
+    const natural = state.imageMeasurer.measureImage(node.node.src, state.imageMeasurer.signal?.(node.node))
     if (natural !== null) return natural.width
   }
   const constraint = minimum ? 0 : Number.POSITIVE_INFINITY

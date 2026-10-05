@@ -727,7 +727,7 @@ const createClaimedDocumentSpaceRuntime = async (
       document: options.document,
       root: registration.root,
       ...(typeof engineRenderer.readImageSize !== "function" ? {} : {
-        measureImage: (src: string, changed: () => void) => engineRenderer.readImageSize(src, changed),
+        measureImage: (src: string, changed: () => void, signal?: AbortSignal) => engineRenderer.readImageSize(src, changed, signal),
       }),
       styleSheets,
       font: options.font,
@@ -834,7 +834,7 @@ const createClaimedDocumentSpaceRuntime = async (
       document: options.document,
       root: registration.root,
       ...(typeof engineRenderer.readImageSize !== "function" ? {} : {
-        measureImage: (src: string, changed: () => void) => engineRenderer.readImageSize(src, changed),
+        measureImage: (src: string, changed: () => void, signal?: AbortSignal) => engineRenderer.readImageSize(src, changed, signal),
       }),
       styleSheets,
       font: options.font,

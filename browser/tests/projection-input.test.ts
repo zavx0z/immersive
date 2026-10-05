@@ -234,6 +234,33 @@ test("decoded image dimensions invalidate both HUD and Display layout", async ()
   }
 })
 
+test("image sizing signal проходит Space composition и освобождается только у удалённого HUD/Display img", async () => {
+  const signals = new Map<string, AbortSignal>()
+  const f = await fixture((src, _changed, signal) => {
+    expect(signal).toBeDefined()
+    signals.set(src, signal!)
+    return null
+  })
+  const images = []
+  for (const kind of ["overlay", "plane"] as const) {
+    const owner = f.projection(kind, `signal-${kind}`)
+    const image = f.document.createElement("img")
+    image.src = `pending-${kind}.png`
+    image.width = 100
+    owner.append(image)
+    images.push(image)
+  }
+  f.runtime.render()
+  expect(signals.size).toBe(2)
+  const hudSignal = signals.get("pending-overlay.png")
+  const displaySignal = signals.get("pending-plane.png")
+  images[0]!.remove()
+  expect(hudSignal!.aborted).toBeTrue()
+  expect(displaySignal!.aborted).toBeFalse()
+  f.runtime.dispose()
+  expect(displaySignal!.aborted).toBeTrue()
+})
+
 test("[BRW-002] пустой HUD пропускает hover, click и wheel к Display", async () => {
   const f = await fixture()
   const display = f.projection("plane", "display")

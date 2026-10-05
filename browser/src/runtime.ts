@@ -235,7 +235,7 @@ const createClaimedDocumentCanvasRuntime = async (
   let viewport = readViewport(options.canvas, seams)
   const interactionState = createDocumentInteractionState(options.document)
   const imageMeasurer = typeof engineRenderer.readImageSize !== "function" ? undefined : {
-    measureImage: (src: string) => engineRenderer.readImageSize(src, onImageSizeChanged),
+    measureImage: (src: string, signal?: AbortSignal) => engineRenderer.readImageSize(src, onImageSizeChanged, signal),
   }
   const onImageSizeChanged = () => {
     if (disposed) return

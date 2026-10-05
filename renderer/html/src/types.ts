@@ -23,7 +23,8 @@ export type RenderTextSource = Readonly<{
 
 export type RenderFontSelection = Readonly<{fontFamily: string; fontWeight: number; fontStyle: "normal" | "italic"}>
 export type RenderImageSize = Readonly<{width: number; height: number}>
-export type RenderImageMeasurer = Readonly<{measureImage(src: string): RenderImageSize | null}>
+/** Signal принадлежит измеряемому img+src и отменяется при потере его владельца. */
+export type RenderImageMeasurer = Readonly<{measureImage(src: string, signal?: AbortSignal): RenderImageSize | null}>
 
 export type RenderTextMeasurer = Readonly<{
   /** Returns one finite non-negative inline advance for the exact resolved font. */

@@ -1,5 +1,5 @@
 import {createGPUInstance, globalConstructors} from "bun-webgpu"
-import {createDocument, type Element} from "@zavx0z/immersive-dom"
+import {createDocument, HTMLImageElement, type Element, type Node} from "@zavx0z/immersive-dom"
 import {component, createRoot, normalizeChildren, type ComponentValue} from "@zavx0z/immersive-component"
 import {isCompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
@@ -12,6 +12,7 @@ import {installExternalImageCopy} from "./external-image.ts"
 import {registerHeadlessCompiler, repositoryRoot} from "./compiler.ts"
 import type {HeadlessOptions} from "./contract/input.ts"
 import type {Headless} from "./contract/output.ts"
+import waitForTexture from "./wait-for-texture.ts"
 
 export type {HeadlessOptions} from "./contract/input.ts"
 export type {Headless} from "./contract/output.ts"
@@ -66,7 +67,12 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
   let layout: ReturnType<typeof createDocumentRenderer> | undefined
   let ready = false
   let disposed = false
+  const lifetime = new AbortController()
   let presentationRequested = false
+  const onImageSizeChanged = (): void => {
+    layout?.invalidate(host)
+    presentationRequested = true
+  }
   const space = new Space()
   const viewPoint = new ViewPoint({viewport: {left: 0, top: 0, width, height}, position: {x: 0, y: -600, z: 0}})
   let overlay: RendererWebGpuScreenOverlay | undefined
@@ -115,48 +121,58 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
       invalidateGeometry: geometry => renderer.invalidateGeometry(geometry),
       requestPresentation: () => { presentationRequested = true },
     })
-    layout = createDocumentRenderer({document, root: host, viewport: {width, height}, styleSheets, textMeasurer: backend.textMeasurer!})
+    layout = createDocumentRenderer({document, root: host, viewport: {width, height}, styleSheets, textMeasurer: backend.textMeasurer!,
+      imageMeasurer: {measureImage: (src, signal) => renderer.readImageSize(src, onImageSizeChanged, signal)},
+    })
     overlay = new RendererWebGpuScreenOverlay({content: backend.root, viewport: {width, height}})
     await renderer.init(canvas.asHtmlCanvas())
     ready = true
   }
 
   async function draw(): Promise<void> {
-    presentationRequested = false
-    componentRoot.flush()
-    const frame = layout!.flush()
-    backend!.applyFrame(frame)
-    const device = canvas.getContext("webgpu")!.getConfiguration()!.device
-    device.pushErrorScope("validation")
-    renderer.renderFrame(space, overlay, viewPoint)
-    const error = await device.popErrorScope()
-    if (error !== null) throw new Error(`Ошибка GPU-кадра Headless: ${error.message}`)
-    const sources = new Set(frame.displayList.flatMap(item => item.kind === "image" ? [item.src] : []))
-    const textures = await Promise.allSettled([...sources].map(src => waitForTexture(src)))
-    const failed = textures.find(result => result.status === "rejected")
-    if (failed?.status === "rejected") throw failed.reason
-    if (presentationRequested) await draw()
-  }
-
-  /** Кадр готов только после загрузки его текстур; ошибка ресурса не превращается в пустой успешный снимок. */
-  function waitForTexture(src: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const signal = AbortSignal.timeout(15_000)
-      const finish = (error?: unknown) => {
-        TextureLoader.removeChangeListener(src, changed)
-        signal.removeEventListener("abort", aborted)
-        error === undefined ? resolve() : reject(error)
+    do {
+      if (lifetime.signal.aborted) throw lifetime.signal.reason
+      presentationRequested = false
+      componentRoot.flush()
+      const frame = layout!.flush()
+      backend!.applyFrame(frame)
+      const device = canvas.getContext("webgpu")!.getConfiguration()!.device
+      device.pushErrorScope("validation")
+      renderer.renderFrame(space, overlay, viewPoint)
+      const error = await device.popErrorScope()
+      if (error !== null) throw new Error(`Ошибка GPU-кадра Headless: ${error.message}`)
+      const sources = new Map<string, {nodes: Set<Node>, controller: AbortController}>()
+      for (const item of frame.displayList) {
+        if (item.kind !== "image") continue
+        let source = sources.get(item.src)
+        if (source === undefined) sources.set(item.src, source = {nodes: new Set(), controller: new AbortController()})
+        source.nodes.add(item.node)
       }
-      const changed = () => {
-        const entry = TextureLoader.peek(src)
-        if (entry?.status === "failed") finish(new Error("Headless не смог загрузить изображение", {cause: entry.error}))
-        else if (entry === undefined || entry.status === "ready") finish()
+      const frameChanged = new AbortController()
+      const changedOwners = (): void => {
+        for (const [src, source] of sources) {
+          if (![...source.nodes].some(node => host.contains(node) && node instanceof HTMLImageElement && node.src === src)) {
+            source.controller.abort(new DOMException("Изображение больше не принадлежит кадру", "AbortError"))
+            frameChanged.abort(new DOMException("Кадр изменился во время загрузки изображения", "AbortError"))
+            presentationRequested = true
+          }
+        }
       }
-      const aborted = () => finish(new Error("Headless не дождался загрузки изображения", {cause: signal.reason}))
-      signal.addEventListener("abort", aborted, {once: true})
-      TextureLoader.addChangeListener(src, changed, {animate: false})
-      changed()
-    })
+      const unsubscribe = document.subscribeMutations(changedOwners)
+      const pendingSources = [...sources]
+      let textures: PromiseSettledResult<void>[]
+      try {
+        changedOwners()
+        textures = await Promise.allSettled(pendingSources.map(([src, source]) => waitForTexture({
+          device,
+          signal: AbortSignal.any([lifetime.signal, frameChanged.signal, source.controller.signal, AbortSignal.timeout(15_000)]),
+          acquire: changed => TextureLoader.acquire(src, changed, {animate: false}),
+        })))
+      } finally { unsubscribe() }
+      if (lifetime.signal.aborted) throw lifetime.signal.reason
+      const failed = textures.find((result, index) => result.status === "rejected" && !pendingSources[index]![1].controller.signal.aborted)
+      if (!frameChanged.signal.aborted && failed?.status === "rejected") throw failed.reason
+    } while (presentationRequested)
   }
 
   const capture = (element: Element): Promise<CapturedFrame> => exclusive(() => withGpu(async () => {
@@ -199,11 +215,13 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
     capture,
     screenshot,
     dispose(): Promise<void> {
+      lifetime.abort(new DOMException("Headless освобождён", "AbortError"))
       return exclusive(async () => {
         if (disposed) return
         componentRoot.unmount()
         layout?.dispose()
         backend?.dispose()
+        renderer.dispose()
         canvas.dispose()
         gpu?.destroy()
         host.remove()

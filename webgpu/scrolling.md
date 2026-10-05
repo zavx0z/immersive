@@ -38,6 +38,51 @@ bun test webgpu/tests/scalar-rect-geometry.test.ts
 Она проверяет общие буферы, независимые материалы, resize, обе оси scroll,
 возврат в видимую область, тени и освобождение после последнего владельца.
 
+## Жизненный цикл изображений
+
+Retained image приобретает `TextureLoader.acquire(src, callback, {animate: false})`.
+Видимость управляет GIF через `setVisible`; смена src, detach и окончательный
+dispose вызывают идемпотентный `release`. Renderer отдельно владеет leases
+используемых ImageMaterial, а image sizing связан AbortSignal с semantic node.
+Проверка размеров без signal остаётся кратким probe до ready/failed.
+
+GPU entries разделены по source и GPUDevice. Повтор одного source/device
+переиспользует upload; освобождение устройства A не уничтожает активную текстуру
+того же source у B. Renderer завершает leases при исчезновении материала из
+композиции, очищает свои sizing subscriptions и окончательно удаляет ресурсы
+собственного устройства. Borrowed device и ресурсы другого Renderer сохраняются.
+
+После последнего потребителя ready entry попадает в общий inactive LRU:
+не больше 32 MiB и 128 entries. В byte budget входят номинальные RGBA GPU bytes,
+buffered textures, retained producer bitmap, GIF data и src string. Активные
+ресурсы в этот предел не входят. Native codec/driver overhead и RSS этим
+счётчиком не измеряются. Eviction уничтожает GPU textures, закрывает owned bitmap
+и decoder и удаляет исходные ссылки. Возврат к URL после eviction загружает его
+повторно; скрытый retained GIF сохраняет текущий кадр и не теряет active lease.
+
+`replaceBitmap` передаёт ownership bitmap платформе. Для непрозрачного source
+его данные сохраняются до replacement/eviction и могут загрузить другое
+устройство. Bitmap из обычного URL закрывается после upload. Borrowed external
+source и native video не закрываются платформой; `closeSourceAfterCopy` явно
+передаёт право закрыть отдельный source после завершения copies.
+
+Producer может передать bitmap/external source до первого потребителя. Такой
+handoff сохраняется отдельно от inactive LRU до первого acquire/load.
+Его очередь допускает 128 источников и 32 MiB обычных данных плюс один крупный
+source; overflow отклоняется до передачи ownership. Длительный producer
+приобретает явный lease до публикации; `releaseSource` отзывает невостребованный
+handoff. После cold eviction непрозрачный source публикуется producer повторно.
+
+Последний release отменяет незавершённый fetch. Generation проверяется после
+асинхронного decode и до GPU upload: поздний bitmap закрывается и не возвращает
+удалённую запись. Replacement также отзывает предыдущую generation; её failure
+не изменяет новый source и не уведомляет его потребителей.
+
+Проверки — `tests/texture-lifetime.test.ts`, `tests/texture-device.test.ts`,
+`tests/gif-texture.test.ts`, `tests/gif-animation.test.ts` и
+`tests/renderer-resources.test.ts`. Fake GPU проверяет reuse, descriptors,
+destroy/close и ownership; это не измерение native GPU residency.
+
 ## Повторное выполнение команд
 
 Renderer удерживает render bundle для точной последовательности команд слоя.

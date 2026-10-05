@@ -69,6 +69,18 @@ API для компонентов и Renderer. Изображения прохо
 общий загрузчик текстур и компоненты используют обычный браузерный API.
 [Проверки пикселей](tests/image-render.test.tsx) выполняют этот путь на нативном GPU.
 
+Размеры img поступают из того же WebGPU resource через signal-bound измерение
+HTML Renderer. Временный wait кадра получает собственный TextureLoader lease и
+освобождает его после ready/failure/abort. Удаление либо смена src последнего img
+этого source отменяет устаревшее ожидание и перестраивает текущий кадр; peer
+того же source сохраняет свою подписку. Повторные кадры ожидаются итеративно,
+без удержания рекурсивной цепочки прежних frames. `dispose` сразу отменяет ожидания,
+а затем в общей GPU-очереди освобождает layout, backend и принадлежащий Renderer.
+
+CPU-проверка этого временного владения: [texture-wait](tests/texture-wait.test.ts).
+[Image lifecycle](../renderer/html/tests/image-lifecycle.test.ts) проверяет detach,
+src change, same-Document reparent и независимых потребителей одного source.
+
 По умолчанию используются публичная тема UI и шрифт Inter из Engine.
 `styleSheetSources`, `fontSource`, `projectRoot`, `width` и `height` настраиваются
 без привязки к конкретному компоненту или пакету.
