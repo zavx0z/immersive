@@ -12,21 +12,27 @@
     "sessionId": "01a10a20-3975-7e72-90ad-d6b05177b285",
     "cwd": "/Users/zavx0z/repozitarium/zavx0z/immersive",
     "usage": {
-      "used": 51650,
+      "used": 64822,
       "size": 828400
     },
     "environmentContext": "33d13b836716cc8bc1bd807f7c9337231e193f1d1e2f1b27946a0fbc1d662fcb",
     "sessionLabel": "какие инструменты ты видешь у себя?",
     "sessionLabelSource": "auto",
     "sessionLabelAssigned": true,
-    "controlVersion": 273
+    "controlVersion": 591,
+    "executionBaseline": {
+      "model": "gpt-6-astra",
+      "thoughtLevel": "medium"
+    },
+    "preserveNativeSettings": true,
+    "connectionId": "codex"
   },
   "history": {
-    "revision": 270,
-    "total": 31,
-    "lastSequence": 605
+    "revision": 609,
+    "total": 74,
+    "lastSequence": 896
   },
   "journal": "a253b5d6728b2703069231a9437b8aea1fa338081bc799b3bb9944dd38480bcd.json.journal.8612d91f-23bb-4b52-bf09-96ece43bcd68.ndjson",
-  "committedBytes": 3625299,
-  "hash": "ae5dfa8aa9b756b2e20cc020c265150176d2900a7a2526a5a180964fdb8dc639"
+  "committedBytes": 8104525,
+  "hash": "7a0aece0240647e6c19f520357648be12596b9df907be48afea6c8a11b122392"
 }
