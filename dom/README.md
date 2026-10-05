@@ -20,6 +20,11 @@ DOM не вычисляет CSS-раскладку и не рисует в GPU. 
 
 ## Публичные точки входа
 
+`DragEvent` наследует `MouseEvent`; `DataTransfer` обслуживает строки clipboard
+и файлы входящего drag-and-drop. Файлы доступны через readonly `files`
+с `length`, индексами, `item()` и итерацией в lifecycle события.
+[Полный договор Browser](../browser/drag-and-drop.md).
+
 Основной импорт — `@zavx0z/immersive-dom`: Document, элементы, события и работа с деревом.
 Отдельные публичные пути перечислены в `package.json#exports`, включая
 `@zavx0z/immersive-dom/display`, `@zavx0z/immersive-dom/range` и `@zavx0z/immersive-dom/selection`.

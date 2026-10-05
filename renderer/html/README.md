@@ -18,6 +18,11 @@ Renderer не выделяет GPU-текстуры и не создаёт от�
 
 ## Публичный API
 
+`createDocumentDragController` доставляет semantic drag lifecycle выбранной
+общим input router цели. Контроллер сохраняет Element между проекциями того
+же Document и не удерживает файловый payload.
+[Контракт Browser](../../browser/drag-and-drop.md).
+
 Основной вход — `@zavx0z/immersive-renderer-html`: `createDocumentRenderer`, типы кадров,
 средства hit testing, состояния взаимодействия и работы с выделением.
 `@zavx0z/immersive-renderer-html/frame-changes` предоставляет отдельный контракт изменений кадра.

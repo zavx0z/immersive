@@ -1,4 +1,5 @@
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
+import {createDocumentNativeDragHost} from "./native-drag-host.ts"
 import {
   Space,
   ViewPoint,
@@ -14,6 +15,7 @@ import {
   createDocumentInteractionController,
   createDocumentInteractionState,
   createDocumentRenderer,
+  hitTest,
   type CreateDocumentRendererOptions,
   type DocumentInteractionController,
   type DocumentInteractionState,
@@ -433,6 +435,20 @@ const createClaimedDocumentCanvasRuntime = async (
     }
   }
 
+  const nativeDragHost = createDocumentNativeDragHost({
+    canvas: options.canvas,
+    document: options.document,
+    pick(event) {
+      if (disposed) return null
+      const rect = seams.readCanvasRect(options.canvas)
+      const x = (event.clientX - rect.left) * viewport.width / positiveExtent(rect.width)
+      const y = (event.clientY - rect.top) * viewport.height / positiveExtent(rect.height)
+      const target = hitTest(documentRenderer.flush(), x, y)?.node ?? null
+      return target === null ? null : {target, x, y}
+    },
+    requestFrame() { if (!disposed) requestRender() },
+  })
+
   const subscribe = (subscriber: DocumentCanvasFrameSubscriber): (() => void) => {
     assertActive(disposed)
     if (typeof subscriber !== "function") throw new TypeError("Frame subscriber must be a function")
@@ -449,6 +465,7 @@ const createClaimedDocumentCanvasRuntime = async (
   const dispose = (): void => {
     if (disposed) return
     disposed = true
+    nativeDragHost.dispose()
     try {
       requestBackendPresentation = (): void => {}
       if (requestedFrame !== null) seams.cancelFrame(requestedFrame)

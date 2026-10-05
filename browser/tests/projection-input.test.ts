@@ -1,5 +1,5 @@
 import {afterEach, expect, test} from "bun:test"
-import {createDocument, type HTMLElement} from "@zavx0z/immersive-dom"
+import {createDocument, DragEvent, type DataTransfer, type HTMLElement} from "@zavx0z/immersive-dom"
 import {Object3D, Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engine"
 import type {RenderComposition, Renderer, RenderOverlay} from "@zavx0z/immersive-webgpu"
 import {createDocumentOverlayRuntime} from "../src/overlay-runtime.ts"
@@ -111,6 +111,7 @@ const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: r
   const emit = (type: string, x: number, y: number, extra: Record<string, unknown> = {}) => {
     let prevented = false
     const event = {
+      type,
       clientX: x, clientY: y, pointerId: 1, pointerType: "mouse", isPrimary: true,
       button: 0, buttons: type === "pointerdown" ? 1 : 0, pressure: 0, timeStamp: 1,
       deltaX: 0, deltaY: 20, deltaZ: 0, deltaMode: 0,
@@ -613,4 +614,142 @@ test("touch не заменяет курсор мыши, pointercancel заве�
   f.emit("pointerdown", 10, 10)
   f.emit("pointercancel", 10, 10)
   expect(f.canvas.style.cursor).toBe("")
+})
+
+const nativeFileTransfer = (files: readonly File[] = []) => ({
+  types: ["Files"],
+  files: Object.assign([...files], {item: (index: number) => files[index] ?? null}),
+  dropEffect: "none",
+  effectAllowed: "all",
+  getData() { return "" },
+})
+
+test.each(["overlay", "plane"] as const)("%s native drag доставляет FileList только в drop и передаёт cancellation/effect", async kind => {
+  const f = await fixture()
+  const owner = f.projection(kind, "drop-owner")
+  const target = f.element("width:80px;height:50px;background:#333", owner)
+  const file = new File(["native"], "drop.txt", {type: "text/plain"})
+  const native = nativeFileTransfer([file])
+  const calls: unknown[] = []
+  let retained: DataTransfer | null = null
+  let list: DataTransfer["files"] | null = null
+  let received: File[] = []
+  owner.addEventListener("dragover", event => {
+    expect(event instanceof DragEvent).toBe(true)
+    const drag = event as DragEvent
+    calls.push([drag.type, drag.target, drag.clientX, drag.clientY, [...drag.dataTransfer!.types]])
+    expect(drag.dataTransfer!.files.length).toBe(0)
+    drag.dataTransfer!.dropEffect = "copy"
+    drag.preventDefault()
+  })
+  owner.addEventListener("drop", event => {
+    const drag = event as DragEvent
+    calls.push([drag.type, drag.target])
+    retained = drag.dataTransfer
+    list = retained!.files
+    expect(list.item(0)).toBe(file)
+    expect(list[0]).toBe(file)
+    received = Array.from(list)
+    drag.preventDefault()
+  })
+  f.runtime.render()
+  expect(f.emit("dragenter", 20, 20, {dataTransfer: native})).toBe(false)
+  expect(f.emit("dragover", 20, 20, {dataTransfer: native})).toBe(true)
+  expect(native.dropEffect).toBe("copy")
+  expect(f.emit("drop", 20, 20, {dataTransfer: native})).toBe(true)
+  expect(calls).toEqual([["dragover", target, 20, 20, ["Files"]], ["drop", target]])
+  expect(retained!.files.length).toBe(0)
+  expect(list!.item(0)).toBeNull()
+  expect(retained!.types).toEqual([])
+  expect(received).toEqual([file])
+  expect(await received[0]!.text()).toBe("native")
+  expect(f.cameraInputs).toEqual([])
+})
+
+test("native file drag выбирает содержимое дальнего Display через пустые HUD и ближний Display", async () => {
+  const f = await fixture()
+  const back = f.projection("plane", "back-drop")
+  const target = f.element("width:100px;height:100px;background:#111", back)
+  const front = f.projection("plane", "front-drop", 10)
+  f.element("width:30px;height:30px;background:#222", front)
+  const hud = f.projection("overlay", "empty-hud-drop")
+  f.element("width:200px;height:200px;border:1px solid #555;box-sizing:border-box", hud)
+  const calls: unknown[] = []
+  f.document.addEventListener("drop", event => {
+    calls.push(event.target)
+    event.preventDefault()
+  })
+  f.runtime.render()
+  expect(f.emit("dragover", 70, 70, {dataTransfer: nativeFileTransfer()})).toBe(false)
+  expect(f.emit("drop", 70, 70, {dataTransfer: nativeFileTransfer([new File(["x"], "x.txt")])})).toBe(true)
+  expect(calls).toEqual([target])
+})
+
+test("native drag lifecycle переходит между HUD/Display, очищается при выходе, удалении и dispose", async () => {
+  const f = await fixture()
+  const display = f.projection("plane", "drag-display")
+  const lower = f.element("width:100px;height:100px;background:#111", display)
+  const hud = f.projection("overlay", "drag-hud")
+  const upper = f.element("width:30px;height:30px;background:#333", hud)
+  const calls: unknown[] = []
+  for (const type of ["dragenter", "dragleave", "dragover", "drop"]) {
+    f.document.addEventListener(type, event => {
+      const drag = event as DragEvent
+      calls.push([type, drag.target, drag.relatedTarget])
+    })
+  }
+  const native = nativeFileTransfer()
+  f.runtime.render()
+  f.emit("dragenter", 10, 10, {dataTransfer: native})
+  f.emit("dragover", 10, 10, {dataTransfer: native})
+  f.emit("dragover", 70, 70, {dataTransfer: native})
+  f.emit("dragleave", 220, 220, {dataTransfer: native})
+  f.emit("dragover", 10, 10, {dataTransfer: native})
+  f.runtime.removeOverlay(hud)
+  f.emit("dragover", 10, 10, {dataTransfer: native})
+  f.runtime.dispose()
+  const count = calls.length
+  expect(f.emit("dragover", 10, 10, {dataTransfer: native})).toBe(false)
+  expect(calls.length).toBe(count)
+  expect(calls).toEqual([
+    ["dragenter", upper, null], ["dragover", upper, null],
+    ["dragleave", upper, lower], ["dragenter", lower, upper], ["dragover", lower, null],
+    ["dragleave", lower, null], ["dragenter", upper, null], ["dragover", upper, null],
+    ["dragleave", upper, null], ["dragenter", lower, null], ["dragover", lower, null],
+    ["dragleave", lower, null],
+  ])
+})
+
+test("same-Document перенос drag-цели из HUD в Display сохраняет Element и drop обработчик", async () => {
+  const f = await fixture()
+  const display = f.projection("plane", "reparent-display")
+  const hud = f.projection("overlay", "reparent-hud")
+  const target = f.element("width:60px;height:60px;background:#333", hud)
+  const calls: string[] = []
+  for (const type of ["dragenter", "dragleave", "dragover", "drop"]) {
+    target.addEventListener(type, () => calls.push(type))
+  }
+  f.runtime.render()
+  f.emit("dragover", 20, 20, {dataTransfer: nativeFileTransfer()})
+  display.append(target)
+  f.runtime.render()
+  f.emit("dragover", 20, 20, {dataTransfer: nativeFileTransfer()})
+  f.emit("drop", 20, 20, {dataTransfer: nativeFileTransfer([new File(["x"], "x.txt")])})
+  expect(calls).toEqual(["dragenter", "dragover", "dragover", "drop"])
+  expect(target.ownerDocument).toBe(f.document)
+})
+
+test("свободная область и отсоединённая цель не поглощают native drop", async () => {
+  const f = await fixture()
+  const display = f.projection("plane", "detached-drop")
+  const target = f.element("width:60px;height:60px;background:#333", display)
+  let drops = 0
+  target.addEventListener("drop", event => { drops++; event.preventDefault() })
+  f.runtime.render()
+  const native = nativeFileTransfer([new File(["x"], "x.txt")])
+  f.emit("dragover", 20, 20, {dataTransfer: native})
+  target.remove()
+  expect(f.emit("drop", 20, 20, {dataTransfer: native})).toBe(false)
+  expect(f.emit("drop", 180, 180, {dataTransfer: native})).toBe(false)
+  expect(drops).toBe(0)
 })

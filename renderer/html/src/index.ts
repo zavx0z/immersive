@@ -1,6 +1,8 @@
 export type {RenderCursor} from "./cursor.ts"
 export { createDocumentRenderer } from "./renderer.ts"
 export {hitTestProjection} from "./projection-hit.ts"
+export {createDocumentDragController} from "./drag.ts"
+export type {DocumentDragController, DocumentDragType} from "./drag.ts"
 export {createDocumentInteractionState} from "./pseudo-state.ts"
 export {fulfillScrollIntoViewRequests} from "./scroll-into-view.ts"
 export {caretPositionAtPoint, getRangeClientRects, readRenderedSelectionText, selectTextWordAtPoint} from "./text-selection.ts"

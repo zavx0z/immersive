@@ -1,5 +1,8 @@
 # Подключение приложения
 
+Входящий файловый drag-and-drop использует общий выбор цели и стандартные
+`DragEvent.dataTransfer.files`: [контракт и проверки](drag-and-drop.md).
+
 Публичный запуск следует React-shaped контракту createRoot/render/unmount.
 
 ```tsx

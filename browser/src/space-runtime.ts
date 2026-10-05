@@ -1,4 +1,5 @@
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
+import {createDocumentNativeDragHost} from "./native-drag-host.ts"
 import {
   Raycaster,
   Space,
@@ -800,6 +801,7 @@ const createClaimedDocumentSpaceRuntime = async (
     assertActive(disposed)
     const record = records.get(owner)
     if (record === undefined) return false
+    nativeDragHost.clear(owner)
     cancelTooltipFrame({kind: "plane", owner})
     cancelCapturedPlane(owner)
     if (hoveredPlaneRoot === owner) hoveredPlaneRoot = null
@@ -873,6 +875,7 @@ const createClaimedDocumentSpaceRuntime = async (
     assertActive(disposed)
     const record = overlays.get(owner)
     if (record === undefined) return false
+    nativeDragHost.clear(owner)
     cancelTooltipFrame({kind: "overlay", owner})
     cancelCapturedOverlay(owner)
     if (hoveredOverlayRoot === owner) hoveredOverlayRoot = null
@@ -1298,6 +1301,19 @@ const createClaimedDocumentSpaceRuntime = async (
     const world = overlay === null && plane === null ? pickWorld(clientX, clientY) : null
     return {overlay, plane, world}
   }
+
+  const nativeDragHost = createDocumentNativeDragHost({
+    canvas: options.canvas,
+    document: options.document,
+    pick(event) {
+      if (disposed || renderError !== null) return null
+      const input = pickInput(event.clientX, event.clientY)
+      const target = input.overlay?.hit.node ?? input.plane?.hit.node ?? null
+      const point = input.overlay?.point ?? input.plane?.intersection.documentPoint
+      return target === null || point === undefined ? null : {target, x: point.x, y: point.y}
+    },
+    requestFrame() { if (!disposed && renderError === null) requestRender() },
+  })
 
   const dispatchProjectedMouse = (
     type: "contextmenu" | "dblclick",
@@ -2002,6 +2018,7 @@ const createClaimedDocumentSpaceRuntime = async (
     dispose() {
       if (disposed) return
       disposed = true
+      nativeDragHost.dispose()
       try {
         cursorPointer = null
         pressedCursor = null
