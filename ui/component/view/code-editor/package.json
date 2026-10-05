@@ -29,6 +29,9 @@
   },
   "devDependencies": {
     "@zavx0z/immersive-headless": "workspace:*",
-    "@zavx0z/immersive-ui-component-view": "workspace:*"
+    "@zavx0z/immersive-ui-component-view": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-renderer-html": "workspace:*"
   }
 }

@@ -4,8 +4,13 @@
 
 @packageDocumentation
 */
-import {MemoCodeLine} from "./src/helpers.tsx"
-import {MemoLineNumber} from "./src/helpers.tsx"
+import {MemoCodeEditorGutter, CodeEditorRows} from "./src/helpers.tsx"
+import {useState} from "@zavx0z/immersive-component"
+import {registerTextSourceRoot} from "@zavx0z/immersive-dom/text-source"
+import {createReadonlyCodeWindow} from "./src/readonly-window.ts"
+import type {ReadonlyCodeWindow} from "./src/readonly-window.ts"
+import {codeEditorWindowBlocks} from "./src/window-plan.ts"
+import type {CodeEditorRowWindow} from "./src/window-plan.ts"
 import {useCallback} from "@zavx0z/immersive-component"
 import {useLayoutEffect} from "@zavx0z/immersive-component"
 import {useMemo} from "@zavx0z/immersive-component"
@@ -31,6 +36,13 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
   const ownedModel = useMemo(() => new CodeEditorModel({value: props.value, readOnly: props.readOnly}), [])
   const model = props.model ?? ownedModel
   const code = useRef<HTMLElement | null>(null)
+  const viewport = useRef<HTMLElement | null>(null)
+  const readonlyWindow = useRef<ReadonlyCodeWindow | null>(null)
+  const [rowWindow, setRowWindow] = useState<CodeEditorRowWindow>({start: 0, end: 32})
+  const latestRowWindow = useRef(rowWindow)
+  latestRowWindow.current = rowWindow
+  const [, setSelectionWindowRevision] = useState(0)
+  const selectionWindowRevision = useRef(0)
   const interaction = useRef<CodeEditorInteraction | null>(null)
   const handle = useRef<CodeEditorHandle | null>(null)
   const callback = useRef(props.onChange)
@@ -64,7 +76,8 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
   useLayoutEffect(() => { interaction.current?.sync() }, [model, value])
   useLayoutEffect(() => {
     if (!code.current || !props.onReady && !props.onSelectionChange) return
-    const port = createCodeEditorHandle(code.current, model, selection => props.onSelectionChange?.(selection))
+    const port = createCodeEditorHandle(code.current, model, selection => props.onSelectionChange?.(selection),
+      (line, block) => readonlyWindow.current?.scrollToLine(line, block) ?? false)
     handle.current = port.handle
     props.onReady?.(port.handle)
     return () => {
@@ -89,7 +102,32 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
   const automatic = useMemo(() => tokens === undefined ? buildCodeEditorViewModel({...props, value, tokens}) : null,
     [value, props.languageId, props.path, highlighter, highlighter?.tokenize, tokens === undefined])
   const view = automatic ?? buildCodeEditorViewModel({...props, value, tokens})
-  const rows = codeEditorVisualRows(view, softBreaks, props.showFormattingCharacters !== false)
+  const rows = useMemo(() => codeEditorVisualRows(view, softBreaks, props.showFormattingCharacters !== false),
+    [view, softBreaks, props.showFormattingCharacters])
+  const windowed = props.readOnly && rows.length > 200
+  const pinned = props.readOnly ? readonlyWindow.current?.prepare(rows, value) ?? [] : []
+  const blocks = windowed ? codeEditorWindowBlocks(rows, value, rowWindow, pinned) : null
+  useLayoutEffect(() => {
+    if (!props.readOnly || !code.current) return
+    return registerTextSourceRoot(code.current)
+  }, [props.readOnly])
+  useLayoutEffect(() => {
+    if (!props.readOnly || !code.current || !viewport.current) return
+    const binding = createReadonlyCodeWindow(code.current, viewport.current, next => {
+      const previous = latestRowWindow.current
+      if (previous.start === next.start && previous.end === next.end) return
+      latestRowWindow.current = next
+      setRowWindow(next)
+    }, () => {
+      selectionWindowRevision.current++
+      setSelectionWindowRevision(selectionWindowRevision.current)
+    })
+    readonlyWindow.current = binding
+    binding.prepare(rows, value)
+    binding.commit(value)
+    return () => { binding.dispose(); readonlyWindow.current = null }
+  }, [props.readOnly])
+  useLayoutEffect(() => { readonlyWindow.current?.commit(value) })
   const decorations = new Map<number, CodeEditorLineDecoration>()
   for (const decoration of props.lineDecorations ?? []) {
     if (!Number.isSafeInteger(decoration.line) || decoration.line < 0 || decorations.has(decoration.line)) {
@@ -98,7 +136,10 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
     decorations.set(decoration.line, decoration)
   }
   return <section
-    ref={props.ref}
+    ref={element => {
+      viewport.current = element
+      props.ref?.(element)
+    }}
     contentEditable="false"
     role="region"
     aria-label={props.title ?? "Code editor"}
@@ -128,41 +169,12 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
       ${props.style}
     `}
   >
-    <ul
-      aria-hidden="true"
-      hidden={props.showLineNumbers === false}
-      onClick={event => {
-        const target = event.target as HTMLElement | null
-        const row = target?.closest?.("li[data-line-index]")
-        if (row?.parentElement !== event.currentTarget) return
-        props.onLineNumberClick?.(Number(row.getAttribute("data-line-index")), event)
-      }}
-      style={css`
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        min-width: 42px;
-        flex-shrink: 0;
-        min-height: 0;
-        margin: 0;
-        padding: 8px;
-        border-right: var(--border-width-control) solid var(--editor-border);
-        background: var(--editor-gutter-background);
-        color: var(--editor-line-number-content);
-        user-select: none;
-
-        &[hidden] {
-          display: none;
-        }
-      `}
-    >
-      {rows.map(row => <MemoLineNumber
-        key={row.key}
-        index={row.line}
-        continuation={row.continuation}
-        decoration={decorations.get(row.line)}
-      />)}
-    </ul>
+    {props.showLineNumbers === false ? null : <MemoCodeEditorGutter
+      rows={rows}
+      blocks={blocks}
+      decorations={decorations}
+      onLineNumberClick={props.onLineNumberClick}
+    />}
     <pre
       style={css`
         box-sizing: border-box;
@@ -189,15 +201,11 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
           white-space: normal;
         `}
       >
-        {rows.map(row => <MemoCodeLine
-          key={row.key}
-          index={row.line}
-          continuation={row.continuation}
-          decoration={decorations.get(row.line)}
-          separator={row.separator}
-          formatting={row.formatting}
-          segments={row.segments}
-        />)}
+        <CodeEditorRows
+          rows={rows}
+          blocks={blocks}
+          decorations={decorations}
+        />
       </code>
     </pre>
   </section>

@@ -5,6 +5,8 @@ type CodeEditorViewModel = ImmersiveUiComponentViewCodeEditorViewModel.Output
 /** Визуальная строка сохраняет исходный номер, текст и диапазоны подсветки. */
 export interface CodeEditorVisualRow {
   readonly key: string
+  readonly start: number
+  readonly end: number
   readonly line: number
   readonly continuation: boolean
   readonly separator: string
@@ -42,6 +44,8 @@ export function codeEditorVisualRows(view: CodeEditorViewModel, breaks: readonly
       const visibleEnd = end - formatting.length
       rows.push({
         key: index === 1 ? String(line) : `${line}:${start}`,
+        start: position + start - (index === 1 && line > 0 ? (view.lineEndings[line - 1]?.length ?? 0) : 0),
+        end: position + end,
         line,
         continuation: index > 1,
         separator: index === 1 && line > 0 ? view.lineEndings[line - 1] ?? "" : "",

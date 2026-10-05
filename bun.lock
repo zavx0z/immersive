@@ -1944,17 +1944,20 @@
       "name": "@zavx0z/immersive-ui-component-view-code-editor",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/highlighter": "^0.1.0",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-tech-text-editor": "workspace:*",
+        "@zavx0z/immersive-ui-component-badge": "workspace:*",
         "@zavx0z/immersive-ui-component-view-code-editor-highlighter": "workspace:*",
         "@zavx0z/immersive-ui-component-view-code-editor-validate": "workspace:*",
         "@zavx0z/immersive-ui-component-view-code-editor-view-model": "workspace:*",
-        "@zavx0z/immersive-ui-component-badge": "workspace:*",
-        "@zavx0z/highlighter": "^0.1.0",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-view": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+        "@zavx0z/immersive-renderer-html": "workspace:*",
+        "@zavx0z/immersive-template": "workspace:*",
+        "@zavx0z/immersive-ui-component-view": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",

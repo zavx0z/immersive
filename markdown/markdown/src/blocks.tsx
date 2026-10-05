@@ -356,8 +356,9 @@ function UnorderedList(props: ListProps) {
 Показывает fenced-код в существующем {@link CodeEditor} только для чтения.
 Язык приходит из parser; {@link Mermaid}-ветку выбирает {@link Block} до вызова этого компонента.
 
-Высота auto определяется строками и отступами готового редактора; колонка номеров
-и прокрутка следуют [правилам CodeEditor](../../../ui/view/code-editor.md).
+Высота auto определяется строками и отступами готового редактора до 400px;
+большой блок прокручивается внутри, чтобы материализовать только видимые строки.
+Колонка номеров и прокрутка следуют [правилам CodeEditor](../../../ui/view/code-editor.md).
 Исходные пробелы и переводы строк сохраняются в общем текстовом пути.
 
 @param props - `value` сохраняет текст кода, `languageId` выбирает подсветку {@link CodeEditor}; редактирование отключено.
@@ -370,6 +371,8 @@ function CodeBlock(props: Readonly<{languageId: string; value: string}>) {
     style={css`
       width: 100%;
       height: auto;
+      max-height: 400px;
+      overflow-y: auto;
       margin-bottom: 8px;
     `}
   />
@@ -626,4 +629,3 @@ export function Block(props: Readonly<{block: MarkdownBlock}>) {
     {block.kind === "table" ? <MarkdownTable table={block} /> : null}
   </div>
 }
-

@@ -25,6 +25,7 @@ export function createCodeEditorHandle(
   element: globalThis.HTMLElement,
   model: CodeEditorModel,
   onChange: (selection: CodeEditorSelectionSet) => void,
+  scrollToLine?: ((line: number, block: "start" | "center" | "end" | "nearest") => boolean) | undefined,
 ): Readonly<{handle: CodeEditorHandle; dispose(): void}> {
   const root = semanticEditorElement(element)
   const document = root.ownerDocument!
@@ -65,6 +66,7 @@ export function createCodeEditorHandle(
     getSelection: read,
     scrollToLine(line, options = {}) {
       if (!Number.isSafeInteger(line) || line < 0) throw new RangeError("Editor line must be a non-negative integer")
+      if (scrollToLine?.(line, options.block ?? "nearest")) return
       root.querySelector(`[data-line-index="${line}"]`)?.scrollIntoView({block: options.block ?? "nearest", inline: "nearest"})
     },
     setSelections(selections, primary = 0) {

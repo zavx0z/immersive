@@ -5,6 +5,7 @@ import {createRoot} from "@zavx0z/immersive-component"
 import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
+import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
 
 const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
@@ -22,20 +23,33 @@ for (const [compact, height, tooltip] of [
     component.render(CodeEditorScrollFixture as unknown as CompiledTemplate<{compact: boolean}>, {compact})
     document.append(owner)
     const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 1000, height: 700}, styleSheets: [theme]})
+    const settle = () => {
+      for (let count = 0; count < 12; count++) {
+        component.flush()
+        renderer.flush()
+        if (!flushDocumentLayoutObservers(document)) break
+      }
+      component.flush()
+      return renderer.flush()
+    }
     try {
       const editor = owner.querySelector('section[role="region"]') as HTMLElement
       const code = editor.querySelector("code")!
       const neighbor = owner.querySelector("aside")!
+      const initial = settle()
       const lines = [...code.querySelectorAll("[data-line-index]")]
+      const retained = new Map(lines.map(line => [line.getAttribute("data-line-index"), line]))
       expect(owner.ownerDocument).toBe(document)
       for (const tag of ["canvas", "space", "viewpoint", "hud", "display"]) {
         expect(owner.querySelectorAll(tag)).toHaveLength(0)
       }
       expect(editor.getAttribute("aria-readonly")).toBe("true")
-      expect(lines.map(line => line.textContent)).toEqual(codeEditorScrollSource.split("\n"))
-      expect(lines).toHaveLength(420)
+      expect(code.textContent).toBe(codeEditorScrollSource)
+      expect(lines.length).toBeLessThan(60)
+      for (const line of lines) {
+        expect(line.textContent).toBe(codeEditorScrollSource.split("\n")[Number(line.getAttribute("data-line-index"))])
+      }
       expect(editor.getAttribute("title")).toBe(tooltip)
-      const initial = renderer.flush()
       expect(initial.boxByNode.get(editor)?.height).toBe(height)
       const reference = initial.boxByNode.get(neighbor)!
       const firstText = initial.displayList.find(item => item.kind === "text" && code.contains(item.node))!
@@ -43,20 +57,29 @@ for (const [compact, height, tooltip] of [
       const click = (label: string) => {
         const button = [...owner.querySelectorAll("button")].find(element => element.textContent === label)!
         button.dispatchEvent(new MouseEvent("click", {bubbles: true}))
-        return renderer.flush()
+        return settle()
       }
       click("Вниз на 320 px")
       expect(editor.scrollTop).toBe(320)
       const shifted = click("Вправо на 80 px")
       expect(editor.scrollLeft).toBeGreaterThan(0)
       expect(shifted.boxByNode.get(neighbor)).toEqual(reference)
-      expect([...code.querySelectorAll("[data-line-index]")].every((line, index) => line === lines[index])).toBe(true)
-      expect(lines.map(line => line.textContent)).toEqual(codeEditorScrollSource.split("\n"))
+      const shiftedLines = [...code.querySelectorAll("[data-line-index]")]
+      const overlap = shiftedLines.filter(line => retained.has(line.getAttribute("data-line-index")))
+      expect(overlap.length).toBeGreaterThan(0)
+      for (const line of overlap) expect(line).toBe(retained.get(line.getAttribute("data-line-index")))
+      expect(shiftedLines.some(line => Number(line.getAttribute("data-line-index")) >= 30)).toBe(true)
+      expect(shiftedLines.length).toBeLessThan(60)
+      expect(code.textContent).toBe(codeEditorScrollSource)
+      expect(owner.querySelector('section[role="region"]')).toBe(editor)
+      expect(editor.querySelector("code")).toBe(code)
       expect(firstText.y).toBe(originalY)
       const reset = click("В начало")
       expect(editor.scrollLeft).toBe(0)
       expect(editor.scrollTop).toBe(0)
       expect(reset.boxByNode.get(neighbor)).toEqual(reference)
+      expect(code.textContent).toBe(codeEditorScrollSource)
+      expect(code.querySelectorAll("[data-line-index]").length).toBeLessThan(60)
     } finally {
       renderer.dispose()
       component.unmount()
