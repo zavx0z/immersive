@@ -191,10 +191,18 @@ export async function createDocumentCanvasRuntimeWithSeams(
 ): Promise<DocumentCanvasRuntime> {
   validateOptions(options)
   const presentationHostClaim = claimBrowserPresentationHost(options.canvas)
+  let engineRenderer: EngineRenderer | undefined
+  let rendererDisposed = false
+  const disposeEngineRenderer = (): void => {
+    if (engineRenderer === undefined || rendererDisposed) return
+    rendererDisposed = true
+    engineRenderer.dispose()
+  }
   try {
-    return await createClaimedDocumentCanvasRuntime(options, seams, presentationHostClaim)
+    engineRenderer = seams.createEngineRenderer()
+    return await createClaimedDocumentCanvasRuntime(options, seams, presentationHostClaim, engineRenderer, disposeEngineRenderer)
   } catch (error) {
-    presentationHostClaim.release()
+    try { disposeEngineRenderer() } finally { presentationHostClaim.release() }
     throw error
   }
 }
@@ -203,6 +211,8 @@ const createClaimedDocumentCanvasRuntime = async (
   options: CreateDocumentCanvasRuntimeOptions,
   seams: DocumentCanvasRuntimeSeams,
   presentationHostClaim: ReturnType<typeof claimBrowserPresentationHost>,
+  engineRenderer: EngineRenderer,
+  disposeEngineRenderer: () => void,
 ): Promise<DocumentCanvasRuntime> => {
   const styleSheets = Object.freeze([...options.styleSheets])
   const tooltipDelayMs = finiteNonNegative(options.tooltipDelayMs ?? 500, "tooltipDelayMs")
@@ -210,7 +220,6 @@ const createClaimedDocumentCanvasRuntime = async (
   const fixedPixelRatio = options.pixelRatio === undefined
     ? null
     : finitePositive(options.pixelRatio, "pixelRatio")
-  const engineRenderer = seams.createEngineRenderer()
   await seams.initializeEngineRenderer(engineRenderer, options.canvas)
   const space = seams.createSpace()
   const viewPoint = seams.createFixedViewPoint(options.canvas, distance)
@@ -318,6 +327,7 @@ const createClaimedDocumentCanvasRuntime = async (
     interaction.dispose()
     documentRenderer.dispose()
     backend.dispose()
+    disposeEngineRenderer()
     throw error
   }
 
@@ -439,31 +449,35 @@ const createClaimedDocumentCanvasRuntime = async (
   const dispose = (): void => {
     if (disposed) return
     disposed = true
-    requestBackendPresentation = (): void => {}
-    if (requestedFrame !== null) seams.cancelFrame(requestedFrame)
-    if (tooltipTimer !== null) seams.clearTimer(tooltipTimer)
-    requestedFrame = null
-    tooltipTimer = null
-    resizeObserver?.disconnect()
-    resizeObserver = null
-    options.canvas.removeEventListener("pointermove", onPointerMove)
-    options.canvas.removeEventListener("pointerdown", onPointerDown)
-    options.canvas.removeEventListener("pointerup", onPointerUp)
-    options.canvas.removeEventListener("pointercancel", onPointerCancel)
-    options.canvas.removeEventListener("wheel", onWheel)
-    for (const pointerId of capturedPointers) releasePointer(pointerId)
-    capturedPointers.clear()
-    subscribers.clear()
-    unsubscribeMutations()
-    unsubscribeStateChanges()
-    unsubscribeAuthorStyleSheets()
-    unsubscribeCompiledStyleSheets()
-    inputHost?.dispose()
-    inputHost = null
-    interaction.dispose()
-    documentRenderer.dispose()
-    backend.dispose()
-    presentationHostClaim.release()
+    try {
+      requestBackendPresentation = (): void => {}
+      if (requestedFrame !== null) seams.cancelFrame(requestedFrame)
+      if (tooltipTimer !== null) seams.clearTimer(tooltipTimer)
+      requestedFrame = null
+      tooltipTimer = null
+      resizeObserver?.disconnect()
+      resizeObserver = null
+      options.canvas.removeEventListener("pointermove", onPointerMove)
+      options.canvas.removeEventListener("pointerdown", onPointerDown)
+      options.canvas.removeEventListener("pointerup", onPointerUp)
+      options.canvas.removeEventListener("pointercancel", onPointerCancel)
+      options.canvas.removeEventListener("wheel", onWheel)
+      for (const pointerId of capturedPointers) releasePointer(pointerId)
+      capturedPointers.clear()
+      subscribers.clear()
+      unsubscribeMutations()
+      unsubscribeStateChanges()
+      unsubscribeAuthorStyleSheets()
+      unsubscribeCompiledStyleSheets()
+      inputHost?.dispose()
+      inputHost = null
+      interaction.dispose()
+      documentRenderer.dispose()
+    } finally {
+      try { backend.dispose() } finally {
+        try { disposeEngineRenderer() } finally { presentationHostClaim.release() }
+      }
+    }
   }
 
   const runtime: DocumentCanvasRuntime = Object.freeze({

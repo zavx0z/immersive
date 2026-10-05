@@ -4,7 +4,13 @@ import { TrueTypeFont } from "../text/true-type-font"
 import { TextMaterial } from "../material/text-material"
 
 type Point = { x: number; y: number; on: boolean }
+type TextLayoutOptions = Readonly<{letterSpacing?: number, spaceAdvance?: number | null}>
+type LayoutEvictionListener = (geometry: BufferGeometry) => void
 type TextLayoutCacheEntry = {
+  key: string
+  users: number
+  arrayBytes: number
+  keyBytes: number
   stencilVerts: Float32Array
   stencilIndices: Uint32Array
   coverVerts: Float32Array
@@ -16,6 +22,7 @@ type TextLayoutCacheEntry = {
 const ADAPTIVE_TOLERANCE_FU = 0.5
 const MAX_SUBDIVISION_DEPTH = 12
 const TEXT_LAYOUT_CACHE_LIMIT = 4096
+const TEXT_LAYOUT_INACTIVE_BYTE_LIMIT = 16 * 1024 * 1024
 
 function pointLineDistance(px: number, py: number, x0: number, y0: number, x1: number, y1: number): number {
   const dx = x1 - x0
@@ -158,8 +165,17 @@ export class Text extends Object3D {
 
   private static geometryCache: WeakMap<TrueTypeFont, Map<number, { stencil: BufferGeometry; cover: BufferGeometry }>> = new WeakMap()
   private static layoutCache: Map<string, TextLayoutCacheEntry> = new Map()
+  private static inactiveLayouts: Map<string, TextLayoutCacheEntry> = new Map()
   private static cachedLayoutGeometries: WeakSet<BufferGeometry> = new WeakSet()
-  private static evictedLayoutGeometries: BufferGeometry[] = []
+  private sharedLayout: TextLayoutCacheEntry | undefined
+  private static inactiveLayoutBytes = 0
+  private static layoutEvictionListeners = new Set<WeakRef<LayoutEvictionListener>>()
+  private static listenerFinalizer = new FinalizationRegistry<WeakRef<LayoutEvictionListener>>(reference => {
+    Text.layoutEvictionListeners.delete(reference)
+  })
+  private static layoutFinalizer = new FinalizationRegistry<TextLayoutCacheEntry>(layout => {
+    Text.releaseLayout(layout)
+  })
   private static fontIds: WeakMap<TrueTypeFont, number> = new WeakMap()
   private static nextFontId = 1
 
@@ -170,15 +186,16 @@ export class Text extends Object3D {
    * @param font - Загруженный TrueType-шрифт.
    * @param fontSize - Размер текста в world units.
    * @param material - Материал заливки текста.
+   * @param options - Окончательные интервалы первого построения; без них сохраняются fontSize * 0.05 и null.
    */
-  constructor(text: string, font: TrueTypeFont, fontSize: number = 10, material: TextMaterial) {
+  constructor(text: string, font: TrueTypeFont, fontSize: number = 10, material: TextMaterial, options: TextLayoutOptions = {}) {
     super()
     this.text = text
     this.font = font
     this.fontSize = fontSize
     this.material = material
-    this.letterSpacing = fontSize * 0.05
-    this.spaceAdvance = null
+    this.letterSpacing = options.letterSpacing ?? fontSize * 0.05
+    this.spaceAdvance = options.spaceAdvance ?? null
     this.updateGeometry()
   }
 
@@ -202,6 +219,7 @@ export class Text extends Object3D {
     if (cachedLayout) {
       Text.touchLayoutCache(cacheKey, cachedLayout)
       this.applyLayout(cachedLayout)
+      Text.trimLayoutCache()
       return
     }
 
@@ -315,17 +333,35 @@ export class Text extends Object3D {
     }
 
     const layout: TextLayoutCacheEntry = {
+      key: cacheKey,
+      users: 0,
+      arrayBytes: 0,
+      keyBytes: cacheKey.length * 2,
       stencilVerts: new Float32Array(allStencilVerts),
       stencilIndices: new Uint32Array(allStencilIndices),
       coverVerts: new Float32Array(allCoverVerts),
       coverIndices: new Uint32Array(allCoverIndices),
     }
+    layout.arrayBytes = layout.stencilVerts.byteLength + layout.stencilIndices.byteLength + layout.coverVerts.byteLength + layout.coverIndices.byteLength
     Text.rememberLayout(cacheKey, layout)
     this.applyLayout(layout)
+    Text.trimLayoutCache()
   }
 
   private applyLayout(layout: TextLayoutCacheEntry): void {
     if (this.useSharedLayout()) {
+      if (this.sharedLayout !== layout) {
+        const previous = this.sharedLayout
+        if (layout.users === 0) {
+          Text.inactiveLayouts.delete(layout.key)
+          Text.inactiveLayoutBytes -= layout.arrayBytes + layout.keyBytes
+        }
+        layout.users += 1
+        this.sharedLayout = layout
+        Text.layoutFinalizer.unregister(this)
+        Text.layoutFinalizer.register(this, layout, this)
+        if (previous !== undefined) Text.releaseLayout(previous)
+      }
       this.stencilGeometry = Text.sharedGeometry(layout, "stencil")
       this.coverGeometry = Text.sharedGeometry(layout, "cover")
       return
@@ -364,23 +400,62 @@ export class Text extends Object3D {
   private static touchLayoutCache(key: string, layout: TextLayoutCacheEntry): void {
     Text.layoutCache.delete(key)
     Text.layoutCache.set(key, layout)
+    if (layout.users === 0) {
+      Text.inactiveLayouts.delete(key)
+      Text.inactiveLayouts.set(key, layout)
+    }
   }
 
   private static rememberLayout(key: string, layout: TextLayoutCacheEntry): void {
     Text.layoutCache.set(key, layout)
-    if (Text.layoutCache.size <= TEXT_LAYOUT_CACHE_LIMIT) return
-    const oldest = Text.layoutCache.keys().next().value
-    if (oldest === undefined) return
-    const evicted = Text.layoutCache.get(oldest)
-    if (evicted?.sharedStencilGeometry !== undefined) {
-      Text.cachedLayoutGeometries.delete(evicted.sharedStencilGeometry)
-      Text.evictedLayoutGeometries.push(evicted.sharedStencilGeometry)
+    Text.inactiveLayouts.set(key, layout)
+    Text.inactiveLayoutBytes += layout.arrayBytes + layout.keyBytes
+  }
+
+  private static releaseLayout(layout: TextLayoutCacheEntry): void {
+    layout.users -= 1
+    if (layout.users === 0) {
+      Text.inactiveLayouts.set(layout.key, layout)
+      Text.inactiveLayoutBytes += layout.arrayBytes + layout.keyBytes
+      Text.trimLayoutCache()
     }
-    if (evicted?.sharedCoverGeometry !== undefined) {
-      Text.cachedLayoutGeometries.delete(evicted.sharedCoverGeometry)
-      Text.evictedLayoutGeometries.push(evicted.sharedCoverGeometry)
+  }
+
+  private static trimLayoutCache(): void {
+    if (Text.inactiveLayoutBytes <= TEXT_LAYOUT_INACTIVE_BYTE_LIMIT && Text.layoutCache.size <= TEXT_LAYOUT_CACHE_LIMIT) return
+    for (const [key, layout] of Text.inactiveLayouts) {
+      Text.inactiveLayouts.delete(key)
+      Text.layoutCache.delete(key)
+      Text.inactiveLayoutBytes -= layout.arrayBytes + layout.keyBytes
+      for (const geometry of [layout.sharedStencilGeometry, layout.sharedCoverGeometry]) {
+        if (geometry === undefined) continue
+        Text.cachedLayoutGeometries.delete(geometry)
+        for (const reference of Text.layoutEvictionListeners) {
+          const listener = reference.deref()
+          if (listener === undefined) Text.layoutEvictionListeners.delete(reference)
+          else {
+            try { listener(geometry) } catch { /* Наблюдатель ресурсов не отменяет построение текста. */ }
+          }
+        }
+      }
+      if (Text.inactiveLayoutBytes <= TEXT_LAYOUT_INACTIVE_BYTE_LIMIT && Text.layoutCache.size <= TEXT_LAYOUT_CACHE_LIMIT) break
     }
-    Text.layoutCache.delete(oldest)
+  }
+
+  /**
+   * Завершает использование общей раскладки этим узлом. Повторный вызов безопасен.
+   * GPU-ресурсы принадлежат рисующему владельцу, а не Text. После освобождения
+   * CachedText больше не рисуют; updateGeometry() может заново получить раскладку.
+   * Обычный Text сохраняет собственные изменяемые массивы.
+   */
+  public dispose(): void {
+    const previous = this.sharedLayout
+    if (previous === undefined) return
+    this.sharedLayout = undefined
+    Text.layoutFinalizer.unregister(this)
+    this.stencilGeometry = new BufferGeometry()
+    this.coverGeometry = new BufferGeometry()
+    Text.releaseLayout(previous)
   }
 
   /** @internal */
@@ -388,11 +463,54 @@ export class Text extends Object3D {
     return Text.cachedLayoutGeometries.has(geometry)
   }
 
-  /** @internal */
-  static consumeEvictedLayoutGeometries(): BufferGeometry[] {
-    const evicted = Text.evictedLayoutGeometries
-    Text.evictedLayoutGeometries = []
-    return evicted
+  /**
+   * Наблюдает окончательное вытеснение общей геометрии без глобального удержания владельца.
+   * Каждый рисующий владелец хранит возвращённую отписку весь свой lifecycle и
+   * вызывает её при dispose. Активные CachedText не передаются наблюдателям.
+   * Уведомление доставляется каждому подписчику; общей очереди геометрии нет.
+   */
+  static onLayoutEvicted(listener: LayoutEvictionListener): () => void {
+    const reference = new WeakRef(listener)
+    Text.layoutEvictionListeners.add(reference)
+    Text.listenerFinalizer.register(listener, reference, reference)
+    return () => {
+      // Отписка удерживает callback только у потребителя; глобальное множество хранит WeakRef.
+      if (reference.deref() === listener) Text.layoutEvictionListeners.delete(reference)
+      Text.listenerFinalizer.unregister(reference)
+    }
+  }
+
+  /**
+   * Показывает удержание массивов и верхнюю UTF-16 оценку ключей без заявления о полном JS heap/RSS.
+   * Активный набор не вытесняется ради лимита и может превышать бюджет неактивных записей.
+   */
+  static getLayoutCacheStats() {
+    let activeEntries = 0
+    let activeUsers = 0
+    let activeBytes = 0
+    let arrayBytes = 0
+    let keyBytes = 0
+    for (const layout of Text.layoutCache.values()) {
+      arrayBytes += layout.arrayBytes
+      keyBytes += layout.keyBytes
+      if (layout.users > 0) {
+        activeEntries += 1
+        activeUsers += layout.users
+        activeBytes += layout.arrayBytes + layout.keyBytes
+      }
+    }
+    return Object.freeze({
+      entries: Text.layoutCache.size,
+      activeEntries,
+      inactiveEntries: Text.layoutCache.size - activeEntries,
+      activeUsers,
+      activeBytes,
+      inactiveBytes: Text.inactiveLayoutBytes,
+      arrayBytes,
+      keyBytes,
+      maxInactiveBytes: TEXT_LAYOUT_INACTIVE_BYTE_LIMIT,
+      maxEntries: TEXT_LAYOUT_CACHE_LIMIT,
+    })
   }
 }
 
@@ -401,16 +519,22 @@ export class Text extends Object3D {
  *
  * Используйте `CachedText`, когда много одинаковых или часто пересоздаваемых
  * надписей рисуются как UI-элементы: редактор, списки, таблицы, меню, панели,
- * скроллируемый текст. Экземпляры с одинаковыми `text`, `font`, `fontSize` и
- * `letterSpacing` получают общую раскладку, общую `BufferGeometry` и один набор
- * GPU-буферов. Это резко снижает стоимость scroll/render циклов, где одни и те
- * же строки появляются снова.
+ * скроллируемый текст. Экземпляры с одинаковыми `text`, `font`, `fontSize`,
+ * `letterSpacing` и `spaceAdvance` получают общую раскладку и общую `BufferGeometry`.
+ * Каждый рисующий владелец переиспользует свои GPU-буферы. Это снижает стоимость
+ * scroll/render циклов, где одни и те же строки появляются снова.
  *
  * Геометрию `CachedText` нельзя менять вручную: не записывайте в
  * `stencilGeometry.attributes.position.array`, не изгибайте и не помечайте её
  * `needsUpdate`. Такая геометрия разделяется между экземплярами. Позицию,
  * трансформации, материал, видимость и `clipBounds` менять можно, потому что это
  * состояние конкретного объекта, а не общей геометрии.
+ *
+ * При окончательном удалении узла вызовите dispose(): он освобождает его lease.
+ * Невидимый, но сохранённый узел остаётся активным потребителем. Смена параметров
+ * через updateGeometry() переводит lease; GC освобождает забытый узел, но не
+ * заменяет явный lifecycle. Общую геометрию не передают другому живому владельцу
+ * после dispose исходного узла.
  *
  * Если текст нужно деформировать, редактировать вершины или хранить как
  * независимый scene-node, используйте {@link Text}.
@@ -426,9 +550,10 @@ export class CachedText extends Text {
    * @param font - Загруженный TrueType-шрифт.
    * @param fontSize - Размер текста в world units.
    * @param material - Материал заливки текста. Материал остаётся per-instance.
+   * @param options - Окончательные интервалы первого построения, без промежуточной раскладки.
    */
-  constructor(text: string, font: TrueTypeFont, fontSize: number = 10, material: TextMaterial) {
-    super(text, font, fontSize, material)
+  constructor(text: string, font: TrueTypeFont, fontSize: number = 10, material: TextMaterial, options: TextLayoutOptions = {}) {
+    super(text, font, fontSize, material, options)
   }
 
   /** @internal */

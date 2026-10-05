@@ -56,7 +56,7 @@ test.each([
     createStyleSheets: () => ({refresh() {}, async whenReady() {}, dispose() {}}),
     createRuntime: async (options, claim) => createDocumentSpaceRuntimeWithSeams(options, {
       createEngineRenderer: () => ({
-        setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, releaseDisplay() {},
+        dispose() {}, setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, releaseDisplay() {},
         renderComposition() {
           submissions++
           const element = controls.element!

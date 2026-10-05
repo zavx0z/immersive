@@ -16,6 +16,7 @@ async function fixture() {
   const captured = new Set<number>()
   let next = 0
   let attempts = 0
+  let engineDisposals = 0
   let fault: Error | null = null
   const canvas = {width: 200, height: 200, style: {touchAction: "auto"},
     getBoundingClientRect: () => rect, addEventListener() {}, removeEventListener() {},
@@ -23,7 +24,7 @@ async function fixture() {
     releasePointerCapture(id: number) { captured.delete(id) },
     hasPointerCapture: (id: number) => captured.has(id),
   } as unknown as HTMLCanvasElement
-  const engine = {setPixelRatio() {}, setSize() {}, invalidateGeometry() {},
+  const engine = {dispose() {engineDisposals++}, setPixelRatio() {}, setSize() {}, invalidateGeometry() {},
     renderComposition() {
       attempts++
       if (fault) throw fault
@@ -62,7 +63,7 @@ async function fixture() {
     frames.delete(entry[0])
     entry[1]()
   }
-  return {document, root, runtime, frames, rect, step, captured, attempts: () => attempts, fail(error: Error | null) { fault = error }}
+  return {document, root, runtime, frames, rect, step, captured, engineDisposals: () => engineDisposals, attempts: () => attempts, fail(error: Error | null) { fault = error }}
 }
 
 test("one failed frame latches autonomous RAF and network render retries, with one actionable report", async () => {
@@ -211,4 +212,20 @@ test("fault cancels a pressed button without late activation after the recovery 
     expect(clicked).toBe(0)
     expect(f.captured.size).toBe(0)
   } finally {f.runtime.dispose()}
+})
+
+
+test("сохранённый Experience продолжает использовать Renderer, только final dispose освобождает его один раз", async () => {
+  const f = await fixture()
+  f.runtime.addOverlay({root: f.root})
+  for (let update = 0; update < 3; update++) {
+    f.root.textContent = `Состояние ${update}`
+    f.runtime.render()
+    f.runtime.resize()
+    expect(f.engineDisposals()).toBe(0)
+  }
+  f.runtime.dispose()
+  f.runtime.dispose()
+  expect(f.engineDisposals()).toBe(1)
+  expect(f.frames.size).toBe(0)
 })

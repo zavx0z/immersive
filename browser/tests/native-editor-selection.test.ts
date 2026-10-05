@@ -89,7 +89,7 @@ test.each([
   const font = new TrueTypeFont(await Bun.file(resolve(workspace, "engine/static/font/jetbrains-mono-bold.ttf")).arrayBuffer())
   const theme = await Bun.file(resolve(workspace, "ui/component/theme/theme.css")).text()
   const runtime = await createDocumentSpaceRuntimeWithSeams({canvas, document, font, styleSheets: [theme]}, {
-    createEngineRenderer: () => ({setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, releaseDisplay() {}, renderComposition(composition: Parameters<Renderer["renderComposition"]>[0]) {
+    createEngineRenderer: () => ({dispose() {}, setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, releaseDisplay() {}, renderComposition(composition: Parameters<Renderer["renderComposition"]>[0]) {
       composition.space.updateWorldMatrix(true, {parents: true})
     }}) as unknown as Renderer,
     initializeEngineRenderer: async () => {}, createSpace: () => new Space(),
@@ -216,7 +216,7 @@ test("real createRoot App keeps two Editor projections isolated across every sel
     loadFont: async () => font,
     createStyleSheets: () => ({refresh() {}, async whenReady() {}, dispose() {}}),
     createRuntime: (options, claim) => createDocumentSpaceRuntimeWithSeams({...options, styleSheets: [theme]}, {
-    createEngineRenderer: () => ({setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, releaseDisplay() {}, renderComposition(composition: Parameters<Renderer["renderComposition"]>[0]) {
+    createEngineRenderer: () => ({dispose() {}, setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, releaseDisplay() {}, renderComposition(composition: Parameters<Renderer["renderComposition"]>[0]) {
       composition.space.updateWorldMatrix(true, {parents: true})
     }}) as unknown as Renderer,
     initializeEngineRenderer: async () => {}, createSpace: () => new Space(),

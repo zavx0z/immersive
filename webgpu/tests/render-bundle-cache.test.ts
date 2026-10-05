@@ -133,6 +133,7 @@ const mutations: [string, (input: ReturnType<typeof inputs>) => void][] = [
   ["bind group identity including external texture replacement", input => { input.group = {} as GPUBindGroup }],
   ["bind group index", input => { input.groupIndex += 1 }],
   ["dynamic offset value", input => { input.offsets[0]! += 256 }],
+  ["compact skin offset with unchanged bind group and capacity", input => { input.offsets[1] = 8192 }],
   ["dynamic offset count", input => { input.offsets.pop() }],
   ["vertex buffer identity", input => { input.vertex = {} as GPUBuffer }],
   ["vertex slot", input => { input.vertexSlot += 1 }],

@@ -32,7 +32,7 @@ async function fixture() {
     releasePointerCapture(id: number) { captures.delete(id) },
     hasPointerCapture: (id: number) => captures.has(id),
   } as unknown as HTMLCanvasElement
-  const engine = {setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, renderComposition() {}} as unknown as Renderer
+  const engine = {dispose() {}, setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, renderComposition() {}} as unknown as Renderer
   const font = {unitsPerEm: 1000, ascent: 800, descent: 200, mapCharToGlyph: () => 0,
     getGlyphOutline: () => ({points: new Float32Array(), onCurve: new Uint8Array(), contours: new Uint16Array()}),
     getHMetric: () => ({advanceWidth: 500, lsb: 0}),

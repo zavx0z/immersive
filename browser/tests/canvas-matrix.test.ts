@@ -29,12 +29,14 @@ test("isolated Canvas runtime delegates matrix synchronization to the rendering 
   const space = new Space()
   let updates = 0
   let presentations = 0
+  let engineDisposals = 0
   const updateMatrix = space.updateMatrix.bind(space)
   space.updateMatrix = () => {
     updates += 1
     updateMatrix()
   }
   const engineRenderer = {
+    dispose() {engineDisposals++},
     invalidateGeometry() {},
     renderFrame(currentSpace: Space, overlay: RendererWebGpuScreenOverlay, camera: ViewPoint) {
       expect(updates).toBe(0)
@@ -84,7 +86,10 @@ test("isolated Canvas runtime delegates matrix synchronization to the rendering 
     expect(updates).toBe(1)
     expect(space.matrixWorld.elements[12]).toBe(50)
     expect(presentations).toBe(2)
+    expect(engineDisposals).toBe(0)
   } finally {
     runtime.dispose()
+    runtime.dispose()
+    expect(engineDisposals).toBe(1)
   }
 })

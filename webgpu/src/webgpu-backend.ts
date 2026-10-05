@@ -22,7 +22,6 @@ import {
   STROKED_PATH_STYLE_RECORD_BYTE_LENGTH,
   StrokedPathInstanceLayer,
   RoundedRectMaterial,
-  Text,
   TextMaterial,
   type PresentationClipShape,
   type TrueTypeFont,
@@ -713,7 +712,6 @@ export class RendererWebGpuBackend {
     this.#pathPreparedItems = prepared.filter((item) => item.kind === "path").length
     this.#commitPreparedFrame(frame, prepared, plan, prepared.every(isReusablePreparedItem))
     for (const geometry of geometries) this.#invalidateGeometry(geometry)
-    this.#invalidateEvictedTextGeometries()
   }
 
   #resetPathWriteDiagnostics(): void {
@@ -770,7 +768,6 @@ export class RendererWebGpuBackend {
     for (const geometry of geometries) this.#invalidateGeometry(geometry)
     if (this.#rectLayerWasPresented) this.#invalidateGeometry(this.#rectLayer.geometry)
     if (this.#pathLayerWasPresented) this.#invalidateGeometry(this.#pathLayer.geometry)
-    this.#invalidateEvictedTextGeometries()
   }
 
   #validateFrameEnvelope(frame: RenderFrame): void {
@@ -1409,7 +1406,6 @@ export class RendererWebGpuBackend {
       positionPathMesh(entry.node, resolvedPathTransform(value.item, frame))
     }
     this.#commitPreparedFrame(frame, this.#preparedFrameCache!.prepared, reused.plan, true)
-    this.#invalidateEvictedTextGeometries()
   }
 
   #commitPreparedFrame(
@@ -2185,12 +2181,10 @@ export class RendererWebGpuBackend {
     const {item} = value
     if (this.#font === undefined) throw new Error("Text display item requires a font")
     const material = new TextMaterial({color: value.color, opacity: value.opacity})
-    const node = new CachedText(item.text, value.font, item.fontSize, material)
-    if (node.letterSpacing !== item.letterSpacing || node.spaceAdvance !== fontSpaceAdvance(value.font, item.fontSize)) {
-      node.letterSpacing = item.letterSpacing
-      node.spaceAdvance = fontSpaceAdvance(value.font, item.fontSize)
-      node.updateGeometry()
-    }
+    const node = new CachedText(item.text, value.font, item.fontSize, material, {
+      letterSpacing: item.letterSpacing,
+      spaceAdvance: fontSpaceAdvance(value.font, item.fontSize),
+    })
     node.name = `${item.node.nodeName}:${item.key}`
     const entry: TextEntry = {
       kind: "text",
@@ -2407,6 +2401,7 @@ export class RendererWebGpuBackend {
       }
       entry.material.onTextureChange = undefined
     }
+    if (entry.kind === "text") entry.node.dispose()
     if (entry.kind === "rect") {
       if (this.#rectGeometries.release(entry.geometry)) geometries.add(entry.geometry)
     } else if (entry.kind === "image" || entry.kind === "path") {
@@ -2425,12 +2420,6 @@ export class RendererWebGpuBackend {
     }
     this.root.children = [...next]
     for (const child of next) child.parent = this.root
-  }
-
-  #invalidateEvictedTextGeometries(): void {
-    for (const geometry of Text.consumeEvictedLayoutGeometries()) {
-      this.#invalidateGeometry(geometry)
-    }
   }
 
   #textureChangeCallback(token: DisplayToken, src: string): () => void {

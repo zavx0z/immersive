@@ -69,6 +69,7 @@ import {
   type PresentationClipRange,
 } from "./presentation-clip-upload"
 import {renderItemSupportsPresentationClips} from "./presentation-clip-support"
+import {trimmedResourceCapacity} from "./resource-capacity"
 import {RenderBundleCache, type RenderCommandEncoder} from "./render-bundle-cache"
 import {
   applyBufferAttributeUploadPlan,
@@ -119,6 +120,8 @@ const INITIAL_RENDERABLE_CAPACITY = 512
 const MAX_LIGHTS = 4 // Максимальное количество источников света
 const WEBGPU_INIT_TIMEOUT_MS = 15000
 const MAX_CACHED_RENDER_LAYERS = 32
+const CAPACITY_TRIM_DELAY_MS = 1000
+const canvasConfigurationOwners = new WeakMap<GPUCanvasContext, GPUDevice>()
 
 const LIGHT_STRUCT_SIZE = 32
 const SCENE_UNIFORM_LAYOUT = createSceneUniformLayout(MAX_LIGHTS, LIGHT_STRUCT_SIZE)
@@ -213,6 +216,16 @@ function hasDirectRenderItems(layer: PreparedRenderLayer): boolean {
  * * Автоматически управляет буферами uniform-ов и пайплайнами.
  */
 export class Renderer {
+  private disposed = false
+  private ownedDevice: GPUDevice | null = null
+  private unsubscribeTextEviction: (() => void) | null = null
+  private readonly imageSizeChangeListeners = new Map<string, () => void>()
+
+  constructor() {
+    const renderer = new WeakRef(this)
+    this.unsubscribeTextEviction = Text.onLayoutEvicted(geometry => renderer.deref()?.invalidateGeometry(geometry))
+  }
+
   private readonly imageSizeListeners = new Map<string, Set<() => void>>()
 
   /** Shares the texture loader's decoded dimensions with CPU layout. */
@@ -232,8 +245,10 @@ export class Renderer {
         TextureLoader.removeChangeListener(src, changed)
         const callbacks = this.imageSizeListeners.get(src)
         this.imageSizeListeners.delete(src)
+        this.imageSizeChangeListeners.delete(src)
         for (const callback of callbacks ?? []) callback()
       }
+      this.imageSizeChangeListeners.set(src, changed)
       TextureLoader.addChangeListener(src, changed, {animate: false})
     }
     listeners.add(onChange)
@@ -299,6 +314,11 @@ export class Renderer {
   private perObjectBindGroup: GPUBindGroup | null = null
   private perObjectDataCPU: Float32Array | null = null
   private boneMatricesDataCPU: Float32Array | null = null
+  private boneMatricesCapacity = 0
+  private latestObjectCount = 0
+  private latestSkinnedCount = 0
+  private capacityTrimTimer: ReturnType<typeof setTimeout> | null = null
+  private boneDynamicOffsets = new Uint32Array(INITIAL_RENDERABLE_CAPACITY)
   private perObjectCapacity = INITIAL_RENDERABLE_CAPACITY
   private presentationClipBuffer: GPUBuffer | null = null
   private presentationClipCapacity = 0
@@ -335,30 +355,55 @@ export class Renderer {
    * @throws Error Если браузер не поддерживает WebGPU или не удалось получить адаптер.
    */
   public async init(canvas: HTMLCanvasElement): Promise<void> {
+    if (this.disposed) throw new Error("Renderer is disposed")
+    if (this.ownedDevice !== null) throw new Error("Renderer is already initialized")
     if (!navigator.gpu) throw new Error("WebGPU не поддерживается браузером.")
 
     const adapter = await withWebGpuInitTimeout(navigator.gpu.requestAdapter(), "WebGPU adapter")
     if (!adapter) throw new Error("Не удалось получить WebGPU адаптер.")
 
-    this.device = await withWebGpuInitTimeout(adapter.requestDevice(), "WebGPU device")
-    this.renderBundleCaches.clear()
-    const presentationClipLimitBytes = Math.min(
-      this.device.limits.maxStorageBufferBindingSize,
-      this.device.limits.maxBufferSize,
-    )
-    const derivedPresentationClipRecordLimit = Math.floor(presentationClipLimitBytes / PRESENTATION_CLIP_RECORD_SIZE)
-    this.presentationClipRecordLimit = Number.isFinite(derivedPresentationClipRecordLimit)
-      ? Math.max(1, derivedPresentationClipRecordLimit)
-      : DEFAULT_MAX_PRESENTATION_CLIP_RECORDS
+    if (this.disposed) throw new Error("Renderer is disposed")
+    const deviceRequest = adapter.requestDevice()
+    let device: GPUDevice
+    try {
+      device = await withWebGpuInitTimeout(deviceRequest, "WebGPU device")
+    } catch (error) {
+      // Timeout прекращает ожидание, но не отменяет native requestDevice.
+      // Позднее устройство принадлежит этой неуспешной попытке и не публикуется.
+      void deviceRequest.then(lateDevice => lateDevice.destroy(), () => {})
+      this.dispose()
+      throw error
+    }
+    if (this.disposed) {
+      device.destroy()
+      throw new Error("Renderer is disposed")
+    }
+    this.device = device
+    this.ownedDevice = device
+    try {
+      this.clearRenderBundleCaches()
+      const presentationClipLimitBytes = Math.min(
+        this.device.limits.maxStorageBufferBindingSize,
+        this.device.limits.maxBufferSize,
+      )
+      const derivedPresentationClipRecordLimit = Math.floor(presentationClipLimitBytes / PRESENTATION_CLIP_RECORD_SIZE)
+      this.presentationClipRecordLimit = Number.isFinite(derivedPresentationClipRecordLimit)
+        ? Math.max(1, derivedPresentationClipRecordLimit)
+        : DEFAULT_MAX_PRESENTATION_CLIP_RECORDS
 
-    this.canvas = canvas
-    this.context = this.canvas.getContext("webgpu")
-    if (!this.context) throw new Error("Не удалось получить WebGPU контекст.")
+      this.canvas = canvas
+      this.context = this.canvas.getContext("webgpu")
+      if (!this.context) throw new Error("Не удалось получить WebGPU контекст.")
 
-    this.presentationFormat = navigator.gpu.getPreferredCanvasFormat()
-    this.configureCanvasContext()
+      this.presentationFormat = navigator.gpu.getPreferredCanvasFormat()
+      this.configureCanvasContext()
 
-    await this.setupPipelines()
+      await this.setupPipelines()
+      if (this.disposed) throw new Error("Renderer is disposed")
+    } catch (error) {
+      this.dispose()
+      throw error
+    }
   }
 
   private configureCanvasContext(): void {
@@ -373,6 +418,7 @@ export class Renderer {
       alphaMode: 'premultiplied',
       usage,
     })
+    canvasConfigurationOwners.set(this.context, this.device)
   }
 
   private async setupPipelines(): Promise<void> {
@@ -1768,7 +1814,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     })
 
     prepareHiddenRenderDependencies(planned, frameRenderItems)
-    this.ensurePerObjectCapacity(frameRenderItems.length)
+    this.ensurePerObjectCapacity(frameRenderItems.length, frameRenderItems.reduce((count, item) => count + Number(item.type === "skinned-mesh"), 0))
     const presentationClipUpload = encodePresentationClipChains(
       frameRenderItems.map((item) => item.object),
       {maxRecords: this.presentationClipRecordLimit},
@@ -2065,34 +2111,75 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
   }
 
 
-  private ensurePerObjectCapacity(required: number): void {
-    if (required <= this.perObjectCapacity) return
-    let nextCapacity = Math.max(1, this.perObjectCapacity)
-    while (nextCapacity < required) nextCapacity *= 2
-    this.createPerObjectResources(nextCapacity)
+  private ensurePerObjectCapacity(required: number, skinnedCount = 0): void {
+    this.latestObjectCount = required
+    this.latestSkinnedCount = skinnedCount
+    if (required > this.perObjectCapacity) {
+      let nextCapacity = Math.max(1, this.perObjectCapacity)
+      while (nextCapacity < required) nextCapacity *= 2
+      this.createPerObjectResources(nextCapacity)
+    }
+    if (this.boneMatricesBuffer === null || skinnedCount > this.boneMatricesCapacity || skinnedCount === 0 && this.boneMatricesCapacity > 0) {
+      let nextCapacity = skinnedCount === 0 ? 0 : Math.max(1, this.boneMatricesCapacity)
+      while (nextCapacity < skinnedCount) nextCapacity *= 2
+      this.createBoneMatricesResources(nextCapacity)
+    }
+    this.scheduleCapacityTrim()
+  }
+
+  /** Time-based low-water debounce работает и при demand loop без дальнейших кадров. */
+  private scheduleCapacityTrim(): void {
+    const uniform = trimmedResourceCapacity(this.perObjectCapacity, this.latestObjectCount, INITIAL_RENDERABLE_CAPACITY)
+    const bones = trimmedResourceCapacity(this.boneMatricesCapacity, this.latestSkinnedCount, 1)
+    if (uniform === this.perObjectCapacity && bones === this.boneMatricesCapacity) {
+      if (this.capacityTrimTimer !== null) clearTimeout(this.capacityTrimTimer)
+      this.capacityTrimTimer = null
+      return
+    }
+    if (this.capacityTrimTimer !== null) return
+    this.capacityTrimTimer = setTimeout(() => {
+      this.capacityTrimTimer = null
+      if (this.disposed || this.device === null) return
+      const nextUniform = trimmedResourceCapacity(this.perObjectCapacity, this.latestObjectCount, INITIAL_RENDERABLE_CAPACITY)
+      const nextBones = trimmedResourceCapacity(this.boneMatricesCapacity, this.latestSkinnedCount, 1)
+      if (nextUniform !== this.perObjectCapacity) this.createPerObjectResources(nextUniform)
+      if (nextBones !== this.boneMatricesCapacity) this.createBoneMatricesResources(nextBones)
+    }, CAPACITY_TRIM_DELAY_MS)
+  }
+
+  private clearRenderBundleCaches(): void {
+    for (const cache of this.renderBundleCaches.values()) cache.clear()
+    this.renderBundleCaches.clear()
   }
 
   private createPerObjectResources(capacity: number): void {
     if (!this.device || !this.perObjectBindGroupLayout) return
-    const previousUniformBuffer = this.perObjectUniformBuffer
-    const previousBoneMatricesBuffer = this.boneMatricesBuffer
-    const uniformBuffer = this.device.createBuffer({
+    const previous = this.perObjectUniformBuffer
+    this.perObjectUniformBuffer = this.device.createBuffer({
       size: capacity * PER_OBJECT_UNIFORM_SIZE,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     })
-    const boneMatricesBuffer = this.device.createBuffer({
-      size: capacity * BONE_MATRICES_SIZE,
+    this.perObjectDataCPU = new Float32Array(capacity * (PER_OBJECT_UNIFORM_SIZE / 4))
+    this.boneDynamicOffsets = new Uint32Array(capacity)
+    this.perObjectCapacity = capacity
+    this.ensurePresentationClipCapacity(1)
+    if (this.boneMatricesBuffer === null) this.createBoneMatricesResources(0)
+    this.createPerObjectBindGroup()
+    previous?.destroy()
+  }
+
+  /** Матрицы размещаются только для skinned slots; static paths разделяют валидный binding offset 0. */
+  private createBoneMatricesResources(capacity: number): void {
+    if (!this.device || !this.perObjectBindGroupLayout) return
+    const previous = this.boneMatricesBuffer
+    this.boneMatricesBuffer = this.device.createBuffer({
+      size: Math.max(1, capacity) * BONE_MATRICES_SIZE,
       usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
     })
-    this.perObjectUniformBuffer = uniformBuffer
-    this.boneMatricesBuffer = boneMatricesBuffer
-    this.perObjectDataCPU = new Float32Array(capacity * (PER_OBJECT_UNIFORM_SIZE / 4))
     this.boneMatricesDataCPU = new Float32Array(capacity * (BONE_MATRICES_SIZE / 4))
-    this.ensurePresentationClipCapacity(1)
+    this.boneMatricesCapacity = capacity
     this.createPerObjectBindGroup()
-    this.perObjectCapacity = capacity
-    previousUniformBuffer?.destroy()
-    previousBoneMatricesBuffer?.destroy()
+    previous?.destroy()
   }
 
   private ensurePresentationClipCapacity(required: number): void {
@@ -2121,6 +2208,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       !this.boneMatricesBuffer ||
       !this.presentationClipBuffer
     ) return
+    this.clearRenderBundleCaches()
     this.perObjectBindGroup = this.device.createBindGroup({
       layout: this.perObjectBindGroupLayout,
       entries: [
@@ -2173,6 +2261,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const usedFloats = objectCount * (PER_OBJECT_UNIFORM_SIZE / 4)
     this.perObjectDataCPU.fill(0, 0, usedFloats)
     const uploadPlan = planPerObjectUploads(objectCount, index => objects[index]?.type === "skinned-mesh")
+    this.boneDynamicOffsets.fill(0, 0, objectCount)
+    let boneSlot = 0
 
     for (let i = 0; i < objectCount; i++) {
       const item = objects[i]
@@ -2185,11 +2275,12 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
           this.updateMeshData(item.object as Mesh, item.worldMatrix, offsetFloats)
           break
         case "skinned-mesh":
+          this.boneDynamicOffsets[i] = boneSlot * BONE_MATRICES_SIZE
           this.updateSkinnedMeshData(
             item.object as SkinnedMesh,
             item.worldMatrix,
             offsetFloats,
-            i * (BONE_MATRICES_SIZE / 4),
+            boneSlot++ * (BONE_MATRICES_SIZE / 4),
           )
           break
         case "instanced-mesh":
@@ -2626,6 +2717,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.geometryAttributeSources.delete(geometry)
     this.roundedRectInstanceBindGroupCache.delete(geometry)
     this.strokedPathInstanceBindGroupCache.delete(geometry)
+    this.clearRenderBundleCaches()
   }
 
   private destroyGeometryBuffers(buffers: GeometryBuffers): void {
@@ -3176,7 +3268,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
 
     const isSkinned = (mesh as SkinnedMesh).isSkinnedMesh
     const dynamicOffset = renderIndex * PER_OBJECT_UNIFORM_SIZE
-    const boneMatricesOffset = renderIndex * BONE_MATRICES_SIZE
+    const boneMatricesOffset = this.boneDynamicOffsets[renderIndex] ?? 0
 
     if (passEncoder) {
       passEncoder.setBindGroup(1, this.perObjectBindGroup, [dynamicOffset, boneMatricesOffset])
@@ -3221,7 +3313,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const dynamicOffset = renderIndex * PER_OBJECT_UNIFORM_SIZE
 
     if (passEncoder) {
-      const boneMatricesOffset = renderIndex * BONE_MATRICES_SIZE
+      const boneMatricesOffset = this.boneDynamicOffsets[renderIndex] ?? 0
       passEncoder.setBindGroup(1, this.perObjectBindGroup, [dynamicOffset, boneMatricesOffset])
 
       const {positionBuffer, normalBuffer, indexBuffer, instanceMatrixBuffer} = this.getOrCreateGeometryBuffers(
@@ -3262,7 +3354,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     ) return
 
     const dynamicOffset = renderIndex * PER_OBJECT_UNIFORM_SIZE
-    const boneMatricesOffset = renderIndex * BONE_MATRICES_SIZE
+    const boneMatricesOffset = this.boneDynamicOffsets[renderIndex] ?? 0
     passEncoder.setBindGroup(1, this.perObjectBindGroup, [dynamicOffset, boneMatricesOffset])
 
     const buffers = this.getOrCreateGeometryBuffers(batch.geometry)
@@ -3304,7 +3396,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.validateStrokedPathStorageLimits(batch)
 
     const dynamicOffset = renderIndex * PER_OBJECT_UNIFORM_SIZE
-    const boneMatricesOffset = renderIndex * BONE_MATRICES_SIZE
+    const boneMatricesOffset = this.boneDynamicOffsets[renderIndex] ?? 0
     passEncoder.setBindGroup(1, this.perObjectBindGroup, [dynamicOffset, boneMatricesOffset])
 
     const buffers = this.getOrCreateGeometryBuffers(batch.geometry)
@@ -3378,7 +3470,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const dynamicOffset = renderIndex * PER_OBJECT_UNIFORM_SIZE
 
     if (passEncoder) {
-      const boneMatricesOffset = renderIndex * BONE_MATRICES_SIZE
+      const boneMatricesOffset = this.boneDynamicOffsets[renderIndex] ?? 0
       passEncoder.setBindGroup(1, this.perObjectBindGroup, [dynamicOffset, boneMatricesOffset])
       const buffers = this.getOrCreateGeometryBuffers(lines.geometry)
       const colorBuffer = this.getOrCreateDefaultLineColorBuffer(lines.geometry, buffers)
@@ -3402,7 +3494,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const dynamicOffset = renderIndex * PER_OBJECT_UNIFORM_SIZE
 
     if (passEncoder) {
-      const boneMatricesOffset = renderIndex * BONE_MATRICES_SIZE
+      const boneMatricesOffset = this.boneDynamicOffsets[renderIndex] ?? 0
       passEncoder.setBindGroup(1, this.perObjectBindGroup, [dynamicOffset, boneMatricesOffset])
       const buffers = this.getOrCreateGeometryBuffers(lines.geometry)
       const colorBuffer = this.getOrCreateDefaultLineColorBuffer(lines.geometry, buffers)
@@ -3429,7 +3521,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const dynamicOffset = renderIndex * PER_OBJECT_UNIFORM_SIZE
 
     if (passEncoder) {
-      const boneMatricesOffset = renderIndex * BONE_MATRICES_SIZE
+      const boneMatricesOffset = this.boneDynamicOffsets[renderIndex] ?? 0
       passEncoder.setBindGroup(1, this.perObjectBindGroup, [dynamicOffset, boneMatricesOffset])
       const {positionBuffer, indexBuffer} = this.getOrCreateGeometryBuffers(geometry)
 
@@ -3438,6 +3530,114 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       passEncoder.setIndexBuffer(indexBuffer!, indexFormat)
       passEncoder.drawIndexed(geometry.index.count)
     }
+  }
+
+  /**
+   * Окончательно освобождает принадлежащие Renderer ресурсы. Same-Experience render/HMR
+   * этот метод не вызывает. Borrowed device не уничтожается; owned device создаётся init.
+   */
+  public dispose(): void {
+    this.disposed = true
+    if (this.capacityTrimTimer !== null) clearTimeout(this.capacityTrimTimer)
+    this.capacityTrimTimer = null
+    this.unsubscribeTextEviction?.()
+    this.unsubscribeTextEviction = null
+    for (const [src, callback] of this.imageSizeChangeListeners) TextureLoader.removeChangeListener(src, callback)
+    this.imageSizeChangeListeners.clear()
+    this.imageSizeListeners.clear()
+    this.clearRenderBundleCaches()
+    const buffers = new Set<GPUBuffer>()
+    for (const value of [this.perObjectUniformBuffer, this.boneMatricesBuffer, this.presentationClipBuffer]) if (value !== null) buffers.add(value)
+    for (const geometry of this.geometryCache.values()) for (const buffer of Object.values(geometry)) if (buffer !== undefined) buffers.add(buffer)
+    for (const view of this.viewUniformResources) {
+      buffers.add(view.globalUniformBuffer)
+      buffers.add(view.sceneUniformBuffer)
+      buffers.add(view.backgroundUniformBuffer)
+    }
+    for (const buffer of buffers) buffer.destroy()
+    this.geometryCache.clear()
+    this.geometryAttributeSources = new WeakMap()
+    this.roundedRectInstanceBindGroupCache.clear()
+    this.strokedPathInstanceBindGroupCache.clear()
+    this.viewUniformResources.length = 0
+    this.viewProjectionMatrices.length = 0
+    this.compositionFrustums.length = 0
+    const textures = new Set<GPUTexture>()
+    for (const value of [this.depthTexture, this.multisampleTexture, this.presentedFrameTexture]) if (value !== null) textures.add(value)
+    for (const target of this.displayRasterTargets.values()) {
+      textures.add(target.texture)
+      textures.add(target.multisample)
+      textures.add(target.depth)
+    }
+    for (const texture of textures) texture.destroy()
+    this.displayRasterTargets.clear()
+    const context = this.context
+    const device = this.ownedDevice
+    if (context !== null && device !== null) {
+      const configuration = typeof context.getConfiguration === "function" ? context.getConfiguration() : undefined
+      if (configuration?.device === device || configuration === undefined && canvasConfigurationOwners.get(context) === device) context.unconfigure()
+      if (canvasConfigurationOwners.get(context) === device) canvasConfigurationOwners.delete(context)
+    }
+    this.ownedDevice = null
+    device?.destroy()
+    this.device = null
+    this.context = null
+    this.canvas = null
+    this.presentationFormat = null
+    this.perObjectUniformBuffer = null
+    this.boneMatricesBuffer = null
+    this.presentationClipBuffer = null
+    this.perObjectBindGroup = null
+    this.perObjectDataCPU = null
+    this.boneMatricesDataCPU = null
+    this.boneDynamicOffsets = new Uint32Array(0)
+    this.perObjectCapacity = 0
+    this.boneMatricesCapacity = 0
+    this.presentationClipCapacity = 0
+    this.presentationClipRanges = new Map()
+    this.depthTexture = null
+    this.depthTextureView = null
+    this.multisampleTexture = null
+    this.multisampleTextureView = null
+    this.presentedFrameTexture = null
+    this.hasPresentedFrame = false
+    this.globalBindGroupLayout = null
+    this.backgroundBindGroupLayout = null
+    this.backgroundPipeline = null
+    this.basicMeshPipeline = null
+    this.thinFilmMeshPipeline = null
+    this.holographicMeshPipeline = null
+    this.staticMeshPipeline = null
+    this.instancedMeshPipeline = null
+    this.skinnedMeshPipeline = null
+    this.linePipeline = null
+    this.lineOverlayPipeline = null
+    this.lineSilhouettePipeline = null
+    this.instancedLinePipeline = null
+    this.textStencilPipeline = null
+    this.textCoverPipeline = null
+    this.textDepthCoverPipeline = null
+    this.imagePipeline = null
+    this.externalImagePipeline = null
+    this.roundedPipeline = null
+    this.uiBasicMeshPipeline = null
+    this.uiImagePipeline = null
+    this.uiExternalImagePipeline = null
+    this.uiRoundedPipeline = null
+    this.uiInstancedRoundedRectPipeline = null
+    this.uiInstancedStrokedPathPipeline = null
+    this.radialBackdropPipeline = null
+    this.uiRadialBackdropPipeline = null
+    this.colorPickerPipeline = null
+    this.uiColorPickerPipeline = null
+    this.imageBindGroupLayout = null
+    this.externalImageBindGroupLayout = null
+    this.roundedRectInstanceBindGroupLayout = null
+    this.strokedPathInstanceBindGroupLayout = null
+    this.perObjectBindGroupLayout = null
+    this.imageSampler = null
+    this.displaySampler = null
+    this.imageBindGroupCache = new WeakMap()
   }
 
   private updateTextures(): void {

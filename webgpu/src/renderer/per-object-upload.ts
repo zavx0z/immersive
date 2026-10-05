@@ -35,21 +35,9 @@ export function planPerObjectUploads(
   objectCount: number,
   isSkinnedAt: (index: number) => boolean,
 ): PerObjectUploadPlan {
-  const boneRanges: BufferUploadRange[] = []
-  let rangeStart = -1
-
-  for (let index = 0; index <= objectCount; index++) {
-    const isSkinned = index < objectCount && isSkinnedAt(index)
-    if (isSkinned && rangeStart < 0) {
-      rangeStart = index
-    } else if (!isSkinned && rangeStart >= 0) {
-      boneRanges.push({
-        byteOffset: rangeStart * BONE_MATRICES_SIZE,
-        byteLength: (index - rangeStart) * BONE_MATRICES_SIZE,
-      })
-      rangeStart = -1
-    }
-  }
+  let skinnedCount = 0
+  for (let index = 0; index < objectCount; index++) if (isSkinnedAt(index)) skinnedCount++
+  const boneRanges = skinnedCount === 0 ? [] : [{byteOffset: 0, byteLength: skinnedCount * BONE_MATRICES_SIZE}]
 
   return {
     uniformBytes: objectCount * PER_OBJECT_UNIFORM_SIZE,

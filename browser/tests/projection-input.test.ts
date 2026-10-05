@@ -54,7 +54,7 @@ const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: r
   } as unknown as DocumentNativeInputHost
   const engineRenderer = {
     ...(readImageSize === undefined ? {} : {readImageSize}),
-    setPixelRatio() {},
+    dispose() {}, setPixelRatio() {},
     setSize() {},
     invalidateGeometry() {},
     renderComposition(composition: RenderComposition) {

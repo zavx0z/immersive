@@ -424,10 +424,18 @@ export async function createDocumentSpaceRuntimeWithSeams(
 ): Promise<DocumentSpaceRuntime> {
   validateOptions(options)
   const presentationHostClaim = claim ?? claimBrowserPresentationHost(options.canvas)
+  let engineRenderer: EngineRenderer | undefined
+  let rendererDisposed = false
+  const disposeEngineRenderer = (): void => {
+    if (engineRenderer === undefined || rendererDisposed) return
+    rendererDisposed = true
+    engineRenderer.dispose()
+  }
   try {
-    return await createClaimedDocumentSpaceRuntime(options, seams, presentationHostClaim)
+    engineRenderer = seams.createEngineRenderer()
+    return await createClaimedDocumentSpaceRuntime(options, seams, presentationHostClaim, engineRenderer, disposeEngineRenderer)
   } catch (error) {
-    presentationHostClaim.release()
+    try { disposeEngineRenderer() } finally { presentationHostClaim.release() }
     throw error
   }
 }
@@ -436,6 +444,8 @@ const createClaimedDocumentSpaceRuntime = async (
   options: CreateDocumentSpaceRuntimeOptions,
   seams: DocumentSpaceRuntimeSeams,
   presentationHostClaim: ReturnType<typeof claimBrowserPresentationHost>,
+  engineRenderer: EngineRenderer,
+  disposeEngineRenderer: () => void,
 ): Promise<DocumentSpaceRuntime> => {
   validateSeams(seams)
   const fixedPixelRatio = options.pixelRatio === undefined
@@ -444,7 +454,6 @@ const createClaimedDocumentSpaceRuntime = async (
   const styleSheets = Object.freeze([...options.styleSheets])
   const initialViewPoint = validateViewPointSnapshot(options.viewPoint ?? DEFAULT_VIEW_POINT)
   const interactionState = createDocumentInteractionState(options.document)
-  const engineRenderer = seams.createEngineRenderer()
   await seams.initializeEngineRenderer(engineRenderer, options.canvas)
   const space = seams.createSpace()
   const viewPoint = seams.createViewPoint(options.canvas, initialViewPoint)
@@ -1993,55 +2002,58 @@ const createClaimedDocumentSpaceRuntime = async (
     dispose() {
       if (disposed) return
       disposed = true
-      cursorPointer = null
-      pressedCursor = null
-      applyCursor()
-      if (requestedFrame !== null) seams.cancelFrame(requestedFrame)
-      requestedFrame = null
-      cancelTooltipFrame()
-      resizeObserver?.disconnect()
-      resizeObserver = null
-      options.canvas.removeEventListener("pointermove", onPointerMove)
-      options.canvas.removeEventListener("pointerdown", onPointerDown)
-      options.canvas.removeEventListener("pointerup", onPointerUp)
-      options.canvas.removeEventListener("pointercancel", onPointerCancel)
-      options.canvas.removeEventListener("pointerleave", onPointerLeave)
-      options.canvas.removeEventListener("wheel", onWheel)
-      options.canvas.removeEventListener("contextmenu", onContextMenu)
-      options.canvas.removeEventListener("dblclick", onDoubleClick)
-      options.canvas.ownerDocument?.removeEventListener("keydown", onDocumentKeyDown)
-      selectionInput.dispose()
-      releaseTouchCameraSurface()
-      for (const pointerId of [...captures.keys()]) cancelCapturedPointer(pointerId)
-      hoveredPlaneRoot = null
-      activePlaneRoot = null
-      hoveredOverlayRoot = null
-      activeOverlayRoot = null
-      hoveredWorldSpace = null
-      activeWorldSpace = null
-      nativeInputHost.setActiveRoot(null)
-      nativeInputHost.dispose()
-      for (const record of records.values()) {
-        if (record.runtime.plane instanceof RendererWebGpuDisplayPlane) engineRenderer.releaseDisplay(record.runtime.plane)
-        space.remove(record.runtime.plane)
-        record.runtime.dispose()
-      }
-      records.clear()
-      for (const record of overlays.values()) {
-        space.remove(record.runtime.overlay)
-        record.runtime.dispose()
-      }
-      overlays.clear()
-      for (const record of worlds.values()) {
-        if (record.runtime.space.parent === space) space.remove(record.runtime.space)
-        record.disposed = true
-      }
-      worlds.clear()
+      try {
+        cursorPointer = null
+        pressedCursor = null
+        applyCursor()
+        if (requestedFrame !== null) seams.cancelFrame(requestedFrame)
+        requestedFrame = null
+        cancelTooltipFrame()
+        resizeObserver?.disconnect()
+        resizeObserver = null
+        options.canvas.removeEventListener("pointermove", onPointerMove)
+        options.canvas.removeEventListener("pointerdown", onPointerDown)
+        options.canvas.removeEventListener("pointerup", onPointerUp)
+        options.canvas.removeEventListener("pointercancel", onPointerCancel)
+        options.canvas.removeEventListener("pointerleave", onPointerLeave)
+        options.canvas.removeEventListener("wheel", onWheel)
+        options.canvas.removeEventListener("contextmenu", onContextMenu)
+        options.canvas.removeEventListener("dblclick", onDoubleClick)
+        options.canvas.ownerDocument?.removeEventListener("keydown", onDocumentKeyDown)
+        selectionInput.dispose()
+        releaseTouchCameraSurface()
+        for (const pointerId of [...captures.keys()]) cancelCapturedPointer(pointerId)
+        hoveredPlaneRoot = null
+        activePlaneRoot = null
+        hoveredOverlayRoot = null
+        activeOverlayRoot = null
+        hoveredWorldSpace = null
+        activeWorldSpace = null
+        nativeInputHost.setActiveRoot(null)
+        nativeInputHost.dispose()
+        for (const record of records.values()) {
+          if (record.runtime.plane instanceof RendererWebGpuDisplayPlane) engineRenderer.releaseDisplay(record.runtime.plane)
+          space.remove(record.runtime.plane)
+          record.runtime.dispose()
+        }
+        records.clear()
+        for (const record of overlays.values()) {
+          space.remove(record.runtime.overlay)
+          record.runtime.dispose()
+        }
+        overlays.clear()
+        for (const record of worlds.values()) {
+          if (record.runtime.space.parent === space) space.remove(record.runtime.space)
+          record.disposed = true
+        }
+        worlds.clear()
 
-      projectionRoots.clear()
-      beforeRenderListeners.clear()
-      presentedListeners.clear()
-      presentationHostClaim.release()
+        projectionRoots.clear()
+        beforeRenderListeners.clear()
+        presentedListeners.clear()
+      } finally {
+        try { disposeEngineRenderer() } finally { presentationHostClaim.release() }
+      }
     },
   })
 

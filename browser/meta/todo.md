@@ -32,3 +32,21 @@ GPU allocations и process RSS как независимые величины. `
 результат; для выводов использованы поля активного владельца.
 
 Скрипты рядом сохранены как `.ts.txt`, не запускаются автоматически.
+
+## Реализованный final lifecycle
+
+Canvas и Space runtime вызывают `engineRenderer.dispose()` только при своём
+окончательном dispose; same-Experience render сохраняет существующий runtime.
+Освобождение Renderer и presentation host claim защищено `finally`, включая
+ошибку последнего consumer cleanup. Plane/overlay не уничтожают общий Renderer.
+Внешняя startup boundary удерживает Renderer с момента создания и завершает его
+при любом неуспешном constructor/init path. Общий guarded release исключает
+двойное освобождение при вложенных startup/final cleanup.
+[Startup regressions](../tests/startup-resources.test.ts) воспроизводят отказ
+NativeInputHost и backend без textMeasurer после успешной GPU инициализации
+и повторный startup того же Canvas после освобождения claim.
+[Space lifecycle test](../tests/render-fault-latch.test.ts) и
+[Canvas test](../tests/canvas-matrix.test.ts) проверяют ровно одно final освобождение.
+[Root test](../tests/experience.test.ts) подтверждает один runtime, прежний
+Document/Element и component state при render обновлениях. Это seams evidence;
+живая серия same/new epoch HMR и GC ещё требуется по критерию выше.
