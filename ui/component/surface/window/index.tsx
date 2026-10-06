@@ -7,10 +7,14 @@ Window — оболочка окна с шапкой и сохраняемым �
 Шапка содержит кнопку сворачивания слева, единственный центрированный title
 и действия справа. Перемещение и resize включаются явно и ограничиваются
 принимающей областью. Focus-within поднимает оболочку целиком и выделяет рамку.
+Сообщение передаётся через message и отображается Notification слева внизу,
+отдельно от прокручиваемого содержимого. onMessageDismiss включает крестик
+и передаёт родителю закрытие сообщения без закрытия окна.
 Window не создаёт Document, Canvas, Display или HUD и не хранит настройки приложения.
 
 @packageDocumentation
 */
+import {WindowMessage} from "./src/message.tsx"
 import minusIcon from "@zavx0z/immersive-ui-theme-icon-minus"
 import SurfaceButton from "@zavx0z/immersive-ui-component-surface-chrome-button"
 import {WindowActionButton} from "./src/action.tsx"
@@ -226,6 +230,10 @@ export default function Window(props: Contract.Input): Contract.Output {
         >
           <slot />
         </div>
+        {props.message === undefined ? null : <WindowMessage
+          value={props.message}
+          onDismiss={props.onMessageDismiss}
+        />}
       </div>
       {props.resizable && !fill ? (
         <WindowResizeHandles

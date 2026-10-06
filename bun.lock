@@ -5,11 +5,11 @@
     "": {
       "name": "@zavx0z/immersive",
       "devDependencies": {
+        "@types/bun": "^1.4.2",
+        "@webgpu/types": "^0.1.74",
         "@zavx0z/immersive-browser": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
-        "@types/bun": "^1.4.2",
-        "@webgpu/types": "^0.1.74",
         "typescript": "^7.0.2",
       },
     },
@@ -17,29 +17,29 @@
       "name": "@zavx0z/immersive-browser",
       "version": "0.0.0",
       "devDependencies": {
+        "@zavx0z/immersive-jsx": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-tech-text-editor": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-ui-component-menu-clipboard": "workspace:*",
         "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
         "@zavx0z/immersive-ui-component-widget-editor": "workspace:*",
-        "@zavx0z/immersive-ui-component": "workspace:*",
-        "@zavx0z/immersive-jsx": "workspace:*",
       },
       "peerDependencies": {
-        "@zavx0z/immersive-renderer-html": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-engine": "workspace:*",
+        "@zavx0z/immersive-renderer-html": "workspace:*",
         "@zavx0z/immersive-space": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
         "@zavx0z/immersive-webgpu": "workspace:*",
       },
       "optionalPeers": [
-        "@zavx0z/immersive-renderer-html",
         "@zavx0z/immersive-component",
         "@zavx0z/immersive-dom",
         "@zavx0z/immersive-engine",
+        "@zavx0z/immersive-renderer-html",
         "@zavx0z/immersive-space",
         "@zavx0z/immersive-template",
         "@zavx0z/immersive-webgpu",
@@ -49,8 +49,8 @@
       "name": "@zavx0z/immersive-component",
       "version": "0.0.0",
       "peerDependencies": {
-        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
       },
       "optionalPeers": [
@@ -62,20 +62,20 @@
       "name": "@zavx0z/immersive-devtool",
       "version": "0.0.0",
       "peerDependencies": {
-        "@zavx0z/immersive-renderer-html": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-renderer-html": "workspace:*",
       },
       "optionalPeers": [
-        "@zavx0z/immersive-renderer-html",
         "@zavx0z/immersive-dom",
+        "@zavx0z/immersive-renderer-html",
       ],
     },
     "dom": {
       "name": "@zavx0z/immersive-dom",
       "version": "0.0.0",
       "devDependencies": {
-        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
       },
       "peerDependencies": {
         "typescript": "7.0.2",
@@ -92,26 +92,26 @@
         "bun-webgpu": "^0.1.7",
       },
       "peerDependencies": {
-        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
-        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-jsx-slot-child": "workspace:*",
-        "@zavx0z/immersive-renderer-html": "workspace:*",
-        "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-engine": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+        "@zavx0z/immersive-jsx-slot-child": "workspace:*",
+        "@zavx0z/immersive-renderer-html": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
+        "@zavx0z/immersive-ui-component-typography": "workspace:*",
         "@zavx0z/immersive-webgpu": "workspace:*",
       },
       "optionalPeers": [
-        "@zavx0z/immersive-renderer-html",
-        "@zavx0z/immersive-ui-component",
         "@zavx0z/immersive-component",
         "@zavx0z/immersive-dom",
         "@zavx0z/immersive-engine",
+        "@zavx0z/immersive-renderer-html",
         "@zavx0z/immersive-template",
+        "@zavx0z/immersive-ui-component",
         "@zavx0z/immersive-webgpu",
       ],
     },
@@ -160,19 +160,19 @@
       "name": "@zavx0z/immersive-jsx-compiler-session",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-error": "workspace:*",
+        "@zavx0z/immersive-jsx-event": "workspace:*",
         "@zavx0z/immersive-jsx-slot-authoring": "workspace:*",
         "@zavx0z/immersive-jsx-slot-plan": "workspace:*",
-        "@zavx0z/immersive-jsx-event": "workspace:*",
-        "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
         "typescript": "^7.0.2",
       },
       "devDependencies": {
-        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-browser": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-space": "workspace:*",
       },
     },
@@ -188,9 +188,9 @@
       "name": "@zavx0z/immersive-jsx-development-create",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-jsx-runtime-create": "workspace:*",
-        "@zavx0z/immersive-component": "workspace:*",
       },
       "devDependencies": {
         "@zavx0z/immersive-template": "workspace:*",
@@ -215,11 +215,11 @@
       "name": "@zavx0z/immersive-jsx-runtime-create",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-jsx-runtime-fragment": "workspace:*",
         "@zavx0z/immersive-jsx-slot-child": "workspace:*",
         "@zavx0z/immersive-jsx-slot-plan": "workspace:*",
-        "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
       },
       "devDependencies": {
@@ -264,9 +264,9 @@
         "@zavx0z/immersive-jsx-slot-authoring": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "peerDependencies": {
         "typescript": "7.0.2",
@@ -286,34 +286,34 @@
         "parse5": "^8.0.1",
       },
       "devDependencies": {
+        "@zavx0z/highlighter": "^0.1.0",
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-project": "workspace:*",
         "@zavx0z/immersive-renderer-html": "workspace:*",
         "@zavx0z/immersive-ui-component": "workspace:*",
-        "@zavx0z/highlighter": "^0.1.0",
       },
       "peerDependencies": {
-        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
-        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-nodes-layout": "workspace:*",
-        "@zavx0z/immersive-nodes-node": "workspace:*",
-        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
-        "@zavx0z/immersive-ui-component-divider": "workspace:*",
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes": "workspace:*",
+        "@zavx0z/immersive-nodes-layout": "workspace:*",
+        "@zavx0z/immersive-nodes-node": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
+        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+        "@zavx0z/immersive-ui-component-divider": "workspace:*",
+        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
       },
       "optionalPeers": [
-        "@zavx0z/immersive-nodes-layout",
-        "@zavx0z/immersive-nodes-node",
-        "@zavx0z/immersive-ui-component",
         "@zavx0z/immersive-component",
         "@zavx0z/immersive-dom",
         "@zavx0z/immersive-nodes",
+        "@zavx0z/immersive-nodes-layout",
+        "@zavx0z/immersive-nodes-node",
         "@zavx0z/immersive-template",
+        "@zavx0z/immersive-ui-component",
       ],
     },
     "nodes": {
@@ -331,41 +331,41 @@
         "@zavx0z/immersive-tech-json-metadata": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-engine": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+        "@zavx0z/immersive-markdown": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-port-id": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-project": "workspace:*",
         "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
         "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
         "@zavx0z/immersive-renderer-html": "workspace:*",
-        "@zavx0z/immersive-engine": "workspace:*",
-        "@zavx0z/immersive-markdown": "workspace:*",
         "@zavx0z/immersive-space": "workspace:*",
         "@zavx0z/immersive-webgpu": "workspace:*",
       },
       "peerDependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
+        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-jsx": "workspace:*",
         "@zavx0z/immersive-nodes-layout": "workspace:*",
         "@zavx0z/immersive-nodes-node": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
         "@zavx0z/immersive-nodes-tree": "workspace:*",
-        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
-        "@zavx0z/immersive-ui-component": "workspace:*",
-        "@zavx0z/immersive-component": "workspace:*",
-        "@zavx0z/immersive-dom": "workspace:*",
-        "@zavx0z/immersive-jsx": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
+        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
       },
       "optionalPeers": [
+        "@zavx0z/immersive-component",
+        "@zavx0z/immersive-dom",
         "@zavx0z/immersive-nodes-layout",
         "@zavx0z/immersive-nodes-node",
         "@zavx0z/immersive-nodes-parameter",
         "@zavx0z/immersive-nodes-socket",
         "@zavx0z/immersive-nodes-tree",
-        "@zavx0z/immersive-ui-component",
-        "@zavx0z/immersive-component",
-        "@zavx0z/immersive-dom",
         "@zavx0z/immersive-template",
+        "@zavx0z/immersive-ui-component",
       ],
     },
     "nodes/geometry/node/field-height": {
@@ -550,6 +550,9 @@
         "@zavx0z/immersive-nodes-node-parameter": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
+        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-metrics": "workspace:*",
@@ -560,12 +563,9 @@
         "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
         "@zavx0z/immersive-nodes-tree": "workspace:*",
         "@zavx0z/immersive-renderer-html": "workspace:*",
+        "@zavx0z/immersive-template": "workspace:*",
         "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-component": "workspace:*",
-        "@zavx0z/immersive-dom": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
-        "@zavx0z/immersive-template": "workspace:*",
       },
     },
     "nodes/node/content": {
@@ -578,13 +578,13 @@
         "@zavx0z/immersive-ui-theme-icon-visibility-on": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-nodes-projection-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-layout": "workspace:*",
         "@zavx0z/immersive-nodes-node": "workspace:*",
+        "@zavx0z/immersive-nodes-projection-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-tree": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/node/diagram": {
@@ -595,17 +595,18 @@
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-project": "workspace:*",
         "@zavx0z/immersive-nodes-layout": "workspace:*",
         "@zavx0z/immersive-nodes-node": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/node/parameter": {
       "name": "@zavx0z/immersive-nodes-node-parameter",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-metrics": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-project": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-socket-side": "workspace:*",
@@ -621,19 +622,18 @@
         "@zavx0z/immersive-ui-component-button-icon": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-chevron-down": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*",
-        "@zavx0z/immersive-component": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+        "@zavx0z/immersive-nodes-layout": "workspace:*",
+        "@zavx0z/immersive-nodes-node": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-boolean-checkbox": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-numeric-number": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-text": "workspace:*",
-        "@zavx0z/immersive-nodes-layout": "workspace:*",
-        "@zavx0z/immersive-nodes-node": "workspace:*",
         "@zavx0z/immersive-nodes-tree": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-dom": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter": {
@@ -646,32 +646,32 @@
         "@zavx0z/immersive-nodes-parameter-choice-cycle": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-choice-option-group": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-choice-select": "workspace:*",
+        "@zavx0z/immersive-nodes-parameter-collection": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-composite-color": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-composite-matrix": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-composite-vector": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-numeric-number": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-numeric-slider": "workspace:*",
-        "@zavx0z/immersive-nodes-parameter-shared-layout": "workspace:*",
-        "@zavx0z/immersive-nodes-parameter-collection": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-output": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-path": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-reference": "workspace:*",
+        "@zavx0z/immersive-nodes-parameter-shared-layout": "workspace:*",
         "@zavx0z/immersive-nodes-parameter-text": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
-        "@zavx0z/immersive-nodes-model-socket-key": "workspace:*",
-        "@zavx0z/immersive-nodes-node-parameter": "workspace:*",
-        "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
-        "@zavx0z/immersive-nodes-projection-parameter": "workspace:*",
-        "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-nodes-tree": "workspace:*",
-        "@zavx0z/immersive-ui-component-field-text": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+        "@zavx0z/immersive-nodes-model-socket-key": "workspace:*",
+        "@zavx0z/immersive-nodes-node-parameter": "workspace:*",
+        "@zavx0z/immersive-nodes-projection-parameter": "workspace:*",
+        "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
+        "@zavx0z/immersive-nodes-socket": "workspace:*",
+        "@zavx0z/immersive-nodes-tree": "workspace:*",
         "@zavx0z/immersive-space": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
+        "@zavx0z/immersive-ui-component-field-text": "workspace:*",
       },
     },
     "nodes/parameter/boolean/checkbox": {
@@ -682,10 +682,10 @@
         "@zavx0z/immersive-ui-component-field-checkbox": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/boolean/switch": {
@@ -696,10 +696,10 @@
         "@zavx0z/immersive-ui-component-field-switch": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/choice/cycle": {
@@ -710,10 +710,10 @@
         "@zavx0z/immersive-ui-component-field-cycle": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/choice/option-group": {
@@ -725,10 +725,10 @@
         "@zavx0z/immersive-ui-component-field-group": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/choice/select": {
@@ -739,10 +739,10 @@
         "@zavx0z/immersive-ui-component-field-select": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/collection": {
@@ -753,10 +753,10 @@
         "@zavx0z/immersive-ui-component-field-collection": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/composite/color": {
@@ -767,10 +767,10 @@
         "@zavx0z/immersive-ui-component-field-color": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/composite/matrix": {
@@ -781,10 +781,10 @@
         "@zavx0z/immersive-ui-component-field-matrix": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/composite/vector": {
@@ -795,10 +795,10 @@
         "@zavx0z/immersive-ui-component-field-vector": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/numeric/number": {
@@ -809,10 +809,10 @@
         "@zavx0z/immersive-ui-component-field-number": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/numeric/slider": {
@@ -823,10 +823,10 @@
         "@zavx0z/immersive-ui-component-field-slider": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/output": {
@@ -838,11 +838,11 @@
         "@zavx0z/immersive-ui-component-field-group": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
         "@zavx0z/immersive-nodes-tree": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/path": {
@@ -853,10 +853,10 @@
         "@zavx0z/immersive-ui-component-field-path": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/reference": {
@@ -867,27 +867,27 @@
         "@zavx0z/immersive-ui-component-field-reference": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/shared/layout": {
       "name": "@zavx0z/immersive-nodes-parameter-shared-layout",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-model-socket-metrics": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
-        "@zavx0z/immersive-component": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
         "@zavx0z/immersive-ui-component-field-text": "workspace:*",
-        "@zavx0z/immersive-dom": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/parameter/text": {
@@ -898,35 +898,35 @@
         "@zavx0z/immersive-ui-component-field-text": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-nodes-projection-parameter": "workspace:*",
-        "@zavx0z/immersive-nodes-parameter": "workspace:*",
-        "@zavx0z/immersive-nodes-socket": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+        "@zavx0z/immersive-nodes-parameter": "workspace:*",
+        "@zavx0z/immersive-nodes-projection-parameter": "workspace:*",
+        "@zavx0z/immersive-nodes-socket": "workspace:*",
       },
     },
     "nodes/projection/parameter": {
       "name": "@zavx0z/immersive-nodes-projection-parameter",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-model-socket-key": "workspace:*",
         "@zavx0z/immersive-nodes-model-socket-resolve-kind": "workspace:*",
         "@zavx0z/immersive-nodes-model-socket-resolve-shape": "workspace:*",
         "@zavx0z/immersive-nodes-model-socket-side": "workspace:*",
-        "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
         "@zavx0z/immersive-nodes-parameter": "workspace:*",
+        "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
         "@zavx0z/immersive-nodes-socket": "workspace:*",
         "@zavx0z/immersive-tech-json-metadata": "workspace:*",
-        "@zavx0z/immersive-component": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-model-parameter-store": "workspace:*",
         "@zavx0z/immersive-nodes-tree": "workspace:*",
         "@zavx0z/immersive-tech-json-value-own": "workspace:*",
-        "@zavx0z/immersive-dom": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "nodes/projection/parameter/presentation": {
@@ -956,18 +956,18 @@
         "@zavx0z/immersive-nodes-model-socket-shapes": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
       },
       "peerDependencies": {
-        "@zavx0z/immersive-nodes-tree": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-nodes-tree": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
       },
       "optionalPeers": [
-        "@zavx0z/immersive-nodes-tree",
         "@zavx0z/immersive-component",
+        "@zavx0z/immersive-nodes-tree",
         "@zavx0z/immersive-template",
       ],
     },
@@ -977,12 +977,12 @@
       "dependencies": {
         "@zavx0z/immersive-nodes-model-parameter-store": "workspace:*",
         "@zavx0z/immersive-nodes-model-parameter-value-type": "workspace:*",
+        "@zavx0z/immersive-tech-json-patch": "workspace:*",
         "@zavx0z/immersive-tech-json-patch-error": "workspace:*",
         "@zavx0z/immersive-tech-json-patch-limits": "workspace:*",
         "@zavx0z/immersive-tech-json-pointer-token": "workspace:*",
         "@zavx0z/immersive-tech-json-value-equal": "workspace:*",
         "@zavx0z/immersive-tech-json-value-own": "workspace:*",
-        "@zavx0z/immersive-tech-json-patch": "workspace:*",
       },
     },
     "renderer": {
@@ -1151,8 +1151,8 @@
       "name": "@zavx0z/immersive-template",
       "version": "0.0.0",
       "devDependencies": {
-        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-dom": "workspace:*",
@@ -1170,25 +1170,25 @@
         "typescript": "^7.0.2",
       },
       "devDependencies": {
+        "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-renderer-html": "workspace:*",
-        "@zavx0z/immersive-ui-view-code-editor-palette": "workspace:*",
         "@zavx0z/immersive-ui-component": "workspace:*",
-        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-ui-view-code-editor-palette": "workspace:*",
       },
       "peerDependencies": {
-        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
         "@zavx0z/immersive-markdown": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
+        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
       },
       "optionalPeers": [
-        "@zavx0z/immersive-ui-component",
         "@zavx0z/immersive-component",
         "@zavx0z/immersive-markdown",
         "@zavx0z/immersive-template",
+        "@zavx0z/immersive-ui-component",
       ],
     },
     "ui/component": {
@@ -1196,24 +1196,28 @@
       "version": "0.0.0",
       "dependencies": {
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-ui-component-navigation-breadcrumb": "workspace:*",
         "@zavx0z/immersive-ui-component-badge": "workspace:*",
         "@zavx0z/immersive-ui-component-button": "workspace:*",
         "@zavx0z/immersive-ui-component-divider": "workspace:*",
         "@zavx0z/immersive-ui-component-feedback": "workspace:*",
         "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-ui-component-menu": "workspace:*",
+        "@zavx0z/immersive-ui-component-navigation-breadcrumb": "workspace:*",
         "@zavx0z/immersive-ui-component-surface": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
         "@zavx0z/immersive-ui-component-view": "workspace:*",
         "@zavx0z/immersive-ui-component-widget": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
+        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-renderer-html": "workspace:*",
         "@zavx0z/immersive-tech-terminal": "workspace:*",
         "@zavx0z/immersive-tech-text-editor": "workspace:*",
+        "@zavx0z/immersive-template": "workspace:*",
         "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
         "@zavx0z/immersive-ui-component-feedback-notification": "workspace:*",
         "@zavx0z/immersive-ui-component-feedback-status-bar": "workspace:*",
@@ -1228,10 +1232,10 @@
         "@zavx0z/immersive-ui-component-surface-tab": "workspace:*",
         "@zavx0z/immersive-ui-component-surface-window": "workspace:*",
         "@zavx0z/immersive-ui-component-surface-window-control": "workspace:*",
+        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
         "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-data": "workspace:*",
         "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-resolve-scope-color-hex": "workspace:*",
         "@zavx0z/immersive-ui-component-view-code-editor-view-model": "workspace:*",
-        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
         "@zavx0z/immersive-ui-component-view-list": "workspace:*",
         "@zavx0z/immersive-ui-component-widget-editor": "workspace:*",
         "@zavx0z/immersive-ui-component-widget-inspector": "workspace:*",
@@ -1252,14 +1256,10 @@
         "@zavx0z/immersive-ui-field-layout-switch": "workspace:*",
         "@zavx0z/immersive-ui-field-layout-text": "workspace:*",
         "@zavx0z/immersive-ui-field-layout-vector": "workspace:*",
+        "@zavx0z/immersive-ui-theme-icon": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-home": "workspace:*",
-        "@zavx0z/immersive-ui-theme-icon": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-set": "workspace:*",
-        "@zavx0z/immersive-component": "workspace:*",
-        "@zavx0z/immersive-dom": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
-        "@zavx0z/immersive-template": "workspace:*",
       },
     },
     "ui/component/badge": {
@@ -1269,8 +1269,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/button": {
@@ -1283,9 +1283,9 @@
         "@zavx0z/immersive-ui-component-button-toggle-group": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-theme-icon-run": "workspace:*",
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
+        "@zavx0z/immersive-ui-theme-icon-run": "workspace:*",
       },
     },
     "ui/component/button/basic": {
@@ -1295,8 +1295,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-button": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-button": "workspace:*",
       },
     },
     "ui/component/button/icon": {
@@ -1307,9 +1307,9 @@
         "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-button": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-run": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "ui/component/button/toggle-group": {
@@ -1321,8 +1321,8 @@
         "@zavx0z/immersive-ui-selection-validate-options": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-button": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-button": "workspace:*",
       },
     },
     "ui/component/divider": {
@@ -1332,8 +1332,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/feedback": {
@@ -1345,8 +1345,8 @@
         "@zavx0z/immersive-ui-component-feedback-status-bar": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/feedback/notification": {
@@ -1358,8 +1358,8 @@
         "@zavx0z/immersive-ui-theme-icon-close": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-feedback": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-feedback": "workspace:*",
       },
     },
     "ui/component/feedback/status-bar": {
@@ -1369,9 +1369,9 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-feedback": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1399,8 +1399,8 @@
         "@zavx0z/immersive-ui-component-field-vector": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/field/checkbox": {
@@ -1410,8 +1410,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/collection": {
@@ -1430,8 +1430,8 @@
         "@zavx0z/immersive-ui-theme-icon-plus": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/color": {
@@ -1445,8 +1445,8 @@
         "@zavx0z/immersive-ui-field-color-value-normalize": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1471,8 +1471,8 @@
         "@zavx0z/immersive-ui-field-color-value-wrap-unit": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/cycle": {
@@ -1486,8 +1486,8 @@
         "@zavx0z/immersive-ui-theme-icon-chevron-down": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1501,9 +1501,9 @@
         "@zavx0z/immersive-ui-field-metric-resolve-density": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1520,8 +1520,8 @@
         "@zavx0z/immersive-ui-field-matrix-value-update": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/number": {
@@ -1540,8 +1540,8 @@
         "@zavx0z/immersive-ui-field-number-value-step": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1557,8 +1557,8 @@
         "@zavx0z/immersive-ui-theme-icon-folder": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/reference": {
@@ -1573,8 +1573,8 @@
         "@zavx0z/immersive-ui-theme-icon-resource": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/select": {
@@ -1588,9 +1588,9 @@
         "@zavx0z/immersive-ui-selection-validate-state": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-ui-selection-validate-state": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "ui/component/field/slider": {
@@ -1601,8 +1601,8 @@
         "@zavx0z/immersive-ui-field-metric-resolve-density": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/switch": {
@@ -1612,8 +1612,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/text": {
@@ -1623,8 +1623,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/field/vector": {
@@ -1638,8 +1638,8 @@
         "@zavx0z/immersive-ui-field-vector-value-update": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-field": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field": "workspace:*",
       },
     },
     "ui/component/menu": {
@@ -1652,8 +1652,8 @@
         "@zavx0z/immersive-ui-component-menu-item": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/menu/basic": {
@@ -1664,8 +1664,8 @@
         "@zavx0z/immersive-ui-component-menu-item": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-menu": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-menu": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1679,8 +1679,8 @@
         "@zavx0z/immersive-ui-component-menu-basic": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-menu": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-menu": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1693,8 +1693,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-menu": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-menu": "workspace:*",
       },
     },
     "ui/component/navigation/breadcrumb": {
@@ -1705,8 +1705,8 @@
         "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/surface": {
@@ -1723,8 +1723,8 @@
         "@zavx0z/immersive-ui-component-surface-window-control": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/surface/chrome": {
@@ -1740,8 +1740,8 @@
         "@zavx0z/immersive-ui-component-surface-chrome-title": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-surface": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-surface": "workspace:*",
       },
     },
     "ui/component/surface/chrome/body": {
@@ -1751,9 +1751,9 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "ui/component/surface/chrome/button": {
@@ -1764,8 +1764,8 @@
         "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
       },
     },
     "ui/component/surface/chrome/header": {
@@ -1775,9 +1775,9 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "ui/component/surface/chrome/navigation": {
@@ -1787,9 +1787,9 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "ui/component/surface/chrome/owner": {
@@ -1799,9 +1799,9 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "ui/component/surface/chrome/title": {
@@ -1811,8 +1811,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-surface-chrome": "workspace:*",
       },
     },
     "ui/component/surface/frame": {
@@ -1829,9 +1829,9 @@
         "@zavx0z/immersive-ui-surface-assert-actions": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-surface": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
     },
     "ui/component/surface/pane": {
@@ -1841,9 +1841,9 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-surface": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1860,9 +1860,9 @@
         "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-surface": "workspace:*",
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1875,9 +1875,9 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
         "@zavx0z/immersive-ui-component-surface": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1889,13 +1889,14 @@
       "version": "0.0.0",
       "dependencies": {
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+        "@zavx0z/immersive-ui-component-feedback-notification": "workspace:*",
         "@zavx0z/immersive-ui-component-surface-chrome-button": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-minus": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component-field-text": "workspace:*",
         "@zavx0z/immersive-ui-component-surface": "workspace:*",
-        "@zavx0z/immersive-headless": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -1910,9 +1911,9 @@
         "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-surface": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-surface": "workspace:*",
       },
     },
     "ui/component/typography": {
@@ -1922,8 +1923,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/view": {
@@ -1937,8 +1938,8 @@
         "@zavx0z/immersive-ui-component-view-timeline": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/view/code-editor": {
@@ -1996,17 +1997,17 @@
       "name": "@zavx0z/immersive-ui-component-view-code-editor-view-model",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/highlighter": "^0.1.0",
         "@zavx0z/immersive-tech-color-hex-normalize": "workspace:*",
         "@zavx0z/immersive-tech-color-hex-valid": "workspace:*",
         "@zavx0z/immersive-tech-text-assert-non-empty": "workspace:*",
         "@zavx0z/immersive-tech-text-editor": "workspace:*",
-        "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-resolve-scope-color-hex": "workspace:*",
-        "@zavx0z/immersive-ui-component-view-code-editor-highlighter": "workspace:*",
-        "@zavx0z/immersive-ui-component-view-code-editor-validate": "workspace:*",
-        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
         "@zavx0z/immersive-ui-component-badge": "workspace:*",
+        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
+        "@zavx0z/immersive-ui-component-view-code-editor-highlighter": "workspace:*",
+        "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-resolve-scope-color-hex": "workspace:*",
+        "@zavx0z/immersive-ui-component-view-code-editor-validate": "workspace:*",
         "@zavx0z/immersive-ui-view-code-editor-editor-foreground": "workspace:*",
-        "@zavx0z/highlighter": "^0.1.0",
       },
     },
     "ui/component/view/list": {
@@ -2016,8 +2017,8 @@
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-view": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-view": "workspace:*",
       },
     },
     "ui/component/view/table": {
@@ -2029,8 +2030,8 @@
         "@zavx0z/immersive-ui-view-table-normalize-table-selection": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-view": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-view": "workspace:*",
       },
     },
     "ui/component/view/table/selection-after-click": {
@@ -2054,8 +2055,8 @@
         "@zavx0z/immersive-ui-component-surface-chrome-title": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-view": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-view": "workspace:*",
       },
     },
     "ui/component/widget": {
@@ -2070,8 +2071,8 @@
         "@zavx0z/immersive-ui-component-widget-tree": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
       },
     },
     "ui/component/widget/editor": {
@@ -2084,8 +2085,8 @@
         "@zavx0z/immersive-ui-component-widget-header": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-widget": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -2096,13 +2097,13 @@
       "version": "0.0.0",
       "dependencies": {
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+        "@zavx0z/immersive-ui-component-badge": "workspace:*",
         "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
         "@zavx0z/immersive-ui-component-widget-header-action": "workspace:*",
-        "@zavx0z/immersive-ui-component-badge": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-widget": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget": "workspace:*",
       },
     },
     "ui/component/widget/header/action": {
@@ -2110,10 +2111,10 @@
       "version": "0.0.0",
       "dependencies": {
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
-        "@zavx0z/immersive-ui-component-widget-header": "workspace:*",
         "@zavx0z/immersive-ui-component-badge": "workspace:*",
+        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
         "@zavx0z/immersive-ui-component-divider": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget-header": "workspace:*",
       },
       "devDependencies": {
         "@zavx0z/immersive-headless": "workspace:*",
@@ -2149,8 +2150,8 @@
         "@zavx0z/immersive-ui-component-widget-header": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-widget": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -2162,16 +2163,16 @@
       "version": "0.0.0",
       "dependencies": {
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
-        "@zavx0z/immersive-ui-component-widget-header-action": "workspace:*",
-        "@zavx0z/immersive-ui-component-widget-header": "workspace:*",
         "@zavx0z/immersive-ui-component-badge": "workspace:*",
+        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget-header": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget-header-action": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-chevron-down": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-ui-component-widget": "workspace:*",
         "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget": "workspace:*",
       },
       "peerDependencies": {
         "@zavx0z/immersive-component": "workspace:*",
@@ -2989,8 +2990,8 @@
       "name": "@zavx0z/immersive-ui-view-code-editor-palette",
       "version": "0.0.0",
       "dependencies": {
-        "@zavx0z/immersive-ui-view-code-editor-theme-color": "workspace:*",
         "@zavx0z/immersive-ui-view-code-editor-editor-foreground": "workspace:*",
+        "@zavx0z/immersive-ui-view-code-editor-theme-color": "workspace:*",
       },
     },
     "ui/view/code-editor/theme/color": {
@@ -3020,20 +3021,20 @@
       "name": "@zavx0z/immersive-webgpu",
       "version": "0.0.0",
       "devDependencies": {
-        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
-        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
+        "@webgpu/types": "^0.1.72",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-template": "workspace:*",
-        "@webgpu/types": "^0.1.72",
+        "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
       },
       "peerDependencies": {
-        "@zavx0z/immersive-renderer-html": "workspace:*",
         "@zavx0z/immersive-engine": "workspace:*",
+        "@zavx0z/immersive-renderer-html": "workspace:*",
       },
       "optionalPeers": [
-        "@zavx0z/immersive-renderer-html",
         "@zavx0z/immersive-engine",
+        "@zavx0z/immersive-renderer-html",
       ],
     },
   },
@@ -3055,17 +3056,159 @@
 
     "@iconify/utils": ["@iconify/utils@3.1.7", "", { "dependencies": { "@antfu/install-pkg": "^2.0.1", "@iconify/types": "^2.0.0", "import-meta-resolve": "^4.2.0" } }, "sha512-JZHlwdID+dy+lTgbYC8NEC4zeugqeYsc6jewvzb4c58kHauJn+X7rNwQjxz5p2qSjqaEeQoLkCIQ9v/H4PK0/w=="],
 
+    "@mermaid-js/parser": ["@mermaid-js/parser@1.2.1", "", { "dependencies": { "@chevrotain/types": "~11.1.2" } }, "sha512-n12NohV3mrUyUL2o93IgG/ifeW9FTyeJn3zDxkhwa8MJ9Fxg3HQMlA3RiGmD/3UnJvheztkjjQAjA2T4LmUcpw=="],
+
+    "@types/bun": ["@types/bun@1.4.2", "", { "dependencies": { "bun-types": "1.4.2" } }, "sha512-GimotNn7+ZV0uVArItBbriZsR1oNf0+WTzPkdcFrzShI7k2norL0uzEaJT8T33dWr7O/c9ZDuAFQrctKCi72oQ=="],
+
+    "@types/d3": ["@types/d3@7.4.3", "", { "dependencies": { "@types/d3-array": "*", "@types/d3-axis": "*", "@types/d3-brush": "*", "@types/d3-chord": "*", "@types/d3-color": "*", "@types/d3-contour": "*", "@types/d3-delaunay": "*", "@types/d3-dispatch": "*", "@types/d3-drag": "*", "@types/d3-dsv": "*", "@types/d3-ease": "*", "@types/d3-fetch": "*", "@types/d3-force": "*", "@types/d3-format": "*", "@types/d3-geo": "*", "@types/d3-hierarchy": "*", "@types/d3-interpolate": "*", "@types/d3-path": "*", "@types/d3-polygon": "*", "@types/d3-quadtree": "*", "@types/d3-random": "*", "@types/d3-scale": "*", "@types/d3-scale-chromatic": "*", "@types/d3-selection": "*", "@types/d3-shape": "*", "@types/d3-time": "*", "@types/d3-time-format": "*", "@types/d3-timer": "*", "@types/d3-transition": "*", "@types/d3-zoom": "*" } }, "sha512-lZXZ9ckh5R8uiFVt8ogUNf+pIrK4EsWrx2Np75WvF/eTpJ0FMHNhjXk8CKEx/+gpHbNQyJWehbFaTvqmHWB3ww=="],
+
+    "@types/d3-array": ["@types/d3-array@3.2.2", "", {}, "sha512-hOLWVbm7uRza0BYXpIIW5pxfrKe0W+D5lrFiAEYR+pb6w3N2SwSMaJbXdUfSEv+dT4MfHBLtn5js0LAWaO6otw=="],
+
+    "@types/d3-axis": ["@types/d3-axis@3.0.6", "", { "dependencies": { "@types/d3-selection": "*" } }, "sha512-pYeijfZuBd87T0hGn0FO1vQ/cgLk6E1ALJjfkC0oJ8cbwkZl3TpgS8bVBLZN+2jjGgg38epgxb2zmoGtSfvgMw=="],
+
+    "@types/d3-brush": ["@types/d3-brush@3.0.6", "", { "dependencies": { "@types/d3-selection": "*" } }, "sha512-nH60IZNNxEcrh6L1ZSMNA28rj27ut/2ZmI3r96Zd+1jrZD++zD3LsMIjWlvg4AYrHn/Pqz4CF3veCxGjtbqt7A=="],
+
+    "@types/d3-chord": ["@types/d3-chord@3.0.6", "", {}, "sha512-LFYWWd8nwfwEmTZG9PfQxd17HbNPksHBiJHaKuY1XeqscXacsS2tyoo6OdRsjf+NQYeB6XrNL3a25E3gH69lcg=="],
+
+    "@types/d3-color": ["@types/d3-color@3.1.3", "", {}, "sha512-iO90scth9WAbmgv7ogoq57O9YpKmFBbmoEoCHDB2xMBY0+/KVrqAaCDyCE16dUspeOvIxFFRI+0sEtqDqy2b4A=="],
+
+    "@types/d3-contour": ["@types/d3-contour@3.0.6", "", { "dependencies": { "@types/d3-array": "*", "@types/geojson": "*" } }, "sha512-BjzLgXGnCWjUSYGfH1cpdo41/hgdWETu4YxpezoztawmqsvCeep+8QGfiY6YbDvfgHz/DkjeIkkZVJavB4a3rg=="],
+
+    "@types/d3-delaunay": ["@types/d3-delaunay@6.0.4", "", {}, "sha512-ZMaSKu4THYCU6sV64Lhg6qjf1orxBthaC161plr5KuPHo3CNm8DTHiLw/5Eq2b6TsNP0W0iJrUOFscY6Q450Hw=="],
+
+    "@types/d3-dispatch": ["@types/d3-dispatch@3.0.7", "", {}, "sha512-5o9OIAdKkhN1QItV2oqaE5KMIiXAvDWBDPrD85e58Qlz1c1kI/J0NcqbEG88CoTwJrYe7ntUCVfeUl2UJKbWgA=="],
+
+    "@types/d3-drag": ["@types/d3-drag@3.0.7", "", { "dependencies": { "@types/d3-selection": "*" } }, "sha512-HE3jVKlzU9AaMazNufooRJ5ZpWmLIoc90A37WU2JMmeq28w1FQqCZswHZ3xR+SuxYftzHq6WU6KJHvqxKzTxxQ=="],
+
+    "@types/d3-dsv": ["@types/d3-dsv@3.0.7", "", {}, "sha512-n6QBF9/+XASqcKK6waudgL0pf/S5XHPPI8APyMLLUHd8NqouBGLsU8MgtO7NINGtPBtk9Kko/W4ea0oAspwh9g=="],
+
+    "@types/d3-ease": ["@types/d3-ease@3.0.2", "", {}, "sha512-NcV1JjO5oDzoK26oMzbILE6HW7uVXOHLQvHshBUW4UMdZGfiY6v5BeQwh9a9tCzv+CeefZQHJt5SRgK154RtiA=="],
+
+    "@types/d3-fetch": ["@types/d3-fetch@3.0.7", "", { "dependencies": { "@types/d3-dsv": "*" } }, "sha512-fTAfNmxSb9SOWNB9IoG5c8Hg6R+AzUHDRlsXsDZsNp6sxAEOP0tkP3gKkNSO/qmHPoBFTxNrjDprVHDQDvo5aA=="],
+
+    "@types/d3-force": ["@types/d3-force@3.0.10", "", {}, "sha512-ZYeSaCF3p73RdOKcjj+swRlZfnYpK1EbaDiYICEEp5Q6sUiqFaFQ9qgoshp5CzIyyb/yD09kD9o2zEltCexlgw=="],
+
+    "@types/d3-format": ["@types/d3-format@3.0.4", "", {}, "sha512-fALi2aI6shfg7vM5KiR1wNJnZ7r6UuggVqtDA+xiEdPZQwy/trcQaHnwShLuLdta2rTymCNpxYTiMZX/e09F4g=="],
+
+    "@types/d3-geo": ["@types/d3-geo@3.1.1", "", { "dependencies": { "@types/geojson": "*" } }, "sha512-65Emv9fQiQQqphLlRkuQ5ypPsOmWPhtBGCMv61JDPEPMvsx+gzhGf74yw1a78xFKPj6zw4AgQICJoQv0vK9M2w=="],
+
+    "@types/d3-hierarchy": ["@types/d3-hierarchy@3.1.7", "", {}, "sha512-tJFtNoYBtRtkNysX1Xq4sxtjK8YgoWUNpIiUee0/jHGRwqvzYxkq0hGVbbOGSz+JgFxxRu4K8nb3YpG3CMARtg=="],
+
+    "@types/d3-interpolate": ["@types/d3-interpolate@3.0.4", "", { "dependencies": { "@types/d3-color": "*" } }, "sha512-mgLPETlrpVV1YRJIglr4Ez47g7Yxjl1lj7YKsiMCb27VJH9W8NVM6Bb9d8kkpG/uAQS5AmbA48q2IAolKKo1MA=="],
+
+    "@types/d3-path": ["@types/d3-path@3.1.1", "", {}, "sha512-VMZBYyQvbGmWyWVea0EHs/BwLgxc+MKi1zLDCONksozI4YJMcTt8ZEuIR4Sb1MMTE8MMW49v0IwI5+b7RmfWlg=="],
+
+    "@types/d3-polygon": ["@types/d3-polygon@3.0.2", "", {}, "sha512-ZuWOtMaHCkN9xoeEMr1ubW2nGWsp4nIql+OPQRstu4ypeZ+zk3YKqQT0CXVe/PYqrKpZAi+J9mTs05TKwjXSRA=="],
+
+    "@types/d3-quadtree": ["@types/d3-quadtree@3.0.6", "", {}, "sha512-oUzyO1/Zm6rsxKRHA1vH0NEDG58HrT5icx/azi9MF1TWdtttWl0UIUsjEQBBh+SIkrpd21ZjEv7ptxWys1ncsg=="],
+
+    "@types/d3-random": ["@types/d3-random@3.0.4", "", {}, "sha512-UHYId5WTCx4L4YNel7NU00XUXXgvgpgZOvp10PuvsQENjMDXhh2RyFc0KBjO7B45ne4Ha1yVH7ii0vnzKkuzWA=="],
+
+    "@types/d3-scale": ["@types/d3-scale@4.0.9", "", { "dependencies": { "@types/d3-time": "*" } }, "sha512-dLmtwB8zkAeO/juAMfnV+sItKjlsw2lKdZVVy6LRr0cBmegxSABiLEpGVmSJJ8O08i4+sGR6qQtb6WtuwJdvVw=="],
+
+    "@types/d3-scale-chromatic": ["@types/d3-scale-chromatic@3.1.0", "", {}, "sha512-iWMJgwkK7yTRmWqRB5plb1kadXyQ5Sj8V/zYlFGMUBbIPKQScw+Dku9cAAMgJG+z5GYDoMjWGLVOvjghDEFnKQ=="],
+
+    "@types/d3-selection": ["@types/d3-selection@3.0.12", "", {}, "sha512-Qe/KWYhEiIIxGs7HrAAjMfShxKldx19SJtr5zu53f3afPsdZNz7HHtdTLXo/kqeiWNXVycI24kSnfzBYkTzpgw=="],
+
+    "@types/d3-shape": ["@types/d3-shape@3.2.0", "", { "dependencies": { "@types/d3-path": "*" } }, "sha512-kVd74ta9eof3eJOvbNd1vGKS/XERRyQbT26Og63hIsvDO84cjD5gEOhsXf26w3FSoNlPVz84DOFcKv/oou+fMw=="],
+
+    "@types/d3-time": ["@types/d3-time@3.0.4", "", {}, "sha512-yuzZug1nkAAaBlBBikKZTgzCeA+k1uy4ZFwWANOfKw5z5LRhV0gNA7gNkKm7HoK+HRN0wX3EkxGk0fpbWhmB7g=="],
+
+    "@types/d3-time-format": ["@types/d3-time-format@4.0.3", "", {}, "sha512-5xg9rC+wWL8kdDj153qZcsJ0FWiFt0J5RB6LYUNZjwSnesfblqrI/bJ1wBdJ8OQfncgbJG5+2F+qfqnqyzYxyg=="],
+
+    "@types/d3-timer": ["@types/d3-timer@3.0.2", "", {}, "sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw=="],
+
+    "@types/d3-transition": ["@types/d3-transition@3.0.9", "", { "dependencies": { "@types/d3-selection": "*" } }, "sha512-uZS5shfxzO3rGlu0cC3bjmMFKsXv+SmZZcgp0KD22ts4uGXp5EVYGzu/0YdwZeKmddhcAccYtREJKkPfXkZuCg=="],
+
+    "@types/d3-zoom": ["@types/d3-zoom@3.0.9", "", { "dependencies": { "@types/d3-interpolate": "*", "@types/d3-selection": "*" } }, "sha512-0sE1406XBYJGiqD3AusTl9ZqC//2mIXix51tbom25gDCA8ri4xnSZg28CaSE8Srl6FClqABUKfsn0qghgdepMA=="],
+
+    "@types/geojson": ["@types/geojson@7946.0.16", "", {}, "sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg=="],
+
+    "@types/node": ["@types/node@26.6.3", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg=="],
+
+    "@types/trusted-types": ["@types/trusted-types@2.0.7", "", {}, "sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw=="],
+
+    "@typescript/typescript-aix-ppc64": ["@typescript/typescript-aix-ppc64@7.0.2", "", { "os": "aix", "cpu": "ppc64" }, "sha512-MTKKkWB7p/0E9xi1d1tHtZ5PiLkGEMIq88pK2CubZjOsLtYTLqhgIgi6zepFa+9GHZ6h05NMCkQxGKiPXMxXtQ=="],
+
+    "@typescript/typescript-darwin-arm64": ["@typescript/typescript-darwin-arm64@7.0.2", "", { "os": "darwin", "cpu": "arm64" }, "sha512-gowzar9MwS/aRWp6f3a4KUqzRjAZjOsmGNCM6LcTgXum+dBfgsBVMN+AgvOCCbguXyick6LJhpBszxMebJ8syA=="],
+
+    "@typescript/typescript-darwin-x64": ["@typescript/typescript-darwin-x64@7.0.2", "", { "os": "darwin", "cpu": "x64" }, "sha512-SZ9xZInqApNlNGc9s0W1VSsktYSOe9cFqNOIqmN1Gs8SmkjKZYFt017G4VwPxASInODuAdbTW7sXiFUf893RgA=="],
+
+    "@typescript/typescript-freebsd-arm64": ["@typescript/typescript-freebsd-arm64@7.0.2", "", { "os": "freebsd", "cpu": "arm64" }, "sha512-W5NH4y/J0plIIS5b2xvTEkU7JFxyqdMAOgf+Ilhl0vHQXKO5dZoxd+C/jEtq56c4F3wk71RB4BMRQ2XdI+bwYQ=="],
+
+    "@typescript/typescript-freebsd-x64": ["@typescript/typescript-freebsd-x64@7.0.2", "", { "os": "freebsd", "cpu": "x64" }, "sha512-UMGDx5sTpzNw3WiPebH7l90IWfJggEd+egHt/q6p7/Cm3zqoV7VxkGXt+3DxPIw8CcmvAB0j3sVVfbhX+M4Tpw=="],
+
+    "@typescript/typescript-linux-arm": ["@typescript/typescript-linux-arm@7.0.2", "", { "os": "linux", "cpu": "arm" }, "sha512-gffT3xPz9sR7j/YJExkyPntrI0P2EP9XbOyWzth2/Gs0RstK+90RBcO0ncXoXy/beYll1SXw846Nf2zdnEz0QQ=="],
+
+    "@typescript/typescript-linux-arm64": ["@typescript/typescript-linux-arm64@7.0.2", "", { "os": "linux", "cpu": "arm64" }, "sha512-Qh4eU4/y3yDjnfjjyPYihMj5/ODIlmt+Bzu17OI+fiSRDW57QmU5SiN63exPRNJPKUzcc1INa1NXdrJ+MqHjUQ=="],
+
+    "@typescript/typescript-linux-loong64": ["@typescript/typescript-linux-loong64@7.0.2", "", { "os": "linux", "cpu": "none" }, "sha512-uEHck9i8hoAzXPiYRib1O7miOnz23SxIeVl6F4LXox+qov1K35jHcEW6VHKvZI+pyvl7fZEP4MCU5LYvIq1GuQ=="],
+
+    "@typescript/typescript-linux-mips64el": ["@typescript/typescript-linux-mips64el@7.0.2", "", { "os": "linux", "cpu": "none" }, "sha512-R4KvAMnE43W5Qeqb0Ly56O3mWMWIAgsMyz36DCaycd5nbg/9kzm0liw3JocfRqyJY0KPmzFjbswozXyW0DnIYA=="],
+
+    "@typescript/typescript-linux-ppc64": ["@typescript/typescript-linux-ppc64@7.0.2", "", { "os": "linux", "cpu": "ppc64" }, "sha512-DORx5b3sd/4S7eayxm4FQv+A7CrkUIGRaHiwI8oiHTAI1fAPWhF4J0vAlkC8biAlHSVVwxMQ3tjZ2/DVbnQiiA=="],
+
+    "@typescript/typescript-linux-riscv64": ["@typescript/typescript-linux-riscv64@7.0.2", "", { "os": "linux", "cpu": "none" }, "sha512-wf0jqEDOjrPRnKwYRyyJDRo11KMbvMFrU+q4zqKyChODBzvlkbhNQfKvLxQCcwTpdDaXSHZTVuh0JoCrKCUMHQ=="],
+
+    "@typescript/typescript-linux-s390x": ["@typescript/typescript-linux-s390x@7.0.2", "", { "os": "linux", "cpu": "s390x" }, "sha512-IkwJc3L7yhytWd/ewjyxNDfOmswCm9GWMJT/ue/dU4aZNbwZeYAetq42VyLmsmSjvoX7z74X6ZaYCtzAr0EuGw=="],
+
+    "@typescript/typescript-linux-x64": ["@typescript/typescript-linux-x64@7.0.2", "", { "os": "linux", "cpu": "x64" }, "sha512-EYdf2cNg7rgCWJnxCdJ+F3V39O8ihb37eHAu1LK8oAFizgTQbPOK7zHHXbPt8rX24COqODXeI3sIf0fCXG7H/A=="],
+
+    "@typescript/typescript-netbsd-arm64": ["@typescript/typescript-netbsd-arm64@7.0.2", "", { "os": "none", "cpu": "arm64" }, "sha512-+polYF4MF04aPpO5FTkHran9yUQDSXqy5GiSDKpsll5jy3l3+g9QLhpf39T+ePtefhXLOGrLl0QIjkQP6VnelA=="],
+
+    "@typescript/typescript-netbsd-x64": ["@typescript/typescript-netbsd-x64@7.0.2", "", { "os": "none", "cpu": "x64" }, "sha512-8YIT0EHM/3dq10ZOVF/A7pc/YSMtbcecct4rWtexrnSCHOPcpC2KTLXfTCR6vDpnSiY12heNb1GiN/wu+T/FyA=="],
+
+    "@typescript/typescript-openbsd-arm64": ["@typescript/typescript-openbsd-arm64@7.0.2", "", { "os": "openbsd", "cpu": "arm64" }, "sha512-APT8+ClYnuYm1u9+kgGXoMj2VzWzcymwh2gNSQVySHfkRDGOTVkoWLjCmOQSaO+PoqQ57B0flRp9SA+7GnnkzQ=="],
+
+    "@typescript/typescript-openbsd-x64": ["@typescript/typescript-openbsd-x64@7.0.2", "", { "os": "openbsd", "cpu": "x64" }, "sha512-yX7s+Q0Dln0Dt9tEzZsAjXXR/+ytBM7AlglaqyeMPxQszJ1JhlJdZ6jLA+IzldHtflX81em7lDao1xXu+aRRkg=="],
+
+    "@typescript/typescript-sunos-x64": ["@typescript/typescript-sunos-x64@7.0.2", "", { "os": "sunos", "cpu": "x64" }, "sha512-dLJDGaLZ1D4HPQn62u1n8mBDkJREwMsAkCdkwd4Ieqw+x3TUyTsqY0YiBCtE6H6OzzgGk3iuZ3vFWRS+E8/d1g=="],
+
+    "@typescript/typescript-win32-arm64": ["@typescript/typescript-win32-arm64@7.0.2", "", { "os": "win32", "cpu": "arm64" }, "sha512-Gyl1Vy6OsWesLzmq+EP0Fb7b4Nid5232AvcA2SFcdYreldpNtYFFofPjnt62y9hQy7VTaZp65ICJjuAQRaVcIQ=="],
+
+    "@typescript/typescript-win32-x64": ["@typescript/typescript-win32-x64@7.0.2", "", { "os": "win32", "cpu": "x64" }, "sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g=="],
+
+    "@upsetjs/venn.js": ["@upsetjs/venn.js@2.0.0", "", { "optionalDependencies": { "d3-selection": "^3.0.0", "d3-transition": "^3.0.1" } }, "sha512-WbBhLrooyePuQ1VZxrJjtLvTc4NVfpOyKx0sKqioq9bX1C1m7Jgykkn8gLrtwumBioXIqam8DLxp88Adbue6Hw=="],
+
+    "@webgpu/types": ["@webgpu/types@0.1.74", "", {}, "sha512-lgiI4hbuLcI9unnm2cL/tvCaQU45dp0xcLWJh5uB/9MBGvIA4F8XIk7nSiBeg+K4xWGYwgZKn80LmERI5CxoTA=="],
+
+    "@zavx0z/highlighter": ["@zavx0z/highlighter@link:@zavx0z/highlighter", {}],
+
+    "@zavx0z/immersive-browser": ["@zavx0z/immersive-browser@workspace:browser"],
+
+    "@zavx0z/immersive-component": ["@zavx0z/immersive-component@workspace:component"],
+
+    "@zavx0z/immersive-devtool": ["@zavx0z/immersive-devtool@workspace:devtool"],
+
+    "@zavx0z/immersive-dom": ["@zavx0z/immersive-dom@workspace:dom"],
+
+    "@zavx0z/immersive-engine": ["@zavx0z/immersive-engine@workspace:engine"],
+
+    "@zavx0z/immersive-headless": ["@zavx0z/immersive-headless@workspace:headless"],
+
+    "@zavx0z/immersive-jsx": ["@zavx0z/immersive-jsx@workspace:jsx"],
+
+    "@zavx0z/immersive-jsx-compiler": ["@zavx0z/immersive-jsx-compiler@workspace:jsx/compiler"],
+
     "@zavx0z/immersive-jsx-compiler-bun": ["@zavx0z/immersive-jsx-compiler-bun@workspace:jsx/compiler/bun"],
 
     "@zavx0z/immersive-jsx-compiler-error": ["@zavx0z/immersive-jsx-compiler-error@workspace:jsx/compiler/error"],
 
     "@zavx0z/immersive-jsx-compiler-session": ["@zavx0z/immersive-jsx-compiler-session@workspace:jsx/compiler/session"],
 
+    "@zavx0z/immersive-jsx-development": ["@zavx0z/immersive-jsx-development@workspace:jsx/development"],
+
     "@zavx0z/immersive-jsx-development-create": ["@zavx0z/immersive-jsx-development-create@workspace:jsx/development/create"],
+
+    "@zavx0z/immersive-jsx-event": ["@zavx0z/immersive-jsx-event@workspace:jsx/event"],
+
+    "@zavx0z/immersive-jsx-runtime": ["@zavx0z/immersive-jsx-runtime@workspace:jsx/runtime"],
 
     "@zavx0z/immersive-jsx-runtime-create": ["@zavx0z/immersive-jsx-runtime-create@workspace:jsx/runtime/create"],
 
     "@zavx0z/immersive-jsx-runtime-fragment": ["@zavx0z/immersive-jsx-runtime-fragment@workspace:jsx/runtime/fragment"],
+
+    "@zavx0z/immersive-jsx-slot": ["@zavx0z/immersive-jsx-slot@workspace:jsx/slot"],
 
     "@zavx0z/immersive-jsx-slot-authoring": ["@zavx0z/immersive-jsx-slot-authoring@workspace:jsx/slot/authoring"],
 
@@ -3075,15 +3218,9 @@
 
     "@zavx0z/immersive-jsx-slot-plan": ["@zavx0z/immersive-jsx-slot-plan@workspace:jsx/slot/plan"],
 
-    "@zavx0z/immersive-jsx-compiler": ["@zavx0z/immersive-jsx-compiler@workspace:jsx/compiler"],
+    "@zavx0z/immersive-markdown": ["@zavx0z/immersive-markdown@workspace:markdown"],
 
-    "@zavx0z/immersive-jsx-development": ["@zavx0z/immersive-jsx-development@workspace:jsx/development"],
-
-    "@zavx0z/immersive-jsx-event": ["@zavx0z/immersive-jsx-event@workspace:jsx/event"],
-
-    "@zavx0z/immersive-jsx-runtime": ["@zavx0z/immersive-jsx-runtime@workspace:jsx/runtime"],
-
-    "@zavx0z/immersive-jsx-slot": ["@zavx0z/immersive-jsx-slot@workspace:jsx/slot"],
+    "@zavx0z/immersive-nodes": ["@zavx0z/immersive-nodes@workspace:nodes"],
 
     "@zavx0z/immersive-nodes-geometry-node-field-height": ["@zavx0z/immersive-nodes-geometry-node-field-height@workspace:nodes/geometry/node/field-height"],
 
@@ -3100,6 +3237,8 @@
     "@zavx0z/immersive-nodes-geometry-node-spacing": ["@zavx0z/immersive-nodes-geometry-node-spacing@workspace:nodes/geometry/node/spacing"],
 
     "@zavx0z/immersive-nodes-geometry-parameter": ["@zavx0z/immersive-nodes-geometry-parameter@workspace:nodes/geometry/parameter"],
+
+    "@zavx0z/immersive-nodes-layout": ["@zavx0z/immersive-nodes-layout@workspace:nodes/layout"],
 
     "@zavx0z/immersive-nodes-model-parameter-store": ["@zavx0z/immersive-nodes-model-parameter-store@workspace:nodes/model/parameter/store"],
 
@@ -3123,11 +3262,15 @@
 
     "@zavx0z/immersive-nodes-model-socket-side": ["@zavx0z/immersive-nodes-model-socket-side@workspace:nodes/model/socket/side"],
 
+    "@zavx0z/immersive-nodes-node": ["@zavx0z/immersive-nodes-node@workspace:nodes/node"],
+
     "@zavx0z/immersive-nodes-node-content": ["@zavx0z/immersive-nodes-node-content@workspace:nodes/node/content"],
 
     "@zavx0z/immersive-nodes-node-diagram": ["@zavx0z/immersive-nodes-node-diagram@workspace:nodes/node/diagram"],
 
     "@zavx0z/immersive-nodes-node-parameter": ["@zavx0z/immersive-nodes-node-parameter@workspace:nodes/node/parameter"],
+
+    "@zavx0z/immersive-nodes-parameter": ["@zavx0z/immersive-nodes-parameter@workspace:nodes/parameter"],
 
     "@zavx0z/immersive-nodes-parameter-boolean-checkbox": ["@zavx0z/immersive-nodes-parameter-boolean-checkbox@workspace:nodes/parameter/boolean/checkbox"],
 
@@ -3139,6 +3282,8 @@
 
     "@zavx0z/immersive-nodes-parameter-choice-select": ["@zavx0z/immersive-nodes-parameter-choice-select@workspace:nodes/parameter/choice/select"],
 
+    "@zavx0z/immersive-nodes-parameter-collection": ["@zavx0z/immersive-nodes-parameter-collection@workspace:nodes/parameter/collection"],
+
     "@zavx0z/immersive-nodes-parameter-composite-color": ["@zavx0z/immersive-nodes-parameter-composite-color@workspace:nodes/parameter/composite/color"],
 
     "@zavx0z/immersive-nodes-parameter-composite-matrix": ["@zavx0z/immersive-nodes-parameter-composite-matrix@workspace:nodes/parameter/composite/matrix"],
@@ -3149,37 +3294,35 @@
 
     "@zavx0z/immersive-nodes-parameter-numeric-slider": ["@zavx0z/immersive-nodes-parameter-numeric-slider@workspace:nodes/parameter/numeric/slider"],
 
-    "@zavx0z/immersive-nodes-parameter-shared-layout": ["@zavx0z/immersive-nodes-parameter-shared-layout@workspace:nodes/parameter/shared/layout"],
-
-    "@zavx0z/immersive-nodes-parameter-collection": ["@zavx0z/immersive-nodes-parameter-collection@workspace:nodes/parameter/collection"],
-
     "@zavx0z/immersive-nodes-parameter-output": ["@zavx0z/immersive-nodes-parameter-output@workspace:nodes/parameter/output"],
 
     "@zavx0z/immersive-nodes-parameter-path": ["@zavx0z/immersive-nodes-parameter-path@workspace:nodes/parameter/path"],
 
     "@zavx0z/immersive-nodes-parameter-reference": ["@zavx0z/immersive-nodes-parameter-reference@workspace:nodes/parameter/reference"],
 
-    "@zavx0z/immersive-nodes-parameter-text": ["@zavx0z/immersive-nodes-parameter-text@workspace:nodes/parameter/text"],
+    "@zavx0z/immersive-nodes-parameter-shared-layout": ["@zavx0z/immersive-nodes-parameter-shared-layout@workspace:nodes/parameter/shared/layout"],
 
-    "@zavx0z/immersive-nodes-projection-parameter-presentation": ["@zavx0z/immersive-nodes-projection-parameter-presentation@workspace:nodes/projection/parameter/presentation"],
+    "@zavx0z/immersive-nodes-parameter-text": ["@zavx0z/immersive-nodes-parameter-text@workspace:nodes/parameter/text"],
 
     "@zavx0z/immersive-nodes-projection-parameter": ["@zavx0z/immersive-nodes-projection-parameter@workspace:nodes/projection/parameter"],
 
-    "@zavx0z/immersive-nodes-layout": ["@zavx0z/immersive-nodes-layout@workspace:nodes/layout"],
-
-    "@zavx0z/immersive-nodes-node": ["@zavx0z/immersive-nodes-node@workspace:nodes/node"],
-
-    "@zavx0z/immersive-nodes-parameter": ["@zavx0z/immersive-nodes-parameter@workspace:nodes/parameter"],
+    "@zavx0z/immersive-nodes-projection-parameter-presentation": ["@zavx0z/immersive-nodes-projection-parameter-presentation@workspace:nodes/projection/parameter/presentation"],
 
     "@zavx0z/immersive-nodes-socket": ["@zavx0z/immersive-nodes-socket@workspace:nodes/socket"],
 
     "@zavx0z/immersive-nodes-tree": ["@zavx0z/immersive-nodes-tree@workspace:nodes/tree"],
 
+    "@zavx0z/immersive-renderer": ["@zavx0z/immersive-renderer@workspace:renderer"],
+
     "@zavx0z/immersive-renderer-html": ["@zavx0z/immersive-renderer-html@workspace:renderer/html"],
+
+    "@zavx0z/immersive-space": ["@zavx0z/immersive-space@workspace:space"],
 
     "@zavx0z/immersive-tech-color-hex-normalize": ["@zavx0z/immersive-tech-color-hex-normalize@workspace:tech/color/hex/normalize"],
 
     "@zavx0z/immersive-tech-color-hex-valid": ["@zavx0z/immersive-tech-color-hex-valid@workspace:tech/color/hex/valid"],
+
+    "@zavx0z/immersive-tech-json-metadata": ["@zavx0z/immersive-tech-json-metadata@workspace:tech/json/metadata"],
 
     "@zavx0z/immersive-tech-json-metadata-boolean": ["@zavx0z/immersive-tech-json-metadata-boolean@workspace:tech/json/metadata/boolean"],
 
@@ -3193,6 +3336,8 @@
 
     "@zavx0z/immersive-tech-json-metadata-string-array": ["@zavx0z/immersive-tech-json-metadata-string-array@workspace:tech/json/metadata/string-array"],
 
+    "@zavx0z/immersive-tech-json-patch": ["@zavx0z/immersive-tech-json-patch@workspace:tech/json/patch"],
+
     "@zavx0z/immersive-tech-json-patch-error": ["@zavx0z/immersive-tech-json-patch-error@workspace:tech/json/patch/error"],
 
     "@zavx0z/immersive-tech-json-patch-limits": ["@zavx0z/immersive-tech-json-patch-limits@workspace:tech/json/patch/limits"],
@@ -3203,17 +3348,23 @@
 
     "@zavx0z/immersive-tech-json-value-own": ["@zavx0z/immersive-tech-json-value-own@workspace:tech/json/value/own"],
 
-    "@zavx0z/immersive-tech-json-metadata": ["@zavx0z/immersive-tech-json-metadata@workspace:tech/json/metadata"],
-
-    "@zavx0z/immersive-tech-json-patch": ["@zavx0z/immersive-tech-json-patch@workspace:tech/json/patch"],
-
     "@zavx0z/immersive-tech-svg-encode": ["@zavx0z/immersive-tech-svg-encode@workspace:tech/svg/encode"],
-
-    "@zavx0z/immersive-tech-text-assert-non-empty": ["@zavx0z/immersive-tech-text-assert-non-empty@workspace:tech/text/assert-non-empty"],
 
     "@zavx0z/immersive-tech-terminal": ["@zavx0z/immersive-tech-terminal@workspace:tech/terminal"],
 
+    "@zavx0z/immersive-tech-text-assert-non-empty": ["@zavx0z/immersive-tech-text-assert-non-empty@workspace:tech/text/assert-non-empty"],
+
     "@zavx0z/immersive-tech-text-editor": ["@zavx0z/immersive-tech-text-editor@workspace:tech/text-editor"],
+
+    "@zavx0z/immersive-template": ["@zavx0z/immersive-template@workspace:template"],
+
+    "@zavx0z/immersive-typedoc": ["@zavx0z/immersive-typedoc@workspace:typedoc"],
+
+    "@zavx0z/immersive-ui-component": ["@zavx0z/immersive-ui-component@workspace:ui/component"],
+
+    "@zavx0z/immersive-ui-component-badge": ["@zavx0z/immersive-ui-component-badge@workspace:ui/component/badge"],
+
+    "@zavx0z/immersive-ui-component-button": ["@zavx0z/immersive-ui-component-button@workspace:ui/component/button"],
 
     "@zavx0z/immersive-ui-component-button-basic": ["@zavx0z/immersive-ui-component-button-basic@workspace:ui/component/button/basic"],
 
@@ -3221,9 +3372,15 @@
 
     "@zavx0z/immersive-ui-component-button-toggle-group": ["@zavx0z/immersive-ui-component-button-toggle-group@workspace:ui/component/button/toggle-group"],
 
+    "@zavx0z/immersive-ui-component-divider": ["@zavx0z/immersive-ui-component-divider@workspace:ui/component/divider"],
+
+    "@zavx0z/immersive-ui-component-feedback": ["@zavx0z/immersive-ui-component-feedback@workspace:ui/component/feedback"],
+
     "@zavx0z/immersive-ui-component-feedback-notification": ["@zavx0z/immersive-ui-component-feedback-notification@workspace:ui/component/feedback/notification"],
 
     "@zavx0z/immersive-ui-component-feedback-status-bar": ["@zavx0z/immersive-ui-component-feedback-status-bar@workspace:ui/component/feedback/status-bar"],
+
+    "@zavx0z/immersive-ui-component-field": ["@zavx0z/immersive-ui-component-field@workspace:ui/component/field"],
 
     "@zavx0z/immersive-ui-component-field-checkbox": ["@zavx0z/immersive-ui-component-field-checkbox@workspace:ui/component/field/checkbox"],
 
@@ -3255,6 +3412,8 @@
 
     "@zavx0z/immersive-ui-component-field-vector": ["@zavx0z/immersive-ui-component-field-vector@workspace:ui/component/field/vector"],
 
+    "@zavx0z/immersive-ui-component-menu": ["@zavx0z/immersive-ui-component-menu@workspace:ui/component/menu"],
+
     "@zavx0z/immersive-ui-component-menu-basic": ["@zavx0z/immersive-ui-component-menu-basic@workspace:ui/component/menu/basic"],
 
     "@zavx0z/immersive-ui-component-menu-clipboard": ["@zavx0z/immersive-ui-component-menu-clipboard@workspace:ui/component/menu/clipboard"],
@@ -3262,6 +3421,10 @@
     "@zavx0z/immersive-ui-component-menu-item": ["@zavx0z/immersive-ui-component-menu-item@workspace:ui/component/menu/item"],
 
     "@zavx0z/immersive-ui-component-navigation-breadcrumb": ["@zavx0z/immersive-ui-component-navigation-breadcrumb@workspace:ui/component/navigation/breadcrumb"],
+
+    "@zavx0z/immersive-ui-component-surface": ["@zavx0z/immersive-ui-component-surface@workspace:ui/component/surface"],
+
+    "@zavx0z/immersive-ui-component-surface-chrome": ["@zavx0z/immersive-ui-component-surface-chrome@workspace:ui/component/surface/chrome"],
 
     "@zavx0z/immersive-ui-component-surface-chrome-body": ["@zavx0z/immersive-ui-component-surface-chrome-body@workspace:ui/component/surface/chrome/body"],
 
@@ -3275,8 +3438,6 @@
 
     "@zavx0z/immersive-ui-component-surface-chrome-title": ["@zavx0z/immersive-ui-component-surface-chrome-title@workspace:ui/component/surface/chrome/title"],
 
-    "@zavx0z/immersive-ui-component-surface-chrome": ["@zavx0z/immersive-ui-component-surface-chrome@workspace:ui/component/surface/chrome"],
-
     "@zavx0z/immersive-ui-component-surface-frame": ["@zavx0z/immersive-ui-component-surface-frame@workspace:ui/component/surface/frame"],
 
     "@zavx0z/immersive-ui-component-surface-pane": ["@zavx0z/immersive-ui-component-surface-pane@workspace:ui/component/surface/pane"],
@@ -3289,57 +3450,43 @@
 
     "@zavx0z/immersive-ui-component-surface-window-control": ["@zavx0z/immersive-ui-component-surface-window-control@workspace:ui/component/surface/window-control"],
 
+    "@zavx0z/immersive-ui-component-typography": ["@zavx0z/immersive-ui-component-typography@workspace:ui/component/typography"],
+
+    "@zavx0z/immersive-ui-component-view": ["@zavx0z/immersive-ui-component-view@workspace:ui/component/view"],
+
+    "@zavx0z/immersive-ui-component-view-code-editor": ["@zavx0z/immersive-ui-component-view-code-editor@workspace:ui/component/view/code-editor"],
+
+    "@zavx0z/immersive-ui-component-view-code-editor-highlighter": ["@zavx0z/immersive-ui-component-view-code-editor-highlighter@workspace:ui/component/view/code-editor/highlighter"],
+
     "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-data": ["@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-data@workspace:ui/component/view/code-editor/syntax-theme/data"],
 
     "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-resolve-scope-color-hex": ["@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-resolve-scope-color-hex@workspace:ui/component/view/code-editor/syntax-theme/resolve-scope-color-hex"],
-
-    "@zavx0z/immersive-ui-component-view-code-editor-highlighter": ["@zavx0z/immersive-ui-component-view-code-editor-highlighter@workspace:ui/component/view/code-editor/highlighter"],
 
     "@zavx0z/immersive-ui-component-view-code-editor-validate": ["@zavx0z/immersive-ui-component-view-code-editor-validate@workspace:ui/component/view/code-editor/validate"],
 
     "@zavx0z/immersive-ui-component-view-code-editor-view-model": ["@zavx0z/immersive-ui-component-view-code-editor-view-model@workspace:ui/component/view/code-editor/view-model"],
 
-    "@zavx0z/immersive-ui-component-view-table-selection-after-click": ["@zavx0z/immersive-ui-component-view-table-selection-after-click@workspace:ui/component/view/table/selection-after-click"],
-
-    "@zavx0z/immersive-ui-component-view-code-editor": ["@zavx0z/immersive-ui-component-view-code-editor@workspace:ui/component/view/code-editor"],
-
     "@zavx0z/immersive-ui-component-view-list": ["@zavx0z/immersive-ui-component-view-list@workspace:ui/component/view/list"],
 
     "@zavx0z/immersive-ui-component-view-table": ["@zavx0z/immersive-ui-component-view-table@workspace:ui/component/view/table"],
 
+    "@zavx0z/immersive-ui-component-view-table-selection-after-click": ["@zavx0z/immersive-ui-component-view-table-selection-after-click@workspace:ui/component/view/table/selection-after-click"],
+
     "@zavx0z/immersive-ui-component-view-timeline": ["@zavx0z/immersive-ui-component-view-timeline@workspace:ui/component/view/timeline"],
 
-    "@zavx0z/immersive-ui-component-widget-header-action": ["@zavx0z/immersive-ui-component-widget-header-action@workspace:ui/component/widget/header/action"],
+    "@zavx0z/immersive-ui-component-widget": ["@zavx0z/immersive-ui-component-widget@workspace:ui/component/widget"],
 
     "@zavx0z/immersive-ui-component-widget-editor": ["@zavx0z/immersive-ui-component-widget-editor@workspace:ui/component/widget/editor"],
 
     "@zavx0z/immersive-ui-component-widget-header": ["@zavx0z/immersive-ui-component-widget-header@workspace:ui/component/widget/header"],
+
+    "@zavx0z/immersive-ui-component-widget-header-action": ["@zavx0z/immersive-ui-component-widget-header-action@workspace:ui/component/widget/header/action"],
 
     "@zavx0z/immersive-ui-component-widget-inspector": ["@zavx0z/immersive-ui-component-widget-inspector@workspace:ui/component/widget/inspector"],
 
     "@zavx0z/immersive-ui-component-widget-terminal": ["@zavx0z/immersive-ui-component-widget-terminal@workspace:ui/component/widget/terminal"],
 
     "@zavx0z/immersive-ui-component-widget-tree": ["@zavx0z/immersive-ui-component-widget-tree@workspace:ui/component/widget/tree"],
-
-    "@zavx0z/immersive-ui-component-badge": ["@zavx0z/immersive-ui-component-badge@workspace:ui/component/badge"],
-
-    "@zavx0z/immersive-ui-component-button": ["@zavx0z/immersive-ui-component-button@workspace:ui/component/button"],
-
-    "@zavx0z/immersive-ui-component-divider": ["@zavx0z/immersive-ui-component-divider@workspace:ui/component/divider"],
-
-    "@zavx0z/immersive-ui-component-feedback": ["@zavx0z/immersive-ui-component-feedback@workspace:ui/component/feedback"],
-
-    "@zavx0z/immersive-ui-component-field": ["@zavx0z/immersive-ui-component-field@workspace:ui/component/field"],
-
-    "@zavx0z/immersive-ui-component-menu": ["@zavx0z/immersive-ui-component-menu@workspace:ui/component/menu"],
-
-    "@zavx0z/immersive-ui-component-surface": ["@zavx0z/immersive-ui-component-surface@workspace:ui/component/surface"],
-
-    "@zavx0z/immersive-ui-component-typography": ["@zavx0z/immersive-ui-component-typography@workspace:ui/component/typography"],
-
-    "@zavx0z/immersive-ui-component-view": ["@zavx0z/immersive-ui-component-view@workspace:ui/component/view"],
-
-    "@zavx0z/immersive-ui-component-widget": ["@zavx0z/immersive-ui-component-widget@workspace:ui/component/widget"],
 
     "@zavx0z/immersive-ui-feedback-status-bar-text": ["@zavx0z/immersive-ui-feedback-status-bar-text@workspace:ui/feedback/status-bar/text"],
 
@@ -3465,6 +3612,8 @@
 
     "@zavx0z/immersive-ui-surface-assert-actions": ["@zavx0z/immersive-ui-surface-assert-actions@workspace:ui/surface/assert-actions"],
 
+    "@zavx0z/immersive-ui-theme-icon": ["@zavx0z/immersive-ui-theme-icon@workspace:ui/theme/icon"],
+
     "@zavx0z/immersive-ui-theme-icon-apply": ["@zavx0z/immersive-ui-theme-icon-apply@workspace:ui/theme/icon/apply"],
 
     "@zavx0z/immersive-ui-theme-icon-arrow-down": ["@zavx0z/immersive-ui-theme-icon-arrow-down@workspace:ui/theme/icon/arrow-down"],
@@ -3517,6 +3666,8 @@
 
     "@zavx0z/immersive-ui-theme-icon-select-opened-item": ["@zavx0z/immersive-ui-theme-icon-select-opened-item@workspace:ui/theme/icon/select-opened-item"],
 
+    "@zavx0z/immersive-ui-theme-icon-set": ["@zavx0z/immersive-ui-theme-icon-set@workspace:ui/theme/icon-set"],
+
     "@zavx0z/immersive-ui-theme-icon-setting": ["@zavx0z/immersive-ui-theme-icon-setting@workspace:ui/theme/icon/setting"],
 
     "@zavx0z/immersive-ui-theme-icon-visibility-on": ["@zavx0z/immersive-ui-theme-icon-visibility-on@workspace:ui/theme/icon/visibility-on"],
@@ -3527,167 +3678,17 @@
 
     "@zavx0z/immersive-ui-theme-syntax-resolve": ["@zavx0z/immersive-ui-theme-syntax-resolve@workspace:ui/theme/syntax/resolve"],
 
-    "@zavx0z/immersive-ui-theme-icon": ["@zavx0z/immersive-ui-theme-icon@workspace:ui/theme/icon"],
-
-    "@zavx0z/immersive-ui-theme-icon-set": ["@zavx0z/immersive-ui-theme-icon-set@workspace:ui/theme/icon-set"],
-
-    "@zavx0z/immersive-ui-view-code-editor-theme-color": ["@zavx0z/immersive-ui-view-code-editor-theme-color@workspace:ui/view/code-editor/theme/color"],
-
     "@zavx0z/immersive-ui-view-code-editor-editor-foreground": ["@zavx0z/immersive-ui-view-code-editor-editor-foreground@workspace:ui/view/code-editor/editor-foreground"],
 
     "@zavx0z/immersive-ui-view-code-editor-palette": ["@zavx0z/immersive-ui-view-code-editor-palette@workspace:ui/view/code-editor/palette"],
+
+    "@zavx0z/immersive-ui-view-code-editor-theme-color": ["@zavx0z/immersive-ui-view-code-editor-theme-color@workspace:ui/view/code-editor/theme/color"],
 
     "@zavx0z/immersive-ui-view-table-normalize-table-selection": ["@zavx0z/immersive-ui-view-table-normalize-table-selection@workspace:ui/view/table/normalize-table-selection"],
 
     "@zavx0z/immersive-ui-widget-inspector-panel-visible": ["@zavx0z/immersive-ui-widget-inspector-panel-visible@workspace:ui/widget/inspector/panel-visible"],
 
-    "@zavx0z/immersive-ui-component": ["@zavx0z/immersive-ui-component@workspace:ui/component"],
-
-    "@zavx0z/immersive-browser": ["@zavx0z/immersive-browser@workspace:browser"],
-
-    "@zavx0z/immersive-component": ["@zavx0z/immersive-component@workspace:component"],
-
-    "@zavx0z/immersive-devtool": ["@zavx0z/immersive-devtool@workspace:devtool"],
-
-    "@zavx0z/immersive-dom": ["@zavx0z/immersive-dom@workspace:dom"],
-
-    "@zavx0z/immersive-engine": ["@zavx0z/immersive-engine@workspace:engine"],
-
-    "@zavx0z/immersive-headless": ["@zavx0z/immersive-headless@workspace:headless"],
-
-    "@zavx0z/immersive-jsx": ["@zavx0z/immersive-jsx@workspace:jsx"],
-
-    "@zavx0z/immersive-markdown": ["@zavx0z/immersive-markdown@workspace:markdown"],
-
-    "@zavx0z/immersive-nodes": ["@zavx0z/immersive-nodes@workspace:nodes"],
-
-    "@zavx0z/immersive-renderer": ["@zavx0z/immersive-renderer@workspace:renderer"],
-
-    "@zavx0z/immersive-space": ["@zavx0z/immersive-space@workspace:space"],
-
-    "@zavx0z/immersive-template": ["@zavx0z/immersive-template@workspace:template"],
-
-    "@zavx0z/immersive-typedoc": ["@zavx0z/immersive-typedoc@workspace:typedoc"],
-
     "@zavx0z/immersive-webgpu": ["@zavx0z/immersive-webgpu@workspace:webgpu"],
-
-    "@mermaid-js/parser": ["@mermaid-js/parser@1.2.1", "", { "dependencies": { "@chevrotain/types": "~11.1.2" } }, "sha512-n12NohV3mrUyUL2o93IgG/ifeW9FTyeJn3zDxkhwa8MJ9Fxg3HQMlA3RiGmD/3UnJvheztkjjQAjA2T4LmUcpw=="],
-
-    "@types/bun": ["@types/bun@1.4.2", "", { "dependencies": { "bun-types": "1.4.2" } }, "sha512-GimotNn7+ZV0uVArItBbriZsR1oNf0+WTzPkdcFrzShI7k2norL0uzEaJT8T33dWr7O/c9ZDuAFQrctKCi72oQ=="],
-
-    "@types/d3": ["@types/d3@7.4.3", "", { "dependencies": { "@types/d3-array": "*", "@types/d3-axis": "*", "@types/d3-brush": "*", "@types/d3-chord": "*", "@types/d3-color": "*", "@types/d3-contour": "*", "@types/d3-delaunay": "*", "@types/d3-dispatch": "*", "@types/d3-drag": "*", "@types/d3-dsv": "*", "@types/d3-ease": "*", "@types/d3-fetch": "*", "@types/d3-force": "*", "@types/d3-format": "*", "@types/d3-geo": "*", "@types/d3-hierarchy": "*", "@types/d3-interpolate": "*", "@types/d3-path": "*", "@types/d3-polygon": "*", "@types/d3-quadtree": "*", "@types/d3-random": "*", "@types/d3-scale": "*", "@types/d3-scale-chromatic": "*", "@types/d3-selection": "*", "@types/d3-shape": "*", "@types/d3-time": "*", "@types/d3-time-format": "*", "@types/d3-timer": "*", "@types/d3-transition": "*", "@types/d3-zoom": "*" } }, "sha512-lZXZ9ckh5R8uiFVt8ogUNf+pIrK4EsWrx2Np75WvF/eTpJ0FMHNhjXk8CKEx/+gpHbNQyJWehbFaTvqmHWB3ww=="],
-
-    "@types/d3-array": ["@types/d3-array@3.2.2", "", {}, "sha512-hOLWVbm7uRza0BYXpIIW5pxfrKe0W+D5lrFiAEYR+pb6w3N2SwSMaJbXdUfSEv+dT4MfHBLtn5js0LAWaO6otw=="],
-
-    "@types/d3-axis": ["@types/d3-axis@3.0.6", "", { "dependencies": { "@types/d3-selection": "*" } }, "sha512-pYeijfZuBd87T0hGn0FO1vQ/cgLk6E1ALJjfkC0oJ8cbwkZl3TpgS8bVBLZN+2jjGgg38epgxb2zmoGtSfvgMw=="],
-
-    "@types/d3-brush": ["@types/d3-brush@3.0.6", "", { "dependencies": { "@types/d3-selection": "*" } }, "sha512-nH60IZNNxEcrh6L1ZSMNA28rj27ut/2ZmI3r96Zd+1jrZD++zD3LsMIjWlvg4AYrHn/Pqz4CF3veCxGjtbqt7A=="],
-
-    "@types/d3-chord": ["@types/d3-chord@3.0.6", "", {}, "sha512-LFYWWd8nwfwEmTZG9PfQxd17HbNPksHBiJHaKuY1XeqscXacsS2tyoo6OdRsjf+NQYeB6XrNL3a25E3gH69lcg=="],
-
-    "@types/d3-color": ["@types/d3-color@3.1.3", "", {}, "sha512-iO90scth9WAbmgv7ogoq57O9YpKmFBbmoEoCHDB2xMBY0+/KVrqAaCDyCE16dUspeOvIxFFRI+0sEtqDqy2b4A=="],
-
-    "@types/d3-contour": ["@types/d3-contour@3.0.6", "", { "dependencies": { "@types/d3-array": "*", "@types/geojson": "*" } }, "sha512-BjzLgXGnCWjUSYGfH1cpdo41/hgdWETu4YxpezoztawmqsvCeep+8QGfiY6YbDvfgHz/DkjeIkkZVJavB4a3rg=="],
-
-    "@types/d3-delaunay": ["@types/d3-delaunay@6.0.4", "", {}, "sha512-ZMaSKu4THYCU6sV64Lhg6qjf1orxBthaC161plr5KuPHo3CNm8DTHiLw/5Eq2b6TsNP0W0iJrUOFscY6Q450Hw=="],
-
-    "@types/d3-dispatch": ["@types/d3-dispatch@3.0.7", "", {}, "sha512-5o9OIAdKkhN1QItV2oqaE5KMIiXAvDWBDPrD85e58Qlz1c1kI/J0NcqbEG88CoTwJrYe7ntUCVfeUl2UJKbWgA=="],
-
-    "@types/d3-drag": ["@types/d3-drag@3.0.7", "", { "dependencies": { "@types/d3-selection": "*" } }, "sha512-HE3jVKlzU9AaMazNufooRJ5ZpWmLIoc90A37WU2JMmeq28w1FQqCZswHZ3xR+SuxYftzHq6WU6KJHvqxKzTxxQ=="],
-
-    "@types/d3-dsv": ["@types/d3-dsv@3.0.7", "", {}, "sha512-n6QBF9/+XASqcKK6waudgL0pf/S5XHPPI8APyMLLUHd8NqouBGLsU8MgtO7NINGtPBtk9Kko/W4ea0oAspwh9g=="],
-
-    "@types/d3-ease": ["@types/d3-ease@3.0.2", "", {}, "sha512-NcV1JjO5oDzoK26oMzbILE6HW7uVXOHLQvHshBUW4UMdZGfiY6v5BeQwh9a9tCzv+CeefZQHJt5SRgK154RtiA=="],
-
-    "@types/d3-fetch": ["@types/d3-fetch@3.0.7", "", { "dependencies": { "@types/d3-dsv": "*" } }, "sha512-fTAfNmxSb9SOWNB9IoG5c8Hg6R+AzUHDRlsXsDZsNp6sxAEOP0tkP3gKkNSO/qmHPoBFTxNrjDprVHDQDvo5aA=="],
-
-    "@types/d3-force": ["@types/d3-force@3.0.10", "", {}, "sha512-ZYeSaCF3p73RdOKcjj+swRlZfnYpK1EbaDiYICEEp5Q6sUiqFaFQ9qgoshp5CzIyyb/yD09kD9o2zEltCexlgw=="],
-
-    "@types/d3-format": ["@types/d3-format@3.0.4", "", {}, "sha512-fALi2aI6shfg7vM5KiR1wNJnZ7r6UuggVqtDA+xiEdPZQwy/trcQaHnwShLuLdta2rTymCNpxYTiMZX/e09F4g=="],
-
-    "@types/d3-geo": ["@types/d3-geo@3.1.1", "", { "dependencies": { "@types/geojson": "*" } }, "sha512-65Emv9fQiQQqphLlRkuQ5ypPsOmWPhtBGCMv61JDPEPMvsx+gzhGf74yw1a78xFKPj6zw4AgQICJoQv0vK9M2w=="],
-
-    "@types/d3-hierarchy": ["@types/d3-hierarchy@3.1.7", "", {}, "sha512-tJFtNoYBtRtkNysX1Xq4sxtjK8YgoWUNpIiUee0/jHGRwqvzYxkq0hGVbbOGSz+JgFxxRu4K8nb3YpG3CMARtg=="],
-
-    "@types/d3-interpolate": ["@types/d3-interpolate@3.0.4", "", { "dependencies": { "@types/d3-color": "*" } }, "sha512-mgLPETlrpVV1YRJIglr4Ez47g7Yxjl1lj7YKsiMCb27VJH9W8NVM6Bb9d8kkpG/uAQS5AmbA48q2IAolKKo1MA=="],
-
-    "@types/d3-path": ["@types/d3-path@3.1.1", "", {}, "sha512-VMZBYyQvbGmWyWVea0EHs/BwLgxc+MKi1zLDCONksozI4YJMcTt8ZEuIR4Sb1MMTE8MMW49v0IwI5+b7RmfWlg=="],
-
-    "@types/d3-polygon": ["@types/d3-polygon@3.0.2", "", {}, "sha512-ZuWOtMaHCkN9xoeEMr1ubW2nGWsp4nIql+OPQRstu4ypeZ+zk3YKqQT0CXVe/PYqrKpZAi+J9mTs05TKwjXSRA=="],
-
-    "@types/d3-quadtree": ["@types/d3-quadtree@3.0.6", "", {}, "sha512-oUzyO1/Zm6rsxKRHA1vH0NEDG58HrT5icx/azi9MF1TWdtttWl0UIUsjEQBBh+SIkrpd21ZjEv7ptxWys1ncsg=="],
-
-    "@types/d3-random": ["@types/d3-random@3.0.4", "", {}, "sha512-UHYId5WTCx4L4YNel7NU00XUXXgvgpgZOvp10PuvsQENjMDXhh2RyFc0KBjO7B45ne4Ha1yVH7ii0vnzKkuzWA=="],
-
-    "@types/d3-scale": ["@types/d3-scale@4.0.9", "", { "dependencies": { "@types/d3-time": "*" } }, "sha512-dLmtwB8zkAeO/juAMfnV+sItKjlsw2lKdZVVy6LRr0cBmegxSABiLEpGVmSJJ8O08i4+sGR6qQtb6WtuwJdvVw=="],
-
-    "@types/d3-scale-chromatic": ["@types/d3-scale-chromatic@3.1.0", "", {}, "sha512-iWMJgwkK7yTRmWqRB5plb1kadXyQ5Sj8V/zYlFGMUBbIPKQScw+Dku9cAAMgJG+z5GYDoMjWGLVOvjghDEFnKQ=="],
-
-    "@types/d3-selection": ["@types/d3-selection@3.0.12", "", {}, "sha512-Qe/KWYhEiIIxGs7HrAAjMfShxKldx19SJtr5zu53f3afPsdZNz7HHtdTLXo/kqeiWNXVycI24kSnfzBYkTzpgw=="],
-
-    "@types/d3-shape": ["@types/d3-shape@3.2.0", "", { "dependencies": { "@types/d3-path": "*" } }, "sha512-kVd74ta9eof3eJOvbNd1vGKS/XERRyQbT26Og63hIsvDO84cjD5gEOhsXf26w3FSoNlPVz84DOFcKv/oou+fMw=="],
-
-    "@types/d3-time": ["@types/d3-time@3.0.4", "", {}, "sha512-yuzZug1nkAAaBlBBikKZTgzCeA+k1uy4ZFwWANOfKw5z5LRhV0gNA7gNkKm7HoK+HRN0wX3EkxGk0fpbWhmB7g=="],
-
-    "@types/d3-time-format": ["@types/d3-time-format@4.0.3", "", {}, "sha512-5xg9rC+wWL8kdDj153qZcsJ0FWiFt0J5RB6LYUNZjwSnesfblqrI/bJ1wBdJ8OQfncgbJG5+2F+qfqnqyzYxyg=="],
-
-    "@types/d3-timer": ["@types/d3-timer@3.0.2", "", {}, "sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw=="],
-
-    "@types/d3-transition": ["@types/d3-transition@3.0.9", "", { "dependencies": { "@types/d3-selection": "*" } }, "sha512-uZS5shfxzO3rGlu0cC3bjmMFKsXv+SmZZcgp0KD22ts4uGXp5EVYGzu/0YdwZeKmddhcAccYtREJKkPfXkZuCg=="],
-
-    "@types/d3-zoom": ["@types/d3-zoom@3.0.9", "", { "dependencies": { "@types/d3-interpolate": "*", "@types/d3-selection": "*" } }, "sha512-0sE1406XBYJGiqD3AusTl9ZqC//2mIXix51tbom25gDCA8ri4xnSZg28CaSE8Srl6FClqABUKfsn0qghgdepMA=="],
-
-    "@types/geojson": ["@types/geojson@7946.0.16", "", {}, "sha512-6C8nqWur3j98U6+lXDfTUWIfgvZU+EumvpHKcYjujKH7woYyLj2sUmff0tRhrqM7BohUw7Pz3ZB1jj2gW9Fvmg=="],
-
-    "@types/node": ["@types/node@26.6.3", "", { "dependencies": { "undici-types": "~8.9.0" } }, "sha512-dsqMQQoeTLqu9wynDD00q573mNzso3IdQOAfHRJqLCcmCFPoGo9A1bDpUcv/9tnKpErQWv9uKeGfl37EIS02Yg=="],
-
-    "@types/trusted-types": ["@types/trusted-types@2.0.7", "", {}, "sha512-ScaPdn1dQczgbl0QFTeTOmVHFULt394XJgOQNoyVhZ6r2vLnMLJfBPd53SB52T/3G36VI1/g2MZaX0cwDuXsfw=="],
-
-    "@typescript/typescript-aix-ppc64": ["@typescript/typescript-aix-ppc64@7.0.2", "", { "os": "aix", "cpu": "ppc64" }, "sha512-MTKKkWB7p/0E9xi1d1tHtZ5PiLkGEMIq88pK2CubZjOsLtYTLqhgIgi6zepFa+9GHZ6h05NMCkQxGKiPXMxXtQ=="],
-
-    "@typescript/typescript-darwin-arm64": ["@typescript/typescript-darwin-arm64@7.0.2", "", { "os": "darwin", "cpu": "arm64" }, "sha512-gowzar9MwS/aRWp6f3a4KUqzRjAZjOsmGNCM6LcTgXum+dBfgsBVMN+AgvOCCbguXyick6LJhpBszxMebJ8syA=="],
-
-    "@typescript/typescript-darwin-x64": ["@typescript/typescript-darwin-x64@7.0.2", "", { "os": "darwin", "cpu": "x64" }, "sha512-SZ9xZInqApNlNGc9s0W1VSsktYSOe9cFqNOIqmN1Gs8SmkjKZYFt017G4VwPxASInODuAdbTW7sXiFUf893RgA=="],
-
-    "@typescript/typescript-freebsd-arm64": ["@typescript/typescript-freebsd-arm64@7.0.2", "", { "os": "freebsd", "cpu": "arm64" }, "sha512-W5NH4y/J0plIIS5b2xvTEkU7JFxyqdMAOgf+Ilhl0vHQXKO5dZoxd+C/jEtq56c4F3wk71RB4BMRQ2XdI+bwYQ=="],
-
-    "@typescript/typescript-freebsd-x64": ["@typescript/typescript-freebsd-x64@7.0.2", "", { "os": "freebsd", "cpu": "x64" }, "sha512-UMGDx5sTpzNw3WiPebH7l90IWfJggEd+egHt/q6p7/Cm3zqoV7VxkGXt+3DxPIw8CcmvAB0j3sVVfbhX+M4Tpw=="],
-
-    "@typescript/typescript-linux-arm": ["@typescript/typescript-linux-arm@7.0.2", "", { "os": "linux", "cpu": "arm" }, "sha512-gffT3xPz9sR7j/YJExkyPntrI0P2EP9XbOyWzth2/Gs0RstK+90RBcO0ncXoXy/beYll1SXw846Nf2zdnEz0QQ=="],
-
-    "@typescript/typescript-linux-arm64": ["@typescript/typescript-linux-arm64@7.0.2", "", { "os": "linux", "cpu": "arm64" }, "sha512-Qh4eU4/y3yDjnfjjyPYihMj5/ODIlmt+Bzu17OI+fiSRDW57QmU5SiN63exPRNJPKUzcc1INa1NXdrJ+MqHjUQ=="],
-
-    "@typescript/typescript-linux-loong64": ["@typescript/typescript-linux-loong64@7.0.2", "", { "os": "linux", "cpu": "none" }, "sha512-uEHck9i8hoAzXPiYRib1O7miOnz23SxIeVl6F4LXox+qov1K35jHcEW6VHKvZI+pyvl7fZEP4MCU5LYvIq1GuQ=="],
-
-    "@typescript/typescript-linux-mips64el": ["@typescript/typescript-linux-mips64el@7.0.2", "", { "os": "linux", "cpu": "none" }, "sha512-R4KvAMnE43W5Qeqb0Ly56O3mWMWIAgsMyz36DCaycd5nbg/9kzm0liw3JocfRqyJY0KPmzFjbswozXyW0DnIYA=="],
-
-    "@typescript/typescript-linux-ppc64": ["@typescript/typescript-linux-ppc64@7.0.2", "", { "os": "linux", "cpu": "ppc64" }, "sha512-DORx5b3sd/4S7eayxm4FQv+A7CrkUIGRaHiwI8oiHTAI1fAPWhF4J0vAlkC8biAlHSVVwxMQ3tjZ2/DVbnQiiA=="],
-
-    "@typescript/typescript-linux-riscv64": ["@typescript/typescript-linux-riscv64@7.0.2", "", { "os": "linux", "cpu": "none" }, "sha512-wf0jqEDOjrPRnKwYRyyJDRo11KMbvMFrU+q4zqKyChODBzvlkbhNQfKvLxQCcwTpdDaXSHZTVuh0JoCrKCUMHQ=="],
-
-    "@typescript/typescript-linux-s390x": ["@typescript/typescript-linux-s390x@7.0.2", "", { "os": "linux", "cpu": "s390x" }, "sha512-IkwJc3L7yhytWd/ewjyxNDfOmswCm9GWMJT/ue/dU4aZNbwZeYAetq42VyLmsmSjvoX7z74X6ZaYCtzAr0EuGw=="],
-
-    "@typescript/typescript-linux-x64": ["@typescript/typescript-linux-x64@7.0.2", "", { "os": "linux", "cpu": "x64" }, "sha512-EYdf2cNg7rgCWJnxCdJ+F3V39O8ihb37eHAu1LK8oAFizgTQbPOK7zHHXbPt8rX24COqODXeI3sIf0fCXG7H/A=="],
-
-    "@typescript/typescript-netbsd-arm64": ["@typescript/typescript-netbsd-arm64@7.0.2", "", { "os": "none", "cpu": "arm64" }, "sha512-+polYF4MF04aPpO5FTkHran9yUQDSXqy5GiSDKpsll5jy3l3+g9QLhpf39T+ePtefhXLOGrLl0QIjkQP6VnelA=="],
-
-    "@typescript/typescript-netbsd-x64": ["@typescript/typescript-netbsd-x64@7.0.2", "", { "os": "none", "cpu": "x64" }, "sha512-8YIT0EHM/3dq10ZOVF/A7pc/YSMtbcecct4rWtexrnSCHOPcpC2KTLXfTCR6vDpnSiY12heNb1GiN/wu+T/FyA=="],
-
-    "@typescript/typescript-openbsd-arm64": ["@typescript/typescript-openbsd-arm64@7.0.2", "", { "os": "openbsd", "cpu": "arm64" }, "sha512-APT8+ClYnuYm1u9+kgGXoMj2VzWzcymwh2gNSQVySHfkRDGOTVkoWLjCmOQSaO+PoqQ57B0flRp9SA+7GnnkzQ=="],
-
-    "@typescript/typescript-openbsd-x64": ["@typescript/typescript-openbsd-x64@7.0.2", "", { "os": "openbsd", "cpu": "x64" }, "sha512-yX7s+Q0Dln0Dt9tEzZsAjXXR/+ytBM7AlglaqyeMPxQszJ1JhlJdZ6jLA+IzldHtflX81em7lDao1xXu+aRRkg=="],
-
-    "@typescript/typescript-sunos-x64": ["@typescript/typescript-sunos-x64@7.0.2", "", { "os": "sunos", "cpu": "x64" }, "sha512-dLJDGaLZ1D4HPQn62u1n8mBDkJREwMsAkCdkwd4Ieqw+x3TUyTsqY0YiBCtE6H6OzzgGk3iuZ3vFWRS+E8/d1g=="],
-
-    "@typescript/typescript-win32-arm64": ["@typescript/typescript-win32-arm64@7.0.2", "", { "os": "win32", "cpu": "arm64" }, "sha512-Gyl1Vy6OsWesLzmq+EP0Fb7b4Nid5232AvcA2SFcdYreldpNtYFFofPjnt62y9hQy7VTaZp65ICJjuAQRaVcIQ=="],
-
-    "@typescript/typescript-win32-x64": ["@typescript/typescript-win32-x64@7.0.2", "", { "os": "win32", "cpu": "x64" }, "sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g=="],
-
-    "@upsetjs/venn.js": ["@upsetjs/venn.js@2.0.0", "", { "optionalDependencies": { "d3-selection": "^3.0.0", "d3-transition": "^3.0.1" } }, "sha512-WbBhLrooyePuQ1VZxrJjtLvTc4NVfpOyKx0sKqioq9bX1C1m7Jgykkn8gLrtwumBioXIqam8DLxp88Adbue6Hw=="],
-
-    "@webgpu/types": ["@webgpu/types@0.1.74", "", {}, "sha512-lgiI4hbuLcI9unnm2cL/tvCaQU45dp0xcLWJh5uB/9MBGvIA4F8XIk7nSiBeg+K4xWGYwgZKn80LmERI5CxoTA=="],
-
-    "@zavx0z/highlighter": ["@zavx0z/highlighter@link:@zavx0z/highlighter", {}],
 
     "argparse": ["argparse@3.0.2", "", {}, "sha512-mFdDM6WqWKraGLsVb+C9CahPnzTXOefAOLq3jYcca2YZ8bEWpr++Tzj+zSaKW9+X9L5uSxcm1AZ3Y6aZJ09OhQ=="],
 

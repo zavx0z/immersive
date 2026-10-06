@@ -1,5 +1,6 @@
 /**
 Уведомление о событии с действиями и закрытием.
+Высота следует содержимому и одинаковым вертикальным отступам.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
@@ -25,9 +26,8 @@ export default function Notification(props: Contract.Input): Contract.Output {
       box-sizing: border-box;
       display: flex;
       flex-direction: row;
-      align-items: flex-start;
+      align-items: center;
       width: 280px;
-      min-height: 36px;
       gap: 6px;
       padding: 6px 7px;
       border: var(--border-width-control) solid var(--widget-regular-outline);
@@ -59,7 +59,6 @@ export default function Notification(props: Contract.Input): Contract.Output {
         width: 7px;
         min-width: 7px;
         height: 7px;
-        margin-top: 5px;
         border-radius: 4px;
         background: var(--state-info);
 
@@ -140,7 +139,7 @@ export default function Notification(props: Contract.Input): Contract.Output {
       `}
     >
       <IconButton
-        label="Dismiss"
+        label="Закрыть уведомление"
         iconSrc={closeIcon}
         style={css`
           width: 20px;

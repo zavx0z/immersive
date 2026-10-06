@@ -5,9 +5,11 @@ import Window from "@zavx0z/immersive-ui-component-surface-window"
 import TextField from "@zavx0z/immersive-ui-component-field-text"
 
 describe.each([
-  {name: "Плавающее окно", props: {open: true, layout: "floating" as const, movable: true, resizable: true}},
-  {name: "Свёрнутое окно", props: {open: false, layout: "floating" as const, movable: true, resizable: true}},
-  {name: "Заполнение области", props: {open: true, layout: "fill" as const, movable: false, resizable: false}},
+  {name: "Плавающее окно", props: {open: true, layout: "floating" as const, movable: true, resizable: true, message: undefined}},
+  {name: "Свёрнутое окно", props: {open: false, layout: "floating" as const, movable: true, resizable: true, message: undefined}},
+  {name: "Заполнение области", props: {open: true, layout: "fill" as const, movable: false, resizable: false, message: undefined}},
+  {name: "Ошибка окна", props: {open: true, layout: "floating" as const, movable: false, resizable: false,
+    message: {message: "Настройки доступны из общей страницы", tone: "error" as const}}},
 ])("$name", async ({props: input}) => {
   const headless = createHeadless({width: 640, height: 480})
   afterAll(() => headless.dispose())
@@ -17,6 +19,7 @@ describe.each([
       id="example-window"
       title="Документ"
       open={props.open}
+      message={props.message}
       layout={props.layout}
       movable={props.movable}
       resizable={props.resizable}
@@ -33,6 +36,17 @@ describe.each([
     expect(element.querySelectorAll("input").length, "Скрытие сохраняет смонтированное содержимое").toBe(1)
   })
 
+  test("Сообщение окна", () => {
+    const notification = shell.querySelector('[data-window-message]')
+    if (props.message === undefined) {
+      expect(notification, "Без сообщения окно не занимает место под уведомление").toBeNull()
+    } else {
+      expect(notification?.querySelector('[role="alert"]')?.children[1]?.textContent, "Ошибка передана штатному Notification")
+        .toBe(props.message.message)
+      expect(shell.querySelector('[data-window-body]')?.contains(notification!), "Уведомление не прокручивается вместе с телом").toBeFalse()
+    }
+  })
+
   /** @remarks Скрытая оболочка не участвует в раскладке или пользовательском вводе. */
   describe.skipIf(!props.open)("Открытое окно", () => {
     test("Геометрия", () => {
@@ -40,6 +54,13 @@ describe.each([
       expect({x: rect.x, y: rect.y, width: rect.width, height: rect.height}, "Плавающая геометрия и заполнение принимающей области").toEqual(props.layout === "fill"
         ? {x: 0, y: 0, width: 640, height: 480}
         : {x: 24, y: 24, width: 320, height: 240})
+    })
+    test("Положение сообщения", () => {
+      if (props.message === undefined) return
+      const rect = shell.getBoundingClientRect()
+      const notification = shell.querySelector('[data-window-message] aside')!.getBoundingClientRect()
+      expect(notification.left >= rect.left && notification.left < rect.left + 12, "Уведомление у левого края окна").toBeTrue()
+      expect(notification.bottom <= rect.bottom && notification.bottom > rect.bottom - 12, "Уведомление у нижнего края окна").toBeTrue()
     })
     test("Сворачивание", () => {
       const button = shell.querySelector("button")!

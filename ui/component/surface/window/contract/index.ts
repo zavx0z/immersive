@@ -1,4 +1,5 @@
 import type {ImmersiveUiComponentSurface} from "@zavx0z/immersive-ui-component-surface/contract"
+import type {ImmersiveUiComponentFeedbackNotification} from "@zavx0z/immersive-ui-component-feedback-notification"
 import type {WindowAction} from "./types.ts"
 import type {WindowGeometry} from "./types.ts"
 
@@ -27,6 +28,10 @@ export declare namespace ImmersiveUiComponentSurfaceWindow {
   @property [layout=floating] - fill заполняет родителя и отключает перемещение/resize.
   @property [actions] - Дополнительные кнопки справа в шапке; не изменяют видимость автоматически.
   @property [onAction] - Передаёт выбранный ключ дополнительного действия.
+  @property [message] - Уведомление слева внизу окна, вне прокручиваемого тела.
+  Отсутствие сообщения убирает область уведомления; текст и тон принадлежат Notification.
+  @property [onMessageDismiss] - Включает крестик уведомления и запрашивает его закрытие.
+  Родитель убирает message; окно и содержимое остаются открытыми.
   @property [style] - Финальное оформление оболочки branded CSS document.
   */
   interface Input {
@@ -43,6 +48,8 @@ export declare namespace ImmersiveUiComponentSurfaceWindow {
     readonly layout?: "floating" | "fill" | undefined
     readonly actions?: readonly WindowAction[] | undefined
     readonly onAction?: ((key: string, event: Event) => void) | undefined
+    readonly message?: Pick<ImmersiveUiComponentFeedbackNotification.Input, "message" | "heading" | "detail" | "tone"> | undefined
+    readonly onMessageDismiss?: ((event: Event) => void) | undefined
     readonly style?: CssStyle | undefined
   }
 
