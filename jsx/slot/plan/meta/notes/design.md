@@ -20,7 +20,7 @@ Intrinsic-поддеревья и fragments через границу component 
 контракта захвата выражений, CSS-владения и сценариев. Не добавлять обход
 только в Headless или отдельном consumer.
 
-[Правила размещения](../../../../../../storybook/component/meta/notes/draft-placement.md),
+[Правила размещения](../../../../../../storybook/component/src/architecture.md),
 [контракты](../../../../../../storybook/contracts/meta/notes/draft-contracts.md)
 и [руководство сценариев](../../../../../../storybook/specs/scenarios/spec/scenario.spec.ts)
 остаются у Archetypes. Заметка сохраняется до переноса оставшегося смысла
