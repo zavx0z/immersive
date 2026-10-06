@@ -14,3 +14,8 @@ export type {Root, RootOptions} from "../create-root.ts"
 export {useSpace, useFrame} from "./root-context.ts"
 export type {RootSize, RootState, FrameState, FrameCallback, FrameLoop} from "./root-context.ts"
 export type {DocumentClipboardController, ClipboardMenuState, ClipboardResult} from "../clipboard.ts"
+
+export {createDocumentNavigationHost} from "../navigation.ts"
+
+export {createAudioPlayback} from "../audio.ts"
+export type {AudioPlayback, AudioPlaybackState} from "../audio.ts"

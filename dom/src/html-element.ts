@@ -263,6 +263,7 @@ export class HTMLElement extends Element {
   }
 
   protected get defaultTabIndex(): number {
+    if (this.localName === "a" && this.hasAttribute("href")) return 0
     return this.isContentEditable &&
       !(this.parentElement instanceof HTMLElement && this.parentElement.isContentEditable) ? 0 : -1
   }

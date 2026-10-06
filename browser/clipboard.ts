@@ -10,6 +10,7 @@ import {
   readDocumentTextHighlights,
   subscribeDocumentTextHighlights,
   sealDataTransfer,
+  releaseDataTransfer,
   type Range,
   type Node,
 } from "@zavx0z/immersive-dom"
@@ -358,10 +359,15 @@ export function createDocumentClipboardController(
         return true
       }
       if (event.type !== "paste" || event.clipboardData === null || snapshot.element === null || !canPasteInto(snapshot.element)) return false
-      const data = new DataTransfer()
-      data.setData("text/plain", event.clipboardData.getData("text/plain"))
+      const data = new DataTransfer({
+        files: Array.from(event.clipboardData.files ?? []),
+        types: Array.from(event.clipboardData.types ?? []),
+      })
+      for (const type of event.clipboardData.types ?? ["text/plain"]) {
+        if (type !== "Files") data.setData(type, event.clipboardData.getData(type))
+      }
       event.preventDefault()
-      pasteData(snapshot, data)
+      try {pasteData(snapshot, data)} finally {releaseDataTransfer(data)}
       return true
     },
     dispose() {

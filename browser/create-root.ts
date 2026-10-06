@@ -1,3 +1,4 @@
+import {createDocumentNavigationHost} from "./navigation.ts"
 import {createDocument} from "@zavx0z/immersive-dom"
 import {createRoot as createComponentRoot, provideContext, component, type ComponentValue} from "@zavx0z/immersive-component"
 import {defineCompiledTemplate} from "@zavx0z/immersive-template/compiled"
@@ -94,6 +95,7 @@ export function createRootWithSeams(
     left: rect.left ?? 0, top: rect.top ?? 0,
     dpr: options.pixelRatio ?? canvas.ownerDocument?.defaultView?.devicePixelRatio ?? 1,
   }, "demand")
+  const navigation = createDocumentNavigationHost(document, canvas.ownerDocument)
   const componentRoot = createComponentRoot(body)
   let active = true
   let updating = false
@@ -219,6 +221,7 @@ export function createRootWithSeams(
     unmount() {
       if (!active) return
       active = false
+      navigation.dispose()
       pending = false
       rejectReady(new Error("Browser root was unmounted"))
       try { styles.dispose() } finally {

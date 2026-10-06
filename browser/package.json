@@ -10,7 +10,8 @@
     ".": "./src/index.ts",
     "./clipboard": "./clipboard.ts",
     "./diagnostics": "./diagnostics.ts",
-    "./integration": "./integration.ts"
+    "./integration": "./integration.ts",
+    "./audio": "./audio.ts"
   },
   "main": "./src/index.ts",
   "module": "./src/index.ts",

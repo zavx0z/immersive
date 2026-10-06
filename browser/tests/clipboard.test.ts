@@ -257,3 +257,30 @@ test("disposing an awaiting paste leaves no late edit", async () => {
   expect(await pending).toEqual({status: "stale"})
   expect(input.value).toBe("original")
 })
+
+test("native paste передаёт файлы и MIME types тому же semantic Document и освобождает payload после dispatch", () => {
+  const document = createDocument()
+  const input = document.createElement("textarea")
+  document.append(input)
+  input.value = "draft"
+  input.focus()
+  const file = new File([new Uint8Array([1, 2])], "screenshot.png", {type: "image/png"})
+  const received: File[] = []
+  let transfer: ClipboardEvent["clipboardData"] = null
+  input.addEventListener("paste", event => {
+    const paste = event as ClipboardEvent
+    transfer = paste.clipboardData
+    received.push(...paste.clipboardData!.files)
+    expect(paste.clipboardData!.types).toContain("Files")
+    expect(paste.clipboardData!.getData("text/html")).toBe("<b>caption</b>")
+    paste.preventDefault()
+  })
+  const commands = createDocumentClipboardController(document)
+  const native = {type: "paste", clipboardData: {files: [file], types: ["Files", "text/html"], getData: () => "<b>caption</b>"}, preventDefault() {}}
+  try {
+    expect(commands.handleNative(native as unknown as globalThis.ClipboardEvent)).toBe(true)
+    expect(received).toEqual([file])
+    expect(input.value).toBe("draft")
+    expect((transfer as ClipboardEvent["clipboardData"])?.files.length).toBe(0)
+  } finally {commands.dispose()}
+})
