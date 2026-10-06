@@ -2,10 +2,10 @@
 //
 // Слот в perObject:
 //   modelMatrix     [offsetFloats +  0 .. +15]
-//   normalMatrix    [offsetFloats + 16 .. +31] (не используется, но layout общий)
+//   side RGBA       [offsetFloats + 16 .. +31] (бывший неиспользуемый normalMatrix)
 //   fill rgba       [offsetFloats + 32 .. +35]
 //   border rgba     [offsetFloats + 36 .. +39]
-//   size.xy + pad   [offsetFloats + 40 .. +43] (vec4: w, h, 0, 0 — world-units)
+//   size.xy + pad   [offsetFloats + 40 .. +43] (vec4: w, h, side-colors flag, 0 — world-units)
 //   radii tl/tr/br/bl [offsetFloats + 44 .. +47]
 //   borderWidth + opacity + shadowBlur + shadowSpread [offsetFloats + 48 .. +51]
 //   clipBounds      [offsetFloats + 52 .. +55] (xMin, yMin, xMax, yMax screen-px)
@@ -157,9 +157,13 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     let borderStrength = max(outerMask - innerMask, 0.0);
     let fillStrength = innerMask;
 
+    var border = perObject.border;
+    if (perObject.size.z > 0.0 && borderStrength > 0.0) {
+        border = roundedBorderColor(p, halfSize, borderWidths, perObject.normalMatrix, aa);
+    }
     let rgb = (perObject.fill.rgb * fillStrength * perObject.fill.a
-            + perObject.border.rgb * borderStrength * perObject.border.a) * opacity * presentationCoverage;
-    let a = (fillStrength * perObject.fill.a + borderStrength * perObject.border.a) * opacity * presentationCoverage;
+            + border.rgb * borderStrength * border.a) * opacity * presentationCoverage;
+    let a = (fillStrength * perObject.fill.a + borderStrength * border.a) * opacity * presentationCoverage;
     if (a <= 0.0) { discard; }
     // Premultiplied → divide rgb на a чтобы получить straight color,
     // потому что blend pipeline ожидает src-alpha с straight color.

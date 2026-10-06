@@ -35,3 +35,35 @@ fn roundedInnerDistance(point: vec2<f32>, halfSize: vec2<f32>, radii: vec4<f32>,
     }
     return rectangle;
 }
+
+// Цвет стороны выбирается по расстоянию до её внешнего края относительно толщины.
+// Это даёт диагональное соединение соседних сторон и учитывает нулевые insets.
+// RGBA смешиваются premultiplied, чтобы прозрачная сторона не оставляла цветной шов.
+fn roundedBorderColor(point: vec2<f32>, halfSize: vec2<f32>, widths: vec4<f32>, colors: mat4x4<f32>, aa: f32) -> vec4<f32> {
+    let distances = vec4<f32>(halfSize.y - point.y, halfSize.x - point.x, halfSize.y + point.y, halfSize.x + point.x);
+    let metrics = distances / max(widths, vec4<f32>(0.00001));
+    var first = 0u;
+    var second = 0u;
+    var firstDistance = 1e20;
+    var secondDistance = 1e20;
+    for (var side = 0u; side < 4u; side++) {
+        if (widths[side] > 0.0) {
+            let distance = metrics[side];
+            if (distance < firstDistance) {
+                second = first;
+                secondDistance = firstDistance;
+                first = side;
+                firstDistance = distance;
+            } else if (distance < secondDistance) {
+                second = side;
+                secondDistance = distance;
+            }
+        }
+    }
+    let a = colors[first];
+    let b = colors[second];
+    let feather = max(aa * (1.0 / max(widths[first], 0.00001) + 1.0 / max(widths[second], 0.00001)), 0.00001);
+    let blend = 0.5 * (1.0 - smoothstep(0.0, feather, secondDistance - firstDistance));
+    let mixed = mix(vec4<f32>(a.rgb * a.a, a.a), vec4<f32>(b.rgb * b.a, b.a), blend);
+    return vec4<f32>(mixed.rgb / max(mixed.a, 0.00001), mixed.a);
+}

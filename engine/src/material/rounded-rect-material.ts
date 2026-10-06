@@ -14,6 +14,9 @@ import { Material, type MaterialParameters } from "./material"
  * `[top, right, bottom, left]`. Independent insets produce an elliptical inner
  * corner; WebGPU evaluates that contour without changing the outer radius.
  *
+ * `borderColors` задаёт независимые RGBA сторон без потери Float32 точности.
+ * Если значение отсутствует, одноцветный путь сохраняет прежние данные и стоимость.
+ *
  * Антиалиасинг работает через fwidth() в фрагментном шейдере — независим
  * от размера меша и pixelRatio, даёт стабильный 1-px переход на любой DPR.
  */
@@ -27,6 +30,8 @@ export interface RoundedRectMaterialParameters extends MaterialParameters {
   fill?: Color | number | null
   /** Цвет рамки. Default null (нет рамки). */
   border?: Color | number | null
+  /** Независимые RGBA сторон top/right/bottom/left; при отсутствии используется border. */
+  borderColors?: readonly [Color | number, Color | number, Color | number, Color | number]
   /** Толщина рамки в world-units. Default 0. */
   borderWidth?: number
   /** Canonical per-edge widths `[top, right, bottom, left]` in world-units. */
@@ -57,6 +62,8 @@ export class RoundedRectMaterial extends Material {
   /** tl, tr, br, bl */
   public radii: [number, number, number, number]
   public fill: Color
+  /** null сохраняет обычную одноцветную рамку без дополнительной GPU-палитры. */
+  public borderColors: readonly [Color, Color, Color, Color] | null = null
   public border: Color
   private edgeBorderWidths: [number, number, number, number] = [0, 0, 0, 0]
   public opacity: number
@@ -86,6 +93,11 @@ export class RoundedRectMaterial extends Material {
       : new Color(parameters.border === null || parameters.border === undefined ? 0x000000 : parameters.border)
     if (parameters.border === null || parameters.border === undefined) {
       this.border.a = 0
+    }
+
+    if (parameters.borderColors !== undefined) {
+      if (parameters.borderColors.length !== 4) throw new TypeError("RoundedRectMaterial.borderColors requires four sides")
+      this.borderColors = parameters.borderColors.map(color => color instanceof Color ? color.clone() : new Color(color)) as [Color, Color, Color, Color]
     }
 
     if (parameters.borderWidths !== undefined) this.borderWidths = parameters.borderWidths

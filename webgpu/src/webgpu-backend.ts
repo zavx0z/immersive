@@ -130,6 +130,7 @@ type PreparedRectItem = Readonly<{
   viewport: RenderFrame["viewport"]
   fill: Color
   border: Color
+  borderColors: readonly [Color, Color, Color, Color] | null
   borderWidths: readonly [number, number, number, number]
   radii: readonly [number, number, number, number]
   opacity: number
@@ -1314,9 +1315,12 @@ export class RendererWebGpuBackend {
     const written: PreparedRectRecordUpdate[] = []
     try {
       for (const update of reused.recordUpdates) {
-        if (!update.writeRecord) continue
-        this.#rectLayer.instances.setRecord(update.handle, update.nextRecord)
         written.push(update)
+        if (update.writeRecord) this.#rectLayer.instances.setRecord(update.handle, update.nextRecord)
+        const previous = this.#preparedFrameCache!.prepared[update.index] as PreparedRectItem
+        if (update.value.borderColors !== null || previous.borderColors !== null) {
+          this.#rectLayer.setBorderColors(update.handle, update.value.borderColors)
+        }
       }
     } catch (error) {
       const rollbackErrors: unknown[] = []
@@ -1324,6 +1328,10 @@ export class RendererWebGpuBackend {
         const update = written[index]!
         try {
           this.#rectLayer.instances.setRecord(update.handle, update.previousRecord)
+          const previous = this.#preparedFrameCache!.prepared[update.index] as PreparedRectItem
+          if (previous.borderColors !== null || update.value.borderColors !== null) {
+            this.#rectLayer.setBorderColors(update.handle, previous.borderColors)
+          }
         } catch (rollbackError) {
           rollbackErrors.push(rollbackError)
         }
@@ -1595,6 +1603,7 @@ export class RendererWebGpuBackend {
       if (handle === undefined) {
         const record = packRectInstance(value)
         handle = this.#rectLayer.instances.allocate(record, orderIndex)
+        if (value.borderColors !== null) this.#rectLayer.setBorderColors(handle, value.borderColors)
         this.#rectHandles.set(value.token, handle)
         this.#rectRecords.set(value.token, record)
         this.#rectSourceItems.set(value.token, value.item)
@@ -1606,6 +1615,9 @@ export class RendererWebGpuBackend {
       }
       if (this.#rectSourceItems.get(value.token) === value.item) continue
       const record = packRectInstance(value)
+      if (value.borderColors !== null || this.#rectLayer.geometry.attributes.roundedRectBorderColors !== undefined) {
+        this.#rectLayer.setBorderColors(handle, value.borderColors)
+      }
       const previous = this.#rectRecords.get(value.token)
       if (previous === undefined || !sameFloatRecord(previous, record)) {
         this.#rectLayer.instances.setRecord(handle, record)
@@ -1979,14 +1991,15 @@ export class RendererWebGpuBackend {
     assertFiniteNonNegative(bottomLeft, `${label}.border.radii.bottomLeft`)
 
     const widths = Object.freeze([top, right, bottom, left] as const)
-    const borderColor = visibleUniformBorderColor(widths, border.colors, label)
+    const borderPaint = prepareBorderColors(widths, border.colors)
     const shadow = prepareRectShadow(item, widths, label)
     const prepared = Object.freeze({
       kind: "rect",
       item,
       viewport: frame.viewport,
       fill: parseDisplayColor(item.color || WHITE),
-      border: borderColor,
+      border: borderPaint.border,
+      borderColors: borderPaint.colors,
       borderWidths: widths,
       radii: Object.freeze([topLeft, topRight, bottomRight, bottomLeft] as const),
       opacity,
@@ -2139,6 +2152,7 @@ export class RendererWebGpuBackend {
       radius: radiiParameters(value.radii),
       fill: value.fill,
       border: value.border,
+      ...(value.borderColors === null ? {} : {borderColors: value.borderColors}),
       borderWidths: value.borderWidths,
       opacity: value.opacity,
       shadowBlur: value.shadow?.blurRadius ?? 0,
@@ -2269,6 +2283,7 @@ export class RendererWebGpuBackend {
         if (this.#rectGeometries.release(previousGeometry)) this.#invalidateGeometry(previousGeometry)
       }
       if (entry.paint.fill !== value.fill || entry.paint.border !== value.border ||
+        entry.paint.borderColors !== value.borderColors ||
         entry.paint.borderWidths !== value.borderWidths || entry.paint.radii !== value.radii ||
         entry.paint.opacity !== value.opacity || entry.paint.shadow !== value.shadow ||
         entry.material.width !== value.item.width || entry.material.height !== value.item.height) {
@@ -2276,6 +2291,7 @@ export class RendererWebGpuBackend {
         entry.material.height = value.item.height
         entry.material.fill.copy(value.fill)
         entry.material.border.copy(value.border)
+        entry.material.borderColors = value.borderColors
         entry.material.borderWidths = value.borderWidths
         copyRadii(entry.material.radii, value.radii)
         entry.material.opacity = value.opacity
@@ -2668,6 +2684,7 @@ function packRectInstance(value: PreparedRectItem): Float32Array {
     [value.border.r, value.border.g, value.border.b, value.border.a],
     ROUNDED_RECT_INSTANCE_OFFSETS.border,
   )
+  record[ROUNDED_RECT_INSTANCE_OFFSETS.reserved] = value.borderColors === null ? 0 : 1
   record.set(value.radii, ROUNDED_RECT_INSTANCE_OFFSETS.radii)
   record.set(value.borderWidths, ROUNDED_RECT_INSTANCE_OFFSETS.borderWidths)
   record.set([
@@ -3360,21 +3377,21 @@ function validateClipRadii(
   return radii
 }
 
-function visibleUniformBorderColor(
-  widths: readonly [number, number, number, number],
-  colors: RectDisplayItem["border"]["colors"],
-  label: string,
-): Color {
-  const values = [colors.top, colors.right, colors.bottom, colors.left] as const
-  const visible = values.flatMap((value, index) => widths[index]! > 0
-    ? [parseDisplayColor(value)]
-    : [])
-  const first = visible[0]
-  if (first === undefined) return new Color(0, 0, 0, 0)
-  if (visible.some(color => !sameColor(first, color))) {
-    throw new Error(`${label} has non-uniform border colors unsupported by RoundedRectMaterial`)
-  }
-  return first
+/** Нулевые стороны не влияют на выбор быстрого одноцветного пути. */
+function prepareBorderColors(
+  widths: readonly number[],
+  values: RectDisplayItem["border"]["colors"],
+): {border: Color, colors: readonly [Color, Color, Color, Color] | null} {
+  const strings = [values.top, values.right, values.bottom, values.left]
+  const firstSide = widths.findIndex(width => width > 0)
+  if (firstSide < 0) return {border: new Color(0, 0, 0, 0), colors: null}
+  const firstText = strings[firstSide]!
+  const first = parseDisplayColor(firstText)
+  // Одинаковые CSS-значения разбираются один раз; обычная рамка не создаёт палитру.
+  if (strings.every((value, index) => widths[index] === 0 || value === firstText)) return {border: first, colors: null}
+  const colors = strings.map((value, index) => widths[index] === 0 || index === firstSide ? first : parseDisplayColor(value!)) as [Color, Color, Color, Color]
+  const uniform = colors.every((color, index) => widths[index] === 0 || sameColor(first, color))
+  return {border: first, colors: uniform ? null : colors}
 }
 
 function prepareRectShadow(

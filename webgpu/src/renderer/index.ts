@@ -140,6 +140,7 @@ interface GeometryBuffers {
   instanceBuffer?: GPUBuffer // для WireframeInstancedMesh (матрица + параметры материала)
   roundedRectRecordBuffer?: GPUBuffer
   roundedRectOrderBuffer?: GPUBuffer
+  roundedRectBorderColorBuffer?: GPUBuffer
   strokedPathStyleRecordBuffer?: GPUBuffer
   strokedPathSegmentRecordBuffer?: GPUBuffer
   strokedPathSegmentOrderBuffer?: GPUBuffer
@@ -153,6 +154,7 @@ interface GeometryAttributeBinding {
 }
 
 interface RoundedRectInstanceBindGroupEntry {
+  readonly borderColorBuffer: GPUBuffer
   readonly recordBuffer: GPUBuffer
   readonly orderBuffer: GPUBuffer
   readonly bindGroup: GPUBindGroup
@@ -341,6 +343,7 @@ export class Renderer {
   private uiExternalImagePipeline: GPURenderPipeline | null = null
   private uiRoundedPipeline: GPURenderPipeline | null = null
   private uiInstancedRoundedRectPipeline: GPURenderPipeline | null = null
+  private uiInstancedMulticolorRoundedRectPipeline: GPURenderPipeline | null = null
   private uiInstancedStrokedPathPipeline: GPURenderPipeline | null = null
   private radialBackdropPipeline: GPURenderPipeline | null = null
   private uiRadialBackdropPipeline: GPURenderPipeline | null = null
@@ -559,6 +562,11 @@ export class Renderer {
         {
           binding: 1,
           visibility: GPUShaderStage.VERTEX,
+          buffer: {type: "read-only-storage"},
+        },
+        {
+          binding: 2,
+          visibility: GPUShaderStage.FRAGMENT,
           buffer: {type: "read-only-storage"},
         },
       ],
@@ -1074,7 +1082,7 @@ export class Renderer {
       multisample: {count: this.sampleCount},
     })
 
-    this.uiInstancedRoundedRectPipeline = await this.device.createRenderPipelineAsync({
+    const roundedRectDescriptor: GPURenderPipelineDescriptor = {
       label: "InstancedRoundedRect.ui",
       layout: roundedRectInstancePipelineLayout,
       vertex: {
@@ -1098,6 +1106,15 @@ export class Renderer {
       primitive: {topology: "triangle-list", cullMode: "none"},
       depthStencil: uiDepthStencil,
       multisample: {count: this.sampleCount},
+    }
+    this.uiInstancedRoundedRectPipeline = await this.device.createRenderPipelineAsync({
+      ...roundedRectDescriptor,
+      fragment: {...roundedRectDescriptor.fragment!, constants: {perSideBorderColors: 0}},
+    })
+    this.uiInstancedMulticolorRoundedRectPipeline = await this.device.createRenderPipelineAsync({
+      ...roundedRectDescriptor,
+      label: "InstancedRoundedRect.multicolor.ui",
+      fragment: {...roundedRectDescriptor.fragment!, constants: {perSideBorderColors: 1}},
     })
 
     this.uiInstancedStrokedPathPipeline = await this.device.createRenderPipelineAsync({
@@ -1671,6 +1688,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.roundedPipeline &&
       this.uiRoundedPipeline &&
       this.uiInstancedRoundedRectPipeline &&
+      this.uiInstancedMulticolorRoundedRectPipeline &&
       this.uiInstancedStrokedPathPipeline &&
       this.radialBackdropPipeline &&
       this.uiRadialBackdropPipeline &&
@@ -2489,8 +2507,11 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.writePerObjectRgba(offsetFloats + 32, material.fill)
       // border rgba @ 36..39
       this.writePerObjectRgba(offsetFloats + 36, material.border)
-      // size.xy + 2 pad @ 40..43
-      this.writePerObjectVec4(offsetFloats + 40, material.width, material.height, 0, 0)
+      // size.xy + side-colors flag + pad @ 40..43
+      this.writePerObjectVec4(offsetFloats + 40, material.width, material.height, material.borderColors === null ? 0 : 1, 0)
+      if (material.borderColors !== null) {
+        for (let side = 0; side < 4; side++) this.writePerObjectRgba(offsetFloats + 16 + side * 4, material.borderColors[side]!)
+      }
       // radii tl/tr/br/bl @ 44..47
       // WGSL ожидает порядок (TR, BR, BL, TL) для quadrant-mapping —
       // но я переписал внутри sdRoundBox чтобы выбирать по квадранту
@@ -2681,7 +2702,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
           pipeline = this.instancedMeshPipeline
           break
         case "instanced-rounded-rect":
-          pipeline = this.uiInstancedRoundedRectPipeline
+          pipeline = (item.object as InstancedRoundedRect).layer.hasBorderColors
+            ? this.uiInstancedMulticolorRoundedRectPipeline
+            : this.uiInstancedRoundedRectPipeline
           break
         case "instanced-stroked-path":
           pipeline = this.uiInstancedStrokedPathPipeline
@@ -2791,6 +2814,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     buffers.instanceBuffer?.destroy()
     buffers.roundedRectRecordBuffer?.destroy()
     buffers.roundedRectOrderBuffer?.destroy()
+    buffers.roundedRectBorderColorBuffer?.destroy()
     buffers.strokedPathStyleRecordBuffer?.destroy()
     buffers.strokedPathSegmentRecordBuffer?.destroy()
     buffers.strokedPathSegmentOrderBuffer?.destroy()
@@ -3001,6 +3025,14 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.synchronizeOptionalGeometryAttribute(
       buffers,
       sources,
+      "roundedRectBorderColors",
+      "roundedRectBorderColorBuffer",
+      geometry.attributes.roundedRectBorderColors,
+      GPUBufferUsage.STORAGE,
+    )
+    this.synchronizeOptionalGeometryAttribute(
+      buffers,
+      sources,
       "strokedPathStyleRecords",
       "strokedPathStyleRecordBuffer",
       geometry.attributes.strokedPathStyleRecords,
@@ -3163,10 +3195,12 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       throw new Error("InstancedRoundedRect bind group is unavailable")
     }
 
+    const borderColorBuffer = buffers.roundedRectBorderColorBuffer ?? buffers.roundedRectRecordBuffer
     const cached = this.roundedRectInstanceBindGroupCache.get(geometry)
     if (
       cached?.recordBuffer === buffers.roundedRectRecordBuffer
       && cached.orderBuffer === buffers.roundedRectOrderBuffer
+      && cached.borderColorBuffer === borderColorBuffer
     ) return cached.bindGroup
 
     const bindGroup = this.device.createBindGroup({
@@ -3174,9 +3208,11 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       entries: [
         {binding: 0, resource: {buffer: buffers.roundedRectRecordBuffer}},
         {binding: 1, resource: {buffer: buffers.roundedRectOrderBuffer}},
+        {binding: 2, resource: {buffer: borderColorBuffer}},
       ],
     })
     this.roundedRectInstanceBindGroupCache.set(geometry, {
+      borderColorBuffer,
       recordBuffer: buffers.roundedRectRecordBuffer,
       orderBuffer: buffers.roundedRectOrderBuffer,
       bindGroup,
@@ -3691,6 +3727,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.uiExternalImagePipeline = null
     this.uiRoundedPipeline = null
     this.uiInstancedRoundedRectPipeline = null
+    this.uiInstancedMulticolorRoundedRectPipeline = null
     this.uiInstancedStrokedPathPipeline = null
     this.radialBackdropPipeline = null
     this.uiRadialBackdropPipeline = null

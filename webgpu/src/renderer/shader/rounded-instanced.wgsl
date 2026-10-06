@@ -1,3 +1,5 @@
+override perSideBorderColors: bool = true;
+
 struct GlobalUniforms {
     viewProjectionMatrix: mat4x4<f32>,
 };
@@ -20,6 +22,8 @@ struct RoundedRectInstanceRecord {
 };
 @binding(0) @group(2) var<storage, read> records: array<RoundedRectInstanceRecord>;
 @binding(1) @group(2) var<storage, read> order: array<u32>;
+// Только разноцветные записи используют эту лениво выделяемую палитру.
+@binding(2) @group(2) var<storage, read> borderColors: array<mat4x4<f32>>;
 
 struct VertexOutput {
     @builtin(position) position: vec4<f32>,
@@ -117,13 +121,17 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
 
     let borderStrength = max(outerMask - innerMask, 0.0);
     let fillStrength = innerMask;
+    var border = record.border;
+    if (perSideBorderColors && record.reserved.x > 0.0 && borderStrength > 0.0) {
+        border = roundedBorderColor(point, halfSize, borderWidths, borderColors[in.slot], antialias);
+    }
     let rgb = (
         record.fill.rgb * fillStrength * record.fill.a
-        + record.border.rgb * borderStrength * record.border.a
+        + border.rgb * borderStrength * border.a
     ) * opacity;
     let alpha = (
         fillStrength * record.fill.a
-        + borderStrength * record.border.a
+        + borderStrength * border.a
     ) * opacity;
     if (alpha <= 0.0) { discard; }
     return vec4<f32>(rgb / max(alpha, 0.00001), alpha);

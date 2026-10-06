@@ -1,4 +1,6 @@
 import {BufferAttribute, BufferGeometry} from "./buffer-geometry"
+import type {Color} from "../math"
+import type {InstanceHandle} from "./instance-layer"
 import {InstanceLayer} from "./instance-layer"
 import {Object3D} from "./object-3d"
 
@@ -16,7 +18,7 @@ export const ROUNDED_RECT_INSTANCE_OFFSETS = Object.freeze({
   radii: 16,
   borderWidths: 20,
   params: 24,
-  reserved: 28,
+  reserved: 28, // x = 1: независимые Float32 RGBA из ленивой палитры слота
 } as const)
 
 export interface RoundedRectInstanceLayerOptions {
@@ -36,6 +38,20 @@ export class RoundedRectInstanceLayer {
   public readonly isRoundedRectInstanceLayer: true = true
   public readonly instances: InstanceLayer
   public readonly geometry: BufferGeometry
+  readonly #borderColorHandles = new Set<InstanceHandle>()
+  #borderColorOwnershipVersion = -1
+
+  /** Активные цвета выбирают pipeline независимо от сохранённой ёмкости палитры. */
+  public get hasBorderColors(): boolean {
+    if (this.#borderColorHandles.size === 0) return false
+    if (this.#borderColorOwnershipVersion !== this.instances.ownershipVersion) {
+      for (const handle of this.#borderColorHandles) {
+        if (!this.instances.has(handle)) this.#borderColorHandles.delete(handle)
+      }
+      this.#borderColorOwnershipVersion = this.instances.ownershipVersion
+    }
+    return this.#borderColorHandles.size > 0
+  }
 
   public constructor(options: RoundedRectInstanceLayerOptions) {
     const instanceOptions = {
@@ -59,6 +75,44 @@ export class RoundedRectInstanceLayer {
     geometry.setAttribute("roundedRectRecords", this.instances.recordAttribute)
     geometry.setAttribute("roundedRectOrder", this.instances.orderAttribute)
     this.geometry = geometry
+  }
+
+  /**
+   * Дополнительные RGBA только для разноцветных рамок. Обычные записи остаются 128 B.
+   * Палитра адресуется стабильным physical slot; порядок рисования её не перемещает.
+   */
+  public setBorderColors(handle: InstanceHandle, colors: readonly Color[] | null): void {
+    if (!this.instances.has(handle)) throw new Error("Border palette requires a live instance")
+    if (colors === null) {
+      this.#borderColorHandles.delete(handle)
+      return
+    }
+    if (colors.length !== 4) throw new TypeError("Border palette requires four RGBA colors")
+    const required = handle.slot + 1
+    let attribute = this.geometry.attributes.roundedRectBorderColors
+    if (attribute === undefined) {
+      attribute = new BufferAttribute(new Float32Array(Math.min(this.instances.maxCapacity, Math.max(16, required)) * 16), 16)
+      this.geometry.setAttribute("roundedRectBorderColors", attribute)
+    } else if (attribute.count < required) {
+      const next = new Float32Array(Math.min(this.instances.maxCapacity, Math.max(required, attribute.count * 2)) * 16)
+      next.set(attribute.array)
+      attribute.array = next
+    }
+    const data = attribute.array as Float32Array
+    const offset = handle.slot * 16
+    let changed = false
+    for (let side = 0; side < 4; side++) {
+      const color = colors[side]!
+      const values = [color.r, color.g, color.b, color.a]
+      for (let channel = 0; channel < 4; channel++) {
+        const index = offset + side * 4 + channel
+        const value = Math.fround(values[channel]!)
+        if (data[index] !== value) {data[index] = value; changed = true}
+      }
+    }
+    if (changed) attribute.addUpdateRange(offset, 16)
+    this.#borderColorHandles.add(handle)
+    this.#borderColorOwnershipVersion = -1
   }
 }
 

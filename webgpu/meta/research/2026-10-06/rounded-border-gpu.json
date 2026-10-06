@@ -1,0 +1,214 @@
+{
+  "at": "2026-10-06T05:48:18.227Z",
+  "adapter": {
+    "nextInChain": 0,
+    "vendor": "intel",
+    "architecture": "gen-9",
+    "device": "intel-r-hd-graphics-630",
+    "description": "Metal driver on macOS Version 13.7.8 (Build 22H730)",
+    "backendType": 5,
+    "adapterType": 2,
+    "vendorID": 32902,
+    "deviceID": 22811,
+    "subgroupMinSize": 4,
+    "subgroupMaxSize": 64,
+    "isFallbackAdapter": false
+  },
+  "count": 2048,
+  "width": 2304,
+  "height": 1152,
+  "strideBytes": 128,
+  "samples": 20,
+  "warmup": 5,
+  "framesPerSample": 4,
+  "msaa": 4,
+  "timing": "GPU render-pass timestamps",
+  "timestampSupported": true,
+  "method": "alternating before/after on same device and shared scene/resources",
+  "shaderHashes": {
+    "before": "a1f81f061953efe41f65a287a76f5601fa60e66d4dde664f4ebf5c4b6eec2c7a",
+    "after": "fbd60eba866e273730a37693d478238294df18b00ae3f3cb3e9dd4ae326b733f"
+  },
+  "currentPipelineOverride": {
+    "perSideBorderColors": 0
+  },
+  "shaderBeforeSource": "git HEAD assembled with HEAD rounded-border; git diff before benchmark confirmed only new colour branch changed these sources",
+  "sceneBuffers": {
+    "bufferCreated": 6,
+    "bufferUploadWrites": 6,
+    "bufferUploadBytes": 270524,
+    "draws": 0,
+    "submittedFrames": 0
+  },
+  "drawCountPerFrame": 1,
+  "paletteBuffers": 0,
+  "recordBytes": 262144,
+  "steadyCounters": {
+    "bufferCreated": 0,
+    "bufferUploadWrites": 0,
+    "bufferUploadBytes": 0,
+    "draws": 200,
+    "submittedFrames": 200
+  },
+  "before": {
+    "rawMs": [
+      3.162112,
+      3.19488,
+      2.998272,
+      3.2768,
+      3.03104,
+      3.063808,
+      3.19488,
+      3.244032,
+      3.407872,
+      3.162112,
+      3.244032,
+      3.19488,
+      3.227648,
+      3.080192,
+      3.325952,
+      3.19488,
+      3.096576,
+      3.145728,
+      2.932736,
+      3.244032
+    ],
+    "medianMs": 3.19488,
+    "p95Ms": 3.325952
+  },
+  "after": {
+    "rawMs": [
+      3.244032,
+      3.260416,
+      3.260416,
+      3.2768,
+      3.014656,
+      3.19488,
+      3.489792,
+      3.19488,
+      3.489792,
+      3.2768,
+      2.94912,
+      2.94912,
+      2.916352,
+      3.03104,
+      3.227648,
+      3.096576,
+      3.2768,
+      3.162112,
+      3.047424,
+      2.94912
+    ],
+    "medianMs": 3.19488,
+    "p95Ms": 3.489792
+  },
+  "pairedRelative": {
+    "rawMs": [
+      1.0259067357512952,
+      1.0205128205128207,
+      1.0874316939890711,
+      1,
+      0.9945945945945946,
+      1.0427807486631016,
+      1.0923076923076924,
+      0.9848484848484849,
+      1.0240384615384617,
+      1.0362694300518136,
+      0.9090909090909092,
+      0.9230769230769231,
+      0.9035532994923858,
+      0.9840425531914894,
+      0.9704433497536945,
+      0.9692307692307693,
+      1.0582010582010581,
+      1.0052083333333333,
+      1.0391061452513968,
+      0.9090909090909092
+    ],
+    "medianMs": 1.0052083333333333,
+    "p95Ms": 1.0874316939890711
+  },
+  "pairs": [
+    {
+      "before": 3.162112,
+      "after": 3.244032
+    },
+    {
+      "before": 3.19488,
+      "after": 3.260416
+    },
+    {
+      "before": 2.998272,
+      "after": 3.260416
+    },
+    {
+      "before": 3.2768,
+      "after": 3.2768
+    },
+    {
+      "before": 3.03104,
+      "after": 3.014656
+    },
+    {
+      "before": 3.063808,
+      "after": 3.19488
+    },
+    {
+      "before": 3.19488,
+      "after": 3.489792
+    },
+    {
+      "before": 3.244032,
+      "after": 3.19488
+    },
+    {
+      "before": 3.407872,
+      "after": 3.489792
+    },
+    {
+      "before": 3.162112,
+      "after": 3.2768
+    },
+    {
+      "before": 3.244032,
+      "after": 2.94912
+    },
+    {
+      "before": 3.19488,
+      "after": 2.94912
+    },
+    {
+      "before": 3.227648,
+      "after": 2.916352
+    },
+    {
+      "before": 3.080192,
+      "after": 3.03104
+    },
+    {
+      "before": 3.325952,
+      "after": 3.227648
+    },
+    {
+      "before": 3.19488,
+      "after": 3.096576
+    },
+    {
+      "before": 3.096576,
+      "after": 3.2768
+    },
+    {
+      "before": 3.145728,
+      "after": 3.162112
+    },
+    {
+      "before": 2.932736,
+      "after": 3.047424
+    },
+    {
+      "before": 3.244032,
+      "after": 2.94912
+    }
+  ],
+  "scope": "uniform instanced rounded shader; GPU passes only, excludes full Renderer CPU/device initialization and native Canvas acceptance"
+}
