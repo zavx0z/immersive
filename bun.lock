@@ -293,6 +293,7 @@
         "@zavx0z/highlighter": "^0.1.0",
       },
       "peerDependencies": {
+        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-nodes-layout": "workspace:*",
         "@zavx0z/immersive-nodes-node": "workspace:*",

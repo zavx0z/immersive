@@ -1,3 +1,5 @@
+import {useContext, useEffect, useState} from "@zavx0z/immersive-component"
+import {MarkdownMediaContext, type MarkdownImageLease} from "./media.ts"
 import {Mermaid} from "../../mermaid/index.tsx"
 import type {
   MarkdownBlock,
@@ -6,6 +8,7 @@ import type {
   MarkdownTableCell,
 } from "../../shared/types/model.ts"
 import Divider from "@zavx0z/immersive-ui-component-divider"
+import Button from "@zavx0z/immersive-ui-component-button-basic"
 import CodeEditor from "@zavx0z/immersive-ui-component-view-code-editor"
 import type {InlineListProps, ListProps} from "../types/blocks.ts"
 
@@ -154,8 +157,10 @@ function InlineCode(props: Readonly<{value: string}>) {
 @param props - `href` уже проверен parser; `content` содержит {@link MarkdownInline}, а `external` включает noreferrer.
 */
 function InlineLink(props: Readonly<{content: readonly MarkdownInline[]; href: string; external: boolean}>) {
+  const host = useContext(MarkdownMediaContext)
   return <a
     href={props.href}
+    target={host?.linkTarget}
     rel={props.external ? "noreferrer" : undefined}
     style={css`
       display: inline;
@@ -225,6 +230,83 @@ function InlineBreak() {
 @param props - Поле `image` содержит ветку image из {@link MarkdownInline}; width/height передаются в CSS px без повторной проверки.
 */
 function InlineImage(props: Readonly<{image: Extract<MarkdownInline, {kind: "image"}>}>) {
+  const host = useContext(MarkdownMediaContext)
+  return <>
+    {host ? <ManagedInlineImage image={props.image} /> : <UnmanagedInlineImage image={props.image} />}
+  </>
+}
+
+/** Доставка host имеет явное состояние ошибки и повтор; URL lease освобождается при смене source. */
+function ManagedInlineImage(props: Readonly<{image: Extract<MarkdownInline, {kind: "image"}>}>) {
+  const host = useContext(MarkdownMediaContext)!
+  const [image, setImage] = useState<MarkdownImageLease | null>(null)
+  const [error, setError] = useState("")
+  const [attempt, setAttempt] = useState(0)
+  useEffect(() => {
+    const controller = new AbortController()
+    let lease: MarkdownImageLease | null = null
+    setImage(null)
+    setError("")
+    void host.loadImage(props.image, controller.signal).then(value => {
+      if (controller.signal.aborted) {value.release(); return}
+      lease = value
+      setImage(value)
+    }, failure => {if (!controller.signal.aborted) setError(failure instanceof Error ? failure.message : String(failure))})
+    return () => {controller.abort(); lease?.release()}
+  }, [props.image.src, host, attempt])
+  return <span
+    data-markdown-image=""
+    style={css`
+      display: inline-flex;
+      flex-direction: column;
+      max-width: 100%;
+      gap: 6px;
+    `}
+  >
+    {image ? <ReadyMarkdownImage image={image} label={props.image.alt} onOpen={() => host.openImage?.(props.image)} /> : <MarkdownImageNotice text={error || `Загрузка: ${props.image.alt || "Изображение"}…`} error={Boolean(error)} />}
+    {error ? <MarkdownImageRetry onRetry={() => setAttempt(attempt + 1)} /> : null}
+  </span>
+}
+
+function ReadyMarkdownImage(props: Readonly<{image: MarkdownImageLease, label: string, onOpen(): void}>) {
+  return <button
+    type="button"
+    aria-label={`Открыть: ${props.label || "Изображение"}`}
+    onClick={props.onOpen}
+    style={css`
+      display: block;
+      padding: 0;
+      border: 0;
+      max-width: 100%;
+      background: transparent;
+    `}
+  >
+    <img
+      src={props.image.url}
+      width={props.image.width}
+      height={props.image.height}
+      alt={props.label}
+      style={css`
+        display: block;
+        max-width: 100%;
+        max-height: 200px;
+        height: auto;
+        object-fit: contain;
+      `}
+    />
+  </button>
+}
+function MarkdownImageNotice(props: Readonly<{text: string, error: boolean}>) {
+  return <span role={props.error ? "alert" : "status"}>{props.text}</span>
+}
+function MarkdownImageRetry(props: Readonly<{onRetry(): void}>) {
+  return <Button
+    label="Повторить загрузку"
+    onClick={() => props.onRetry()}
+  />
+}
+
+function UnmanagedInlineImage(props: Readonly<{image: Extract<MarkdownInline, {kind: "image"}>}>) {
   return <img
     src={props.image.src}
     alt={props.image.alt}

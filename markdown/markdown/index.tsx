@@ -80,3 +80,6 @@ export function Markdown(props: MarkdownProps) {
     />)}
   </article>
 }
+
+export {MarkdownMediaContext} from "./src/media.ts"
+export type {MarkdownMediaHost, MarkdownImageSource, MarkdownImageLease} from "./src/media.ts"

@@ -41,7 +41,8 @@
     "@zavx0z/immersive-jsx": "workspace:*",
     "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
     "@zavx0z/immersive-ui-component-divider": "workspace:*",
-    "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*"
+    "@zavx0z/immersive-ui-component-view-code-editor": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*"
   },
   "devDependencies": {
     "@zavx0z/immersive-renderer-html": "workspace:*",
