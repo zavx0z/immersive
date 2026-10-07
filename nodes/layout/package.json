@@ -23,6 +23,9 @@
     "./top-down/contract/input": "./algorithm/top-down/contract/input.ts",
     "./top-down/contract/output": "./algorithm/top-down/contract/output.ts",
     "./top-down/error": "./algorithm/top-down/src/error.ts",
+    "./hierarchy": "./algorithm/hierarchy/index.ts",
+    "./hierarchy/contract/input": "./algorithm/hierarchy/contract/input.ts",
+    "./hierarchy/contract/output": "./algorithm/hierarchy/contract/output.ts",
     "./coffman-graham": "./algorithm/coffman-graham/index.ts",
     "./coffman-graham/contract/input": "./algorithm/coffman-graham/contract/input.ts",
     "./coffman-graham/contract/output": "./algorithm/coffman-graham/contract/output.ts",
@@ -43,7 +46,7 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
+    "test": "bun test --parallel tests algorithm/hierarchy/tests",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {
