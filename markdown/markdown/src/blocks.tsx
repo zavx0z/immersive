@@ -1,4 +1,5 @@
 import {useContext, useEffect, useState} from "@zavx0z/immersive-component"
+import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import {MarkdownMediaContext, type MarkdownImageLease} from "./media.ts"
 import {Mermaid} from "../../mermaid/index.tsx"
 import type {
@@ -232,8 +233,44 @@ function InlineBreak() {
 function InlineImage(props: Readonly<{image: Extract<MarkdownInline, {kind: "image"}>}>) {
   const host = useContext(MarkdownMediaContext)
   return <>
-    {host ? <ManagedInlineImage image={props.image} /> : <UnmanagedInlineImage image={props.image} />}
+    {host?.renderImage ? <CallerInlineImage
+      image={props.image}
+    /> : <DefaultInlineImage
+      image={props.image}
+    />}
   </>
+}
+
+function DefaultInlineImage(props: Readonly<{image: Extract<MarkdownInline, {kind: "image"}>}>) {
+  const host = useContext(MarkdownMediaContext)
+  return <>
+    {host ? <ManagedInlineImage
+      image={props.image}
+    /> : <UnmanagedInlineImage
+      image={props.image}
+    />}
+  </>
+}
+
+/** Caller-компонент владеет своим lifecycle; Markdown сохраняет строчную композицию. */
+function CallerInlineImage(props: Readonly<{image: Extract<MarkdownInline, {kind: "image"}>}>) {
+  const host = useContext(MarkdownMediaContext)!
+  const content: readonly JSX.Element[] = [host.renderImage!(props.image)]
+  return <span
+    data-markdown-image=""
+    style={css`
+      display: inline-flex;
+      flex-direction: column;
+      max-width: 100%;
+      gap: 6px;
+    `}
+  >
+    <CallerImageContent>{content}</CallerImageContent>
+  </span>
+}
+
+function CallerImageContent() {
+  return <slot />
 }
 
 /** Доставка host имеет явное состояние ошибки и повтор; URL lease освобождается при смене source. */

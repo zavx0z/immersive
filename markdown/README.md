@@ -42,3 +42,19 @@ Markdown участвует в [едином Document приложения](../P
 и их анимация следуют [общему жизненному циклу ресурсов](../renderer/html/font-images.md).
 Ответственность Markdown заканчивается на семантической композиции документа;
 размеры, переносы и рисование обслуживает платформа.
+
+
+Для изображений `MarkdownMediaContext` принимает `MarkdownMediaHost`: host
+разрешает адрес, выдаёт `loadImage` lease и открывает original. Опциональный
+`renderImage` передаёт эту часть caller-компоненту в том же Document через
+compiler-owned slot. В этом режиме Markdown сохраняет article, окружающие
+текстовые и inline узлы, а caller владеет src, размерами, загрузкой, visibility,
+освобождением lease, ошибкой и retry. Стандартный `loadImage` для этой ветки
+не вызывается. Caller может удерживать геометрию изображения без src при уходе
+за экран и использовать ограниченный encoded-кеш при возвращении. Без
+`renderImage` standalone и прежний managed lifecycle остаются доступными.
+
+Поведение публичной композиции проверяет
+[сценарий caller image](markdown/tests/media-renderer.test.ts): безопасный адрес
+из parser, отсутствие стандартного loader, стабильность текста/article при
+обновлении caller-компонента и его cleanup.
