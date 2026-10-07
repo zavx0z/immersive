@@ -7,6 +7,7 @@
 import type {ImmersiveUiComponentSurfacePanel as Contract} from "./contract"
 import {useId} from "@zavx0z/immersive-component"
 import Button from "@zavx0z/immersive-ui-component-button-basic"
+import CheckboxField from "@zavx0z/immersive-ui-component-field-checkbox"
 import IconButton from "@zavx0z/immersive-ui-component-button-icon"
 import chevronDownIcon from "@zavx0z/immersive-ui-theme-icon-chevron-down"
 import chevronRightIcon from "@zavx0z/immersive-ui-theme-icon-chevron-right"
@@ -26,7 +27,7 @@ export default function Panel(props: Contract.Input): Contract.Output {
       flex-direction: column;
       width: 100%;
       overflow: clip;
-      border-radius: 4px;
+      border-radius: var(--panel-radius, 4px);
       background: var(--widget-regular-outline);
 
       &[hidden] {
@@ -45,12 +46,34 @@ export default function Panel(props: Contract.Input): Contract.Output {
         width: 100%;
         height: 26px;
         gap: 2px;
-        background: var(--widget-regular-outline);
+        padding-left: var(--panel-header-inset, 0px);
+        background: var(--panel-header-background, var(--widget-regular-outline));
       `}
     >
+      {props.checked !== undefined ? <IconButton
+        label={`${props.expanded ? "Свернуть" : "Развернуть"} ${props.label}`}
+        iconSrc={props.expanded ? chevronDownIcon : chevronRightIcon}
+        iconSize={14}
+        style={css`
+          width: 18px;
+          min-width: 18px;
+          height: 22px;
+          padding: 2px;
+          border: 0;
+          background: transparent;
+          box-shadow: none;
+        `}
+        onClick={onClick}
+      /> : null}
+      {props.checked !== undefined ? <CheckboxField
+        checked={props.checked}
+        title={`Использовать ${props.label}`}
+        disabled={props.checkDisabled}
+        onChange={props.onCheckedChange}
+      /> : null}
       <Button
         label={props.label}
-        startIcon={props.expanded ? chevronDownIcon : chevronRightIcon}
+        startIcon={props.checked === undefined ? (props.expanded ? chevronDownIcon : chevronRightIcon) : undefined}
         iconSize={14}
         title={props.title}
         aria-expanded={String(props.expanded)}
@@ -111,8 +134,8 @@ export default function Panel(props: Contract.Input): Contract.Output {
         box-sizing: border-box;
         display: block;
         width: 100%;
-        padding: 6px;
-        background: var(--widget-regular-outline);
+        padding: var(--panel-content-padding, 6px);
+        background: var(--panel-content-background, var(--widget-regular-outline));
 
         &[hidden] {
           display: none;

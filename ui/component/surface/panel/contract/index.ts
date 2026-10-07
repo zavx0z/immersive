@@ -12,8 +12,14 @@ export declare namespace ImmersiveUiComponentSurfacePanel {
     readonly label: string
     readonly title?: string | undefined
     readonly expanded: boolean
+    /** Необязательный флажок перед подписью; не управляет раскрытием панели. */
+    readonly checked?: boolean | undefined
+    readonly checkDisabled?: boolean | undefined
+    readonly onCheckedChange?: ((checked: boolean, event: Event) => void) | undefined
     readonly hidden?: boolean | undefined
     readonly actions?: readonly PanelAction[] | undefined
+    /** Оформление: --panel-radius, --panel-header-inset, --panel-header-background,
+    --panel-content-padding и --panel-content-background настраивают блок без изменения полей внутри. */
     readonly style?: CssStyle | undefined
     readonly onToggle?: ((expanded: boolean, event: Event) => void) | undefined
   }

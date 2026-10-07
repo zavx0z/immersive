@@ -19,7 +19,8 @@
     "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
     "@zavx0z/immersive-ui-component-button-icon": "workspace:*",
     "@zavx0z/immersive-ui-theme-icon-chevron-down": "workspace:*",
-    "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*"
+    "@zavx0z/immersive-ui-theme-icon-chevron-right": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-checkbox": "workspace:*"
   },
   "peerDependencies": {
     "@zavx0z/immersive-component": "workspace:*"
