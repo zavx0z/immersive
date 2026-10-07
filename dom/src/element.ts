@@ -1,5 +1,6 @@
 import {readElementBoundingClientRect, readElementLayoutRect, type DOMRectReadOnly, type DOMRect, type ElementGeometryTarget} from "../geometry.ts"
 import type {Document} from "./document.ts"
+import {requestElementFullscreen, type FullscreenOptions} from "./fullscreen.ts"
 import {getClassList} from "./dom-token-list.ts"
 import type {DOMTokenList} from "./dom-token-list.ts"
 import type {AttributeMutation} from "./mutation.ts"
@@ -24,6 +25,10 @@ function normalizeAttributeName(name: string): string {
 }
 
 export class Element extends Node {
+  requestFullscreen(options?: FullscreenOptions): Promise<void> {
+    return requestElementFullscreen(this, options)
+  }
+
   readonly localName: string
   readonly tagName: string
   private attributeValues: Map<string, string> | null = null

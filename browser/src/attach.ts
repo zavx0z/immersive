@@ -1,5 +1,5 @@
 import {flushDocumentLayoutObservers, registerDocumentLayoutObserverScheduler} from "@zavx0z/immersive-dom/geometry"
-import {subscribeDocumentAuthorStyleSheets, subscribeDocumentCompiledStyleSheets} from "@zavx0z/immersive-dom"
+import {subscribeDocumentAuthorStyleSheets, subscribeDocumentCompiledStyleSheets, subscribeDocumentFullscreen} from "@zavx0z/immersive-dom"
 import {DisplayElement, publishDisplayMetrics} from "@zavx0z/immersive-dom/display"
 import {readDisplayStyle} from "@zavx0z/immersive-renderer-html"
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
@@ -565,6 +565,28 @@ export const createAttachedRoot = async (
   }
   const unsubscribeDisplayAuthorStyles = subscribeDocumentAuthorStyleSheets(document, refreshDisplays)
   const unsubscribeDisplayCompiledStyles = subscribeDocumentCompiledStyleSheets(document, refreshDisplays)
+  let releaseFullscreenFrames = () => {}
+  const unsubscribeFullscreen = subscribeDocumentFullscreen(document, () => {
+    releaseFullscreenFrames()
+    releaseFullscreenFrames = () => {}
+    displayDirty = hudDirty = true
+    const target = document.fullscreenElement
+    if (target === null) return
+    let ancestor = target
+    while (ancestor.parentElement !== null && !(ancestor instanceof DisplayElement) && !(ancestor instanceof HUDElement)) {
+      ancestor = ancestor.parentElement
+    }
+    if (!(ancestor instanceof DisplayElement) && !(ancestor instanceof HUDElement)) return
+    const owner = ancestor
+    const overlay = runtime.getOverlay(target)
+    if (overlay) {
+      const publish = (frame: RenderFrame) => {
+        for (const listener of projectionListeners.get(owner) ?? []) listener(frame)
+      }
+      releaseFullscreenFrames = overlay.subscribe(publish)
+      publish(overlay.frame)
+    }
+  })
 
   const unsubscribePresented = runtime.subscribePresented(sequence => {
     if (disposed || document.documentElement === null) return
@@ -597,6 +619,11 @@ export const createAttachedRoot = async (
       kind,
       owner,
       readFrame() {
+        const fullscreen = document.fullscreenElement
+        if (fullscreen !== null && owner.contains(fullscreen)) {
+          const overlay = runtime.getOverlay(fullscreen)
+          if (overlay) return overlay.frame
+        }
         return projectionBindings.get(owner)?.runtime.frame ?? null
       },
       subscribeFrames(listener: (frame: RenderFrame) => void) {
@@ -739,6 +766,8 @@ export const createAttachedRoot = async (
       document.removeEventListener("focusin", synchronizeInputOwner)
       unsubscribeDisplayAuthorStyles()
       unsubscribeDisplayCompiledStyles()
+      unsubscribeFullscreen()
+      releaseFullscreenFrames()
       unsubscribeMutations()
       unsubscribeBeforeRender()
       unsubscribeLayoutScheduler()
@@ -930,6 +959,7 @@ const synchronizeHud = (
 ): void => {
   const hud = tree.hud
   for (const owner of runtime.overlayRoots) {
+    if (owner === runtime.document.fullscreenElement) continue
     if (hud === null || owner !== hud.element) runtime.removeOverlay(owner)
   }
   if (hud === null) return

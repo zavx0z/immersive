@@ -156,6 +156,7 @@ type SupportedPseudoClass =
   | "disabled"
   | "focus"
   | "focus-within"
+  | "fullscreen"
   | "hover"
   | "indeterminate"
   | "root"
@@ -661,6 +662,7 @@ const uaDeclarations = (tag: string, element: Element): DeclarationMap => {
     case "input":
       return inputUaDeclarations(element)
     case "img":
+    case "video":
       return imageUaDeclarations(element)
     case "select":
       return selectUaDeclarations(element)
@@ -1734,6 +1736,7 @@ const isSupportedPseudoClass = (value: string): value is SupportedPseudoClass =>
   value === "disabled" ||
   value === "focus" ||
   value === "focus-within" ||
+  value === "fullscreen" ||
   value === "hover" ||
   value === "indeterminate" ||
   value === "root"
@@ -1811,6 +1814,8 @@ const matchesPseudoClass = (
         interactionState.isHovered(element)
     case "focus":
       return element.ownerDocument?.activeElement === element
+    case "fullscreen":
+      return element.ownerDocument?.fullscreenElement === element
     case "focus-within": {
       const activeElement = element.ownerDocument?.activeElement ?? null
       return activeElement !== null && element.contains(activeElement)

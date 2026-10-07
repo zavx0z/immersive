@@ -10,6 +10,7 @@ type AttributeSelector = Readonly<{
 }>
 
 type CompoundSelector = Readonly<{
+  fullscreen: boolean
   tag: string | null
   id: string | null
   classes: readonly string[]
@@ -102,6 +103,7 @@ function readCompound(source: string, start: number): CompoundResult {
   let id: string | null = null
   const classes: string[] = []
   const attributes: AttributeSelector[] = []
+  let fullscreen = false
 
   if (source[cursor] === "*") {
     tag = "*"
@@ -115,6 +117,11 @@ function readCompound(source: string, start: number): CompoundResult {
   }
 
   while (cursor < source.length && !asciiWhitespace.test(source[cursor]!)) {
+    if (source.startsWith(":fullscreen", cursor)) {
+      fullscreen = true
+      cursor += ":fullscreen".length
+      continue
+    }
     const marker = source[cursor]
     if (marker === "#" || marker === ".") {
       const identifier = readIdentifier(source, cursor + 1)
@@ -137,11 +144,12 @@ function readCompound(source: string, start: number): CompoundResult {
     throw syntaxError(source, cursor)
   }
 
-  if (tag === null && id === null && classes.length === 0 && attributes.length === 0) {
+  if (tag === null && id === null && classes.length === 0 && attributes.length === 0 && !fullscreen) {
     throw syntaxError(source, cursor)
   }
   return {
     compound: Object.freeze({
+      fullscreen,
       tag,
       id,
       classes: Object.freeze(classes),
@@ -169,6 +177,7 @@ function parseSelector(selectors: string): ParsedSelector {
 }
 
 function matchesCompound(element: Element, compound: CompoundSelector): boolean {
+  if (compound.fullscreen && element.ownerDocument?.fullscreenElement !== element) return false
   if (compound.tag && compound.tag !== "*" && element.localName !== compound.tag) return false
   if (compound.id !== null && element.getAttribute("id") !== compound.id) return false
   const classNames = new Set((element.getAttribute("class") ?? "").split(/[\t\n\f\r ]+/).filter(Boolean))

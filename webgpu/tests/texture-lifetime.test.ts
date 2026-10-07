@@ -392,3 +392,79 @@ test("unclaimed producer handoff is bounded and rejects before taking bitmap own
   expect(rejected.closed).toBe(0)
   expect(TextureLoader.diagnostics().pendingProducerEntries).toBeLessThanOrEqual(128)
 })
+
+test("Browser revokes a live video source across devices without closing borrowed decoder or affecting an image peer", async () => {
+  const f = fixture()
+  const a = f.device()
+  const b = f.device()
+  const original = globalThis.HTMLVideoElement
+  class Video {
+    closed = 0
+    close() { this.closed++ }
+  }
+  globalThis.HTMLVideoElement = Video as unknown as typeof HTMLVideoElement
+  cleanup.push(() => {
+    if (original === undefined) delete (globalThis as {HTMLVideoElement?: typeof HTMLVideoElement}).HTMLVideoElement
+    else globalThis.HTMLVideoElement = original
+  })
+  const src = `metafor:video/${randomUUID()}`
+  const video = new Video()
+  TextureLoader.replaceExternalSource(src, video as unknown as HTMLVideoElement, 1280, 720)
+  const first = TextureLoader.acquire(src, () => {})
+  const second = TextureLoader.acquire(src, () => {})
+  first.load(a.gpu)
+  second.load(b.gpu)
+  await ready(src, a.gpu)
+  await ready(src, b.gpu)
+  expect(a.uploads).toHaveLength(0)
+  expect(b.uploads).toHaveLength(0)
+  const imageSrc = f.src("peer")
+  const image = TextureLoader.acquire(imageSrc, () => {})
+  image.load(a.gpu)
+  await ready(imageSrc, a.gpu)
+  const firstEntry = first.peek(a.gpu)!
+  const secondEntry = second.peek(b.gpu)!
+  TextureLoader.releaseVideoSource(src)
+  TextureLoader.releaseVideoSource(src)
+  expect(firstEntry.externalTextureSource).toBeUndefined()
+  expect(secondEntry.externalTextureSource).toBeUndefined()
+  expect(TextureLoader.peek(src, a.gpu)).toBeUndefined()
+  expect(TextureLoader.peek(src, b.gpu)).toBeUndefined()
+  expect(image.peek(a.gpu)?.status).toBe("ready")
+  expect(video.closed).toBe(0)
+  first.release()
+  second.release()
+  image.release()
+})
+
+test("lease декодера сохраняет живое видео при вытеснении невидимых материалов из LRU", async () => {
+  const f = fixture()
+  const device = f.device()
+  const original = globalThis.HTMLVideoElement
+  class Video {}
+  globalThis.HTMLVideoElement = Video as unknown as typeof HTMLVideoElement
+  cleanup.push(() => {
+    if (original === undefined) delete (globalThis as {HTMLVideoElement?: typeof HTMLVideoElement}).HTMLVideoElement
+    else globalThis.HTMLVideoElement = original
+  })
+  const src = `metafor:video/${randomUUID()}`
+  const video = new Video()
+  const decoder = TextureLoader.acquire(src, () => {}, {animate: false})
+  TextureLoader.replaceExternalSource(src, video as unknown as HTMLVideoElement, 640, 480)
+  const visible = TextureLoader.acquire(src, () => {})
+  visible.load(device.gpu)
+  await ready(src, device.gpu)
+  visible.release()
+  for (let index = 0; index < 140; index++) {
+    const peer = TextureLoader.acquire(f.src(`pressure-${index}`), () => {})
+    peer.load(device.gpu)
+    await tick()
+    peer.release()
+  }
+  const restored = TextureLoader.acquire(src, () => {})
+  expect(restored.load(device.gpu)).toMatchObject({status: "ready", externalTextureSource: video})
+  restored.release()
+  decoder.release()
+  TextureLoader.releaseVideoSource(src)
+  expect(TextureLoader.peek(src, device.gpu)).toBeUndefined()
+})

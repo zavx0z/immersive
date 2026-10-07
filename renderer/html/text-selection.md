@@ -42,6 +42,24 @@ measurer и не разделяют графемы; `wrap="off"` сохраня�
 контрола, а не только его DOM-детей. Изменение selection/value не создаёт новый
 Document или consumer-local слой рисования. Проверки: `tests/textarea-selection.test.ts`.
 
+Однострочные input с value-based selection используют тот же договор визуальной
+строки. Фокусированное поле рисует каретку для collapsed selection и диапазон
+для непустого выделения; placeholder не задаёт её положение. Измеренный текст,
+каретка и указатель используют одну строку с исходными UTF-16 offsets. Пароль
+рисует один символ маски на графему и сохраняет связь с границами исходного
+значения. Клик, drag и Shift-click не разделяют графемы; preventDefault оставляет
+жест компоненту. Активная длинная строка обрезается по content box и показывает
+позицию ввода, а не заменяет редактируемое значение многоточием. Readonly
+сохраняет выделение, но не показывает каретку редактирования; disabled не рисует
+выделение. Типы без selectionStart не получают ложной value-based каретки.
+Изменение позиции обновляет paint и pointer-метрики без нового layout; прежний
+кадр сохраняется. Проверки: `tests/input-selection.test.ts`.
+
+Browser передаёт общую фазу через `caretVisible` InteractionController.
+`composeFrame` меняет opacity каретки и отмечает её индекс в sparse frame delta,
+сохраняя исходные boxes, hits, текст и предшествующий кадр. Без scheduler,
+в частности в Headless, каретка остаётся видимой.
+
 Pending `Element.setPointerCapture` обрабатывается до выбора получателя
 `pointermove`, `pointerup` и `pointercancel`, в том числе если capture был задан
 между событиями. Передача capture другому semantic Element завершает прежний

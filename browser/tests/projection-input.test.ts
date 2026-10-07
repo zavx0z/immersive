@@ -1,5 +1,5 @@
 import {afterEach, expect, test} from "bun:test"
-import {createDocument, DragEvent, type DataTransfer, type HTMLElement} from "@zavx0z/immersive-dom"
+import {createDocument, DragEvent, KeyboardEvent as SemanticKeyboardEvent, type DataTransfer, type HTMLElement} from "@zavx0z/immersive-dom"
 import {Object3D, Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engine"
 import type {RenderComposition, Renderer, RenderOverlay} from "@zavx0z/immersive-webgpu"
 import {createDocumentOverlayRuntime} from "../src/overlay-runtime.ts"
@@ -14,13 +14,26 @@ afterEach(() => {
 
 // Only GPU submission, native text proxies and scheduling are substituted.
 // CPU layout, hit testing, projection geometry, dispatch and scrolling are real.
-const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: readonly string[] = [], clientRect = {left: 0, top: 0, width: 200, height: 200}, initialCursor = "") => {
+const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: readonly string[] = [], clientRect = {left: 0, top: 0, width: 200, height: 200}, initialCursor = "", timers?: {setTimer(callback: () => void, delay: number): unknown; clearTimer(handle: unknown): void}) => {
   const document = createDocument()
   const root = document.createElement("div")
   document.append(root)
   const listeners = new Map<string, EventListenerOrEventListenerObject>()
   const captured = new Set<number>()
+  const nativeDocument = Object.assign(new EventTarget(), {
+    fullscreenEnabled: true,
+    fullscreenElement: null as HTMLCanvasElement | null,
+    async exitFullscreen() {
+      nativeDocument.fullscreenElement = null
+      nativeDocument.dispatchEvent(new Event("fullscreenchange"))
+    },
+  })
   const canvas = {
+    ownerDocument: nativeDocument,
+    async requestFullscreen() {
+      nativeDocument.fullscreenElement = canvas
+      nativeDocument.dispatchEvent(new Event("fullscreenchange"))
+    },
     width: 200,
     height: 200,
     style: {touchAction: "auto", cursor: initialCursor},
@@ -86,8 +99,8 @@ const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: r
     devicePixelRatio: () => 1,
     requestFrame: () => 1,
     cancelFrame() {},
-    setTimer: () => 1,
-    clearTimer() {},
+    setTimer: timers?.setTimer ?? (() => 1),
+    clearTimer: timers?.clearTimer ?? (() => {}),
     now: () => 0,
   })
   runtimes.push(runtime)
@@ -752,4 +765,86 @@ test("свободная область и отсоединённая цель �
   expect(f.emit("drop", 20, 20, {dataTransfer: native})).toBe(false)
   expect(f.emit("drop", 180, 180, {dataTransfer: native})).toBe(false)
   expect(drops).toBe(0)
+})
+
+
+test.each(["overlay", "plane"] as const)("%s input caret мигает через общий Experience scheduler", async kind => {
+  let sequence = 0
+  const timers = new Map<number, () => void>()
+  const f = await fixture(undefined, [], {left: 0, top: 0, width: 200, height: 200}, "", {
+    setTimer(callback) {const id = ++sequence; timers.set(id, callback); return id},
+    clearTimer(handle) {timers.delete(handle as number)},
+  })
+  const owner = f.projection(kind, "input-caret")
+  const input = f.document.createElement("input")
+  input.setAttribute("style", "width:100px;height:24px;padding:0;border:0;font-size:12px;line-height:20px;color:#ffffff")
+  input.value = "abcdef"
+  owner.append(input)
+  input.focus()
+  input.setSelectionRange(3, 3)
+  f.runtime.render()
+  const projection = kind === "overlay" ? f.runtime.getOverlay(owner)! : f.runtime.getPlane(owner)!
+  const before = projection.frame
+  const caret = () => projection.frame.displayList.find(item => item.node === input && item.key === "caret")
+  expect(caret()).toMatchObject({x: 18, opacity: 1})
+  expect(timers.size).toBe(1)
+  const pending = [...timers][0]!
+  timers.delete(pending[0])
+  pending[1]()
+  f.runtime.render()
+  expect(caret()).toMatchObject({x: 18, opacity: 0})
+  expect(projection.frame.boxes).toBe(before.boxes)
+  expect(projection.frame.hits).toBe(before.hits)
+  input.setSelectionRange(2, 2)
+  f.runtime.render()
+  expect(caret()).toMatchObject({x: 12, opacity: 1})
+  f.runtime.dispose()
+  expect(timers.size).toBe(0)
+})
+
+test.each(["overlay", "plane"] as const)("%s content enters one fullscreen overlay, keeps DOM identity and returns input to its owner", async kind => {
+  const f = await fixture()
+  const owner = f.projection(kind, "fullscreen-owner", 30)
+  const target = f.element("width:50px;height:40px;overflow:hidden", owner)
+  const button = f.element("width:100%;height:100%", target, "button")
+  const events = f.observe(button)
+  f.runtime.render()
+  const before = target.getBoundingClientRect()
+  expect(() => f.runtime.addOverlay({root: target})).toThrow("overlap")
+  await target.requestFullscreen()
+  f.runtime.render()
+  expect(f.document.fullscreenElement).toBe(target)
+  expect(target.parentNode).toBe(owner)
+  expect(target.getBoundingClientRect()).toMatchObject({x: 0, y: 0, width: 200, height: 200})
+  expect(f.runtime.projectPoint(owner, {x: 0, y: 0})).toEqual({x: 0, y: 0})
+  f.emit("pointerdown", 150, 150)
+  f.emit("pointerup", 150, 150)
+  expect(events).toContain("click")
+  expect(f.cameraInputs).toEqual([])
+  await f.document.exitFullscreen()
+  f.runtime.render()
+  expect(f.runtime.getOverlay(target)).toBeUndefined()
+  expect(target.getBoundingClientRect()).toMatchObject({x: before.x, y: before.y, width: before.width, height: before.height})
+  expect(target.parentNode).toBe(owner)
+})
+
+test("fullscreen Esc uses the native exit and does not reach the remote content; denial creates no overlay", async () => {
+  const f = await fixture()
+  const owner = f.projection("overlay", "fullscreen-escape")
+  const target = f.element("width:50px;height:40px", owner)
+  const button = f.element("width:40px;height:24px", target, "button")
+  let keys = 0
+  button.addEventListener("keydown", () => keys++)
+  await target.requestFullscreen()
+  expect(f.canvas.ownerDocument.fullscreenElement).toBe(f.canvas)
+  button.dispatchEvent(new SemanticKeyboardEvent("keydown", {key: "Escape", bubbles: true, cancelable: true}))
+  await Promise.resolve()
+  expect(f.document.fullscreenElement).toBeNull()
+  expect(f.canvas.ownerDocument.fullscreenElement).toBeNull()
+  expect(keys).toBe(0)
+  expect(f.runtime.getOverlay(target)).toBeUndefined()
+  f.canvas.requestFullscreen = async () => {throw new Error("activation required")}
+  await expect(target.requestFullscreen()).rejects.toThrow("activation required")
+  expect(f.document.fullscreenElement).toBeNull()
+  expect(f.runtime.getOverlay(target)).toBeUndefined()
 })

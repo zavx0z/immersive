@@ -1,4 +1,5 @@
 import {HUDElement} from "../hud/index.ts"
+import {exitDocumentFullscreen, readDocumentFullscreenElement, readDocumentFullscreenEnabled} from "./fullscreen.ts"
 import {SpaceElement} from "../space/index.ts"
 import {ViewPointElement} from "../viewpoint/index.ts"
 import {DisplayElement} from "../display/index.ts"
@@ -34,6 +35,7 @@ import {HTMLFieldSetElement} from "./html-field-set-element.ts"
 import {HTMLHeadingElement} from "./html-heading-element.ts"
 import {HTMLElement} from "./html-element.ts"
 import {HTMLInputElement} from "./html-input-element.ts"
+import {HTMLVideoElement} from "./html-video-element.ts"
 import {HTMLImageElement} from "./html-image-element.ts"
 import {HTMLLabelElement} from "./html-label-element.ts"
 import {HTMLLIElement} from "./html-li-element.ts"
@@ -153,6 +155,7 @@ export interface HTMLElementTagNameMap {
   h6: HTMLHeadingElement
   input: HTMLInputElement
   img: HTMLImageElement
+  video: HTMLVideoElement
   label: HTMLLabelElement
   li: HTMLLIElement
   legend: HTMLLegendElement
@@ -186,6 +189,10 @@ export type DocumentTextControlSelection = Readonly<{
 }>
 
 export class Document extends Node {
+  get fullscreenElement(): Element | null { return readDocumentFullscreenElement(this) }
+  get fullscreenEnabled(): boolean { return readDocumentFullscreenEnabled(this) }
+  exitFullscreen(): Promise<void> { return exitDocumentFullscreen(this) }
+
   private readonly elementFactories: ReadonlyMap<string, DocumentElementFactory>
   private transactionDepth = 0
   private pendingMutations: DocumentMutation[] = []
@@ -247,6 +254,7 @@ export class Document extends Node {
       case "h6": return new HTMLHeadingElement(this, "h6")
       case "input": return new HTMLInputElement(this)
       case "img": return new HTMLImageElement(this)
+      case "video": return new HTMLVideoElement(this)
       case "label": return new HTMLLabelElement(this)
       case "li": return new HTMLLIElement(this)
       case "legend": return new HTMLLegendElement(this)

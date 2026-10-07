@@ -1,4 +1,6 @@
 export {DOMRect, DOMRectReadOnly, registerDocumentGeometryReader, readElementLayoutRect, observeElementLayout} from "../geometry.ts"
+export {bindDocumentFullscreenHost, clearDocumentFullscreen, subscribeDocumentFullscreen} from "./fullscreen.ts"
+export type {DocumentFullscreenHost, FullscreenOptions} from "./fullscreen.ts"
 export type {DOMRectInit, ElementGeometryTarget, ElementClientRectReader, ElementLayoutRectReader, ElementLayoutObserverOptions} from "../geometry.ts"
 export {CustomEvent, Event} from "./event.ts"
 export {DataTransfer, FileList, sealDataTransfer, releaseDataTransfer} from "../data-transfer.ts"
@@ -160,3 +162,6 @@ export type {
   TextAreaStateChange,
   TextAreaValueStateChange
 } from "./state-change.ts"
+
+export {HTMLVideoElement, bindVideoPlayback, readVideoPlaybackState, publishVideoPlaybackState, subscribeDocumentVideoChanges} from "./html-video-element.ts"
+export type {VideoPlaybackState, VideoPlaybackController} from "./html-video-element.ts"

@@ -6,6 +6,7 @@ import type {
 } from "@zavx0z/immersive-engine"
 import {
   subscribeDocumentAuthorStyleSheets,
+  subscribeDocumentVideoChanges,
   subscribeDocumentCompiledStyleSheets,
   subscribeDocumentTextHighlights,
   subscribeDocumentScrollIntoViewRequests,
@@ -54,6 +55,7 @@ export type CreateDocumentPlaneRuntimeOptions = Readonly<{
   requestPresentation(): void
   interactionState?: DocumentInteractionState
   tooltipDelayMs?: number
+  caretVisible?: () => boolean
 }>
 
 export type DocumentPlaneRuntimeFrameSubscriber = (frame: RenderFrame) => void
@@ -96,6 +98,7 @@ export type DocumentPlaneRuntimeSeams = Readonly<{
     document: Document
     interactionState: DocumentInteractionState
     tooltipDelayMs: number
+    caretVisible?: () => boolean
     textMeasurer: NonNullable<CreateDocumentRendererOptions["textMeasurer"]>
     hitTest: typeof hitTestProjection
   }>): DocumentInteractionController
@@ -150,6 +153,7 @@ export function createDocumentPlaneRuntimeWithSeams(
   let unsubscribeStateChanges = (): void => {}
   let unsubscribeTextHighlights = (): void => {}
   let unsubscribeScrollIntoView = (): void => {}
+  let unsubscribeVideo = (): void => {}
   let unsubscribeAuthorStyleSheets = (): void => {}
   let unsubscribeCompiledStyleSheets = (): void => {}
   let disposed = false
@@ -178,6 +182,7 @@ export function createDocumentPlaneRuntimeWithSeams(
     unsubscribeScrollIntoView()
     clearDocumentScrollIntoViewRequests(options.document, options.root)
     options.document.removeEventListener("selectionchange", requestFrame)
+    unsubscribeVideo()
     unsubscribeAuthorStyleSheets()
     unsubscribeCompiledStyleSheets()
     unsubscribeMutations = () => {}
@@ -221,6 +226,7 @@ export function createDocumentPlaneRuntimeWithSeams(
       document: options.document,
       interactionState,
       tooltipDelayMs,
+      ...(options.caretVisible === undefined ? {} : {caretVisible: options.caretVisible}),
       textMeasurer,
     })
     requestBackendPresentation = (): void => {
@@ -232,6 +238,9 @@ export function createDocumentPlaneRuntimeWithSeams(
     unsubscribeTextHighlights = subscribeDocumentTextHighlights(options.document, requestFrame)
     unsubscribeScrollIntoView = subscribeDocumentScrollIntoViewRequests(options.document, request => {
       if (options.root.contains(request.target)) requestFrame()
+    })
+    unsubscribeVideo = subscribeDocumentVideoChanges(options.document, video => {
+      if (options.root.contains(video)) requestFrame()
     })
     unsubscribeAuthorStyleSheets = subscribeDocumentAuthorStyleSheets(options.document, requestFrame)
     unsubscribeCompiledStyleSheets = subscribeDocumentCompiledStyleSheets(options.document, requestFrame)

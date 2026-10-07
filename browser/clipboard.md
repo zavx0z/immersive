@@ -27,6 +27,20 @@ dispose или закрытие меню во время async read отменя
 Отказ clipboard permission не изменяет текст или диапазоны и показывается
 в меню. Native copy/cut не запускает асинхронную permission API.
 
+## Каретка однострочного поля
+
+Один Browser Experience обслуживает один таймер активного input с collapsed
+value-based selection. Каждые 500 мс он запрашивает существующий demand-кадр
+и меняет общую фазу каретки; HUD и Display используют этот же scheduler.
+Таймер не создаёт дополнительный Canvas, Document или цикл RAF. Позиция и
+значение принадлежат semantic input; Renderer сохраняет их геометрию.
+Ввод и изменение позиции возвращают видимую фазу. Blur, непустой диапазон,
+readonly, disabled, потеря владельца и dispose отменяют таймер. При переносе
+поле сохраняет identity, а следующий кадр получает его текущая проекция.
+
+Проверки: `tests/caret-blink.test.ts`, `tests/projection-input.test.ts`,
+`tests/native-key-dispatch.test.ts`.
+
 ## Native proxy и IME
 
 Прокси принадлежит Browser, а не редактору. Нативное событие proxy и default

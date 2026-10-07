@@ -74,6 +74,8 @@ export type TitleTooltip = Readonly<{
 
 export type CreateDocumentInteractionControllerOptions = Readonly<{
   document: Document
+  /** Общая фаза Browser; headless без scheduler рисует каретку постоянно. */
+  caretVisible?: () => boolean
   tooltipDelayMs?: number
   /** Use the same default-font measurer as the renderer and presentation backend. */
   textMeasurer?: RenderTextMeasurer
@@ -151,7 +153,7 @@ export const createDocumentInteractionController = (
     changed: boolean
   }> | null = null
   let textSelectionDrag: Readonly<{
-    textArea: HTMLTextAreaElement
+    textArea: HTMLTextAreaElement | HTMLInputElement
     pointerId: number
     anchor: number
   }> | null = null
@@ -175,6 +177,8 @@ export const createDocumentInteractionController = (
   let cachedPresentation: RenderFrame | null = null
   let lastComposedBase: RenderFrame | null = null
   let lastComposedFrame: RenderFrame | null = null
+  let composedCaretIndex = -1
+  let lastComposedCaretIndex = -1
   let disposed = false
 
   const controller: DocumentInteractionController = {
@@ -249,9 +253,12 @@ export const createDocumentInteractionController = (
           if (ownerHit.node instanceof HTMLInputElement && ownerHit.node.type === "range") {
             rangeDrag = Object.freeze({input: ownerHit.node, pointerId: id, changed: false})
             updateRangeDrag(frame, input)
-          } else if (ownerHit.node instanceof HTMLTextAreaElement && (input.button ?? 0) === 0) {
-            const anchor = textAreaOffsetAtPoint(frame, ownerHit.node, input)
-            if (anchor !== null) {
+          } else if ((ownerHit.node instanceof HTMLTextAreaElement || ownerHit.node instanceof HTMLInputElement && ownerHit.node.selectionStart !== null) && (input.button ?? 0) === 0) {
+            const point = textControlOffsetAtPoint(frame, ownerHit.node, input)
+            if (point !== null) {
+              const anchor = input.shiftKey
+                ? (ownerHit.node.selectionDirection === "backward" ? ownerHit.node.selectionEnd : ownerHit.node.selectionStart) ?? point
+                : point
               textSelectionDrag = Object.freeze({textArea: ownerHit.node, pointerId: id, anchor})
               updateTextSelectionDrag(frame, input)
             }
@@ -487,7 +494,13 @@ export const createDocumentInteractionController = (
     if (presentation === base && lastComposedFrame === lastComposedBase) {
       lastComposedBase = base
       lastComposedFrame = presentation
+      lastComposedCaretIndex = composedCaretIndex
       return presentation
+    }
+    if (presentation === base && lastComposedCaretIndex >= 0 &&
+      lastComposedFrame?.displayList.length === base.displayList.length) {
+      presentation = Object.freeze({...base})
+      if (isRendererOwnedFrame(base)) markRendererOwnedFrame(presentation)
     }
     const changes = base === lastComposedBase ? null : readCanonicalRenderFrameChanges(base)
     if (changes?.structural !== undefined && lastComposedBase !== null && lastComposedFrame !== null &&
@@ -510,6 +523,7 @@ export const createDocumentInteractionController = (
           immutableArrayFromReader(composed.displayList.length, index => index), changes.operations, changes.scroll, changes.structural)
         lastComposedBase = base
         lastComposedFrame = composed
+        lastComposedCaretIndex = composedCaretIndex
         return composed
       }
     }
@@ -520,6 +534,10 @@ export const createDocumentInteractionController = (
       presentation.displayList.length === lastComposedFrame.displayList.length) {
       if (base === lastComposedBase || changes?.previous === lastComposedBase) {
         const overlayIndexes: number[] = []
+        for (const index of new Set([composedCaretIndex, lastComposedCaretIndex])) {
+          if (index >= 0 && index < base.displayList.length &&
+            presentation.displayList[index] !== lastComposedFrame.displayList[index]) overlayIndexes.push(index)
+        }
         for (let index = base.displayList.length; index < presentation.displayList.length; index++) {
           if (presentation.displayList[index] !== lastComposedFrame.displayList[index]) overlayIndexes.push(index)
         }
@@ -530,12 +548,24 @@ export const createDocumentInteractionController = (
     }
     lastComposedBase = base
     lastComposedFrame = presentation
+    lastComposedCaretIndex = composedCaretIndex
     return presentation
   }
 
   function withTextHighlights(frame: RenderFrame): RenderFrame {
     const selection = options.document.getSelection()
     const active = options.document.activeElement
+    composedCaretIndex = active instanceof HTMLInputElement && options.caretVisible !== undefined
+      ? frame.displayList.findIndex(item => item.node === active && item.key === "caret") : -1
+    if (composedCaretIndex >= 0 && options.caretVisible?.() === false) {
+      const index = composedCaretIndex
+      const displayList = frame.displayList
+      const caret = displayList[index]!
+      frame = Object.freeze({...frame,
+        displayList: immutableArrayFromReader(displayList.length, position => position === index
+          ? Object.freeze({...caret, opacity: 0}) : displayList[position]!),
+      })
+    }
     const caret = selection.isCollapsed && active instanceof HTMLElement && active.isContentEditable && active.contains(selection.anchorNode)
     const highlights = selection.rangeCount > 0 && (!selection.isCollapsed || caret)
       ? [...rangeHighlightItems(frame, selection.getRangeAt(0), "ua:selection", caret ? "#e6e6e6" : "#6da4ff", caret)]
@@ -663,7 +693,7 @@ export const createDocumentInteractionController = (
   function updateTextSelectionDrag(frame: RenderFrame, input: PointerInput): void {
     const drag = textSelectionDrag
     if (drag === null || drag.pointerId !== pointerIdOf(input)) return
-    const focus = textAreaOffsetAtPoint(frame, drag.textArea, input)
+    const focus = textControlOffsetAtPoint(frame, drag.textArea, input)
     if (focus === null) return
     const start = Math.min(drag.anchor, focus)
     const end = Math.max(drag.anchor, focus)
@@ -690,9 +720,9 @@ const rangeEndpoint = (value: string): number | null => {
   return Number.isFinite(number) ? number : null
 }
 
-const textAreaOffsetAtPoint = (
+const textControlOffsetAtPoint = (
   frame: RenderFrame,
-  textArea: HTMLTextAreaElement,
+  textArea: HTMLTextAreaElement | HTMLInputElement,
   input: PointerInput,
 ): number | null => {
   const hit = frame.hits.get(textArea)

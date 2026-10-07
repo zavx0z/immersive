@@ -1,3 +1,7 @@
+import {createDocumentCaretBlink} from "./caret-blink.ts"
+import {createDocumentVideoHost} from "./video-host.ts"
+import {createDocumentFullscreenHost} from "./fullscreen-host.ts"
+import {subscribeDocumentFullscreen} from "@zavx0z/immersive-dom"
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
 import {createDocumentNativeDragHost} from "./native-drag-host.ts"
 import {
@@ -463,6 +467,10 @@ const createClaimedDocumentSpaceRuntime = async (
   const overlays = new Map<Node, OverlayRecord>()
   const worlds = new Map<Space, WorldRecord>()
   const projectionRoots = new Set<Node>()
+  let fullscreenRoot: Node | null = null
+  let ownsFullscreenOverlay = false
+  let fullscreenHost: ReturnType<typeof createDocumentFullscreenHost> | null = null
+  let unsubscribeFullscreen = () => {}
   const captures = new Map<number, CapturedPointer>()
   const initialCursor = options.canvas.style?.cursor ?? ""
   let cursorPointer: {x: number; y: number; id: number; inside: boolean} | null = null
@@ -534,6 +542,8 @@ const createClaimedDocumentSpaceRuntime = async (
     })
   }
 
+  let videoHost: ReturnType<typeof createDocumentVideoHost> | null = null
+
   const cancelTooltipFrame = (
     owner?: Readonly<{kind: "plane" | "overlay"; owner: Node}>,
   ): void => {
@@ -584,12 +594,27 @@ const createClaimedDocumentSpaceRuntime = async (
 
   const selectionInput = createDocumentSelectionInput({
     document: options.document,
-    readFrames: () => [...records.values(), ...overlays.values()].map(record => record.runtime.frame),
+    readFrames: () => fullscreenRoot === null
+      ? [...records.values(), ...overlays.values()].map(record => record.runtime.frame)
+      : [overlays.get(fullscreenRoot)!.runtime.frame],
     readActiveFrame: () => (activeOverlayRoot !== null ? overlays.get(activeOverlayRoot)?.runtime.frame :
       activePlaneRoot !== null ? records.get(activePlaneRoot)?.runtime.frame : null) ?? null,
     isSelectionActive: (root, pointerId) =>
       (records.get(root) ?? overlays.get(root))?.runtime.interaction.selectionPointerId === pointerId,
     requestFrame: requestRender,
+  })
+
+  const caretBlink = createDocumentCaretBlink({
+    document: options.document,
+    owns: node => renderError === null && [...projectionRoots].some(root => root.contains(node)),
+    requestFrame(target) {
+      if (disposed || renderError !== null) return
+      for (const record of records.values()) if (record.runtime.root.contains(target)) record.dirty = true
+      for (const record of overlays.values()) if (record.runtime.root.contains(target)) record.dirty = true
+      requestRender()
+    },
+    setTimer: seams.setTimer,
+    clearTimer: seams.clearTimer,
   })
 
   const render = (): void => {
@@ -606,16 +631,19 @@ const createClaimedDocumentSpaceRuntime = async (
     renderRequestedDuringFrame = false
     try {
       for (const listener of [...beforeRenderListeners]) listener()
+      caretBlink.synchronize()
       const selectionTime = performance.now()
       const selecting = selectionInput.advance(lastSelectionFrameTime === null ? 16 : selectionTime - lastSelectionFrameTime)
       lastSelectionFrameTime = selecting ? selectionTime : null
       if (selecting) renderRequestedDuringFrame = true
       for (const record of records.values()) {
+        if (fullscreenRoot !== null) continue
         if (!record.dirty) continue
         record.dirty = false
         record.runtime.flush()
       }
       for (const record of overlays.values()) {
+        if (fullscreenRoot !== null && record.owner !== fullscreenRoot) continue
         if (!record.dirty) continue
         record.dirty = false
         record.runtime.flush()
@@ -629,9 +657,11 @@ const createClaimedDocumentSpaceRuntime = async (
         space,
         viewPoint,
         overlays: [...overlays.values()]
+          .filter(record => fullscreenRoot === null || record.owner === fullscreenRoot)
           .sort((left, right) => left.order - right.order)
           .map((record) => record.runtime.overlay),
         boundedViews: [...worlds.values()]
+          .filter(() => fullscreenRoot === null)
           .filter((record) => record.visible && record.backingViewport !== null)
           .sort((left, right) => left.order - right.order)
           .map((record) => Object.freeze({
@@ -675,8 +705,8 @@ const createClaimedDocumentSpaceRuntime = async (
     }
     if (
       renderRequestedDuringFrame ||
-      [...records.values()].some(({dirty}) => dirty) ||
-      [...overlays.values()].some(({dirty}) => dirty)
+      fullscreenRoot === null && [...records.values()].some(({dirty}) => dirty) ||
+      [...overlays.values()].some(record => record.dirty && (fullscreenRoot === null || record.owner === fullscreenRoot))
     ) {
       requestRender()
     }
@@ -684,6 +714,7 @@ const createClaimedDocumentSpaceRuntime = async (
 
   function projectPoint(owner: Node, point: Readonly<{x: number; y: number}>, geometry = false): Readonly<{x: number; y: number}> | null {
     assertActive(disposed)
+    if (fullscreenRoot !== null && owner !== fullscreenRoot && owner.contains(fullscreenRoot)) owner = fullscreenRoot
     const rect = seams.readCanvasRect(options.canvas)
     const overlay = overlays.get(owner)?.runtime
     if (overlay !== undefined) {
@@ -739,6 +770,7 @@ const createClaimedDocumentSpaceRuntime = async (
       ...(registration.rasterSize === undefined ? {} : {rasterSize: registration.rasterSize}),
       interactionState,
       tooltipDelayMs,
+      caretVisible: () => caretBlink.visible,
       invalidateGeometry: (geometry) => engineRenderer.invalidateGeometry(geometry),
       requestFrame() {
         if (disposed) return
@@ -820,6 +852,7 @@ const createClaimedDocumentSpaceRuntime = async (
 
   const addOverlay = (
     registration: DocumentSpaceOverlayRegistration,
+    fullscreenPresentation = false,
   ): DocumentOverlayRuntime => {
     assertActive(disposed)
     const owner = registration.root
@@ -827,7 +860,7 @@ const createClaimedDocumentSpaceRuntime = async (
       throw new Error(`Document space projection owner is already registered: ${owner}`)
     }
     validateProjectionRoot(options.document, registration.root)
-    validateProjectionRootSeparation(projectionRoots, registration.root)
+    if (!fullscreenPresentation) validateProjectionRootSeparation(projectionRoots, registration.root)
     const tooltipDelayMs = finiteNonNegative(registration.tooltipDelayMs ?? 500, "tooltipDelayMs")
     let record: OverlayRecord | null = null
     let requestedBeforeRegistration = false
@@ -845,6 +878,7 @@ const createClaimedDocumentSpaceRuntime = async (
       interactionState,
       ...(registration.distance === undefined ? {} : {distance: registration.distance}),
       tooltipDelayMs,
+      caretVisible: () => caretBlink.visible,
       invalidateGeometry: (geometry) => engineRenderer.invalidateGeometry(geometry),
       requestFrame() {
         if (disposed) return
@@ -1234,6 +1268,7 @@ const createClaimedDocumentSpaceRuntime = async (
     if (point === null) return null
     const ordered = [...overlays.values()].sort((left, right) => right.order - left.order)
     for (const record of ordered) {
+      if (fullscreenRoot !== null && record.owner !== fullscreenRoot) continue
       if (!record.runtime.overlay.visible || !record.runtime.overlay.content.visible) continue
       const frame = record.runtime.renderer.flush()
       const hit = hitTestProjection(frame, point.x, point.y)
@@ -1297,6 +1332,7 @@ const createClaimedDocumentSpaceRuntime = async (
   // alone never hide content. A capture keeps its owner until up/cancel.
   const pickInput = (clientX: number, clientY: number) => {
     const overlay = pickOverlay(clientX, clientY)
+    if (fullscreenRoot !== null) return {overlay, plane: null, world: null}
     const plane = overlay === null ? pickPlane(clientX, clientY) : null
     const world = overlay === null && plane === null ? pickWorld(clientX, clientY) : null
     return {overlay, plane, world}
@@ -1962,7 +1998,7 @@ const createClaimedDocumentSpaceRuntime = async (
     getPlane,
     updatePlane,
     removePlane,
-    addOverlay,
+    addOverlay: registration => addOverlay(registration),
     getOverlay,
     removeOverlay,
     addWorld,
@@ -2018,6 +2054,10 @@ const createClaimedDocumentSpaceRuntime = async (
     dispose() {
       if (disposed) return
       disposed = true
+      unsubscribeFullscreen()
+      fullscreenHost?.dispose()
+      caretBlink.dispose()
+      videoHost?.dispose()
       nativeDragHost.dispose()
       try {
         cursorPointer = null
@@ -2075,6 +2115,50 @@ const createClaimedDocumentSpaceRuntime = async (
   })
 
   try {
+    const synchronizeFullscreen = () => {
+      if (disposed) return
+      const next = options.document.fullscreenElement
+      if (next === fullscreenRoot) return
+      for (const pointerId of [...captures.keys()]) cancelCapturedPointer(pointerId)
+      clearHoveredPlane(null)
+      clearHoveredOverlay(null)
+      const previous = fullscreenRoot
+      const active = options.document.activeElement
+      let fallback: Node | null = null
+      if (active) for (const root of projectionRoots) {
+        if (root !== previous && root.contains(active) && (fallback === null || fallback.contains(root))) fallback = root
+      }
+      nativeInputHost.setActiveRoot(next ?? fallback)
+      fullscreenRoot = null
+      if (previous !== null && ownsFullscreenOverlay) removeOverlay(previous)
+      ownsFullscreenOverlay = false
+      fullscreenRoot = next
+      if (next !== null && !overlays.has(next)) {
+        addOverlay({root: next}, true)
+        ownsFullscreenOverlay = true
+      }
+      activeOverlayRoot = next ?? (fallback !== null && overlays.has(fallback) ? fallback : null)
+      activePlaneRoot = next === null && fallback !== null && records.has(fallback) ? fallback : null
+      for (const record of records.values()) record.dirty = true
+      for (const record of overlays.values()) record.dirty = true
+      requestRender()
+    }
+    unsubscribeFullscreen = subscribeDocumentFullscreen(options.document, synchronizeFullscreen)
+    fullscreenHost = createDocumentFullscreenHost({
+      document: options.document,
+      canvas: options.canvas,
+      validate(element) {
+        if (![...projectionRoots].some(root => root.contains(element))) {
+          throw new TypeError("Fullscreen target must belong to a connected HTML projection")
+        }
+        if (records.has(element)) throw new TypeError("Request fullscreen on HTML content inside the Display, not its projection root")
+      },
+    })
+    videoHost = createDocumentVideoHost({
+      document: options.document,
+      nativeDocument: options.canvas.ownerDocument,
+      requestFrame() { if (!disposed) requestRender() },
+    })
     resizeObserver = seams.createResizeObserver(() => {
       if (!disposed) resize()
     })

@@ -1,8 +1,12 @@
 import {registerDocumentGeometryReader} from "@zavx0z/immersive-dom/geometry"
+import {subscribeDocumentFullscreen} from "@zavx0z/immersive-dom"
 import {readFrameClientRects, readFrameLayoutRect} from "./client-rect.ts"
 import {
   HTMLElement,
   HTMLImageElement,
+  HTMLVideoElement,
+  readVideoPlaybackState,
+  subscribeDocumentVideoChanges,
   HTMLInputElement,
   HTMLMeterElement,
   HTMLProgressElement,
@@ -505,6 +509,18 @@ export const createDocumentRenderer = (
   const unsubscribeState = options.document.subscribeStateChanges(
     invalidateStateBatch,
   )
+  const unsubscribeVideo = subscribeDocumentVideoChanges(options.document, video => {
+    if (disposed || !options.root.contains(video)) return
+    dirty.invalidate(video)
+    subtreeDirty.add(video)
+    blockFastPath()
+  })
+  const unsubscribeFullscreen = subscribeDocumentFullscreen(options.document, () => {
+    if (disposed) return
+    dirty.invalidate(options.root)
+    subtreeDirty.add(options.root)
+    blockFastPath()
+  })
   const invalidateStyleSheets = (): void => {
     if (disposed) return
     dirty.invalidate(options.root)
@@ -577,10 +593,12 @@ export const createDocumentRenderer = (
       releaseGeometry()
       unsubscribe()
       unsubscribeState()
+      unsubscribeVideo()
       unsubscribeAuthorStyleSheets()
       unsubscribeCompiledStyleSheets()
       unsubscribeInteraction()
       popovers.clear()
+      unsubscribeFullscreen()
     },
   })
 
@@ -1199,56 +1217,35 @@ const tryBuildInputValueFrame = (
   if (!INPUT_VALUE_TYPES.has(target.type)) return null
   const layoutNode = layoutCache.get(target)
   const box = previous.boxByNode.get(target)
-  if (!layoutNode || layoutNode.transparent || !box) return null
+  if (!layoutNode || layoutNode.transparent || !box || previous.scrolls.has(target)) return null
+  const hit = previous.hits.get(target)
+  if (!hit) return null
+  const presentation = inputPresentation(target, layoutNode, box, hit.clips, hit.transform, textMeasurer,
+    hit.textControl?.lines?.[0]?.clips.at(-1)?.presentationOwner ?? null)
   const indexes = collectionIndexes(previous)
-  const displayIndex = indexedDisplayItem(indexes, target, "value")
-  const previousItem = displayIndex < 0 ? undefined : previous.displayList[displayIndex]
-  if (previousItem?.kind !== "text") return null
-
-  const liveValue = target.value
-  const placeholder = liveValue === "" ? target.placeholder : ""
-  const source = liveValue || placeholder
-  if (source === "" || box.contentWidth <= 0 || box.contentHeight <= 0) return null
-  const rawText = target.type === "password" && liveValue !== ""
-    ? "•".repeat(graphemeCount(liveValue))
-    : source.replace(/[\r\n]+/g, " ")
-  const text = ellipsizeSingleLine(
-    rawText,
-    layoutNode.style,
-    box.contentWidth,
-    true,
-    textMeasurer,
-  )
-  if (text === "" || !hasPaintableText(text)) return null
-
-  const nextItem: DisplayItem = Object.freeze({
-    ...previousItem,
-    text,
-    x: alignedTextX(
-      layoutNode.style,
-      box.contentX,
-      box.contentWidth,
-      textAdvance(text, layoutNode.style, textMeasurer),
-    ),
-    opacity: layoutNode.effectiveOpacity * (placeholder ? 0.55 : 1),
-  })
-  const displayList = replaceImmutableArray(previous.displayList, displayIndex, nextItem)
+  const previousIndexes = [...(indexes.displayByNode.get(target)?.entries() ?? [])]
+    .filter(([key]) => key === "value" || key === "caret" || key.startsWith("selection:"))
+  if (previousIndexes.length !== presentation.items.length) return null
+  let displayList = previous.displayList
+  const changed: number[] = []
+  for (const item of presentation.items) {
+    const index = indexes.displayByNode.get(target)?.get(item.key)
+    if (index === undefined || previous.displayList[index]?.kind !== item.kind) return null
+    displayList = replaceImmutableArray(displayList, index, item)
+    changed.push(index)
+  }
+  const nextHit = Object.freeze({...hit, textControl: presentation.metrics})
+  const hitIndex = indexedHit(indexes, hit)
+  if (previous.hitOrder !== undefined && hitIndex === undefined) return null
   const next: RenderFrame = Object.freeze({
+    ...previous,
     revision,
-    document: previous.document,
-    root: previous.root,
-    viewport: previous.viewport,
-    boxes: previous.boxes,
-    boxByNode: previous.boxByNode,
     displayList,
-    hits: previous.hits,
-    ...(previous.hitOrder === undefined ? {} : {hitOrder: previous.hitOrder}),
-    scrolls: previous.scrolls,
-    ...(previous.presentationTransforms === undefined
-      ? {}
-      : {presentationTransforms: previous.presentationTransforms}),
+    hits: replaceImmutableNodeMap(previous.hits, target, nextHit),
+    ...(previous.hitOrder === undefined ? {} : {hitOrder: replaceImmutableArray(previous.hitOrder, hitIndex!, nextHit)}),
   })
-  recordCanonicalRenderFrameChanges(next, previous, [displayIndex])
+  if (hitIndex !== undefined) indexes.hitByRecord.set(nextHit, hitIndex)
+  recordCanonicalRenderFrameChanges(next, previous, changed)
   collectionIndexesByFrame.set(next, indexes)
   return next
 }
@@ -2223,24 +2220,39 @@ const buildFrame = (
   allowTextStream = true,
   flexPlans = new WeakMap<LayoutNode, Map<string, readonly ResolvedFlexLine[]>>(),
 ): RenderFrame => {
+  const fullscreen = document.fullscreenElement
+  const fullscreenRoot = fullscreen !== null && (root === fullscreen || root.contains(fullscreen)) ? fullscreen : null
   const selectedPicker = document.readOpenSelectPicker()
-  const openSelect = selectedPicker !== null && (root === selectedPicker || root.contains(selectedPicker)) ? selectedPicker : null
+  const openSelect = selectedPicker !== null && (root === selectedPicker || root.contains(selectedPicker))
+    && (fullscreenRoot === null || fullscreenRoot.contains(selectedPicker)) ? selectedPicker : null
   const popoverInheritedStyles = new WeakMap<HTMLElement, ComputedStyle>()
-  const inheritedStyle = projectionRootInheritedStyle(root, rules, interactionState)
+  const presentedRoot = fullscreenRoot ?? root
+  const inheritedStyle = projectionRootInheritedStyle(presentedRoot, rules, interactionState)
   const tree = buildLayoutTree(
-    root,
+    presentedRoot,
     null,
     inheritedStyle,
     1,
     rules,
     dirtyNodes,
     subtreeDirty,
-    layoutCache,
+    fullscreenRoot === null ? layoutCache : new WeakMap(),
     false,
     null,
     popoverInheritedStyles,
     interactionState,
   )
+  if (fullscreenRoot !== null) {
+    // The fullscreen top layer uses the viewport as its containing block and
+    // escapes its former parent's clipping/transform without reparenting.
+    tree.style = Object.freeze<ComputedStyle>({...tree.style,
+      position: "static", boxSizing: "border-box",
+      width: {unit: "px", value: viewport.width}, height: {unit: "px", value: viewport.height},
+      minWidth: null, minHeight: null, maxWidth: null, maxHeight: null,
+      left: null, top: null, right: null, bottom: null,
+      margin: {left: 0, top: 0, right: 0, bottom: 0}, transform: [],
+    })
+  }
   const state: BuildState = {
     boxes: [],
     boxByNode: new Map(),
@@ -2283,6 +2295,13 @@ const buildFrame = (
     fixedBoundaries: Object.freeze([]),
   })
 
+  if (fullscreenRoot !== null) state.displayList.push(Object.freeze({
+    kind: "rect", key: "ua:fullscreen-backdrop", node: fullscreenRoot,
+    x: 0, y: 0, width: viewport.width, height: viewport.height,
+    color: "#000000", opacity: 1, border: ZERO_BORDER, shadow: null,
+    clips: NO_CLIPS, transform: IDENTITY_TRANSFORM,
+  }))
+
   measure(tree, availableWidth, availableHeight, state)
   if (isOutOfFlow(tree.style)) {
     placeAbsoluteChild(
@@ -2311,6 +2330,7 @@ const buildFrame = (
   }
 
   for (const popover of popovers) {
+    if (fullscreenRoot !== null && !fullscreenRoot.contains(popover)) continue
     const inheritedStyle = popoverInheritedStyles.get(popover) ??
       layoutCache.get(popover)?.parent?.style ??
       ROOT_STYLE
@@ -2607,6 +2627,7 @@ const buildLayoutTree = (
       style.display === "none" ||
         tag === "input" ||
         tag === "img" ||
+        tag === "video" ||
         tag === "select" ||
         tag === "progress" ||
         tag === "meter" ||
@@ -2681,7 +2702,7 @@ const finalizeLayoutNodeChildren = (layoutNode: LayoutNode): void => {
     child.style.display === "none" || child.style.display === "inline" &&
     child.style.position === "static" && child.style.transform.length === 0 &&
     child.style.overflowX === "visible" && child.style.overflowY === "visible" &&
-    !["input", "img", "select", "textarea", "progress", "meter", "vector-path"].includes(child.tag ?? "") &&
+    !["input", "img", "video", "select", "textarea", "progress", "meter", "vector-path"].includes(child.tag ?? "") &&
     child.inlineTextOnly === true)
   layoutNode.hasFixedDescendants = layoutNode.children.some(child => child.style.display !== "none" &&
     (child.style.position === "fixed" || child.hasFixedDescendants))
@@ -2775,7 +2796,7 @@ const fragmentableInline = (node: LayoutNode): boolean => {
     style.margin.top === 0 && style.margin.right === 0 && style.margin.bottom === 0 && style.margin.left === 0 &&
     node.children.every(child => child.style.position === "static" &&
       (child.text !== null || child.style.display === "inline" || child.style.display === "none")) &&
-    !["input", "img", "select", "textarea", "progress", "meter"].includes(node.tag ?? "")
+    !["input", "img", "video", "select", "textarea", "progress", "meter"].includes(node.tag ?? "")
 }
 
 type InlineRect = Readonly<{x: number; y: number; width: number; height: number}>
@@ -2894,8 +2915,8 @@ const measure = (
     )
   }
 
-  if (layoutNode.node instanceof HTMLImageElement && state.imageMeasurer !== undefined) {
-    const natural = state.imageMeasurer.measureImage(layoutNode.node.src, state.imageMeasurer.signal?.(layoutNode.node))
+  if (isReplacedMedia(layoutNode.node, state)) {
+    const natural = mediaSize(layoutNode.node, state)
     if (natural !== null && natural.width > 0 && natural.height > 0) {
       const style = layoutNode.style
       const edgeWidth = horizontalBoxEdges(style)
@@ -3785,7 +3806,7 @@ const place = (
   const descendantBoxStart = state.boxes.length
   const descendantDisplayStart = state.displayList.length
   const descendantHitStart = state.hitOrder.length
-  emitReplacedControlPresentation(layoutNode, box, descendantClips, state)
+  emitReplacedControlPresentation(layoutNode, box, descendantClips, state, presentationOwner)
   const childrenContext = childPlacementContext(
     layoutNode,
     box,
@@ -4122,7 +4143,7 @@ const canRetainTextPaint = (node: LayoutNode): boolean =>
   node.inlineTextOnly === true && node.style.display === "block" &&
   node.style.position === "static" && node.style.transform.length === 0 &&
   node.style.overflowX === "visible" && node.style.overflowY === "visible" &&
-  !node.transparent && !["input", "img", "select", "textarea", "progress", "meter", "vector-path"].includes(node.tag ?? "")
+  !node.transparent && !["input", "img", "video", "select", "textarea", "progress", "meter", "vector-path"].includes(node.tag ?? "")
 
 /**
 Связывает сохранённый текст с clip-объектами текущей раскладки.
@@ -4581,8 +4602,8 @@ const automaticMainMinimum = (
 
 /** Размер по содержимому использует общие метрики потомков и правила переноса inline-текста. */
 const intrinsicContentWidth = (node: LayoutNode, minimum: boolean, availableHeight: number, state: BuildState): number => {
-  if (node.node instanceof HTMLImageElement && state.imageMeasurer !== undefined) {
-    const natural = state.imageMeasurer.measureImage(node.node.src, state.imageMeasurer.signal?.(node.node))
+  if (isReplacedMedia(node.node, state)) {
+    const natural = mediaSize(node.node, state)
     if (natural !== null) return natural.width
   }
   const constraint = minimum ? 0 : Number.POSITIVE_INFINITY
@@ -4631,7 +4652,7 @@ const intrinsicWidth = (
 ): number => {
   if (node.text !== null)
     return measure(node, availableWidth, availableHeight, state).width
-  if (node.node instanceof HTMLImageElement && state.imageMeasurer !== undefined)
+  if (isReplacedMedia(node.node, state))
     return measure(node, availableWidth, availableHeight, state).width
   if (node.transparent) {
     return flowChildren(node).reduce(
@@ -4707,7 +4728,7 @@ const intrinsicHeight = (
 ): number => {
   if (node.text !== null)
     return measure(node, availableWidth, availableHeight, state).height
-  if (node.node instanceof HTMLImageElement && state.imageMeasurer !== undefined)
+  if (isReplacedMedia(node.node, state))
     return measure(node, availableWidth, availableHeight, state).height
   if (node.transparent) {
     return flowChildren(node).reduce(
@@ -5742,9 +5763,10 @@ const emitReplacedControlPresentation = (
   box: RenderBox,
   clips: readonly RenderClip[],
   state: BuildState,
+  presentationOwner: Element | null,
 ): void => {
   if (layoutNode.style.visibility === "hidden") return
-  if (layoutNode.node instanceof HTMLImageElement) {
+  if (layoutNode.node instanceof HTMLImageElement || layoutNode.node instanceof HTMLVideoElement) {
     emitImagePresentation(layoutNode.node, layoutNode, box, clips, state)
     return
   }
@@ -5775,63 +5797,29 @@ const emitReplacedControlPresentation = (
     return
   }
   if (!INPUT_VALUE_TYPES.has(input.type)) return
-  const liveValue = input.value
-  const placeholder = liveValue === "" ? input.placeholder : ""
-  const source = liveValue || placeholder
-  if (source === "" || box.contentWidth <= 0 || box.contentHeight <= 0) return
-  const rawText = input.type === "password" && liveValue !== ""
-    ? "•".repeat(graphemeCount(liveValue))
-    : source.replace(/[\r\n]+/g, " ")
-  const text = ellipsizeSingleLine(
-    rawText,
-    layoutNode.style,
-    box.contentWidth,
-    true,
-    state.textMeasurer,
-  )
-  if (text === "" || !hasPaintableText(text)) return
-  const lineHeight = resolveLineHeight(layoutNode.style)
-  state.displayList.push(
-    Object.freeze({
-      kind: "text",
-      key: "value",
-      node: input,
-      text,
-      x: alignedTextX(
-        layoutNode.style,
-        box.contentX,
-        box.contentWidth,
-        textAdvance(text, layoutNode.style, state.textMeasurer),
-      ),
-      y: box.contentY + Math.max(0, (box.contentHeight - lineHeight) / 2),
-      color: layoutNode.style.color,
-      fontSize: layoutNode.style.fontSize,
-        fontFamily: layoutNode.style.fontFamily, fontWeight: layoutNode.style.fontWeight, fontStyle: layoutNode.style.fontStyle,
-      lineHeight,
-      letterSpacing: layoutNode.style.letterSpacing,
-      opacity: layoutNode.effectiveOpacity * (placeholder ? 0.55 : 1),
-      clips,
-      transform: presentationFor(input, state),
-    }),
-  )
+  const presentation = inputPresentation(input, layoutNode, box, clips, presentationFor(input, state), state.textMeasurer, presentationOwner)
+  const hit = state.hits.get(input)
+  if (hit) state.hits.set(input, Object.freeze({...hit, textControl: presentation.metrics}))
+  state.displayList.push(...presentation.items)
 }
 
 const presentationFor = (node: Node, state: BuildState): RenderTransform =>
   state.transforms.get(node) ?? IDENTITY_TRANSFORM
 
 const emitImagePresentation = (
-  image: HTMLImageElement,
+  image: HTMLImageElement | HTMLVideoElement,
   layoutNode: LayoutNode,
   box: RenderBox,
   clips: readonly RenderClip[],
   state: BuildState,
 ): void => {
-  if (image.src === "" || box.contentWidth <= 0 || box.contentHeight <= 0) return
+  const src = image instanceof HTMLVideoElement ? readVideoPlaybackState(image).resource ?? "" : image.src
+  if (src === "" || box.contentWidth <= 0 || box.contentHeight <= 0) return
   state.displayList.push(Object.freeze({
     kind: "image",
     key: "image",
     node: image,
-    src: image.src,
+    src,
     x: box.contentX,
     y: box.contentY,
     width: box.contentWidth,
@@ -6213,6 +6201,87 @@ const localRectStart = (
   ? (visualStart - translate) / scale
   : (visualStart + visualSize - translate) / scale
 
+/** Одна строка значения сохраняет метрики для paint, selection и pointer default. */
+const inputPresentation = (
+  input: HTMLInputElement,
+  layoutNode: LayoutNode,
+  box: RenderBox,
+  clips: readonly RenderClip[],
+  transform: RenderTransform,
+  textMeasurer: CreateDocumentRendererOptions["textMeasurer"],
+  presentationOwner: Element | null,
+): Readonly<{items: readonly DisplayItem[]; metrics: NonNullable<HitMetadata["textControl"]>}> => {
+  const style = layoutNode.style
+  const lineHeight = resolveLineHeight(style)
+  const value = input.value
+  const masked = input.type === "password"
+  let sourceOffset = 0
+  const segments = masked ? graphemeSegmenter
+    ? Array.from(graphemeSegmenter.segment(value), segment => segment.segment) : Array.from(value) : []
+  const text = masked ? "•".repeat(segments.length) : value.replace(/[\r\n]/g, " ")
+  const offsets = masked ? [0, ...segments.map(segment => sourceOffset += segment.length)]
+    : Array.from({length: text.length + 1}, (_, offset) => offset)
+  const measure = (value: string) => textAdvance(value, style, textMeasurer)
+  const lineClips = Object.freeze([...clips, Object.freeze({
+    x: box.contentX, y: box.contentY, width: box.contentWidth, height: box.contentHeight,
+    radii: ZERO_CLIP_RADII, clipX: true, clipY: true, transform,
+    ...(presentationOwner === null ? {} : {presentationOwner}),
+  })])
+  let line: TextDisplayItem = Object.freeze({
+    kind: "text", key: "value", node: input, text, width: measure(text),
+    source: createTextSource({offsets, userSelect: "text", selectionRoot: input, whiteSpace: "nowrap"}, style, textMeasurer),
+    x: alignedTextX(style, 0, box.contentWidth, measure(text)),
+    y: Math.max(0, (box.contentHeight - lineHeight) / 2),
+    color: style.color, fontSize: style.fontSize,
+    fontFamily: style.fontFamily, fontWeight: style.fontWeight, fontStyle: style.fontStyle,
+    lineHeight, letterSpacing: style.letterSpacing, opacity: layoutNode.effectiveOpacity,
+    clips: lineClips, transform,
+  })
+  const focused = input.ownerDocument?.activeElement === input && !input.disabled
+  const selected = input.selectionStart !== null
+  if (focused && selected) {
+    const focus = input.selectionDirection === "backward" ? input.selectionStart! : input.selectionEnd!
+    const caretX = line.x + textAdvanceAt(line, textControlColumn(line, focus))
+    const shift = Math.max(0, caretX - Math.max(0, box.contentWidth - 1)) + Math.min(0, caretX)
+    line = Object.freeze({...line, x: line.x - shift})
+  }
+  const placeholder = value === "" && input.placeholder !== ""
+  const painted = placeholder ? input.placeholder.replace(/[\r\n]/g, " ") : text
+  const visibleText = focused && selected && !placeholder ? painted
+    : ellipsizeSingleLine(painted, style, box.contentWidth, true, textMeasurer)
+  if ((!focused || !selected) && !placeholder) {
+    line = Object.freeze({...line, x: alignedTextX(style, 0, box.contentWidth, measure(visibleText))})
+  }
+  const items: DisplayItem[] = []
+  const metrics = Object.freeze({lineHeight, characterAdvance: Math.max(0, style.fontSize * 0.6 + style.letterSpacing),
+    exactOffsetMapping: selected, lines: Object.freeze([line])})
+  if (box.contentWidth <= 0 || box.contentHeight <= 0 || style.visibility === "hidden") return {items, metrics}
+  if (selected) emitTextControlSelection(input, [line], box, items)
+  const {source: valueSource, ...withoutSource} = line
+  if (visibleText !== "" && hasPaintableText(visibleText)) items.push(Object.freeze({...withoutSource,
+    text: visibleText,
+    width: measure(visibleText),
+    ...(!placeholder && valueSource ? {source: valueSource} : {}),
+    x: box.contentX + (placeholder ? alignedTextX(style, 0, box.contentWidth, measure(visibleText)) : line.x),
+    y: box.contentY + line.y,
+    opacity: line.opacity * (placeholder ? 0.55 : 1),
+  }))
+  return {items, metrics}
+}
+
+/** Каретка пароля измеряется по маске, её граница остаётся смещением исходного UTF-16. */
+const textControlColumn = (line: TextDisplayItem, offset: number): number => {
+  const offsets = line.source!.offsets
+  let low = 0
+  let high = offsets.length - 1
+  while (low < high) {
+    const middle = Math.floor((low + high) / 2)
+    if (offsets[middle]! < offset) low = middle + 1
+    else high = middle
+  }
+  return low
+}
+
 /** Одна раскладка значения задаёт текст, каретку, выделение и позиции указателя. */
 const emitTextAreaPresentation = (
   textArea: HTMLTextAreaElement,
@@ -6251,7 +6320,7 @@ const emitTextAreaPresentation = (
   if (hit?.textControl) state.hits.set(textArea, Object.freeze({...hit,
     textControl: Object.freeze({...hit.textControl, exactOffsetMapping: preserves, lines: valueLines}),
   }))
-  if (preserves) emitTextAreaSelection(textArea, valueLines, box, state)
+  if (preserves) emitTextControlSelection(textArea, valueLines, box, state.displayList)
   const placeholder = textArea.value === "" && textArea.placeholder !== ""
   for (const line of placeholder ? plan(textArea.placeholder.replace(/\r\n?/g, "\n")) : valueLines) {
     if (!hasPaintableText(line.text)) continue
@@ -6262,20 +6331,21 @@ const emitTextAreaPresentation = (
   }
 }
 
-const emitTextAreaSelection = (
-  textArea: HTMLTextAreaElement,
+const emitTextControlSelection = (
+  textArea: HTMLTextAreaElement | HTMLInputElement,
   lines: readonly TextDisplayItem[],
   box: RenderBox,
-  state: BuildState,
+  displayList: DisplayItem[],
 ): void => {
   if (textArea.disabled || textArea.ownerDocument?.activeElement !== textArea || !lines.length) return
   const start = textArea.selectionStart
   const end = textArea.selectionEnd
+  if (start === null || end === null || start === end && textArea.readOnly) return
   for (let index = 0; index < lines.length; index++) {
     const line = lines[index]!
     if (line.lineHeight <= 0) continue
     const first = line.source!.offsets[0]!
-    const last = first + line.text.length
+    const last = line.source!.offsets.at(-1)!
     const next = lines[index + 1]?.source?.offsets[0]
     const caret = start === end
     // На мягком переносе граница принадлежит началу следующей визуальной строки.
@@ -6284,14 +6354,14 @@ const emitTextAreaSelection = (
     const to = Math.min(end, last)
     const newline = next !== undefined && next > last && start <= last && end > last
     if (caret ? !containsCaret : from >= to && !newline) continue
-    const startColumn = Math.max(0, (caret ? end : from) - first)
-    const endColumn = Math.max(startColumn, to - first)
+    const startColumn = textControlColumn(line, caret ? end : from)
+    const endColumn = Math.max(startColumn, textControlColumn(line, to))
     const left = textAdvanceAt(line, startColumn)
-    state.displayList.push(Object.freeze({
+    displayList.push(Object.freeze({
       kind: "rect", key: caret ? "caret" : `selection:${index}`, node: textArea,
       x: box.contentX + line.x + left, y: box.contentY + line.y,
       width: caret ? 1 : Math.max(newline ? 2 : 1, textAdvanceAt(line, endColumn) - left),
-      height: line.lineHeight, color: TEXT_SELECTION_COLOR, opacity: caret ? 1 : 0.35,
+      height: line.lineHeight, color: caret ? line.color : TEXT_SELECTION_COLOR, opacity: line.opacity * (caret ? 1 : 0.35),
       border: ZERO_BORDER, shadow: null, clips: line.clips, transform: line.transform,
     }))
     if (caret) return
@@ -7185,4 +7255,13 @@ const replaceImmutableNodeMapEntries = <Key extends Node, Value>(
   const next = new Map(values)
   for (const {node, value} of entries) next.set(node, value)
   return new ImmutableNodeMap(next)
+}
+
+const isReplacedMedia = (node: Node, state: BuildState): boolean =>
+  node instanceof HTMLVideoElement || node instanceof HTMLImageElement && state.imageMeasurer !== undefined
+
+const mediaSize = (node: Node, state: BuildState): Readonly<{width: number; height: number}> | null => {
+  if (node instanceof HTMLVideoElement) return {width: node.videoWidth || 300, height: node.videoHeight || 150}
+  if (node instanceof HTMLImageElement) return state.imageMeasurer?.measureImage(node.src, state.imageMeasurer.signal?.(node)) ?? null
+  return null
 }

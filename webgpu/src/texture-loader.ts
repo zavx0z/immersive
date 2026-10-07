@@ -434,6 +434,11 @@ export class TextureLoader {
       destroyEntry(entry)
     }
   }
+  /** Отзывает decoder Browser и все удержанные GPU-представления его уникального source. */
+  static releaseVideoSource(src: string): void {
+    for (const entry of [...entriesBySource.get(src) ?? []]) destroyEntry(entry)
+    sources.delete(src)
+  }
   static diagnostics(): Readonly<{activeEntries: number; inactiveEntries: number; inactiveBytes: number; pendingLoads: number; pendingProducerEntries: number; pendingProducerBytes: number}> {
     let activeEntries = 0
     let pendingLoads = 0

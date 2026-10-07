@@ -31,5 +31,6 @@ export type CssTemplatePseudo =
   | ":disabled"
   | ":focus"
   | ":focus-within"
+  | ":fullscreen"
   | ":hover"
   | ":indeterminate"

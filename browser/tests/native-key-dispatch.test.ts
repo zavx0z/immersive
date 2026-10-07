@@ -1,5 +1,6 @@
 import {expect, test} from "bun:test"
 import {createDocument, HTMLElement, HTMLInputElement, HTMLTextAreaElement, InputEvent as SemanticInputEvent, textPositionAtOffset} from "@zavx0z/immersive-dom"
+import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import {createDocumentNativeInputHostWithSeams} from "../src/native-input-host.ts"
 
 class NativeProxy extends EventTarget {
@@ -210,4 +211,30 @@ test("rebinding a focused projection preserves its selection without synthetic p
     expect(f.host.dispatchText(editor, "new")).toBe(true)
     expect(editor.textContent).toBe("replace new suffix")
   } finally {f.host.dispose()}
+})
+
+
+test("native ввод URL и изменение selection proxy передвигают ту же Renderer каретку", () => {
+  const f = textFixture()
+  const input = f.document.createElement("input") as HTMLInputElement
+  input.type = "url"
+  input.setAttribute("style", "width:180px;height:20px;padding:0;border:0;font-size:10px;line-height:20px")
+  input.value = "abcdef"
+  input.setSelectionRange(3, 3)
+  f.activate(input)
+  const renderer = createDocumentRenderer({document: f.document, root: f.root, viewport: {width: 200, height: 100}})
+  const caret = () => renderer.flush().displayList.find(item => item.node === input && item.key === "caret")
+  try {
+    expect(caret()).toMatchObject({x: 18})
+    expect(f.host.dispatchText(input, "X")).toBe(true)
+    expect(input.value).toBe("abcXdef")
+    expect([input.selectionStart, input.selectionEnd]).toEqual([4, 4])
+    expect(caret()).toMatchObject({x: 24})
+    // После native keyboard default proxy сообщает новое выделение этим событием.
+    // Здесь seam заменяет браузерный default; semantic selection не присваивается вручную.
+    f.host.nativeInput.setSelectionRange(3, 3)
+    f.host.nativeInput.dispatchEvent(new Event("selectionchange"))
+    expect([input.selectionStart, input.selectionEnd]).toEqual([3, 3])
+    expect(caret()).toMatchObject({x: 18})
+  } finally {renderer.dispose(); f.host.dispose()}
 })

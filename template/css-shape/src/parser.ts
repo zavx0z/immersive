@@ -2,6 +2,7 @@ import {containsTaggedTemplateMarker, parseTaggedTemplateSegments, type TaggedTe
 import type {CssTemplateAttributeSelector, CssTemplateRule, CssTemplateItem, CssTemplatePseudo, CssTemplateDeclaration} from "./types.ts"
 const supportedPseudos: readonly CssTemplatePseudo[] = Object.freeze([
   ":focus-within",
+  ":fullscreen",
   ":indeterminate",
   ":disabled",
   ":checked",

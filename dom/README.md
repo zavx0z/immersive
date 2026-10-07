@@ -20,6 +20,14 @@ DOM не вычисляет CSS-раскладку и не рисует в GPU. 
 
 ## Публичные точки входа
 
+`createElement("video")` возвращает semantic `HTMLVideoElement` с `srcObject`,
+`play()`/`pause()` и состоянием декодирования. Декодер принадлежит Browser:
+[контракт видео](../browser/video.md).
+
+`requestFullscreen()`, `fullscreenElement`, `exitFullscreen()` и события
+полноэкранного режима связывают semantic элемент с native Browser host:
+[контракт fullscreen](../browser/fullscreen.md).
+
 `DragEvent` наследует `MouseEvent`; `DataTransfer` обслуживает строки clipboard
 и файлы входящего drag-and-drop. Файлы доступны через readonly `files`
 с `length`, индексами, `item()` и итерацией в lifecycle события.

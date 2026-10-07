@@ -1,3 +1,7 @@
+import {createDocumentCaretBlink} from "./caret-blink.ts"
+import {createDocumentVideoHost} from "./video-host.ts"
+import {createDocumentFullscreenHost} from "./fullscreen-host.ts"
+import {subscribeDocumentFullscreen} from "@zavx0z/immersive-dom"
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
 import {createDocumentNativeDragHost} from "./native-drag-host.ts"
 import {
@@ -108,6 +112,7 @@ export type DocumentCanvasRuntimeSeams = Readonly<{
     document: Document
     interactionState: DocumentInteractionState
     tooltipDelayMs: number
+    caretVisible?: () => boolean
     textMeasurer: NonNullable<CreateDocumentRendererOptions["textMeasurer"]>
   }>): DocumentInteractionController
   createNativeInputHost(options: Readonly<{requestFrame(): void}>): DocumentNativeInputHost
@@ -257,10 +262,12 @@ const createClaimedDocumentCanvasRuntime = async (
     textMeasurer,
     ...(imageMeasurer === undefined ? {} : {imageMeasurer}),
   })
+  let caretBlink: ReturnType<typeof createDocumentCaretBlink> | null = null
   const interaction = seams.createInteraction({
     document: options.document,
     interactionState,
     tooltipDelayMs,
+    caretVisible: () => caretBlink?.visible ?? true,
     textMeasurer,
   })
   const overlay = seams.createOverlay({content: backend.root, viewport, distance})
@@ -284,6 +291,7 @@ const createClaimedDocumentCanvasRuntime = async (
       requestedFrame = null
     }
     inputHost?.synchronize()
+    caretBlink?.synchronize()
     const frame = interaction.composeFrame(documentRenderer.flush(), seams.now())
     backend.applyFrame(frame)
     viewPoint.update()
@@ -306,6 +314,13 @@ const createClaimedDocumentCanvasRuntime = async (
   }
 
   try {
+    caretBlink = createDocumentCaretBlink({
+      document: options.document,
+      owns: node => options.root.contains(node),
+      requestFrame: () => {if (!disposed) requestRender()},
+      setTimer: seams.setTimer,
+      clearTimer: seams.clearTimer,
+    })
     inputHost = seams.createNativeInputHost({requestFrame: requestRender})
     inputHost.setActiveRoot(options.root)
     unsubscribeMutations = options.document.subscribeMutations(() => {
@@ -321,6 +336,7 @@ const createClaimedDocumentCanvasRuntime = async (
   } catch (error) {
     if (requestedFrame !== null) seams.cancelFrame(requestedFrame)
     requestBackendPresentation = (): void => {}
+    caretBlink?.dispose()
     unsubscribeMutations()
     unsubscribeStateChanges()
     unsubscribeAuthorStyleSheets()
@@ -435,6 +451,10 @@ const createClaimedDocumentCanvasRuntime = async (
     }
   }
 
+  let videoHost: ReturnType<typeof createDocumentVideoHost> | null = null
+  let fullscreenHost: ReturnType<typeof createDocumentFullscreenHost> | null = null
+  let unsubscribeFullscreen = () => {}
+
   const nativeDragHost = createDocumentNativeDragHost({
     canvas: options.canvas,
     document: options.document,
@@ -465,6 +485,10 @@ const createClaimedDocumentCanvasRuntime = async (
   const dispose = (): void => {
     if (disposed) return
     disposed = true
+    unsubscribeFullscreen()
+    fullscreenHost?.dispose()
+    caretBlink?.dispose()
+    videoHost?.dispose()
     nativeDragHost.dispose()
     try {
       requestBackendPresentation = (): void => {}
@@ -547,6 +571,19 @@ const createClaimedDocumentCanvasRuntime = async (
   })
 
   try {
+    fullscreenHost = createDocumentFullscreenHost({
+      document: options.document,
+      canvas: options.canvas,
+      validate(element) {
+        if (!options.root.contains(element)) throw new TypeError("Fullscreen target belongs to another presentation")
+      },
+    })
+    unsubscribeFullscreen = subscribeDocumentFullscreen(options.document, requestRender)
+    videoHost = createDocumentVideoHost({
+      document: options.document,
+      nativeDocument: options.canvas.ownerDocument,
+      requestFrame() { if (!disposed) requestRender() },
+    })
     options.canvas.addEventListener("pointermove", onPointerMove)
     options.canvas.addEventListener("pointerdown", onPointerDown)
     options.canvas.addEventListener("pointerup", onPointerUp)
