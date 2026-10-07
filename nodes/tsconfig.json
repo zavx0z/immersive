@@ -5,6 +5,8 @@
     "jsxImportSource": "@zavx0z/immersive-jsx"
   },
   "include": [
+    "spatial/**/*.ts",
+    "spatial/**/*.tsx",
     "index.ts",
     "frame/**/*.ts",
     "frame/**/*.tsx",

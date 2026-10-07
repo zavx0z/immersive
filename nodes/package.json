@@ -7,6 +7,8 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
+    "./spatial": "./spatial/index.ts",
+    "./spatial/contract/input": "./spatial/contract/input.ts",
     "./view": "./view/index.tsx",
     "./view/contract/input": "./view/contract/input.ts",
     "./view/tree": "./view/tree.ts",
@@ -24,7 +26,7 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel ./tests ./frame/tests ./view/tests ./frame/spec ./marker/arrow/spec",
+    "test": "bun test --parallel ./tests ./spatial/tests ./frame/tests ./view/tests ./frame/spec ./marker/arrow/spec",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
