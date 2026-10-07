@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 3,
+  "metadata": {
+    "id": "fffdfdda2895d3b60167f27267a951d55ca83eff00c1467afdc46d26657c0bba",
+    "executorId": "77176fbd-ff93-5733-9b7a-76493c93adac",
+    "executorLabel": "Основной",
+    "address": "/immersive/vector/value/normalize",
+    "pending": [],
+    "historyComplete": true,
+    "status": "idle",
+    "error": null,
+    "controlVersion": 9,
+    "executionBaseline": {
+      "model": "gpt-6-astra",
+      "thoughtLevel": "medium"
+    },
+    "sessionId": "01a1113b-1033-7f63-bd4a-0b5473512523",
+    "connectionId": "codex",
+    "cwd": "."
+  },
+  "history": {
+    "revision": 4,
+    "total": 1,
+    "lastSequence": 1
+  },
+  "journal": "811da53028b12be841be24dae1ed83af1192fc543e5fcecd302f6ecf22ffe818.json.journal.88080898-3967-4a7a-a14d-e886c7b18b61.ndjson",
+  "committedBytes": 6932,
+  "hash": "f0d468689c1b73a0a7daf46e8df61d80053d4eabe526d931fb98f6edfa84263a",
+  "displayHistory": {
+    "revision": 4,
+    "total": 1,
+    "lastSequence": 1
+  }
+}

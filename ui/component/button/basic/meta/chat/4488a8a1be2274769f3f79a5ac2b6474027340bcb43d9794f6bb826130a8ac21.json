@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 3,
+  "metadata": {
+    "id": "7b73efb22c4b8a05d6bd5eadd277bb421ce6ed3d8d1eb359f70a91c26e19eabe",
+    "executorId": "8f6c4308-9c99-5616-9b2c-57adbe47ae4c",
+    "executorLabel": "Основной",
+    "address": "/immersive/ui/component/button/basic",
+    "pending": [],
+    "historyComplete": true,
+    "status": "idle",
+    "error": null,
+    "controlVersion": 378,
+    "executionSelection": {
+      "connectionId": "ollama-ai-srv",
+      "model": "qwen3.8:27b-q4_K_M"
+    },
+    "preserveNativeSettings": false,
+    "sessionLabel": "Привет. Что ты видишь в своей",
+    "sessionLabelSource": "auto",
+    "sessionLabelAssigned": true,
+    "executionBaseline": {
+      "model": "hf.co/unsloth/Qwen3.8-27B-GGUF:UD-IQ3_XXS"
+    },
+    "sessionId": "29439e36-4315-430d-ab7e-b8b97cd57608",
+    "connectionId": "ollama-ai-srv",
+    "provider": "ollama",
+    "cwd": ".",
+    "usage": {
+      "used": 5898,
+      "size": 32768
+    },
+    "environmentContext": "b365b7e23c2b347cfb707a3bef5da6cc34d659b3ff446a8dbc3df6843ada3c1d"
+  },
+  "history": {
+    "revision": 457,
+    "total": 7,
+    "lastSequence": 367
+  },
+  "journal": "4488a8a1be2274769f3f79a5ac2b6474027340bcb43d9794f6bb826130a8ac21.json.journal.2948dfca-08dc-456b-8e65-29dad37432a7.ndjson",
+  "committedBytes": 590880,
+  "hash": "30977051a5f5799cc315df75b57e4c94eb1a7f811165ee61b90bd676e9190744",
+  "displayHistory": {
+    "revision": 457,
+    "total": 3,
+    "lastSequence": 367
+  }
+}
