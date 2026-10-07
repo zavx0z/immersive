@@ -50,7 +50,7 @@ import {
 import {HUDElement} from "../../dom/hud/index.ts"
 import {SpaceElement} from "@zavx0z/immersive-dom/space"
 import {ViewPointElement} from "@zavx0z/immersive-dom/viewpoint"
-import * as publicApi from "../src/index.ts"
+import * as publicApi from "@zavx0z/immersive-browser"
 import {
   attachWithRuntimeFactory,
   type PresentationOptions,

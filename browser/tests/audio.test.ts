@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createAudioPlayback, type AudioPlaybackState} from "../audio"
+import {createAudioPlayback, type AudioPlaybackState} from "@zavx0z/immersive-browser/audio"
 
 test("native audio IO публикует состояние, seek и dispose освобождают playback без visible DOM", async () => {
   const events = new Map<string, () => void>()
