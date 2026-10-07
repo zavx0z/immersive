@@ -120,12 +120,14 @@ test("[NODES-005] domain imports resolve only through public package contracts",
 
 test("[NODES-006] projected Parameter render и геометрия используют один resolver", async () => {
   const parameterSource = await Bun.file(Bun.resolveSync("@zavx0z/immersive-nodes-projection-parameter", packageRoot)).text()
-  const nodeSource = await Bun.file(Bun.resolveSync("@zavx0z/immersive-nodes-geometry-node-project", packageRoot)).text()
+  const nodeFile = Bun.resolveSync("@zavx0z/immersive-nodes-geometry-node-project", packageRoot)
+  const nodeSource = await Bun.file(nodeFile).text()
+  const heightFile = Bun.resolveSync("@zavx0z/immersive-nodes-geometry-node-field-height", dirname(nodeFile))
 
   expect(parameterSource).toContain("const resolved = resolveProjectedParameterPresentation(snapshot)")
-  const heightSource = await Bun.file(Bun.resolveSync("@zavx0z/immersive-nodes-geometry-node-field-height", packageRoot)).text()
+  const heightSource = await Bun.file(heightFile).text()
   expect(heightSource).toContain("projectedParameterFieldHeight(")
-  const heightContract = await Bun.file(resolve(Bun.resolveSync("@zavx0z/immersive-nodes-geometry-node-field-height", packageRoot), "../contract/index.ts")).text()
+  const heightContract = await Bun.file(resolve(heightFile, "../contract/index.ts")).text()
   expect(heightContract).toContain('import type {ImmersiveNodesProjectionParameterPresentation} from "@zavx0z/immersive-nodes-projection-parameter-presentation"')
   expect(heightContract).toContain('type Input = ImmersiveNodesProjectionParameterPresentation.Output')
   expect(parameterSource).not.toContain("booleanSwitch")
