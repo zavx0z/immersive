@@ -6,7 +6,12 @@ Window — оболочка окна с шапкой и сохраняемым �
 
 Шапка содержит кнопку сворачивания слева, единственный центрированный title
 и действия справа. Перемещение и resize включаются явно и ограничиваются
-принимающей областью. Focus-within поднимает оболочку целиком и выделяет рамку.
+принимающей областью. У каждого HUD и Display собственное активное окно и порядок.
+Нажатие и focusin поднимают окно; потеря keyboard focus сохраняет активность.
+Все окна одной проекции размещаются соседями в общем позиционированном родителе,
+без внешних обёрток вокруг отдельных окон. Dock controls размещаются вне слоя окон.
+Открытие восстанавливает прежний доступный фокус, сворачивание выбирает предыдущее
+видимое окно своей проекции. Порядок задаётся CSS без перестановки component DOM.
 Сообщение передаётся через message и отображается Notification слева внизу,
 отдельно от прокручиваемого содержимого. onMessageDismiss включает крестик
 и передаёт родителю закрытие сообщения без закрытия окна.
@@ -20,6 +25,7 @@ import SurfaceButton from "@zavx0z/immersive-ui-component-surface-chrome-button"
 import {WindowActionButton} from "./src/action.tsx"
 import {WindowResizeHandles} from "./src/resize-handles.tsx"
 import {useWindowGeometry} from "./src/use-geometry.ts"
+import {useWindowActivity} from "./src/use-activity.ts"
 import {validateWindow} from "./src/validate.ts"
 import type {ImmersiveUiComponentSurfaceWindow as Contract} from "./contract"
 
@@ -29,6 +35,7 @@ export type {ImmersiveUiComponentSurfaceWindow} from "./contract"
 export default function Window(props: Contract.Input): Contract.Output {
   validateWindow(props)
   const frame = useWindowGeometry(props)
+  const activity = useWindowActivity(frame.areaElement, frame.element, props.open)
   const fill = props.layout === "fill"
   return <div
     ref={frame.areaElement}
@@ -43,11 +50,8 @@ export default function Window(props: Contract.Input): Contract.Output {
       min-width: 0;
       min-height: 0;
       pointer-events: none;
-      z-index: 1;
-
-      &:focus-within {
-        z-index: 2;
-      }
+      --window-rank: ${activity.rank};
+      z-index: var(--window-rank);
 
       &[data-layout="fill"] {
         position: relative;
@@ -60,9 +64,9 @@ export default function Window(props: Contract.Input): Contract.Output {
       id={props.id}
       role="dialog"
       aria-label={props.title}
-      tabIndex={-1}
       hidden={!props.open}
       data-window=""
+      data-window-active={activity.active ? "true" : "false"}
       data-layout={fill ? "fill" : "floating"}
       onPointerDown={event => {
         const target = event.target as Element | null
@@ -98,7 +102,7 @@ export default function Window(props: Contract.Input): Contract.Output {
         --window-outline: var(--widget-toolbar-outline);
         color: var(--widget-toolbar-content);
 
-        &:focus-within {
+        &[data-window-active="true"] {
           --window-outline: var(--material-editor-outline-active);
         }
 

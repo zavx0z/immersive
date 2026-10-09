@@ -223,7 +223,7 @@ for (const failure of ["missing context", "configure throws"] as const) {
     let unconfigured = 0
     const context = {configure() {throw new Error("configure throws")}, unconfigure() {unconfigured++}}
     Object.defineProperty(globalThis, "navigator", {configurable: true, value: {gpu: {
-      requestAdapter: async () => ({requestDevice: async () => f.device}), getPreferredCanvasFormat: () => "bgra8unorm",
+      requestAdapter: async () => ({features: new Set(), requestDevice: async () => f.device}), getPreferredCanvasFormat: () => "bgra8unorm",
     }}})
     try {
       await expect(f.renderer.init({getContext: () => failure === "missing context" ? null : context} as unknown as HTMLCanvasElement)).rejects.toThrow(failure === "missing context" ? "WebGPU контекст" : "configure throws")
@@ -285,7 +285,7 @@ test("device request завершившийся после init timeout унич
   }))
   const clear = spyOn(globalThis, "clearTimeout").mockImplementation(() => {})
   Object.defineProperty(globalThis, "navigator", {configurable: true, value: {gpu: {
-    requestAdapter: async () => ({requestDevice: () => request}),
+    requestAdapter: async () => ({features: new Set(), requestDevice: () => request}),
   }}})
   try {
     const init = f.renderer.init({} as HTMLCanvasElement)

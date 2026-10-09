@@ -1,10 +1,14 @@
+import {FrameInputState, type FrameInputs} from "./frame-input-state"
+import {uiAttachmentAccess} from "./ui-attachment-access"
+import {BackdropFilter, backdropCompositeShader} from "./backdrop-filter"
+import {readBackdrop, requiresSceneBackdrop} from "../backdrop"
 import {RendererWebGpuDisplayPlane, DisplayRasterMaterial} from "../display-plane.ts"
 import {selectDisplayRaster} from "../display-render-mode.ts"
 import {Space} from "@zavx0z/immersive-engine"
 import {ViewPoint} from "@zavx0z/immersive-engine"
 import {Mesh} from "@zavx0z/immersive-engine"
 import {InstancedMesh} from "@zavx0z/immersive-engine"
-import {InstancedRoundedRect} from "@zavx0z/immersive-engine"
+import {InstancedRoundedRect, ROUNDED_RECT_INSTANCE_RECORD_BYTE_LENGTH} from "@zavx0z/immersive-engine"
 import {
   InstancedStrokedPath,
   StrokedPathInstanceLayer,
@@ -196,6 +200,7 @@ interface PreparedRenderLayer {
 }
 
 interface RenderViewUniformResources {
+  matrix: Matrix4
   globalUniformBuffer: GPUBuffer
   sceneUniformBuffer: GPUBuffer
   globalBindGroup: GPUBindGroup
@@ -331,6 +336,9 @@ export class Renderer {
     if (current?.src !== material.src) {
       current?.lease.release()
       const lease = TextureLoader.acquire(material.src, () => {
+        this.imageContentEpoch += 1
+        this.imageMaterialEpochs.set(material, (this.imageMaterialEpochs.get(material) ?? 0) + 1)
+        this.frameInputState.invalidate()
         const callback = material.onTextureChange
         if (callback !== undefined && this.device !== null && !TextureLoader.bindChangeListener(material.src, callback, this.device)) callback()
       }, {animate: true})
@@ -345,9 +353,10 @@ export class Renderer {
     const retained = new Set<ImageMaterial>()
     for (const item of items) {
       const object = item.object
-      if (object instanceof Mesh && object.material instanceof ImageMaterial && !(object.material instanceof DisplayRasterMaterial)) {
-        retained.add(object.material)
-        this.imageEntry(object.material)
+      const material = object instanceof Mesh ? (Array.isArray(object.material) ? object.material[0] : object.material) : undefined
+      if (material instanceof ImageMaterial && !(material instanceof DisplayRasterMaterial)) {
+        retained.add(material)
+        this.imageEntry(material)
       }
     }
     for (const [material, current] of this.imageMaterialLeases) if (!retained.has(material)) {
@@ -355,6 +364,20 @@ export class Renderer {
       this.imageMaterialLeases.delete(material)
     }
   }
+  private readonly frameInputState = new FrameInputState()
+  private imageContentEpoch = 0
+  private readonly imageMaterialEpochs = new WeakMap<ImageMaterial, number>()
+  private readonly geometryEpochs = new WeakMap<BufferGeometry, number>()
+  private readonly backdropInputStates: FrameInputState[] = []
+  private backdropFrame: {
+    layers: readonly PreparedCompositionLayer[]
+    items: RenderItem[]
+    indices: ReadonlyMap<RenderItem, number>
+    clips: Float32Array
+    pending: (FrameInputs | null)[]
+    reusable: boolean
+  } | undefined
+  private readonly sceneInputData = new WeakMap<GPUBuffer, Float32Array>()
   private device: GPUDevice | null = null
   private context: GPUCanvasContext | null = null
   private presentationFormat: GPUTextureFormat | null = null
@@ -387,6 +410,9 @@ export class Renderer {
   private uiBasicMeshPipeline: GPURenderPipeline | null = null
   private uiImagePipeline: GPURenderPipeline | null = null
   private uiExternalImagePipeline: GPURenderPipeline | null = null
+  private backdropFilter: BackdropFilter | null = null
+  private backdropPipeline: GPURenderPipeline | null = null
+  private backdropAlphaPipeline: GPURenderPipeline | null = null
   private uiRoundedPipeline: GPURenderPipeline | null = null
   private uiInstancedRoundedRectPipeline: GPURenderPipeline | null = null
   private uiInstancedMulticolorRoundedRectPipeline: GPURenderPipeline | null = null
@@ -472,7 +498,8 @@ export class Renderer {
     if (!adapter) throw new Error("Не удалось получить WebGPU адаптер.")
 
     if (this.disposed) throw new Error("Renderer is disposed")
-    const deviceRequest = adapter.requestDevice()
+    const deviceRequest = adapter.requestDevice({requiredFeatures:
+      adapter.features.has("dual-source-blending") ? ["dual-source-blending"] : []})
     let device: GPUDevice
     try {
       device = await withWebGpuInitTimeout(deviceRequest, "WebGPU device")
@@ -489,6 +516,7 @@ export class Renderer {
     }
     this.device = device
     this.ownedDevice = device
+    void device.lost?.then(() => this.frameInputState.invalidate())
     try {
       this.clearRenderBundleCaches()
       const presentationClipLimitBytes = Math.min(
@@ -520,7 +548,7 @@ export class Renderer {
     const usage =
       GPUTextureUsage.RENDER_ATTACHMENT |
       GPUTextureUsage.TEXTURE_BINDING |
-      GPUTextureUsage.COPY_SRC
+      GPUTextureUsage.COPY_SRC | GPUTextureUsage.COPY_DST
     this.context.configure({
       device: this.device,
       format: this.presentationFormat,
@@ -531,6 +559,7 @@ export class Renderer {
   }
 
   private async setupPipelines(): Promise<void> {
+    this.frameInputState.invalidate()
     if (!this.device || !this.presentationFormat) return
 
     const globalBindGroupLayout = this.device.createBindGroupLayout({
@@ -1731,6 +1760,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
       })
       this.viewUniformResources.push({
+        matrix: new Matrix4(),
         globalUniformBuffer,
         sceneUniformBuffer,
         globalBindGroup: this.device.createBindGroup({
@@ -1886,6 +1916,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     if (canvas === null) return
     const planned = planRenderComposition(composition, canvas)
     if (!this.isReadyToRender()) return
+    this.backdropFilter?.abortFrame()
+    this.backdropFrame = undefined
     prepareCompositionWorldMatrices(planned)
 
     const fullViewport: RendererPhysicalViewport = {
@@ -1949,6 +1981,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       const resources = matrix === undefined ? baseResources : this.viewUniformResources[resourceIndex]!
       let frustum = baseFrustum
       if (matrix !== undefined) {
+        resources.matrix.copy(matrix)
         this.device!.queue.writeBuffer(resources.globalUniformBuffer, 0, matrix.elements)
         frustum = this.compositionFrustums[resourceIndex]!.setFromProjectionMatrix(matrix)
       }
@@ -1970,6 +2003,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       const resourceIndex = 1 + planned.boundedViews.length + planned.overlays.length + index
       const resources = this.viewUniformResources[resourceIndex]!
       const matrix = plane.rasterProjection()
+      resources.matrix.copy(matrix)
       this.device!.queue.writeBuffer(resources.globalUniformBuffer, 0, matrix.elements)
       const frustum = this.compositionFrustums[resourceIndex]!.setFromProjectionMatrix(matrix)
       const target = this.ensureDisplayRasterTarget(plane)
@@ -1985,6 +2019,17 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     }
     const preparedLayers = [baseLayer, ...boundedLayers, ...overlayLayers]
     const allLayers = [...preparedLayers, ...rasterLayers]
+    const hasBackdrop = allLayers.some(({layer}) => layer.uiObjects.some(item => (readBackdrop(item.object)?.sigma ?? 0) > 0))
+    if (hasBackdrop) {
+      this.ensureBackdropPipeline()
+      this.backdropFilter!.beginFrame(new Set<object>([
+        ...(preparedLayers.some(({layer}) => layer.uiObjects.some(item => (readBackdrop(item.object)?.sigma ?? 0) > 0)) ? [this.canvas!] : []),
+        ...rasterLayers.filter(({layer}) => layer.uiObjects.some(item => (readBackdrop(item.object)?.sigma ?? 0) > 0)).map(value => value.target.texture),
+      ]))
+    } else {
+      this.backdropFilter?.beginFrame(new Set())
+      this.backdropFilter?.endFrame()
+    }
     this.pruneRenderBundleCaches(allLayers)
     if (!preparedLayers.some(({layer}) => layer.glassObjects.some(isActivePhysicalGlass))) {
       destroyGlassTargets(this.glassTargets)
@@ -2009,6 +2054,14 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.ensurePresentationClipCapacity(presentationClipUpload.data.length / PRESENTATION_CLIP_RECORD_FLOATS)
     this.presentationClipRanges = presentationClipUpload.ranges
     const uploadPlan = this.updatePerObjectData(frameRenderItems)
+    const frameInputs = this.readFrameInputs(allLayers, frameRenderItems, presentationClipUpload.data)
+    if (!frameInputs) this.frameInputState.invalidate()
+    if (frameInputs && this.hasPresentedFrame && this.presentedFrameTexture && this.frameInputState.matches(frameInputs)) {
+      commandEncoder.copyTextureToTexture({texture: this.presentedFrameTexture}, {texture: canvasTexture},
+        {width: canvas!.width, height: canvas!.height, depthOrArrayLayers: 1})
+      this.device!.queue.submit([commandEncoder.finish()])
+      return
+    }
     if (uploadPlan.uniformBytes > 0 && this.perObjectDataCPU && this.perObjectUniformBuffer) {
       this.device!.queue.writeBuffer(
         this.perObjectUniformBuffer,
@@ -2033,6 +2086,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.device!.queue.writeBuffer(this.presentationClipBuffer, 0, presentationClipUpload.data)
     }
 
+    this.backdropFrame = {layers: allLayers, items: [], indices: renderIndexByItem, clips: presentationClipUpload.data, pending: [], reusable: true}
     for (const raster of rasterLayers) {
       this.renderPreparedLayer(commandEncoder, raster.target.texture.createView(), raster, renderIndexByItem, true, [0, 0, 0, 0], raster.target)
       this.renderOverlayLines(commandEncoder, raster.target.texture.createView(), raster, renderIndexByItem)
@@ -2094,13 +2148,145 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     }
 
     this.device!.queue.submit([commandEncoder.finish()])
+    this.backdropFilter?.endFrame()
+    this.backdropInputStates.length = this.backdropFrame.pending.length
+    for (let index = 0; index < this.backdropFrame.pending.length; index++) {
+      const inputs = this.backdropFrame.pending[index]
+      if (inputs) this.backdropInputStates[index]!.commit(inputs)
+      else this.backdropInputStates[index]!.invalidate()
+    }
+    this.backdropFrame = undefined
     this.hasPresentedFrame = this.presentedFrameTexture !== null
+    if (frameInputs && this.hasPresentedFrame) this.frameInputState.commit(frameInputs)
+  }
+
+  /** Точные подготовленные GPU-входы. Незнакомый источник не получает право на replay. */
+  private readFrameInputs(layers: readonly PreparedCompositionLayer[], items: readonly RenderItem[], clips: Float32Array,
+    indices?: ReadonlyMap<RenderItem, number>): FrameInputs | null {
+    const references: unknown[] = [this.device, this.presentationFormat, this.sampleCount, this.canvas!.width, this.canvas!.height]
+    const data: ArrayBufferView[] = []
+    const selected = indices ? new Set(items) : undefined
+    if (indices) {
+      for (const item of items) {
+        const index = indices.get(item)
+        if (index === undefined) return null
+        const stride = PER_OBJECT_UNIFORM_SIZE / 4
+        data.push(this.perObjectDataCPU!.subarray(index * stride, (index + 1) * stride))
+        const range = this.presentationClipRanges.get(item.object)
+        if (!range) return null
+        data.push(clips.subarray(range.start * PRESENTATION_CLIP_RECORD_FLOATS, (range.start + range.count) * PRESENTATION_CLIP_RECORD_FLOATS))
+      }
+    } else {
+      references.push(this.imageContentEpoch)
+      data.push(clips)
+      data.push(this.perObjectDataCPU!.subarray(0, items.length * (PER_OBJECT_UNIFORM_SIZE / 4)))
+    }
+    if (items.some(item => item.type === "skinned-mesh")) data.push(this.boneMatricesDataCPU!)
+    for (const prepared of layers) {
+      const scene = this.sceneInputData.get(prepared.resources.sceneUniformBuffer)
+      if (!scene) return null
+      data.push(prepared.resources.matrix.elements, scene)
+      const {x, y, width, height} = prepared.viewport
+      const color = prepared.layer.background
+      references.push(prepared.root, x, y, width, height, prepared.paintBackground)
+      if (color === undefined) references.push(undefined)
+      else if ("r" in color) references.push(color.r, color.g, color.b, color.a)
+      else if (Array.isArray(color)) references.push(...color)
+      else return null
+      for (const list of [prepared.layer.regularObjects, prepared.layer.glassObjects, prepared.layer.uiObjects, prepared.layer.overlayLines]) {
+        const relevant = selected ? list.filter(item => selected.has(item)) : list
+        references.push(relevant.length)
+        for (const item of relevant) references.push(item.object, item.type)
+      }
+    }
+    const attribute = (value: BufferAttribute | null | undefined) => {
+      if (!value) {
+        references.push(value)
+        return true
+      }
+      if (value.constructor !== BufferAttribute || (typeof SharedArrayBuffer === "function" && value.array.buffer instanceof SharedArrayBuffer)) return false
+      references.push(value, value.array, value.version, value.count, value.itemSize, value.array.byteLength)
+      return true
+    }
+    const geometry = (value: BufferGeometry, rounded?: InstancedRoundedRect) => {
+      references.push(value, this.geometryEpochs.get(value))
+      if (!attribute(value.index)) return false
+      const keys = Object.keys(value.attributes).sort()
+      references.push(keys.length)
+      for (const key of keys) {
+        references.push(key)
+        const valueAttribute = value.attributes[key]
+        if (rounded && ["roundedRectRecords", "roundedRectOrder", "roundedRectBorderColors"].includes(key)) {
+          // Общая storage-геометрия обслуживает разные paint runs. Изменение
+          // последующего run не меняет прочитанные этим draw slots.
+          if (!valueAttribute || valueAttribute.constructor !== BufferAttribute
+            || (typeof SharedArrayBuffer === "function" && valueAttribute.array.buffer instanceof SharedArrayBuffer)) return false
+          references.push(valueAttribute, valueAttribute.array, valueAttribute.itemSize)
+          const order = value.attributes.roundedRectOrder?.array
+          if (!(order instanceof Uint32Array)) return false
+          const end = rounded.firstInstance + rounded.count
+          if (end > order.length) return false
+          if (key === "roundedRectOrder") data.push(order.subarray(rounded.firstInstance, end))
+          else {
+            const stride = key === "roundedRectRecords" ? ROUNDED_RECT_INSTANCE_RECORD_BYTE_LENGTH : 64
+            const bytes = new Uint8Array(valueAttribute.array.buffer, valueAttribute.array.byteOffset, valueAttribute.array.byteLength)
+            for (let index = rounded.firstInstance; index < end; index++) {
+              const start = order[index]! * stride
+              if (start + stride > bytes.length) return false
+              data.push(bytes.subarray(start, start + stride))
+            }
+          }
+        } else if (!attribute(valueAttribute)) return false
+      }
+      return true
+    }
+    for (const item of items) {
+      const object = item.object
+      references.push(object, item.type)
+      const blur = readBackdrop(object)
+      references.push(blur?.sigma, blur?.width, blur?.height)
+      if (object instanceof InstancedRoundedRect || object instanceof InstancedStrokedPath) {
+        references.push(object.firstInstance, object.count, object.layer)
+        if (object instanceof InstancedRoundedRect) references.push(object.layer.hasBorderColors)
+        else references.push(object.layer.styles.ownershipVersion)
+        if (!geometry(object.geometry, indices && object instanceof InstancedRoundedRect ? object : undefined)) return null
+        continue
+      }
+      const raw = object instanceof Mesh || object instanceof LineSegments || object instanceof WireframeInstancedMesh || object instanceof Text ? object.material : undefined
+      const material = Array.isArray(raw) ? raw[0] : raw
+      if (!(material instanceof MeshBasicMaterial || material instanceof MeshLambertMaterial || material instanceof RoundedRectMaterial
+        || material instanceof ImageMaterial || material instanceof GlassMaterial || material instanceof TextMaterial
+        || material instanceof LineBasicMaterial || material instanceof LineGlowMaterial || material instanceof ColorPickerMaterial
+        || material instanceof RadialBackdropMaterial || material instanceof ThinFilmMaterial || material instanceof HolographicMaterial)) return null
+      references.push(material, material.visible)
+      if (material instanceof TextMaterial) references.push(material.depthWrite)
+      if (material instanceof LineGlowMaterial) references.push(material.visibilityMode)
+      if (material instanceof RoundedRectMaterial) references.push(material.width, material.height)
+      if (material instanceof GlassMaterial) references.push(material.tintColor.a, material.thickness)
+      if (material instanceof ImageMaterial) {
+        references.push(material.src, this.imageMaterialEpochs.get(material))
+        if (material instanceof DisplayRasterMaterial) references.push(this.displayRasterImages.get(material))
+        else {
+          const entry = this.imageEntry(material)
+          if (entry.status !== "ready" || entry.externalTextureSource !== undefined || entry.pendingBitmap || entry.pendingExternalSource) return null
+          references.push(entry.texture, entry.width, entry.height)
+        }
+      }
+      if (object instanceof Text) {
+        if (!geometry(object.stencilGeometry) || !geometry(object.coverGeometry)) return null
+      } else {
+        if (!geometry(object.geometry)) return null
+        if (object instanceof InstancedMesh || object instanceof WireframeInstancedMesh) references.push(object.count)
+      }
+    }
+    return {references, data}
   }
 
   private prepareCompositionView(index: number, viewPoint: ViewPoint): Frustum {
     const resources = this.viewUniformResources[index]!
     const viewProjectionMatrix = this.viewProjectionMatrices[index]!
       .multiplyMatrices(viewPoint.projectionMatrix, viewPoint.viewMatrix)
+    resources.matrix.copy(viewProjectionMatrix)
     this.device!.queue.writeBuffer(
       resources.globalUniformBuffer,
       0,
@@ -2122,7 +2308,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const visit = (object: Object3D): void => {
       if (!object.visible || excluded.has(object)) return
       if (object instanceof RendererWebGpuDisplayPlane) {
-        if (selectDisplayRaster(object, viewPoint, viewport, modes?.has(object) ?? false)) {
+        if (!requiresSceneBackdrop(object.content) && selectDisplayRaster(object, viewPoint, viewport, modes?.has(object) ?? false)) {
           if (!modes) {
             modes = new WeakSet()
             this.displayRasterModes.set(root, modes)
@@ -2199,14 +2385,18 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const glass = physical.length > 0 ? this.ensureGlassTargets(rasterTarget) : null
     const legacy = hasGlassMaterial ? layer.glassObjects.filter(item => !isPhysicalGlass(item)) : layer.glassObjects
     const ui = hasGlassMaterial ? layer.uiObjects.filter(item => !isPhysicalGlass(item)) : layer.uiObjects
+    const blurStart = ui.findIndex(item => (readBackdrop(item.object)?.sigma ?? 0) > 0)
+    const hasBackdrop = blurStart >= 0
+    const initialUi = hasBackdrop ? ui.slice(0, blurStart) : ui
     const postGlassLines = glass === null ? [] : layer.regularObjects.filter(isSilhouetteLine)
     const regular = glass === null ? layer.regularObjects : layer.regularObjects.filter(item => !isSilhouetteLine(item))
+    this.backdropFrame?.items.push(...regular, ...physical, ...legacy, ...postGlassLines, ...layer.overlayLines, ...initialUi)
     const colorLoadOp: GPULoadOp = clearColor ? "clear" : "load"
     const renderPassDescriptor: GPURenderPassDescriptor = {
       colorAttachments: [
         {
           view: rasterTarget?.multisample.createView() ?? this.multisampleTextureView!,
-          resolveTarget: glass?.opaqueView ?? textureView,
+          ...(glass ? {resolveTarget: glass.opaqueView} : hasBackdrop ? {} : {resolveTarget: textureView}),
           loadOp: colorLoadOp,
           storeOp: "store",
           clearValue: clearValue ?? layer.background ?? [0, 0, 0, 0],
@@ -2253,7 +2443,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       // Keep pass membership and transparency order exactly as collected.
       this.renderObjectList(encoder, regular, renderIndexByItem)
       this.renderObjectList(encoder, legacy, renderIndexByItem)
-      if (glass === null) this.renderObjectList(encoder, ui, renderIndexByItem, true)
+      if (glass === null) this.renderObjectList(encoder, initialUi, renderIndexByItem, true)
     }
     let cache = this.renderBundleCaches.get(root)
     if (cache === undefined && this.renderBundleCaches.size < MAX_CACHED_RENDER_LAYERS) {
@@ -2287,7 +2477,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       else glassCache.execute(this.device!, {colorFormat: "rgba16float", additionalColorFormats: ["rgba16float"], sampleCount: 1}, accumulation, recordGlass)
       accumulation.end()
       const postDescriptor: GPURenderPassDescriptor = {
-        colorAttachments: [{view: rasterTarget?.multisample.createView() ?? this.multisampleTextureView!, resolveTarget: textureView, loadOp: "load", storeOp: "store"}],
+        colorAttachments: [{view: rasterTarget?.multisample.createView() ?? this.multisampleTextureView!, ...(hasBackdrop ? {} : {resolveTarget: textureView}), loadOp: "load", storeOp: "store"}],
         depthStencilAttachment: {view: rasterTarget?.depth.createView() ?? this.depthTextureView!, depthLoadOp: "load", depthStoreOp: "store", stencilLoadOp: "load", stencilStoreOp: "store"},
       }
       const composite = commandEncoder.beginRenderPass({...postDescriptor, label: "glass-composite"})
@@ -2296,16 +2486,163 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       composite.setBindGroup(0, glass.compositeGroup)
       composite.draw(3)
       composite.end()
-      if (ui.length > 0 || postGlassLines.length > 0) {
+      if (initialUi.length > 0 || postGlassLines.length > 0) {
         const post = commandEncoder.beginRenderPass({...postDescriptor, label: "glass-lines-and-hud"})
         this.configurePassViewport(post, viewport)
         post.setStencilReference(0)
         post.setBindGroup(0, resources.globalBindGroup)
         this.renderObjectList(post, postGlassLines, renderIndexByItem)
-        this.renderObjectList(post, ui, renderIndexByItem, true)
+        this.renderObjectList(post, initialUi, renderIndexByItem, true)
         post.end()
       }
     }
+    if (hasBackdrop) this.renderBackdropUi(commandEncoder, textureView, prepared, ui.slice(blurStart), renderIndexByItem, rasterTarget)
+  }
+
+  /** UI-проход прерывается только перед blur; обычный путь и его bundles сохраняются. */
+  private renderBackdropUi(command: GPUCommandEncoder, view: GPUTextureView, prepared: PreparedCompositionLayer,
+    items: RenderItem[], indices: ReadonlyMap<RenderItem, number>, raster?: DisplayRasterTarget): void {
+    const filter = this.backdropFilter!
+    const source = raster?.multisample ?? this.multisampleTexture!
+    let passResolves = false
+    const begin = (resolve: boolean, draws: readonly RenderItem[]) => {
+      passResolves = resolve
+      const access = uiAttachmentAccess(draws)
+      const pass = command.beginRenderPass({label: "ui-backdrop-ordered", colorAttachments: [{
+        view: raster?.multisample.createView() ?? this.multisampleTextureView!, ...(resolve ? {resolveTarget: view} : {}), loadOp: "load", storeOp: "store",
+      }], depthStencilAttachment: {view: raster?.depth.createView() ?? this.depthTextureView!,
+        ...(access.depthReadOnly ? {depthReadOnly: true} : {depthLoadOp: "load", depthStoreOp: "store"}),
+        ...(access.stencilReadOnly ? {stencilReadOnly: true} : {stencilLoadOp: "load", stencilStoreOp: "store"})}})
+      this.configurePassViewport(pass, prepared.viewport)
+      pass.setStencilReference(0)
+      pass.setBindGroup(0, prepared.resources.globalBindGroup)
+      return pass
+    }
+    let pass: GPURenderPassEncoder | null = null
+    let start = 0
+    let prefixStart = 0
+    for (let index = 0; index < items.length; index++) {
+      const item = items[index]!, backdrop = readBackdrop(item.object)
+      if (!backdrop) continue
+      if (index > start || pass !== null) {
+        pass ??= begin(false, items.slice(start))
+        this.renderObjectList(pass, items.slice(start, index), indices, true)
+      }
+      start = index + 1
+      if (backdrop.sigma === 0) continue
+      const mesh = item.object as Mesh
+      const material = mesh.material as RoundedRectMaterial
+      const matrix = new Matrix4().multiplyMatrices(prepared.resources.matrix, item.worldMatrix)
+      const center = new Vector3(0, 0, 0).applyMatrix4(matrix)
+      const x = new Vector3(material.width / Math.max(backdrop.width, 1e-6), 0, 0).applyMatrix4(matrix)
+      const y = new Vector3(0, material.height / Math.max(backdrop.height, 1e-6), 0).applyMatrix4(matrix)
+      const pixelScale = Math.max(
+        Math.hypot((x.x - center.x) * prepared.viewport.width, (x.y - center.y) * prepared.viewport.height),
+        Math.hypot((y.x - center.x) * prepared.viewport.width, (y.y - center.y) * prepared.viewport.height),
+      ) * 0.5
+      const corners = [[-1, -1], [-1, 1], [1, -1], [1, 1]].map(([x, y]) => {
+        const point = new Vector3(x! * material.width * .5, y! * material.height * .5, 0).applyMatrix4(matrix)
+        return {x: prepared.viewport.x + (point.x + 1) * prepared.viewport.width * .5,
+          y: prepared.viewport.y + (1 - point.y) * prepared.viewport.height * .5,
+          front: matrix.elements[3]! * x! * material.width * .5 + matrix.elements[7]! * y! * material.height * .5 + matrix.elements[15]! > 0}
+      })
+      const bounds = corners.every(point => point.front && Number.isFinite(point.x) && Number.isFinite(point.y)) ? {
+        left: Math.max(prepared.viewport.x, Math.min(...corners.map(point => point.x))),
+        top: Math.max(prepared.viewport.y, Math.min(...corners.map(point => point.y))),
+        right: Math.min(prepared.viewport.x + prepared.viewport.width, Math.max(...corners.map(point => point.x))),
+        bottom: Math.min(prepared.viewport.y + prepared.viewport.height, Math.max(...corners.map(point => point.y))),
+      } : undefined
+      const sigma = Math.min(Math.max(source.width, source.height) * 2, Math.max(0.01, backdrop.sigma * pixelScale))
+      const centerX = prepared.viewport.x + (center.x + 1) * prepared.viewport.width * .5
+      const centerY = prepared.viewport.y + (1 - center.y) * prepared.viewport.height * .5
+      const dx = [(x.x - center.x) * prepared.viewport.width * .5, (center.y - x.y) * prepared.viewport.height * .5]
+      const dy = [(y.x - center.x) * prepared.viewport.width * .5, (center.y - y.y) * prepared.viewport.height * .5]
+      const determinant = dx[0]! * dy[1]! - dx[1]! * dy[0]!
+      let depth: {texture: GPUTexture, plane: readonly [number, number, number]} | undefined
+      // Только мировому Display нужна отсечка более близких объектов. HUD уже
+      // находится перед сценой и использует свой depth range, очищенный для UI.
+      if (prepared.root instanceof Space && Number.isFinite(determinant) && Math.abs(determinant) > 1e-9) {
+        const a = ((x.z - center.z) * dy[1]! - (y.z - center.z) * dx[1]!) / determinant
+        const b = (dx[0]! * (y.z - center.z) - dy[0]! * (x.z - center.z)) / determinant
+        depth = {texture: raster?.depth ?? this.depthTexture!, plane: [a, b, center.z - a * centerX - b * centerY]}
+      }
+      const frame = this.backdropFrame!
+      frame.items.push(...items.slice(prefixStart, index + 1))
+      prefixStart = index + 1
+      const slot = frame.pending.length
+      const state = this.backdropInputStates[slot] ??= new FrameInputState()
+      const inputs = this.readFrameInputs(frame.layers, frame.items, frame.clips, frame.indices)
+      frame.pending.push(inputs)
+      // Сравниваем только новый отрезок paint order. Если изменился более ранний
+      // отрезок, все последующие фильтры теряют право на reuse в этом кадре.
+      frame.reusable = frame.reusable && inputs !== null && state.matches(inputs)
+      frame.items = []
+      const group = filter.encode(command, source, sigma, raster?.texture ?? this.canvas!, bounds, depth,
+        {key: state, reusable: frame.reusable, beforeFilter: () => {
+          pass?.end()
+          pass = null
+        }})
+      const nextBlur = items.findIndex((next, nextIndex) => nextIndex > index && (readBackdrop(next.object)?.sigma ?? 0) > 0)
+      // Готовые результаты можно последовательно смешать в одном UI pass.
+      // Access учитывает весь остаток: cached blur больше не разрывает stencil.
+      pass ??= begin(nextBlur === -1, items.slice(index))
+      pass.setPipeline(this.backdropPipeline!)
+      pass.setBindGroup(2, group)
+      const renderIndex = indices.get(item)
+      if (renderIndex !== undefined) {
+        this.renderMesh(pass, mesh, item.worldMatrix, renderIndex)
+        if (this.backdropAlphaPipeline) {
+          pass.setPipeline(this.backdropAlphaPipeline)
+          this.renderMesh(pass, mesh, item.worldMatrix, renderIndex)
+        }
+      }
+    }
+    this.backdropFrame?.items.push(...items.slice(prefixStart))
+    if (start < items.length || pass !== null) {
+      pass ??= begin(true, items.slice(start))
+      this.renderObjectList(pass, items.slice(start), indices, true)
+      pass.end()
+      if (!passResolves) {
+        // При слиянии cached draws финальный pass был открыт до последнего blur.
+        // Один resolve без повторного рисования завершает MSAA композицию.
+        command.beginRenderPass({label: "backdrop-final-resolve", colorAttachments: [{
+          view: raster?.multisample.createView() ?? this.multisampleTextureView!,
+          resolveTarget: view, loadOp: "load", storeOp: "store",
+        }]}).end()
+      }
+    }
+  }
+
+  /** Создаётся лениво: отсутствие backdrop не добавляет текстуры или render passes. */
+  private ensureBackdropPipeline(): void {
+    if (this.backdropFilter) return
+    this.backdropFilter = new BackdropFilter(this.device!, this.presentationFormat!)
+    const dual = this.device!.features.has("dual-source-blending")
+    // Optional WebGPU feature проверен на device; текущий lib.dom ещё не включает этот blend factor.
+    const inverseCoverage = "one-minus-src1-alpha" as GPUBlendFactor
+    const create = (mode: "dual" | "color" | "alpha") => {
+      const module = this.device!.createShaderModule({label: `backdrop-rounded-mask:${mode}`, code: backdropCompositeShader(mode)})
+      const blend: GPUBlendState = mode === "dual" ? {
+        color: {srcFactor: "one", dstFactor: inverseCoverage, operation: "add"},
+        alpha: {srcFactor: "one", dstFactor: inverseCoverage, operation: "add"},
+      } : mode === "color" ? {
+        color: {srcFactor: "src-alpha", dstFactor: "one-minus-src-alpha", operation: "add"},
+        alpha: {srcFactor: "zero", dstFactor: "one-minus-src-alpha", operation: "add"},
+      } : {color: {srcFactor: "zero", dstFactor: "one", operation: "add"}, alpha: {srcFactor: "one", dstFactor: "one", operation: "add"}}
+      return this.device!.createRenderPipeline({label: `backdrop-rounded-mask:${mode}`,
+        layout: this.device!.createPipelineLayout({bindGroupLayouts: [this.globalBindGroupLayout!, this.perObjectBindGroupLayout!, this.backdropFilter!.compositeLayout]}),
+        vertex: {module, entryPoint: "vs_main", buffers: [
+          {arrayStride: 12, attributes: [{shaderLocation: 0, offset: 0, format: "float32x3"}]},
+          {arrayStride: 12, attributes: [{shaderLocation: 1, offset: 0, format: "float32x3"}]},
+        ]},
+        fragment: {module, entryPoint: "fs_main", targets: [{format: this.presentationFormat!, blend, writeMask: mode === "alpha" ? 8 : 15}]},
+        primitive: {topology: "triangle-list", cullMode: "none"},
+        depthStencil: {format: "depth24plus-stencil8", depthWriteEnabled: false, depthCompare: "less-equal"},
+        multisample: {count: this.sampleCount},
+      })
+    }
+    this.backdropPipeline = create(dual ? "dual" : "color")
+    this.backdropAlphaPipeline = dual ? null : create("alpha")
   }
 
   /** Один комплект на уже существующий render target, общий для всех его слоёв/batches. */
@@ -2843,6 +3180,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     let currentPipeline: GPURenderPipeline | null = null
 
     for (const item of objectsToRender) {
+      if (readBackdrop(item.object)?.sigma === 0) continue
       const renderIndex = renderIndexByItem.get(item)
       if (renderIndex === undefined) continue
       if (item.object.presentationClips.length > 0 && !renderItemSupportsPresentationClips(item)) continue
@@ -2974,6 +3312,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
    * @param geometry - Геометрия для очистки из кэша
    */
   public invalidateGeometry(geometry: BufferGeometry): void {
+    this.frameInputState.invalidate()
+    this.geometryEpochs.set(geometry, (this.geometryEpochs.get(geometry) ?? 0) + 1)
     const buffers = this.geometryCache.get(geometry)
     if (buffers === undefined) return
     this.destroyGeometryBuffers(buffers)
@@ -3302,6 +3642,12 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       float32View[currentLightOffset + 7] = light.intensity
     }
 
+    let snapshot = this.sceneInputData.get(sceneUniformBuffer)
+    if (!snapshot) {
+      snapshot = new Float32Array(this.sceneUniformFloats.length)
+      this.sceneInputData.set(sceneUniformBuffer, snapshot)
+    }
+    snapshot.set(this.sceneUniformFloats)
     this.device.queue.writeBuffer(sceneUniformBuffer, 0, this.sceneUniformData)
   }
 
@@ -3445,6 +3791,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
   /** Releases a removed display's derived attachments; the semantic owner is managed by Browser. */
   public releaseDisplay(plane: RendererWebGpuDisplayPlane): void {
     const target = this.displayRasterTargets.get(plane)
+    if (target) this.backdropFilter?.release(target.texture)
     target?.texture.destroy()
     target?.multisample.destroy()
     target?.depth.destroy()
@@ -3473,13 +3820,14 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     let multisample: GPUTexture
     let depth: GPUTexture
     try {
-      texture = allocate({label: "display-matrix", size: [width, height], format: this.presentationFormat!, usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING})
-      multisample = allocate({label: "display-matrix-msaa", size: [width, height], format: this.presentationFormat!, sampleCount: this.sampleCount, usage: GPUTextureUsage.RENDER_ATTACHMENT})
+      texture = allocate({label: "display-matrix", size: [width, height], format: this.presentationFormat!, usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_SRC})
+      multisample = allocate({label: "display-matrix-msaa", size: [width, height], format: this.presentationFormat!, sampleCount: this.sampleCount, usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING})
       depth = allocate({label: "display-matrix-depth", size: [width, height], format: "depth24plus-stencil8", sampleCount: this.sampleCount, usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING})
     } catch (error) {
       for (const texture of created) texture.destroy()
       throw error
     }
+    if (current) this.backdropFilter?.release(current.texture)
     current?.texture.destroy()
     current?.multisample.destroy()
     current?.depth.destroy()
@@ -3818,6 +4166,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
    * этот метод не вызывает. Borrowed device не уничтожается; owned device создаётся init.
    */
   public dispose(): void {
+    this.frameInputState.invalidate(true)
+    this.backdropInputStates.length = 0
+    this.backdropFrame = undefined
     this.disposed = true
     if (this.capacityTrimTimer !== null) clearTimeout(this.capacityTrimTimer)
     this.capacityTrimTimer = null
@@ -3849,6 +4200,10 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.viewUniformResources.length = 0
     this.viewProjectionMatrices.length = 0
     this.compositionFrustums.length = 0
+    this.backdropFilter?.dispose()
+    this.backdropFilter = null
+    this.backdropPipeline = null
+    this.backdropAlphaPipeline = null
     destroyGlassTargets(this.glassTargets)
     this.glassTargets = null
     const textures = new Set<GPUTexture>()
@@ -3945,6 +4300,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.depthTexture.height !== this.canvas.height
 
     if (needsResize) {
+      this.frameInputState.invalidate()
       for (const cache of this.glassRenderBundleCaches.values()) cache.clear()
       this.glassRenderBundleCaches.clear()
       destroyGlassTargets(this.glassTargets)
@@ -3968,7 +4324,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.multisampleTexture = this.device.createTexture({
         size,
         format: this.presentationFormat,
-        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
         sampleCount: this.sampleCount,
       })
       // These attachments outlive a frame. Reusing their views avoids two

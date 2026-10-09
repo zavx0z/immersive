@@ -71,7 +71,7 @@ const containsPaint = (
   x: number,
   y: number,
 ): boolean => {
-  if (item.opacity <= 0 || item.kind === "rect" && item.shadow !== null) return false
+  if (item.opacity <= 0 || item.kind === "rect" && (item.shadow !== null || item.backdropBlur === 0)) return false
   if (!item.clips.every(clip => pointInClip(frame, clip, x, y))) return false
   // Vector paths already passed the exact stroke hit test, including retained transforms.
   if (item.kind === "path") return visibleColor(item.stroke)

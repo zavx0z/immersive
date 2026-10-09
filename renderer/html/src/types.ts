@@ -162,6 +162,8 @@ export type RectDisplayItem = Readonly<{
   opacity: number
   border: RenderBorder
   shadow: RenderBoxShadow | null
+  /** Sigma размытия уже нарисованного фона в CSS px; только у key: "backdrop". */
+  backdropBlur?: number
   clips: readonly RenderClip[]
   transform: RenderTransform
 }>

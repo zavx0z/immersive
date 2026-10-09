@@ -397,6 +397,7 @@ const ROOT_STYLE: ComputedStyle = Object.freeze({
     y: Object.freeze({unit: "percent", value: 50}),
   }),
   boxShadow: null,
+  backdropBlur: null,
   rowGap: 0,
   columnGap: 0,
   margin: ZERO_EDGES,
@@ -2790,7 +2791,7 @@ const fragmentableInline = (node: LayoutNode): boolean => {
   const style = node.style
   return style.display === "inline" && style.position === "static" && style.transform.length === 0 &&
     style.width === null && style.height === null && style.minWidth === null && style.maxWidth === null &&
-    style.minHeight === null && style.maxHeight === null && style.boxShadow === null &&
+    style.minHeight === null && style.maxHeight === null && style.boxShadow === null && style.backdropBlur === null &&
     style.overflowX === "visible" && style.overflowY === "visible" &&
     horizontal(style.padding) + vertical(style.padding) + horizontal(style.borderWidths) + vertical(style.borderWidths) === 0 &&
     style.margin.top === 0 && style.margin.right === 0 && style.margin.bottom === 0 && style.margin.left === 0 &&
@@ -3754,6 +3755,7 @@ const place = (
   state.boxByNode.set(layoutNode.node, box)
 
   emitBoxShadow(layoutNode, box, clips, state)
+  emitBackdropBlur(layoutNode, box, clips, state)
   if (layoutNode.style.visibility !== "hidden" && hasRectPaint(layoutNode.style.background, border) && width > 0 && height > 0) {
     state.displayList.push(
       Object.freeze({
@@ -5709,6 +5711,33 @@ const hasRectPaint = (
   border.widths.bottom > 0 ||
   border.widths.left > 0
 
+const emitBackdropBlur = (
+  layoutNode: LayoutNode,
+  box: RenderBox,
+  clips: readonly RenderClip[],
+  state: BuildState,
+): void => {
+  const sigma = layoutNode.style.backdropBlur
+  if (sigma === null || layoutNode.style.visibility === "hidden" || layoutNode.effectiveOpacity <= 0 ||
+    box.width <= 0 || box.height <= 0) return
+  state.displayList.push(Object.freeze({
+    kind: "rect",
+    key: "backdrop",
+    node: layoutNode.node,
+    x: box.x,
+    y: box.y,
+    width: box.width,
+    height: box.height,
+    color: "#ffffff",
+    opacity: layoutNode.effectiveOpacity,
+    border: Object.freeze({...box.border, widths: ZERO_EDGES}),
+    shadow: null,
+    backdropBlur: sigma,
+    clips,
+    transform: box.transform,
+  }))
+}
+
 const emitBoxShadow = (
   layoutNode: LayoutNode,
   box: RenderBox,
@@ -7178,6 +7207,7 @@ const textStyle = (inherited: ComputedStyle): ComputedStyle =>
     transform: Object.freeze([]),
     transformOrigin: ROOT_STYLE.transformOrigin,
     boxShadow: null,
+    backdropBlur: null,
     rowGap: 0,
     columnGap: 0,
     margin: ZERO_EDGES,

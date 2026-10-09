@@ -86,7 +86,7 @@ try {
   const complete = async () => {
     if (fence === null) return device.queue.onSubmittedWorkDone()
     const encoder = device.createCommandEncoder()
-    encoder.copyTextureToBuffer({texture: context.getCurrentTexture()}, {buffer: fence, bytesPerRow: 256}, {width: 1, height: 1})
+    encoder.copyTextureToBuffer({texture: context.getCurrentTexture()}, {buffer: fence, bytesPerRow: 256, rowsPerImage: 1}, {width: 1, height: 1})
     device.queue.submit([encoder.finish()])
     await fence.mapAsync(GPUMapMode.READ)
     fence.unmap()
