@@ -104,6 +104,7 @@ export type ComputedStyle = Readonly<{
   transform: readonly ComputedTransformFunction[]
   transformOrigin: ComputedTransformOrigin
   boxShadow: ComputedBoxShadow | null
+  backdropBlur: number | null
   rowGap: number
   columnGap: number
   margin: RenderMargin
@@ -274,6 +275,7 @@ const deferredVariablePropertySet: ReadonlySet<string> = new Set([
   "scale",
   "visibility",
   "box-shadow",
+  "backdrop-filter",
   "z-index",
 ])
 const deferredVariableShorthandSet: ReadonlySet<string> = new Set([
@@ -547,6 +549,7 @@ export const computeStyle = (
     transform: parseTransform(readValue(values, "transform")) ?? Object.freeze([]),
     transformOrigin: parseTransformOrigin(readValue(values, "transform-origin")) ?? CENTER_ORIGIN,
     boxShadow: parseBoxShadow(readValue(values, "box-shadow"), color) ?? null,
+    backdropBlur: parseBackdropBlur(readValue(values, "backdrop-filter")) ?? null,
     rowGap: parseGapValue(readValue(values, "row-gap"), fontSize) ?? 0,
     columnGap: parseGapValue(readValue(values, "column-gap"), fontSize) ?? 0,
     margin: readEdges(values, "margin", ZERO_EDGES, true),
@@ -1264,6 +1267,8 @@ const expandDeclaration = (
         : []
     case "box-shadow":
       return validBoxShadow(value) ? [["box-shadow", value.trim()]] : []
+    case "backdrop-filter":
+      return parseBackdropBlur(value) !== undefined ? [[property, value.trim()]] : []
     case "z-index": {
       const zIndex = validZIndex(value)
       return zIndex === null ? [] : [["z-index", zIndex]]
@@ -2216,6 +2221,16 @@ const transformOriginAxis = (value: string | undefined, axis: "x" | "y"): CSSLen
   if (value === (axis === "x" ? "left" : "top")) return parseLength("0%")
   if (value === (axis === "x" ? "right" : "bottom")) return parseLength("100%")
   return parseLength(value)
+}
+
+/** Поддерживаем один blur с неотрицательным px sigma, без списка фильтров. */
+const parseBackdropBlur = (value: string | undefined): number | null | undefined => {
+  if (value === undefined || value.trim().toLowerCase() === "none") return null
+  const match = /^blur\(\s*([+-]?(?:\d+|\d*\.\d+)(?:e[+-]?\d+)?)(px)?\s*\)$/i.exec(value.trim())
+  if (match === null) return undefined
+  const sigma = Number(match[1])
+  return Number.isFinite(sigma) && sigma >= 0 && (match[2] !== undefined || sigma === 0)
+    ? sigma : undefined
 }
 
 const validBoxShadow = (value: string): boolean =>

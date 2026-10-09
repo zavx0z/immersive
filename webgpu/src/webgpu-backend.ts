@@ -30,6 +30,7 @@ import {isRendererOwnedFrame, readCanonicalRenderFrameChanges} from "@zavx0z/imm
 import {TextureLoader, type TextureLease} from "./texture-loader.ts"
 import {PaintVisibilityIndex, type IndexedPaintBounds} from "./paint-visibility-index.ts"
 import {RetainedPlaneGeometryPool} from "./retained-plane-geometry-pool.ts"
+import {setBackdrop, type Backdrop} from "./backdrop.ts"
 import type {
   DisplayItem,
   ImageDisplayItem,
@@ -134,6 +135,7 @@ type PreparedRectItem = Readonly<{
   borderWidths: readonly [number, number, number, number]
   radii: readonly [number, number, number, number]
   opacity: number
+  backdrop: Backdrop | undefined
   shadow: Readonly<{
     blurRadius: number
     spreadRadius: number
@@ -936,6 +938,8 @@ export class RendererWebGpuBackend {
       if (item === previous.item && sameResolvedPresentationInputs(item, cached.frame, frame)) continue
       if (frame.revision === cached.revision && readCanonicalRenderFrameChanges(frame)?.previous !== cached.frame) return null
       if (!sameDisplayIdentity(previous.item, item)) return this.#preparePathReorder(frame, cached, changedIndexes)
+      if (previous.kind === "rect" && item.kind === "rect" &&
+        (previous.backdrop === undefined) !== (item.backdropBlur === undefined)) return null
       if (previous.kind === "text" && item.kind === "text" &&
         sameTextPaint(previous.item, item) && reusableItem(item)) {
         assertFinite(item.x, "retained.text.x")
@@ -1993,6 +1997,13 @@ export class RendererWebGpuBackend {
     const widths = Object.freeze([top, right, bottom, left] as const)
     const borderPaint = prepareBorderColors(widths, border.colors)
     const shadow = prepareRectShadow(item, widths, label)
+    let backdrop: Backdrop | undefined
+    const sigma = item.backdropBlur
+    if (sigma !== undefined) {
+      assertFiniteNonNegative(sigma, `${label}.backdropBlur`)
+      if (shadow !== null) throw new Error(`${label} backdrop blur cannot carry a shadow`)
+      backdrop = Object.freeze({sigma, width: item.width, height: item.height})
+    }
     const prepared = Object.freeze({
       kind: "rect",
       item,
@@ -2003,6 +2014,7 @@ export class RendererWebGpuBackend {
       borderWidths: widths,
       radii: Object.freeze([topLeft, topRight, bottomRight, bottomLeft] as const),
       opacity,
+      backdrop,
       shadow,
       clips: this.#prepareClips(item.clips, frame, label),
       token,
@@ -2160,6 +2172,7 @@ export class RendererWebGpuBackend {
     })
     const geometry = this.#rectGeometries.acquire(geometryWidth, geometryHeight)
     const node = new Mesh(geometry, material)
+    setBackdrop(node, value.backdrop)
     node.name = `${item.node.nodeName}:${item.key}`
     const entry: RectEntry = {
       kind: "rect",
@@ -2299,6 +2312,7 @@ export class RendererWebGpuBackend {
         entry.material.shadowSpread = value.shadow?.spreadRadius ?? 0
       }
       entry.paint = value
+      setBackdrop(entry.node, value.backdrop)
       this.#updateClips(entry, value.clips)
       positionPlane(entry.node, value.item)
       entry.node.visible = rectIntersectsViewport(value)
@@ -2418,6 +2432,7 @@ export class RendererWebGpuBackend {
     }
     if (entry.kind === "text") entry.node.dispose()
     if (entry.kind === "rect") {
+      setBackdrop(entry.node, undefined)
       if (this.#rectGeometries.release(entry.geometry)) geometries.add(entry.geometry)
     } else if (entry.kind === "image" || entry.kind === "path") {
       geometries.add(entry.geometry)
@@ -2521,7 +2536,7 @@ class RectRunSpatialIndex {
 }
 
 function isRectInstanceCompatible(value: PreparedRectItem): boolean {
-  return value.clips.length === 0 && value.item.width > 0
+  return value.backdrop === undefined && value.clips.length === 0 && value.item.width > 0
     && value.item.height > 0
     && value.item.transform.scaleX !== 0
     && value.item.transform.scaleY !== 0
@@ -3073,6 +3088,7 @@ function sameRectBatchTopology(left: RectDisplayItem, right: RectDisplayItem): b
   // moving an instance preserves painter order; movement alone is not a replan.
   return Object.is(left.width, right.width)
     && Object.is(left.height, right.height)
+    && Object.is(left.backdropBlur, right.backdropBlur)
     && sameRectShadowGeometry(left.shadow, right.shadow)
     && Array.isArray(right.clips)
     && left.clips.length === 0 && right.clips.length === 0
@@ -3157,6 +3173,7 @@ function isReusableDisplayItem(item: DisplayItem): boolean {
       )
   } else if (item.kind === "rect") {
     reusable = isFrozenDataRecord(item, ["width", "height", "color", "border", "shadow"])
+      && (!("backdropBlur" in item) || Object.hasOwn(item, "backdropBlur"))
       && isFrozenDataRecord(item.border, ["widths", "colors", "radii"])
       && isFrozenDataRecord(item.border.widths, edgeFields)
       && isFrozenDataRecord(item.border.colors, edgeFields)
@@ -3175,7 +3192,7 @@ function isReusableDisplayItem(item: DisplayItem): boolean {
 function sameRectPaint(previous: RectDisplayItem, next: RectDisplayItem): boolean {
   return previous.width === next.width && previous.height === next.height &&
     previous.color === next.color && previous.opacity === next.opacity &&
-    previous.border === next.border && previous.shadow === next.shadow
+    previous.border === next.border && previous.shadow === next.shadow && previous.backdropBlur === next.backdropBlur
 }
 
 const frozenDataRecords = new WeakMap<object, ReadonlySet<string>>()
