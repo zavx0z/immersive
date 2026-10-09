@@ -71,7 +71,7 @@ describe.each([
       ],
     },
   },
-])("$name", ({props, expected}: {props: PlanSlotsInput; expected: PlanSlotsOutput}) => {
+])("$name", ({name, props, expected}: {name: string; props: PlanSlotsInput; expected: PlanSlotsOutput}) => {
   const original = {
     outlets: props.outlets.slice(),
     children: props.children.map(child => child === undefined ? undefined : {...child}),
@@ -107,7 +107,12 @@ describe.each([
   })
 
   /** @remarks Безымянная область применима только когда получатель объявил пустое имя. */
-  describe.skipIf(!props.outlets.includes(""))("Безымянная область", () => {
+  describe.skipIf(![
+    "Пустая безымянная область",
+    "Безымянное вложенное содержимое",
+    "Области в порядке получателя",
+    "Несколько детей и незаполненная область",
+  ].includes(name))("Безымянная область", () => {
     test("Неявное и пустое назначение", () => {
       expect(
         actual.slots.find(slot => slot.name === "")?.children,
@@ -117,7 +122,13 @@ describe.each([
   })
 
   /** @remarks Именованные назначения применимы только при наличии непустых имён в outlets. */
-  describe.skipIf(!props.outlets.some(name => name !== ""))("Именованные области", () => {
+  describe.skipIf(![
+    "Отсутствующие дети",
+    "Именованное содержимое без безымянной области",
+    "Области в порядке получателя",
+    "Несколько детей и незаполненная область",
+    "Точное сравнение имён",
+  ].includes(name))("Именованные области", () => {
     test("Назначение по точному имени", () => {
       expect(
         actual.slots.filter(slot => slot.name !== ""),
@@ -127,7 +138,7 @@ describe.each([
   })
 
   /** @remarks Пустые области рассматриваются в вариантах, где хотя бы одно объявление не получило детей. */
-  describe.skipIf(!expected.slots.some(slot => slot.children.length === 0))("Пустые области", () => {
+  describe.skipIf(!["Пустая безымянная область", "Несколько детей и незаполненная область"].includes(name))("Пустые области", () => {
     test("Сохранение незаполненной точки вставки", () => {
       expect(
         actual.slots.filter(slot => slot.children.length === 0),
@@ -137,7 +148,7 @@ describe.each([
   })
 
   /** @remarks Авторский порядок внутри области проверяется в вариантах с несколькими назначенными детьми. */
-  describe.skipIf(!expected.slots.some(slot => slot.children.length > 1))("Несколько детей области", () => {
+  describe.skipIf(!["Безымянное вложенное содержимое", "Несколько детей и незаполненная область"].includes(name))("Несколько детей области", () => {
     test("Авторский порядок детей", () => {
       expect(
         actual.slots.filter(slot => slot.children.length > 1),

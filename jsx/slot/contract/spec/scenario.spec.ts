@@ -108,18 +108,18 @@ export function Application(props: {unknown: any}) {
 afterAll(() => fixture.close())
 
 describe.each([
-  {name: "Alias и type-only re-export", props: {file: "alias.tsx"}, warning: false, typeDependencies: true},
-  {name: "Необязательная одиночная область", props: {file: "conditional.tsx"}, warning: false, typeDependencies: true},
-  {name: "Разрешённый union условных ветвей", props: {file: "union.tsx"}, warning: false, typeDependencies: true},
-  {name: "Необязательная коллекция отсутствует", props: {file: "optional-array.tsx"}, warning: false, typeDependencies: false},
-  {name: "Keyed коллекция", props: {file: "keyed.tsx"}, warning: false, typeDependencies: true},
-  {name: "Типизированная передача слота", props: {file: "forward.tsx"}, warning: false, typeDependencies: true},
-  {name: "Общий JSX.Element", props: {file: "unrestricted.tsx"}, warning: false, typeDependencies: false},
-  {name: "Явный текстовый тип", props: {file: "text.tsx"}, warning: false, typeDependencies: false},
-  {name: "Необязательный динамический текст", props: {file: "optional-text.tsx"}, warning: false, typeDependencies: false},
-  {name: "Получатель memo", props: {file: "memo.tsx"}, warning: false, typeDependencies: true},
-  {name: "Получатель без схемы", props: {file: "untyped.tsx"}, warning: true, typeDependencies: false},
-])("$name", async ({props, warning, typeDependencies}) => {
+  {name: "Alias и type-only re-export", props: {file: "alias.tsx"}, warning: false},
+  {name: "Необязательная одиночная область", props: {file: "conditional.tsx"}, warning: false},
+  {name: "Разрешённый union условных ветвей", props: {file: "union.tsx"}, warning: false},
+  {name: "Необязательная коллекция отсутствует", props: {file: "optional-array.tsx"}, warning: false},
+  {name: "Keyed коллекция", props: {file: "keyed.tsx"}, warning: false},
+  {name: "Типизированная передача слота", props: {file: "forward.tsx"}, warning: false},
+  {name: "Общий JSX.Element", props: {file: "unrestricted.tsx"}, warning: false},
+  {name: "Явный текстовый тип", props: {file: "text.tsx"}, warning: false},
+  {name: "Необязательный динамический текст", props: {file: "optional-text.tsx"}, warning: false},
+  {name: "Получатель memo", props: {file: "memo.tsx"}, warning: false},
+  {name: "Получатель без схемы", props: {file: "untyped.tsx"}, warning: true},
+])("$name", async ({name, props, warning}) => {
   const input = await fixture.input(props.file)
   const result = await validateSlotContracts(input)
 
@@ -133,7 +133,14 @@ describe.each([
     expect(input.sourceFile.text, "Проверка не превращает type-only контракт в runtime metadata").toContain("export function")
   })
   /** @remarks Импортированный контракт нужен вариантам Panel; локальные схемы не имеют этих файлов. */
-  describe.skipIf(!typeDependencies)("Зависимости типов", () => {
+  describe.skipIf(![
+    "Alias и type-only re-export",
+    "Необязательная одиночная область",
+    "Разрешённый union условных ветвей",
+    "Keyed коллекция",
+    "Типизированная передача слота",
+    "Получатель memo",
+  ].includes(name))("Зависимости типов", () => {
     test("Декларации и промежуточный re-export", () => {
       expect(result.dependencyPaths, "Изменение любого участника type-only цепочки требует повторной проверки сценария").toEqual(expect.arrayContaining([
         `${fixture.directory}/barrel.ts`,

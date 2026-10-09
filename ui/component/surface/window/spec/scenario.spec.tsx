@@ -10,7 +10,7 @@ describe.each([
   {name: "Заполнение области", props: {open: true, layout: "fill" as const, movable: false, resizable: false, message: undefined}},
   {name: "Ошибка окна", props: {open: true, layout: "floating" as const, movable: false, resizable: false,
     message: {message: "Настройки доступны из общей страницы", tone: "error" as const}}},
-])("$name", async ({props: input}) => {
+])("$name", async ({name, props: input}) => {
   const headless = createHeadless({width: 640, height: 480})
   afterAll(() => headless.dispose())
   const props = {...input, onOpenChange: mock()}
@@ -48,7 +48,7 @@ describe.each([
   })
 
   /** @remarks Скрытая оболочка не участвует в раскладке или пользовательском вводе. */
-  describe.skipIf(!props.open)("Открытое окно", () => {
+  describe.skipIf(!["Плавающее окно", "Заполнение области", "Ошибка окна"].includes(name))("Открытое окно", () => {
     test("Геометрия", () => {
       const rect = shell.getBoundingClientRect()
       expect({x: rect.x, y: rect.y, width: rect.width, height: rect.height}, "Плавающая геометрия и заполнение принимающей области").toEqual(props.layout === "fill"
