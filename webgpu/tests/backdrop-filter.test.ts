@@ -1,11 +1,12 @@
 import {expect, test} from "bun:test"
-import {BufferGeometry, Matrix4, Mesh, Object3D, RoundedRectMaterial} from "@zavx0z/immersive-engine"
+import {BufferGeometry, Matrix4, Mesh, Object3D, RoundedRectMaterial, Text, TextMaterial, TrueTypeFont} from "@zavx0z/immersive-engine"
 import {BackdropFilter} from "../src/renderer/backdrop-filter.ts"
 import {Renderer} from "../src/renderer/index.ts"
 import {setBackdrop} from "../src/backdrop.ts"
 import {classifyRenderItems, type RenderItem} from "../src/renderer/utils/render-list.ts"
+import {FrameInputState} from "../src/renderer/frame-input-state.ts"
 
-type Texture = GPUTexture & {destroys: number}
+type Texture = GPUTexture & {destroys: number, descriptor?: GPUTextureDescriptor}
 type Buffer = GPUBuffer & {destroys: number, value: number[]}
 type Group = GPUBindGroup & {descriptor: GPUBindGroupDescriptor}
 
@@ -30,8 +31,9 @@ function fixture() {
   const buffers: Buffer[] = []
   const groups: Group[] = []
   const pipelines: GPURenderPipelineDescriptor[] = []
-  const makeTexture = (width: number, height: number): Texture => {
-    const texture = {width, height, destroys: 0,
+  const layouts: GPUBindGroupLayoutDescriptor[] = []
+  const makeTexture = (width: number, height: number, sampleCount = 1): Texture => {
+    const texture = {width, height, sampleCount, destroys: 0,
       createView() { expect(texture.destroys).toBe(0)
         return {texture} },
       destroy() {texture.destroys++},
@@ -46,7 +48,8 @@ function fixture() {
     createTexture(descriptor: GPUTextureDescriptor) {
       const extent = descriptor.size as GPUExtent3DDict
       const [width, height] = Array.isArray(descriptor.size) ? descriptor.size : [extent.width, extent.height]
-      const texture = makeTexture(width!, height!)
+      const texture = makeTexture(width!, height!, descriptor.sampleCount ?? 1)
+      texture.descriptor = descriptor
       textures.push(texture)
       return texture
     },
@@ -60,7 +63,10 @@ function fixture() {
       groups.push(group)
       return group
     },
-    createSampler: () => ({}), createBindGroupLayout: () => ({}),
+    createSampler: () => ({}), createBindGroupLayout(descriptor: GPUBindGroupLayoutDescriptor) {
+      layouts.push(descriptor)
+      return {}
+    },
     createShaderModule: () => ({}), createPipelineLayout: () => ({}),
     createRenderPipeline(descriptor: GPURenderPipelineDescriptor) {pipelines.push(descriptor)
       return {}},
@@ -86,18 +92,51 @@ function fixture() {
     } as unknown as GPUCommandEncoder
     return {encoder, copies, passes, events}
   }
-  return {device, textures, buffers, groups, pipelines, makeTexture, command}
+  return {device, textures, buffers, groups, pipelines, layouts, makeTexture, command}
 }
 
 const uniform = (group: Group): Buffer =>
   (Array.from(group.descriptor.entries).find(entry => entry.binding === 2)!.resource as GPUBufferBinding).buffer as Buffer
 
-test("same canvas key reuses scratch while a new swapchain texture is copied every frame", () => {
+test("single-sample and MSAA sources select compatible layouts without owning or writing the borrowed sources", () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const key = {}, single = Object.freeze(f.makeTexture(80, 40)), multisample = Object.freeze(f.makeTexture(80, 40, 4))
+  try {
+    for (const source of [single, multisample]) {
+      filter.beginFrame(new Set([key]))
+      const command = f.command()
+      filter.encode(command.encoder, source, 4, key)
+      filter.endFrame()
+      expect(command.copies).toHaveLength(0)
+      expect(command.passes).toHaveLength(2)
+      const sampled = command.passes[0]!.group!.descriptor.entries.find(entry => entry.binding === 0)!.resource as GPUTextureView & {texture: Texture}
+      expect(sampled.texture).toBe(source)
+    }
+    const filterLayouts = f.layouts.map(layout => Array.from(layout.entries).find(entry => entry.binding === 0)?.texture)
+      .filter(texture => texture?.sampleType !== undefined)
+    expect([...new Map(filterLayouts.map(texture => [JSON.stringify(texture), texture])).values()]).toEqual([
+      {multisampled: false, sampleType: "float"},
+      {multisampled: true, sampleType: "unfilterable-float"},
+    ])
+    expect(f.textures).toHaveLength(2)
+    filter.dispose()
+    expect(f.textures.every(texture => texture.destroys === 1)).toBe(true)
+    expect(f.buffers.every(buffer => buffer.destroys === 1)).toBe(true)
+    expect([single.destroys, multisample.destroys]).toEqual([0, 0])
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("same canvas key reuses scratch while changing borrowed MSAA source bindings without snapshots", () => {
   const restore = usageGlobals()
   const f = fixture()
   const filter = new BackdropFilter(f.device, "bgra8unorm")
   const canvas = {}
-  const firstSource = f.makeTexture(101, 53), nextSource = f.makeTexture(101, 53)
+  const firstSource = Object.freeze(f.makeTexture(101, 53, 4)), nextSource = Object.freeze(f.makeTexture(101, 53, 4))
   try {
     expect(f.textures).toHaveLength(0)
     filter.beginFrame(new Set([canvas]))
@@ -112,8 +151,20 @@ test("same canvas key reuses scratch while a new swapchain texture is copied eve
     filter.endFrame()
     expect(f.textures).toEqual(allocations)
     expect(f.buffers).toEqual(slots)
-    expect(next.copies[0]).toMatchObject({source: nextSource, destination: first.copies[0]!.destination})
-    expect(f.textures.map(texture => [texture.width, texture.height])).toEqual([[101, 53], [26, 14], [26, 14]])
+    expect(first.copies).toHaveLength(0)
+    expect(next.copies).toHaveLength(0)
+    expect(f.textures.map(texture => [texture.width, texture.height])).toEqual([[26, 14], [26, 14]])
+    expect(f.textures.map(texture => texture.descriptor?.label)).toEqual(["backdrop-horizontal", "backdrop-vertical"])
+    const sampled = (group: Group) => (Array.from(group.descriptor.entries).find(entry => entry.binding === 0)!.resource as GPUTextureView & {texture: Texture}).texture
+    expect(sampled(first.passes[0]!.group!)).toBe(firstSource)
+    expect(sampled(next.passes[0]!.group!)).toBe(nextSource)
+    expect(next.passes[0]!.group).not.toBe(first.passes[0]!.group)
+    expect(next.passes[1]!.group).toBe(first.passes[1]!.group)
+    expect(sampled(composite as Group)).toBe(f.textures[1]!)
+    expect(uniform(composite as Group).value).toEqual([101, 53, 0, 0])
+    expect(first.passes.concat(next.passes).every(pass => Array.from(pass.descriptor.colorAttachments).every(attachment =>
+      (attachment?.view as GPUTextureView & {texture: Texture}).texture !== firstSource &&
+      (attachment?.view as GPUTextureView & {texture: Texture}).texture !== nextSource && attachment?.resolveTarget === undefined))).toBe(true)
     expect(firstSource.destroys + nextSource.destroys).toBe(0)
   } finally {
     filter.dispose()
@@ -133,7 +184,7 @@ test("multiple windows in one command buffer have independent uniforms, reused a
     filter.encode(command.encoder, source, 8)
     const slots = command.passes.map(pass => uniform(pass.group!))
     expect(new Set(slots).size).toBe(4)
-    expect(command.copies).toHaveLength(2)
+    expect(command.copies).toHaveLength(0)
     expect(command.passes.every(pass => pass.ended)).toBe(true)
     expect(slots[0]!.value[2]).toBeCloseTo(4 / 3 / 120)
     expect(slots[1]!.value[3]).toBeCloseTo(4 / 3 / 60)
@@ -164,13 +215,17 @@ test("resize destroys all old scale variants and rebuilds live bindings without 
     filter.encode(command.encoder, source, 4, canvas)
     filter.endFrame()
     const old = [...f.textures]
-    expect(old).toHaveLength(5)
+    expect(old).toHaveLength(4)
+    const oldInfo = f.buffers[0]!
     filter.beginFrame(new Set([canvas]))
     const next = f.command()
-    filter.encode(next.encoder, resized, 4, canvas)
+    const composite = filter.encode(next.encoder, resized, 4, canvas)
     filter.endFrame()
     expect(old.every(texture => texture.destroys === 1)).toBe(true)
-    expect(next.copies[0]!.destination).toMatchObject({width: 200, height: 80, destroys: 0})
+    expect(next.copies).toHaveLength(0)
+    expect(oldInfo.destroys).toBe(1)
+    expect(uniform(composite as Group).value).toEqual([200, 80, 0, 0])
+    expect(f.textures.slice(old.length).map(texture => [texture.width, texture.height])).toEqual([[50, 20], [50, 20]])
     for (const pass of next.passes) {
       const view = Array.from(pass.group!.descriptor.entries).find(entry => entry.binding === 0)!.resource as GPUTextureView & {texture: Texture}
       expect(view.texture.destroys).toBe(0)
@@ -195,8 +250,11 @@ test("release and inactive targets free only owned resources; empty frames trim 
     filter.endFrame()
     filter.release(left)
     filter.release(left)
-    expect(f.textures.slice(0, 3).map(texture => texture.destroys)).toEqual([1, 1, 1])
-    expect(f.textures.slice(3).map(texture => texture.destroys)).toEqual([0, 0, 0])
+    expect(f.textures).toHaveLength(4)
+    expect(f.textures.slice(0, 2).map(texture => texture.destroys)).toEqual([1, 1])
+    expect(f.textures.slice(2).map(texture => texture.destroys)).toEqual([0, 0])
+    expect(f.buffers[0]!.destroys).toBe(1)
+    expect(f.buffers.slice(1).every(buffer => buffer.destroys === 0)).toBe(true)
     filter.beginFrame(new Set())
     filter.endFrame()
     expect(f.textures.every(texture => texture.destroys === 1)).toBe(true)
@@ -211,28 +269,25 @@ test("release and inactive targets free only owned resources; empty frames trim 
   }
 })
 
-test("bounded windows copy their sampling halo and scissor work inside a larger target", () => {
+test("bounded windows sample borrowed MSAA directly and scissor the two Gaussian passes including vertical halo", () => {
   const restore = usageGlobals()
   const f = fixture()
   const filter = new BackdropFilter(f.device, "bgra8unorm")
-  const source = f.makeTexture(1000, 800)
+  const source = Object.freeze(f.makeTexture(1000, 800, 4))
   try {
     filter.beginFrame(new Set([source]))
     const command = f.command()
     filter.encode(command.encoder, source, 8, source, {left: 100, top: 80, right: 200, bottom: 120})
-    const copy = command.copies[0]!
-    const extent = copy.extent as number[]
-    const origin = copy.origin as GPUOrigin3DDict
-    expect(origin.x).toBeLessThanOrEqual(100 - 3 * 8)
-    expect(origin.y).toBeLessThanOrEqual(80 - 3 * 8)
-    expect(origin.x! + extent[0]!).toBeGreaterThanOrEqual(200 + 3 * 8)
-    expect(origin.y! + extent[1]!).toBeGreaterThanOrEqual(120 + 3 * 8)
-    expect(extent[0]! * extent[1]!).toBeLessThan(1000 * 800 / 4)
+    expect(command.copies).toHaveLength(0)
+    expect(f.textures.map(texture => [texture.width, texture.height])).toEqual([[125, 100], [125, 100]])
     const horizontal = command.passes[0]!.scissor!, vertical = command.passes[1]!.scissor!
     expect(horizontal[0]).toBe(vertical[0])
     expect(horizontal[2]).toBe(vertical[2])
     expect(horizontal[1]).toBeLessThan(vertical[1]!)
     expect(horizontal[1]! + horizontal[3]!).toBeGreaterThan(vertical[1]! + vertical[3]!)
+    expect(horizontal[1]! * 8).toBeLessThanOrEqual(80 - 3 * 8)
+    expect((horizontal[1]! + horizontal[3]!) * 8).toBeGreaterThanOrEqual(120 + 3 * 8)
+    expect(horizontal[2]! * horizontal[3]! * 8 * 8).toBeLessThan(1000 * 800 / 4)
     expect(vertical[0]! * 8).toBeLessThanOrEqual(100)
     expect(vertical[1]! * 8).toBeLessThanOrEqual(80)
     expect((vertical[0]! + vertical[2]!) * 8).toBeGreaterThanOrEqual(200)
@@ -258,7 +313,10 @@ test.each(["vertical-texture", "composite-binding"] as const)("failed %s allocat
     filter.beginFrame(new Set([source]))
     expect(() => filter.encode(f.command().encoder, source, 4)).toThrow("allocation failure")
     filter.dispose()
+    expect(f.textures.length).toBe(failure === "vertical-texture" ? 1 : 2)
     expect(f.textures.every(texture => texture.destroys === 1)).toBe(true)
+    expect(f.buffers.length).toBeGreaterThan(0)
+    expect(f.buffers.every(buffer => buffer.destroys === 1)).toBe(true)
     expect(source.destroys).toBe(0)
   } finally {
     filter.dispose()
@@ -281,12 +339,23 @@ type RendererState = {
   presentationFormat: GPUTextureFormat
   depthTextureView: GPUTextureView
   multisampleTextureView: GPUTextureView
+  multisampleTexture: GPUTexture
   backdropFilter: {encode(command: GPUCommandEncoder, texture: GPUTexture, sigma: number, key: object): GPUBindGroup} | null
   backdropPipeline: GPURenderPipeline
+  backdropAlphaPipeline: GPURenderPipeline | null
   renderObjectList(encoder: unknown, items: RenderItem[], indices: ReadonlyMap<RenderItem, number>, ui?: boolean): void
   renderMesh(encoder: unknown, object: Mesh, worldMatrix: Matrix4, index: number): void
   renderPreparedLayer(command: GPUCommandEncoder, view: GPUTextureView, prepared: Prepared, indices: ReadonlyMap<RenderItem, number>, clear: boolean): void
-  renderBackdropUi(command: GPUCommandEncoder, view: GPUTextureView, prepared: Prepared, items: RenderItem[], indices: ReadonlyMap<RenderItem, number>): void
+  renderBackdropUi(command: GPUCommandEncoder, view: GPUTextureView, prepared: Prepared, items: RenderItem[], indices: ReadonlyMap<RenderItem, number>, raster?: {texture: GPUTexture, multisample: GPUTexture, depth: GPUTexture}): void
+}
+
+function rendererState(): RendererState {
+  const renderer = new Renderer()
+  const state = renderer as unknown as RendererState
+  // Эти CPU-проверки порядка draw не сертифицируют полный scene prefix.
+  Object.assign(state, {backdropFrame: {items: [], layers: [], clips: new Float32Array(), indices: new Map(), pending: [], reusable: true},
+    readFrameInputs: () => null})
+  return state
 }
 
 const item = (sigma?: number): RenderItem => {
@@ -306,7 +375,7 @@ const prepared = (items: RenderItem[], physicalWidth = 400, physicalHeight = 200
 
 test("ordinary and zero-blur UI keep one normal pass without scratch allocations", () => {
   const f = fixture()
-  const state = new Renderer() as unknown as RendererState
+  const state = rendererState()
   Object.assign(state, {device: f.device, context: {}, canvas: {}, presentationFormat: "bgra8unorm",
     depthTextureView: {}, multisampleTextureView: {}, backdropFilter: null})
   const plain = item(), zero = item(0)
@@ -327,10 +396,10 @@ test.each([
   {physicalWidth: 200, physicalHeight: 100, worldScale: .5, sigma: 3},
 ])("ordered composition converts CSS sigma for $physicalWidth physical px and scale $worldScale before foreground", ({physicalWidth, physicalHeight, worldScale, sigma}) => {
   const f = fixture()
-  const state = new Renderer() as unknown as RendererState
+  const state = rendererState()
   const source = f.makeTexture(physicalWidth, physicalHeight), canvas = {}
   const calls: {sigma: number, key: object, texture: GPUTexture}[] = []
-  Object.assign(state, {context: {getCurrentTexture: () => source}, canvas, depthTextureView: {}, multisampleTextureView: {}, backdropPipeline: {},
+  Object.assign(state, {context: {getCurrentTexture: () => {throw new Error("Backdrop must borrow MSAA, not the resolved canvas")}}, multisampleTexture: source, canvas, depthTextureView: {}, multisampleTextureView: {}, backdropPipeline: {},
     backdropFilter: {encode(_command: GPUCommandEncoder, texture: GPUTexture, sigma: number, key: object) {
       calls.push({texture, sigma, key})
       events.push("filter")
@@ -357,12 +426,191 @@ test.each([
   expect(command.passes.every(pass => pass.ended)).toBe(true)
 })
 
+test.each(["dual", "portable"] as const)("%s multiple-panel UI has one final resolve and no copies or full-resolution snapshots", mode => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const state = rendererState()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const source = f.makeTexture(400, 200, 4)
+  const canvas = {width: 400, height: 200}
+  const resolvedView = {} as GPUTextureView
+  Object.assign(state, {device: f.device, context: {getCurrentTexture: () => {throw new Error("No resolved canvas snapshot")}}, canvas,
+    presentationFormat: "bgra8unorm", depthTextureView: {}, multisampleTexture: source, multisampleTextureView: source.createView(),
+    backdropFilter: filter, backdropPipeline: {}, backdropAlphaPipeline: mode === "portable" ? {} : null})
+  const behind = item(), first = item(3), child = item(), second = item(3), between = item(), third = item(3), zero = item(0), front = item()
+  const items = [behind, first, child, second, between, third, zero, front]
+  const drawn: RenderItem[] = [], composites: Object3D[] = []
+  state.renderObjectList = (_pass, values) => drawn.push(...values)
+  state.renderMesh = (_pass, mesh) => composites.push(mesh)
+  try {
+    filter.beginFrame(new Set([canvas]))
+    const command = f.command()
+    state.renderPreparedLayer(command.encoder, resolvedView, prepared(items), new Map(items.map((value, index) => [value, index])), true)
+    filter.endFrame()
+    const resolved = command.passes.flatMap((pass, index) => Array.from(pass.descriptor.colorAttachments)
+      .filter(attachment => attachment?.resolveTarget !== undefined).map(attachment => ({index, attachment})))
+    expect(resolved).toHaveLength(1)
+    expect(resolved[0]!.index).toBe(command.passes.length - 1)
+    expect(resolved[0]!.attachment!.resolveTarget).toBe(resolvedView)
+    expect(command.passes.every(pass => pass.ended)).toBe(true)
+    const uiPasses = command.passes.filter(pass => pass.descriptor.label === "ui-backdrop-ordered")
+    expect(uiPasses).toHaveLength(3)
+    for (const pass of uiPasses) {
+      expect(pass.descriptor.depthStencilAttachment).toMatchObject({depthReadOnly: true, stencilReadOnly: true})
+      expect(pass.descriptor.depthStencilAttachment!.depthLoadOp).toBeUndefined()
+      expect(pass.descriptor.depthStencilAttachment!.depthStoreOp).toBeUndefined()
+      expect(pass.descriptor.depthStencilAttachment!.stencilLoadOp).toBeUndefined()
+      expect(pass.descriptor.depthStencilAttachment!.stencilStoreOp).toBeUndefined()
+    }
+    expect(command.copies).toHaveLength(0)
+    expect(f.textures.map(texture => [texture.width, texture.height])).toEqual(Array.from({length: 5}, () => [50, 25]))
+    expect(f.textures.map(texture => texture.descriptor?.label)).toEqual(["backdrop-horizontal", "backdrop-vertical",
+      "backdrop-cached-output", "backdrop-cached-output", "backdrop-cached-output"])
+    expect(drawn).toEqual([behind, child, between, front])
+    expect(composites).toEqual(mode === "dual" ? [first.object, second.object, third.object]
+      : [first.object, first.object, second.object, second.object, third.object, third.object])
+    expect(f.buffers).toHaveLength(7)
+    filter.dispose()
+    expect(f.textures.every(texture => texture.destroys === 1)).toBe(true)
+    expect(f.buffers.every(buffer => buffer.destroys === 1)).toBe(true)
+    expect(source.destroys).toBe(0)
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("raster composition borrows its MSAA attachment while retaining the resolved texture only as cache key", () => {
+  const f = fixture()
+  const state = rendererState()
+  const canvasSource = f.makeTexture(400, 200, 4)
+  const raster = {texture: f.makeTexture(200, 100), multisample: f.makeTexture(200, 100, 4), depth: f.makeTexture(200, 100, 4)}
+  const calls: {
+    source: GPUTexture
+    key: object
+  }[] = []
+  Object.assign(state, {multisampleTexture: canvasSource, canvas: {}, depthTextureView: {}, multisampleTextureView: {}, backdropPipeline: {},
+    backdropFilter: {encode(_command: GPUCommandEncoder, source: GPUTexture, _sigma: number, key: object) {
+      calls.push({source, key})
+      return {} as GPUBindGroup
+    }}})
+  state.renderObjectList = () => {}
+  state.renderMesh = () => {}
+  const backdrop = item(3), command = f.command(), resolvedView = raster.texture.createView()
+  state.renderBackdropUi(command.encoder, resolvedView, prepared([backdrop], 200, 100), [backdrop], new Map([[backdrop, 0]]), raster)
+  expect(calls).toEqual([{source: raster.multisample, key: raster.texture}])
+  expect(command.copies).toHaveLength(0)
+  expect(command.passes).toHaveLength(1)
+  const attachment = Array.from(command.passes[0]!.descriptor.colorAttachments)[0]!
+  expect((attachment.view as GPUTextureView & {texture: Texture}).texture).toBe(raster.multisample)
+  expect(attachment.resolveTarget).toBe(resolvedView)
+  expect([canvasSource.destroys, raster.texture.destroys, raster.multisample.destroys, raster.depth.destroys]).toEqual([0, 0, 0, 0])
+})
+
+test("UI continuation access includes complete text pairs on both sides of blur boundaries", async () => {
+  const f = fixture()
+  const state = rendererState()
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const texts = [false, true, false].map(depthWrite => new Text("UI", font, 12, new TextMaterial({depthWrite})))
+  const textItems = (object: Text): RenderItem[] => ["text-stencil", "text-cover"].map(type =>
+    ({type: type as RenderItem["type"], object, worldMatrix: object.matrixWorld}))
+  const first = item(3), second = item(3), zero = item(0), front = item()
+  const items = [...textItems(texts[0]!), first, ...textItems(texts[1]!), second, ...textItems(texts[2]!), zero, front]
+  const source = f.makeTexture(400, 200, 4)
+  Object.assign(state, {multisampleTexture: source, canvas: {}, depthTextureView: {}, multisampleTextureView: {}, backdropPipeline: {},
+    backdropFilter: {encode(...args: Parameters<BackdropFilter["encode"]>) {
+      args[6]?.beforeFilter?.()
+      return {} as GPUBindGroup
+    }}})
+  const drawn: RenderItem[][] = []
+  state.renderObjectList = (_pass, values) => {if (values.length > 0) drawn.push(values)}
+  state.renderMesh = () => {}
+  try {
+    const command = f.command()
+    state.renderBackdropUi(command.encoder, {} as GPUTextureView, prepared(items), items, new Map(items.map((value, index) => [value, index])))
+    expect(command.passes).toHaveLength(3)
+    expect(command.passes.map(pass => pass.descriptor.depthStencilAttachment?.depthReadOnly === true)).toEqual([false, false, true])
+    for (const pass of command.passes) expect(pass.descriptor.depthStencilAttachment?.stencilReadOnly === true).toBe(false)
+    expect(command.passes[1]!.descriptor.depthStencilAttachment).toMatchObject({depthLoadOp: "load", depthStoreOp: "store"})
+    const flattened = drawn.flat()
+    expect(flattened).toEqual([...textItems(texts[0]!), ...textItems(texts[1]!), ...textItems(texts[2]!), front])
+    for (const object of texts) {
+      const chunk = drawn.find(values => values.some(value => value.object === object))!
+      expect(chunk.filter(value => value.object === object).map(value => value.type)).toEqual(["text-stencil", "text-cover"])
+    }
+    expect(command.passes.every(pass => pass.ended)).toBe(true)
+  } finally {texts.forEach(object => object.dispose())}
+})
+
+test("real filter cache hits merge three UI composites while preserving complete text pairs and one final resolve", async () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const state = rendererState() as RendererState & {backdropInputStates: FrameInputState[]}
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const source = f.makeTexture(400, 200, 4), canvas = {width: 400, height: 200}
+  const font = new TrueTypeFont(await Bun.file(new URL("../../engine/static/font/inter-regular.ttf", import.meta.url)).arrayBuffer())
+  const texts = [false, true, false].map(depthWrite => {
+    const object = new Text("UI", font, 12, new TextMaterial({depthWrite}))
+    object.renderLayer = "ui"
+    return object
+  })
+  const textItems = (object: Text): RenderItem[] => ["text-stencil", "text-cover"].map(type =>
+    ({type: type as RenderItem["type"], object, worldMatrix: object.matrixWorld}))
+  const backdrops = [item(3), item(3), item(3)]
+  const items = backdrops.flatMap((backdrop, index) => [backdrop, ...textItems(texts[index]!)])
+  const indices = new Map(items.map((value, index) => [value, index]))
+  const scene = prepared(items)
+  const resolvedView = {} as GPUTextureView
+  // Тест фиксирует входы сцены и явно подтверждает prefix после cold submission.
+  const inputs = {references: [source, ...items.map(value => value.object)], data: []}
+  Object.assign(state, {device: f.device, context: {}, canvas, presentationFormat: "bgra8unorm", depthTextureView: {},
+    multisampleTexture: source, multisampleTextureView: source.createView(), backdropFilter: filter,
+    backdropPipeline: {}, backdropAlphaPipeline: null, readFrameInputs: () => inputs})
+  let events: string[] = []
+  state.renderObjectList = (_pass, values) => events.push(...values.map(value => `${texts.indexOf(value.object as Text)}:${value.type}`))
+  state.renderMesh = (_pass, object) => events.push(`backdrop:${backdrops.findIndex(value => value.object === object)}`)
+  const render = () => {
+    Object.assign(state, {backdropFrame: {items: [], layers: [scene], clips: new Float32Array(), indices, pending: [], reusable: true}})
+    filter.beginFrame(new Set([canvas]))
+    events = []
+    const command = f.command()
+    state.renderPreparedLayer(command.encoder, resolvedView, scene, indices, true)
+    filter.endFrame()
+    return {command, events: [...events]}
+  }
+  try {
+    const cold = render()
+    expect(cold.command.passes.filter(pass => pass.descriptor.label === "backdrop-blur")).toHaveLength(6)
+    expect(cold.command.passes.filter(pass => pass.descriptor.label === "ui-backdrop-ordered")).toHaveLength(3)
+    state.backdropInputStates.forEach(prefix => prefix.commit(inputs))
+    const warm = render()
+    expect(warm.command.passes).toHaveLength(3)
+    expect(warm.command.passes.filter(pass => pass.descriptor.label === "backdrop-blur")).toHaveLength(0)
+    const merged = warm.command.passes.filter(pass => pass.descriptor.label === "ui-backdrop-ordered")
+    expect(merged).toHaveLength(1)
+    expect(merged[0]!.descriptor.depthStencilAttachment?.depthReadOnly === true).toBe(false)
+    expect(merged[0]!.descriptor.depthStencilAttachment?.stencilReadOnly === true).toBe(false)
+    expect(warm.command.passes.filter(pass => pass.descriptor.label === "backdrop-final-resolve")).toHaveLength(1)
+    const resolves = warm.command.passes.flatMap(pass => Array.from(pass.descriptor.colorAttachments).filter(attachment => attachment?.resolveTarget !== undefined))
+    expect(resolves).toHaveLength(1)
+    expect(resolves[0]!.resolveTarget).toBe(resolvedView)
+    expect(warm.events).toEqual(cold.events)
+    expect(warm.events).toEqual(["backdrop:0", "0:text-stencil", "0:text-cover", "backdrop:1", "1:text-stencil", "1:text-cover",
+      "backdrop:2", "2:text-stencil", "2:text-cover"])
+    expect(warm.command.passes.every(pass => pass.ended)).toBe(true)
+  } finally {
+    texts.forEach(object => object.dispose())
+    filter.dispose()
+    restore()
+  }
+})
+
 test("world filtering uses the current borrowed depth attachment and distinct plane uniforms", () => {
   const restore = usageGlobals()
   const f = fixture()
   const filter = new BackdropFilter(f.device, "bgra8unorm")
-  const source = f.makeTexture(120, 60)
-  const firstDepth = f.makeTexture(120, 60), nextDepth = f.makeTexture(120, 60)
+  const source = f.makeTexture(120, 60, 4)
+  const firstDepth = f.makeTexture(120, 60, 4), nextDepth = f.makeTexture(120, 60, 4)
   const depthResource = (group: Group) => group.descriptor.entries.find(entry => entry.binding === 3)?.resource as GPUTextureView & {texture: Texture}
   try {
     filter.beginFrame(new Set([source]))
@@ -378,6 +626,242 @@ test("world filtering uses the current borrowed depth attachment and distinct pl
     expect(next.passes[0]!.group !== command.passes[0]!.group).toBeTrue()
     filter.dispose()
     expect([firstDepth.destroys, nextDepth.destroys]).toEqual([0, 0])
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("submitted operation hit skips Gaussian passes and uniform writes while source reuse is decided by caller", () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const canvas = {}, operation = {}
+  const source = f.makeTexture(120, 60, 4), nextSource = f.makeTexture(120, 60, 4)
+  try {
+    filter.beginFrame(new Set([canvas]))
+    const first = f.command()
+    const group = filter.encode(first.encoder, source, 4, canvas, undefined, undefined, {key: operation, reusable: false}) as Group
+    const output = (group.descriptor.entries.find(entry => entry.binding === 0)!.resource as GPUTextureView & {texture: Texture}).texture
+    expect(output.descriptor?.label).toBe("backdrop-cached-output")
+    expect((Array.from(first.passes[1]!.descriptor.colorAttachments)[0]!.view as GPUTextureView & {texture: Texture}).texture).toBe(output)
+    expect(uniform(group).value).toEqual([120, 60, 0, 0])
+    filter.endFrame()
+    const buffers = [...f.buffers]
+    const values = buffers.map(buffer => buffer.value)
+    filter.beginFrame(new Set([canvas]))
+    const next = f.command()
+    expect(filter.encode(next.encoder, nextSource, 4, canvas, undefined, undefined, {key: operation, reusable: true})).toBe(group)
+    expect(next.passes).toHaveLength(0)
+    expect(next.copies).toHaveLength(0)
+    filter.endFrame()
+    expect(f.buffers).toEqual(buffers)
+    buffers.forEach((buffer, index) => expect(buffer.value).toBe(values[index]!))
+    expect(buffers.every(buffer => buffer.destroys === 0)).toBe(true)
+    filter.beginFrame(new Set([canvas]))
+    const changed = f.command()
+    expect(filter.encode(changed.encoder, nextSource, 4, canvas, undefined, undefined, {key: operation, reusable: false})).toBe(group)
+    expect(changed.passes).toHaveLength(2)
+    expect((changed.passes[0]!.group!.descriptor.entries.find(entry => entry.binding === 0)!.resource as GPUTextureView & {texture: Texture}).texture).toBe(nextSource)
+    filter.endFrame()
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("beforeFilter runs once before the first Gaussian pass on miss and never on a submitted cache hit", () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const source = f.makeTexture(120, 60, 4), canvas = {}, operation = {}
+  const encode = (reusable: boolean) => {
+    const command = f.command()
+    const events: string[] = []
+    const beginRenderPass = command.encoder.beginRenderPass.bind(command.encoder)
+    command.encoder.beginRenderPass = descriptor => {
+      events.push(descriptor.label ?? "unlabelled-pass")
+      return beginRenderPass(descriptor)
+    }
+    const group = filter.encode(command.encoder, source, 4, canvas, undefined, undefined, {
+      key: operation,
+      reusable,
+      beforeFilter() {
+        expect(command.passes).toHaveLength(0)
+        events.push("beforeFilter")
+      },
+    })
+    return {command, events, group}
+  }
+  try {
+    filter.beginFrame(new Set([canvas]))
+    const first = encode(false)
+    expect(first.events).toEqual(["beforeFilter", "backdrop-blur", "backdrop-blur"])
+    expect(first.command.passes.every(pass => pass.ended)).toBe(true)
+    filter.endFrame()
+    filter.beginFrame(new Set([canvas]))
+    const hit = encode(true)
+    expect(hit.group).toBe(first.group)
+    expect(hit.events).toEqual([])
+    expect(hit.command.passes).toHaveLength(0)
+    filter.endFrame()
+    filter.beginFrame(new Set([canvas]))
+    const changed = encode(false)
+    expect(changed.events).toEqual(["beforeFilter", "backdrop-blur", "backdrop-blur"])
+    filter.endFrame()
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("aborted filter frame never validates pending output and can release target before retry", () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const source = f.makeTexture(120, 60, 4), canvas = {}, operation = {}
+  try {
+    filter.beginFrame(new Set([canvas]))
+    filter.encode(f.command().encoder, source, 4, canvas, undefined, undefined, {key: operation, reusable: false})
+    filter.abortFrame()
+    filter.beginFrame(new Set([canvas]))
+    const retry = f.command()
+    filter.encode(retry.encoder, source, 4, canvas, undefined, undefined, {key: operation, reusable: true})
+    expect(retry.passes).toHaveLength(2)
+    filter.endFrame()
+    filter.beginFrame(new Set([canvas]))
+    const hit = f.command()
+    filter.encode(hit.encoder, source, 4, canvas, undefined, undefined, {key: operation, reusable: true})
+    expect(hit.passes).toHaveLength(0)
+    filter.abortFrame()
+    filter.release(canvas)
+    expect(f.textures.every(texture => texture.destroys === 1)).toBe(true)
+    expect(f.buffers[0]!.destroys).toBe(1)
+    expect(source.destroys).toBe(0)
+    filter.beginFrame(new Set())
+    filter.endFrame()
+    expect(f.buffers.every(buffer => buffer.destroys === 1)).toBe(true)
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("cached outputs are released before borrowed size uniform on resize and are pruned on an unused operation", () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const source = f.makeTexture(120, 60, 4), resized = f.makeTexture(200, 100, 4), canvas = {}, operation = {}
+  try {
+    filter.beginFrame(new Set([canvas]))
+    filter.encode(f.command().encoder, source, 4, canvas, undefined, undefined, {key: operation, reusable: false})
+    filter.endFrame()
+    const info = f.buffers[0]!
+    const output = f.textures.find(texture => texture.descriptor?.label === "backdrop-cached-output")!
+    const destroy = output.destroy.bind(output)
+    output.destroy = () => {
+      expect(info.destroys).toBe(0)
+      destroy()
+    }
+    filter.beginFrame(new Set([canvas]))
+    const next = f.command()
+    filter.encode(next.encoder, resized, 4, canvas, undefined, undefined, {key: operation, reusable: true})
+    expect(next.passes).toHaveLength(2)
+    expect(output.destroys).toBe(1)
+    expect(info.destroys).toBe(1)
+    filter.endFrame()
+    const replacement = f.textures.at(-1)!
+    filter.beginFrame(new Set([canvas]))
+    filter.endFrame()
+    expect(replacement.destroys).toBe(1)
+    expect([source.destroys, resized.destroys]).toEqual([0, 0])
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("output budget fallback renders into shared V without evicting earlier operations", () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  // Только fake metadata: три 1500×1500 RGBA outputs помещаются в 32 MiB, четыре нет.
+  const source = f.makeTexture(12000, 12000, 4), canvas = {}
+  const operations = Array.from({length: 4}, () => ({}))
+  try {
+    filter.beginFrame(new Set([canvas]))
+    const first = f.command()
+    const groups = operations.map(key => filter.encode(first.encoder, source, 8, canvas, undefined, undefined, {key, reusable: false}))
+    const outputs = groups.map(group => (Array.from((group as Group).descriptor.entries).find(entry => entry.binding === 0)!.resource as GPUTextureView & {texture: Texture}).texture)
+    expect(outputs.slice(0, 3).every(texture => texture.descriptor?.label === "backdrop-cached-output")).toBe(true)
+    expect(outputs[3]!.descriptor?.label).toBe("backdrop-vertical")
+    expect(f.textures).toHaveLength(5)
+    expect(f.textures.every(texture => texture.destroys === 0)).toBe(true)
+    filter.endFrame()
+    filter.beginFrame(new Set([canvas]))
+    const next = f.command()
+    operations.forEach(key => filter.encode(next.encoder, source, 8, canvas, undefined, undefined, {key, reusable: true}))
+    expect(next.passes).toHaveLength(2)
+    filter.endFrame()
+    expect(f.textures).toHaveLength(5)
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("cache-hit cursor gaps retain dense distinct parameter slots for later misses", () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const source = f.makeTexture(120, 60, 4), canvas = {}, a = {}, b = {}, c = {}
+  const encode = (command: GPUCommandEncoder, key: object, reusable: boolean) =>
+    filter.encode(command, source, 4, canvas, undefined, undefined, {key, reusable})
+  try {
+    filter.beginFrame(new Set([canvas]))
+    encode(f.command().encoder, a, false)
+    filter.endFrame()
+    filter.beginFrame(new Set([canvas]))
+    const middle = f.command()
+    encode(middle.encoder, b, false)
+    encode(middle.encoder, a, true)
+    encode(middle.encoder, c, false)
+    const used = middle.passes.map(pass => uniform(pass.group!))
+    expect(new Set(used).size).toBe(4)
+    filter.endFrame()
+    const allocations = f.buffers.length
+    filter.beginFrame(new Set([canvas]))
+    const next = f.command()
+    encode(next.encoder, b, true)
+    encode(next.encoder, a, true)
+    encode(next.encoder, c, false)
+    expect(next.passes.map(pass => uniform(pass.group!))).toEqual(used.slice(2))
+    expect(f.buffers).toHaveLength(allocations)
+    filter.endFrame()
+    expect(f.buffers.every(buffer => buffer.destroys === 0)).toBe(true)
+  } finally {
+    filter.dispose()
+    restore()
+  }
+})
+
+test("empty ROI never publishes an unrendered cached output", () => {
+  const restore = usageGlobals()
+  const f = fixture()
+  const filter = new BackdropFilter(f.device, "bgra8unorm")
+  const source = f.makeTexture(120, 60, 4), canvas = {}, operation = {}
+  try {
+    filter.beginFrame(new Set([canvas]))
+    const empty = f.command()
+    filter.encode(empty.encoder, source, 4, canvas, {left: 200, top: 200, right: 220, bottom: 220}, undefined, {key: operation, reusable: true})
+    expect(empty.passes).toHaveLength(0)
+    expect(f.textures.every(texture => texture.descriptor?.label !== "backdrop-cached-output")).toBe(true)
+    filter.endFrame()
+    filter.beginFrame(new Set([canvas]))
+    const live = f.command()
+    filter.encode(live.encoder, source, 4, canvas, undefined, undefined, {key: operation, reusable: true})
+    expect(live.passes).toHaveLength(2)
+    filter.endFrame()
   } finally {
     filter.dispose()
     restore()

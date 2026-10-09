@@ -7,14 +7,19 @@ import {NativeGpuCanvas} from "../native-canvas.ts"
 import {installShaderCompilationDiagnostics} from "../shader-diagnostics.ts"
 
 /** World Mesh являются единственным источником полос за прозрачным CSS Display. */
+const forcedPortable = process.env.BACKDROP_DISABLE_DUAL_SOURCE === "1"
+let adapterSupportsDualSource = false
 const gpu = createGPUInstance()
 const requestAdapter = gpu.requestAdapter.bind(gpu)
 gpu.requestAdapter = async options => {
   const adapter = await requestAdapter(options)
   if (adapter === null) return null
+  adapterSupportsDualSource = adapter.features.has("dual-source-blending")
   const requestDevice = adapter.requestDevice.bind(adapter)
   adapter.requestDevice = async descriptor => {
-    const device = await requestDevice(descriptor)
+    const requested = Array.from(descriptor?.requiredFeatures ?? [])
+    const device = await requestDevice({...descriptor, requiredFeatures: forcedPortable
+      ? requested.filter(feature => feature !== "dual-source-blending") : requested})
     installShaderCompilationDiagnostics(device)
     return device
   }
@@ -27,6 +32,7 @@ const probes = {
   insideWhite: [76, 75], insideBlack: [83, 75], outsideWhite: [76, 8], outsideBlack: [83, 8],
   corner: [42, 22], child: [100, 42], childOutside: [92, 42],
   blue: [92, 72], blueOutside: [81, 72], red: [144, 72], redOutside: [133, 72],
+  roiLeft: [36, 75], roiRight: [164, 75], clipOutside: [108, 75],
 } as const
 
 async function run(candidate: "lowDpi" | "highDpi") {
@@ -83,6 +89,7 @@ async function run(candidate: "lowDpi" | "highDpi") {
   const marker = () => backend.root.children.find(object => object.name.endsWith(":backdrop"))
   const childMesh = () => backend.root.children.find(object => !object.name.endsWith(":backdrop"))
   const frames: Record<string, Record<string, number[]>> = {}
+  const cornerProfiles: Record<string, number[]> = {}
   let edgeProfile: number[] = []
   try {
     await renderer.init(canvas.asHtmlCanvas())
@@ -94,6 +101,12 @@ async function run(candidate: "lowDpi" | "highDpi") {
       const validation = await device.popErrorScope()
       if (validation !== null) throw new Error(`${candidate}/${name}: ${validation.message}`)
       const frame = await canvas.capture()
+      const cornerY = Math.floor(24.5 * height / logical.height)
+      cornerProfiles[name] = Array.from({length: 33}, (_, index) => {
+        const cornerX = Math.floor(44 * width / logical.width) + index
+        const offset = (cornerY * width + cornerX) * 4
+        return [...frame.rgba.slice(offset, offset + 4)]
+      }).flat()
       if (name === "blurred") {
         edgeProfile = Array.from({length: 17}, (_, index) => {
           const x = Math.floor((72.5 + index) * width / logical.width)
@@ -116,6 +129,9 @@ async function run(candidate: "lowDpi" | "highDpi") {
     const retainedChild = childMesh()
     panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(8px)`)
     await render("blurred")
+    panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(8px);opacity:.5`)
+    await render("halfOpacity")
+    panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(8px)`)
     const retainedMarker = marker()
     if (retainedMarker === undefined) throw new Error("CSS blur не создал отдельный marker")
     const childReused = childMesh() === retainedChild
@@ -140,6 +156,23 @@ async function run(candidate: "lowDpi" | "highDpi") {
     panel.setAttribute("style", `${panelStyle};left:44px;backdrop-filter:blur(8px)`)
     await render("moved")
     const moveReused = marker() === beforeMove && childMesh() === retainedChild
+    child.setAttribute("hidden", "")
+    const smallPanel = "position:absolute;top:60px;width:32px;height:32px;border-radius:4px;backdrop-filter:blur(8px)"
+    panel.setAttribute("style", `${smallPanel};left:16px`)
+    await render("roiLeft")
+    panel.setAttribute("style", `${smallPanel};left:144px`)
+    await render("roiRight")
+    panel.setAttribute("style", `${smallPanel};left:16px`)
+    await render("roiLeftAgain")
+    const clipOwner = document.createElement("div")
+    clipOwner.setAttribute("style", "position:absolute;left:0;top:0;width:100px;height:120px;overflow:hidden;border-radius:12px")
+    root.append(clipOwner)
+    clipOwner.append(panel)
+    panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(8px)`)
+    await render("clipped")
+    root.append(panel)
+    clipOwner.remove()
+    child.removeAttribute("hidden")
     panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(8px)`)
     logical = {width: 220, height: 132}
     layout.resize(logical)
@@ -163,7 +196,8 @@ async function run(candidate: "lowDpi" | "highDpi") {
     stripes.forEach(mesh => {space.remove(mesh)})
     await render("empty", false)
     return {intendedRasterSize, resizedRasterSize, candidateFootprint: width / intendedRasterSize.width,
-      frames, edgeProfile, childReused, moveReused, rootReused, noneCleared, disposeCleared}
+      frames, cornerProfiles, adapterSupportsDualSource, forcedPortable, deviceFeatures: [...device.features],
+      edgeProfile, childReused, moveReused, rootReused, noneCleared, disposeCleared}
   } finally {
     layout.dispose()
     backend.dispose()

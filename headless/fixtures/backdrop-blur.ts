@@ -8,15 +8,20 @@ import {installShaderCompilationDiagnostics} from "../shader-diagnostics.ts"
 
 /** Настоящие CSS/layout/display records и GPU pixels в отдельном native процессе. */
 let adapterInfo: unknown = null
+const forcedPortable = process.env.BACKDROP_DISABLE_DUAL_SOURCE === "1"
+let adapterSupportsDualSource = false
 const gpu = createGPUInstance()
 const requestAdapter = gpu.requestAdapter.bind(gpu)
 gpu.requestAdapter = async options => {
   const adapter = await requestAdapter(options)
   if (adapter === null) return null
+  adapterSupportsDualSource = adapter.features.has("dual-source-blending")
   adapterInfo = adapter.info
   const requestDevice = adapter.requestDevice.bind(adapter)
   adapter.requestDevice = async descriptor => {
-    const device = await requestDevice(descriptor)
+    const requested = Array.from(descriptor?.requiredFeatures ?? [])
+    const device = await requestDevice({...descriptor, requiredFeatures: forcedPortable
+      ? requested.filter(feature => feature !== "dual-source-blending") : requested})
     installShaderCompilationDiagnostics(device)
     return device
   }
@@ -30,6 +35,7 @@ const coordinates = {
   outsideWhite: [76, 8], outsideBlack: [83, 8],
   foreground: [92, 42], foregroundRight: [108, 42], foregroundOutside: [84, 42],
   corner: [42, 22], overlap: [84, 42], released: [100, 60],
+  roiLeft: [36, 75], roiRight: [164, 75], clipOutside: [108, 75],
 } as const
 
 async function acceptance(mode: "hud" | "lowDpi" | "direct") {
@@ -73,6 +79,7 @@ async function acceptance(mode: "hud" | "lowDpi" | "direct") {
   }
   let presenting = true
   const frames: Record<string, Record<string, number[]>> = {}
+  const cornerProfiles: Record<string, number[]> = {}
   const marker = () => backend.root.children.find(node => node.name.endsWith(":backdrop"))
   const markerCount = () => backend.root.children.filter(node => node.name.endsWith(":backdrop")).length
   let disposedMarker: Object3D | undefined
@@ -86,6 +93,12 @@ async function acceptance(mode: "hud" | "lowDpi" | "direct") {
       const validation = await device.popErrorScope()
       if (validation !== null) throw new Error(`${mode}/${name}: ${validation.message}`)
       const frame = await canvas.capture()
+      const cornerY = Math.floor(24.5 * height / logical.height)
+      cornerProfiles[name] = Array.from({length: 33}, (_, index) => {
+        const cornerX = Math.floor(44 * width / logical.width) + index
+        const offset = (cornerY * width + cornerX) * 4
+        return [...frame.rgba.slice(offset, offset + 4)]
+      }).flat()
       frames[name] = Object.fromEntries(Object.entries(coordinates).map(([key, [x, y]]) => {
         const physicalX = Math.floor((x + .5) * width / logical.width)
         const physicalY = Math.floor((y + .5) * height / logical.height)
@@ -97,6 +110,8 @@ async function acceptance(mode: "hud" | "lowDpi" | "direct") {
     const rasterCandidateCreated = display === null || (display.rasterSurface !== null) === (mode === "lowDpi")
     panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(6px)`)
     await render("blurred")
+    panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(6px);opacity:.5`)
+    await render("halfOpacity")
     const retained = marker()
     if (retained === undefined) throw new Error("CSS blur не создал backend marker")
     panel.setAttribute("style", `${panelStyle};backdrop-filter:none`)
@@ -119,6 +134,23 @@ async function acceptance(mode: "hud" | "lowDpi" | "direct") {
     const moveReused = marker() === beforeMove
     panel.setAttribute("style", `${panelStyle};left:44px;backdrop-filter:blur(0px)`)
     await render("movedZero")
+    child.setAttribute("hidden", "")
+    const smallPanel = "position:absolute;top:60px;width:32px;height:32px;border-radius:4px;backdrop-filter:blur(6px)"
+    panel.setAttribute("style", `${smallPanel};left:16px`)
+    await render("roiLeft")
+    panel.setAttribute("style", `${smallPanel};left:144px`)
+    await render("roiRight")
+    panel.setAttribute("style", `${smallPanel};left:16px`)
+    await render("roiLeftAgain")
+    const clipOwner = document.createElement("div")
+    clipOwner.setAttribute("style", "position:absolute;left:0;top:0;width:100px;height:120px;overflow:hidden;border-radius:12px")
+    root.append(clipOwner)
+    clipOwner.append(panel)
+    panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(6px)`)
+    await render("clipped")
+    root.append(panel)
+    clipOwner.remove()
+    child.removeAttribute("hidden")
     panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(6px)`)
     logical = {width: 220, height: 132}
     layout.resize(logical)
@@ -134,6 +166,12 @@ async function acceptance(mode: "hud" | "lowDpi" | "direct") {
       })
       space.background = new Color(0, 0, 0, 0)
       await render("alphaBlur")
+      panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(6px);opacity:.5`)
+      await render("alphaHalf")
+      panel.setAttribute("style", `${panelStyle};backdrop-filter:none`)
+      await render("alphaNone")
+      panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(6px)`)
+      await render("alphaRestored")
       space.background = new Color(0, 0, 0)
     }
     disposedMarker = marker()
@@ -150,7 +188,8 @@ async function acceptance(mode: "hud" | "lowDpi" | "direct") {
     if (validation !== null) throw new Error(`${mode}/released: ${validation.message}`)
     const released = await canvas.capture()
     const offset = ((height / 2) * width + width / 2) * 4
-    return {frames, rasterCandidateCreated, noneCleared, moveReused, disposeCleared,
+    return {frames, cornerProfiles, adapterSupportsDualSource, forcedPortable, deviceFeatures: [...device.features],
+      rasterCandidateCreated, noneCleared, moveReused, disposeCleared,
       released: [...released.rgba.slice(offset, offset + 4)]}
   } finally {
     layout.dispose()
