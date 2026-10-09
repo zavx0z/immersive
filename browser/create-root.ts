@@ -10,6 +10,7 @@ import {createAttachedRoot, type Root as Presentation, type RootRuntimeFactory} 
 import {createRootEnvironment, rootContext} from "./src/root-context.ts"
 import {claimBrowserPresentationHost} from "./src/presentation-host.ts"
 import {createApplicationStyleSheets} from "./src/application-stylesheets.ts"
+import {createDocumentSpaceRuntime} from "./src/space-runtime.ts"
 
 export interface RootOptions {
   /** Положительное конечное число. По умолчанию используется devicePixelRatio окна. */
@@ -60,7 +61,6 @@ export function createRoot(canvas: HTMLCanvasElement, options: RootOptions = {})
   return createRootWithSeams(canvas, options, {
     loadFont: () => loadDocumentDefaultFont(canvas.ownerDocument),
     createRuntime: async (input, claim) => {
-      const {createDocumentSpaceRuntime} = await import("./src/space-runtime.ts")
       return createDocumentSpaceRuntime(input, claim)
     },
     createStyleSheets: createApplicationStyleSheets,
