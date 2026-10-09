@@ -31,6 +31,15 @@ import type {CodeEditorInteraction} from "./src/interaction.ts"
 
 export type {ImmersiveUiComponentViewCodeEditor} from "./contract"
 
+/**
+Соединяет текстовую модель, подсветку, окно строк и независимые действия полей.
+
+@param props - Авторский текст, модель, оформление строк и обработчики принимающего приложения.
+
+@returns Редактор в том же Document с общей прокруткой кода и номеров.
+
+@throws Ошибка неверных props, повторяющихся либо отрицательных адресов оформления.
+*/
 export default function CodeEditor(props: Contract.Input): Contract.Output {
   assertCodeEditorProps(props)
   const ownedModel = useMemo(() => new CodeEditorModel({value: props.value, readOnly: props.readOnly}), [])
@@ -133,7 +142,16 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
     if (!Number.isSafeInteger(decoration.line) || decoration.line < 0 || decorations.has(decoration.line)) {
       throw new RangeError("CodeEditor line decorations require unique non-negative line indices")
     }
-    decorations.set(decoration.line, decoration)
+    decorations.set(decoration.line, {...decoration})
+  }
+  const markers = new Map((props.lineMarkers ?? []).map(marker => [marker.line, {...marker}]))
+  const gutterControls = {
+    markers,
+    showMarkers: props.showLineMarkers ?? (markers.size > 0 || props.onLineMarkerClick !== undefined),
+    showLineNumbers: props.showLineNumbers !== false,
+    onLineNumberClick: props.onLineNumberClick,
+    onLineMarkerClick: props.onLineMarkerClick,
+    lineMarkerLabel: props.lineMarkerLabel,
   }
   return <section
     ref={element => {
@@ -169,11 +187,11 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
       ${props.style}
     `}
   >
-    {props.showLineNumbers === false ? null : <MemoCodeEditorGutter
+    {!gutterControls.showLineNumbers && !gutterControls.showMarkers ? null : <MemoCodeEditorGutter
       rows={rows}
       blocks={blocks}
       decorations={decorations}
-      onLineNumberClick={props.onLineNumberClick}
+      controls={gutterControls}
     />}
     <pre
       style={css`

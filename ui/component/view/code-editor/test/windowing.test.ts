@@ -248,3 +248,30 @@ test("compiled CodeEditor: editable-to-readonly transition retains the existing 
     expect(textOffsetAtPosition(editor.code, selection.focusNode!, selection.focusOffset)).toBe(4)
   } finally { editor.dispose() }
 }, 30_000)
+
+
+test("метки и рамка следуют виртуальному окну длинного исходника", () => {
+  const clicked: number[] = []
+  const props = {
+    value: bigSource,
+    readOnly: true,
+    lineMarkers: [{line: 12_000, iconSrc: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14'%3E%3Ccircle cx='7' cy='7' r='5' fill='%23e35d6a'/%3E%3C/svg%3E", label: "Диагностика"}],
+    lineDecorations: [{line: 12_000, numberTone: "error" as const}],
+    onLineMarkerClick: (line: number) => clicked.push(line),
+  }
+  const editor = setup(props)
+  try {
+    expect(editor.host.querySelector('[data-line-marker="12000"]'), "Далёкая метка не создаёт тысячи скрытых элементов").toBeNull()
+    editor.handle.scrollToLine(12_000, {block: "center"})
+    editor.settle()
+    const number = editor.host.querySelector('[data-line-number="12000"]')!
+    expect(number.getAttribute("data-number-tone"), "Оформление появляется вместе с номером в новом окне").toBe("error")
+    editor.host.querySelector('[data-line-marker="12000"]')!.dispatchEvent(new PointerEvent("click", {bubbles: true}))
+    expect(clicked, "Метка сохраняет логический индекс после прокрутки").toEqual([12_000])
+    editor.render({...props, lineMarkers: [], lineDecorations: []})
+    editor.settle()
+    expect(editor.host.querySelector('[data-line-number="12000"]')!.hasAttribute("data-number-tone"), "Повторный render снимает оформление в уже открытом окне").toBeFalse()
+  } finally {
+    editor.dispose()
+  }
+})

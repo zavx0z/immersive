@@ -14,6 +14,10 @@ export function WindowingFixture(props: WindowingFixtureProps) {
       softBreaks={props.softBreaks}
       showFormattingCharacters={props.showFormattingCharacters}
       onReady={props.onReady}
+      lineMarkers={props.lineMarkers}
+      lineDecorations={props.lineDecorations}
+      onLineMarkerClick={props.onLineMarkerClick}
+      onLineNumberClick={props.onLineNumberClick}
       style={css`
         width: 500px;
         height: ${props.viewportHeight ?? 240}px;

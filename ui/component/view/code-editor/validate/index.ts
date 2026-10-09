@@ -26,6 +26,20 @@ export default function assertCodeEditorProps(props: Contract.Input[0]): Contrac
   if (props.onLineNumberClick !== undefined && typeof props.onLineNumberClick !== "function") {
     throw new TypeError("CodeEditor onLineNumberClick must be a function")
   }
+  if (props.showLineMarkers !== undefined && typeof props.showLineMarkers !== "boolean") throw new TypeError("CodeEditor showLineMarkers must be a boolean")
+  if (props.onLineMarkerClick !== undefined && typeof props.onLineMarkerClick !== "function") throw new TypeError("CodeEditor onLineMarkerClick must be a function")
+  if (props.lineMarkerLabel !== undefined && typeof props.lineMarkerLabel !== "function") throw new TypeError("CodeEditor lineMarkerLabel must be a function")
+  if (props.lineMarkers !== undefined) {
+    if (!Array.isArray(props.lineMarkers)) throw new TypeError("CodeEditor lineMarkers must be an array")
+    const lines = new Set<number>()
+    for (const marker of props.lineMarkers) {
+      if (!marker || !Number.isSafeInteger(marker.line) || marker.line < 0 || lines.has(marker.line)) throw new RangeError("CodeEditor line markers require unique non-negative line indices")
+      assertNonEmpty(marker.iconSrc, "CodeEditor marker iconSrc")
+      assertNonEmpty(marker.label, "CodeEditor marker label")
+      if (marker.disabled !== undefined && typeof marker.disabled !== "boolean") throw new TypeError("CodeEditor marker disabled must be a boolean")
+      lines.add(marker.line)
+    }
+  }
   if (props.languageId !== undefined) assertNonEmpty(props.languageId, "CodeEditor languageId")
   if (props.path !== undefined) assertNonEmpty(props.path, "CodeEditor path")
   if (props.showLineNumbers !== undefined && typeof props.showLineNumbers !== "boolean") {

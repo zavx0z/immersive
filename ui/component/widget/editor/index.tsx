@@ -62,6 +62,10 @@ export default function Editor(props: Contract.Input): Contract.Output {
       tokens={props.tokens}
       showLineNumbers={props.showLineNumbers}
       lineDecorations={props.lineDecorations}
+      showLineMarkers={props.showLineMarkers}
+      lineMarkers={props.lineMarkers}
+      onLineMarkerClick={props.onLineMarkerClick}
+      lineMarkerLabel={props.lineMarkerLabel}
       onLineNumberClick={props.onLineNumberClick}
       onChange={props.onChange}
       onReady={props.onReady}

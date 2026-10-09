@@ -8,20 +8,53 @@ import type {CodeEditorPaintRun} from "./paint-runs.ts"
 import type {CodeEditorVisualRow} from "./visual-rows.ts"
 import type {CodeEditorWindowBlock} from "./window-plan.ts"
 
-/** Частная подготовка редактор исходного текста с подсветкой, выделением и общей моделью редактирования. */
-export function LineNumber(props: Readonly<{index: number; continuation: boolean; decoration: CodeEditorLineDecoration | undefined}>) {
+/**
+Настройки независимых действий номера и поля метки.
+
+@property markers - Снимок меток текущего render, адресованных логическими строками.
+
+@property showMarkers - Резервировать отдельное поле маркеров.
+
+@property showLineNumbers - Показывать цифры номеров строк.
+
+@property [onLineNumberClick] - Передаёт строку с нуля и событие клика номера.
+
+@property [onLineMarkerClick] - Передаёт строку и событие отдельного поля метки.
+
+@property [lineMarkerLabel] - Возвращает доступное имя пустого поля по строке с нуля.
+*/
+type GutterControls = Pick<ImmersiveUiComponentViewCodeEditor.Input,
+  "onLineNumberClick" | "onLineMarkerClick" | "lineMarkerLabel"> & Readonly<{
+  markers: ReadonlyMap<number, NonNullable<ImmersiveUiComponentViewCodeEditor.Input["lineMarkers"]>[number]>
+  showMarkers: boolean
+  showLineNumbers: boolean
+}>
+
+/**
+Показывает номер и отдельную метку в одной логической строке, сохраняя высоту редактора.
+
+@param props - Строка, оформление и действия владельца; continuation скрывает повторные номера и метки.
+
+@returns Номер и узкое поле маркера с независимыми обработчиками.
+*/
+export function LineNumber(props: Readonly<{index: number; continuation: boolean; decoration: CodeEditorLineDecoration | undefined; controls: GutterControls}>) {
   const label = props.continuation ? "" : String(props.index + 1)
+  const marker = props.continuation ? undefined : props.controls.markers.get(props.index)
+  const markerLabel = marker?.label ?? props.controls.lineMarkerLabel?.(props.index) ?? `Метка строки ${props.index + 1}`
   return <li
     data-line-index={String(props.index)}
     data-tone={props.decoration?.gutterTone}
+    data-line-continuation={props.continuation ? "true" : undefined}
     title={props.decoration?.title}
     style={css`
       box-sizing: border-box;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 2px;
       min-width: 24px;
       height: var(--code-editor-line-height, 16px);
       min-height: var(--code-editor-line-height, 16px);
-      text-align: right;
       white-space: nowrap;
 
       &[data-tone="info"] {
@@ -41,7 +74,114 @@ export function LineNumber(props: Readonly<{index: number; continuation: boolean
       }
     `}
   >
-    {label}
+    <button
+      hidden={!props.controls.showMarkers}
+      type="button"
+      data-line-marker={String(props.index)}
+      aria-label={markerLabel}
+      title={markerLabel}
+      disabled={props.continuation || marker?.disabled === true || !props.controls.onLineMarkerClick}
+      onClick={event => {
+        event.stopPropagation()
+        if (!props.continuation && !marker?.disabled) props.controls.onLineMarkerClick?.(props.index, event)
+      }}
+      style={css`
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 14px;
+        height: var(--code-editor-line-height, 16px);
+        margin: 0;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+
+        &[hidden] {
+          display: none;
+        }
+
+        &:disabled {
+          cursor: default;
+        }
+      `}
+    >
+      <img
+        hidden={!marker}
+        src={marker?.iconSrc}
+        alt=""
+        aria-hidden="true"
+        draggable={false}
+        style={css`
+          width: 14px;
+          height: 14px;
+
+          &[hidden] {
+            display: none;
+          }
+        `}
+      />
+    </button>
+    <button
+      hidden={!props.controls.showLineNumbers}
+      type="button"
+      data-line-number={String(props.index)}
+      data-number-tone={props.continuation ? undefined : props.decoration?.numberTone}
+      disabled={props.continuation || !props.controls.onLineNumberClick}
+      onClick={event => {
+        event.stopPropagation()
+        if (!props.continuation) props.controls.onLineNumberClick?.(props.index, event)
+      }}
+      style={css`
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: var(--code-editor-line-height, 16px);
+        padding: 0 2px;
+        margin: 0;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+
+        &[hidden] {
+          display: none;
+        }
+
+        &:disabled {
+          cursor: default;
+        }
+
+        &[data-number-tone="neutral"] {
+          border-color: var(--editor-line-number-content);
+        }
+
+        &[data-number-tone="info"] {
+          border-color: var(--state-info);
+        }
+
+        &[data-number-tone="success"] {
+          border-color: var(--state-success);
+        }
+
+        &[data-number-tone="warning"] {
+          border-color: var(--state-warning);
+        }
+
+        &[data-number-tone="error"] {
+          border-color: var(--state-error);
+        }
+      `}
+    >
+      {label}
+    </button>
   </li>
 }
 
@@ -214,8 +354,14 @@ export function CodeWindowBlock(props: Readonly<{block: CodeEditorWindowBlock; d
   </>
 }
 
-/** Номера используют то же окно, не входят в source-text root. */
-export function LineNumberWindowBlock(props: Readonly<{block: CodeEditorWindowBlock; decoration: CodeEditorLineDecoration | undefined}>) {
+/**
+Сохраняет геометрию пропущенных строк и показывает номер только материализованной строки.
+
+@param props - Строки или блоки окна, их оформление и действия полей.
+
+@returns Согласованные с кодом номера и маркеры без включения в исходный текст.
+*/
+export function LineNumberWindowBlock(props: Readonly<{block: CodeEditorWindowBlock; decoration: CodeEditorLineDecoration | undefined; controls: GutterControls}>) {
   const row = props.block.kind === "row" ? props.block.row : null
   return <>
     {props.block.kind === "gap" ? <CodeWindowGap count={props.block.end - props.block.start} /> : null}
@@ -223,21 +369,22 @@ export function LineNumberWindowBlock(props: Readonly<{block: CodeEditorWindowBl
       index={row.line}
       continuation={row.continuation}
       decoration={props.decoration}
+      controls={props.controls}
     /> : null}
   </>
 }
 
 
-/** Gutter создаётся только при включённых номерах и следует тому же окну. */
-export function CodeEditorGutter(props: Readonly<{rows: readonly CodeEditorVisualRow[]; blocks: readonly CodeEditorWindowBlock[] | null; decorations: ReadonlyMap<number, CodeEditorLineDecoration>; onLineNumberClick?: ((line: number, event: MouseEvent) => void) | undefined}>) {
+/**
+Составляет поля номеров и меток из одного окна логических строк.
+
+@param props - Строки или блоки окна, их оформление и действия полей.
+
+@returns Согласованные с кодом номера и маркеры без включения в исходный текст.
+*/
+export function CodeEditorGutter(props: Readonly<{rows: readonly CodeEditorVisualRow[]; blocks: readonly CodeEditorWindowBlock[] | null; decorations: ReadonlyMap<number, CodeEditorLineDecoration>; controls: GutterControls}>) {
   return <ul
-      aria-hidden="true"
-      onClick={event => {
-        const target = event.target as HTMLElement | null
-        const row = target?.closest?.("li[data-line-index]")
-        if (row?.parentElement !== event.currentTarget) return
-        props.onLineNumberClick?.(Number(row.getAttribute("data-line-index")), event)
-      }}
+      data-code-gutter=""
       style={css`
         box-sizing: border-box;
         display: flex;
@@ -246,7 +393,7 @@ export function CodeEditorGutter(props: Readonly<{rows: readonly CodeEditorVisua
         flex-shrink: 0;
         min-height: 0;
         margin: 0;
-        padding: 8px;
+        padding: 8px 4px;
         border-right: var(--border-width-control) solid var(--editor-border);
         background: var(--editor-gutter-background);
         color: var(--editor-line-number-content);
@@ -260,22 +407,31 @@ export function CodeEditorGutter(props: Readonly<{rows: readonly CodeEditorVisua
       {props.blocks !== null ? <WindowedLineNumbers
         blocks={props.blocks}
         decorations={props.decorations}
+        controls={props.controls}
       /> : <PlainLineNumbers
         rows={props.rows}
         decorations={props.decorations}
+        controls={props.controls}
       />}
     </ul>
 }
 
 /** Изменение текста при прежних номерах не перерисовывает gutter и его композицию. */
 export const MemoCodeEditorGutter = memo(CodeEditorGutter, (previous, next) =>
-  previous.blocks === next.blocks && previous.onLineNumberClick === next.onLineNumberClick &&
+  previous.blocks === next.blocks && previous.controls.onLineNumberClick === next.controls.onLineNumberClick &&
+  previous.controls.onLineMarkerClick === next.controls.onLineMarkerClick &&
+  previous.controls.lineMarkerLabel === next.controls.lineMarkerLabel &&
+  previous.controls.showMarkers === next.controls.showMarkers && previous.controls.showLineNumbers === next.controls.showLineNumbers &&
+  previous.controls.markers.size === next.controls.markers.size && [...previous.controls.markers].every(([line, marker]) => {
+    const candidate = next.controls.markers.get(line)
+    return candidate !== undefined && candidate.iconSrc === marker.iconSrc && candidate.label === marker.label && candidate.disabled === marker.disabled
+  }) &&
   previous.rows.length === next.rows.length && previous.rows.every((row, index) => {
     const candidate = next.rows[index]!
     return row.key === candidate.key && row.line === candidate.line && row.continuation === candidate.continuation
   }) && previous.decorations.size === next.decorations.size && [...previous.decorations].every(([line, decoration]) => {
     const candidate = next.decorations.get(line)
-    return candidate !== undefined && candidate.gutterTone === decoration.gutterTone && candidate.title === decoration.title
+    return candidate !== undefined && candidate.gutterTone === decoration.gutterTone && candidate.numberTone === decoration.numberTone && candidate.title === decoration.title
   }))
 
 
@@ -318,23 +474,37 @@ export function PlainCodeRows(props: Readonly<{rows: readonly CodeEditorVisualRo
   </>
 }
 
-export function WindowedLineNumbers(props: Readonly<{blocks: readonly CodeEditorWindowBlock[]; decorations: ReadonlyMap<number, CodeEditorLineDecoration>}>) {
+/** Размещает номера, метки и промежутки виртуального окна.
+
+@param props - Строки окна и их оформление.
+
+@returns Поля номеров и меток.
+*/
+export function WindowedLineNumbers(props: Readonly<{blocks: readonly CodeEditorWindowBlock[]; decorations: ReadonlyMap<number, CodeEditorLineDecoration>; controls: GutterControls}>) {
   return <>
     {props.blocks.map(block => <LineNumberWindowBlock
       key={block.key}
       block={block}
       decoration={block.kind === "row" ? props.decorations.get(block.row.line) : undefined}
+      controls={props.controls}
     />)}
   </>
 }
 
-export function PlainLineNumbers(props: Readonly<{rows: readonly CodeEditorVisualRow[]; decorations: ReadonlyMap<number, CodeEditorLineDecoration>}>) {
+/** Размещает поля всех строк короткого либо редактируемого документа.
+
+@param props - Строки окна и их оформление.
+
+@returns Поля номеров и меток.
+*/
+export function PlainLineNumbers(props: Readonly<{rows: readonly CodeEditorVisualRow[]; decorations: ReadonlyMap<number, CodeEditorLineDecoration>; controls: GutterControls}>) {
   return <>
     {props.rows.map(row => <MemoLineNumber
       key={row.key}
       index={row.line}
       continuation={row.continuation}
       decoration={props.decorations.get(row.line)}
+      controls={props.controls}
     />)}
   </>
 }
