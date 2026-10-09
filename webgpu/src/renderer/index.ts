@@ -17,6 +17,9 @@ import {Matrix4, Vector3, Frustum} from "@zavx0z/immersive-engine"
 import {LineSegments} from "@zavx0z/immersive-engine"
 import {Text} from "@zavx0z/immersive-engine"
 import {Object3D} from "@zavx0z/immersive-engine"
+import {glassShader, glassCompositeShader} from "./shader/glass"
+import {glassAbsorptionChannel} from "./glass-optics"
+import {createGlassTargets, destroyGlassTargets, type GlassTargets} from "./glass-targets"
 import thinFilmWGSL from "./shader/thin-film.wgsl" with {type: "text"}
 import holographicWGSL from "./shader/holographic.wgsl" with {type: "text"}
 import meshStaticWGSL from "./shader/mesh-static.wgsl" with {type: "text"}
@@ -97,6 +100,8 @@ export type {
 if (import.meta.hot) {
   (import.meta.hot.accept as unknown as (dependencies: string[], callback: () => void) => void)([
     "./shader/mesh-basic.wgsl",
+    "./shader/glass.wgsl",
+    "./shader/glass-composite.wgsl",
     "./shader/thin-film.wgsl",
     "./shader/holographic.wgsl",
     "./shader/mesh-static.wgsl",
@@ -179,6 +184,7 @@ type DisplayRasterTarget = {
   depth: GPUTexture
   width: number
   height: number
+  glassTargets?: GlassTargets
 }
 
 interface PreparedRenderLayer {
@@ -209,6 +215,23 @@ function hasDirectRenderItems(layer: PreparedRenderLayer): boolean {
   return layer.regularObjects.length > 0 || layer.glassObjects.length > 0 || layer.uiObjects.length > 0
 }
 
+/** Физическое стекло отделено от намеренно emissive ThinFilm/Holographic. */
+function isPhysicalGlass(item: RenderItem): boolean {
+  const raw = (item.object as Mesh | undefined)?.material
+  return (Array.isArray(raw) ? raw[0] : raw) instanceof GlassMaterial
+}
+
+function isActivePhysicalGlass(item: RenderItem): boolean {
+  const raw = (item.object as Mesh | undefined)?.material
+  const material = Array.isArray(raw) ? raw[0] : raw
+  return material instanceof GlassMaterial && material.visible && material.tintColor.a > 0
+}
+
+function isSilhouetteLine(item: RenderItem): boolean {
+  const material = (item.object as LineSegments | undefined)?.material
+  return item.type === "line" && material instanceof LineGlowMaterial && material.visibilityMode === "silhouette"
+}
+
 /**
  * Рендерер, использующий **WebGPU API** для отрисовки сцены.
  *
@@ -216,6 +239,24 @@ function hasDirectRenderItems(layer: PreparedRenderLayer): boolean {
  * * Полная поддержка **WebGPU** (не поддерживает WebGL).
  * * Работает в пространстве отсечения с глубиной **[0, 1]**.
  * * Автоматически управляет буферами uniform-ов и пайплайнами.
+ *
+ * GlassMaterial — тонкие оболочки: Beer–Lambert поглощает проходящий свет,
+ * Schlick/GGX отражает существующие источники. Цвет tint не является emission.
+ * Два single-sample RGBA16F attachments накапливают optical depth/отражение без
+ * сортировки Mesh; композиция независима от порядка до точности FP16.
+ * Composite возвращает encoded premultiplied sRGB в текущий
+ * unorm MSAA target перед прозрачными контурами/HUD. Глубина opaque читается
+ * по каждому MSAA sample; покрытие границы single-sample стекла приближённое.
+ *
+ * Комплект texture занимает 20 байт на physical pixel (118809600 байт для
+ * 2730×2176), общий для всех слоёв/batches одного target. Display matrix имеет
+ * свой комплект только при наличии стекла. Resize/dispose освобождают его;
+ * кадр без GlassMaterial не создаёт дополнительного прохода или textures.
+ * Коэффициенты поглощения вычисляются на CPU один раз на загрузку batch, а не
+ * на каждый fragment. Пиксели без стекла возвращают снимок opaque без gamma math.
+ * FP16 накопление насыщается при экстремальном overdraw; перед exp/делением
+ * composite ограничивает суммы. Многослойное отражение — взвешенное приближение,
+ * не ray tracing, преломление или точный оптический путь внутри закрытого объёма.
  */
 export class Renderer {
   private disposed = false
@@ -318,6 +359,11 @@ export class Renderer {
   private context: GPUCanvasContext | null = null
   private presentationFormat: GPUTextureFormat | null = null
   private basicMeshPipeline: GPURenderPipeline | null = null
+  private glassMeshPipeline: GPURenderPipeline | null = null
+  private glassCompositePipeline: GPURenderPipeline | null = null
+  private glassCompositeLayout: GPUBindGroupLayout | null = null
+  private glassDepthLayout: GPUBindGroupLayout | null = null
+  private glassTargets: GlassTargets | null = null
   private thinFilmMeshPipeline: GPURenderPipeline | null = null
   private holographicMeshPipeline: GPURenderPipeline | null = null
   private staticMeshPipeline: GPURenderPipeline | null = null
@@ -388,6 +434,7 @@ export class Renderer {
 
   private geometryCache: Map<BufferGeometry, GeometryBuffers> = new Map()
   private readonly renderBundleCaches = new Map<Object3D, RenderBundleCache>()
+  private readonly glassRenderBundleCaches = new Map<Object3D, RenderBundleCache>()
   private geometryAttributeSources: WeakMap<BufferGeometry, Map<string, GeometryAttributeBinding>> = new WeakMap()
   private depthTexture: GPUTexture | null = null
   private depthTextureView: GPUTextureView | null = null
@@ -404,6 +451,7 @@ export class Renderer {
   private readonly sceneUniformUints = new Uint32Array(this.sceneUniformData)
   private readonly backgroundUniformData = new Float32Array(4)
   private readonly sceneViewNormalMatrix = new Matrix4()
+  private readonly rasterViewMatrix = new Matrix4()
   private readonly sceneCameraPosition = new Vector3()
   private readonly sceneWorldLightPosition = new Vector3()
   private readonly meshNormalMatrix = new Matrix4()
@@ -672,6 +720,8 @@ export class Renderer {
     const basicShaderModule = this.device.createShaderModule({
       code: meshBasicWGSL,
     })
+    const glassShaderModule = this.device.createShaderModule({label: "glass-optical-depth", code: glassShader(this.sampleCount)})
+    const glassCompositeModule = this.device.createShaderModule({label: "glass-linear-composite", code: glassCompositeShader})
     const thinFilmShaderModule = this.device.createShaderModule({
       code: thinFilmWGSL,
     })
@@ -710,7 +760,7 @@ export class Renderer {
       label: "rounded",
       code: roundedShaderCode,
     })
-    await Promise.all([roundedShaderModule, roundedInstancedShaderModule].map(async module => {
+    await Promise.all([roundedShaderModule, roundedInstancedShaderModule, glassShaderModule, glassCompositeModule].map(async module => {
       const diagnostics = await module.getCompilationInfo()
       const errors = diagnostics.messages.filter(message => message.type === "error")
       if (errors.length > 0) {
@@ -758,6 +808,41 @@ export class Renderer {
       },
       primitive: {topology: "triangle-list", cullMode: "none"},
       depthStencil,
+      multisample: {count: this.sampleCount},
+    })
+
+    this.glassDepthLayout = this.device.createBindGroupLayout({entries: [{
+      binding: 0, visibility: GPUShaderStage.FRAGMENT,
+      texture: {sampleType: "depth", multisampled: this.sampleCount > 1},
+    }]})
+    this.glassCompositeLayout = this.device.createBindGroupLayout({entries: [0, 1, 2].map(binding => ({
+      binding, visibility: GPUShaderStage.FRAGMENT, texture: {sampleType: "unfilterable-float" as const},
+    }))})
+    const additive: GPUBlendState = {
+      color: {srcFactor: "one", dstFactor: "one", operation: "add"},
+      alpha: {srcFactor: "one", dstFactor: "one", operation: "add"},
+    }
+    this.glassMeshPipeline = await this.device.createRenderPipelineAsync({
+      label: "GlassMaterial optical depth",
+      layout: this.device.createPipelineLayout({bindGroupLayouts: [globalBindGroupLayout, perObjectBindGroupLayout, this.glassDepthLayout]}),
+      vertex: {module: glassShaderModule, entryPoint: "vs_main", buffers: [
+        {arrayStride: 12, attributes: [{shaderLocation: 0, offset: 0, format: "float32x3"}]},
+        {arrayStride: 12, attributes: [{shaderLocation: 1, offset: 0, format: "float32x3"}]},
+      ]},
+      fragment: {module: glassShaderModule, entryPoint: "fs_main", targets: [
+        {format: "rgba16float", blend: additive}, {format: "rgba16float", blend: additive},
+      ]},
+      primitive: {topology: "triangle-list", cullMode: "none"},
+      // OIT is single-sample; the shader reads all existing opaque MSAA depth samples.
+      multisample: {count: 1},
+    })
+    this.glassCompositePipeline = await this.device.createRenderPipelineAsync({
+      label: "GlassMaterial linear composite",
+      layout: this.device.createPipelineLayout({bindGroupLayouts: [this.glassCompositeLayout]}),
+      vertex: {module: glassCompositeModule, entryPoint: "vs_main"},
+      fragment: {module: glassCompositeModule, entryPoint: "fs_main", targets: [{format: this.presentationFormat}]},
+      primitive: {topology: "triangle-list", cullMode: "none"},
+      depthStencil: {format: "depth24plus-stencil8", depthWriteEnabled: false, depthCompare: "always"},
       multisample: {count: this.sampleCount},
     })
 
@@ -1449,6 +1534,7 @@ struct VertexOutput {
   @location(2) instanceColor: vec4<f32>,
   @location(3) glowIntensity: f32,
   @location(4) glowColor: vec4<f32>,
+  @location(5) inverseDistanceFade: f32,
 };
 
 @vertex
@@ -1461,7 +1547,8 @@ fn vs_main(
     @location(5) instanceMatrix3: vec4<f32>,
     @location(6) instanceColor: vec4<f32>,
     @location(7) glowIntensity: f32,
-    @location(8) glowColor: vec4<f32>
+    @location(8) glowColor: vec4<f32>,
+    @location(9) inverseDistanceFade: f32
 ) -> VertexOutput {
   var out: VertexOutput;
   // Собираем матрицу инстанса из 4 векторов
@@ -1480,14 +1567,14 @@ fn vs_main(
   out.instanceColor = instanceColor;
   out.glowIntensity = glowIntensity;
   out.glowColor = glowColor;
+  out.inverseDistanceFade = inverseDistanceFade;
   return out;
 }
 
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
   let distanceMm = distance(in.worldPosition, sceneUniforms.cameraPosition);
-  let fadeDistanceMm = 5000.0;
-  let normalizedDistance = distanceMm / fadeDistanceMm;
+  let normalizedDistance = distanceMm * in.inverseDistanceFade;
 
   // Базовое затухание для обычных линий
   let baseFade = exp(-0.5 * normalizedDistance);
@@ -1523,9 +1610,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
           {arrayStride: 12, attributes: [{shaderLocation: 0, offset: 0, format: "float32x3"}]},
           // color (базовый цвет вершин)
           {arrayStride: 12, attributes: [{shaderLocation: 1, offset: 0, format: "float32x3"}]},
-          // instance buffer (матрица 16 floats + параметры материала 9 floats = 25 floats = 100 байт)
+          // instance buffer (матрица 16 floats + параметры материала 10 floats = 26 floats = 104 байта)
           {
-            arrayStride: 100, // 25 * 4 байта
+            arrayStride: 104, // 26 * 4 байта
             stepMode: "instance",
             attributes: [
               // Матрица инстанса (16 floats)
@@ -1533,10 +1620,11 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
               {shaderLocation: 3, offset: 16, format: "float32x4"},
               {shaderLocation: 4, offset: 32, format: "float32x4"},
               {shaderLocation: 5, offset: 48, format: "float32x4"},
-              // Параметры материала (9 floats)
+              // Параметры материала (10 floats)
               {shaderLocation: 6, offset: 64, format: "float32x4"}, // color (rgba)
               {shaderLocation: 7, offset: 80, format: "float32"}, // glowIntensity
               {shaderLocation: 8, offset: 84, format: "float32x4"}, // glowColor (rgba)
+              {shaderLocation: 9, offset: 100, format: "float32"}, // inverseDistanceFade
             ],
           },
         ],
@@ -1815,7 +1903,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     for (const plane of this.displayRasterTargets.keys()) {
       if (!rasterDisplays.has(plane)) this.releaseDisplay(plane)
     }
-    this.ensureViewUniformResourceCapacity(1 + planned.boundedViews.length + rasterDisplays.size)
+    this.ensureViewUniformResourceCapacity(1 + planned.boundedViews.length + planned.overlays.length + rasterDisplays.size)
     const baseResources = this.viewUniformResources[0]!
     const baseFrustum = this.prepareCompositionView(0, planned.viewPoint)
 
@@ -1856,34 +1944,56 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       return {root: view.space, layer, resources, viewport: view.viewport, paintBackground: true}
     })
     const overlayLayers: PreparedCompositionLayer[] = planned.overlays.map((overlay, index) => {
+      const matrix = overlay.viewProjectionForViewPoint?.(planned.viewPoint)
+      const resourceIndex = 1 + planned.boundedViews.length + index
+      const resources = matrix === undefined ? baseResources : this.viewUniformResources[resourceIndex]!
+      let frustum = baseFrustum
+      if (matrix !== undefined) {
+        this.device!.queue.writeBuffer(resources.globalUniformBuffer, 0, matrix.elements)
+        frustum = this.compositionFrustums[resourceIndex]!.setFromProjectionMatrix(matrix)
+      }
       return {
         root: overlay,
         layer: this.prepareRenderLayer(
           overlay,
           frameRenderItems,
           baseLights,
-          baseFrustum,
+          frustum,
           overlayExclusions[index],
         ),
-        resources: baseResources,
+        resources,
         viewport: fullViewport,
         paintBackground: false,
       }
     })
     const rasterLayers = [...rasterDisplays].map((plane, index) => {
-      const resourceIndex = 1 + planned.boundedViews.length + index
+      const resourceIndex = 1 + planned.boundedViews.length + planned.overlays.length + index
       const resources = this.viewUniformResources[resourceIndex]!
       const matrix = plane.rasterProjection()
       this.device!.queue.writeBuffer(resources.globalUniformBuffer, 0, matrix.elements)
       const frustum = this.compositionFrustums[resourceIndex]!.setFromProjectionMatrix(matrix)
       const target = this.ensureDisplayRasterTarget(plane)
-      const layer = this.prepareRenderLayer(plane.content, frameRenderItems, [], frustum)
+      const lights = [...baseLights]
+      const layer = this.prepareRenderLayer(plane.content, frameRenderItems, lights, frustum)
+      this.updateSceneUniforms(resources.sceneUniformBuffer, lights, this.rasterViewMatrix.copy(plane.matrixWorld).invert(), true)
       return {root: plane.content, layer, resources, viewport: {x: 0, y: 0, width: target.width, height: target.height}, paintBackground: false, target}
     })
     this.updateSceneUniforms(baseResources.sceneUniformBuffer, baseLights, planned.viewPoint.viewMatrix)
+    for (const overlay of overlayLayers) {
+      if (overlay.resources === baseResources) continue
+      this.updateSceneUniforms(overlay.resources.sceneUniformBuffer, baseLights, planned.viewPoint.viewMatrix)
+    }
     const preparedLayers = [baseLayer, ...boundedLayers, ...overlayLayers]
     const allLayers = [...preparedLayers, ...rasterLayers]
     this.pruneRenderBundleCaches(allLayers)
+    if (!preparedLayers.some(({layer}) => layer.glassObjects.some(isActivePhysicalGlass))) {
+      destroyGlassTargets(this.glassTargets)
+      this.glassTargets = null
+    }
+    for (const raster of rasterLayers) if (!raster.layer.glassObjects.some(isActivePhysicalGlass)) {
+      destroyGlassTargets(raster.target.glassTargets)
+      delete raster.target.glassTargets
+    }
     const renderIndexByItem = new Map<RenderItem, number>()
     frameRenderItems.forEach((item, index) => {
       if (!renderIndexByItem.has(item)) renderIndexByItem.set(item, index)
@@ -2038,10 +2148,13 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const activeRoots = new Set(layers
       .filter(({layer, paintBackground}) => paintBackground || hasDirectRenderItems(layer))
       .map(({root}) => root))
-    for (const [root, cache] of this.renderBundleCaches) {
-      if (activeRoots.has(root)) continue
-      cache.clear()
-      this.renderBundleCaches.delete(root)
+    const glassRoots = new Set(layers.filter(({layer}) => layer.glassObjects.some(isActivePhysicalGlass)).map(({root}) => root))
+    for (const [caches, roots] of [[this.renderBundleCaches, activeRoots], [this.glassRenderBundleCaches, glassRoots]] as const) {
+      for (const [root, cache] of caches) {
+        if (roots.has(root)) continue
+        cache.clear()
+        caches.delete(root)
+      }
     }
   }
 
@@ -2081,12 +2194,19 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     rasterTarget?: DisplayRasterTarget,
   ): void {
     const {root, layer, resources, viewport, paintBackground} = prepared
+    const hasGlassMaterial = layer.glassObjects.some(isPhysicalGlass)
+    const physical = hasGlassMaterial ? layer.glassObjects.filter(isActivePhysicalGlass) : []
+    const glass = physical.length > 0 ? this.ensureGlassTargets(rasterTarget) : null
+    const legacy = hasGlassMaterial ? layer.glassObjects.filter(item => !isPhysicalGlass(item)) : layer.glassObjects
+    const ui = hasGlassMaterial ? layer.uiObjects.filter(item => !isPhysicalGlass(item)) : layer.uiObjects
+    const postGlassLines = glass === null ? [] : layer.regularObjects.filter(isSilhouetteLine)
+    const regular = glass === null ? layer.regularObjects : layer.regularObjects.filter(item => !isSilhouetteLine(item))
     const colorLoadOp: GPULoadOp = clearColor ? "clear" : "load"
     const renderPassDescriptor: GPURenderPassDescriptor = {
       colorAttachments: [
         {
           view: rasterTarget?.multisample.createView() ?? this.multisampleTextureView!,
-          resolveTarget: textureView,
+          resolveTarget: glass?.opaqueView ?? textureView,
           loadOp: colorLoadOp,
           storeOp: "store",
           clearValue: clearValue ?? layer.background ?? [0, 0, 0, 0],
@@ -2131,9 +2251,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       }
       encoder.setBindGroup(0, resources.globalBindGroup)
       // Keep pass membership and transparency order exactly as collected.
-      this.renderObjectList(encoder, layer.regularObjects, renderIndexByItem)
-      this.renderObjectList(encoder, layer.glassObjects, renderIndexByItem)
-      this.renderObjectList(encoder, layer.uiObjects, renderIndexByItem, true)
+      this.renderObjectList(encoder, regular, renderIndexByItem)
+      this.renderObjectList(encoder, legacy, renderIndexByItem)
+      if (glass === null) this.renderObjectList(encoder, ui, renderIndexByItem, true)
     }
     let cache = this.renderBundleCaches.get(root)
     if (cache === undefined && this.renderBundleCaches.size < MAX_CACHED_RENDER_LAYERS) {
@@ -2148,6 +2268,56 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     }, passEncoder, record)
 
     passEncoder.end()
+    if (glass !== null) {
+      const accumulation = commandEncoder.beginRenderPass({label: "glass-accumulation", colorAttachments: glass.accumulationViews.map(view => ({
+        view, loadOp: "clear", storeOp: "store", clearValue: [0, 0, 0, 0],
+      }))})
+      this.configurePassViewport(accumulation, viewport)
+      const recordGlass = (encoder: RenderCommandEncoder) => {
+        encoder.setBindGroup(0, resources.globalBindGroup)
+        encoder.setBindGroup(2, glass.depthGroup)
+        this.renderObjectList(encoder, physical, renderIndexByItem)
+      }
+      let glassCache = this.glassRenderBundleCaches.get(root)
+      if (glassCache === undefined && this.glassRenderBundleCaches.size < MAX_CACHED_RENDER_LAYERS) {
+        glassCache = new RenderBundleCache()
+        this.glassRenderBundleCaches.set(root, glassCache)
+      }
+      if (glassCache === undefined) recordGlass(accumulation)
+      else glassCache.execute(this.device!, {colorFormat: "rgba16float", additionalColorFormats: ["rgba16float"], sampleCount: 1}, accumulation, recordGlass)
+      accumulation.end()
+      const postDescriptor: GPURenderPassDescriptor = {
+        colorAttachments: [{view: rasterTarget?.multisample.createView() ?? this.multisampleTextureView!, resolveTarget: textureView, loadOp: "load", storeOp: "store"}],
+        depthStencilAttachment: {view: rasterTarget?.depth.createView() ?? this.depthTextureView!, depthLoadOp: "load", depthStoreOp: "store", stencilLoadOp: "load", stencilStoreOp: "store"},
+      }
+      const composite = commandEncoder.beginRenderPass({...postDescriptor, label: "glass-composite"})
+      this.configurePassViewport(composite, viewport)
+      composite.setPipeline(this.glassCompositePipeline!)
+      composite.setBindGroup(0, glass.compositeGroup)
+      composite.draw(3)
+      composite.end()
+      if (ui.length > 0 || postGlassLines.length > 0) {
+        const post = commandEncoder.beginRenderPass({...postDescriptor, label: "glass-lines-and-hud"})
+        this.configurePassViewport(post, viewport)
+        post.setStencilReference(0)
+        post.setBindGroup(0, resources.globalBindGroup)
+        this.renderObjectList(post, postGlassLines, renderIndexByItem)
+        this.renderObjectList(post, ui, renderIndexByItem, true)
+        post.end()
+      }
+    }
+  }
+
+  /** Один комплект на уже существующий render target, общий для всех его слоёв/batches. */
+  private ensureGlassTargets(raster?: DisplayRasterTarget): GlassTargets {
+    const current = raster?.glassTargets ?? (raster === undefined ? this.glassTargets : null)
+    if (current !== null && current !== undefined) return current
+    const depth = raster?.depth ?? this.depthTexture!
+    const target = createGlassTargets(this.device!, raster?.width ?? this.canvas!.width, raster?.height ?? this.canvas!.height,
+      this.presentationFormat!, this.glassCompositeLayout!, this.glassDepthLayout!, depth.createView({aspect: "depth-only"}))
+    if (raster !== undefined) raster.glassTargets = target
+    else this.glassTargets = target
+    return target
   }
 
   private renderOverlayLines(
@@ -2225,8 +2395,10 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
   }
 
   private clearRenderBundleCaches(): void {
-    for (const cache of this.renderBundleCaches.values()) cache.clear()
-    this.renderBundleCaches.clear()
+    for (const caches of [this.renderBundleCaches, this.glassRenderBundleCaches]) {
+      for (const cache of caches.values()) cache.clear()
+      caches.clear()
+    }
   }
 
   private createPerObjectResources(capacity: number): void {
@@ -2550,8 +2722,15 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         material instanceof DisplayRasterMaterial ? -1 : material.fit === "contain" ? 1 : 0,
         sourceAspect,
       )
-    } else if ((material as any).isGlassMaterial) {
-      this.writePerObjectRgba(offsetFloats + 32, (material as GlassMaterial).tintColor)
+    } else if (material instanceof GlassMaterial) {
+      material.validate()
+      // sRGB decode/log is per batch, not repeated for every overlapping fragment.
+      this.writePerObjectVec4(offsetFloats + 32, glassAbsorptionChannel(material.tintColor.r),
+        glassAbsorptionChannel(material.tintColor.g), glassAbsorptionChannel(material.tintColor.b), material.tintColor.a)
+      const f0 = ((material.ior - 1) / (material.ior + 1)) ** 2
+      const roughSquared = material.roughness ** 4
+      const masking = (material.roughness + 1) ** 2 / 8
+      this.writePerObjectVec4(offsetFloats + 36, material.thickness, f0, roughSquared, masking)
     }
   }
 
@@ -2631,7 +2810,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       shimmerAmount,
     )
     this.writePerObjectVec4(offsetFloats + 24, glowR, glowG, glowB, glowA)
-    this.writePerObjectVec4(offsetFloats + 28, visualScale, silhouetteAmount, 0, 0)
+    this.writePerObjectVec4(offsetFloats + 28, visualScale, silhouetteAmount,
+      material.distanceFade === 0 ? 0 : 1 / material.distanceFade, 0)
   }
 
   private updateTextData(text: Text, worldMatrix: Matrix4, offsetFloats: number, isStencil: boolean): void {
@@ -2684,6 +2864,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
                   ? this.thinFilmMeshPipeline
                   : material instanceof HolographicMaterial
                     ? this.holographicMeshPipeline
+                  : material instanceof GlassMaterial
+                    ? this.glassMeshPipeline
                   : material instanceof ColorPickerMaterial
                     ? (isUiLayer ? this.uiColorPickerPipeline : this.colorPickerPipeline)
                   : isRadialBackdropMaterial(material)
@@ -3068,6 +3250,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     sceneUniformBuffer: GPUBuffer,
     lights: LightItem[],
     viewMatrix: Matrix4,
+    orthographic = false,
   ): void {
     if (!this.device) return
 
@@ -3096,6 +3279,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     float32View[cameraOffset] = cameraPosition.x
     float32View[cameraOffset + 1] = cameraPosition.y
     float32View[cameraOffset + 2] = cameraPosition.z
+    float32View[cameraOffset + 3] = Number(orthographic)
 
     const lightsArrayOffset = SCENE_UNIFORM_LAYOUT.lightsFloatOffset
     for (let i = 0; i < uint32View[32]!; i++) {
@@ -3264,6 +3448,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     target?.texture.destroy()
     target?.multisample.destroy()
     target?.depth.destroy()
+    destroyGlassTargets(target?.glassTargets)
     this.displayRasterTargets.delete(plane)
     const surface = plane.rasterSurface
     if (surface) {
@@ -3290,7 +3475,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     try {
       texture = allocate({label: "display-matrix", size: [width, height], format: this.presentationFormat!, usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING})
       multisample = allocate({label: "display-matrix-msaa", size: [width, height], format: this.presentationFormat!, sampleCount: this.sampleCount, usage: GPUTextureUsage.RENDER_ATTACHMENT})
-      depth = allocate({label: "display-matrix-depth", size: [width, height], format: "depth24plus-stencil8", sampleCount: this.sampleCount, usage: GPUTextureUsage.RENDER_ATTACHMENT})
+      depth = allocate({label: "display-matrix-depth", size: [width, height], format: "depth24plus-stencil8", sampleCount: this.sampleCount, usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING})
     } catch (error) {
       for (const texture of created) texture.destroy()
       throw error
@@ -3298,6 +3483,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     current?.texture.destroy()
     current?.multisample.destroy()
     current?.depth.destroy()
+    destroyGlassTargets(current?.glassTargets)
     const next = {texture, multisample, depth, width, height}
     this.displayRasterTargets.set(plane, next)
     this.displayRasterImages.set(plane.rasterMaterial, texture)
@@ -3663,9 +3849,12 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.viewUniformResources.length = 0
     this.viewProjectionMatrices.length = 0
     this.compositionFrustums.length = 0
+    destroyGlassTargets(this.glassTargets)
+    this.glassTargets = null
     const textures = new Set<GPUTexture>()
     for (const value of [this.depthTexture, this.multisampleTexture, this.presentedFrameTexture]) if (value !== null) textures.add(value)
     for (const target of this.displayRasterTargets.values()) {
+      destroyGlassTargets(target.glassTargets)
       textures.add(target.texture)
       textures.add(target.multisample)
       textures.add(target.depth)
@@ -3707,6 +3896,10 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.backgroundBindGroupLayout = null
     this.backgroundPipeline = null
     this.basicMeshPipeline = null
+    this.glassMeshPipeline = null
+    this.glassCompositePipeline = null
+    this.glassCompositeLayout = null
+    this.glassDepthLayout = null
     this.thinFilmMeshPipeline = null
     this.holographicMeshPipeline = null
     this.staticMeshPipeline = null
@@ -3752,6 +3945,10 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.depthTexture.height !== this.canvas.height
 
     if (needsResize) {
+      for (const cache of this.glassRenderBundleCaches.values()) cache.clear()
+      this.glassRenderBundleCaches.clear()
+      destroyGlassTargets(this.glassTargets)
+      this.glassTargets = null
       this.depthTextureView = null
       this.multisampleTextureView = null
       if (this.depthTexture) this.depthTexture.destroy()
@@ -3764,7 +3961,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.depthTexture = this.device.createTexture({
         size,
         format: "depth24plus-stencil8",
-        usage: GPUTextureUsage.RENDER_ATTACHMENT,
+        usage: GPUTextureUsage.RENDER_ATTACHMENT | GPUTextureUsage.TEXTURE_BINDING,
         sampleCount: this.sampleCount,
       })
 

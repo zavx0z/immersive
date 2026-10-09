@@ -10,6 +10,7 @@ import "../src/jsx.ts"
 export type MeshProps = TransformProps & Readonly<{
   visible?: boolean
   name?: string
+  style?: CssStyle
   factory?: XRObjectProjectionFactory | null
   ref?: SpaceRef<XRMeshElement> | null
 }>
@@ -30,6 +31,7 @@ export function Mesh(props: MeshProps): JSX.Element {
       scaleZ={props.scale?.z}
       visible={props.visible}
       name={props.name}
+      style={props.style}
       factory={props.factory}
       ref={props.ref}
     >

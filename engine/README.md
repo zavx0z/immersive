@@ -26,6 +26,43 @@ Engine являются представлением содержимого об
 вход для стандартного шрифта, а `@zavx0z/immersive-engine/fonts/...` — опубликованные
 файлы Inter и JetBrains Mono. Точный состав определяется `package.json#exports`.
 
+## Обзор и свободное перемещение
+
+`ViewPoint.fitPoseForBounds(bounds, backDirection, {fov, aspect, padding})`
+подбирает позу по восьми углам world AABB. `backDirection` направлен от target
+к eye; `{x: 0, y: 0, z: 1}` задаёт вид сверху в Z-up. Реальный aspect viewport
+учитывается и для desktop, и для portrait; padding по умолчанию 1.12. Helper не
+создаёт ViewPoint и не применяет позу или clip planes автоматически.
+
+`ViewPoint.fitPoseForPoints(points, backDirection, options)` вписывает реальные
+вершины разреженной сцены без пустых углов world AABB. За один проход по iterable
+балансирует перспективные границы, сохраняя тот же Z-up и padding. Точки можно
+передавать генератором с повторным использованием одного DTO; helper их не хранит.
+Локальный численный origin сохраняет точность при больших мировых переносах.
+
+Режим `navigation: "fly"` переводит zoom в поступательное перемещение eye и target
+вдоль cursor ray. `flySpeed` задаётся в мм на единицу delta, по умолчанию 10.
+Дробление delta сохраняет итоговое перемещение; target и слои сцены не являются
+препятствием. `fly(distance, anchor?)` выполняет тот же signed шаг в мм напрямую.
+`navigation: "orbit"` остаётся default и сохраняет прежний zoom к target.
+
+`rayForClientPoint({x, y})` возвращает Ray из eye через native client XY, когда
+viewport известен. `frustumPlanes(overscanCssPx)` возвращает шесть inward world
+planes: `normal·point + constant >= 0` означает внутреннюю сторону. Ray и planes
+получают ту же Z-up позу/FOV в double; материализация Display не нужна.
+
+## Явный clip range для сцены
+
+`ViewPoint.depthRangeForBounds({min, max}, {position, target})` вычисляет near/far
+по глубине мировой AABB в мм. Helper не изменяет ViewPoint и не заменяет
+авторские clip planes автоматически. Автор применяет возвращённые near/far,
+когда геометрия и поза готовы. Для полностью задних границ возвращается null.
+
+Передняя область получает near в половину ближайшей глубины и far с запасом 10%.
+Это позволяет различать близкие слои на большой дистанции без крайне широкого
+far/near. Для области, пересекающей плоскость камеры, near остаётся положительным:
+0.001 мм; более близкая геометрия может отсекаться. Плоская AABB допустима.
+
 ## Раскладка и память текста
 
 `Text` и `CachedText` принимают пятым аргументом необязательные
@@ -61,3 +98,10 @@ stencil/cover geometry отдельно. Engine хранит слабые ссы
 
 Состав рабочего пространства задаёт `package.json#workspaces`; контракт
 пакета описывают этот README и публичные TSDoc.
+
+## Затухание линий
+
+`LineBasicMaterial.distanceFade` задаёт расстояние затухания в мм. Значение 0
+сохраняет цвет и alpha при любой дистанции камеры. Значение по умолчанию 5000
+сохраняет прежний вид существующих Line и Grid. LineGlowMaterial наследует этот
+договор и применяет свою интенсивность к явно включённому затуханию.

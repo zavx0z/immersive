@@ -15,16 +15,32 @@ test("Повторный JSX render сохраняет команды камер
       entrypoints: [resolve(import.meta.dir, "authoring.fixture.tsx")],
       outdir: output,
       target: "bun",
-      external: ["@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template/compiled"],
-      plugins: [createJsxBunPlugin({cwd: resolve(import.meta.dir, "../../.."), sourceRoots: [import.meta.dir]})],
+      plugins: [
+        createJsxBunPlugin({cwd: resolve(import.meta.dir, "../../.."), sourceRoots: [import.meta.dir]}),
+        {
+          name: "canonical-owner-test-runtime",
+          setup(build) {
+            const owners: Record<string, string> = {
+              "@zavx0z/immersive-component": resolve(import.meta.dir, "../../../component/src/index.ts"),
+              "@zavx0z/immersive-dom": resolve(import.meta.dir, "../../src/index.ts"),
+              "@zavx0z/immersive-template/compiled": resolve(import.meta.dir, "../../../template/compiled.ts"),
+            }
+            build.onResolve({filter: /^@zavx0z\/immersive-(?:component|dom|template\/compiled)$/}, args => ({
+              path: owners[args.path]!, external: true,
+            }))
+          },
+        },
+      ],
     })
     expect(result.success, "Базовый тег viewpoint должен компилироваться без компонента Space").toBe(true)
     const entry = result.outputs.find(value => value.kind === "entry-point")!
     const {CameraFixture} = await import(pathToFileURL(entry.path).href)
     const ref = {current: null as ViewPointElement | null}
-    const props = {x: 0, y: -600, z: 900, targetZ: 900, ref}
+    const props = {x: 0, y: -600, z: 900, targetZ: 900, navigation: "fly", flySpeed: 25, ref}
     root.render(CameraFixture, props)
     const camera = ref.current!
+    expect(camera.navigation).toBe("fly")
+    expect(camera.flySpeed).toBe(25)
     camera.dollyTo(300)
     root.render(CameraFixture, {...props})
     expect(ref.current, "Повторный render должен сохранять экземпляр камеры").toBe(camera)

@@ -24,6 +24,7 @@ export class RendererWebGpuScreenOverlay extends Object3D {
   public readonly content: Object3D
   public distance: number
   #viewport: RenderViewport
+  readonly #viewProjection = new Matrix4()
 
   constructor(options: RendererWebGpuScreenOverlayOptions) {
     super()
@@ -76,6 +77,17 @@ export class RendererWebGpuScreenOverlay extends Object3D {
     this.quaternion.setFromRotationMatrix(rotation)
     this.#fitContent(viewPoint)
     if (options.updateWorldMatrix !== false) this.updateWorldMatrix(true)
+  }
+
+  /**
+   * Проекция HUD сохраняет позу/FOV общего ViewPoint, но имеет собственную
+   * глубину вокруг authored distance. Near/far сцены не отсекают screen UI.
+   * Матрица переиспользуется; Renderer копирует её в uniform своего HUD layer.
+   */
+  public viewProjectionForViewPoint(viewPoint: ViewPoint): Matrix4 {
+    return this.#viewProjection
+      .makePerspective(viewPoint.fov, viewPoint.aspect, this.distance * 0.5, this.distance * 2)
+      .multiply(viewPoint.viewMatrix)
   }
 
   #fitContent(viewPoint: ViewPoint): void {

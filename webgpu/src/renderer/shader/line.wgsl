@@ -24,7 +24,8 @@ struct PerObjectUniforms {
   shimmerAmount: f32,
   glowColor: vec4<f32>,
   visualScale: f32,
-  silhouetteAmount: f32
+  silhouetteAmount: f32,
+  inverseDistanceFade: f32
 };
 @binding(0) @group(1) var<uniform> perObject: PerObjectUniforms;
 
@@ -53,8 +54,8 @@ fn vs_main(
 @fragment
 fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
   let distanceMm = distance(in.worldPosition, sceneUniforms.cameraPosition);
-  let fadeDistanceMm = 5000.0;
-  let normalizedDistance = distanceMm / fadeDistanceMm;
+  // Материал задаёт расстояние в мм; нулевой коэффициент отключает затухание.
+  let normalizedDistance = distanceMm * perObject.inverseDistanceFade;
 
   // Базовое затухание для обычных линий
   let baseFade = exp(-0.5 * normalizedDistance);

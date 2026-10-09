@@ -85,3 +85,26 @@ test("недопустимый dollyTo не меняет Element даже час
   expect(pose(camera), "Ожидаемое состояние камеры: pose(camera)").toEqual(original)
   expect(document.version, "Ожидаемое состояние камеры: document.version").toBe(version)
 })
+
+
+test("navigation и flySpeed отражают явную конфигурацию без изменения pose или сохранённого обзора", () => {
+  const {document, camera} = fixture()
+  const before = pose(camera)
+  expect(camera.navigation).toBe("orbit")
+  expect(camera.flySpeed).toBe(10)
+  camera.saveState()
+  camera.navigation = "fly"
+  camera.flySpeed = 25
+  expect(camera.getAttribute("navigation")).toBe("fly")
+  expect(camera.getAttribute("fly-speed")).toBe("25")
+  expect(pose(camera)).toEqual(before)
+  camera.dollyTo(400)
+  camera.reset()
+  expect(camera.navigation).toBe("fly")
+  expect(camera.flySpeed).toBe(25)
+  expect(pose(camera)).toEqual(before)
+  const version = document.version
+  for (const speed of [0, -1, NaN, Infinity]) expect(() => { camera.flySpeed = speed }).toThrow(RangeError)
+  expect(() => { camera.navigation = "walk" as "fly" }).toThrow(RangeError)
+  expect(document.version).toBe(version)
+})

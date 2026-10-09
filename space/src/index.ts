@@ -16,6 +16,7 @@ export type {
   XRAnimationProjectionFactory,
   XRGeometryProjectionFactory,
   XRMaterialProjectionFactory,
+  XRMaterialProjectionContext,
   XRObjectProjectionContext,
   XRObjectProjectionFactory,
 } from "./elements.ts"
@@ -41,3 +42,8 @@ export type {
 } from "./jsx.ts"
 
 export type {SpatialVector, SpatialQuaternion, OrientationProps, TransformProps} from "./props.ts"
+
+export type {SpatialRay} from "../contract/spatial-ray.ts"
+export type {SpatialHit} from "../contract/spatial-hit.ts"
+export type {SpatialHitTest} from "../contract/spatial-hit-test.ts"
+export {bindSpatialHit, readSpatialHit} from "./spatial-event.ts"

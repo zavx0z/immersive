@@ -29,5 +29,8 @@
     "@zavx0z/immersive-jsx-compiler-bun": "workspace:*"
   },
   "description": "Семантическая компиляция JSX в готовые шаблоны",
-  "sideEffects": false
+  "sideEffects": false,
+  "peerDependencies": {
+    "@zavx0z/immersive-component": "workspace:*"
+  }
 }

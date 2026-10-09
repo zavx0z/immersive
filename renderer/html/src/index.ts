@@ -81,3 +81,5 @@ export type {
 
 export {readDisplayStyle, MILLIMETRES_PER_CSS_PIXEL} from "./display-style.ts"
 export type {DisplayStyle} from "./display-style.ts"
+
+export {readElementStyle} from "./element-style.ts"

@@ -34,9 +34,9 @@ export class WireframeInstancedMesh extends Object3D {
 
     // Инициализируем буферы
     this.instanceMatrix = new Float32Array(count * 16)
-    this.instanceMaterialParams = new Float32Array(count * 9) // 9 floats на инстанс: color(4), glowIntensity(1), glowColor(4)
-    this.instanceCombinedBuffer = new Float32Array(count * 25)
-    this.geometry.setAttribute("instanceBuffer", new BufferAttribute(this.instanceCombinedBuffer, 25))
+    this.instanceMaterialParams = new Float32Array(count * 10) // color(4), glowIntensity(1), glowColor(4), inverseDistanceFade(1)
+    this.instanceCombinedBuffer = new Float32Array(count * 26)
+    this.geometry.setAttribute("instanceBuffer", new BufferAttribute(this.instanceCombinedBuffer, 26))
 
     // Инициализируем единичными матрицами и параметрами материалов
     for (let i = 0; i < count; i++) {
@@ -97,7 +97,7 @@ export class WireframeInstancedMesh extends Object3D {
       throw new Error(`WireframeInstancedMesh.setColorAt: index ${index} out of range (0-${this.count - 1})`)
     }
 
-    const offset = index * 9
+    const offset = index * 10
     this.instanceMaterialParams[offset] = color.r
     this.instanceMaterialParams[offset + 1] = color.g
     this.instanceMaterialParams[offset + 2] = color.b
@@ -110,7 +110,7 @@ export class WireframeInstancedMesh extends Object3D {
       throw new Error(`WireframeInstancedMesh.setGlowIntensityAt: index ${index} out of range (0-${this.count - 1})`)
     }
 
-    const offset = index * 9 + 4
+    const offset = index * 10 + 4
     this.instanceMaterialParams[offset] = intensity
     this.instanceBufferNeedsUpdate = true
   }
@@ -120,7 +120,7 @@ export class WireframeInstancedMesh extends Object3D {
       throw new Error(`WireframeInstancedMesh.setGlowColorAt: index ${index} out of range (0-${this.count - 1})`)
     }
 
-    const offset = index * 9 + 5
+    const offset = index * 10 + 5
     this.instanceMaterialParams[offset] = color.r
     this.instanceMaterialParams[offset + 1] = color.g
     this.instanceMaterialParams[offset + 2] = color.b
@@ -130,7 +130,7 @@ export class WireframeInstancedMesh extends Object3D {
 
   private updateMaterialParamsAt(index: number): void {
     const material = Array.isArray(this.material) ? this.material[index]! : this.material
-    const offset = index * 9
+    const offset = index * 10
 
     // Цвет материала (4 floats: rgba)
     this.instanceMaterialParams[offset] = material.color.r
@@ -138,8 +138,9 @@ export class WireframeInstancedMesh extends Object3D {
     this.instanceMaterialParams[offset + 2] = material.color.b
     this.instanceMaterialParams[offset + 3] = material.opacity
 
-    // Интенсивность свечения (1 float)
+    // Интенсивность свечения и коэффициент расстояния принадлежат материалу.
     this.instanceMaterialParams[offset + 4] = material.glowIntensity
+    this.instanceMaterialParams[offset + 9] = material.distanceFade === 0 ? 0 : 1 / material.distanceFade
 
     // Цвет свечения (4 floats: rgba)
     if (material.glowColor) {
@@ -159,15 +160,15 @@ export class WireframeInstancedMesh extends Object3D {
     const instanceBuffer = this.instanceCombinedBuffer
 
     for (let i = 0; i < this.count; i++) {
-      const instanceOffset = i * 25
+      const instanceOffset = i * 26
       const matrixOffset = i * 16
-      const materialOffset = i * 9
+      const materialOffset = i * 10
 
       // Копируем матрицу
       instanceBuffer.set(this.instanceMatrix.subarray(matrixOffset, matrixOffset + 16), instanceOffset)
 
       // Копируем параметры материала
-      instanceBuffer.set(this.instanceMaterialParams.subarray(materialOffset, materialOffset + 9), instanceOffset + 16)
+      instanceBuffer.set(this.instanceMaterialParams.subarray(materialOffset, materialOffset + 10), instanceOffset + 16)
     }
 
     // Устанавливаем флаг обновления для существующего атрибута

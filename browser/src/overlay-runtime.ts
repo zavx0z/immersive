@@ -1,3 +1,4 @@
+import {mutationAffectsProjection, stateAffectsProjection} from "./projection-invalidation.ts"
 import type {RenderImageSize} from "@zavx0z/immersive-renderer-html"
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
 import type {
@@ -217,8 +218,12 @@ export function createDocumentOverlayRuntimeWithSeams(
     requestBackendPresentation = (): void => {
       if (!disposed) options.requestPresentation()
     }
-    unsubscribeMutations = options.document.subscribeMutations(requestFrame)
-    unsubscribeStateChanges = options.document.subscribeStateChanges(requestFrame)
+    unsubscribeMutations = options.document.subscribeMutations(batch => {
+      if (mutationAffectsProjection(batch, options.root, interactionState)) requestFrame()
+    })
+    unsubscribeStateChanges = options.document.subscribeStateChanges(batch => {
+      if (stateAffectsProjection(batch, options.root)) requestFrame()
+    })
     options.document.addEventListener("selectionchange", requestFrame)
     unsubscribeTextHighlights = subscribeDocumentTextHighlights(options.document, requestFrame)
     unsubscribeScrollIntoView = subscribeDocumentScrollIntoViewRequests(options.document, request => {

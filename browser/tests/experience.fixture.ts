@@ -339,7 +339,9 @@ export const createFakeRuntime = (
       if (state.disposed) throw new Error("Root is disposed")
       state.projectionInputs.push({owner: "input", type: "wheel", input})
     },
+    projectWorldPoint(point: {x: number; y: number; z: number}) { return {x: point.x, y: point.y} },
     projectPoint(_id: SemanticNode, point: {x: number; y: number}) { return point },
+    unprojectPoint(_id: SemanticNode, point: {x: number; y: number}) { return point },
     render() {
       for (const listener of [...state.beforeRender]) listener()
       state.renderedFrames += 1

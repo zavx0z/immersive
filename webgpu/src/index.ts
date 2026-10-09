@@ -33,3 +33,5 @@ export type {
 } from "./document-plane.ts"
 
 export {RendererWebGpuDisplayPlane} from "./display-plane.ts"
+
+export {parseDisplayColor} from "./webgpu-backend.ts"

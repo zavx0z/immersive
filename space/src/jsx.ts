@@ -1,3 +1,4 @@
+import type {SpatialHitTest} from "../contract/spatial-hit-test.ts"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {Ref} from "@zavx0z/immersive-component"
 import type {
@@ -38,7 +39,14 @@ export type XRObjectIntrinsicProperties<Target extends XRObjectElement> = Spatia
   scaleZ?: number | undefined
   visible?: boolean | undefined
   name?: string | undefined
+  style?: CssStyle | undefined
   factory?: XRObjectProjectionFactory | null | undefined
+  hitTest?: SpatialHitTest | null | undefined
+  onClick?: ((event: MouseEvent) => void) | undefined
+  onPointerDown?: ((event: PointerEvent) => void) | undefined
+  onPointerMove?: ((event: PointerEvent) => void) | undefined
+  onPointerUp?: ((event: PointerEvent) => void) | undefined
+  onPointerCancel?: ((event: PointerEvent) => void) | undefined
 }>
 
 export type XRGroupIntrinsicProperties = XRObjectIntrinsicProperties<XRGroupElement>
@@ -89,6 +97,8 @@ export type XRGeometryIntrinsicProperties = Readonly<{
 export type XRMaterialIntrinsicProperties = Readonly<{
   kind?: string | undefined
   color?: string | undefined
+  style?: CssStyle | undefined
+  styleProperties?: readonly string[] | undefined
   factory?: XRMaterialProjectionFactory | null | undefined
   ref?: SpaceRef<XRMaterialElement> | null | undefined
 }>

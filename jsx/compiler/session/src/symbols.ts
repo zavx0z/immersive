@@ -146,7 +146,7 @@ export async function buildJsxTransformSymbols(
     }
     let classified = classifiedTypes.get(type.id)
     if (!classified) {
-      classified = classifyChildrenExpressionType(type, project.checker)
+      classified = classifyChildrenExpressionType(type, project)
       classifiedTypes.set(type.id, classified)
     }
     childrenExpressionKinds.set(expression, await classified)
@@ -363,13 +363,15 @@ function jsxSourceIdentity(sourcePath: string, files: GovernedFiles): string {
 
 async function classifyChildrenExpressionType(
   type: Type,
-  checker: Checker,
+  project: Project,
 ): Promise<JsxChildrenExpressionKind> {
+  const checker = project.checker
   if (type.isErrorType() || (type.flags & (TypeFlags.Any | TypeFlags.Unknown)) !== 0) {
     return "unsupported"
   }
   const parts = type.isUnionType() ? await type.getTypes() : [type]
   let component = false
+  let compiled = false
   let keyed = false
   let nullable = false
   let text = false
@@ -382,6 +384,11 @@ async function classifyChildrenExpressionType(
       text = true
       continue
     }
+    if (await checker.getPropertyOfType(part, "@zavx0z/immersive-component/value")) {
+      if (!await isPreparedComponentType(part, project)) return "invalid-compiled-component"
+      compiled = true
+      continue
+    }
     if (await isJsxElementType(part, checker)) {
       component = true
       continue
@@ -392,13 +399,41 @@ async function classifyChildrenExpressionType(
     }
     return "unsupported"
   }
-  const activeKinds = Number(component) + Number(keyed) + Number(text)
+  const activeKinds = Number(component) + Number(keyed) + Number(text) + Number(compiled)
   if (!text && keyed) return "component-children"
   if (activeKinds === 0 && nullable) return "empty"
+  if (compiled && !component && !keyed) return text ? "prepared-content" : "compiled-component"
   if (activeKinds !== 1) return "unsupported"
   if (keyed) return nullable ? "unsupported" : "keyed-components"
   if (component) return nullable ? "nullable-component" : "component"
   return "text"
+}
+
+/** Phantom-метка не заменяет обязательный nominal Symbol исходного ComponentValue. */
+async function isPreparedComponentType(type: Type, project: Project): Promise<boolean> {
+  const marker = await project.checker.getPropertyOfType(type, "@zavx0z/immersive-component/value")
+  if (!marker) return false
+  const markerType = await project.checker.getTypeOfSymbol(marker)
+  if (!markerType) return false
+  const markerParts = markerType.isUnionType() ? await markerType.getTypes() : [markerType]
+  if (!markerParts.some(part => part.isBooleanLiteralType() && part.value === true) ||
+    markerParts.some(part => (part.flags & TypeFlags.Undefined) === 0 && !(part.isBooleanLiteralType() && part.value === true))) return false
+  const paths = new Set<string>()
+  for (const declaration of marker.declarations) {
+    const metadata = await project.program.getSourceFileMetadata(declaration.path)
+    const root = metadata?.packageJsonDirectory
+    if (root === undefined) continue
+    try {
+      if (JSON.parse(readFileSync(resolve(root, "package.json"), "utf8")).name === "@zavx0z/immersive-component") paths.add(declaration.path)
+    } catch { /* Нечитаемая package identity не подтверждает готовое значение. */ }
+  }
+  if (paths.size === 0) return false
+  for (const property of await project.checker.getPropertiesOfType(type)) {
+    if (!property.name.startsWith("__@componentValueBrand@") || !property.declarations.some(declaration => paths.has(declaration.path))) continue
+    const brand = await project.checker.getTypeOfSymbol(property)
+    if (brand?.isBooleanLiteralType() === true && brand.value === true) return true
+  }
+  return false
 }
 
 function isTextChildType(type: Type): boolean {

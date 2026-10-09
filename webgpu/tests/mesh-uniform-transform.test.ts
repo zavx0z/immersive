@@ -4,6 +4,7 @@ import {
   Color,
   ColorPickerMaterial,
   HolographicMaterial,
+  GlassMaterial,
   ImageMaterial,
   InstancedMesh,
   Material,
@@ -91,7 +92,7 @@ test("lit and unknown scalar material paths retain inverse-transpose including s
   mesh.updateWorldMatrix()
   const expectedNormal = new Matrix4().copy(mesh.matrixWorld).invert().transpose().elements
   const item: RenderItem = {type: "static-mesh", object: mesh, worldMatrix: mesh.matrixWorld}
-  const lit = [new MeshLambertMaterial(), new ThinFilmMaterial(), new HolographicMaterial(), new UnknownMaterial()]
+  const lit = [new GlassMaterial({tintColor: new Color(.2, .4, .6, .15)}), new MeshLambertMaterial(), new ThinFilmMaterial(), new HolographicMaterial(), new UnknownMaterial()]
   for (const material of lit) {
     mesh.material = material
     renderer.updatePerObjectData([item])

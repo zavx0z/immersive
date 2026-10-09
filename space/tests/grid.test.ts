@@ -42,6 +42,7 @@ test("Grid создаёт одну сетку XY в мм и сохраняет �
   expect(element.ownerDocument).toBe(document)
   const factory = element.factory as () => GridHelper
   const projection = factory()
+  expect(projection.material).toHaveProperty("distanceFade", 5000)
   const positions = projection.geometry.attributes.position!.array
   expect(positions.length).toBe(25 * 4 * 3)
   for (let index = 2; index < positions.length; index += 3) expect(positions[index]).toBe(0)
@@ -66,10 +67,30 @@ test("Grid отклоняет недопустимые параметры без
   root.render(grid, {size: 2400, divisions: 24})
   const element = document.querySelector("xr-line-segments") as XRLineSegmentsElement
   const factory = element.factory
-  for (const props of [{size: 0}, {size: Infinity}, {divisions: 0}, {divisions: 1.5}, {colorGrid: -1}]) {
+  for (const props of [{size: 0}, {size: Infinity}, {divisions: 0}, {divisions: 1.5}, {colorGrid: -1}, {distanceFade: -1}, {distanceFade: NaN}, {distanceFade: Infinity}, {distanceFade: Number.MIN_VALUE}]) {
     expect(() => root.render(grid, props)).toThrow(RangeError)
     expect(document.querySelector("xr-line-segments")).toBe(element)
     expect(element.factory).toBe(factory)
   }
+  root.unmount()
+})
+
+
+test("Grid передаёт нулевое затухание и кеширует неизменный fade при render и перемещении", () => {
+  const document = createDocument({elementFactories: createSpaceElementFactories()})
+  const root = createRoot(document)
+  root.render(grid, {size: 96000, divisions: 128, distanceFade: 0})
+  const element = document.querySelector("xr-line-segments") as XRLineSegmentsElement
+  const factory = element.factory as () => GridHelper
+  const projection = factory()
+  expect(projection.material).toHaveProperty("distanceFade", 0)
+  expect(projection.material).toHaveProperty("opacity", .6)
+  for (let index = 0; index < 5; index++) root.render(grid, {size: 96000, divisions: 128, distanceFade: 0, position: {x: index, y: 0, z: -12000}})
+  expect(document.querySelector("xr-line-segments")).toBe(element)
+  expect(element.factory).toBe(factory)
+  root.render(grid, {size: 96000, divisions: 128, distanceFade: 48000})
+  expect(element.factory).not.toBe(factory)
+  expect((element.factory as () => GridHelper)().material).toHaveProperty("distanceFade", 48000)
+  expect(document.querySelector("xr-line-segments")).toBe(element)
   root.unmount()
 })

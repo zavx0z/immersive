@@ -1,4 +1,4 @@
-import { Matrix4, Vector3 } from "../math"
+import { Matrix4, Ray, Vector3 } from "../math"
 
 const LOOK_AT_EPSILON = 1e-6
 
@@ -11,6 +11,11 @@ export interface ViewPointParameters {
   Browser обновляет эти данные при изменении размера; Engine не читает native DOM.
   */
   viewport?: ViewPointClientViewport
+
+  /** Orbit приближает к target; fly проходит через уровни, перемещая eye и target вместе. */
+  navigation?: ViewPointNavigation
+  /** Скорость fly в мм на единицу zoom delta. @default 10 */
+  flySpeed?: number
 
   /**
   Угол обзора (field of view) в радианах.
@@ -52,6 +57,29 @@ export type ViewPointClientViewport = Readonly<{
   height: number
 }>
 
+/** Мировые границы в мм; допускают плоскую область и совпадающие углы. */
+export type ViewPointWorldBounds = Readonly<{
+  min: Readonly<{x: number; y: number; z: number}>
+  max: Readonly<{x: number; y: number; z: number}>
+}>
+
+/** Поза для численного расчёта без создания или изменения ViewPoint. */
+export type ViewPointPose = Readonly<{
+  position: Readonly<{x: number; y: number; z: number}>
+  target: Readonly<{x: number; y: number; z: number}>
+}>
+
+export type ViewPointDepthRange = Readonly<{near: number; far: number}>
+
+export type ViewPointNavigation = "orbit" | "fly"
+export type ViewPointFrustumPlane = Readonly<{
+  normal: Readonly<{x: number; y: number; z: number}>
+  /** Внутренняя полуплоскость: normal·worldPoint + constant >= 0. */
+  constant: number
+}>
+export type ViewPointFitOptions = Readonly<{fov: number; aspect: number; padding?: number}>
+
+
 /**
 Камера в правой системе Z-up с расстояниями в миллиметрах.
 
@@ -65,6 +93,8 @@ export class ViewPoint {
   public aspect: number
   public near: number
   public far: number
+  public navigation: ViewPointNavigation
+  public flySpeed: number
 
   public position: Vector3
   public viewMatrix: Matrix4 = new Matrix4()
@@ -72,6 +102,168 @@ export class ViewPoint {
 
   private viewport: ViewPointClientViewport | null
   private target: Vector3
+
+  /**
+  Возвращает clip range мировой AABB для явно заданной позы, не меняя ViewPoint.
+
+  Глубина восьми углов вычисляется в double вдоль position → target. Полностью
+  задняя область возвращает null. Передняя область получает near в половину
+  ближайшей глубины и far с запасом 10%; это оставляет запас для следующих шагов
+  жеста и сохраняет точность depth buffer. При пересечении плоскости камеры near
+  равен 0.001 мм: геометрия ближе этого положительного порога может отсекаться.
+  Не выбирает позу, FOV или момент применения; автор явно записывает near/far.
+
+  @param bounds - Конечные мировые min/max в мм, min не превышает max по каждой оси.
+  @param pose - Конечные position и target, которые не совпадают.
+  @throws RangeError Если границы или поза не допускают конечный расчёт глубины.
+  */
+  public static depthRangeForBounds(bounds: ViewPointWorldBounds, pose: ViewPointPose): ViewPointDepthRange | null {
+    for (let vectorIndex = 0; vectorIndex < 4; vectorIndex++) {
+      const vector = vectorIndex === 0 ? bounds.min : vectorIndex === 1 ? bounds.max
+        : vectorIndex === 2 ? pose.position : pose.target
+      if (!Number.isFinite(vector.x) || !Number.isFinite(vector.y) || !Number.isFinite(vector.z)) {
+        throw new RangeError("ViewPoint depth bounds and pose must be finite")
+      }
+    }
+    if (bounds.min.x > bounds.max.x || bounds.min.y > bounds.max.y || bounds.min.z > bounds.max.z) {
+      throw new RangeError("ViewPoint depth bounds must have ordered min/max")
+    }
+    const deltaX = pose.target.x - pose.position.x
+    const deltaY = pose.target.y - pose.position.y
+    const deltaZ = pose.target.z - pose.position.z
+    const length = Math.hypot(deltaX, deltaY, deltaZ)
+    if (!Number.isFinite(length) || length === 0) throw new RangeError("ViewPoint depth pose requires distinct finite position and target")
+    const forwardX = deltaX / length
+    const forwardY = deltaY / length
+    const forwardZ = deltaZ / length
+    let nearest = Infinity
+    let farthest = -Infinity
+    // Ровно восемь scalar dots: без Vector3, массивов углов и Float32 матриц.
+    for (let corner = 0; corner < 8; corner++) {
+      const x = (corner & 1) === 0 ? bounds.min.x : bounds.max.x
+      const y = (corner & 2) === 0 ? bounds.min.y : bounds.max.y
+      const z = (corner & 4) === 0 ? bounds.min.z : bounds.max.z
+      const depth = (x - pose.position.x) * forwardX +
+        (y - pose.position.y) * forwardY + (z - pose.position.z) * forwardZ
+      if (!Number.isFinite(depth)) throw new RangeError("ViewPoint bounds depth must be finite")
+      nearest = Math.min(nearest, depth)
+      farthest = Math.max(farthest, depth)
+    }
+    if (farthest <= 0) return null
+    const near = nearest > 0 ? Math.max(Number.MIN_VALUE, nearest * 0.5) : 0.001
+    const far = Math.min(Number.MAX_VALUE, Math.max(farthest * 1.1, near * 2))
+    return {near, far}
+  }
+
+  /**
+  Вписывает реальные world points без пустых углов охватывающей AABB.
+
+  Один проход по iterable балансирует четыре перспективные support planes
+  выбранной Z-up базы. Первую точку использует как численный origin, сохраняя
+  точность при больших мировых переносах. Точки не сохраняются и могут повторно
+  использовать один изменяемый DTO между yield. Возвращает только pose.
+  */
+  public static fitPoseForPoints(points: Iterable<Readonly<{x: number; y: number; z: number}>>, backDirection: Readonly<{x: number; y: number; z: number}>, options: ViewPointFitOptions): ViewPointPose {
+    const length = Math.hypot(backDirection.x, backDirection.y, backDirection.z)
+    const padding = options.padding ?? 1.12
+    if (!Number.isFinite(length) || length === 0 || !Number.isFinite(options.fov) || options.fov <= 0 || options.fov >= Math.PI ||
+      !Number.isFinite(options.aspect) || options.aspect <= 0 || !Number.isFinite(padding) || padding < 1) {
+      throw new RangeError("ViewPoint point fit direction, FOV, aspect and padding must be finite and valid")
+    }
+    const back = new Vector3(backDirection.x / length, backDirection.y / length, backDirection.z / length)
+    const right = new Vector3(-back.y, back.x, 0)
+    if (right.length() === 0) right.set(1, 0, 0)
+    else right.normalize()
+    const up = new Vector3().crossVectors(back, right)
+    const tangentY = Math.tan(options.fov / 2) / padding
+    const tangentX = tangentY * options.aspect
+    let originX = 0, originY = 0, originZ = 0
+    let count = 0
+    let maxRight = -Infinity, maxLeft = -Infinity, maxUp = -Infinity, maxDown = -Infinity
+    let minBack = Infinity, maxBack = -Infinity
+    for (const point of points) {
+      if (!Number.isFinite(point.x) || !Number.isFinite(point.y) || !Number.isFinite(point.z)) {
+        throw new RangeError("ViewPoint fit points must be finite")
+      }
+      if (count++ === 0) {
+        originX = point.x
+        originY = point.y
+        originZ = point.z
+      }
+      const x = point.x - originX, y = point.y - originY, z = point.z - originZ
+      const r = x * right.x + y * right.y + z * right.z
+      const u = x * up.x + y * up.y + z * up.z
+      const b = x * back.x + y * back.y + z * back.z
+      if (!Number.isFinite(r) || !Number.isFinite(u) || !Number.isFinite(b)) throw new RangeError("ViewPoint fit coordinates exceed finite range")
+      maxRight = Math.max(maxRight, r / tangentX + b)
+      maxLeft = Math.max(maxLeft, -r / tangentX + b)
+      maxUp = Math.max(maxUp, u / tangentY + b)
+      maxDown = Math.max(maxDown, -u / tangentY + b)
+      minBack = Math.min(minBack, b)
+      maxBack = Math.max(maxBack, b)
+    }
+    if (count === 0) throw new RangeError("ViewPoint point fit requires a non-empty iterable")
+    const r = tangentX * (maxRight - maxLeft) * 0.5
+    const u = tangentY * (maxUp - maxDown) * 0.5
+    const clearance = Math.max(0.001, Math.max(Math.abs(originX), Math.abs(originY), Math.abs(originZ), Math.abs(maxBack)) * Number.EPSILON * 4)
+    const eyeBack = Math.max(maxRight * 0.5 + maxLeft * 0.5, maxUp * 0.5 + maxDown * 0.5, maxBack + clearance)
+    const targetBack = minBack * 0.5 + maxBack * 0.5
+    const world = (b: number) => ({x: originX + right.x * r + up.x * u + back.x * b,
+      y: originY + right.y * r + up.y * u + back.y * b, z: originZ + right.z * r + up.z * u + back.z * b})
+    const position = world(eyeBack), target = world(targetBack)
+    if (!Number.isFinite(position.x) || !Number.isFinite(position.y) || !Number.isFinite(position.z) ||
+      !Number.isFinite(target.x) || !Number.isFinite(target.y) || !Number.isFinite(target.z)) {
+      throw new RangeError("ViewPoint fitted point pose exceeds finite coordinates")
+    }
+    return {position, target}
+  }
+
+  /**
+  Подбирает позу для world AABB при явно выбранном направлении от target к eye.
+  Использует реальный aspect viewport и восемь перспективных ограничений; подходит
+  для наклонного обзора и вида сверху. Z-up полюс использует ту же базу, что makeLookAt.
+  Возвращает только позу: clip range и момент её применения остаются у автора.
+  */
+  public static fitPoseForBounds(bounds: ViewPointWorldBounds, backDirection: Readonly<{x: number; y: number; z: number}>, options: ViewPointFitOptions): ViewPointPose {
+    for (const axis of ["x", "y", "z"] as const) {
+      if (!Number.isFinite(bounds.min[axis]) || !Number.isFinite(bounds.max[axis]) || bounds.min[axis] > bounds.max[axis]) {
+        throw new RangeError("ViewPoint fit bounds must be finite and ordered")
+      }
+    }
+    const length = Math.hypot(backDirection.x, backDirection.y, backDirection.z)
+    const padding = options.padding ?? 1.12
+    if (!Number.isFinite(length) || length === 0 || !Number.isFinite(options.fov) || options.fov <= 0 || options.fov >= Math.PI ||
+      !Number.isFinite(options.aspect) || options.aspect <= 0 || !Number.isFinite(padding) || padding < 1) {
+      throw new RangeError("ViewPoint fit direction, FOV, aspect and padding must be finite and valid")
+    }
+    const back = new Vector3(backDirection.x / length, backDirection.y / length, backDirection.z / length)
+    const right = new Vector3(-back.y, back.x, 0)
+    if (right.length() === 0) right.set(1, 0, 0)
+    else right.normalize()
+    const up = new Vector3().crossVectors(back, right)
+    const target = {
+      x: bounds.min.x * 0.5 + bounds.max.x * 0.5,
+      y: bounds.min.y * 0.5 + bounds.max.y * 0.5,
+      z: bounds.min.z * 0.5 + bounds.max.z * 0.5,
+    }
+    const tangentY = Math.tan(options.fov / 2)
+    const tangentX = tangentY * options.aspect
+    let distance = 0.001
+    for (let corner = 0; corner < 8; corner++) {
+      const x = ((corner & 1) === 0 ? bounds.min.x : bounds.max.x) - target.x
+      const y = ((corner & 2) === 0 ? bounds.min.y : bounds.max.y) - target.y
+      const z = ((corner & 4) === 0 ? bounds.min.z : bounds.max.z) - target.z
+      const depthOffset = x * back.x + y * back.y + z * back.z
+      distance = Math.max(distance, depthOffset + 0.001,
+        depthOffset + padding * Math.abs(x * right.x + y * right.y + z * right.z) / tangentX,
+        depthOffset + padding * Math.abs(x * up.x + y * up.y + z * up.z) / tangentY)
+    }
+    const position = {x: target.x + back.x * distance, y: target.y + back.y * distance, z: target.z + back.z * distance}
+    if (!Number.isFinite(position.x) || !Number.isFinite(position.y) || !Number.isFinite(position.z)) {
+      throw new RangeError("ViewPoint fitted pose exceeds finite coordinates")
+    }
+    return {position, target}
+  }
 
   /**
   Создаёт камеру в фиксированной правой системе Z-up.
@@ -90,6 +282,10 @@ export class ViewPoint {
     this.fov = parameters.fov ?? 1 // примерно 57 градусов
     this.near = parameters.near ?? 0.1
     this.far = parameters.far ?? 1000
+    this.navigation = parameters.navigation ?? "orbit"
+    this.flySpeed = parameters.flySpeed ?? 10
+    if (this.navigation !== "orbit" && this.navigation !== "fly") throw new RangeError("ViewPoint navigation must be orbit or fly")
+    if (!Number.isFinite(this.flySpeed) || this.flySpeed <= 0) throw new RangeError("ViewPoint flySpeed must be finite and positive")
 
     if (this.fov <= 0) throw new Error("Угол обзора (fov) должен быть больше нуля.")
     if (this.near <= 0) throw new Error("Ближняя плоскость отсечения (near) должна быть больше нуля.")
@@ -174,8 +370,81 @@ export class ViewPoint {
       finiteControlDelta(anchor.clientX, "zoom anchor clientX")
       finiteControlDelta(anchor.clientY, "zoom anchor clientY")
     }
-    this.handleZoom(delta, anchor)
+    if (this.navigation === "fly") {
+      if (!Number.isFinite(this.flySpeed) || this.flySpeed <= 0) throw new RangeError("ViewPoint flySpeed must be finite and positive")
+      this.fly(delta * this.flySpeed, anchor)
+    } else {
+      this.handleZoom(delta, anchor)
+      this.update()
+    }
+  }
+
+  /** Перемещает eye и target на signed distance в мм вдоль cursor ray; target не является препятствием. */
+  public fly(distance: number, anchor?: Readonly<{clientX: number; clientY: number}>): void {
+    finiteControlDelta(distance, "fly distance")
+    const direction = this.clientDirection(anchor === undefined ? undefined : {x: anchor.clientX, y: anchor.clientY})
+    const displacement = direction.multiplyScalar(distance)
+    const position = this.position.clone().add(displacement)
+    const target = this.target.clone().add(displacement)
+    if (!isFiniteVector(position) || !isFiniteVector(target)) throw new RangeError("ViewPoint fly pose exceeds finite coordinates")
+    this.position.copy(position)
+    this.target.copy(target)
     this.update()
+  }
+
+  /** Луч из eye через native client XY, в double и независимо от near/far. */
+  public rayForClientPoint(point: Readonly<{x: number; y: number}>): Ray | null {
+    finiteControlDelta(point.x, "ray client x")
+    finiteControlDelta(point.y, "ray client y")
+    if (this.viewport === null) return null
+    return new Ray(this.position.clone(), this.clientDirection(point))
+  }
+
+  /** Шесть inward world planes для численного visibility query без материализации Display. */
+  public frustumPlanes(overscan = 0): readonly ViewPointFrustumPlane[] {
+    if (!Number.isFinite(overscan) || overscan < 0) throw new RangeError("ViewPoint frustum overscan must be finite and non-negative")
+    const {forward, right, up} = this.viewBasis()
+    const tangent = Math.tan(this.fov / 2)
+    const tangentX = tangent * this.aspect * (1 + (this.viewport === null ? 0 : 2 * overscan / this.viewport.width))
+    const tangentY = tangent * (1 + (this.viewport === null ? 0 : 2 * overscan / this.viewport.height))
+    if (!Number.isFinite(tangentX) || !Number.isFinite(tangentY) || tangentX <= 0 || tangentY <= 0 ||
+      !Number.isFinite(this.near) || !Number.isFinite(this.far) || this.near <= 0 || this.far <= this.near) {
+      throw new RangeError("ViewPoint frustum projection must be finite and valid")
+    }
+    const plane = (normal: Vector3, offset = 0): ViewPointFrustumPlane => {
+      normal.normalize()
+      return {normal: {x: normal.x, y: normal.y, z: normal.z}, constant: -normal.dot(this.position) + offset}
+    }
+    return [plane(forward.clone(), -this.near), plane(forward.clone().negate(), this.far),
+      plane(forward.clone().multiplyScalar(tangentX).add(right)),
+      plane(forward.clone().multiplyScalar(tangentX).sub(right)),
+      plane(forward.clone().multiplyScalar(tangentY).add(up)),
+      plane(forward.clone().multiplyScalar(tangentY).sub(up))]
+  }
+
+  private viewBasis(): {forward: Vector3; right: Vector3; up: Vector3} {
+    const forward = new Vector3().subVectors(this.target, this.position)
+    const length = forward.length()
+    if (!Number.isFinite(length) || length === 0) throw new RangeError("ViewPoint requires a finite direction from eye to target")
+    forward.multiplyScalar(1 / length)
+    const right = new Vector3(forward.y, -forward.x, 0)
+    if (right.length() === 0) right.set(1, 0, 0)
+    else right.normalize()
+    const up = new Vector3().crossVectors(right, forward)
+    return {forward, right, up}
+  }
+
+  private clientDirection(point?: Readonly<{x: number; y: number}>): Vector3 {
+    if (point !== undefined) {
+      finiteControlDelta(point.x, "client x")
+      finiteControlDelta(point.y, "client y")
+    }
+    const {forward, right, up} = this.viewBasis()
+    if (point === undefined || this.viewport === null) return forward
+    const tangent = Math.tan(this.fov / 2)
+    const x = ((point.x - this.viewport.left) / this.viewport.width * 2 - 1) * tangent * this.aspect
+    const y = (1 - (point.y - this.viewport.top) / this.viewport.height * 2) * tangent
+    return forward.add(right.multiplyScalar(x)).add(up.multiplyScalar(y)).normalize()
   }
 
   private handleRotation(deltaX: number, deltaY: number) {
@@ -213,58 +482,30 @@ export class ViewPoint {
   }
 
   private handleZoom(delta: number, anchor?: {clientX: number; clientY: number}) {
-    const anchorBefore = anchor === undefined ? null : this.targetPlanePointForClient(anchor.clientX, anchor.clientY)
     const offset = new Vector3().subVectors(this.position, this.target)
     const currentRadius = offset.length()
     const scale = Math.pow(0.95, delta * 0.05)
-    const scaledRadius = currentRadius * scale
-    const scaledDelta = currentRadius - scaledRadius
     const minZoomDistance = Math.max(0.001, Math.min(0.1, this.near * 0.02))
-    const minimumRadiusDelta = Math.max(0.01, this.near * 0.2 * Math.abs(delta) * 0.01)
-    const radiusDelta = Math.sign(scaledDelta) * Math.max(Math.abs(scaledDelta), minimumRadiusDelta)
-    const newRadius = Math.max(minZoomDistance, currentRadius - radiusDelta)
-
-    offset.normalize().multiplyScalar(newRadius)
-
-    this.position.copy(this.target).add(offset)
-    this.update()
-    if (anchorBefore !== null && anchor !== undefined) {
-      const anchorAfter = this.targetPlanePointForClient(anchor.clientX, anchor.clientY)
-      if (anchorAfter !== null) {
-        const correction = anchorBefore.sub(anchorAfter)
-        if (isFiniteVector(correction)) {
-          this.position.add(correction)
-          this.target.add(correction)
-          this.update()
-        }
-      }
+    const newRadius = Math.max(minZoomDistance, currentRadius * scale)
+    const back = offset.normalize()
+    const correction = new Vector3()
+    if (anchor !== undefined && this.viewport !== null) {
+      const rect = this.viewport
+      const ndcX = ((anchor.clientX - rect.left) / rect.width) * 2 - 1
+      const ndcY = 1 - ((anchor.clientY - rect.top) / rect.height) * 2
+      // Та же Z-up ориентация, что у makeLookAt, без Float32 translation
+      // и инверсии near/far: их погрешность превращалась в скачки anchor.
+      const right = new Vector3(-back.y, back.x, 0)
+      if (right.length() === 0) right.set(1, 0, 0)
+      else right.normalize()
+      const up = new Vector3().crossVectors(back, right)
+      const radialDelta = (currentRadius - newRadius) * Math.tan(this.fov / 2)
+      correction.add(right.multiplyScalar(ndcX * radialDelta * this.aspect))
+      correction.add(up.multiplyScalar(ndcY * radialDelta))
     }
-  }
-
-  private targetPlanePointForClient(clientX: number, clientY: number): Vector3 | null {
-    const rect = this.viewport
-    if (rect === null) return null
-    const width = rect.width
-    const height = rect.height
-    if (width <= 0 || height <= 0) return null
-
-    this.update()
-    const ndcX = ((clientX - rect.left) / width) * 2 - 1
-    const ndcY = 1 - ((clientY - rect.top) / height) * 2
-    const inverseViewProjection = new Matrix4()
-      .multiplyMatrices(this.projectionMatrix, this.viewMatrix)
-      .invert()
-    const nearPoint = new Vector3(ndcX, ndcY, 0).applyMatrix4(inverseViewProjection)
-    const farPoint = new Vector3(ndcX, ndcY, 1).applyMatrix4(inverseViewProjection)
-    if (!isFiniteVector(nearPoint) || !isFiniteVector(farPoint)) return null
-
-    const direction = farPoint.sub(nearPoint).normalize()
-    const normal = new Vector3().subVectors(this.position, this.target).normalize()
-    const denominator = direction.dot(normal)
-    if (Math.abs(denominator) < LOOK_AT_EPSILON) return null
-    const distance = this.target.clone().sub(nearPoint).dot(normal) / denominator
-    if (!Number.isFinite(distance) || distance < 0) return null
-    return nearPoint.add(direction.multiplyScalar(distance))
+    // Изменение расстояния и сдвиг target-plane anchor вычислены в double.
+    this.position.copy(this.target).add(back.multiplyScalar(newRadius)).add(correction)
+    this.target.add(correction)
   }
 
   private sanitizePose(): void {

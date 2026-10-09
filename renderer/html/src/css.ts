@@ -2696,3 +2696,10 @@ const splitCssComponents = (value: string): string[] => {
   if (current) parts.push(current)
   return parts
 }
+
+
+/** Разрешает значение custom property тем же каскадом и правилами var(), что CSS. */
+export function computedCustomProperty(style: ComputedStyle, name: string): string | null {
+  const value = new CustomPropertyResolver(style.customProperties).resolve(name)
+  return value.valid ? value.value : null
+}

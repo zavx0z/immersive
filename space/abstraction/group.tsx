@@ -10,6 +10,7 @@ import "../src/jsx.ts"
 export type GroupProps = TransformProps & Readonly<{
   visible?: boolean
   name?: string
+  style?: CssStyle
   factory?: XRObjectProjectionFactory | null
   ref?: SpaceRef<XRGroupElement> | null
 }>
@@ -30,6 +31,7 @@ export function Group(props: GroupProps): JSX.Element {
       scaleZ={props.scale?.z}
       visible={props.visible}
       name={props.name}
+      style={props.style}
       factory={props.factory}
       ref={props.ref}
     >

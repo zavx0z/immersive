@@ -10,7 +10,8 @@ export interface RenderCommandEncoder {
 
 export type RenderBundleLayout = Readonly<{
   colorFormat: GPUTextureFormat
-  depthStencilFormat: GPUTextureFormat
+  depthStencilFormat?: GPUTextureFormat
+  additionalColorFormats?: readonly GPUTextureFormat[]
   sampleCount: number
 }>
 
@@ -58,11 +59,12 @@ export class RenderBundleCache implements RenderCommandEncoder {
       this.device !== device
       || this.layout?.colorFormat !== layout.colorFormat
       || this.layout.depthStencilFormat !== layout.depthStencilFormat
+      || (this.layout.additionalColorFormats ?? []).join() !== (layout.additionalColorFormats ?? []).join()
       || this.layout.sampleCount !== layout.sampleCount
     ) {
       this.clear()
       this.device = device
-      this.layout = {...layout}
+      this.layout = {...layout, ...(layout.additionalColorFormats === undefined ? {} : {additionalColorFormats: [...layout.additionalColorFormats]})}
     }
     this.cursor = 0
     this.changed = false
@@ -81,8 +83,8 @@ export class RenderBundleCache implements RenderCommandEncoder {
       }
       if (this.bundle === null) {
         const encoder = device.createRenderBundleEncoder({
-          colorFormats: [layout.colorFormat],
-          depthStencilFormat: layout.depthStencilFormat,
+          colorFormats: [layout.colorFormat, ...layout.additionalColorFormats ?? []],
+          ...(layout.depthStencilFormat === undefined ? {} : {depthStencilFormat: layout.depthStencilFormat}),
           sampleCount: layout.sampleCount,
           depthReadOnly: false,
           stencilReadOnly: false,

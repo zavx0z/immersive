@@ -1,11 +1,12 @@
+import {readSpatialHit} from "@zavx0z/immersive-space"
 import {afterEach, expect, test} from "bun:test"
-import {createDocument, DragEvent, KeyboardEvent as SemanticKeyboardEvent, type DataTransfer, type HTMLElement} from "@zavx0z/immersive-dom"
-import {Object3D, Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engine"
+import {acquireDocumentAuthorStyleSheetOwner, createDocument, DragEvent, KeyboardEvent as SemanticKeyboardEvent, type DataTransfer, type HTMLElement} from "@zavx0z/immersive-dom"
+import {Object3D, Raycaster, Space, TrueTypeFont, Vector3, ViewPoint} from "@zavx0z/immersive-engine"
 import type {RenderComposition, Renderer, RenderOverlay} from "@zavx0z/immersive-webgpu"
 import {createDocumentOverlayRuntime} from "../src/overlay-runtime.ts"
 import {createDocumentPlaneRuntime} from "../src/plane-runtime.ts"
 import type {DocumentNativeInputHost} from "../src/native-input-host.ts"
-import {createDocumentSpaceRuntimeWithSeams, type DocumentSpaceRuntime} from "../src/space-runtime.ts"
+import {createDocumentSpaceRuntimeWithSeams, type DocumentSpaceRuntime, type CreateDocumentSpaceRuntimeOptions} from "../src/space-runtime.ts"
 
 const runtimes: DocumentSpaceRuntime[] = []
 afterEach(() => {
@@ -14,7 +15,7 @@ afterEach(() => {
 
 // Only GPU submission, native text proxies and scheduling are substituted.
 // CPU layout, hit testing, projection geometry, dispatch and scrolling are real.
-const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: readonly string[] = [], clientRect = {left: 0, top: 0, width: 200, height: 200}, initialCursor = "", timers?: {setTimer(callback: () => void, delay: number): unknown; clearTimer(handle: unknown): void}) => {
+const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: readonly string[] = [], clientRect = {left: 0, top: 0, width: 200, height: 200}, initialCursor = "", timers?: {setTimer(callback: () => void, delay: number): unknown; clearTimer(handle: unknown): void}, pickSpatial?: CreateDocumentSpaceRuntimeOptions["pickSpatial"], requested?: () => void) => {
   const document = createDocument()
   const root = document.createElement("div")
   document.append(root)
@@ -84,6 +85,7 @@ const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: r
   } as unknown as Renderer
   const runtime = await createDocumentSpaceRuntimeWithSeams({
     canvas, document, font, styleSheets, cameraGestures: true,
+    ...(pickSpatial === undefined ? {} : {pickSpatial}),
   }, {
     createEngineRenderer: () => engineRenderer,
     initializeEngineRenderer: async () => {},
@@ -97,7 +99,7 @@ const fixture = async (readImageSize?: Renderer["readImageSize"], styleSheets: r
     createResizeObserver: () => ({observe() {}, disconnect() {}}),
     readCanvasRect: () => clientRect,
     devicePixelRatio: () => 1,
-    requestFrame: () => 1,
+    requestFrame: () => { requested?.(); return 1 },
     cancelFrame() {},
     setTimer: timers?.setTimer ?? (() => 1),
     clearTimer: timers?.clearTimer ?? (() => {}),
@@ -847,4 +849,378 @@ test("fullscreen Esc uses the native exit and does not reach the remote content;
   await expect(target.requestFullscreen()).rejects.toThrow("activation required")
   expect(f.document.fullscreenElement).toBeNull()
   expect(f.runtime.getOverlay(target)).toBeUndefined()
+})
+
+
+test.each(["overlay", "plane"] as const)("%s pinch меняет ViewPoint над UI, удерживает anchor и оставляет обычную прокрутку", async kind => {
+  const f = await fixture()
+  const root = f.projection(kind, "pinch")
+  const scroller = f.element("width: 200px; height: 200px; overflow: auto; background: red", root)
+  f.element("width: 100px; height: 600px", scroller)
+  const wheels = f.observe(scroller)
+  const zooms: {delta: number; anchor: {clientX: number; clientY: number} | undefined}[] = []
+  f.camera.zoom = (delta, anchor) => { zooms.push({delta, anchor}) }
+  f.runtime.render()
+  expect(f.emit("wheel", 50, 50, {ctrlKey: true, deltaY: 0.001, timeStamp: 100})).toBe(true)
+  expect(f.emit("wheel", 190, 190, {ctrlKey: true, deltaY: 0.002, timeStamp: 110})).toBe(true)
+  expect(zooms).toEqual([
+    {delta: -0.001, anchor: {clientX: 50, clientY: 50}},
+    {delta: -0.002, anchor: {clientX: 50, clientY: 50}},
+  ])
+  expect(scroller.scrollTop).toBe(0)
+  expect(wheels).toEqual([])
+  expect(f.emit("wheel", 50, 50, {deltaY: 20})).toBe(true)
+  expect(scroller.scrollTop).toBe(20)
+  expect(wheels).toEqual(["wheel"])
+  f.emit("wheel", 75, 75, {ctrlKey: true, timeStamp: 120})
+  expect(zooms.at(-1)?.anchor).toEqual({clientX: 75, clientY: 75})
+  f.emit("wheel", 80, 80, {ctrlKey: true, timeStamp: 500})
+  expect(zooms.at(-1)?.anchor).toEqual({clientX: 80, clientY: 80})
+})
+
+test.each(["overlay", "plane"] as const)("%s flush зависит от собственного DOM и наследуемого контекста", async kind => {
+  const f = await fixture()
+  const firstRoot = f.projection(kind, "first")
+  const secondRoot = f.projection(kind, "second")
+  const first = kind === "overlay" ? f.runtime.getOverlay(firstRoot)! : f.runtime.getPlane(firstRoot)!
+  const second = kind === "overlay" ? f.runtime.getOverlay(secondRoot)! : f.runtime.getPlane(secondRoot)!
+  const content = f.element("width: 50px; height: 50px; background: red", firstRoot)
+  f.runtime.render()
+  let firstFlushes = 0
+  let secondFlushes = 0
+  first.subscribe(() => { firstFlushes++ })
+  second.subscribe(() => { secondFlushes++ })
+  firstFlushes = secondFlushes = 0
+  content.setAttribute("style", "width: 60px; height: 50px; background: red")
+  f.runtime.render()
+  expect([firstFlushes, secondFlushes]).toEqual([1, 0])
+  firstFlushes = secondFlushes = 0
+  const viewpoint = f.document.createElement("div")
+  const parent = firstRoot.parentNode as HTMLElement
+  parent.append(viewpoint)
+  f.runtime.render()
+  firstFlushes = secondFlushes = 0
+  viewpoint.setAttribute("position", "10 20 30")
+  f.runtime.restoreViewPoint(f.runtime.snapshotViewPoint())
+  f.runtime.render()
+  expect([firstFlushes, secondFlushes]).toEqual([0, 0])
+  parent.setAttribute("style", "color: blue")
+  f.runtime.render()
+  expect([firstFlushes, secondFlushes]).toEqual([1, 1])
+  firstFlushes = secondFlushes = 0
+  secondRoot.append(content)
+  f.runtime.render()
+  expect([firstFlushes, secondFlushes]).toEqual([1, 1])
+  const input = f.document.createElement("input")
+  firstRoot.append(input)
+  f.runtime.render()
+  firstFlushes = secondFlushes = 0
+  input.value = "local change"
+  f.runtime.render()
+  expect([firstFlushes, secondFlushes]).toEqual([1, 0])
+  firstFlushes = secondFlushes = 0
+  const styles = acquireDocumentAuthorStyleSheetOwner(f.document)
+  styles.replace([{id: "global", cssText: "div { color: green }"}])
+  f.runtime.render()
+  expect([firstFlushes, secondFlushes]).toEqual([1, 1])
+  styles.release()
+})
+
+
+test.each(["overlay", "plane"] as const)("%s обратная проекция сохраняет CSS координаты вне прямоугольника", async kind => {
+  const f = await fixture(undefined, [], {left: 40, top: 20, width: 400, height: 300})
+  const root = f.projection(kind, "inverse")
+  if (kind === "plane") f.runtime.updatePlane(root, {
+    worldUnitsPerPixel: 0.5,
+    worldUnitsPerPixelY: 0.75,
+    transform: {
+      position: {x: 12, y: 5, z: 8},
+      quaternion: {x: Math.sin(Math.PI / 6), y: 0, z: 0, w: Math.cos(Math.PI / 6)},
+      scale: {x: 1.2, y: 0.8, z: 1},
+    },
+  })
+  f.runtime.render()
+  for (const point of [{x: 60, y: 40}, {x: -30, y: 250}]) {
+    const client = f.runtime.projectPoint(root, point)!
+    const inverse = f.runtime.unprojectPoint(root, client)!
+    expect(inverse.x).toBeCloseTo(point.x, 3)
+    expect(inverse.y).toBeCloseTo(point.y, 3)
+  }
+  expect(f.runtime.unprojectPoint(root, {x: NaN, y: 10})).toBeNull()
+  if (kind === "plane") f.runtime.removePlane(root)
+  else f.runtime.removeOverlay(root)
+  expect(f.runtime.unprojectPoint(root, {x: 50, y: 50})).toBeNull()
+})
+
+
+test("spatial edge выбирается общим hit решением, сохраняет capture и bubbling click с id", async () => {
+  let target: HTMLElement | null = null
+  let enabled = true
+  const f = await fixture(undefined, [], undefined, "", undefined, () => target === null || !enabled ? null : {target, hit: {id: "edge/entity/socket", distance: 90, point: {x: 0, y: 0, z: 0}}})
+  target = f.element("", undefined, "div")
+  const parent = target.parentElement!
+  const events: string[] = []
+  const ids: string[] = []
+  let bubbles = 0
+  parent.addEventListener("click", () => { bubbles++ })
+  for (const type of ["pointerover", "pointerenter", "pointermove", "pointerdown", "gotpointercapture", "pointerup", "click", "lostpointercapture", "pointerout", "pointerleave"]) {
+    target.addEventListener(type, event => {
+      events.push(type)
+      const hit = readSpatialHit(event)
+      if (hit !== null) ids.push(hit.id)
+      if (type === "pointerdown") target!.setPointerCapture(1)
+    })
+  }
+  f.emit("pointermove", 100, 100)
+  f.emit("pointerdown", 100, 100)
+  expect(f.captured.has(1)).toBe(true)
+  f.emit("pointermove", 160, 160)
+  f.emit("pointerup", 160, 160)
+  expect(f.captured.size).toBe(0)
+  expect(bubbles).toBe(1)
+  expect(events).toContain("gotpointercapture")
+  expect(events).toContain("lostpointercapture")
+  expect(ids.every(id => id === "edge/entity/socket")).toBe(true)
+  expect(f.cameraInputs).toEqual([])
+  enabled = false
+  f.emit("pointermove", 100, 100)
+  expect(events.slice(-2)).toEqual(["pointerout", "pointerleave"])
+})
+
+test("HUD и нарисованный ближний Display перекрывают spatial edge тем же выбором получателя", async () => {
+  let target: HTMLElement | null = null
+  let distance = 150
+  const f = await fixture(undefined, [], undefined, "", undefined, () => target === null ? null : {target, hit: {id: "edge", distance, point: {x: 0, y: 0, z: 0}}})
+  target = f.element("")
+  const edgeEvents = f.observe(target)
+  const plane = f.projection("plane", "occluding-display")
+  const button = f.element("width: 200px; height: 200px", plane, "button")
+  const buttonEvents = f.observe(button)
+  f.emit("pointerdown", 100, 100)
+  f.emit("pointerup", 100, 100)
+  expect(buttonEvents).toContain("click")
+  expect(edgeEvents).toEqual([])
+  distance = 50
+  f.emit("pointerdown", 100, 100)
+  f.emit("pointerup", 100, 100)
+  expect(edgeEvents).toContain("click")
+  edgeEvents.length = 0
+  const hud = f.projection("overlay", "occluding-hud")
+  const hudButton = f.element("width: 200px; height: 200px", hud, "button")
+  const hudEvents = f.observe(hudButton)
+  f.emit("pointerdown", 100, 100)
+  f.emit("pointerup", 100, 100)
+  expect(hudEvents).toContain("click")
+  expect(edgeEvents).toEqual([])
+})
+
+test("spatial edge отменяет pointer при удалении и не активируется при up над другой частью batch", async () => {
+  let target: HTMLElement | null = null
+  let id = "first"
+  const f = await fixture(undefined, [], undefined, "", undefined, () => target === null ? null : {target, hit: {id, distance: 50, point: {x: 0, y: 0, z: 0}}})
+  target = f.element("")
+  const events = f.observe(target)
+  f.emit("pointerdown", 100, 100)
+  id = "second"
+  f.emit("pointerup", 100, 100)
+  expect(events).not.toContain("click")
+  f.emit("pointerdown", 100, 100)
+  expect(f.captured.has(1)).toBe(true)
+  target.remove()
+  expect(events).toContain("pointercancel")
+  expect(f.captured.size).toBe(0)
+})
+
+
+test("мировые XYZ проецируются без Display в native client XY текущей камеры", async () => {
+  const f = await fixture(undefined, [], {left: 40, top: 20, width: 400, height: 300})
+  expect([...f.runtime.planeRoots]).toEqual([])
+  expect(f.runtime.projectWorldPoint({x: 0, y: 0, z: 0})).toEqual({x: 240, y: 170})
+  const point = f.runtime.projectWorldPoint({x: 20, y: 0, z: 15})!
+  expect(point.x).toBeGreaterThan(240)
+  expect(point.y).toBeLessThan(170)
+  // Outside XY остаётся полезным для пересечения экранных bounds большого Repo.
+  expect(f.runtime.projectWorldPoint({x: 1000, y: 0, z: 0})!.x).toBeGreaterThan(440)
+  f.runtime.restoreViewPoint({position: {x: 30, y: -100, z: 0}, target: {x: 30, y: 0, z: 0}, fov: Math.PI / 2, near: .1, far: 2000})
+  expect(f.runtime.projectWorldPoint({x: 0, y: 0, z: 0})!.x).toBeLessThan(240)
+  expect([...f.runtime.planeRoots]).toEqual([])
+})
+
+test("мировая проекция исключает невалидные XYZ и точки за камерой или вне near/far", async () => {
+  const f = await fixture()
+  expect(f.runtime.projectWorldPoint({x: NaN, y: 0, z: 0})).toBeNull()
+  expect(f.runtime.projectWorldPoint({x: 0, y: -100, z: 0})).toBeNull()
+  expect(f.runtime.projectWorldPoint({x: 0, y: -101, z: 0})).toBeNull()
+  expect(f.runtime.projectWorldPoint({x: 0, y: -99.99, z: 0})).toBeNull()
+  expect(f.runtime.projectWorldPoint({x: 0, y: 3000, z: 0})).toBeNull()
+  f.runtime.dispose()
+  expect(() => f.runtime.projectWorldPoint({x: 0, y: 0, z: 0})).toThrow()
+})
+
+
+test("доступные вложенные Frame и их подписи отдают обычный trackpad wheel панорамированию Space", async () => {
+  const f = await fixture()
+  const root = f.projection("plane", "repo")
+  const frame = f.element("position: absolute; left: 10px; top: 10px; width: 180px; height: 180px; background: #333", root)
+  frame.setAttribute("role", "option")
+  frame.setAttribute("tabindex", "0")
+  const nested = f.element("position: absolute; left: 10px; top: 10px; width: 160px; height: 160px; background: #444", frame)
+  nested.setAttribute("role", "option")
+  nested.setAttribute("tabindex", "0")
+  const label = f.element("height: 24px; width: 160px", nested)
+  label.textContent = "Frame"
+  const semantic: number[] = []
+  frame.addEventListener("wheel", () => { semantic.push(1) })
+  f.runtime.render()
+  expect(f.emit("wheel", 40, 30, {deltaX: 10, deltaY: 5, timeStamp: 100})).toBe(true)
+  expect(f.cameraInputs).toEqual(["pan"])
+  expect(semantic).toEqual([1])
+})
+
+test("непрерывное trackpad pan сохраняет владельца при движении UI под указателем", async () => {
+  const f = await fixture()
+  const root = f.projection("plane", "repo")
+  f.element("width: 200px; height: 200px; background: #333", root)
+  f.runtime.render()
+  f.emit("wheel", 50, 50, {deltaY: 10, timeStamp: 100})
+  const button = f.element("position: absolute; left: 0; top: 0; width: 100px; height: 100px", root, "button")
+  const controls = f.observe(button)
+  f.runtime.render()
+  f.emit("wheel", 50, 50, {deltaY: 10, timeStamp: 110})
+  expect(f.cameraInputs).toEqual(["pan", "pan"])
+  expect(controls).toEqual([])
+  f.emit("wheel", 50, 50, {deltaY: 10, timeStamp: 300})
+  expect(f.cameraInputs).toEqual(["pan", "pan"])
+  expect(controls).toEqual(["wheel"])
+})
+
+test("UI scroll/editor и отмена semantic wheel сохраняют ввод при разрешённых ViewPoint controls", async () => {
+  const f = await fixture()
+  const root = f.projection("plane", "repo")
+  const frame = f.element("width: 200px; height: 200px; background: #333", root)
+  const scroll = f.element("width: 80px; height: 60px; overflow: auto", frame)
+  f.element("width: 80px; height: 200px", scroll)
+  const editor = f.element("position: absolute; left: 100px; top: 0; width: 90px; height: 70px; background: #555", frame)
+  editor.setAttribute("contenteditable", "true")
+  const inner = f.element("width: 80px; height: 60px; background: #666", editor)
+  const input = f.document.createElement("input")
+  input.setAttribute("style", "position: absolute; left: 100px; top: 100px; width: 90px; height: 40px")
+  frame.append(input)
+  f.runtime.render()
+  f.emit("wheel", 20, 20, {deltaY: 500, timeStamp: 100})
+  f.emit("wheel", 20, 20, {deltaY: 100, timeStamp: 300})
+  expect(scroll.scrollTop).toBe(140)
+  f.emit("wheel", 120, 20, {timeStamp: 500})
+  f.emit("wheel", 120, 120, {timeStamp: 700})
+  expect(f.cameraInputs).toEqual([])
+  const editEvents = f.observe(inner)
+  f.emit("wheel", 120, 20, {timeStamp: 900})
+  expect(editEvents).toEqual(["wheel"])
+  frame.addEventListener("wheel", event => event.preventDefault())
+  expect(f.emit("wheel", 30, 150, {timeStamp: 1100})).toBe(true)
+  expect(f.cameraInputs).toEqual([])
+})
+
+
+test("burst trackpad deltas применяются ровно один раз и объединяются в один RAF", async () => {
+  let requests = 0
+  const f = await fixture(undefined, [], {left: 0, top: 0, width: 200, height: 200}, "", undefined, undefined, () => { requests++ })
+  const root = f.projection("plane", "repo")
+  f.element("width: 200px; height: 200px; background: #333", root)
+  const deltas: {x: number; y: number}[] = []
+  f.camera.pan = (x, y) => { deltas.push({x, y}) }
+  f.runtime.render()
+  const initialFrames = f.runtime.presentedFrames
+  requests = 0
+  for (let i = 0; i < 30; i++) f.emit("wheel", 50, 50, {deltaX: 0.1, deltaY: 0.2, timeStamp: 100 + i})
+  expect(deltas).toHaveLength(30)
+  expect(deltas.reduce((sum, delta) => sum + delta.x, 0)).toBeCloseTo(3, 10)
+  expect(deltas.reduce((sum, delta) => sum + delta.y, 0)).toBeCloseTo(6, 10)
+  expect(requests).toBe(1)
+  expect(f.runtime.presentedFrames).toBe(initialFrames)
+  f.runtime.render()
+  expect(f.runtime.presentedFrames).toBe(initialFrames + 1)
+})
+
+test("заморозка ViewPoint прекращает прежнее владение wheel burst", async () => {
+  const f = await fixture()
+  const root = f.projection("plane", "repo")
+  f.element("width: 200px; height: 200px; background: #333", root)
+  f.runtime.render()
+  f.emit("wheel", 50, 50, {timeStamp: 100})
+  const button = f.element("position: absolute; left: 0; top: 0; width: 100px; height: 100px", root, "button")
+  const events = f.observe(button)
+  f.runtime.setCameraGesturesEnabled(false)
+  f.runtime.setCameraGesturesEnabled(true)
+  f.runtime.render()
+  f.emit("wheel", 50, 50, {timeStamp: 110})
+  expect(f.cameraInputs).toEqual(["pan"])
+  expect(events).toEqual(["wheel"])
+})
+
+
+test.each([{near: 10, far: 100}, {near: 10000, far: 22000}])("HUD сохраняет logical hit и click при независимом clip range Space %p", async clip => {
+  const f = await fixture()
+  const root = f.projection("overlay", "hud")
+  const button = f.element("position: absolute; left: 20px; top: 10px; width: 60px; height: 40px; background: lime", root, "button")
+  const events = f.observe(button)
+  f.runtime.restoreViewPoint({...f.runtime.snapshotViewPoint(), ...clip})
+  f.runtime.render()
+  expect(f.runtime.projectPoint(root, {x: 40, y: 30})).toEqual({x: 40, y: 30})
+  f.emit("pointerdown", 40, 30)
+  f.emit("pointerup", 40, 30)
+  expect(events).toContain("click")
+  expect(f.document.activeElement).toBe(button)
+})
+
+
+test("native и программный pinch в fly режиме проходят плоскость target без потери фиксированного anchor", async () => {
+  const f = await fixture()
+  f.camera.position.set(0, 0, 100)
+  f.camera.getTarget().set(0, 0, 0)
+  f.camera.navigation = "fly"
+  f.camera.flySpeed = 100
+  f.camera.zoom = ViewPoint.prototype.zoom
+  f.camera.update()
+  f.runtime.render()
+  f.emit("wheel", 100, 100, {ctrlKey: true, deltaY: -1, timeStamp: 100})
+  f.emit("wheel", 180, 180, {ctrlKey: true, deltaY: -1, timeStamp: 110})
+  expect(f.camera.position).toEqual(new Vector3(0, 0, -100))
+  expect(f.camera.getTarget()).toEqual(new Vector3(0, 0, -200))
+  f.runtime.dispatchWheel({clientX: 100, clientY: 100, ctrlKey: true, deltaY: -1})
+  expect(f.camera.position.z).toBe(-200)
+})
+
+test.each([1, 2])("secondary button %s панорамирует над coarse spatial face через общий ViewPoint", async button => {
+  let target: HTMLElement | null = null
+  const f = await fixture(undefined, [], undefined, "", undefined, () => target === null ? null : {target, hit: {id: "entity-volume", distance: 50, point: {x: 0, y: 0, z: 0}}})
+  target = f.element("")
+  const events = f.observe(target)
+  const buttons = button === 1 ? 4 : 2
+  f.emit("pointerdown", 100, 100, {button, buttons})
+  expect(events).toEqual(["pointerdown", "pointercancel"])
+  expect(f.captured.has(1)).toBe(true)
+  f.emit("pointermove", 120, 130, {button, buttons})
+  f.emit("pointerup", 120, 130, {button, buttons: 0})
+  expect(f.cameraInputs).toEqual(["pan"])
+  expect(events).not.toContain("click")
+  expect(f.captured.size).toBe(0)
+})
+
+test.each(["cancel", "capture", "frozen"] as const)("spatial %s сохраняет собственный secondary pointer lifecycle", async policy => {
+  let target: HTMLElement | null = null
+  const f = await fixture(undefined, [], undefined, "", undefined, () => target === null ? null : {target, hit: {id: "entity-volume", distance: 50, point: {x: 0, y: 0, z: 0}}})
+  target = f.element("")
+  const events = f.observe(target)
+  if (policy === "frozen") f.runtime.setCameraGesturesEnabled(false)
+  else target.addEventListener("pointerdown", event => {
+    if (policy === "cancel") event.preventDefault()
+    else target!.setPointerCapture(1)
+  })
+  f.emit("pointerdown", 100, 100, {button: 2, buttons: 2})
+  f.emit("pointermove", 120, 130, {button: 2, buttons: 2})
+  f.emit("pointerup", 120, 130, {button: 2, buttons: 0})
+  expect(f.cameraInputs).toEqual([])
+  expect(events).toEqual(["pointerdown", "pointermove", "pointerup"])
+  expect(f.captured.size).toBe(0)
 })

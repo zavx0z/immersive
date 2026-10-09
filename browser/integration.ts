@@ -9,7 +9,7 @@ import type {Root as Presentation, RootLinkedAuthorStyleSheet} from "./src/attac
 export type {BrowserFontFaceSource} from "./font-faces.ts"
 export type {
   RootLinkedAuthorStyleSheet, RootDocumentProjection, RootProjection, RootSpaceProjection,
-  RootKeyInput, RootPointerInput, RootWheelInput, RootInput,
+  RootKeyInput, RootPointerInput, RootWheelInput, RootInput, RootWorldRay,
 } from "./src/attach.ts"
 export type {Presentation}
 

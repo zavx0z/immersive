@@ -12,6 +12,8 @@
 | [Adaptive](./algorithm/adaptive/index.ts) | Тот же граф с `capability` и `allowedSides` | Одна сторона для каждого точного сокета, включая общий. [Диагностический вариант](./algorithm/adaptive/diagnostic/index.ts) возвращает также bounded-search counters |
 | [TopDown](./algorithm/top-down/index.ts) | Плоский DAG: точные `x` портов либо `attachment: "contour"` | Прежние `SOUTH` → `NORTH` или пересечения фигур, cubic curves. [Контракт и parity evidence](top-down-parity.md) |
 | [Hierarchy](./algorithm/hierarchy/index.ts) | Лес карточек: `id`, `parentId`, измеренные `width`/`height` | `DOWN`, устойчивый порядок детей и корней, ортогональные линии. O(n) времени и памяти без рекурсии и viewport |
+| [Compound](./algorithm/compound/index.ts) | Измеренные карточки и вложенные Frames: общий `LayoutNode` | Компактные строки внутри каждой рамки, стабильная геометрия по ID, O(n log n) времени / O(n) памяти без рекурсии. Связи независимы |
+| [Prism Tree](./prism-tree/README.md), самостоятельный пакет | Измеренные Displays, `parentId`, веса и расстояние между слоями | Параллельные XY-слои по глубине, точные размеры, одинаковая глубина тел независимо от промежутка между слоями и непересекающиеся объёмы прямоугольных ветвей. O(n log n) |
 | [Coffman–Graham](./algorithm/coffman-graham/index.ts) | DAG, `x` портов и `maxNodesPerLayer` | Ограниченные по ширине слои, cubic curves и массив crossings. Цикл возвращает typed witness |
 
 У Adaptive один `source/shared` может соединяться с двумя приёмниками:
@@ -45,6 +47,32 @@ const layout = layoutHierarchy({
 входной порядок. Рёбра используют общий `LayoutEdgeSection` и указывают
 `sourceNodeId`/`targetNodeId`; id ребра — `hierarchy:<индекс ребёнка>`.
 Bounds включают все прямоугольники и маршруты.
+
+Compound размещает соседей в компактных строках, сортируя их по измеренной высоте,
+ширине и ID. Желаемое отношение ширины к высоте задаётся `aspectRatio`, по умолчанию
+1.5; это ориентир упаковки, а не ограничение размера карточки. Родитель расширяется
+до размеров детей, отступов `padding` и собственного `contentHeight` (по умолчанию
+исходный `height`). Лист сохраняет измеренный размер. Порядок результата совпадает
+с входом, перестановка входа не меняет прямоугольники по ID. Нет портов, маршрутов
+и перебора вариантов по форме viewport.
+
+```ts
+import {layoutCompound} from "@zavx0z/immersive-nodes-layout/compound"
+
+const result = layoutCompound({
+  nodes: [
+    {id: "frame:repo", width: 1, height: 40, contentHeight: 40},
+    {id: "package", parentId: "frame:repo", width: 960, height: 680},
+  ],
+  options: {spacing: 24, padding: 24, aspectRatio: 1.5},
+})
+```
+
+Владелец данных заранее различает ID карточек и Frames; раскладка сохраняет оба
+набора в общем `nodes`. `CompoundLayoutError` возвращает `code` и `witness` для
+структурных и числовых ошибок. Глубина дерева не ограничена стеком вызовов.
+Алгоритм рассчитывает переданный рабочий набор: выбор части большого каталога,
+загрузка остальных частей и принятие ревизии принадлежат потребителю.
 
 Фиксированная политика экспортирует `FixedLayoutInput` и `FixedLayoutOutput` из
 `@zavx0z/immersive-nodes-layout` и `@zavx0z/immersive-nodes-layout/fixed`. Они заменили прежние alias общего

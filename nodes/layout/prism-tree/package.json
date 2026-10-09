@@ -1,0 +1,20 @@
+{
+  "name": "@zavx0z/immersive-nodes-layout-prism-tree",
+  "label": "Призматическое дерево",
+  "version": "0.0.0",
+  "description": "Послойная 3D-раскладка измеренных дисплеев и непересекающихся прямоугольных ветвей",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.ts"
+  },
+  "dependencies": {
+    "@zavx0z/immersive-nodes-layout": "workspace:*"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test test spec",
+    "check": "bun run typecheck && bun run test"
+  }
+}

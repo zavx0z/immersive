@@ -3426,7 +3426,7 @@ function sameColor(left: Color, right: Color): boolean {
   return left.r === right.r && left.g === right.g && left.b === right.b && left.a === right.a
 }
 
-function parseDisplayColor(value: string): Color {
+export function parseDisplayColor(value: string): Color {
   const normalized = value.trim().toLowerCase()
   if (normalized === "transparent") return new Color(0, 0, 0, 0)
 

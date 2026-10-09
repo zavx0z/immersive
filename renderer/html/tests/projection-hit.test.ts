@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@zavx0z/immersive-dom"
+import {createDocument, HTMLElement} from "@zavx0z/immersive-dom"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "../src/index.ts"
 import {projectionPaintIndex} from "../src/projection-hit.ts"
 
@@ -123,3 +123,62 @@ test("transparent siblings do not steal a lower element's pointer target", () =>
   expect(f.hit(100, 100)).toBeNull()
   f.renderer.dispose()
 })
+
+test("negative tabindex owns the transparent row without entering sequential focus order", () => {
+  const f = fixture()
+  const scroll = f.add("width:180px;height:60px;overflow:auto")
+  const row = f.document.createElement("div")
+  row.setAttribute("role", "treeitem")
+  row.setAttribute("tabindex", "-1")
+  row.setAttribute("style", "width:180px;height:24px;background:transparent")
+  row.textContent = "Short"
+  const sibling = f.document.createElement("div")
+  sibling.setAttribute("tabindex", "0")
+  sibling.setAttribute("style", "width:180px;height:100px")
+  scroll.append(row, sibling)
+  const interaction = createDocumentInteractionController({document: f.document, hitTest: hitTestProjection})
+  const clicked: unknown[] = []
+  row.addEventListener("click", event => clicked.push(event.target))
+  try {
+    const frame = f.renderer.flush()
+    expect(hitTestProjection(frame, 150, 12)?.node).toBe(row)
+    interaction.pointerDown(frame, {clientX: 150, clientY: 12, pointerId: 1})
+    interaction.pointerUp(f.renderer.flush(), {clientX: 150, clientY: 12, pointerId: 1})
+    expect(clicked).toEqual([row])
+    expect(f.document.activeElement).toBe(row)
+    expect(row.tabIndex).toBe(-1)
+    expect([...scroll.querySelectorAll("[tabindex]")].filter(node => node instanceof HTMLElement && node.tabIndex >= 0)).toEqual([sibling])
+    row.setAttribute("disabled", "")
+    const disabled = f.renderer.flush()
+    expect(hitTestProjection(disabled, 150, 12)?.node).toBe(row)
+    interaction.pointerDown(disabled, {clientX: 150, clientY: 12, pointerId: 2})
+    interaction.pointerUp(disabled, {clientX: 150, clientY: 12, pointerId: 2})
+    expect(clicked).toEqual([row])
+  } finally {
+    interaction.dispose()
+    f.renderer.dispose()
+  }
+})
+
+test.each(["", "invalid", "+", "--1", "2147483648", "-2147483649"])(
+  "invalid tabindex %j does not turn an empty wrapper into an input blocker", value => {
+    const f = fixture()
+    const lower = f.add("position:absolute;width:180px;height:60px;background:#333")
+    const wrapper = f.add("position:absolute;width:180px;height:60px;background:transparent")
+    wrapper.setAttribute("tabindex", value)
+    try {
+      expect(f.hit(150, 12)).toBe(lower)
+      expect(f.renderer.flush().hits.get(wrapper)?.interactive).toBe(false)
+    } finally { f.renderer.dispose() }
+  },
+)
+
+test.each(["-1", "\t -2", "+0", "12suffix", "-2147483648", "2147483647"])(
+  "valid HTML tabindex %j retains transparent input ownership", value => {
+    const f = fixture()
+    const control = f.add("width:180px;height:24px;background:transparent")
+    control.setAttribute("tabindex", value)
+    try { expect(f.hit(150, 12)).toBe(control) }
+    finally { f.renderer.dispose() }
+  },
+)

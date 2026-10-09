@@ -1,3 +1,6 @@
+import type {XRMaterialProjectionContext} from "../contract/material-context.ts"
+export type {XRMaterialProjectionContext} from "../contract/material-context.ts"
+import type {SpatialHitTest} from "../contract/spatial-hit-test.ts"
 import {Comment, Element, type Document, type Node} from "@zavx0z/immersive-dom"
 import {SpatialElement} from "@zavx0z/immersive-dom/space"
 import type {
@@ -50,6 +53,7 @@ export type XRGeometryProjectionFactory = (
 
 export type XRMaterialProjectionFactory = (
   element: XRMaterialElement,
+  context?: XRMaterialProjectionContext,
 ) => Material
 
 export type XRObjectProjectionContext = Readonly<{
@@ -67,6 +71,8 @@ export type XRAnimationProjectionFactory = (
   element: XRAnimationElement,
 ) => AnimationClip
 
+const materialStyleProperties = new WeakMap<XRMaterialElement, readonly string[]>()
+const hitTests = new WeakMap<XRElement, SpatialHitTest>()
 const factories = new WeakMap<XRElement, Function>()
 const factoryRevisions = new WeakMap<XRElement, number>()
 
@@ -132,6 +138,15 @@ export abstract class XRObjectElement extends XRElement {
     writeFactory(this, value, "Object")
   }
   get factoryRevision(): number { return readFactoryRevision(this) }
+
+  get hitTest(): SpatialHitTest | null { return hitTests.get(this) ?? null }
+  set hitTest(value: SpatialHitTest | null) {
+    if (value !== null && typeof value !== "function") throw new TypeError("Spatial hitTest должен быть функцией")
+    if (this.hitTest === value) return
+    if (value === null) hitTests.delete(this)
+    else hitTests.set(this, value)
+    this.setAttribute("hit-test-revision", String(Number(this.getAttribute("hit-test-revision") ?? 0) + 1))
+  }
 
   protected validateObjectChildren(
     nodes: readonly Node[],
@@ -377,6 +392,15 @@ export class XRGeometryElement extends XRElement {
 }
 
 export class XRMaterialElement extends XRElement {
+  /** Имена дополнительных CSS variables, разрешаемых Renderer для фабрики материала. */
+  get styleProperties(): readonly string[] { return materialStyleProperties.get(this) ?? [] }
+  set styleProperties(value: readonly string[]) {
+    if (!Array.isArray(value) || value.some(name => typeof name !== "string" || !name.startsWith("--"))) throw new TypeError("Материал требует имена CSS custom properties")
+    if (JSON.stringify(this.styleProperties) === JSON.stringify(value)) return
+    materialStyleProperties.set(this, Object.freeze([...value]))
+    this.setAttribute("material-style-properties", JSON.stringify(value))
+  }
+
   constructor(ownerDocument: Document) {
     super(ownerDocument, "xr-material")
   }

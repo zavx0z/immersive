@@ -237,6 +237,9 @@ export type JsxChildrenExpressionKind =
   | "component"
   | "keyed-components"
   | "nullable-component"
+  | "compiled-component"
+  | "prepared-content"
+  | "invalid-compiled-component"
   | "text"
   | "unsupported"
 
@@ -525,7 +528,7 @@ export function transformJsxSourceFile(
         `  normalizeChildren as ${helper}Children,`,
         `  keyedComponents as ${helper}Keyed`,
         `} from "@zavx0z/immersive-component"`,
-        ...(componentSlots.size > 0 ? [`import {composeSlot as ${helper}Slot} from "@zavx0z/immersive-component/slot"`] : []),
+        ...(componentSlots.size > 0 || [...symbols.childrenExpressionKinds.values()].includes("prepared-content") ? [`import {composeSlot as ${helper}Slot} from "@zavx0z/immersive-component/slot"`] : []),
         "",
       ].join("\n"),
     })
@@ -1074,6 +1077,11 @@ function compileChild(child: JsxChild, context: CompileContext): string[] {
   if (isIdentifier(expression) && context.childrenExpressionKinds.get(expression) === "empty") return []
   if (isJsxFragment(expression)) return compileJsx(expression, context)
   const childrenKind = context.childrenExpressionKinds.get(expression)
+  if (childrenKind === "invalid-compiled-component") throw compileError(context.sourcePath, "prepared JSX content requires a nominal ComponentValue from @zavx0z/immersive-component")
+  if (childrenKind === "compiled-component") {
+    return compileValueRange(expression, "conditional", context, true)
+  }
+  if (childrenKind === "prepared-content") return compileValueRange(expression, "conditional", context, false, false, true)
   if (isPropsFieldExpression(expression, "children", context)) {
     if (childrenKind === "component-children") {
       return compileValueRange(expression, "conditional", context, false, true)
@@ -1123,6 +1131,7 @@ function compileValueRange(
   context: CompileContext,
   normalizeNullish = false,
   normalizeChildren = false,
+  normalizePrepared = false,
 ): string[] {
   const start = nextNode(context)
   const end = nextNode(context)
@@ -1133,7 +1142,9 @@ function compileValueRange(
   else if (kind === "conditional") {
     context.bindings.push(`${context.helper}BindConditional(${start}, ${end})`)
   } else context.bindings.push(`${context.helper}BindKeyed(${start}, ${end})`)
-  const value = normalizeChildren
+  const value = normalizePrepared
+    ? `${context.helper}Slot({content: ${expression.getText(context.sourceFile)}})`
+    : normalizeChildren
     ? `${context.helper}Children(${expression.getText(context.sourceFile)})`
     : expression.getText(context.sourceFile)
   context.writes.push(
@@ -1395,7 +1406,8 @@ function componentChildValue(child: JsxChild, context: ComponentExpressionContex
   const keyed = keyedMapValueExpression(value, context, assigned)
   if (keyed !== null) return keyed
   const kind = context.childrenExpressionKinds.get(value)
-  if (kind === "component-children") return value.getText(context.sourceFile)
+  if (kind === "invalid-compiled-component") throw compileError(context.sourcePath, "prepared JSX content requires a nominal ComponentValue from @zavx0z/immersive-component")
+  if (kind === "compiled-component" || kind === "prepared-content" || kind === "component-children") return value.getText(context.sourceFile)
   if (isConditionalExpression(value)) {
     if (kind === "text") return value.getText(context.sourceFile)
     return conditionalComponentValueExpression(asConditional(value), context, assigned)

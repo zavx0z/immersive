@@ -7,6 +7,7 @@ import { LineSegments } from "@zavx0z/immersive-engine"
 import { Text } from "@zavx0z/immersive-engine"
 import { Light } from "@zavx0z/immersive-engine"
 import {LineGlowMaterial} from "@zavx0z/immersive-engine"
+import {GlassMaterial} from "@zavx0z/immersive-engine"
 import { SkinnedMesh } from "@zavx0z/immersive-engine"
 import { WireframeInstancedMesh } from "@zavx0z/immersive-engine";
 import { Matrix4, Frustum, Sphere, Vector3 } from "@zavx0z/immersive-engine";
@@ -42,7 +43,13 @@ export function classifyRenderItems(renderList: readonly RenderItem[]): Classifi
   const uiAncestry = new Map<Object3D, boolean>()
   for (const item of renderList) {
     const ui = isUiLayerObject(item.object, uiAncestry)
-    const material = (item.object as {material?: {isGlassMaterial?: boolean}}).material
+    const raw = (item.object as {material?: {isGlassMaterial?: boolean} | {isGlassMaterial?: boolean}[]}).material
+    const material = Array.isArray(raw) ? raw[0] : raw
+    // Для деформируемых/инстансированных мешей нужны отдельные optical shaders.
+    // Отказ происходит до записи GPU-команд, а не внутри несовместимого прохода.
+    if (material instanceof GlassMaterial && item.type !== "static-mesh") {
+      throw new TypeError(`GlassMaterial поддерживает static-mesh; получен ${item.type}`)
+    }
     const glass = material?.isGlassMaterial
     const lineMode = item.type === "line" && material instanceof LineGlowMaterial
       ? material.visibilityMode

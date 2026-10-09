@@ -1,4 +1,4 @@
-import {Object3D} from "@zavx0z/immersive-engine"
+import {Matrix4, Object3D} from "@zavx0z/immersive-engine"
 import {ViewPoint} from "@zavx0z/immersive-engine"
 import {Space} from "@zavx0z/immersive-engine"
 import {SkinnedMesh} from "@zavx0z/immersive-engine"
@@ -44,6 +44,8 @@ export type RenderBoundedView = Readonly<{
 
 export type RenderOverlay = Object3D & {
   updateForViewPoint?(viewPoint: ViewPoint, options?: Readonly<{updateWorldMatrix?: boolean}>): void
+  /** Производная проекция того же ViewPoint; clip range screen UI независим от Space. */
+  viewProjectionForViewPoint?(viewPoint: ViewPoint): Matrix4
 }
 
 /** One ordered presentation owned by a single Renderer and native canvas. */

@@ -224,7 +224,7 @@ test("color, depth/stencil and sample layout changes recreate compatible bundle 
   }
   expect(fake.descriptors).toEqual(variants.map(variant => ({
     colorFormats: [variant.colorFormat],
-    depthStencilFormat: variant.depthStencilFormat,
+    ...(variant.depthStencilFormat === undefined ? {} : {depthStencilFormat: variant.depthStencilFormat}),
     sampleCount: variant.sampleCount,
     depthReadOnly: false,
     stencilReadOnly: false,
@@ -246,6 +246,27 @@ test("device replacement and explicit release cannot reuse bundles owned by the 
   expect(first.bundles).toHaveLength(1)
   expect(second.bundles).toHaveLength(2)
   expect(second.executions).toEqual(second.bundles)
+})
+
+test("MRT/no-depth layout стекла не переиспользует opaque bundle и хранит snapshot списка formats", () => {
+  const fake = gpu()
+  const cache = new RenderBundleCache()
+  const input = inputs()
+  const additional: GPUTextureFormat[] = ["rgba16float"]
+  const glass: RenderBundleLayout = {colorFormat: "rgba16float", additionalColorFormats: additional, sampleCount: 1}
+  const paint = (encoder: RenderCommandEncoder) => record(input, encoder)
+  cache.execute(fake.device, layout, fake.pass, paint)
+  cache.execute(fake.device, layout, fake.pass, paint)
+  cache.execute(fake.device, glass, fake.pass, paint)
+  cache.execute(fake.device, glass, fake.pass, paint)
+  expect(fake.descriptors.at(-1)!.colorFormats).toEqual(["rgba16float", "rgba16float"])
+  expect(fake.descriptors.at(-1)!).not.toHaveProperty("depthStencilFormat")
+  const count = fake.bundles.length
+  additional[0] = "rgba8unorm"
+  cache.execute(fake.device, glass, fake.pass, paint)
+  cache.execute(fake.device, glass, fake.pass, paint)
+  expect(fake.bundles).toHaveLength(count + 1)
+  expect(fake.descriptors.at(-1)!.colorFormats).toEqual(["rgba16float", "rgba8unorm"])
 })
 
 test("a throw after mutating the tape discards stale commands and permits a correct retry", () => {

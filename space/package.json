@@ -17,7 +17,9 @@
     "./shape/line": "./shape/line.tsx",
     "./shape/line-segments": "./shape/line-segments.tsx",
     "./shape/mesh": "./shape/mesh.tsx",
-    "./staging/light": "./staging/light.tsx"
+    "./staging/light": "./staging/light.tsx",
+    "./shape/edges": "./shape/edges.tsx",
+    "./shape/volumes": "./shape/volumes.tsx"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",

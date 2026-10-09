@@ -497,6 +497,8 @@ test("[BRW-015] projection handles читают frames и bounded route input", 
   const hudProjection = experience.getProjection(hud)
   expect(projection.kind).toBe("display")
   expect(hudProjection.kind).toBe("hud")
+  expect(projection.unprojectPoint({x: -20, y: 400})).toEqual({x: -20, y: 400})
+  expect(() => projection.unprojectPoint({x: NaN, y: 0})).toThrow()
   expect(projection.owner).toBe(display)
   expect(projection.readFrame()?.root).toBe(display)
 
@@ -522,6 +524,8 @@ test("[BRW-015] projection handles читают frames и bounded route input", 
   )
 
   const spaceProjection = experience.getProjection(experience.space)
+  expect(spaceProjection.projectPoint({x: 25, y: -30, z: 100})).toEqual({x: 25, y: -30})
+  expect(() => spaceProjection.projectPoint({x: 0, y: 0, z: NaN})).toThrow()
   const beforeOrbit = state.viewPoint!.position.clone()
   spaceProjection.orbit(10, 5)
   expect(state.viewPoint!.position).not.toEqual(beforeOrbit)
@@ -1152,4 +1156,33 @@ test("Browser integration options do not acquire the stylesheet registry a secon
   expect(fixture.state.factoryCalls).toBe(1)
   root.unmount()
   expect(released).toBe(true)
+})
+
+
+test("semantic navigation синхронизируется с единственным ViewPoint; Space публикует ray и frustum без Display", async () => {
+  const state = createFakeRuntimeState()
+  const canvas = {getContext: () => null, getBoundingClientRect: () => ({left: 40, top: 20, width: 200, height: 100})} as unknown as HTMLCanvasElement
+  const root = await attachFixture({canvas, font: {} as TrueTypeFont}, async options => {
+    state.factoryCalls++
+    return createFakeRuntime(options, state)
+  })
+  try {
+    root.viewPoint.navigation = "fly"
+    root.viewPoint.flySpeed = 20
+    expect(state.viewPoint!.navigation).toBe("fly")
+    expect(state.viewPoint!.flySpeed).toBe(20)
+    state.viewPoint!.setViewport({left: 40, top: 20, width: 200, height: 100})
+    const projection = root.getProjection(root.space)
+    const before = state.viewPoint!.position.clone()
+    const target = state.viewPoint!.getTarget().clone()
+    const ray = projection.rayForPoint({x: 140, y: 70})!
+    expect(ray.origin).toEqual({x: before.x, y: before.y, z: before.z})
+    expect(Math.hypot(ray.direction.x, ray.direction.y, ray.direction.z)).toBeCloseTo(1, 10)
+    expect(projection.frustumPlanes(10)).toHaveLength(6)
+    expect(state.planes.size).toBe(0)
+    projection.zoom(2, {clientX: 140, clientY: 70})
+    expect(state.viewPoint!.position.distanceTo(before)).toBeCloseTo(40, 10)
+    expect(state.viewPoint!.getTarget().distanceTo(target)).toBeCloseTo(40, 10)
+    expect(state.factoryCalls).toBe(1)
+  } finally { root.unmount() }
 })

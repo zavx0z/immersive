@@ -1,3 +1,6 @@
+import {createSpatialInput, type DocumentSpatialHit} from "./spatial-input.ts"
+import {bindSpatialHit, type SpatialRay} from "@zavx0z/immersive-space"
+export type {DocumentSpatialHit} from "./spatial-input.ts"
 import {createDocumentCaretBlink} from "./caret-blink.ts"
 import {createDocumentVideoHost} from "./video-host.ts"
 import {createDocumentFullscreenHost} from "./fullscreen-host.ts"
@@ -8,10 +11,12 @@ import {
   Raycaster,
   Space,
   ViewPoint,
+  Vector3,
   type TrueTypeFont,
 } from "@zavx0z/immersive-engine"
 import {
   MouseEvent as SemanticMouseEvent,
+  WheelEvent as SemanticWheelEvent,
   KeyboardEvent as SemanticKeyboardEvent,
   type Document,
   type Element as DomElement,
@@ -164,6 +169,7 @@ export type CreateDocumentSpaceRuntimeOptions = Readonly<{
   cameraGestures?: boolean
   /** Browser Root выполняет первый render после подключения проекций и pre-paint наблюдения. */
   deferInitialFrame?: boolean
+  pickSpatial?(ray: SpatialRay): DocumentSpatialHit | null
   onViewportChange?(size: RootSize): void
 }>
 
@@ -217,7 +223,9 @@ export type DocumentSpaceRuntime = Readonly<{
   setCameraGesturesEnabled(enabled: boolean): void
   dispatchPointer(type: "pointermove" | "pointerdown" | "pointerup" | "pointercancel", input: PointerInput): void
   dispatchWheel(input: WheelInput): void
+  projectWorldPoint(point: DocumentSpaceVector3): Readonly<{x: number; y: number}> | null
   projectPoint(owner: Node, point: Readonly<{x: number; y: number}>): Readonly<{x: number; y: number}> | null
+  unprojectPoint(owner: Node, point: Readonly<{x: number; y: number}>): Readonly<{x: number; y: number}> | null
   subscribeBeforeRender(listener: () => void): () => void
   subscribePresented(listener: (frame: number) => void): () => void
   dispose(): void
@@ -319,7 +327,10 @@ type CapturedWorldPointer = {
   clientY: number
 }
 
+type CapturedSpatialPointer = {kind: "spatial"}
+
 type CapturedPointer =
+  | CapturedSpatialPointer
   | CapturedPlanePointer
   | CapturedOverlayPointer
   | CapturedCameraPointer
@@ -459,6 +470,7 @@ const createClaimedDocumentSpaceRuntime = async (
   const styleSheets = Object.freeze([...options.styleSheets])
   const initialViewPoint = validateViewPointSnapshot(options.viewPoint ?? DEFAULT_VIEW_POINT)
   const interactionState = createDocumentInteractionState(options.document)
+  const spatialInput = createSpatialInput(options.document, interactionState, pointerId => cancelCapturedPointer(pointerId))
   await seams.initializeEngineRenderer(engineRenderer, options.canvas)
   const space = seams.createSpace()
   const viewPoint = seams.createViewPoint(options.canvas, initialViewPoint)
@@ -508,6 +520,20 @@ const createClaimedDocumentSpaceRuntime = async (
   let lastSelectionFrameTime: number | null = null
   let renderError: Error | null = null
   let reportedRenderError = false
+  let pinch: Readonly<{
+    viewPoint: ViewPoint
+    world: Space | null
+    anchor: Readonly<{clientX: number; clientY: number}>
+    viewportHeight: number
+    time: number
+  }> | null = null
+
+  let wheelPan: Readonly<{
+    viewPoint: ViewPoint
+    world: Space | null
+    viewportHeight: number
+    time: number
+  }> | null = null
 
   const resumeRendering = (): void => {
     assertActive(disposed)
@@ -712,6 +738,23 @@ const createClaimedDocumentSpaceRuntime = async (
     }
   }
 
+  const projectedWorldPoint = new Vector3()
+
+  /** Мировая точка проецируется без создания Display и без обхода semantic дерева. */
+  function projectWorldPoint(point: DocumentSpaceVector3): Readonly<{x: number; y: number}> | null {
+    assertActive(disposed)
+    if (![point.x, point.y, point.z].every(Number.isFinite)) return null
+    const rect = seams.readCanvasRect(options.canvas)
+    if (!Number.isFinite(rect.width) || !Number.isFinite(rect.height) || rect.width <= 0 || rect.height <= 0) return null
+    viewPoint.update()
+    const view = projectedWorldPoint.set(point.x, point.y, point.z).applyMatrix4(viewPoint.viewMatrix)
+    if (-view.z < viewPoint.near || -view.z > viewPoint.far) return null
+    const projected = view.applyMatrix4(viewPoint.projectionMatrix)
+    const x = rect.left + (projected.x + 1) * rect.width / 2
+    const y = rect.top + (1 - projected.y) * rect.height / 2
+    return Number.isFinite(x) && Number.isFinite(y) ? {x, y} : null
+  }
+
   function projectPoint(owner: Node, point: Readonly<{x: number; y: number}>, geometry = false): Readonly<{x: number; y: number}> | null {
     assertActive(disposed)
     if (fullscreenRoot !== null && owner !== fullscreenRoot && owner.contains(fullscreenRoot)) owner = fullscreenRoot
@@ -734,6 +777,26 @@ const createClaimedDocumentSpaceRuntime = async (
       x: rect.left + (projected.x + 1) * rect.width / 2,
       y: rect.top + (1 - projected.y) * rect.height / 2,
     }
+  }
+
+  function unprojectPoint(owner: Node, point: Readonly<{x: number; y: number}>): Readonly<{x: number; y: number}> | null {
+    assertActive(disposed)
+    if (!Number.isFinite(point.x) || !Number.isFinite(point.y)) return null
+    if (fullscreenRoot !== null && owner !== fullscreenRoot && owner.contains(fullscreenRoot)) owner = fullscreenRoot
+    const overlay = overlays.get(owner)?.runtime
+    if (overlay !== undefined) {
+      if (!overlay.overlay.visible || !overlay.overlay.content.visible) return null
+      const rect = seams.readCanvasRect(options.canvas)
+      if (!Number.isFinite(rect.width) || !Number.isFinite(rect.height) || rect.width <= 0 || rect.height <= 0) return null
+      return {
+        x: (point.x - rect.left) * canvasViewport.width / rect.width,
+        y: (point.y - rect.top) * canvasViewport.height / rect.height,
+      }
+    }
+    const plane = records.get(owner)?.runtime.plane
+    if (plane === undefined || !plane.visible || !plane.content.visible || !prepareRay(point.x, point.y)) return null
+    // Capture/drag продолжает координаты на плоскости за границей Display.
+    return plane.intersectRay(raycaster.ray)?.documentPoint ?? null
   }
 
   const planeRoots = (): Iterable<Node> => records.keys()
@@ -1332,10 +1395,16 @@ const createClaimedDocumentSpaceRuntime = async (
   // alone never hide content. A capture keeps its owner until up/cancel.
   const pickInput = (clientX: number, clientY: number) => {
     const overlay = pickOverlay(clientX, clientY)
-    if (fullscreenRoot !== null) return {overlay, plane: null, world: null}
-    const plane = overlay === null ? pickPlane(clientX, clientY) : null
-    const world = overlay === null && plane === null ? pickWorld(clientX, clientY) : null
-    return {overlay, plane, world}
+    if (fullscreenRoot !== null) return {overlay, plane: null, world: null, spatial: null}
+    let plane = overlay === null ? pickPlane(clientX, clientY) : null
+    let spatial = overlay === null && options.pickSpatial !== undefined && prepareRay(clientX, clientY)
+      ? options.pickSpatial({origin: raycaster.ray.origin, direction: raycaster.ray.direction}) : null
+    if (spatial !== null && plane !== null) {
+      if (spatial.hit.distance < plane.intersection.distance) plane = null
+      else spatial = null
+    }
+    const world = overlay === null && plane === null && spatial === null ? pickWorld(clientX, clientY) : null
+    return {overlay, plane, world, spatial}
   }
 
   const nativeDragHost = createDocumentNativeDragHost({
@@ -1356,10 +1425,10 @@ const createClaimedDocumentSpaceRuntime = async (
     event: MouseEvent,
     input: ReturnType<typeof pickInput>,
   ): boolean => {
-    const target = input.overlay?.hit.node ?? input.plane?.hit.node ?? null
-    const point = input.overlay?.point ?? input.plane?.intersection.documentPoint
+    const target = input.overlay?.hit.node ?? input.plane?.hit.node ?? input.spatial?.target ?? null
+    const point = input.overlay?.point ?? input.plane?.intersection.documentPoint ?? (input.spatial === null ? undefined : {x: event.clientX, y: event.clientY})
     if (target === null || point === undefined) return false
-    const accepted = target.dispatchEvent(new SemanticMouseEvent(type, {
+    const projected = new SemanticMouseEvent(type, {
       bubbles: true,
       cancelable: true,
       clientX: point.x,
@@ -1371,7 +1440,9 @@ const createClaimedDocumentSpaceRuntime = async (
       altKey: event.altKey,
       metaKey: event.metaKey,
       detail: event.detail,
-    }))
+    })
+    if (input.spatial !== null) bindSpatialHit(projected, input.spatial.hit)
+    const accepted = target.dispatchEvent(projected)
     if (type === "contextmenu" && accepted && options.clipboard !== undefined) {
       const bounds = options.canvas.getBoundingClientRect()
       if (options.clipboard.openContextMenu(target, {x: event.clientX - bounds.left, y: event.clientY - bounds.top})) {
@@ -1459,6 +1530,7 @@ const createClaimedDocumentSpaceRuntime = async (
     const capture = captures.get(pointerId)
     if (capture === undefined) return
     try {
+      if (capture.kind === "spatial") spatialInput.cancel(pointerId)
       const runtime = capture.kind === "plane" ? records.get(capture.planeRoot)?.runtime
         : capture.kind === "overlay" ? overlays.get(capture.overlayRoot)?.runtime : undefined
       if (runtime !== undefined && (capture.kind === "plane" || capture.kind === "overlay")) {
@@ -1500,6 +1572,8 @@ const createClaimedDocumentSpaceRuntime = async (
     if (cameraGesturesEnabled === enabled) return
     cameraGesturesEnabled = enabled
     if (enabled) return
+    pinch = null
+    wheelPan = null
     for (const [pointerId, capture] of [...captures]) {
       if (capture.kind === "camera") releasePointer(pointerId)
     }
@@ -1556,6 +1630,10 @@ const createClaimedDocumentSpaceRuntime = async (
     if (disposed) return
     const capture = captures.get(event.pointerId)
     if (capture !== undefined) {
+      if (capture.kind === "spatial") {
+        spatialInput.move(pickInput(event.clientX, event.clientY).spatial, event)
+        return
+      }
       if (capture.kind === "camera") {
         if (routeTouchCameraMove(event, capture)) return
         const deltaX = event.clientX - capture.clientX
@@ -1628,7 +1706,15 @@ const createClaimedDocumentSpaceRuntime = async (
       scheduleTooltipFrame({kind: "plane", owner: record.owner}, record.tooltipDelayMs)
       return
     }
-    const {overlay: overlayHit, plane: hit, world} = pickInput(event.clientX, event.clientY)
+    const {overlay: overlayHit, plane: hit, world, spatial} = pickInput(event.clientX, event.clientY)
+    if (spatial !== null) {
+      clearHoveredOverlay(event)
+      clearHoveredPlane(event)
+      clearHoveredWorld()
+      spatialInput.move(spatial, event)
+      return
+    }
+    spatialInput.leave(event)
     if (overlayHit?.record.owner !== hoveredOverlayRoot) clearHoveredOverlay(event)
     if (overlayHit !== null) {
       clearHoveredWorld()
@@ -1655,6 +1741,24 @@ const createClaimedDocumentSpaceRuntime = async (
     scheduleTooltipFrame({kind: "plane", owner: hit.record.owner}, hit.record.tooltipDelayMs)
   }
 
+  const beginCameraPointer = (event: PointerEvent, mode: "orbit" | "pan"): void => {
+    clearHoveredOverlay(event)
+    clearHoveredPlane(event)
+    nativeInputHost.setActiveRoot(null)
+    if (event.cancelable) event.preventDefault()
+    options.canvas.setPointerCapture?.(event.pointerId)
+    captures.set(event.pointerId, {
+      kind: "camera",
+      mode,
+      pointerType: event.pointerType,
+      clientX: event.clientX,
+      clientY: event.clientY,
+    })
+    activePlaneRoot = null
+    activeOverlayRoot = null
+    activeWorldSpace = null
+  }
+
   const routePointerDown = (event: PointerEvent): void => {
     if (renderError !== null) {
       resumeRendering()
@@ -1662,8 +1766,30 @@ const createClaimedDocumentSpaceRuntime = async (
     }
     if (disposed) return
     cancelTooltipFrame()
+    wheelPan = null
+    pinch = null
     cancelCapturedPointer(event.pointerId)
-    const {overlay: overlayHit, plane: hit, world} = pickInput(event.clientX, event.clientY)
+    const {overlay: overlayHit, plane: hit, world, spatial} = pickInput(event.clientX, event.clientY)
+    if (spatial !== null) {
+      clearHoveredOverlay(event)
+      clearHoveredPlane(event)
+      clearHoveredWorld()
+      nativeInputHost.setActiveRoot(null)
+      const accepted = spatialInput.down(spatial, event)
+      // Spatial объект получает возможность отменить default или захватить
+      // pointer. Иначе secondary-кнопка начинает штатное панорамирование.
+      if (cameraGesturesEnabled && (event.button === 1 || event.button === 2) &&
+        accepted && !event.defaultPrevented && options.document.readPointerCaptureTarget(event.pointerId) === null) {
+        spatialInput.cancel(event.pointerId)
+        beginCameraPointer(event, "pan")
+        return
+      }
+      options.canvas.setPointerCapture?.(event.pointerId)
+      captures.set(event.pointerId, {kind: "spatial"})
+      if (event.cancelable) event.preventDefault()
+      return
+    }
+    spatialInput.leave(event)
     if (overlayHit?.record.owner !== hoveredOverlayRoot) clearHoveredOverlay(event)
     if (overlayHit !== null) {
       clearHoveredWorld()
@@ -1695,7 +1821,7 @@ const createClaimedDocumentSpaceRuntime = async (
       hoveredWorldSpace = world.owner
       nativeInputHost.setActiveRoot(null)
       const mode = world.cameraGestures
-        ? event.button === 2
+        ? event.button === 1 || event.button === 2
           ? "pan"
           : event.button === 0
             ? "orbit"
@@ -1719,28 +1845,14 @@ const createClaimedDocumentSpaceRuntime = async (
     clearHoveredWorld()
     if (hit?.record.owner !== hoveredPlaneRoot) clearHoveredPlane(event)
     const cameraMode = cameraGesturesEnabled && hit === null
-      ? event.button === 2
+      ? event.button === 1 || event.button === 2
         ? "pan"
         : event.button === 0
           ? "orbit"
           : null
       : null
     if (cameraMode !== null) {
-      clearHoveredOverlay(event)
-      clearHoveredPlane(event)
-      nativeInputHost.setActiveRoot(null)
-      if (event.cancelable) event.preventDefault()
-      options.canvas.setPointerCapture?.(event.pointerId)
-      captures.set(event.pointerId, {
-        kind: "camera",
-        mode: cameraMode,
-        pointerType: event.pointerType,
-        clientX: event.clientX,
-        clientY: event.clientY,
-      })
-      activePlaneRoot = null
-      activeOverlayRoot = null
-      activeWorldSpace = null
+      beginCameraPointer(event, cameraMode)
       return
     }
     if (hit === null) {
@@ -1770,6 +1882,11 @@ const createClaimedDocumentSpaceRuntime = async (
     selectionInput.clearPointer(event.pointerId)
     const capture = captures.get(event.pointerId)
     if (capture === undefined) return
+    if (capture.kind === "spatial") {
+      try { spatialInput.up(pickInput(event.clientX, event.clientY).spatial, event) }
+      finally { releasePointer(event.pointerId) }
+      return
+    }
     if (capture.kind === "camera") {
       releasePointer(event.pointerId)
       return
@@ -1810,6 +1927,7 @@ const createClaimedDocumentSpaceRuntime = async (
   const routePointerLeave = (event: PointerEvent): void => {
     if (renderError !== null) return
     if (disposed || captures.has(event.pointerId)) return
+    spatialInput.leave(event)
     clearHoveredOverlay(event)
     clearHoveredWorld()
     clearHoveredPlane(event)
@@ -1818,6 +1936,43 @@ const createClaimedDocumentSpaceRuntime = async (
   const onWheel = (event: WheelEvent): void => {
     if (renderError !== null) return
     if (disposed) return
+    if (event.ctrlKey) {
+      wheelPan = null
+      const time = Number.isFinite(event.timeStamp) ? event.timeStamp : seams.now()
+      const ownerEnabled = pinch !== null && (pinch.world === null
+        ? cameraGesturesEnabled
+        : worlds.get(pinch.world)?.cameraGestures === true)
+      if (pinch === null || !ownerEnabled || time < pinch.time || time - pinch.time > 150) {
+        const {world} = pickInput(event.clientX, event.clientY)
+        if (world === null ? !cameraGesturesEnabled : !world.cameraGestures) {
+          pinch = null
+          return
+        }
+        pinch = {
+          viewPoint: world?.runtime.viewPoint ?? viewPoint,
+          world: world?.owner ?? null,
+          anchor: {clientX: event.clientX, clientY: event.clientY},
+          viewportHeight: world?.logicalViewport?.height ?? canvasViewport.height,
+          time,
+        }
+      } else pinch = {...pinch, time}
+      routeCameraWheel(pinch.viewPoint, event, pinch.viewportHeight, pinch.anchor)
+      if (event.cancelable) event.preventDefault()
+      requestRender()
+      return
+    }
+    pinch = null
+    const time = Number.isFinite(event.timeStamp) ? event.timeStamp : seams.now()
+    const panEnabled = wheelPan !== null && (wheelPan.world === null
+      ? cameraGesturesEnabled : worlds.get(wheelPan.world)?.cameraGestures === true)
+    if (wheelPan !== null && panEnabled && time >= wheelPan.time && time - wheelPan.time <= 150) {
+      wheelPan = {...wheelPan, time}
+      routeCameraWheel(wheelPan.viewPoint, event, wheelPan.viewportHeight)
+      if (event.cancelable) event.preventDefault()
+      requestRender()
+      return
+    }
+    wheelPan = null
     const {overlay, plane, world} = pickInput(event.clientX, event.clientY)
     if (overlay !== null) {
       const target = overlay.record.runtime.wheel(localWheelInput(event, overlay.point))
@@ -1825,9 +1980,21 @@ const createClaimedDocumentSpaceRuntime = async (
       return
     }
     if (plane !== null) {
-      const target = plane.record.runtime.wheel(localWheelInput(event, plane.intersection.documentPoint))
-      if (target !== null && event.cancelable) event.preventDefault()
-      return
+      if (!cameraGesturesEnabled || projectionOwnsWheel(plane.record.runtime.renderer.flush(), plane.hit.node)) {
+        const target = plane.record.runtime.wheel(localWheelInput(event, plane.intersection.documentPoint))
+        if (target !== null && event.cancelable) event.preventDefault()
+        return
+      }
+      // Декоративный Display остаётся целью semantic wheel, но его paint
+      // не означает владение прокруткой. Явная отмена сохраняет UI-владельца.
+      const input = localWheelInput(event, plane.intersection.documentPoint)
+      const accepted = plane.hit.node.dispatchEvent(new SemanticWheelEvent("wheel", {
+        ...input, bubbles: true, cancelable: true, composed: true,
+      }))
+      if (!accepted) {
+        if (event.cancelable) event.preventDefault()
+        return
+      }
     }
     if (world !== null) {
       if (!world.cameraGestures) return
@@ -1835,6 +2002,12 @@ const createClaimedDocumentSpaceRuntime = async (
     } else {
       if (!cameraGesturesEnabled) return
       routeCameraWheel(viewPoint, event, canvasViewport.height)
+    }
+    wheelPan = {
+      viewPoint: world?.runtime.viewPoint ?? viewPoint,
+      world: world?.owner ?? null,
+      viewportHeight: world?.logicalViewport?.height ?? canvasViewport.height,
+      time,
     }
     if (event.cancelable) event.preventDefault()
     requestRender()
@@ -1901,6 +2074,12 @@ const createClaimedDocumentSpaceRuntime = async (
       return
     }
     const capture = captures.get(cursorPointer.id)
+    if (capture?.kind === "camera" || capture?.kind === "world" && capture.mode !== null) {
+      // Жест уже принадлежит ViewPoint; новый hit под движущейся сценой
+      // не меняет его cursor и не требует обхода проекций на каждом move.
+      applyCursor(pressedCursor?.id === cursorPointer.id ? pressedCursor.value : "auto")
+      return
+    }
     const runtime = capture?.kind === "overlay" ? overlays.get(capture.overlayRoot)?.runtime
       : capture?.kind === "plane" ? records.get(capture.planeRoot)?.runtime : undefined
     const target = options.document.readPointerCaptureTarget(cursorPointer.id)
@@ -1921,7 +2100,8 @@ const createClaimedDocumentSpaceRuntime = async (
       return
     }
     const hit = pickInput(cursorPointer.x, cursorPointer.y)
-    applyCursor((hit.overlay?.hit ?? hit.plane?.hit)?.cursor ?? "auto")
+    spatialInput.refresh(hit.spatial)
+    applyCursor(hit.spatial !== null ? "pointer" : (hit.overlay?.hit ?? hit.plane?.hit)?.cursor ?? "auto")
   }
 
   /** Наблюдает мышь/перо вокруг штатного dispatch; touch не заменяет видимый курсор. */
@@ -2048,7 +2228,9 @@ const createClaimedDocumentSpaceRuntime = async (
         preventDefault() {},
       } as WheelEvent)
     },
+    projectWorldPoint,
     projectPoint,
+    unprojectPoint,
     subscribeBeforeRender,
     subscribePresented,
     dispose() {
@@ -2080,6 +2262,7 @@ const createClaimedDocumentSpaceRuntime = async (
         selectionInput.dispose()
         releaseTouchCameraSurface()
         for (const pointerId of [...captures.keys()]) cancelCapturedPointer(pointerId)
+        spatialInput.dispose()
         hoveredPlaneRoot = null
         activePlaneRoot = null
         hoveredOverlayRoot = null
@@ -2421,13 +2604,14 @@ const routeCameraWheel = (
   viewPoint: ViewPoint,
   event: WheelEvent,
   viewportHeight: number,
+  anchor = {clientX: event.clientX, clientY: event.clientY},
 ): void => {
   if (event.ctrlKey) {
     const deltaY = wheelDeltaPixels(event.deltaY, event.deltaMode, viewportHeight)
-    const delta = Math.abs(deltaY) >= 0.01
+    const delta = deltaY !== 0
       ? deltaY
       : wheelDeltaPixels(event.deltaX, event.deltaMode, viewportHeight)
-    viewPoint.zoom(-delta, {clientX: event.clientX, clientY: event.clientY})
+    viewPoint.zoom(-delta, anchor)
     return
   }
   viewPoint.pan(event.deltaX, event.deltaY)
@@ -2447,3 +2631,27 @@ const wheelDeltaPixels = (
 const assertActive = (disposed: boolean): void => {
   if (disposed) throw new Error("Document space runtime is disposed")
 }
+
+
+/** Контролы и даже исчерпанные scrollports сохраняют wheel внутри своего UI. */
+const projectionOwnsWheel = (frame: RenderFrame, target: DomElement): boolean => {
+  for (let node: DomElement | null = target; node !== null; node = node.parentElement) {
+    const hit = frame.hits.get(node)
+    // tabindex/role=option сами по себе владеют клавиатурным фокусом,
+    // но не wheel: доступная декоративная рамка может панорамировать Space.
+    if (hit?.disabled || ["button", "input", "select", "textarea", "summary"].includes(node.localName) ||
+      node.localName === "a" && node.hasAttribute("href")) return true
+    const editable = node.getAttribute("contenteditable")
+    if (editable === "" || editable === "true" || editable === "plaintext-only") return true
+    const role = node.getAttribute("role")
+    if (role !== null && WHEEL_CONTROL_ROLES.has(role)) return true
+    const scroll = frame.scrolls.get(node)
+    if (scroll !== undefined && (scroll.maxScrollLeft > 0 || scroll.maxScrollTop > 0)) return true
+  }
+  return false
+}
+
+const WHEEL_CONTROL_ROLES = new Set([
+  "button", "link", "checkbox", "radio", "combobox", "textbox", "searchbox",
+  "slider", "spinbutton", "switch", "tab", "menuitem", "menuitemcheckbox", "menuitemradio", "treeitem",
+])

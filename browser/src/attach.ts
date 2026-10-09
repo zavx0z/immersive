@@ -1,7 +1,9 @@
+import type {ViewPointFrustumPlane} from "@zavx0z/immersive-engine"
 import {flushDocumentLayoutObservers, registerDocumentLayoutObserverScheduler} from "@zavx0z/immersive-dom/geometry"
 import {subscribeDocumentAuthorStyleSheets, subscribeDocumentCompiledStyleSheets, subscribeDocumentFullscreen} from "@zavx0z/immersive-dom"
 import {DisplayElement, publishDisplayMetrics} from "@zavx0z/immersive-dom/display"
-import {readDisplayStyle} from "@zavx0z/immersive-renderer-html"
+import {readDisplayStyle, readElementStyle} from "@zavx0z/immersive-renderer-html"
+import {parseDisplayColor} from "@zavx0z/immersive-webgpu"
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
 import {loadFontFaces, type BrowserFontFaceSource} from "../font-faces.ts"
 import {
@@ -155,11 +157,25 @@ export type RootDocumentProjection = Readonly<{
   readFrame(): RenderFrame | null
   subscribeFrames(listener: (frame: RenderFrame) => void): () => void
   projectPoint(point: Readonly<{x: number; y: number}>): Readonly<{x: number; y: number}> | null
+  /** Обратный луч к плоскости Display; допускает координаты вне её прямоугольника. */
+  unprojectPoint(point: Readonly<{x: number; y: number}>): Readonly<{x: number; y: number}> | null
+}>
+
+export type RootWorldRay = Readonly<{
+  origin: Readonly<{x: number; y: number; z: number}>
+  direction: Readonly<{x: number; y: number; z: number}>
 }>
 
 export type RootSpaceProjection = Readonly<{
   kind: "space"
   owner: SpaceElement
+  /** XYZ в мм → native client XY; Display не требуется. */
+  projectPoint(point: Readonly<{x: number; y: number; z: number}>): Readonly<{x: number; y: number}> | null
+  /** Луч из eye через native client XY; не требует materialized Display. */
+  rayForPoint(point: Readonly<{x: number; y: number}>): RootWorldRay | null
+  /** Inward world planes того же ViewPoint; overscan задаётся в CSS px. */
+  frustumPlanes(overscan?: number): readonly ViewPointFrustumPlane[]
+  fly(distance: number, anchor?: Readonly<{clientX: number; clientY: number}>): void
   orbit(deltaX: number, deltaY: number): void
   pan(deltaX: number, deltaY: number): void
   zoom(delta: number, anchor?: Readonly<{clientX: number; clientY: number}>): void
@@ -306,6 +322,7 @@ export const createAttachedRoot = async (
   const ownedLinks: HTMLLinkElement[] = []
   let linkedSources: readonly RootLinkedAuthorStyleSheet[] = []
   let linkedAuthorStyleSheetHost: BrowserLinkedAuthorStyleSheetHost | null = null
+  const objects = new Map<XRObjectElement, ObjectProjection>()
   let runtime: DocumentSpaceRuntime
   let synchronizeCamera = () => {}
   try {
@@ -348,6 +365,21 @@ export const createAttachedRoot = async (
       : await loadFontFaces(options.fontSources, options.canvas.ownerDocument?.baseURI))
     runtime = await createRuntime({
       deferInitialFrame: true,
+      pickSpatial(ray) {
+        let best: import("./space-runtime.ts").DocumentSpatialHit | null = null
+        for (const [target, projection] of objects) {
+          if (target.hitTest === null || !space.contains(target)) continue
+          let visible = true
+          for (let object: Object3D | null = projection.object; object !== null; object = object.parent) {
+            if (!object.visible) { visible = false; break }
+          }
+          if (!visible) continue
+          const hit = target.hitTest(ray)
+          if (hit === null || !Number.isFinite(hit.distance) || hit.distance < 0 || best !== null && hit.distance >= best.hit.distance) continue
+          best = {target, hit}
+        }
+        return best
+      },
       canvas: options.canvas,
       document,
       clipboard: environment.read().clipboard,
@@ -371,7 +403,7 @@ export const createAttachedRoot = async (
     throw error
   }
 
-  const objects = new Map<XRObjectElement, ObjectProjection>()
+
   const animations = new Map<XRAnimationElement, AnimationProjection>()
   const projectionBindings = new Map<DisplayElement | HUDElement, ProjectionBinding>()
   environment.read().clipboard.configure(
@@ -450,6 +482,8 @@ export const createAttachedRoot = async (
       if (cameraDirty) {
         synchronizeViewPoint(tree, runtime, value => { viewPointSignature = value }, viewPointSignature)
         runtime.setCameraGesturesEnabled(tree.viewPoint.controls)
+        runtime.viewPoint.navigation = tree.viewPoint.navigation
+        runtime.viewPoint.flySpeed = tree.viewPoint.flySpeed
         cameraDirty = false
       }
       const projectionsDirty = displayDirty || hudDirty
@@ -528,7 +562,10 @@ export const createAttachedRoot = async (
     synchronizeInputOwner()
     for (const record of batch.records) {
       const target = record.target
-      if (target !== document && !space.contains(target)) continue
+      if (record.type === "attributes") {
+        for (const object of objects.keys()) if (target.contains(object)) dirtyObjects.add(object)
+      }
+      if (target !== document && !space.contains(target) && !target.contains(space)) continue
       if (record.type === "childList") {
         if (target === document || target instanceof SpaceElement || target instanceof XRObjectElement) structureDirty = true
         continue
@@ -558,8 +595,9 @@ export const createAttachedRoot = async (
   })
 
   const refreshDisplays = () => {
-    if (disposed || tree.displays.length === 0) return
-    displayDirty = true
+    if (disposed) return
+    displayDirty = tree.displays.length > 0
+    for (const element of objects.keys()) dirtyObjects.add(element)
     if (!inFrame && !lifecycle?.updating()) synchronize()
     runtime.requestRender()
   }
@@ -642,12 +680,41 @@ export const createAttachedRoot = async (
         validatePoint(point)
         return runtime.projectPoint(owner, point)
       },
+      unprojectPoint(point: Readonly<{x: number; y: number}>) {
+        requireDocumentProjectionRuntime(owner)
+        validatePoint(point)
+        return runtime.unprojectPoint(owner, point)
+      },
     })
   }
 
   const spaceProjection: RootSpaceProjection = Object.freeze({
     kind: "space",
     owner: space,
+    projectPoint(point) {
+      assertActive(disposed)
+      validatePoint(point)
+      if (!Number.isFinite(point.z)) throw new TypeError("World point must contain three finite XYZ coordinates")
+      return runtime.projectWorldPoint(point)
+    },
+    rayForPoint(point) {
+      assertActive(disposed)
+      validatePoint(point)
+      const ray = runtime.viewPoint.rayForClientPoint(point)
+      return ray === null ? null : {
+        origin: {x: ray.origin.x, y: ray.origin.y, z: ray.origin.z},
+        direction: {x: ray.direction.x, y: ray.direction.y, z: ray.direction.z},
+      }
+    },
+    frustumPlanes(overscan) {
+      assertActive(disposed)
+      return runtime.viewPoint.frustumPlanes(overscan)
+    },
+    fly(distance, anchor) {
+      assertActive(disposed)
+      runtime.viewPoint.fly(distance, anchor)
+      runtime.requestRender()
+    },
     orbit(deltaX, deltaY) {
       assertActive(disposed)
       runtime.viewPoint.orbit(deltaX, deltaY)
@@ -1091,7 +1158,7 @@ const synchronizeObjects = (
       : resolveGeometry(geometryElement, held?.geometry ?? null)
     const material = materialElement === null
       ? null
-      : resolveMaterial(materialElement, held?.material ?? null)
+      : resolveMaterial(materialElement, held?.material ?? null, runtime)
     const factory = element.factory
     const factoryChanged = held !== undefined && (
       held.factory !== factory ||
@@ -1219,9 +1286,11 @@ const resolveGeometry = (
 const resolveMaterial = (
   element: XRMaterialElement,
   held: LeafProjection<Material> | null,
+  runtime: DocumentSpaceRuntime,
 ): LeafProjection<Material> => {
   const factory = element.factory
-  const signature = factory === null ? elementAttributeSignature(element) : "factory"
+  const resolved = factory === null ? null : readElementStyle(runtime.document, element, element.styleProperties, runtime.interactionState)
+  const signature = resolved === null ? elementAttributeSignature(element) : JSON.stringify(resolved)
   if (
     held !== null &&
     held.element === element &&
@@ -1232,7 +1301,11 @@ const resolveMaterial = (
 
   const resource = factory === null
     ? createBuiltInMaterial(element)
-    : factory(element)
+    : factory(element, {
+        color: parseDisplayColor(resolved!.color),
+        opacity: resolved!.opacity,
+        customProperties: resolved!.customProperties,
+      })
   if (!(resource instanceof Material)) {
     throw new TypeError("Material factory must return Material")
   }

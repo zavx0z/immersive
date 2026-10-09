@@ -4,7 +4,7 @@ import {createRoot} from "@zavx0z/immersive-component"
 import {createDocument, HTMLElement, KeyboardEvent, readDocumentScrollIntoViewRequests} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
-import {createDocumentInteractionController, createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
+import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@zavx0z/immersive-renderer-html"
 import type {ImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-component-widget-tree"
 type TreeProps = ImmersiveUiComponentWidgetTree.Input
 type TreeHandle = NonNullable<Parameters<NonNullable<ImmersiveUiComponentWidgetTree.Input["onReady"]>>[0]>
@@ -44,7 +44,7 @@ function mount(
   const render = () => component.render(template, props)
   render()
   const renderer = createDocumentRenderer({document, root: container, viewport: {width: 320, height}})
-  const interaction = createDocumentInteractionController({document})
+  const interaction = createDocumentInteractionController({document, hitTest: hitTestProjection})
   return {
     container,
     component,

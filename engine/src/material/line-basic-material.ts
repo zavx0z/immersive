@@ -15,6 +15,11 @@ export interface LineBasicMaterialParameters extends MaterialParameters {
    * @default 1.0
    */
   opacity?: number
+  /**
+   * Расстояние затухания в мм; 0 сохраняет цвет и alpha при любой дистанции.
+   * По умолчанию 5000 для сохранения прежнего отображения существующих линий.
+   */
+  distanceFade?: number
 }
 
 /**
@@ -25,6 +30,16 @@ export class LineBasicMaterial extends Material {
   public color: Color
   /** @default 1.0 */
   public opacity: number
+  private _distanceFade = 5000
+
+  /** Расстояние затухания в мм; 0 отключает его независимо от ViewPoint. */
+  public get distanceFade(): number { return this._distanceFade }
+  public set distanceFade(value: number) {
+    if (!Number.isFinite(value) || value < 0 || value > 0 && !Number.isFinite(Math.fround(1 / value))) {
+      throw new RangeError("distanceFade требует 0 либо положительное конечное расстояние с конечным Float32 коэффициентом")
+    }
+    this._distanceFade = value
+  }
 
   /**
    * @param parameters - Параметры материала.
@@ -37,5 +52,6 @@ export class LineBasicMaterial extends Material {
       this.color = new Color(parameters.color ?? 0xffffff)
     }
     this.opacity = parameters.opacity ?? 1.0
+    this.distanceFade = parameters.distanceFade ?? 5000
   }
 }

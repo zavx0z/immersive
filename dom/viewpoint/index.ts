@@ -67,6 +67,26 @@ export class ViewPointElement extends SpatialElement {
   set targetZ(value: number) { setNumberAttribute(this, "target-z", value) }
   get controls(): boolean { return booleanAttribute(this, "controls", false) }
   set controls(value: boolean) { this.setAttribute("controls", String(value)) }
+  /** Явный режим navigation; orbit сохраняет прежний закон приближения к target. */
+  get navigation(): "orbit" | "fly" {
+    const value = this.getAttribute("navigation") ?? "orbit"
+    if (value !== "orbit" && value !== "fly") throw new RangeError("ViewPoint navigation must be orbit or fly")
+    return value
+  }
+  set navigation(value: "orbit" | "fly") {
+    if (value !== "orbit" && value !== "fly") throw new RangeError("ViewPoint navigation must be orbit or fly")
+    this.setAttribute("navigation", value)
+  }
+  /** Скорость fly: мм на единицу zoom delta, по умолчанию 10. */
+  get flySpeed(): number {
+    const value = numberAttribute(this, "fly-speed", 10)
+    if (value <= 0) throw new RangeError("ViewPoint flySpeed must be positive")
+    return value
+  }
+  set flySpeed(value: number) {
+    if (!Number.isFinite(value) || value <= 0) throw new RangeError("ViewPoint flySpeed must be finite and positive")
+    setNumberAttribute(this, "fly-speed", value)
+  }
   get fov(): number { return numberAttribute(this, "fov", 1) }
   set fov(value: number) { setNumberAttribute(this, "fov", value) }
   get near(): number { return numberAttribute(this, "near", 0.1) }

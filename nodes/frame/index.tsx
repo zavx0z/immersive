@@ -44,8 +44,8 @@ export function Frame(props: FrameProps) {
       box-shadow: 0 2px 8px rgba(0, 0, 0, .28);
 
       &[aria-selected="true"] {
-        border-color: #2d6880;
-        box-shadow: 0 2px 10px rgba(45, 104, 128, .5);
+        border-color: var(--frame-selected-border-color, #2d6880);
+        box-shadow: var(--frame-selected-shadow, 0 2px 10px rgba(45, 104, 128, .5));
       }
 
       &[hidden] {

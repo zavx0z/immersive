@@ -51,6 +51,8 @@ export function projectionPaintIndex(frame: RenderFrame): ReadonlyMap<Node, read
  * borders own their stroke, while text, images and backgrounds own their paint.
  * The returned target follows the same clip, transform and stacking rules as
  * ordinary document input. Exhausted scroll viewports still occlude content.
+ * An explicit valid tabindex, including a negative one, owns the full control
+ * box without changing the element's sequential keyboard focus order.
  */
 export const hitTestProjection = (frame: RenderFrame, x: number, y: number): HitMetadata | null => {
   const paint = projectionPaintIndex(frame)

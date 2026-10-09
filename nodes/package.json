@@ -22,11 +22,12 @@
     "./routing/link-path": "./shared/routing/link-path.ts",
     "./marker": "./marker/index.ts",
     "./marker/arrow": "./marker/arrow/index.tsx",
-    "./marker/arrow/contract/input": "./marker/arrow/contract/input.ts"
+    "./marker/arrow/contract/input": "./marker/arrow/contract/input.ts",
+    "./spatial/tree": "./spatial/tree/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel ./tests ./spatial/tests ./frame/tests ./view/tests ./frame/spec ./marker/arrow/spec",
+    "test": "bun test --parallel ./tests ./spatial/tests ./frame/tests ./view/tests ./frame/spec ./marker/arrow/spec && bun test ./spatial/tree/tests",
     "check": "bun run --parallel typecheck test"
   },
   "peerDependencies": {
@@ -40,7 +41,8 @@
     "@zavx0z/immersive-ui-component": "workspace:*",
     "@zavx0z/immersive-nodes-node": "workspace:*",
     "@zavx0z/immersive-jsx": "workspace:*",
-    "@zavx0z/immersive-ui-component-button-basic": "workspace:*"
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+    "@zavx0z/immersive-browser": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/immersive-nodes-parameter": {
@@ -69,6 +71,9 @@
     },
     "@zavx0z/immersive-nodes-node": {
       "optional": true
+    },
+    "@zavx0z/immersive-browser": {
+      "optional": true
     }
   },
   "devDependencies": {
@@ -76,9 +81,7 @@
     "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
     "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
     "@zavx0z/immersive-renderer-html": "workspace:*",
-    "@zavx0z/immersive-engine": "workspace:*",
     "@zavx0z/immersive-webgpu": "workspace:*",
-    "@zavx0z/immersive-space": "workspace:*",
     "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
     "@zavx0z/immersive-nodes-geometry-node-project": "workspace:*",
     "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
@@ -93,6 +96,9 @@
     "@zavx0z/immersive-nodes-node-parameter": "workspace:*",
     "@zavx0z/immersive-nodes-node-content": "workspace:*",
     "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
-    "@zavx0z/immersive-nodes-geometry-node-port-id": "workspace:*"
+    "@zavx0z/immersive-nodes-geometry-node-port-id": "workspace:*",
+    "@zavx0z/immersive-nodes-layout-prism-tree": "workspace:*",
+    "@zavx0z/immersive-space": "workspace:*",
+    "@zavx0z/immersive-engine": "workspace:*"
   }
 }

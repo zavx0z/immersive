@@ -5,6 +5,8 @@ export function CameraFixture(props: Readonly<{
   y?: number
   z?: number
   targetZ?: number
+  navigation?: "orbit" | "fly"
+  flySpeed?: number
   ref: Readonly<{current: ViewPointElement | null}>
 }>) {
   return (
@@ -13,6 +15,8 @@ export function CameraFixture(props: Readonly<{
       y={props.y}
       z={props.z}
       targetZ={props.targetZ}
+      navigation={props.navigation}
+      flySpeed={props.flySpeed}
       ref={props.ref}
     />
   )

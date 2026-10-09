@@ -92,3 +92,8 @@ records. Наследование и явный `visibility:visible` потом�
 
 [Заливка vector-path](vector-fill.md) описывает CSS fill/fill-rule, ограниченную
 грамматику контуров, paint/hit и generic evidence.
+
+`readElementStyle(document, element, customPropertyNames)` читает цвет, суммарную
+opacity предков и разрешённые custom properties тем же CSS-каскадом, что Display.
+Функция не выполняет layout, не обходит потомков и обслуживает пространственные
+материалы Browser без доступа потребителя к private Renderer state.

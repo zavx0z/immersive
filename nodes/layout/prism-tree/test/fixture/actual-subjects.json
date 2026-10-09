@@ -1,0 +1,1720 @@
+{
+  "provenance": {
+    "source": "Project canonical snapshot",
+    "sha256": "a0a735d598f2c8fcdbf1bcb66ce632571c0a5bddf71575eb0047dfe82c3b4925",
+    "subjects": 428
+  },
+  "nodes": [
+    {
+      "id": "/"
+    },
+    {
+      "id": "/storybook",
+      "parentId": "/"
+    },
+    {
+      "id": "/storybook/app",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/app/control",
+      "parentId": "/storybook/app"
+    },
+    {
+      "id": "/storybook/app/environment",
+      "parentId": "/storybook/app"
+    },
+    {
+      "id": "/storybook/app/environment/binding",
+      "parentId": "/storybook/app/environment"
+    },
+    {
+      "id": "/storybook/app/environment/declaration",
+      "parentId": "/storybook/app/environment"
+    },
+    {
+      "id": "/storybook/app/environment/tools",
+      "parentId": "/storybook/app/environment"
+    },
+    {
+      "id": "/storybook/app/knowledge",
+      "parentId": "/storybook/app"
+    },
+    {
+      "id": "/storybook/app/knowledge/address",
+      "parentId": "/storybook/app/knowledge"
+    },
+    {
+      "id": "/storybook/app/knowledge/catalog",
+      "parentId": "/storybook/app/knowledge"
+    },
+    {
+      "id": "/storybook/app/knowledge/content",
+      "parentId": "/storybook/app/knowledge"
+    },
+    {
+      "id": "/storybook/app/knowledge/navigation",
+      "parentId": "/storybook/app/knowledge"
+    },
+    {
+      "id": "/storybook/app/knowledge/project",
+      "parentId": "/storybook/app/knowledge"
+    },
+    {
+      "id": "/storybook/app/response",
+      "parentId": "/storybook/app"
+    },
+    {
+      "id": "/storybook/app/server",
+      "parentId": "/storybook/app"
+    },
+    {
+      "id": "/storybook/app/server/browser",
+      "parentId": "/storybook/app/server"
+    },
+    {
+      "id": "/storybook/app/server/catalog",
+      "parentId": "/storybook/app/server"
+    },
+    {
+      "id": "/storybook/app/server/requests",
+      "parentId": "/storybook/app/server"
+    },
+    {
+      "id": "/storybook/app/server/sessions",
+      "parentId": "/storybook/app/server"
+    },
+    {
+      "id": "/storybook/app/server/state",
+      "parentId": "/storybook/app/server"
+    },
+    {
+      "id": "/storybook/app/settings",
+      "parentId": "/storybook/app"
+    },
+    {
+      "id": "/storybook/app/settings/locations",
+      "parentId": "/storybook/app/settings"
+    },
+    {
+      "id": "/storybook/app/web",
+      "parentId": "/storybook/app"
+    },
+    {
+      "id": "/storybook/app/web/build",
+      "parentId": "/storybook/app/web"
+    },
+    {
+      "id": "/storybook/app/web/page",
+      "parentId": "/storybook/app/web"
+    },
+    {
+      "id": "/storybook/app/web/page/agent-bridge",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/client",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/home",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/navigation",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/package",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/package/scenario/inspector",
+      "parentId": "/storybook/app/web/page/package"
+    },
+    {
+      "id": "/storybook/app/web/page/package/scenario/model",
+      "parentId": "/storybook/app/web/page/package"
+    },
+    {
+      "id": "/storybook/app/web/page/package/scenario/preview",
+      "parentId": "/storybook/app/web/page/package"
+    },
+    {
+      "id": "/storybook/app/web/page/package/scenario/result",
+      "parentId": "/storybook/app/web/page/package"
+    },
+    {
+      "id": "/storybook/app/web/page/presentation",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/shell",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/shell/execution-settings",
+      "parentId": "/storybook/app/web/page/shell"
+    },
+    {
+      "id": "/storybook/app/web/page/shell/mcp-window",
+      "parentId": "/storybook/app/web/page/shell"
+    },
+    {
+      "id": "/storybook/app/web/page/shell/minimap",
+      "parentId": "/storybook/app/web/page/shell"
+    },
+    {
+      "id": "/storybook/app/web/page/shell/viewpoint-controls",
+      "parentId": "/storybook/app/web/page/shell"
+    },
+    {
+      "id": "/storybook/app/web/page/shell/viewpoint-tab",
+      "parentId": "/storybook/app/web/page/shell"
+    },
+    {
+      "id": "/storybook/app/web/page/shell/workbench",
+      "parentId": "/storybook/app/web/page/shell"
+    },
+    {
+      "id": "/storybook/app/web/page/shell/workbench/catalog",
+      "parentId": "/storybook/app/web/page/shell/workbench"
+    },
+    {
+      "id": "/storybook/app/web/page/shell/workbench/catalog/navigation",
+      "parentId": "/storybook/app/web/page/shell/workbench/catalog"
+    },
+    {
+      "id": "/storybook/app/web/page/status",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/style-sheets",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/page/target",
+      "parentId": "/storybook/app/web/page"
+    },
+    {
+      "id": "/storybook/app/web/protocol",
+      "parentId": "/storybook/app/web"
+    },
+    {
+      "id": "/storybook/app/web/release",
+      "parentId": "/storybook/app/web"
+    },
+    {
+      "id": "/storybook/chat",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/chat/history",
+      "parentId": "/storybook/chat"
+    },
+    {
+      "id": "/storybook/chat/preferences",
+      "parentId": "/storybook/chat"
+    },
+    {
+      "id": "/storybook/chat/session",
+      "parentId": "/storybook/chat"
+    },
+    {
+      "id": "/storybook/chat/view",
+      "parentId": "/storybook/chat"
+    },
+    {
+      "id": "/storybook/cluster",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/cluster/env",
+      "parentId": "/storybook/cluster"
+    },
+    {
+      "id": "/storybook/component",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/component/env",
+      "parentId": "/storybook/component"
+    },
+    {
+      "id": "/storybook/container",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/container/env",
+      "parentId": "/storybook/container"
+    },
+    {
+      "id": "/storybook/contracts",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/contracts/env",
+      "parentId": "/storybook/contracts"
+    },
+    {
+      "id": "/storybook/domain",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/domain/env",
+      "parentId": "/storybook/domain"
+    },
+    {
+      "id": "/storybook/package/activation",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/artifacts",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/build/conformance",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/build/consumer-boundary",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/build/descriptor",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/build/inputs",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/build/loader",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/build/prepare",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/build/scenarios",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/build/scheduler",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/documentation",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/env",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/graph",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/graph/create",
+      "parentId": "/storybook/package/graph"
+    },
+    {
+      "id": "/storybook/package/graph/read",
+      "parentId": "/storybook/package/graph"
+    },
+    {
+      "id": "/storybook/package/identity",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/index",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/metadata",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/metadata/collect",
+      "parentId": "/storybook/package/metadata"
+    },
+    {
+      "id": "/storybook/package/name",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/package-json",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/reader",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/resources",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/revision",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/route/address",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/route/children",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/route/directories",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/route/ignored",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/route/resolve",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/route/structure",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/route/url",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/route/workspaces",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/session",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/package/standard",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/project",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/project/env",
+      "parentId": "/storybook/project"
+    },
+    {
+      "id": "/storybook/repo/env",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/repo/reader",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/specs/document",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/specs/env",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/specs/guide",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/specs/presentation",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/specs/reader",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/specs/reference",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/specs/scenarios",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/specs/scenarios/reader",
+      "parentId": "/storybook/specs/scenarios"
+    },
+    {
+      "id": "/storybook/specs/scenarios/reader/validation",
+      "parentId": "/storybook/specs/scenarios/reader"
+    },
+    {
+      "id": "/storybook/tech/acp",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/build/artifacts",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/build/compiler",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/build/environment",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/build/environment/protocol",
+      "parentId": "/storybook/tech/build/environment"
+    },
+    {
+      "id": "/storybook/tech/build/queue",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/build/worker",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/hmr/connection",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/hmr/page",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/http/client",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/json/format",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/limits",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/process/measure",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/process/sample",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/process/wait",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/tech/testing/browser-root",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/typedoc",
+      "parentId": "/storybook"
+    },
+    {
+      "id": "/storybook/typedoc/env",
+      "parentId": "/storybook/typedoc"
+    },
+    {
+      "id": "/immersive",
+      "parentId": "/"
+    },
+    {
+      "id": "/immersive/browser",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/component",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/devtool",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/dom",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/engine",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/headless",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/jsx",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/jsx/compiler",
+      "parentId": "/immersive/jsx"
+    },
+    {
+      "id": "/immersive/jsx/compiler/bun",
+      "parentId": "/immersive/jsx/compiler"
+    },
+    {
+      "id": "/immersive/jsx/compiler/error",
+      "parentId": "/immersive/jsx/compiler"
+    },
+    {
+      "id": "/immersive/jsx/compiler/session",
+      "parentId": "/immersive/jsx/compiler"
+    },
+    {
+      "id": "/immersive/jsx/development",
+      "parentId": "/immersive/jsx"
+    },
+    {
+      "id": "/immersive/jsx/development/create",
+      "parentId": "/immersive/jsx/development"
+    },
+    {
+      "id": "/immersive/jsx/event",
+      "parentId": "/immersive/jsx"
+    },
+    {
+      "id": "/immersive/jsx/runtime",
+      "parentId": "/immersive/jsx"
+    },
+    {
+      "id": "/immersive/jsx/runtime/create",
+      "parentId": "/immersive/jsx/runtime"
+    },
+    {
+      "id": "/immersive/jsx/runtime/fragment",
+      "parentId": "/immersive/jsx/runtime"
+    },
+    {
+      "id": "/immersive/jsx/slot",
+      "parentId": "/immersive/jsx"
+    },
+    {
+      "id": "/immersive/jsx/slot/authoring",
+      "parentId": "/immersive/jsx/slot"
+    },
+    {
+      "id": "/immersive/jsx/slot/child",
+      "parentId": "/immersive/jsx/slot"
+    },
+    {
+      "id": "/immersive/jsx/slot/contract",
+      "parentId": "/immersive/jsx/slot"
+    },
+    {
+      "id": "/immersive/jsx/slot/plan",
+      "parentId": "/immersive/jsx/slot"
+    },
+    {
+      "id": "/immersive/markdown",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/nodes",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/nodes/geometry/node/field-height",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/geometry/node/metrics",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/geometry/node/plan",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/geometry/node/port-id",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/geometry/node/project",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/geometry/node/socket-side",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/geometry/node/spacing",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/geometry/parameter",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/layout",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/parameter/store",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/parameter/value-type",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/key",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/kinds",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/metrics",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/preset",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/presets",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/resolve-kind",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/resolve-shape",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/shapes",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/model/socket/side",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/node",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/node/content",
+      "parentId": "/immersive/nodes/node"
+    },
+    {
+      "id": "/immersive/nodes/node/diagram",
+      "parentId": "/immersive/nodes/node"
+    },
+    {
+      "id": "/immersive/nodes/node/parameter",
+      "parentId": "/immersive/nodes/node"
+    },
+    {
+      "id": "/immersive/nodes/parameter",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/parameter/boolean/checkbox",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/boolean/switch",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/choice/cycle",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/choice/option-group",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/choice/select",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/collection",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/composite/color",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/composite/matrix",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/composite/vector",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/numeric/number",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/numeric/slider",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/output",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/path",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/reference",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/shared/layout",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/parameter/text",
+      "parentId": "/immersive/nodes/parameter"
+    },
+    {
+      "id": "/immersive/nodes/projection/parameter",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/projection/parameter/presentation",
+      "parentId": "/immersive/nodes/projection/parameter"
+    },
+    {
+      "id": "/immersive/nodes/socket",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/nodes/tree",
+      "parentId": "/immersive/nodes"
+    },
+    {
+      "id": "/immersive/renderer",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/renderer/html",
+      "parentId": "/immersive/renderer"
+    },
+    {
+      "id": "/immersive/space",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/color/hex/normalize",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/color/hex/valid",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/json/metadata",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/json/metadata/boolean",
+      "parentId": "/immersive/tech/json/metadata"
+    },
+    {
+      "id": "/immersive/tech/json/metadata/number",
+      "parentId": "/immersive/tech/json/metadata"
+    },
+    {
+      "id": "/immersive/tech/json/metadata/object-array",
+      "parentId": "/immersive/tech/json/metadata"
+    },
+    {
+      "id": "/immersive/tech/json/metadata/read",
+      "parentId": "/immersive/tech/json/metadata"
+    },
+    {
+      "id": "/immersive/tech/json/metadata/string",
+      "parentId": "/immersive/tech/json/metadata"
+    },
+    {
+      "id": "/immersive/tech/json/metadata/string-array",
+      "parentId": "/immersive/tech/json/metadata"
+    },
+    {
+      "id": "/immersive/tech/json/patch",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/json/patch/error",
+      "parentId": "/immersive/tech/json/patch"
+    },
+    {
+      "id": "/immersive/tech/json/patch/limits",
+      "parentId": "/immersive/tech/json/patch"
+    },
+    {
+      "id": "/immersive/tech/json/pointer/token",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/json/value/equal",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/json/value/own",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/svg/encode",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/terminal",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/text-editor",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/tech/text/assert-non-empty",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/template",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/typedoc",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/component",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/component/badge",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/button",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/button/basic",
+      "parentId": "/immersive/ui/component/button"
+    },
+    {
+      "id": "/immersive/ui/component/button/icon",
+      "parentId": "/immersive/ui/component/button"
+    },
+    {
+      "id": "/immersive/ui/component/button/toggle-group",
+      "parentId": "/immersive/ui/component/button"
+    },
+    {
+      "id": "/immersive/ui/component/divider",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/feedback",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/feedback/notification",
+      "parentId": "/immersive/ui/component/feedback"
+    },
+    {
+      "id": "/immersive/ui/component/feedback/status-bar",
+      "parentId": "/immersive/ui/component/feedback"
+    },
+    {
+      "id": "/immersive/ui/component/field",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/field/checkbox",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/collection",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/color",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/color-picker",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/cycle",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/group",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/matrix",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/number",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/path",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/reference",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/select",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/slider",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/switch",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/text",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/field/vector",
+      "parentId": "/immersive/ui/component/field"
+    },
+    {
+      "id": "/immersive/ui/component/menu",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/menu/basic",
+      "parentId": "/immersive/ui/component/menu"
+    },
+    {
+      "id": "/immersive/ui/component/menu/clipboard",
+      "parentId": "/immersive/ui/component/menu"
+    },
+    {
+      "id": "/immersive/ui/component/menu/item",
+      "parentId": "/immersive/ui/component/menu"
+    },
+    {
+      "id": "/immersive/ui/component/navigation/breadcrumb",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/surface",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/surface/chrome",
+      "parentId": "/immersive/ui/component/surface"
+    },
+    {
+      "id": "/immersive/ui/component/surface/chrome/body",
+      "parentId": "/immersive/ui/component/surface/chrome"
+    },
+    {
+      "id": "/immersive/ui/component/surface/chrome/button",
+      "parentId": "/immersive/ui/component/surface/chrome"
+    },
+    {
+      "id": "/immersive/ui/component/surface/chrome/header",
+      "parentId": "/immersive/ui/component/surface/chrome"
+    },
+    {
+      "id": "/immersive/ui/component/surface/chrome/navigation",
+      "parentId": "/immersive/ui/component/surface/chrome"
+    },
+    {
+      "id": "/immersive/ui/component/surface/chrome/owner",
+      "parentId": "/immersive/ui/component/surface/chrome"
+    },
+    {
+      "id": "/immersive/ui/component/surface/chrome/title",
+      "parentId": "/immersive/ui/component/surface/chrome"
+    },
+    {
+      "id": "/immersive/ui/component/surface/frame",
+      "parentId": "/immersive/ui/component/surface"
+    },
+    {
+      "id": "/immersive/ui/component/surface/pane",
+      "parentId": "/immersive/ui/component/surface"
+    },
+    {
+      "id": "/immersive/ui/component/surface/panel",
+      "parentId": "/immersive/ui/component/surface"
+    },
+    {
+      "id": "/immersive/ui/component/surface/tab",
+      "parentId": "/immersive/ui/component/surface"
+    },
+    {
+      "id": "/immersive/ui/component/surface/window",
+      "parentId": "/immersive/ui/component/surface"
+    },
+    {
+      "id": "/immersive/ui/component/surface/window-control",
+      "parentId": "/immersive/ui/component/surface"
+    },
+    {
+      "id": "/immersive/ui/component/typography",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/view",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/view/code-editor",
+      "parentId": "/immersive/ui/component/view"
+    },
+    {
+      "id": "/immersive/ui/component/view/code-editor/highlighter",
+      "parentId": "/immersive/ui/component/view/code-editor"
+    },
+    {
+      "id": "/immersive/ui/component/view/code-editor/syntax-theme/data",
+      "parentId": "/immersive/ui/component/view/code-editor"
+    },
+    {
+      "id": "/immersive/ui/component/view/code-editor/syntax-theme/resolve-scope-color-hex",
+      "parentId": "/immersive/ui/component/view/code-editor"
+    },
+    {
+      "id": "/immersive/ui/component/view/code-editor/validate",
+      "parentId": "/immersive/ui/component/view/code-editor"
+    },
+    {
+      "id": "/immersive/ui/component/view/code-editor/view-model",
+      "parentId": "/immersive/ui/component/view/code-editor"
+    },
+    {
+      "id": "/immersive/ui/component/view/list",
+      "parentId": "/immersive/ui/component/view"
+    },
+    {
+      "id": "/immersive/ui/component/view/table",
+      "parentId": "/immersive/ui/component/view"
+    },
+    {
+      "id": "/immersive/ui/component/view/table/selection-after-click",
+      "parentId": "/immersive/ui/component/view/table"
+    },
+    {
+      "id": "/immersive/ui/component/view/timeline",
+      "parentId": "/immersive/ui/component/view"
+    },
+    {
+      "id": "/immersive/ui/component/widget",
+      "parentId": "/immersive/ui/component"
+    },
+    {
+      "id": "/immersive/ui/component/widget/editor",
+      "parentId": "/immersive/ui/component/widget"
+    },
+    {
+      "id": "/immersive/ui/component/widget/header",
+      "parentId": "/immersive/ui/component/widget"
+    },
+    {
+      "id": "/immersive/ui/component/widget/header/action",
+      "parentId": "/immersive/ui/component/widget/header"
+    },
+    {
+      "id": "/immersive/ui/component/widget/inspector",
+      "parentId": "/immersive/ui/component/widget"
+    },
+    {
+      "id": "/immersive/ui/component/widget/terminal",
+      "parentId": "/immersive/ui/component/widget"
+    },
+    {
+      "id": "/immersive/ui/component/widget/tree",
+      "parentId": "/immersive/ui/component/widget"
+    },
+    {
+      "id": "/immersive/ui/feedback/status-bar/text",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/collection/model/default-visible-rows",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/collection/model/max-visible-rows",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/collection/model/min-visible-rows",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/collection/model/normalize-items",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/collection/model/normalize-visible-rows",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/collection/model/visible-rows-height",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/channel-display",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/clamp-unit",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/format",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/from-hsva",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/normalize",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/parse",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/rgba-css",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/to-hsva",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/color/value/wrap-unit",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/checkbox",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/collection",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/color",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/color-picker",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/cycle",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/group",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/matrix",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/number",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/path",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/reference",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/select",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/slider",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/switch",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/text",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/layout/vector",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/matrix/value/normalize",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/matrix/value/update",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/metric/collection-height",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/metric/collection-visible-rows-height",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/metric/color-picker-height",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/metric/density-height",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/metric/labelled-height",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/metric/matrix-height",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/metric/read",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/metric/resolve-density",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/scrub/range",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/scrub/raw",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/scrub/snap",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/scrub/value",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/fill-percentage",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/finite-bound",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/format",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/normalize",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/pointer-adaptive-span",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/pointer-step",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/round",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/soft-range",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/step",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/number/value/valid-step",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/vector/value/normalize",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/field/vector/value/update",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/selection/exceptional-label",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/selection/find-option",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/selection/validate-options",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/selection/validate-state",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/surface/assert-actions",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/theme/icon",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/apply",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/arrow-down",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/arrow-up",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/breakpoint",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/chevron-down",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/chevron-right",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/clear",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/close",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/collapse-all",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/compose",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/database",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/execution-point",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/expand",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/expand-all",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/folder",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/home",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/image",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/language",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/minus",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/picker",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/pin",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/plus",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/resource",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/run",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/search",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/select-opened-item",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/setting",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon/visibility-on",
+      "parentId": "/immersive/ui/theme/icon"
+    },
+    {
+      "id": "/immersive/ui/theme/icon-set",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/theme/syntax/active",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/theme/syntax/name",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/theme/syntax/resolve",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/view/code-editor/editor-foreground",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/view/code-editor/palette",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/view/code-editor/theme/color",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/view/table/normalize-table-selection",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/ui/widget/inspector/panel-visible",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/immersive/webgpu",
+      "parentId": "/immersive"
+    },
+    {
+      "id": "/highlighter",
+      "parentId": "/"
+    },
+    {
+      "id": "/chat",
+      "parentId": "/"
+    },
+    {
+      "id": "/ai",
+      "parentId": "/"
+    },
+    {
+      "id": "/ai/server",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/server/request",
+      "parentId": "/ai/server"
+    },
+    {
+      "id": "/ai/testing",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/workspace",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/access",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/apply-patch",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/create",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/list",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/mkdir",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/read",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/read-many",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/remove",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/rename",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/stat",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/filesystem/write",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/git/status",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/tech/failure",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/ai/tech/input",
+      "parentId": "/ai"
+    },
+    {
+      "id": "/provider",
+      "parentId": "/"
+    },
+    {
+      "id": "/provider/connection",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/connection/capsule",
+      "parentId": "/provider/connection"
+    },
+    {
+      "id": "/provider/connection/chrome-studio",
+      "parentId": "/provider/connection"
+    },
+    {
+      "id": "/provider/model/ollama",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/configuration/ollama",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/session/browser",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/session/ollama",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/app/browser",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/app/capsule",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/app/chrome-studio",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/app/codex",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/app/ollama",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/tech/browser",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/tech/capsule",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/tech/chrome-studio",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/tech/ollama",
+      "parentId": "/provider"
+    },
+    {
+      "id": "/provider/tech/ssh",
+      "parentId": "/provider"
+    }
+  ]
+}

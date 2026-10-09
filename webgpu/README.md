@@ -27,6 +27,12 @@
 Типы композиции описывают общий кадр, ограниченные виды и overlays.
 Конкретные требования к ресурсам и их освобождению находятся в исходниках API.
 
+Screen HUD использует позу, FOV и aspect единственного ViewPoint, но свой
+clip range вокруг authored distance. Его слой получает собственные projection
+uniform/frustum в том же Renderer и кадре; near/far Space не скрывают HUD ни при
+приближении, ни при отдалении. UI viewport, hit testing и semantic Document
+сохраняются. Дополнительный ViewPoint или Space не создаётся.
+
 `TextureLoader.acquire` предоставляет lease источника; `load(device)` связывает
 его с GPUDevice, `setVisible` управляет GIF, `release` завершает владение.
 Неактивные записи ограничены 32 MiB и 128 entries; активные потребители не
@@ -62,3 +68,19 @@ Scalar material использует прежний uniform slot 256 байт, �
 в неиспользуемом для rounded shader normal-matrix участке. Тесты
 `multicolor-rounded-border` проверяют транспорт, повторное использование
 буферов и пиксели настоящего GPU.
+
+Shader линий получает коэффициент расстояния из материала Engine через
+существующий per-object uniform. `distanceFade: 0` отключает attenuation RGB и
+alpha; фиксированного мирового расстояния в shader нет. Это свойство не меняет
+проход, depth-test или пространственное перекрытие объектов.
+
+[`GlassMaterial`](../engine/src/material/glass-material.ts) описывает прозрачную
+тонкую оболочку с поглощением и отражением света. Текущая реализация поддерживает
+обычные Mesh с объединённой геометрией; ограничения оптического приближения,
+порядок проходов и владение ресурсами описаны у [Renderer](src/renderer/index.ts).
+Материал не создаёт collision body.
+
+[Native GPU проверки](tests/glass-optics.native.test.ts) проверяют пиксели,
+перекрытие, HUD и raster Display. [Короткий замер](../headless/fixtures/glass-performance.ts)
+измеряет отрисовку объединённых боксов с ожиданием GPU; его результат не является
+FPS браузерного приложения.

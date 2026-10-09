@@ -175,6 +175,9 @@
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-space": "workspace:*",
       },
+      "peerDependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
+      },
     },
     "jsx/development": {
       "name": "@zavx0z/immersive-jsx-development",
@@ -320,7 +323,9 @@
       "name": "@zavx0z/immersive-nodes",
       "version": "0.0.0",
       "dependencies": {
+        "@zavx0z/immersive-engine": "workspace:*",
         "@zavx0z/immersive-nodes-geometry-node-port-id": "workspace:*",
+        "@zavx0z/immersive-nodes-layout-prism-tree": "workspace:*",
         "@zavx0z/immersive-nodes-model-socket-key": "workspace:*",
         "@zavx0z/immersive-nodes-model-socket-kinds": "workspace:*",
         "@zavx0z/immersive-nodes-model-socket-preset": "workspace:*",
@@ -328,10 +333,10 @@
         "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
         "@zavx0z/immersive-nodes-node-parameter": "workspace:*",
         "@zavx0z/immersive-nodes-projection-parameter": "workspace:*",
+        "@zavx0z/immersive-space": "workspace:*",
         "@zavx0z/immersive-tech-json-metadata": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-engine": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-markdown": "workspace:*",
@@ -340,10 +345,10 @@
         "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
         "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
         "@zavx0z/immersive-renderer-html": "workspace:*",
-        "@zavx0z/immersive-space": "workspace:*",
         "@zavx0z/immersive-webgpu": "workspace:*",
       },
       "peerDependencies": {
+        "@zavx0z/immersive-browser": "workspace:*",
         "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-jsx": "workspace:*",
@@ -357,6 +362,7 @@
         "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
       },
       "optionalPeers": [
+        "@zavx0z/immersive-browser",
         "@zavx0z/immersive-component",
         "@zavx0z/immersive-dom",
         "@zavx0z/immersive-nodes-layout",
@@ -467,6 +473,13 @@
       "dependencies": {
         "@dagrejs/dagre": "^3.1.1",
         "d3-dag": "^0.9.1",
+      },
+    },
+    "nodes/layout/prism-tree": {
+      "name": "@zavx0z/immersive-nodes-layout-prism-tree",
+      "version": "0.0.0",
+      "dependencies": {
+        "@zavx0z/immersive-nodes-layout": "workspace:*",
       },
     },
     "nodes/model/parameter/store": {
@@ -3240,6 +3253,8 @@
     "@zavx0z/immersive-nodes-geometry-parameter": ["@zavx0z/immersive-nodes-geometry-parameter@workspace:nodes/geometry/parameter"],
 
     "@zavx0z/immersive-nodes-layout": ["@zavx0z/immersive-nodes-layout@workspace:nodes/layout"],
+
+    "@zavx0z/immersive-nodes-layout-prism-tree": ["@zavx0z/immersive-nodes-layout-prism-tree@workspace:nodes/layout/prism-tree"],
 
     "@zavx0z/immersive-nodes-model-parameter-store": ["@zavx0z/immersive-nodes-model-parameter-store@workspace:nodes/model/parameter/store"],
 

@@ -45,6 +45,8 @@ export type ContextProvision<Value = unknown> = Readonly<{
 }>
 
 export type ComponentValue<Props = any> = Readonly<{
+  /** Типовая метка готового значения для JSX; runtime identity проверяет приватный Symbol. */
+  readonly "@zavx0z/immersive-component/value"?: true
   [componentValueBrand]: true
   contexts: readonly ContextProvision[]
   key: ComponentKey

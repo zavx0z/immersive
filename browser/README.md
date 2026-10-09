@@ -120,6 +120,35 @@ Mesh, Group, Geometry, Material, Asset и Animation также удержива�
 попытку. Начальная ошибка запуска передаётся в onUncaughtError и отклоняет diagnostic whenReady, а не
 скрытым фоновым перезапуском.
 
+Pinch трекпада (`ctrl` + wheel) меняет разрешённый ViewPoint даже над содержимым
+Display/HUD. Общий input lifecycle сохраняет получателя и точку приближения
+на время непрерывного жеста; пауза более 150 мс или обычное wheel завершают его.
+Обычное wheel над декоративным содержимым Display панорамирует Space, включая
+доступные через tabindex подписи и рамки. Контролы, editable-содержимое и
+scrollports сохраняют собственный ввод; исчерпанная прокрутка не передаётся Space.
+Semantic wheel с preventDefault также сохраняет владение UI. Жест панорамирования
+удерживает один ViewPoint до паузы 150 мс, даже когда движущийся UI оказывается
+под неподвижным указателем. Заморозка ViewPoint завершает владение жестом.
+Мелкие pinch deltas сохраняют свой масштаб независимо от количества событий;
+anchor вычисляется в double без инверсии Float32 near/far-матрицы.
+
+Display/HUD запрашивают обновление проекции только при изменениях своего дерева,
+его предков и связанного input state; общие stylesheet изменения обновляют все
+проекции. Перемещение ViewPoint требует общей презентации без повторного layout
+независимых проекций.
+
+`<viewpoint navigation="fly" flySpeed={20} />` явно выбирает свободное движение
+через уровни: pinch перемещает eye и target вдоль удерживаемого cursor ray, на
+20 мм за единицу delta. Default `orbit` сохраняет приближение к target. Controls
+по-прежнему разрешают жесты; HUD и interactive UI сохраняют собственный ввод.
+
+Публичная проекция Space предоставляет `rayForPoint(nativeClientXY)`,
+`frustumPlanes(overscanCssPx)` и `fly(distanceMm, anchor?)`. Они используют
+единственный ViewPoint; запросы видимости не требуют создания Display или
+доступа к приватной математике Renderer. Шесть world planes направлены внутрь:
+`normal·point + constant >= 0`. Автор viewer выбирает применение позы и clips
+через публичные Engine helpers fitPoseForBounds/depthRangeForBounds.
+
 `ViewPoint.controls` декларативно разрешает жесты в свободной области сцены.
 Камеру можно получить через `ref={camera}`, где `camera` создан обычным `useRef`.
 `camera.current.saveState()` сохраняет обзор, `dollyTo(600, {x: 0, y: 0, z: 900})`
@@ -170,3 +199,28 @@ Browser переводит его углы в CSS-пиксели нативно�
 
 [Координаты и полный договор DOM](../dom/layout-geometry.md),
 [проверка первого и последующих кадров HUD/Display](tests/layout-measurement.test.ts).
+
+Публичная проекция Display/HUD предоставляет `projectPoint(localCssXY)` и
+`unprojectPoint(clientXY)`. Обратный метод пересекает текущий луч ViewPoint с
+плоскостью Display и возвращает локальные CSS px даже вне прямоугольника;
+при отсутствии пересечения возвращает `null`. Метод использует тот же владелец
+проекции, Canvas, Space и кадр.
+
+Пространственные объекты могут задать `hitTest` в мировых XYZ. Browser включает
+ближайшее попадание в общее решение ввода: HUD перекрывает мировое содержимое,
+Display и пространственный объект сравниваются по глубине. Semantic pointer
+события, capture, bubbling click и cancellation используют тот же Document.
+`readSpatialHit(event)` публичного Space API раскрывает адрес части объекта и
+мировую точку, сохраняя обычный контракт события.
+
+`root.getProjection(root.space).projectPoint(worldXYZ)` проецирует точку XYZ в мм
+непосредственно в native client XY. Метод использует текущие матрицы ViewPoint и
+границы Canvas, не требует существующего Display и не обходит его DOM. Точки за
+камерой или вне near/far возвращают `null`; координаты вне экранных XY сохраняются,
+чтобы приложение могло пересечь экранные bounds ещё не материализованного Repo.
+
+Пространственная фабрика Material получает необязательный публичный
+`XRMaterialProjectionContext`: разрешённый CSS color, opacity и запрошенные
+через `Material.styleProperties` custom variables. Browser обновляет материалы
+при изменении предков или stylesheet, сохраняя geometry и semantic identity.
+Mesh, Group и Material принимают branded CssStyle обычным авторским способом.

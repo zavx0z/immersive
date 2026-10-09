@@ -6757,7 +6757,11 @@ const createHit = (
   style: ComputedStyle,
 ): HitMetadata => {
   const disabled = node.hasAttribute("disabled")
-  const tabIndex = Number.parseInt(node.getAttribute("tabindex") ?? "-1", 10)
+  // HTML integer parsing also accepts a sign, leading ASCII whitespace and a numeric prefix.
+  // Negative tabindex keeps programmatic/pointer focus while excluding sequential Tab focus.
+  const tabIndexMatch = /^[\t\n\f\r ]*([+-]?\d+)/.exec(node.getAttribute("tabindex") ?? "")
+  const tabIndex = tabIndexMatch === null ? NaN : Number(tabIndexMatch[1])
+  const explicitTabIndex = Number.isFinite(tabIndex) && tabIndex >= -2147483648 && tabIndex <= 2147483647
   const inputRole = node instanceof HTMLInputElement
     ? defaultInputRole(node.type)
     : null
@@ -6784,7 +6788,7 @@ const createHit = (
         tag === "textarea" ||
         node instanceof HTMLElement && node.isContentEditable &&
           !(node.parentElement instanceof HTMLElement && node.parentElement.isContentEditable) ||
-        tabIndex >= 0),
+        node instanceof HTMLElement && explicitTabIndex),
     disabled,
     role,
     clips,
