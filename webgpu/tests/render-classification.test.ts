@@ -7,7 +7,9 @@ import {
   Mesh,
   MeshBasicMaterial,
   Object3D,
+  Matrix4,
 } from "@zavx0z/immersive-engine"
+import {RendererWebGpuDisplayPlane} from "../src/display-plane.ts"
 import {classifyRenderItems, type RenderItem} from "../src/renderer/utils/render-list.ts"
 
 function mesh(glass = false): RenderItem {
@@ -99,4 +101,71 @@ test("legacy display markers and very deep ancestry preserve classification with
   const result = classifyRenderItems([item, item])
   expect(result.uiObjects).toEqual([item, item])
   expect(result.regularObjects).toEqual([])
+})
+
+test("Камера упорядочивает целые Display, сохраняя внутренние draw records и независимый HUD", () => {
+  const hud = mesh()
+  hud.object.renderLayer = "ui"
+  const nearA = mesh()
+  const nearB = mesh()
+  const far = mesh()
+  const plane = (items: RenderItem[], z: number) => {
+    const content = new Object3D()
+    content.renderLayer = "ui"
+    for (const item of items) content.add(item.object)
+    const display = new RendererWebGpuDisplayPlane({
+      content,
+      viewport: {width: 100, height: 100},
+      rasterSize: {width: 100, height: 100},
+      worldUnitsPerPixel: 1,
+    })
+    display.position.z = z
+    display.updateWorldMatrix(true)
+    return display
+  }
+  plane([nearA, nearB], -10)
+  const distant = plane([far], -20)
+  const rasterSurface = distant.surface
+  const raster: RenderItem = {type: "static-mesh", object: rasterSurface, worldMatrix: rasterSurface.matrixWorld}
+  const source = [hud, nearA, nearB, nearA, raster]
+  const forward = classifyRenderItems(source, new Matrix4())
+  expect(forward.uiObjects, "Растровая поверхность участвует в том же порядке Display, а повторные draws сохраняются").toEqual([raster, nearA, nearB, nearA, hud])
+  expect(forward.regularObjects, "Растровая поверхность не попадает в ранний World pass").toEqual([])
+  const reverse = new Matrix4().set(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1)
+  expect(classifyRenderItems(source, reverse).uiObjects, "Смена направления камеры пересчитывает порядок поверхностей").toEqual([nearA, nearB, nearA, raster, hud])
+  expect(source, "Исходный список и индексы ресурсов остаются неизменными").toEqual([hud, nearA, nearB, nearA, raster])
+})
+
+test("Граница raster root сохраняет World background перед Glass, а внешний Display участвует только в пространственном проходе", () => {
+  const background = mesh()
+  const glass = mesh(true)
+  const hud = mesh()
+  hud.object.renderLayer = "ui"
+  const content = new Object3D()
+  content.add(background.object)
+  content.add(glass.object)
+  content.add(hud.object)
+  const display = new RendererWebGpuDisplayPlane({
+    content,
+    viewport: {width: 100, height: 100},
+    rasterSize: {width: 25, height: 25},
+    worldUnitsPerPixel: 1,
+  })
+  const source = [background, glass, hud]
+  for (const viewMatrix of [undefined, new Matrix4()]) {
+    const raster = classifyRenderItems(source, viewMatrix, content)
+    expect(raster.regularObjects, "Raster background остаётся в opaque pass перед glass").toEqual([background])
+    expect(raster.glassObjects, "Стекло сохраняет собственный optical pass").toEqual([glass])
+    expect(raster.uiObjects, "Только собственный HUD рисуется после glass").toEqual([hud])
+  }
+  const outer = new Object3D()
+  outer.add(display)
+  const direct = classifyRenderItems(source, new Matrix4(), outer)
+  expect(direct.regularObjects, "Direct Display сохраняет World background перед optical pass").toEqual([background])
+  expect(direct.glassObjects, "Direct Display сохраняет Glass pass membership").toEqual([glass])
+  expect(direct.uiObjects, "Engine World content не становится UI из-за внешнего Display").toEqual([hud])
+  const surface = display.surface
+  const presentation: RenderItem = {type: "static-mesh", object: surface, worldMatrix: surface.matrixWorld}
+  expect(classifyRenderItems([presentation], new Matrix4(), outer).uiObjects,
+    "Сама rasterSurface участвует в UI порядке внешних Display").toEqual([presentation])
 })

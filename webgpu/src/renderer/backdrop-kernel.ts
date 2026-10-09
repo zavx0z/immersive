@@ -79,3 +79,29 @@ export function createBackdropKernel(
   }
   return compactOffsets.length < TAP_COUNT ? seal(compactOffsets, compactWeights) : original()
 }
+
+/**
+ * Полная дискретная Gaussian после area prefilter. Соседние texels объединяются
+ * билинейной выборкой; пропусков между коэффициентами нет даже при большом sigma.
+ * Variance box prefilter вычитается из Gaussian, чтобы сохранить ширину blur.
+ */
+export function createDenseBackdropKernel(sigma: number, sourcePixels: number, physicalPixels: number): BackdropKernel {
+  if (!Number.isFinite(sigma) || sigma < 0) throw new RangeError("Backdrop kernel sigma must be finite and non-negative")
+  for (const value of [sourcePixels, physicalPixels]) {
+    if (!Number.isSafeInteger(value) || value <= 0) throw new RangeError("Backdrop kernel dimensions must be positive safe integers")
+  }
+  const scale = physicalPixels / sourcePixels
+  const variance = Math.max(0, sigma * sigma - Math.max(0, scale * scale - 1) / 12) / (scale * scale)
+  if (variance < 1e-12) return seal([0], [1])
+  const deviation = Math.sqrt(variance), radius = Math.ceil(3 * deviation)
+  if (!Number.isSafeInteger(radius) || radius > 4090) throw new RangeError("Backdrop kernel exceeds GPU uniform capacity")
+  const offsets: number[] = [], weights: number[] = []
+  for (let offset = -radius; offset <= radius; offset += 2) {
+    const first = Math.exp(-.5 * offset * offset / variance)
+    const second = offset < radius ? Math.exp(-.5 * (offset + 1) ** 2 / variance) : 0
+    const weight = first + second
+    offsets.push(offset + second / weight)
+    weights.push(weight)
+  }
+  return seal(offsets, weights)
+}

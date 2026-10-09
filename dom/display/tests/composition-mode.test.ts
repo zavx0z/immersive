@@ -44,6 +44,7 @@ type TestRenderer = {
   isReadyToRender(): boolean
   updateTextures(): void
   updateSceneUniforms(): void
+  readFrameInputs(): null
   ensurePerObjectCapacity(): void
   ensurePresentationClipCapacity(): void
   updatePerObjectData(): {uniformBytes: number; boneRanges: never[]}
@@ -122,6 +123,8 @@ function fixture() {
   renderer.isReadyToRender = () => true
   renderer.updateTextures = () => {}
   renderer.updateSceneUniforms = () => {}
+  // Mock не создаёт GPU-входы: право на replay в этой проверке отсутствует.
+  renderer.readFrameInputs = () => null
   renderer.ensurePerObjectCapacity = () => {}
   renderer.ensurePresentationClipCapacity = () => {}
   renderer.updatePerObjectData = () => ({uniformBytes: 0, boneRanges: []})

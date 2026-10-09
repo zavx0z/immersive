@@ -196,6 +196,7 @@ const selectorAttributeDependencies = new WeakMap<StyleRuleIndex, ReadonlySet<st
 const pointerStateSelectors = new WeakMap<StyleRuleIndex, readonly ParsedSelector[]>()
 const ancestryLocalSelectors = new WeakMap<StyleRuleIndex, boolean>()
 const customEnvironments = new WeakMap<Element, ComputedCustomProperties>()
+const customPropertyDependencies = new WeakMap<ComputedStyle, ReadonlySet<string> | null>()
 
 type CascadedValue = Readonly<{
   specificity: readonly [number, number, number]
@@ -490,6 +491,7 @@ export const computeStyle = (
     )
 
   const customProperties = createCustomPropertyEnvironment(element, parent, customValues)
+  const dependencies = collectStyleVariableDependencies(values, customProperties)
   values = resolveCascadedVariables(values, customProperties)
   const writingMode = (readValue(values, "writing-mode") ?? parent?.writingMode ?? "horizontal-tb") as ComputedStyle["writingMode"]
   resolveLogicalPadding(values, writingMode)
@@ -520,7 +522,7 @@ export const computeStyle = (
   const displaySurface = element instanceof DisplayElement && displayWidth?.unit === "px" && displayHeight?.unit === "px"
     ? displaySurfaceStyle(displayWidth.value, displayHeight.value, element.width, element.height, name => readValue(values, name)) : null
 
-  return Object.freeze({
+  const style: ComputedStyle = Object.freeze({
     displaySurface,
     visibility: readValue(values, "visibility") === "hidden" ? "hidden" : readValue(values, "visibility") === "visible" ? "visible" : parent?.visibility ?? "visible",
     customProperties,
@@ -618,6 +620,81 @@ export const computeStyle = (
     cursor: computeCursor(readValue(values, "cursor"), parent?.cursor),
     zIndex: parseZIndex(readValue(values, "z-index")),
   })
+  customPropertyDependencies.set(style, dependencies)
+  return style
+}
+
+/** Все синтаксические var-зависимости вычисленных declarations, включая aliases и fallback. */
+export const styleVariableDependencies = (style: ComputedStyle): ReadonlySet<string> | null =>
+  customPropertyDependencies.get(style) ?? null
+
+/** Смена наследуемого окружения требует обычного cascade, даже при совпадении own values. */
+export const changedOwnCustomProperties = (left: ComputedStyle, right: ComputedStyle): ReadonlySet<string> | null => {
+  if (left.customProperties === right.customProperties) return new Set()
+  // Отсутствие собственных declarations представлено самим parent environment.
+  const leftEnvironment = left.customProperties
+  const rightEnvironment = right.customProperties
+  const parent = leftEnvironment.parent === rightEnvironment ? rightEnvironment
+    : rightEnvironment.parent === leftEnvironment ? leftEnvironment
+    : leftEnvironment.parent === rightEnvironment.parent ? leftEnvironment.parent : undefined
+  if (parent === undefined) return null
+  const leftOwn = leftEnvironment === parent ? EMPTY_CUSTOM_PROPERTIES.own : leftEnvironment.own
+  const rightOwn = rightEnvironment === parent ? EMPTY_CUSTOM_PROPERTIES.own : rightEnvironment.own
+  return new Set([...Object.keys(leftOwn), ...Object.keys(rightOwn)].filter(name => leftOwn[name] !== rightOwn[name]))
+}
+
+/** Перепривязывает неизменённые own declarations без cascade и повторного измерения текста. */
+export const rebaseStyleCustomProperties = (
+  style: ComputedStyle,
+  previousParent: ComputedCustomProperties,
+  nextParent: ComputedCustomProperties,
+  element?: Element,
+): ComputedStyle | null => {
+  const previous = style.customProperties
+  if (previousParent === nextParent) return style
+  const next = previous === previousParent ? nextParent
+    : previous.parent === previousParent ? Object.freeze({parent: nextParent, own: previous.own}) : null
+  if (next === null) return null
+  const result = Object.freeze({...style, customProperties: next})
+  customPropertyDependencies.set(result, customPropertyDependencies.get(style) ?? null)
+  if (element !== undefined && previous !== previousParent) customEnvironments.set(element, next)
+  return result
+}
+
+const collectStyleVariableDependencies = (
+  values: ReadonlyMap<string, CascadedValue>,
+  environment: ComputedCustomProperties,
+): ReadonlySet<string> | null => {
+  const names = new Set<string>()
+  const visited = new Map<ComputedCustomProperties, Set<string>>()
+  const visit = (source: string, scope: ComputedCustomProperties): boolean => {
+    for (let cursor = 0; cursor < source.length;) {
+      const start = findVarFunction(source, cursor)
+      if (start < 0) break
+      const end = matchingParenthesis(source, start + 3)
+      if (end < 0) return false
+      const argument = splitVarArgument(source.slice(start + 4, end))
+      if (argument === null || !validCustomPropertyName(argument.name)) return false
+      names.add(argument.name)
+      const declaration = lookupCustomProperty(scope, argument.name)
+      if (declaration !== null) {
+        let seen = visited.get(declaration.environment)
+        if (seen === undefined) {
+          seen = new Set()
+          visited.set(declaration.environment, seen)
+        }
+        if (!seen.has(argument.name)) {
+          seen.add(argument.name)
+          if (!visit(declaration.source, declaration.environment)) return false
+        }
+      }
+      if (argument.fallback !== null && !visit(argument.fallback, scope)) return false
+      cursor = end + 1
+    }
+    return true
+  }
+  for (const value of values.values()) if (!visit(value.value, environment)) return null
+  return names
 }
 
 export const resolveLength = (

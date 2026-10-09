@@ -26,6 +26,9 @@ test("настоящий GPU: поглощение, перестановка с�
     expect(frames.rasterGlass!.hud).toEqual([0, 255, 0, 255])
     expect(frames.rasterRepeated).toEqual(frames.rasterGlass)
     expect(frames.rasterResized).toEqual(frames.rasterGlass)
+    expected.forEach((value, channel) => expect(Math.abs(frames.directGlass!.center[channel]! - Math.round(value * 255))).toBeLessThanOrEqual(2))
+    expect(frames.directGlass!.hud).toEqual([0, 255, 0, 255])
+    expect(frames.directRepeated).toEqual(frames.directGlass)
     expect(frames.releasedDisplay!.center).toEqual([0, 0, 0, 255])
   } finally {
     if (worker.exitCode === null) worker.kill()

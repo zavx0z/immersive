@@ -34,6 +34,9 @@ import {
   styleRulesDependOnAttribute,
   styleRulesMayDependOnPointerState,
   styleRulesPermitStructuralRetention,
+  styleVariableDependencies,
+  changedOwnCustomProperties,
+  rebaseStyleCustomProperties,
   type ComputedStyle,
   type CSSLength,
   type StyleRuleIndex,
@@ -1686,7 +1689,15 @@ const tryBuildTransformFrame = (
     rules,
     interactionState,
   )
-  if (!sameStyleExceptTransform(layoutNode.style, nextStyle)) return null
+  const previousStyle = layoutNode.style
+  const changedVariables = changedOwnCustomProperties(previousStyle, nextStyle)
+  if (changedVariables === null || !sameStyleExceptTransform(previousStyle, nextStyle, changedVariables.size > 0)) return null
+  if (previousStyle.customProperties !== nextStyle.customProperties) {
+    if (styleVariableDependencies(previousStyle) === null || styleVariableDependencies(nextStyle) === null) return null
+    const dependencies = descendantVariableDependencies(layoutNode, rules, interactionState)
+    if (dependencies === null || [...changedVariables].some(name => dependencies.has(name))) return null
+    if (!rebaseDescendantStyles(layoutNode, previousStyle, nextStyle)) return null
+  }
   const targetPreviouslyOwnedPresentation = previous.presentationTransforms?.has(target) === true
   const targetOwnsNextPresentation = nextStyle.transform.length > 0
   if (
@@ -1694,6 +1705,9 @@ const tryBuildTransformFrame = (
     previous.displayList.some((item) => item.kind === "path" && target.contains(item.node))
   ) return null
   layoutNode.style = nextStyle
+  for (let current: LayoutNode | null = layoutNode; current !== null; current = current.parent) {
+    subtreeVariableDependencies.delete(current)
+  }
 
   const nextTransforms = new Map<Node, RenderTransform>()
   const parentTransform = nearestBoxTransform(layoutNode.parent, previous)
@@ -1975,7 +1989,79 @@ const subtreeOwnsOverflowClip = (layoutNode: LayoutNode): boolean => {
   return layoutNode.ownsOverflowClipInSubtree
 }
 
-const sameStyleExceptTransform = (left: ComputedStyle, right: ComputedStyle): boolean => {
+const subtreeVariableDependencies = new WeakMap<LayoutNode, ReadonlySet<string> | null>()
+
+const descendantVariableDependencies = (
+  owner: LayoutNode,
+  rules: StyleRuleIndex,
+  interactionState: CreateDocumentRendererOptions["interactionState"],
+): ReadonlySet<string> | null => {
+  const collectUnlaidOut = (node: Node, inherited: ComputedStyle, names: Set<string>): boolean => {
+    const style = isElement(node) ? computeStyle(node, inherited, rules, interactionState) : inherited
+    if (isElement(node)) {
+      const own = styleVariableDependencies(style)
+      if (own === null) return false
+      for (const name of own) names.add(name)
+    }
+    for (const child of node.childNodes) if (!collectUnlaidOut(child, style, names)) return false
+    return true
+  }
+  const collect = (node: LayoutNode): ReadonlySet<string> | null => {
+    const cached = subtreeVariableDependencies.get(node)
+    if (cached !== undefined) return cached
+    const names = new Set<string>()
+    const own = isElement(node.node) ? styleVariableDependencies(node.style) : names
+    if (own === null) {
+      subtreeVariableDependencies.set(node, null)
+      return null
+    }
+    for (const name of own) names.add(name)
+    for (const child of node.children) {
+      const dependencies = collect(child)
+      if (dependencies === null) {
+        subtreeVariableDependencies.set(node, null)
+        return null
+      }
+      for (const name of dependencies) names.add(name)
+    }
+    // display:none и replaced controls не строят LayoutNode детей. Их CSS всё
+    // равно участвует в доказательстве: скрытая var-зависимость не теряется.
+    const represented = new Set(node.children.map(child => child.node))
+    for (const child of node.node.childNodes) {
+      if (!represented.has(child) && !collectUnlaidOut(child, node.style, names)) {
+        subtreeVariableDependencies.set(node, null)
+        return null
+      }
+    }
+    subtreeVariableDependencies.set(node, names)
+    return names
+  }
+  const names = new Set<string>()
+  for (const child of owner.children) {
+    const dependencies = collect(child)
+    if (dependencies === null) return null
+    for (const name of dependencies) names.add(name)
+  }
+  const represented = new Set(owner.children.map(child => child.node))
+  for (const child of owner.node.childNodes) {
+    if (!represented.has(child) && !collectUnlaidOut(child, owner.style, names)) return null
+  }
+  return names
+}
+
+const rebaseDescendantStyles = (owner: LayoutNode, previous: ComputedStyle, next: ComputedStyle): boolean => {
+  for (const child of owner.children) {
+    const previousStyle = child.style
+    const nextStyle = rebaseStyleCustomProperties(previousStyle, previous.customProperties, next.customProperties,
+      isElement(child.node) ? child.node : undefined)
+    if (nextStyle === null) return false
+    child.style = nextStyle
+    if (!rebaseDescendantStyles(child, previousStyle, nextStyle)) return false
+  }
+  return true
+}
+
+const sameStyleExceptTransform = (left: ComputedStyle, right: ComputedStyle, customPropertiesProven = false): boolean => {
   const {
     customProperties: leftCustomProperties,
     transform: _leftTransform,
@@ -1988,7 +2074,7 @@ const sameStyleExceptTransform = (left: ComputedStyle, right: ComputedStyle): bo
     transformOrigin: _rightOrigin,
     ...rightComparable
   } = right
-  return leftCustomProperties === rightCustomProperties &&
+  return (customPropertiesProven || leftCustomProperties === rightCustomProperties) &&
     JSON.stringify(leftComparable) === JSON.stringify(rightComparable)
 }
 
@@ -2015,7 +2101,7 @@ const styleMutationSignatures = (
       ? sourceProperty
       : sourceProperty.replace(/([A-Z])/g, "-$1").toLowerCase()
     const declaration = `${property}:${entry.slice(separator + 1).trim()}`
-    if (property === "transform" || property === "transform-origin") transform.push(declaration)
+    if (property === "transform" || property === "transform-origin" || property.startsWith("--")) transform.push(declaration)
     else other.push(declaration)
   }
   return Object.freeze({other: other.join(";"), transform: transform.join(";")})

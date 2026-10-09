@@ -11,6 +11,7 @@ import {GlassMaterial} from "@zavx0z/immersive-engine"
 import { SkinnedMesh } from "@zavx0z/immersive-engine"
 import { WireframeInstancedMesh } from "@zavx0z/immersive-engine";
 import { Matrix4, Frustum, Sphere, Vector3 } from "@zavx0z/immersive-engine";
+import {RendererWebGpuDisplayPlane} from "../../display-plane.ts"
 
 const _sphere = new Sphere();
 
@@ -33,16 +34,21 @@ export type ClassifiedRenderItems = {
   uiObjects: RenderItem[]
 }
 
-/** Classifies one frame without reordering within a pass or deduplicating draws. */
-export function classifyRenderItems(renderList: readonly RenderItem[]): ClassifiedRenderItems {
+/** Сохраняет paint order UI Display внутри root, не наследуя внешнюю поверхность растрового прохода. */
+export function classifyRenderItems(renderList: readonly RenderItem[], viewMatrix?: Matrix4, root?: Object3D): ClassifiedRenderItems {
   const glassObjects: RenderItem[] = []
   const regularObjects: RenderItem[] = []
   const silhouettes: RenderItem[] = []
   const overlayLines: RenderItem[] = []
   const uiObjects: RenderItem[] = []
   const uiAncestry = new Map<Object3D, boolean>()
+  const displayAncestry = new Map<Object3D, RendererWebGpuDisplayPlane | null>()
+  const displays = new Map<RendererWebGpuDisplayPlane, RenderItem[]>()
   for (const item of renderList) {
-    const ui = isUiLayerObject(item.object, uiAncestry)
+    const display = findDisplay(item.object, displayAncestry, root)
+    // Engine World/Glass сохраняют свои проходы внутри проекции. Только сама
+    // растровая матрица становится UI без собственного renderLayer marker.
+    const ui = (display !== null && item.object === display.rasterSurface) || isUiLayerObject(item.object, uiAncestry)
     const raw = (item.object as {material?: {isGlassMaterial?: boolean} | {isGlassMaterial?: boolean}[]}).material
     const material = Array.isArray(raw) ? raw[0] : raw
     // Для деформируемых/инстансированных мешей нужны отдельные optical shaders.
@@ -58,7 +64,14 @@ export function classifyRenderItems(renderList: readonly RenderItem[]): Classifi
     // and glass/overlay-line objects. Preserve it rather than changing paint.
     if (glass === true) glassObjects.push(item)
     if (ui) {
-      uiObjects.push(item)
+      if (display !== null && viewMatrix !== undefined) {
+        let items = displays.get(display)
+        if (items === undefined) {
+          items = []
+          displays.set(display, items)
+        }
+        items.push(item)
+      } else uiObjects.push(item)
     } else if (lineMode === "overlay") {
       overlayLines.push(item)
     } else if (!glass) {
@@ -70,8 +83,49 @@ export function classifyRenderItems(renderList: readonly RenderItem[]): Classifi
     glassObjects,
     regularObjects: silhouettes.length === 0 ? regularObjects : [...silhouettes, ...regularObjects],
     overlayLines,
-    uiObjects,
+    // HUD без физической поверхности сохраняет свой paint order поверх сцены.
+    uiObjects: displays.size === 0 ? uiObjects : [
+      ...[...displays].sort(([a], [b]) => viewDepth(a, viewMatrix!) - viewDepth(b, viewMatrix!))
+        .flatMap(([, items]) => items),
+      ...uiObjects,
+    ],
   }
+}
+
+function viewDepth(display: RendererWebGpuDisplayPlane, viewMatrix: Matrix4): number {
+  const world = display.matrixWorld.elements
+  const view = viewMatrix.elements
+  return view[2]! * world[12]! + view[6]! * world[13]! + view[10]! * world[14]! + view[14]!
+}
+
+function findDisplay(
+  object: Object3D,
+  cache: Map<Object3D, RendererWebGpuDisplayPlane | null>,
+  root?: Object3D,
+): RendererWebGpuDisplayPlane | null {
+  let current: Object3D | null = object
+  let display: RendererWebGpuDisplayPlane | null = null
+  while (current !== null) {
+    const inherited = cache.get(current)
+    if (inherited !== undefined) {
+      display = inherited
+      break
+    }
+    if (current instanceof RendererWebGpuDisplayPlane) {
+      display = current
+      cache.set(current, current)
+      break
+    }
+    if (current === root) {
+      cache.set(current, null)
+      break
+    }
+    current = current.parent
+  }
+  for (let node: Object3D | null = object; node !== current && node !== null; node = node.parent) {
+    cache.set(node, display)
+  }
+  return display
 }
 
 function isUiLayerObject(object: Object3D, cache: Map<Object3D, boolean>): boolean {

@@ -86,8 +86,9 @@ export default function Window(props: Contract.Input): Contract.Output {
         --window-height: ${frame.box.height}px;
 
         position: absolute;
-        left: var(--window-x);
-        top: var(--window-y);
+        left: 0;
+        top: 0;
+        transform: translate(var(--window-x), var(--window-y));
         width: var(--window-width);
         height: var(--window-height);
         max-width: 100%;
@@ -109,6 +110,7 @@ export default function Window(props: Contract.Input): Contract.Output {
         &[data-layout="fill"] {
           left: 0;
           top: 0;
+          transform: none;
           width: 100%;
           height: 100%;
         }

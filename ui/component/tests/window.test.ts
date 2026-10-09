@@ -1,7 +1,7 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createRoot} from "@zavx0z/immersive-component"
-import {createDocument, MouseEvent, KeyboardEvent, type HTMLInputElement} from "@zavx0z/immersive-dom"
+import {createDocument, MouseEvent, KeyboardEvent, type HTMLInputElement, type Element} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, type RenderCursor} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
@@ -47,12 +47,20 @@ function mount(projection: "hud" | "display", pair = false) {
     throw new Error("Window layout did not settle")
   }
   const shell = owner.querySelector("[data-window]")!
+  // Input controller принимает координаты проекции; DOM rect уже включает
+  // transform окна и заданное выше отображение Display в client coordinates.
+  const bounds = (node: Element) => {
+    const rect = node.getBoundingClientRect()
+    return projection === "display"
+      ? {x: (rect.x - 40) * 2, y: (rect.y - 20) * 2, width: rect.width * 2, height: rect.height * 2}
+      : {x: rect.x, y: rect.y, width: rect.width, height: rect.height}
+  }
   const box = () => {
-    const rect = flush().boxByNode.get(shell)!
-    return {x: rect.x, y: rect.y, width: rect.width, height: rect.height}
+    flush()
+    return bounds(shell)
   }
   flush()
-  return {document, owner, shell, component, props, changes, renderer, input, flush, box,
+  return {document, owner, shell, component, props, changes, renderer, input, flush, box, bounds,
     dispose() {
       input.dispose()
       component.unmount()
@@ -87,7 +95,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
     const f = mount(projection)
     try {
       let frame = f.flush()
-      const rect = frame.boxByNode.get(f.owner.querySelector("[data-window-title]")!)!
+      const rect = f.bounds(f.owner.querySelector("[data-window-title]")!)
       const point = {clientX: rect.x + rect.width / 2, clientY: rect.y + rect.height / 2, pointerId: 7, button: 0, buttons: 1}
       f.input.pointerDown(frame, point)
       f.input.pointerMove(frame, {...point, clientX: point.clientX + 1000, clientY: point.clientY + 1000})
@@ -108,7 +116,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
       const text = frame.displayList.find(item => item.kind === "text" && item.text === "Окно")
       if (text?.kind !== "text") throw new Error("Нет текста заголовка")
       const box = f.box()
-      expect(text.x + (text.width ?? 0) / 2).toBeCloseTo(box.x + box.width / 2, 0)
+      expect((text.x + (text.width ?? 0) / 2) * text.transform.scaleX + text.transform.translateX).toBeCloseTo(box.x + box.width / 2, 0)
     } finally { f.dispose() }
   })
 
@@ -117,7 +125,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
     try {
       const title = f.owner.querySelector("[data-window-title]")!
       let frame = f.flush()
-      const rect = frame.boxByNode.get(title)!
+      const rect = f.bounds(title)
       const point = {clientX: rect.x + rect.width / 2, clientY: rect.y + rect.height / 2, pointerId: 11, button: 0, buttons: 1}
       expect(frame.hits.get(title)?.cursor).toBe("grab")
       f.input.pointerDown(frame, point)
@@ -137,7 +145,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
       const header = f.owner.querySelector("[data-window-header]")!
       for (const button of header.querySelectorAll("button")) {
         expect(frame.hits.get(button)?.cursor).toBe(button.hasAttribute("disabled") ? "not-allowed" : "pointer")
-        const rect = frame.boxByNode.get(button)!
+        const rect = f.bounds(button)
         const point = {clientX: rect.x + rect.width / 2, clientY: rect.y + rect.height / 2, pointerId: 12, button: 0, buttons: 1}
         f.input.pointerDown(frame, point)
         f.input.pointerMove(frame, {...point, clientX: point.clientX + 40, clientY: point.clientY + 40})
@@ -166,7 +174,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
     const f = mount(projection)
     try {
       const frame = f.flush()
-      const rect = frame.boxByNode.get(f.owner.querySelector("[data-window-title]")!)!
+      const rect = f.bounds(f.owner.querySelector("[data-window-title]")!)
       const point = {clientX: rect.x + rect.width / 2, clientY: rect.y + rect.height / 2, pointerId: 9, button: 0, buttons: 1}
       f.input.pointerDown(frame, point)
       f.input.pointerMove(frame, {...point, clientX: point.clientX + 40})
@@ -192,7 +200,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
       }
       const hit = hitTestProjection(frame, point.clientX, point.clientY)
       const handle = f.owner.querySelector(`[data-window-resize="${edge}"]`)!
-      const rect = frame.boxByNode.get(handle)!
+      const rect = f.bounds(handle)
       expect(hit?.node === handle, JSON.stringify({point, rect: {x: rect.x, y: rect.y, width: rect.width, height: rect.height}, hit: hit?.role, clips: frame.hits.get(handle)?.clips.map(clip => ({x: clip.x, y: clip.y, width: clip.width, height: clip.height}))})).toBeTrue()
       f.input.pointerDown(frame, point)
       const end = {...point, clientX: point.clientX + (edge === "w" ? -4 : edge === "e" ? 4 : 0), clientY: point.clientY + (edge === "n" ? -4 : edge === "s" ? 4 : 0)}
@@ -208,7 +216,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
     try {
       let frame = f.flush()
       const handle = f.owner.querySelector(`[data-window-resize="${edge}"]`)!
-      const rect = frame.boxByNode.get(handle)!
+      const rect = f.bounds(handle)
       expect(frame.hits.get(handle)?.cursor).toBe(({n: "ns-resize", s: "ns-resize", e: "ew-resize", w: "ew-resize", ne: "nesw-resize", sw: "nesw-resize", nw: "nwse-resize", se: "nwse-resize"} as Record<string, RenderCursor>)[edge])
       const point = {clientX: rect.x + rect.width / 2, clientY: rect.y + rect.height / 2, pointerId: 8, button: 0, buttons: 1}
       f.input.pointerDown(frame, point)

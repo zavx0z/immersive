@@ -1955,6 +1955,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         baseFrustum,
         excludedRoots,
         planned.space.background,
+        planned.viewPoint.viewMatrix,
       ),
       resources: baseResources,
       viewport: fullViewport,
@@ -1971,6 +1972,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         frustum,
         boundedExclusions[index],
         view.space.background,
+        view.viewPoint.viewMatrix,
       )
       this.updateSceneUniforms(resources.sceneUniformBuffer, lights, view.viewPoint.viewMatrix)
       return {root: view.space, layer, resources, viewport: view.viewport, paintBackground: true}
@@ -1993,6 +1995,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
           baseLights,
           frustum,
           overlayExclusions[index],
+          undefined,
+          planned.viewPoint.viewMatrix,
         ),
         resources,
         viewport: fullViewport,
@@ -2351,12 +2355,13 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     frustum: Frustum,
     excludedRoots?: ReadonlySet<Object3D>,
     background?: GPUColor,
+    viewMatrix?: Matrix4,
   ): PreparedRenderLayer {
     const allRenderItems: RenderItem[] = []
     const lights: LightItem[] = []
     collectSpaceObjects(root, allRenderItems, lights, frustum, excludedRoots)
     const {glassObjects, regularObjects, overlayLines, uiObjects} =
-      classifyRenderItems(allRenderItems)
+      classifyRenderItems(allRenderItems, viewMatrix, root)
 
     frameRenderItems.push(...allRenderItems)
     frameLights.push(...lights)

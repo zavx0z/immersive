@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {createBackdropKernel, type BackdropKernel, type BackdropKernelMode} from "../src/renderer/backdrop-kernel.ts"
+import {createBackdropKernel, createDenseBackdropKernel, type BackdropKernel, type BackdropKernelMode} from "../src/renderer/backdrop-kernel.ts"
 
 type Pixel = readonly [number, number, number, number]
 
@@ -139,4 +139,28 @@ test("invalid kernel inputs cannot emit non-finite GPU parameters", () => {
     expect(() => createBackdropKernel(8, 64, size, "linear")).toThrow("physicalPixels")
   }
   expect(() => createBackdropKernel(8, 64, 64, "unknown" as BackdropKernelMode)).toThrow(TypeError)
+})
+
+
+test("dense Gaussian visits every reduced texel and bilinear pairs equal the complete convolution", () => {
+  for (const sigma of [0, .5, 1, 8, 16, 24, 40, 100]) {
+    for (const [sourcePixels, physicalPixels] of [[32, 256], [33, 259], [64, 64]] as const) {
+      const kernel = createDenseBackdropKernel(sigma, sourcePixels, physicalPixels)
+      const scale = physicalPixels / sourcePixels
+      const variance = Math.max(0, sigma * sigma - Math.max(0, scale * scale - 1) / 12) / scale ** 2
+      const radius = Math.ceil(3 * Math.sqrt(variance))
+      const dense = variance < 1e-12 ? {count: 1, offsets: [0], weights: [1]} : {
+        count: radius * 2 + 1,
+        offsets: Array.from({length: radius * 2 + 1}, (_, index) => index - radius),
+        weights: Array.from({length: radius * 2 + 1}, (_, index) => Math.exp(-.5 * (index - radius) ** 2 / variance)),
+      }
+      const pixels = texture(sourcePixels), valid = pixels.map(() => true)
+      for (let position = 0; position < sourcePixels; position++) {
+        const actual = evaluate(pixels, position, kernel, "linear", valid)
+        const expected = evaluate(pixels, position, dense, "linear", valid)
+        actual.forEach((value, channel) => expect(value).toBeCloseTo(expected[channel]!, 10))
+      }
+      expect(kernel.count).toBe(Math.ceil(dense.count / 2))
+    }
+  }
 })
