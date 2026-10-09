@@ -6,7 +6,7 @@ import {createHeadless} from "@zavx0z/immersive-headless"
 import Inspector from "@zavx0z/immersive-ui-component-widget-inspector"
 
 describe.each([
-  {name: "Основное представление", props: {categories: [{id: "a", label: "Категория", iconSrc: runIcon}], selectedCategoryId: "a", query: "", showSearch: undefined}},
+  {name: "Основное представление", props: {categories: [{id: "a", label: "Категория", iconSrc: runIcon}], selectedCategoryId: "a", query: ""}},
   {name: "Без поиска", props: {categories: [{id: "a", label: "Категория", iconSrc: runIcon}], selectedCategoryId: "a", query: "", showSearch: false}},
 ])("$name", async ({props}) => {
   const headless = createHeadless({width: 640, height: 400})

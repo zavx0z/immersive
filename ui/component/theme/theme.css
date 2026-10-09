@@ -66,6 +66,13 @@
   --radius-large: 6px;
   --radius-round: 9999px;
 
+  /* Общая оболочка и ритм составных виджетов. */
+  --widget-radius: var(--radius-large);
+  --widget-content-padding: var(--spacing-8);
+  --widget-content-gap: var(--spacing-8);
+  --widget-surface-background: rgb(var(--surface-750));
+  --widget-header-height: 36px;
+
   /* Общая шкала внешних теней: один слой для текущего Renderer.
    * Названия соответствуют шкале Tailwind, значения принадлежат нашей теме.
    */

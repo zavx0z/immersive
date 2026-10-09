@@ -1,5 +1,8 @@
 /**
 Виджеты составляют законченные панели с управлением и содержимым.
+Общая тема определяет радиус оболочки, высоту шапки и отступы содержимого.
+Настройки показывают боковые разделы, инспектор — категории, редактор, дерево
+и терминал сохраняют собственные способы работы с данными.
 Самостоятельные участники сохраняют собственные протоколы и расширяют общий JSX-результат.
 
 @packageDocumentation
@@ -15,3 +18,5 @@ export type {ImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-componen
 export {default as WidgetHeader} from "@zavx0z/immersive-ui-component-widget-header"
 export type {ImmersiveUiComponentWidgetHeader} from "@zavx0z/immersive-ui-component-widget-header"
 export type {ImmersiveUiComponentWidget} from "./contract"
+export {default as Settings} from "@zavx0z/immersive-ui-component-widget-settings"
+export type {ImmersiveUiComponentWidgetSettings} from "@zavx0z/immersive-ui-component-widget-settings"

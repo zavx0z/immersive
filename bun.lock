@@ -2081,12 +2081,14 @@
         "@zavx0z/immersive-ui-component-widget-editor": "workspace:*",
         "@zavx0z/immersive-ui-component-widget-header": "workspace:*",
         "@zavx0z/immersive-ui-component-widget-inspector": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget-settings": "workspace:*",
         "@zavx0z/immersive-ui-component-widget-terminal": "workspace:*",
         "@zavx0z/immersive-ui-component-widget-tree": "workspace:*",
       },
       "devDependencies": {
         "@zavx0z/immersive-headless": "workspace:*",
         "@zavx0z/immersive-ui-component": "workspace:*",
+        "@zavx0z/immersive-ui-component-surface-panel": "workspace:*",
       },
     },
     "ui/component/widget/editor": {
@@ -2152,6 +2154,24 @@
         "@zavx0z/immersive-ui-component-typography": "workspace:*",
         "@zavx0z/immersive-ui-component-widget": "workspace:*",
         "@zavx0z/immersive-ui-theme-icon-run": "workspace:*",
+      },
+    },
+    "ui/component/widget/settings": {
+      "name": "@zavx0z/immersive-ui-component-widget-settings",
+      "version": "0.0.0",
+      "dependencies": {
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+        "@zavx0z/immersive-ui-component-button-basic": "workspace:*",
+      },
+      "devDependencies": {
+        "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-ui-component-field-text": "workspace:*",
+        "@zavx0z/immersive-ui-component-surface-panel": "workspace:*",
+        "@zavx0z/immersive-ui-component-widget": "workspace:*",
+      },
+      "peerDependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
       },
     },
     "ui/component/widget/terminal": {
@@ -3499,6 +3519,8 @@
     "@zavx0z/immersive-ui-component-widget-header-action": ["@zavx0z/immersive-ui-component-widget-header-action@workspace:ui/component/widget/header/action"],
 
     "@zavx0z/immersive-ui-component-widget-inspector": ["@zavx0z/immersive-ui-component-widget-inspector@workspace:ui/component/widget/inspector"],
+
+    "@zavx0z/immersive-ui-component-widget-settings": ["@zavx0z/immersive-ui-component-widget-settings@workspace:ui/component/widget/settings"],
 
     "@zavx0z/immersive-ui-component-widget-terminal": ["@zavx0z/immersive-ui-component-widget-terminal@workspace:ui/component/widget/terminal"],
 

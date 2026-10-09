@@ -1,0 +1,30 @@
+{
+  "name": "@zavx0z/immersive-ui-component-widget-settings",
+  "label": "Настройки",
+  "version": "0.0.0",
+  "description": "Настройки с боковыми разделами и единой областью панелей",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./index.tsx"
+  },
+  "scripts": {
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec"
+  },
+  "dependencies": {
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-ui-component-button-basic": "workspace:*"
+  },
+  "peerDependencies": {
+    "@zavx0z/immersive-component": "workspace:*"
+  },
+  "devDependencies": {
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-ui-component-widget": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-panel": "workspace:*",
+    "@zavx0z/immersive-ui-component-field-text": "workspace:*",
+    "@zavx0z/immersive-dom": "workspace:*"
+  }
+}

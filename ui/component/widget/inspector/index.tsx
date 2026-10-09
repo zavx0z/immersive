@@ -1,10 +1,10 @@
-import {InspectorHeader} from "./src/header"
 /**
 Инспектор категорий и панелей с поиском и сохраняемым содержимым.
 Реализация и её контракт принадлежат этому пакету; потребители используют его публичный вход.
 
 @packageDocumentation
 */
+import {InspectorHeader} from "./src/header"
 
 import {CategoryButton} from "./src/helpers.tsx"
 import {InspectorContextRowView} from "./src/helpers.tsx"
@@ -26,8 +26,8 @@ export default function Inspector(props: Contract.Input): Contract.Output {
       height: 100%;
       overflow: clip;
       border: var(--border-width-control) solid var(--material-editor-border);
-      border-radius: 6px;
-      background: var(--widget-number-background-readonly);
+      border-radius: var(--widget-radius);
+      background: var(--widget-surface-background);
       color: rgb(var(--surface-150));
       font-size: var(--font-size-sm);
 
@@ -75,7 +75,7 @@ export default function Inspector(props: Contract.Input): Contract.Output {
           min-width: 0;
           min-height: 0;
           flex-grow: 1;
-          background: var(--widget-number-background-readonly);
+          background: var(--widget-surface-background);
         `}
       >
         {props.context === undefined ? null : <InspectorContextRowView
@@ -95,11 +95,11 @@ export default function Inspector(props: Contract.Input): Contract.Output {
             width: 100%;
             min-height: 0;
             flex-grow: 1;
-            gap: 2px;
-            padding: 7px;
+            gap: var(--widget-content-gap);
+            padding: var(--widget-content-padding);
             overflow-y: auto;
             scrollbar-width: thin;
-            background: var(--widget-number-background-readonly);
+            background: var(--widget-surface-background);
           `}
         >
           <slot />

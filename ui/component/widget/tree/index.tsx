@@ -220,7 +220,7 @@ export default function Tree(props: Contract.Input): Contract.Output {
       min-height: 0;
       overflow: hidden;
       border: var(--border-width-control) solid var(--widget-toolbar-outline);
-      border-radius: 6px;
+      border-radius: var(--widget-radius);
       background: var(--widget-text-background);
 
       &[data-tree-embedded="true"] {

@@ -19,10 +19,10 @@ export default function WidgetHeader(props: Contract.Input): Contract.Output {
       flex-direction: row;
       align-items: center;
       min-width: 0;
-      height: 36px;
-      min-height: 36px;
+      height: var(--widget-header-height);
+      min-height: var(--widget-header-height);
       gap: 6px;
-      padding: 6px 16px;
+      padding: 6px var(--widget-content-padding);
       background: var(--widget-toolbar-background);
       color: var(--widget-toolbar-content);
       user-select: none;
