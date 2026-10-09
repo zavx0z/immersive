@@ -32,7 +32,7 @@ const coordinates = {
   corner: [42, 22], overlap: [84, 42], released: [100, 60],
 } as const
 
-async function acceptance(mode: "hud" | "raster" | "direct") {
+async function acceptance(mode: "hud" | "lowDpi" | "direct") {
   const width = 600, height = 360
   let logical = {width: 200, height: 120}
   const canvas = new NativeGpuCanvas(width, height)
@@ -94,11 +94,11 @@ async function acceptance(mode: "hud" | "raster" | "direct") {
       }))
     }
     await render("zero")
+    const rasterCandidateCreated = display === null || (display.rasterSurface !== null) === (mode === "lowDpi")
     panel.setAttribute("style", `${panelStyle};backdrop-filter:blur(6px)`)
     await render("blurred")
     const retained = marker()
     if (retained === undefined) throw new Error("CSS blur не создал backend marker")
-    const rasterSelected = display === null || (display.rasterSurface !== null) === (mode === "raster")
     panel.setAttribute("style", `${panelStyle};backdrop-filter:none`)
     await render("none")
     const noneCleared = markerCount() === 0 && !backend.root.children.includes(retained)
@@ -126,7 +126,6 @@ async function acceptance(mode: "hud" | "raster" | "direct") {
     display?.configure(logical, units())
     display?.setRasterSize(mode === "direct" ? {width: 660, height: 396} : logical)
     await render("resized")
-    const resizedRasterSelected = display === null || (display.rasterSurface !== null) === (mode === "raster")
     if (mode === "hud") {
       child.setAttribute("hidden", "")
       root.setAttribute("style", "position:relative;width:220px;height:132px;background:transparent")
@@ -151,7 +150,7 @@ async function acceptance(mode: "hud" | "raster" | "direct") {
     if (validation !== null) throw new Error(`${mode}/released: ${validation.message}`)
     const released = await canvas.capture()
     const offset = ((height / 2) * width + width / 2) * 4
-    return {frames, rasterSelected, resizedRasterSelected, noneCleared, moveReused, disposeCleared,
+    return {frames, rasterCandidateCreated, noneCleared, moveReused, disposeCleared,
       released: [...released.rgba.slice(offset, offset + 4)]}
   } finally {
     layout.dispose()
@@ -213,7 +212,7 @@ async function benchmark(width: number, height: number) {
       const validation = await device.popErrorScope()
       if (validation !== null) throw new Error(`${width}×${height}/${name}: ${validation.message}`)
     }
-    return {width, height, metric: "renderComposition + 1px copy/map queue completion wall ms", warmupFrames: 8, samples}
+    return {width, height, target: "HUD", metric: "renderComposition + 1px copy/map queue completion wall ms", warmupFrames: 8, samples}
   } finally {
     fence?.destroy()
     layout.dispose()
@@ -226,6 +225,6 @@ async function benchmark(width: number, height: number) {
 try {
   const result = Bun.argv[2] === "benchmark"
     ? {benchmark: [await benchmark(1280, 720), await benchmark(2730, 2176)]}
-    : {hud: await acceptance("hud"), raster: await acceptance("raster"), direct: await acceptance("direct")}
+    : {hud: await acceptance("hud"), lowDpi: await acceptance("lowDpi"), direct: await acceptance("direct")}
   console.log(JSON.stringify(Bun.argv[2] === "benchmark" ? {...result, adapterInfo} : result))
 } finally {gpu.destroy()}

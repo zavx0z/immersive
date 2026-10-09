@@ -11,6 +11,8 @@ export class DisplayRasterMaterial extends ImageMaterial {
 Физический дисплей с прямым рисованием существующего графа содержимого.
 Поверхность для текстуры создаётся только при выборе растрового режима.
 Номинальная матрица сохраняется независимо от наличия GPU-текстуры.
+Backdrop blur требует внешней сцены: Renderer выбирает для такого содержимого
+прямое рисование в общий кадр, сохраняя размер и тот же граф содержимого.
 */
 export class RendererWebGpuDisplayPlane extends RendererWebGpuDocumentPlane {
   #surface: Mesh | null = null

@@ -26,3 +26,10 @@ export function setBackdrop(object: Object3D, value: Backdrop | undefined): void
   if (previous?.sigma === sigma && previous.width === width && previous.height === height) return
   backdrops.set(object, Object.freeze({sigma, width, height}))
 }
+
+/** Видимый backdrop зависит от общего кадра и не может вычисляться в изолированной матрице Display. */
+export function requiresSceneBackdrop(root: Object3D): boolean {
+  if (!root.visible) return false
+  if ((backdrops.get(root)?.sigma ?? 0) > 0) return true
+  return root.children.some(requiresSceneBackdrop)
+}

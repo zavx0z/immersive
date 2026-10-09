@@ -1,5 +1,5 @@
 import {BackdropFilter, backdropCompositeShader} from "./backdrop-filter"
-import {readBackdrop} from "../backdrop"
+import {readBackdrop, requiresSceneBackdrop} from "../backdrop"
 import {RendererWebGpuDisplayPlane, DisplayRasterMaterial} from "../display-plane.ts"
 import {selectDisplayRaster} from "../display-render-mode.ts"
 import {Space} from "@zavx0z/immersive-engine"
@@ -2142,7 +2142,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const visit = (object: Object3D): void => {
       if (!object.visible || excluded.has(object)) return
       if (object instanceof RendererWebGpuDisplayPlane) {
-        if (selectDisplayRaster(object, viewPoint, viewport, modes?.has(object) ?? false)) {
+        if (!requiresSceneBackdrop(object.content) && selectDisplayRaster(object, viewPoint, viewport, modes?.has(object) ?? false)) {
           if (!modes) {
             modes = new WeakSet()
             this.displayRasterModes.set(root, modes)
@@ -2383,7 +2383,20 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         bottom: Math.min(prepared.viewport.y + prepared.viewport.height, Math.max(...corners.map(point => point.y))),
       } : undefined
       const sigma = Math.min(Math.max(source.width, source.height) * 2, Math.max(0.01, backdrop.sigma * pixelScale))
-      const group = filter.encode(command, source, sigma, raster?.texture ?? this.canvas!, bounds)
+      const centerX = prepared.viewport.x + (center.x + 1) * prepared.viewport.width * .5
+      const centerY = prepared.viewport.y + (1 - center.y) * prepared.viewport.height * .5
+      const dx = [(x.x - center.x) * prepared.viewport.width * .5, (center.y - x.y) * prepared.viewport.height * .5]
+      const dy = [(y.x - center.x) * prepared.viewport.width * .5, (center.y - y.y) * prepared.viewport.height * .5]
+      const determinant = dx[0]! * dy[1]! - dx[1]! * dy[0]!
+      let depth: {texture: GPUTexture, plane: readonly [number, number, number]} | undefined
+      // Только мировому Display нужна отсечка более близких объектов. HUD уже
+      // находится перед сценой и использует свой depth range, очищенный для UI.
+      if (prepared.root instanceof Space && Number.isFinite(determinant) && Math.abs(determinant) > 1e-9) {
+        const a = ((x.z - center.z) * dy[1]! - (y.z - center.z) * dx[1]!) / determinant
+        const b = (dx[0]! * (y.z - center.z) - dy[0]! * (x.z - center.z)) / determinant
+        depth = {texture: raster?.depth ?? this.depthTexture!, plane: [a, b, center.z - a * centerX - b * centerY]}
+      }
+      const group = filter.encode(command, source, sigma, raster?.texture ?? this.canvas!, bounds, depth)
       pass = begin()
       pass.setPipeline(this.backdropPipeline!)
       pass.setBindGroup(2, group)

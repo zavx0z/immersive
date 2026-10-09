@@ -3,15 +3,14 @@ import {expect, test} from "bun:test"
 type Samples = Record<string, number[]>
 type Probe = {
   frames: Record<string, Samples>
-  rasterSelected: boolean
-  resizedRasterSelected: boolean
+  rasterCandidateCreated: boolean
   noneCleared: boolean
   moveReused: boolean
   disposeCleared: boolean
   released: number[]
 }
 
-test("native CSS backdrop: HUD, прямой и raster Display размывают только предыдущее содержимое", async () => {
+test("native CSS backdrop: HUD и Display разной номинальной плотности размывают только предыдущее содержимое", async () => {
   const worker = Bun.spawn([process.execPath, `${import.meta.dir}/../../headless/fixtures/backdrop-blur.ts`], {
     cwd: `${import.meta.dir}/../..`, stdout: "pipe", stderr: "pipe", timeout: 25000,
   })
@@ -20,7 +19,7 @@ test("native CSS backdrop: HUD, прямой и raster Display размываю�
       worker.exited, new Response(worker.stdout).text(), new Response(worker.stderr).text(),
     ])
     expect(exit, stderr).toBe(0)
-    const modes = JSON.parse(stdout) as Record<"hud" | "raster" | "direct", Probe>
+    const modes = JSON.parse(stdout) as Record<"hud" | "lowDpi" | "direct", Probe>
     for (const [mode, result] of Object.entries(modes)) {
       const {frames} = result
       const zero = frames.zero!, blurred = frames.blurred!
@@ -57,8 +56,7 @@ test("native CSS backdrop: HUD, прямой и raster Display размываю�
           expect(Math.abs(alpha[channel]! - alpha[3]!), "premultiplied white keeps RGB equal to alpha").toBeLessThanOrEqual(3)
         }
       }
-      expect(result.rasterSelected, mode).toBe(true)
-      expect(result.resizedRasterSelected, mode).toBe(true)
+      expect(result.rasterCandidateCreated, mode).toBe(true)
       expect(result.noneCleared, mode).toBe(true)
       expect(result.moveReused, mode).toBe(true)
       expect(result.disposeCleared, mode).toBe(true)
