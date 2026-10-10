@@ -1720,6 +1720,6 @@
         {"id":"contains:/provider/tech/chrome-studio","source":{"nodeId":"/provider","point":{"x":54051,"y":60360},"side":"SOUTH"},"target":{"nodeId":"/provider/tech/chrome-studio","point":{"x":53955,"y":71850},"side":"NORTH"}},
         {"id":"contains:/provider/tech/ollama","source":{"nodeId":"/provider","point":{"x":54051,"y":60360},"side":"SOUTH"},"target":{"nodeId":"/provider/tech/ollama","point":{"x":57845,"y":71850},"side":"NORTH"}},
         {"id":"contains:/provider/tech/ssh","source":{"nodeId":"/provider","point":{"x":54051,"y":60360},"side":"SOUTH"},"target":{"nodeId":"/provider/tech/ssh","point":{"x":50065,"y":74112},"side":"NORTH"}}
-      ]}} 
+      ]}}
   ]
 }
