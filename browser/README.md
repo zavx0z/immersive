@@ -9,7 +9,11 @@
 Входящий файловый drag-and-drop использует общий выбор цели и стандартные
 `DragEvent.dataTransfer.files`: [контракт и проверки](drag-and-drop.md).
 
-Публичный запуск следует React-shaped контракту createRoot/render/unmount.
+Browser подключает один DOM к Canvas независимо от способа построения дерева.
+Императивный код создаёт элементы через Document и запускает DocumentRoot.
+Компонентный вход createRoot/render/unmount использует то же подключение,
+добавляя только исполнение компонентов. Ввод, стили, ресурсы и кадры сохраняют
+одного владельца и одну реализацию.
 
 ```tsx
 import {createRoot} from "@zavx0z/immersive-browser"
@@ -224,3 +228,13 @@ Display и пространственный объект сравниваютс�
 через `Material.styleProperties` custom variables. Browser обновляет материалы
 при изменении предков или stylesheet, сохраняя geometry и semantic identity.
 Mesh, Group и Material принимают branded CssStyle обычным авторским способом.
+
+## Custom Element host в пространственном дереве
+
+Browser следует [договору DOM Space](../dom/space/README.md#custom-element-host-в-пространственном-дереве).
+Space может находиться в цепочке зарегистрированных custom hosts под body;
+пространственные дети и ресурсы также могут быть собраны через такие hosts.
+Browser связывает существующие Elements по пространственному владению, сохраняя
+полную DOM ancestry для CSS, событий и фокуса. Изменения host обновляют те же
+проекции, ввод и общий кадр; same-Document перенос сохраняет их identity.
+Один Document сохраняет одного владельца Canvas, Renderer и frame lifecycle.

@@ -1,3 +1,4 @@
+import {attachWithRuntimeFactory} from "../src/component-attachment.ts"
 import {attachFixture, createFakeRuntime, createFakeRuntimeState, presentFakeFrame, testApp} from "./experience.fixture.ts"
 import {expect, test} from "bun:test"
 import {component} from "@zavx0z/immersive-component"
@@ -51,10 +52,7 @@ import {HUDElement} from "../../dom/hud/index.ts"
 import {SpaceElement} from "@zavx0z/immersive-dom/space"
 import {ViewPointElement} from "@zavx0z/immersive-dom/viewpoint"
 import * as publicApi from "@zavx0z/immersive-browser"
-import {
-  attachWithRuntimeFactory,
-  type PresentationOptions,
-} from "../src/attach.ts"
+import type {ComponentPresentationOptions as PresentationOptions} from "../src/component-attachment.ts"
 import type {
   CreateDocumentSpaceRuntimeOptions,
   DocumentSpaceOverlayRegistration,
@@ -194,8 +192,8 @@ test("[BRW-004] attach монтирует один Document и синхрони�
   expect(state.disposed).toBe(true)
 })
 
-test("[BRW-005] публичный Browser API содержит один createRoot и общие hooks", () => {
-  expect(Object.keys(publicApi)).toEqual(["createRoot", "useFrame", "useSpace"])
+test("[BRW-005] DOM и компонентный вход используют одно подключение Browser", () => {
+  expect(Object.keys(publicApi)).toEqual(["createDocumentRoot", "createRoot", "useFrame", "useSpace"])
 })
 
 test("[BRW-006] ViewPoint синхронизируется перед кадром в exact semantic Element без петли", async () => {

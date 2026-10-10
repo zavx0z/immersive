@@ -272,7 +272,7 @@ describe("Slot content composition", () => {
     const invalid: SlotContent = {tag: "span", props: {}}
 
     expect(() => root.render(hostTemplate, {content: [invalid, stable.value]})).toThrow(
-      "Slot content requires compiled component values, text, or fixed arrays",
+      "Slot content requires compiled component values, DOM Nodes, text, or fixed arrays",
     )
     expect(container.textContent).toBe("stable:0")
     expect(stable.ref.current).toBe(element)

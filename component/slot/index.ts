@@ -19,7 +19,8 @@ import {
   normalizeChildren,
 } from "../src/composition.ts"
 import {composeFixedSlotGroup} from "./src/group.ts"
-import {slotTextTemplate} from "./src/templates.ts"
+import {slotTextTemplate, slotNodeTemplate} from "./src/templates.ts"
+import {Node} from "@zavx0z/immersive-dom"
 
 export type {ComposeSlotInput} from "./contract/input.ts"
 export type {ComposeSlotOutput} from "./contract/output.ts"
@@ -46,6 +47,7 @@ const content = composeSlot({content: [null, "Счётчик: ", 0]})
 */
 export function composeSlot({content}: ComposeSlotInput): ComposeSlotOutput {
   if (content == null || typeof content === "boolean") return null
+  if (content instanceof Node) return component(slotNodeTemplate, {value: content})
   if (
     typeof content === "string" ||
     typeof content === "number" ||
@@ -60,5 +62,5 @@ export function composeSlot({content}: ComposeSlotInput): ComposeSlotOutput {
   if (Array.isArray(content)) {
     return composeFixedSlotGroup(content, entry => composeSlot({content: entry}))
   }
-  throw new TypeError("Slot content requires compiled component values, text, or fixed arrays")
+  throw new TypeError("Slot content requires compiled component values, DOM Nodes, text, or fixed arrays")
 }

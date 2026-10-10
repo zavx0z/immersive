@@ -1,0 +1,11 @@
+{
+  "extends": "../../../../../tsconfig.json",
+  "compilerOptions": {
+    "jsxImportSource": "@zavx0z/immersive/XReact",
+    "paths": {
+      "@zavx0z/immersive/XReact": ["../../../../../XReact/index.ts"],
+      "@zavx0z/immersive/XReact/*": ["../../../../../XReact/*/index.ts"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"]
+}

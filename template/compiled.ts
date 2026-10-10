@@ -11,6 +11,10 @@ export {
   encodeCompiledStyleText
 } from "./style-codec.ts"
 import {decodeCompiledStyleText} from "./style-codec.ts"
+import {markDomAnchor} from "./dom-operations.ts"
+export {DomContentRange, DomEventBinding, domContent, isDomContent, registerDomContentAdapter, snapshotDomNodes,
+  createDomAnchor, isDomAnchor, textValue, prepareTextOperation, prepareDomOperation, applyDomOperation, propertyOperation, attributeOperation, attributeValue, hasPropertySetter, moveDomRange, removeDomRange} from "./dom-operations.ts"
+export type {DomContent, DomContentInstance, DomContentAdapter, DomNodes, DomPatch} from "./dom-operations.ts"
 
 const templateBrand = Symbol.for("@zavx0z/immersive-template/compiled-template")
 const bindingBrand = Symbol.for("@zavx0z/immersive-template/compiled-binding")
@@ -104,6 +108,9 @@ export type ChildBinding = Readonly<{
   start: Comment
 }>
 
+/** Существующие Nodes в адресованной области того же Document. */
+export type NodeBinding = Readonly<{kind: "node"; start: Comment; end: Comment}>
+
 export type ConditionalBinding = Readonly<{
   end: Comment
   kind: "conditional"
@@ -125,6 +132,7 @@ export type HostBinding =
   | ChildBinding
   | ConditionalBinding
   | KeyedBinding
+  | NodeBinding
 
 export function defineCompiledTemplate<Props>(
   definition: CompiledTemplateDefinition<Props>
@@ -194,6 +202,10 @@ export function bindRef(target: Node): RefBinding {
 
 export function bindChild(start: Comment, end: Comment): ChildBinding {
   return rangeBinding("child", start, end)
+}
+
+export function bindNode(start: Comment, end: Comment): NodeBinding {
+  return rangeBinding("node", start, end)
 }
 
 export function bindConditional(start: Comment, end: Comment): ConditionalBinding {
@@ -288,12 +300,14 @@ const sameCompiledStyleSheetSource = (
     left.cssText === right.cssText
   )
 
-function rangeBinding<Kind extends "child" | "conditional" | "keyed">(
+function rangeBinding<Kind extends "child" | "conditional" | "keyed" | "node">(
   kind: Kind,
   start: Comment,
   end: Comment
 ): Extract<HostBinding, {kind: Kind}> {
   if (start === end) throw new TypeError("A compiled range requires distinct anchors")
+  markDomAnchor(start)
+  markDomAnchor(end)
   return Object.freeze({
     [bindingBrand]: true as const,
     end,

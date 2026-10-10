@@ -1,8 +1,8 @@
 import type {XRMaterialProjectionContext} from "../contract/material-context.ts"
 export type {XRMaterialProjectionContext} from "../contract/material-context.ts"
 import type {SpatialHitTest} from "../contract/spatial-hit-test.ts"
-import {Comment, Element, type Document, type Node} from "@zavx0z/immersive-dom"
-import {SpatialElement} from "@zavx0z/immersive-dom/space"
+import {Comment, Element, isHTMLWhitespace, isHTMLWhitespaceNode, type Document, type Node} from "@zavx0z/immersive-dom"
+import {SpatialElement, spatialChildren, spatialChildrenAfterInsertion} from "@zavx0z/immersive-dom/space"
 import type {
   AnimationClip,
   BufferGeometry,
@@ -148,38 +148,39 @@ export abstract class XRObjectElement extends XRElement {
     this.setAttribute("hit-test-revision", String(Number(this.getAttribute("hit-test-revision") ?? 0) + 1))
   }
 
+  protected override validateChildInsertion(nodes: readonly Node[], replacing: readonly Node[]): void {
+    this.validateSpatialChildren(spatialChildrenAfterInsertion(this, this, nodes, replacing))
+  }
+
+  protected override validateDescendantInsertion(target: Node, nodes: readonly Node[], replacing: readonly Node[]): void {
+    this.validateSpatialChildren(spatialChildrenAfterInsertion(this, target, nodes, replacing))
+  }
+
+  protected override validateDescendantTextChange(_target: Node, value: string): void {
+    if (!isHTMLWhitespace(value)) throw new TypeError(`${this.localName} accepts only whitespace text outside owned resources`)
+  }
+
+  protected validateSpatialChildren(children: readonly Node[]): void {
+    this.validateObjectChildren(children)
+  }
+
   protected validateObjectChildren(
-    nodes: readonly Node[],
-    replacing: readonly Node[],
+    children: readonly Node[],
     leafTypes: readonly (new (...args: never[]) => XRElement)[] = [],
-  ): readonly Node[] {
-    const retained = new Set(replacing)
-    const moving = new Set(nodes.filter(node => node.parentNode === this))
-    const children = [
-      ...this.childNodes.filter(node => !retained.has(node) && !moving.has(node)),
-      ...nodes,
-    ]
+  ): void {
     for (const child of children) {
-      if (child instanceof Comment) continue
+      if (child instanceof Comment || isHTMLWhitespaceNode(child)) continue
       const isLeaf = leafTypes.some(type => child instanceof type)
       if (!(child instanceof XRObjectElement) && !(child instanceof XRAnimationElement) && !isLeaf) {
         throw new TypeError(`${this.localName} accepts only spatial Object or owned resource children`)
       }
     }
-    return children
   }
 }
 
 export class XRGroupElement extends XRObjectElement {
   constructor(ownerDocument: Document) {
     super(ownerDocument, "xr-group")
-  }
-
-  protected override validateChildInsertion(
-    nodes: readonly Node[],
-    replacing: readonly Node[],
-  ): void {
-    this.validateObjectChildren(nodes, replacing)
   }
 }
 
@@ -188,17 +189,8 @@ export class XRAssetElement extends XRObjectElement {
     super(ownerDocument, "xr-asset")
   }
 
-  protected override validateChildInsertion(
-    nodes: readonly Node[],
-    replacing: readonly Node[],
-  ): void {
-    const retained = new Set(replacing)
-    const moving = new Set(nodes.filter(node => node.parentNode === this))
-    const children = [
-      ...this.childNodes.filter(node => !retained.has(node) && !moving.has(node)),
-      ...nodes,
-    ]
-    if (children.some(child => !(child instanceof Comment) && !(child instanceof XRAnimationElement))) {
+  protected override validateSpatialChildren(children: readonly Node[]): void {
+    if (children.some(child => !(child instanceof Comment) && !isHTMLWhitespaceNode(child) && !(child instanceof XRAnimationElement))) {
       throw new TypeError("Asset accepts only Animation behavior children")
     }
   }
@@ -210,22 +202,15 @@ export class XRMeshElement extends XRObjectElement {
   }
 
   get geometry(): XRGeometryElement | null {
-    return this.children.find(child => child instanceof XRGeometryElement) ?? null
+    return spatialChildren(this).find(child => child instanceof XRGeometryElement) ?? null
   }
 
   get material(): XRMaterialElement | null {
-    return this.children.find(child => child instanceof XRMaterialElement) ?? null
+    return spatialChildren(this).find(child => child instanceof XRMaterialElement) ?? null
   }
 
-  protected override validateChildInsertion(
-    nodes: readonly Node[],
-    replacing: readonly Node[],
-  ): void {
-    const children = this.validateObjectChildren(
-      nodes,
-      replacing,
-      [XRGeometryElement, XRMaterialElement],
-    )
+  protected override validateSpatialChildren(children: readonly Node[]): void {
+    this.validateObjectChildren(children, [XRGeometryElement, XRMaterialElement])
     if (children.filter(child => child instanceof XRGeometryElement).length > 1) {
       throw new TypeError("Mesh accepts at most one Geometry")
     }
@@ -237,22 +222,15 @@ export class XRMeshElement extends XRObjectElement {
 
 abstract class XRGeometryMaterialObjectElement extends XRObjectElement {
   get geometry(): XRGeometryElement | null {
-    return this.children.find(child => child instanceof XRGeometryElement) ?? null
+    return spatialChildren(this).find(child => child instanceof XRGeometryElement) ?? null
   }
 
   get material(): XRMaterialElement | null {
-    return this.children.find(child => child instanceof XRMaterialElement) ?? null
+    return spatialChildren(this).find(child => child instanceof XRMaterialElement) ?? null
   }
 
-  protected override validateChildInsertion(
-    nodes: readonly Node[],
-    replacing: readonly Node[],
-  ): void {
-    const children = this.validateObjectChildren(
-      nodes,
-      replacing,
-      [XRGeometryElement, XRMaterialElement],
-    )
+  protected override validateSpatialChildren(children: readonly Node[]): void {
+    this.validateObjectChildren(children, [XRGeometryElement, XRMaterialElement])
     if (children.filter(child => child instanceof XRGeometryElement).length > 1) {
       throw new TypeError(`${this.localName} accepts at most one Geometry`)
     }
@@ -287,14 +265,11 @@ export class XRTextElement extends XRObjectElement {
   set letterSpacing(value: number) { setNumberAttribute(this, "letter-spacing", value) }
 
   get material(): XRMaterialElement | null {
-    return this.children.find(child => child instanceof XRMaterialElement) ?? null
+    return spatialChildren(this).find(child => child instanceof XRMaterialElement) ?? null
   }
 
-  protected override validateChildInsertion(
-    nodes: readonly Node[],
-    replacing: readonly Node[],
-  ): void {
-    const children = this.validateObjectChildren(nodes, replacing, [XRMaterialElement])
+  protected override validateSpatialChildren(children: readonly Node[]): void {
+    this.validateObjectChildren(children, [XRMaterialElement])
     if (children.filter(child => child instanceof XRMaterialElement).length > 1) {
       throw new TypeError("Text accepts at most one Material")
     }
@@ -318,13 +293,6 @@ export class XRLightElement extends XRObjectElement {
   set targetY(value: number) { setNumberAttribute(this, "target-y", value) }
   get targetZ(): number { return numberAttribute(this, "target-z", 0) }
   set targetZ(value: number) { setNumberAttribute(this, "target-z", value) }
-
-  protected override validateChildInsertion(
-    nodes: readonly Node[],
-    replacing: readonly Node[],
-  ): void {
-    this.validateObjectChildren(nodes, replacing)
-  }
 }
 
 export class XRAnimationElement extends XRElement {

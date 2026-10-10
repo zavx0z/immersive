@@ -26,20 +26,7 @@ export type {
   SpaceHUDProjection,
   SpaceTree,
 } from "./tree.ts"
-export type {
-  SpaceRef,
-  XRAnimationIntrinsicProperties,
-  XRAssetIntrinsicProperties,
-  XRGeometryIntrinsicProperties,
-  XRGroupIntrinsicProperties,
-  XRLightIntrinsicProperties,
-  XRLineIntrinsicProperties,
-  XRLineSegmentsIntrinsicProperties,
-  XRMaterialIntrinsicProperties,
-  XRMeshIntrinsicProperties,
-  XRObjectIntrinsicProperties,
-  XRTextIntrinsicProperties,
-} from "./jsx.ts"
+
 
 export type {SpatialVector, SpatialQuaternion, OrientationProps, TransformProps} from "./props.ts"
 

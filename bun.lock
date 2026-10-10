@@ -4,13 +4,44 @@
   "workspaces": {
     "": {
       "name": "@zavx0z/immersive",
-      "devDependencies": {
-        "@types/bun": "^1.4.2",
+      "dependencies": {
         "@webgpu/types": "^0.1.74",
         "@zavx0z/immersive-browser": "workspace:*",
+        "@zavx0z/immersive-component": "workspace:*",
+        "@zavx0z/immersive-devtool": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
-        "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-engine": "workspace:*",
+        "@zavx0z/immersive-headless": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-error": "workspace:*",
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+        "@zavx0z/immersive-jsx-development": "workspace:*",
+        "@zavx0z/immersive-jsx-runtime": "workspace:*",
+        "@zavx0z/immersive-jsx-slot-child": "workspace:*",
+        "@zavx0z/immersive-markdown": "workspace:*",
+        "@zavx0z/immersive-nodes": "workspace:*",
+        "@zavx0z/immersive-nodes-layout": "workspace:*",
+        "@zavx0z/immersive-nodes-node": "workspace:*",
+        "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
+        "@zavx0z/immersive-nodes-parameter": "workspace:*",
+        "@zavx0z/immersive-nodes-socket": "workspace:*",
+        "@zavx0z/immersive-nodes-tree": "workspace:*",
+        "@zavx0z/immersive-renderer-html": "workspace:*",
+        "@zavx0z/immersive-space": "workspace:*",
+        "@zavx0z/immersive-tech-svg-encode": "workspace:*",
+        "@zavx0z/immersive-template": "workspace:*",
+        "@zavx0z/immersive-typedoc": "workspace:*",
+        "@zavx0z/immersive-ui-component": "workspace:*",
+        "@zavx0z/immersive-ui-theme-icon": "workspace:*",
+        "@zavx0z/immersive-ui-theme-icon-set": "workspace:*",
+        "@zavx0z/immersive-webgpu": "workspace:*",
+        "bun-webgpu": "^0.1.7",
         "typescript": "^7.0.2",
+      },
+      "devDependencies": {
+        "@types/bun": "^1.4.2",
+        "@zavx0z/immersive-jsx": "workspace:*",
+        "@zavx0z/immersive-jsx-slot-authoring": "workspace:*",
       },
     },
     "browser": {
@@ -73,6 +104,9 @@
     "dom": {
       "name": "@zavx0z/immersive-dom",
       "version": "0.0.0",
+      "dependencies": {
+        "parse5": "^8.0.1",
+      },
       "devDependencies": {
         "@zavx0z/immersive-jsx": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",

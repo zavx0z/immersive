@@ -1,6 +1,6 @@
 import {DisplayElement} from "@zavx0z/immersive-dom/display"
 import {describe, expect, test} from "bun:test"
-import {Event, createDocument} from "@zavx0z/immersive-dom"
+import {Event, HTMLElement, createDocument} from "@zavx0z/immersive-dom"
 import {
   Object3D,
   SphereGeometry,
@@ -188,4 +188,57 @@ describe("Пространственные элементы одного Documen
     button.dispatchEvent(new Event("click"))
     expect(clicks).toBe(1)
   })
+})
+
+
+test("custom hosts сохраняют пространственное владение и проверяют изменения до записи DOM", () => {
+  const document = createSpaceDocument()
+  document.customElementRegistry.define("spatial-host", class extends HTMLElement {})
+  const app = document.createElement("spatial-host")
+  document.append(app)
+  const space = document.createElement("space")
+  app.append(space)
+  const host = document.createElement("spatial-host")
+  const nested = document.createElement("spatial-host")
+  const camera = document.createElement("viewpoint")
+  nested.append(camera)
+  host.append(nested)
+  space.append(host)
+  const group = document.createElement("xr-group")
+  const meshHost = document.createElement("spatial-host")
+  const mesh = document.createElement("xr-mesh") as XRMeshElement
+  const resources = document.createElement("spatial-host")
+  const geometry = document.createElement("xr-geometry") as XRGeometryElement
+  const material = document.createElement("xr-material") as XRMaterialElement
+  resources.append(geometry, material)
+  mesh.append(resources)
+  meshHost.append(mesh)
+  group.append(meshHost)
+  host.append(group, document.createElement("display"), document.createElement("hud"))
+  const tree = readSpaceTree(document)
+  expect(tree.space).toBe(space)
+  expect(tree.viewPoint).toBe(camera)
+  expect(tree.objects).toEqual([group, mesh])
+  expect(tree.displays).toHaveLength(1)
+  expect(tree.hud?.element.localName).toBe("hud")
+  expect(mesh.geometry).toBe(geometry)
+  expect(mesh.material).toBe(material)
+  expect(camera.parentNode).toBe(nested)
+  expect(() => host.append(document.createElement("viewpoint"))).toThrow("exactly one ViewPoint")
+  expect(() => nested.append(document.createElement("hud"))).toThrow("at most one HUD")
+  expect(() => host.append(document.createElement("div"))).toThrow("only spatial")
+  expect(() => nested.append(document.createElement("space"))).toThrow("does not accept space")
+  expect(() => resources.append(document.createElement("xr-geometry"))).toThrow("at most one Geometry")
+  expect(resources.childNodes).toEqual([geometry, material])
+  host.append(camera)
+  expect(readSpaceTree(document).viewPoint).toBe(camera)
+  expect(nested.childNodes).toHaveLength(0)
+  const invalid = document.createElement("spatial-host")
+  invalid.append(document.createElement("div"))
+  expect(() => space.append(invalid)).toThrow("only spatial")
+  expect(invalid.parentNode).toBeNull()
+  const ordinary = document.createElement("div")
+  ordinary.append(space)
+  app.append(ordinary)
+  expect(() => readSpaceTree(document)).toThrow("application root")
 })

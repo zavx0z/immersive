@@ -1,4 +1,5 @@
 import type {Document} from "./document.ts"
+import {customConstruction, initializeCustomElement} from "./internal/custom-elements.ts"
 import {Element} from "./element.ts"
 import {domError} from "./internal/errors.ts"
 import {changeFocus, isProgrammaticallyFocusable} from "./internal/focus.ts"
@@ -70,8 +71,10 @@ export type TogglePopoverOptions = ShowPopoverOptions & Readonly<{
 }>
 
 export class HTMLElement extends Element {
-  constructor(ownerDocument: Document, localName = "unknown") {
-    super(ownerDocument, localName)
+  constructor(ownerDocument?: Document, localName = "unknown") {
+    const construction = ownerDocument === undefined ? customConstruction(new.target) : undefined
+    super(construction?.document ?? ownerDocument!, construction?.definition.name ?? localName)
+    if (construction) return initializeCustomElement(this, construction)
   }
 
   get title(): string {

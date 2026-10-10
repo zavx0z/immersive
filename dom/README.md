@@ -95,6 +95,49 @@ provider ещё не готов. Browser завершает вызванные c
 
 [Полный договор, координаты, ограничения и evidence](layout-geometry.md).
 
+## Имена native factories и Custom Elements
+
+Document сохраняет встроенные элементы и явно переданные elementFactories.
+Автономный Custom Element не подменяет эти фабрики. Registry.define отклоняет
+имя, занятое native factory любого связанного Document, с NotSupportedError.
+Подключение заранее заполненного registry к Document с такой коллизией также
+отклоняется. Таким образом registry.get(name) не обещает constructor, который
+Document.createElement(name) молча обходит. Имена пространственных примитивов
+не переименовываются; пользовательские x-pane/x-button остаются автономными.
+
+## HTML fragment и innerHTML
+
+Строковое HTML-авторство и Template используют один принадлежащий DOM parser.
+`parseFragment(document, source, contextElement?)` синхронно возвращает
+отсоединённый DocumentFragment того же Document. По умолчанию используется HTML
+body context; явный contextElement должен принадлежать этому Document. Parser
+сохраняет HTML-атрибуты, текст, комментарии, декодирует named/numeric entities
+и учитывает HTML void/raw-text/RCDATA и контекст таблицы или select.
+HTML nonvoid теги, включая spatial/custom элементы, закрываются явно;
+`<viewpoint/>` не является XML/JSX self-closing формой. Whitespace остаётся
+Text nodes; допустимость такого ребёнка проверяет его semantic владелец.
+
+`Element.innerHTML` читает только HTML-сериализацию детей. Присваивание строки
+(или null как пустой строки) выполняет parse и replaceChildren одной существующей
+Document.transaction. Тот же Document.createElement создаёт базовые и custom
+элементы; атрибуты, connect/disconnect и реакции следуют обычному DOM lifecycle.
+Пространственные и прочие ограничения детей сохраняются: строковая форма
+не обходит проверки дерева. Scripts и строковые event attributes остаются данными;
+DOM не выполняет JavaScript из HTML.
+
+`parseFragmentSource(source, contextTagName?)` возвращает readonly синтаксическую
+форму element `{type, name, attrs, children}`, text/comment `{type, value}`.
+Значения атрибутов и текста уже entity-decoded. Template кэширует эту форму для
+своих bindings, не создавая дополнительный semantic Document и не вызывая
+custom constructors ради blueprint. Parser не зависит от Template, Component
+или JSX и не вызывается структурными createElement/append операциями.
+
+Этот профиль не реализует HTMLTemplateElement.content, SVG/MathML namespaces,
+Shadow DOM, загрузку ресурсов или исполнение scripts. Namespace/element,
+которые нельзя честно представить поддержанными DOM nodes, отклоняются до
+изменения целевого Element. Синтаксическое восстановление некорректного HTML
+принадлежит общему parser; ограничения semantic DOM проверяет владелец дерева.
+
 ## Документация и проверки
 
 Этот README описывает пакет целиком. Модульный контракт Display находится

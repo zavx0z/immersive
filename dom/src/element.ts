@@ -1,5 +1,8 @@
 import {readElementBoundingClientRect, readElementLayoutRect, type DOMRectReadOnly, type DOMRect, type ElementGeometryTarget} from "../geometry.ts"
 import type {Document} from "./document.ts"
+import {parseFragment, serializeFragment} from "./html-fragment.ts"
+import {customElementAttributeChanged, customRegistryFor, isCustomElementHost} from "./internal/custom-elements.ts"
+import type {CustomElementRegistry} from "./custom-elements.ts"
 import {requestElementFullscreen, type FullscreenOptions} from "./fullscreen.ts"
 import {getClassList} from "./dom-token-list.ts"
 import type {DOMTokenList} from "./dom-token-list.ts"
@@ -25,6 +28,9 @@ function normalizeAttributeName(name: string): string {
 }
 
 export class Element extends Node {
+  get customElementRegistry(): CustomElementRegistry | null {
+    return customRegistryFor(this) as CustomElementRegistry | null ?? this.ownerDocument?.customElementRegistry ?? null
+  }
   requestFullscreen(options?: FullscreenOptions): Promise<void> {
     return requestElementFullscreen(this, options)
   }
@@ -71,6 +77,13 @@ export class Element extends Node {
   set className(value: string) {
     this.setAttribute("class", value)
   }
+
+  /**
+  Отражает [атрибут slot](https://dom.spec.whatwg.org/#dom-element-slot).
+  Распределение содержимого принадлежит принимающему компоненту.
+  */
+  get slot(): string { return this.getAttribute("slot") ?? "" }
+  set slot(value: string) { this.setAttribute("slot", value) }
 
   get classList(): DOMTokenList {
     return getClassList(this)
@@ -200,6 +213,16 @@ export class Element extends Node {
     return queryAll(this, selectors)
   }
 
+  get innerHTML(): string {
+    return serializeFragment(this)
+  }
+
+  set innerHTML(value: string | null) {
+    const document = this.ownerDocument
+    if (!document) throw new TypeError("HTML fragment target has no ownerDocument")
+    document.transaction(() => this.replaceChildren(parseFragment(document, value === null ? "" : String(value), this)))
+  }
+
   override get textContent(): string {
     return this.descendantTextContent()
   }
@@ -213,6 +236,20 @@ export class Element extends Node {
     oldValue: string | null,
     newValue: string | null
   ): void {
+    if (isCustomElementHost(this)) {
+      const document = this.ownerDocument
+      const record = () => {
+        customElementAttributeChanged(this, attributeName, oldValue, newValue)
+        this.publishAttributeMutation(attributeName, oldValue, newValue)
+      }
+      if (document) document.transaction(record)
+      else record()
+      return
+    }
+    this.publishAttributeMutation(attributeName, oldValue, newValue)
+  }
+
+  private publishAttributeMutation(attributeName: string, oldValue: string | null, newValue: string | null): void {
     const document = this.ownerDocument
     if (!document || !this.isConnected) return
     const mutation: AttributeMutation = Object.freeze({

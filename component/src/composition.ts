@@ -6,10 +6,14 @@ import {
   defineCompiledTemplate,
   isCompiledTemplate,
   slotContents,
-  type CompiledTemplate
+  registerDomContentAdapter,
+  type CompiledTemplate,
+  type DomContent
 } from "@zavx0z/immersive-template/compiled"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {CompiledStyleValue} from "./style.ts"
+import {withComponentContent, type ComponentContent} from "./content.ts"
+import {mountDomComponent} from "./runtime.ts"
 
 const componentValueBrand = Symbol("@zavx0z/immersive-component/component-value")
 const keyedValueBrand = Symbol("@zavx0z/immersive-component/keyed-value")
@@ -17,6 +21,9 @@ const contextBrand = Symbol("@zavx0z/immersive-component/context")
 const contextConsumerBrand = Symbol("@zavx0z/immersive-component/context-consumer")
 const memoComparators = new WeakMap<CompiledTemplate<unknown>, MemoComparator<unknown>>()
 const emptyContextProvisions = Object.freeze([]) as readonly ContextProvision[]
+
+// Регистрация принадлежит самому prepared value, поэтому сохраняется и при tree shaking.
+registerDomContentAdapter({accepts: isComponentValue, mount: mountDomComponent})
 
 export type ComponentKey = string | number | null
 export type MemoComparator<Props> = (
@@ -27,6 +34,20 @@ export type FunctionComponent<Props = Record<string, never>> = (
   props: Readonly<Props>
 ) => JSX.Element<object>
 export type FC<Props = Record<string, never>> = FunctionComponent<Props>
+
+declare const compiledComponentBrand: unique symbol
+
+/**
+Публичный тип заранее собранного компонента. Callable-часть относится к
+проверке авторского JSX; в исполнении значение является CompiledTemplate.
+Номинальная метка позволяет компилятору потребителя читать только декларацию,
+не открывая TSX-реализацию зависимости.
+*/
+export interface CompiledComponent<Props = Record<string, never>, Result extends JSX.Element<object> = JSX.Element<never>> extends CompiledTemplate<Props> {
+  (props: Readonly<Props>): Result
+  readonly [compiledComponentBrand]: true
+  readonly "@zavx0z/immersive-component/compiled"?: true
+}
 
 export interface Context<Value> {
   readonly Consumer: ContextConsumer<Value>
@@ -44,7 +65,7 @@ export type ContextProvision<Value = unknown> = Readonly<{
   value: Value
 }>
 
-export type ComponentValue<Props = any> = Readonly<{
+export type ComponentValue<Props = any> = DomContent & Readonly<{
   /** Типовая метка готового значения для JSX; runtime identity проверяет приватный Symbol. */
   readonly "@zavx0z/immersive-component/value"?: true
   [componentValueBrand]: true
@@ -118,14 +139,15 @@ export function memo<Props>(
 export function component<Props>(
   template: CompiledTemplate<Props>,
   props: Readonly<Props>,
-  key: ComponentKey = null
+  key: ComponentKey = null,
+  content?: ComponentContent,
 ): ComponentValue<Props> {
   if (!isCompiledTemplate(template)) throw new TypeError("component expects a compiled template")
   return Object.freeze({
     [componentValueBrand]: true as const,
     contexts: emptyContextProvisions,
     key: componentKey(key),
-    props,
+    props: content === undefined ? props : withComponentContent(template, props, content),
     template
   })
 }

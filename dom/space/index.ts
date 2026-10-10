@@ -5,11 +5,12 @@
 */
 import type {Document} from "../src/document.ts"
 import type {Node} from "../src/node.ts"
+import {isHTMLWhitespace, isHTMLWhitespaceNode} from "../src/internal/html-whitespace.ts"
 import {Comment} from "../src/comment.ts"
 import {DisplayElement} from "../display/index.ts"
-import {SpatialElement} from "./spatial-element.ts"
+import {SpatialElement, spatialChildrenAfterInsertion} from "./spatial-element.ts"
 
-export {SpatialElement} from "./spatial-element.ts"
+export {SpatialElement, isSpatialHost, spatialChildren, spatialChildrenAfterInsertion, spatialParent} from "./spatial-element.ts"
 
 /**
 Корень пространственной сцены; допустимость детей проверяется до изменения дерева.
@@ -43,15 +44,20 @@ export class SpaceElement extends SpatialElement {
     nodes: readonly Node[],
     replacing: readonly Node[],
   ): void {
-    const retained = new Set(replacing)
-    const moving = new Set(nodes.filter(node => node.parentNode === this))
-    const children = [
-      ...this.childNodes.filter(node => !retained.has(node) && !moving.has(node)),
-      ...nodes,
-    ]
+    this.validateSpatialChildren(spatialChildrenAfterInsertion(this, this, nodes, replacing))
+  }
 
+  protected override validateDescendantInsertion(target: Node, nodes: readonly Node[], replacing: readonly Node[]): void {
+    this.validateSpatialChildren(spatialChildrenAfterInsertion(this, target, nodes, replacing))
+  }
+
+  protected override validateDescendantTextChange(_target: Node, value: string): void {
+    if (!isHTMLWhitespace(value)) throw new TypeError("Space accepts only whitespace text outside Display or HUD")
+  }
+
+  private validateSpatialChildren(children: readonly Node[]): void {
     for (const child of children) {
-      if (child instanceof Comment || child instanceof DisplayElement) continue
+      if (child instanceof Comment || child instanceof DisplayElement || isHTMLWhitespaceNode(child)) continue
       if (!(child instanceof SpatialElement)) {
         throw new TypeError("Space accepts only spatial elements")
       }

@@ -26,3 +26,32 @@ Browser требует одну камеру. Ресурсы Geometry и Materia
 
 Тесты находятся в `tests`; зависимости тестов импортируются относительными
 путями. Запуск: `bun test dom/space/tests`. Названия и сообщения `expect` — на русском.
+
+## Custom Element host в пространственном дереве
+
+Зарегистрированный автономный Custom Element может содержать Space либо его
+пространственных детей. Для пространственного владения цепочка таких hosts
+прозрачна: ближайший предок, который не является custom host, остаётся владельцем
+Space, ViewPoint, Display, HUD, Object и его ресурсов. Space по-прежнему один,
+ViewPoint ровно один, HUD не более одного; вложенный Space и обычный HTML вне
+Display/HUD недопустимы. Изменение детей подключённого host проверяет эти же
+ограничения до изменения DOM.
+
+Hosts остаются настоящими Elements единого Document: CSS, наследование, события
+и фокус следуют полной DOM ancestry. Они не создают Engine objects, отдельные
+проекции, Renderer, ввод или цикл кадров. Same-Document перенос сохраняет
+identity DOM, компонентное состояние и действующие пространственные проекции.
+Этот договор не делает произвольный HTML прозрачным и не добавляет Shadow DOM.
+
+## Whitespace в декларативном DOM
+
+Space сохраняет Text nodes, содержащие только HTML whitespace: TAB, LF, FF,
+CR и обычный пробел U+0020. Они не становятся пространственными объектами.
+Значимый текст, включая NBSP, по-прежнему принадлежит Display/HUD и запрещён
+непосредственно в Space, в том числе через прозрачный custom host. Изменение
+whitespace Text на значимый текст отклоняется до изменения data.
+
+В HTML-строке nonvoid spatial/custom теги закрываются явно:
+`<viewpoint></viewpoint>`, `<fragment-host></fragment-host>`.
+`<viewpoint/>` не получает XML/JSX self-closing смысл. Parser сохраняет HTML
+whitespace и не подменяет HTML grammar правилами JSX.

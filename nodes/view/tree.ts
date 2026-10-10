@@ -22,7 +22,11 @@ export {useMeasuredNodeTreePresentation, type MeasuredNodeTreeComputer} from "..
 const emptySubscribe = (_listener: () => void) => () => {}
 const emptySnapshot = () => null
 
-export function useNodeTreePresentation(props: NodeTreeProps | null) {
+export function useNodeTreePresentation(props: NodeTreeProps | null): {
+  scene: GraphScene | null
+  pending: boolean
+  isCurrent: () => boolean
+} {
   const snapshot = useSyncExternalStore(props?.store.subscribe ?? emptySubscribe, props?.store.getSnapshot ?? emptySnapshot)
   const layout = useMemo(() => {
     if (props === null) return null

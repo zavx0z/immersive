@@ -56,7 +56,7 @@ test("compiled SpatialVolumes передаёт реальные CSS opacity и t
   const {join, resolve} = await import("node:path")
   const {pathToFileURL} = await import("node:url")
   const {component} = await import("@zavx0z/immersive-component")
-  const {attachWithRuntimeFactory} = await import("../src/attach.ts")
+  const {attachWithRuntimeFactory} = await import("../src/component-attachment.ts")
   const {default: createJsxBunPlugin} = await import("@zavx0z/immersive-jsx-compiler-bun")
   const repository = resolve(import.meta.dir, "../..")
   const directory = await mkdtemp(join(import.meta.dir, ".volume-style-"))

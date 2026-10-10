@@ -1,5 +1,7 @@
 import {GifAnimation, type GifDecoderConstructor} from "./gif-animation.ts"
 
+type ExternalImageSource = Parameters<GPUQueue["copyExternalImageToTexture"]>[0]["source"]
+
 export type TextureStatus = "loading" | "ready" | "failed"
 
 export interface TextureEntry {
@@ -196,7 +198,7 @@ function restartSource(entry: TextureEntry): void {
 }
 
 export type PendingExternalSource = {
-  source: GPUImageCopyExternalImage["source"]
+  source: ExternalImageSource
   width: number
   height: number
   bufferCount: number
@@ -345,7 +347,7 @@ export class TextureLoader {
     const entries = [...entriesBySource.get(src) ?? []]
     if (!entries.length) entries.push(register({src, status: "loading", width: bitmap.width || 1, height: bitmap.height || 1, texture: null, error: null}))
     const previous = new Set<ImageBitmap>()
-    const external = new Set<GPUImageCopyExternalImage["source"]>()
+    const external = new Set<ExternalImageSource>()
     for (const entry of entries) if (entry.pendingExternalSource?.closeSourceAfterCopy) external.add(entry.pendingExternalSource.source)
     for (const source of external) closeExternalSource(source)
     for (const entry of entries) if (entry.pendingBitmap !== undefined && entry.pendingBitmap !== bitmap) previous.add(entry.pendingBitmap)
@@ -368,7 +370,7 @@ export class TextureLoader {
     if (updates.length) void Promise.allSettled(updates)
   }
 
-  static replaceExternalSource(src: string, source: GPUImageCopyExternalImage["source"], width: number, height: number, options: ReplaceExternalSourceOptions = {}): boolean {
+  static replaceExternalSource(src: string, source: ExternalImageSource, width: number, height: number, options: ReplaceExternalSourceOptions = {}): boolean {
     producerCapacity(src, src.length * 2 + Math.max(1, width) * Math.max(1, height) * 4)
     const entries = [...entriesBySource.get(src) ?? []]
     const pending: PendingExternalSource = {source, width: Math.max(1, Math.round(width)), height: Math.max(1, Math.round(height)),
@@ -381,7 +383,7 @@ export class TextureLoader {
       ...(liveVideo === undefined && !pending.closeSourceAfterCopy && options.keepPending !== false ? {external: pending} : {})})
     if (!entries.length) entries.push(register({src, status: "loading", width: pending.width, height: pending.height, texture: null, error: null}))
     let copied = false
-    const previous = new Set<GPUImageCopyExternalImage["source"]>()
+    const previous = new Set<ExternalImageSource>()
     for (const entry of entries) if (entry.pendingExternalSource?.closeSourceAfterCopy && entry.pendingExternalSource.source !== source) previous.add(entry.pendingExternalSource.source)
     for (const old of previous) closeExternalSource(old)
     for (const entry of entries) {
@@ -470,7 +472,7 @@ export class TextureLoader {
   }
 }
 
-function liveVideoElementSource(source: GPUImageCopyExternalImage["source"]): HTMLVideoElement | undefined {
+function liveVideoElementSource(source: ExternalImageSource): HTMLVideoElement | undefined {
   return typeof HTMLVideoElement !== "undefined" && source instanceof HTMLVideoElement
     ? source
     : undefined
@@ -641,7 +643,7 @@ function replaceTextureFromExternalSource(
   }
 }
 
-function closeExternalSource(source: GPUImageCopyExternalImage["source"]): void {
+function closeExternalSource(source: ExternalImageSource): void {
   const close = (source as {close?: unknown}).close
   if (typeof close !== "function") return
   try {

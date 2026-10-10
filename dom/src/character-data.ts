@@ -29,6 +29,7 @@ export class CharacterData extends Node {
     const removed = Math.min(count, this.length - offset)
     const replacement = String(data)
     const next = this.value.slice(0, offset) + replacement + this.value.slice(offset + removed)
+    this.validateTextChange(next)
     const oldValue = this.value
     this.value = next
     invalidateTextPositionIndexes(this)

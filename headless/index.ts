@@ -1,3 +1,4 @@
+/// <reference path="./assets.d.ts" />
 import {createGPUInstance, globalConstructors} from "bun-webgpu"
 import {createDocument, HTMLImageElement, type Element, type Node} from "@zavx0z/immersive-dom"
 import {component, createRoot, normalizeChildren, type ComponentValue} from "@zavx0z/immersive-component"
@@ -10,6 +11,8 @@ import {installShaderCompilationDiagnostics} from "./shader-diagnostics.ts"
 import {createImageBitmap, ImageBitmap} from "./image-bitmap.ts"
 import {installExternalImageCopy} from "./external-image.ts"
 import {registerHeadlessCompiler, repositoryRoot} from "./compiler.ts"
+import defaultFontSource from "@zavx0z/immersive-engine/fonts/inter-regular.ttf" with {type: "file"}
+import defaultStyleSheetSource from "@zavx0z/immersive-ui-component/theme/theme.css" with {type: "file"}
 import type {HeadlessOptions} from "./contract/input.ts"
 import type {Headless} from "./contract/output.ts"
 import waitForTexture from "./wait-for-texture.ts"
@@ -52,7 +55,7 @@ await headless.dispose()
 ```
 */
 export function createHeadless(options: HeadlessOptions = {}): Headless {
-  registerHeadlessCompiler(options.projectRoot ?? repositoryRoot(import.meta.dir))
+  registerHeadlessCompiler(options.projectRoot ?? repositoryRoot(process.cwd()))
   const width = options.width ?? 1024
   const height = options.height ?? 768
   const canvas = new NativeGpuCanvas(width, height)
@@ -112,8 +115,8 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
 
   async function initialize(): Promise<void> {
     if (ready) return
-    const fontSource = options.fontSource ?? new URL(import.meta.resolve("@zavx0z/immersive-engine/fonts/inter-regular.ttf"))
-    const sources = options.styleSheetSources ?? [new URL(import.meta.resolve("@zavx0z/immersive-ui-component/theme/theme.css"))]
+    const fontSource = options.fontSource ?? new URL(defaultFontSource, import.meta.url)
+    const sources = options.styleSheetSources ?? [new URL(defaultStyleSheetSource, import.meta.url)]
     const font = new TrueTypeFont(await Bun.file(fontSource).arrayBuffer())
     const styleSheets = await Promise.all(sources.map(source => Bun.file(source).text()))
     backend = new RendererWebGpuBackend({

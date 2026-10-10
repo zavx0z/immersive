@@ -6,6 +6,7 @@
     "module": "Preserve",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
+    "customConditions": ["source"],
     "jsx": "preserve",
     "jsxImportSource": "@zavx0z/immersive-jsx",
     "allowImportingTsExtensions": true,
@@ -20,6 +21,6 @@
     "exactOptionalPropertyTypes": true,
     "types": ["bun"]
   },
-  "include": ["tests/**/*.ts", "*/tests/**/*.ts"],
+  "include": ["tests/**/*.ts", "*/tests/**/*.ts", "index.ts", "XReact/**/*.ts", "ui/index.ts", "compiler/**/*.ts"],
   "exclude": ["projects/**", "node_modules/**"]
 }

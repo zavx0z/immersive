@@ -1,4 +1,8 @@
+export {isHTMLWhitespace, isHTMLWhitespaceNode} from "./internal/html-whitespace.ts"
+export {parseFragment, parseFragmentSource, serializeFragment} from "./html-fragment.ts"
+export type {HTMLFragmentSyntaxNode} from "./html-fragment.ts"
 export {DOMRect, DOMRectReadOnly, registerDocumentGeometryReader, readElementLayoutRect, observeElementLayout} from "../geometry.ts"
+export {flushDocumentLayoutObservers, registerDocumentLayoutObserverScheduler} from "../geometry.ts"
 export {bindDocumentFullscreenHost, clearDocumentFullscreen, subscribeDocumentFullscreen} from "./fullscreen.ts"
 export type {DocumentFullscreenHost, FullscreenOptions} from "./fullscreen.ts"
 export type {DOMRectInit, ElementGeometryTarget, ElementClientRectReader, ElementLayoutRectReader, ElementLayoutObserverOptions} from "../geometry.ts"
@@ -56,6 +60,8 @@ export type {NodeOrString} from "./node.ts"
 export {NodeList} from "./node-list.ts"
 export {DOMTokenList} from "./dom-token-list.ts"
 export {Document, createDocument} from "./document.ts"
+export {CustomElementRegistry} from "./custom-elements.ts"
+export type {CustomElementConstructor} from "./custom-elements.ts"
 export type {
   DocumentElementFactory,
   DocumentOptions,

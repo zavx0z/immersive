@@ -2,7 +2,7 @@
   "name": "@zavx0z/immersive",
   "label": "Immersive",
   "version": "0.0.0",
-  "description": "Единая Immersive-платформа MetaFor",
+  "description": "Императивный и декларативный DOM, пространственный движок и готовые компоненты XReact",
   "private": true,
   "type": "module",
   "engines": {
@@ -10,7 +10,7 @@
   },
   "workspaces": [
     "**",
-    "!**/{node_modules,spec,test,tests,fixture,fixtures,dist,projects}/**",
+    "!**/{node_modules,spec,test,tests,fixture,fixtures,dist,projects,tmp}/**",
     "!**/.*/**"
   ],
   "scripts": {
@@ -20,17 +20,710 @@
     "test": "bun run --parallel test:architecture test:packages",
     "test:architecture": "bun test --parallel --timeout 30000 tests/architecture/packages.test.ts tests/architecture/dependencies.test.ts tests/experience/contract.test.ts",
     "test:packages": "bun run --workspaces --sequential test",
-    "check": "bun run --parallel typecheck test"
+    "check": "bun run --parallel typecheck test",
+    "build": "bun ./build.ts",
+    "test:distribution": "bun test ./tests/distribution.test.ts"
   },
   "devDependencies": {
-    "@zavx0z/immersive-browser": "workspace:*",
     "@types/bun": "^1.4.2",
-    "@webgpu/types": "^0.1.74",
-    "typescript": "^7.0.2",
     "@zavx0z/immersive-jsx": "workspace:*",
-    "@zavx0z/immersive-dom": "workspace:*"
+    "@zavx0z/immersive-jsx-slot-authoring": "workspace:*"
   },
   "overrides": {
     "@zavx0z/highlighter": "link:@zavx0z/highlighter"
+  },
+  "exports": {
+    "./browser.json": "./dist/browser.json",
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./XReact": {
+      "source": "./XReact/index.ts",
+      "types": "./dist/XReact/index.d.ts",
+      "browser": "./dist/XReact/index.js",
+      "default": "./dist/XReact/index.js"
+    },
+    "./XReact/compiled": {
+      "source": "./XReact/compiled/index.ts",
+      "types": "./dist/XReact/compiled/index.d.ts",
+      "browser": "./dist/XReact/compiled/index.js",
+      "default": "./dist/XReact/compiled/index.js"
+    },
+    "./XReact/browser": {
+      "source": "./XReact/browser/index.ts",
+      "types": "./dist/XReact/browser/index.d.ts",
+      "browser": "./dist/XReact/browser/index.js",
+      "default": "./dist/XReact/browser/index.js"
+    },
+    "./XReact/browser/diagnostics": {
+      "source": "./XReact/browser/diagnostics/index.ts",
+      "types": "./dist/XReact/browser/diagnostics/index.d.ts",
+      "browser": "./dist/XReact/browser/diagnostics/index.js",
+      "default": "./dist/XReact/browser/diagnostics/index.js"
+    },
+    "./XReact/browser/integration": {
+      "source": "./XReact/browser/integration/index.ts",
+      "types": "./dist/XReact/browser/integration/index.d.ts",
+      "browser": "./dist/XReact/browser/integration/index.js",
+      "default": "./dist/XReact/browser/integration/index.js"
+    },
+    "./XReact/jsx-runtime": {
+      "source": "./XReact/jsx-runtime/index.ts",
+      "types": "./dist/XReact/jsx-runtime/index.d.ts",
+      "browser": "./dist/XReact/jsx-runtime/index.js",
+      "default": "./dist/XReact/jsx-runtime/index.js"
+    },
+    "./XReact/jsx-dev-runtime": {
+      "source": "./XReact/jsx-dev-runtime/index.ts",
+      "types": "./dist/XReact/jsx-dev-runtime/index.d.ts",
+      "browser": "./dist/XReact/jsx-dev-runtime/index.js",
+      "default": "./dist/XReact/jsx-dev-runtime/index.js"
+    },
+    "./XReact/slot": {
+      "source": "./XReact/slot/index.ts",
+      "types": "./dist/XReact/slot/index.d.ts",
+      "browser": "./dist/XReact/slot/index.js",
+      "default": "./dist/XReact/slot/index.js"
+    },
+    "./XReact/slot/child": {
+      "source": "./jsx/slot/child/index.ts",
+      "types": "./dist/jsx/slot/child/index.d.ts",
+      "browser": "./dist/jsx/slot/child/index.js",
+      "default": "./dist/jsx/slot/child/index.js"
+    },
+    "./ui": {
+      "source": "./ui/index.ts",
+      "types": "./dist/ui/index.d.ts",
+      "browser": "./dist/ui/index.js",
+      "default": "./dist/ui/index.js"
+    },
+    "./ui/svg": {
+      "source": "./tech/svg/encode/index.ts",
+      "types": "./dist/tech/svg/encode/index.d.ts",
+      "browser": "./dist/tech/svg/encode/index.js",
+      "default": "./dist/tech/svg/encode/index.js"
+    },
+    "./ui/icons": {
+      "source": "./ui/theme/icon/index.ts",
+      "types": "./dist/ui/theme/icon/index.d.ts",
+      "browser": "./dist/ui/theme/icon/index.js",
+      "default": "./dist/ui/theme/icon/index.js"
+    },
+    "./engine": {
+      "source": "./engine/src/index.ts",
+      "types": "./dist/engine/src/index.d.ts",
+      "browser": "./dist/engine/src/index.js",
+      "default": "./dist/engine/src/index.js"
+    },
+    "./renderer/html": {
+      "source": "./renderer/html/src/index.ts",
+      "types": "./dist/renderer/html/src/index.d.ts",
+      "browser": "./dist/renderer/html/src/index.js",
+      "default": "./dist/renderer/html/src/index.js"
+    },
+    "./webgpu": {
+      "source": "./webgpu/src/index.ts",
+      "types": "./dist/webgpu/src/index.d.ts",
+      "browser": "./dist/webgpu/src/index.js",
+      "default": "./dist/webgpu/src/index.js"
+    },
+    "./space": {
+      "source": "./space/index.ts",
+      "types": "./dist/space/index.d.ts",
+      "browser": "./dist/space/index.js",
+      "default": "./dist/space/index.js"
+    },
+    "./diagnostics": {
+      "source": "./diagnostics/index.ts",
+      "types": "./dist/diagnostics/index.d.ts",
+      "browser": "./dist/diagnostics/index.js",
+      "default": "./dist/diagnostics/index.js"
+    },
+    "./template": {
+      "source": "./template/index.ts",
+      "types": "./dist/template/index.d.ts",
+      "browser": "./dist/template/index.js",
+      "default": "./dist/template/index.js"
+    },
+    "./markdown": {
+      "source": "./markdown/markdown/index.tsx",
+      "types": "./dist/markdown/markdown/index.d.ts",
+      "browser": "./dist/markdown/markdown/index.js",
+      "default": "./dist/markdown/markdown/index.js"
+    },
+    "./markdown/parser": {
+      "source": "./markdown/parser/index.ts",
+      "types": "./dist/markdown/parser/index.d.ts",
+      "browser": "./dist/markdown/parser/index.js",
+      "default": "./dist/markdown/parser/index.js"
+    },
+    "./markdown/destination": {
+      "source": "./markdown/destination/index.ts",
+      "types": "./dist/markdown/destination/index.d.ts",
+      "browser": "./dist/markdown/destination/index.js",
+      "default": "./dist/markdown/destination/index.js"
+    },
+    "./typedoc": {
+      "source": "./typedoc/typedoc/index.tsx",
+      "types": "./dist/typedoc/typedoc/index.d.ts",
+      "browser": "./dist/typedoc/typedoc/index.js",
+      "default": "./dist/typedoc/typedoc/index.js"
+    },
+    "./nodes/node": {
+      "source": "./nodes/node/index.ts",
+      "types": "./dist/nodes/node/index.d.ts",
+      "browser": "./dist/nodes/node/index.js",
+      "default": "./dist/nodes/node/index.js"
+    },
+    "./nodes/diagram": {
+      "source": "./nodes/node/diagram/index.tsx",
+      "types": "./dist/nodes/node/diagram/index.d.ts",
+      "browser": "./dist/nodes/node/diagram/index.js",
+      "default": "./dist/nodes/node/diagram/index.js"
+    },
+    "./nodes/parameter": {
+      "source": "./nodes/parameter/index.ts",
+      "types": "./dist/nodes/parameter/index.d.ts",
+      "browser": "./dist/nodes/parameter/index.js",
+      "default": "./dist/nodes/parameter/index.js"
+    },
+    "./nodes/socket": {
+      "source": "./nodes/socket/index.tsx",
+      "types": "./dist/nodes/socket/index.d.ts",
+      "browser": "./dist/nodes/socket/index.js",
+      "default": "./dist/nodes/socket/index.js"
+    },
+    "./nodes/layout": {
+      "source": "./nodes/layout/index.ts",
+      "types": "./dist/nodes/layout/index.d.ts",
+      "browser": "./dist/nodes/layout/index.js",
+      "default": "./dist/nodes/layout/index.js"
+    },
+    "./nodes/layout/top-down": {
+      "source": "./nodes/layout/algorithm/top-down/index.ts",
+      "types": "./dist/nodes/layout/algorithm/top-down/index.d.ts",
+      "browser": "./dist/nodes/layout/algorithm/top-down/index.js",
+      "default": "./dist/nodes/layout/algorithm/top-down/index.js"
+    },
+    "./nodes/tree": {
+      "source": "./nodes/tree/index.ts",
+      "types": "./dist/nodes/tree/index.d.ts",
+      "browser": "./dist/nodes/tree/index.js",
+      "default": "./dist/nodes/tree/index.js"
+    },
+    "./nodes/view": {
+      "source": "./nodes/view/index.tsx",
+      "types": "./dist/nodes/view/index.d.ts",
+      "browser": "./dist/nodes/view/index.js",
+      "default": "./dist/nodes/view/index.js"
+    },
+    "./nodes/spatial": {
+      "source": "./nodes/spatial/index.ts",
+      "types": "./dist/nodes/spatial/index.d.ts",
+      "browser": "./dist/nodes/spatial/index.js",
+      "default": "./dist/nodes/spatial/index.js"
+    },
+    "./nodes/spatial/tree": {
+      "source": "./nodes/spatial/tree/index.ts",
+      "types": "./dist/nodes/spatial/tree/index.d.ts",
+      "browser": "./dist/nodes/spatial/tree/index.js",
+      "default": "./dist/nodes/spatial/tree/index.js"
+    },
+    "./nodes/routing": {
+      "source": "./nodes/shared/routing/index.ts",
+      "types": "./dist/nodes/shared/routing/index.d.ts",
+      "browser": "./dist/nodes/shared/routing/index.js",
+      "default": "./dist/nodes/shared/routing/index.js"
+    },
+    "./compiler": {
+      "source": "./compiler/index.ts",
+      "types": "./dist/compiler/index.d.ts",
+      "bun": "./dist/compiler/index.js",
+      "default": "./dist/compiler/index.js"
+    },
+    "./compiler/session": {
+      "source": "./jsx/compiler/session/index.ts",
+      "types": "./dist/jsx/compiler/session/index.d.ts",
+      "bun": "./dist/jsx/compiler/session/index.js",
+      "default": "./dist/jsx/compiler/session/index.js"
+    },
+    "./compiler/error": {
+      "source": "./jsx/compiler/error/index.ts",
+      "types": "./dist/jsx/compiler/error/index.d.ts",
+      "bun": "./dist/jsx/compiler/error/index.js",
+      "default": "./dist/jsx/compiler/error/index.js"
+    },
+    "./headless": {
+      "source": "./headless/index.ts",
+      "types": "./dist/headless/index.d.ts",
+      "bun": "./dist/headless/index.js",
+      "default": "./dist/headless/index.js"
+    },
+    "./headless/preload": {
+      "source": "./headless/preload/index.ts",
+      "types": "./dist/headless/preload/index.d.ts",
+      "bun": "./dist/headless/preload/index.js",
+      "default": "./dist/headless/preload/index.js"
+    },
+    "./typedoc/parser": {
+      "source": "./typedoc/parser/index.ts",
+      "types": "./dist/typedoc/parser/index.d.ts",
+      "bun": "./dist/typedoc/parser/index.js",
+      "default": "./dist/typedoc/parser/index.js"
+    },
+    "./typedoc/batch": {
+      "source": "./typedoc/batch/index.ts",
+      "types": "./dist/typedoc/batch/index.d.ts",
+      "bun": "./dist/typedoc/batch/index.js",
+      "default": "./dist/typedoc/batch/index.js"
+    },
+    "./ui/theme.css": "./ui/component/theme/theme.css",
+    "./engine/fonts/inter-regular.ttf": "./engine/static/font/inter-regular.ttf",
+    "./engine/fonts/inter-bold.ttf": "./engine/static/font/inter-bold.ttf",
+    "./engine/fonts/inter-italic.ttf": "./engine/static/font/inter-italic.ttf",
+    "./engine/fonts/inter-bold-italic.ttf": "./engine/static/font/inter-bold-italic.ttf",
+    "./engine/fonts/jetbrains-mono-regular.ttf": "./engine/static/font/jetbrains-mono-regular.ttf",
+    "./engine/fonts/jetbrains-mono-italic.ttf": "./engine/static/font/jetbrains-mono-italic.ttf",
+    "./engine/fonts/jetbrains-mono-bold-italic.ttf": "./engine/static/font/jetbrains-mono-bold-italic.ttf",
+    "./engine/fonts/jetbrains-mono-bold.ttf": "./engine/static/font/jetbrains-mono-bold.ttf",
+    "./nodes/editor": {
+      "source": "./nodes/editor/index.tsx",
+      "types": "./dist/nodes/editor/index.d.ts",
+      "browser": "./dist/nodes/editor/index.js",
+      "default": "./dist/nodes/editor/index.js"
+    },
+    "./ui/icons/set": {
+      "source": "./ui/theme/icon-set/index.ts",
+      "types": "./dist/ui/theme/icon-set/index.d.ts",
+      "browser": "./dist/ui/theme/icon-set/index.js",
+      "default": "./dist/ui/theme/icon-set/index.js"
+    },
+    "./XReact/slot-presence": {
+      "source": "./component/slot-presence/index.ts",
+      "types": "./dist/component/slot-presence/index.d.ts",
+      "browser": "./dist/component/slot-presence/index.js",
+      "default": "./dist/component/slot-presence/index.js"
+    },
+    "./ui/widget": {
+      "source": "./ui/component/widget/index.ts",
+      "types": "./dist/ui/component/widget/index.d.ts",
+      "browser": "./dist/ui/component/widget/index.js",
+      "default": "./dist/ui/component/widget/index.js"
+    },
+    "./ui/surface": {
+      "source": "./ui/component/surface/index.ts",
+      "types": "./dist/ui/component/surface/index.d.ts",
+      "browser": "./dist/ui/component/surface/index.js",
+      "default": "./dist/ui/component/surface/index.js"
+    },
+    "./ui/field": {
+      "source": "./ui/component/field/index.ts",
+      "types": "./dist/ui/component/field/index.d.ts",
+      "browser": "./dist/ui/component/field/index.js",
+      "default": "./dist/ui/component/field/index.js"
+    },
+    "./ui/feedback": {
+      "source": "./ui/component/feedback/index.ts",
+      "types": "./dist/ui/component/feedback/index.d.ts",
+      "browser": "./dist/ui/component/feedback/index.js",
+      "default": "./dist/ui/component/feedback/index.js"
+    },
+    "./ui/button": {
+      "source": "./ui/component/button/index.ts",
+      "types": "./dist/ui/component/button/index.d.ts",
+      "browser": "./dist/ui/component/button/index.js",
+      "default": "./dist/ui/component/button/index.js"
+    },
+    "./ui/divider": {
+      "source": "./ui/component/divider/index.tsx",
+      "types": "./dist/ui/component/divider/index.d.ts",
+      "browser": "./dist/ui/component/divider/index.js",
+      "default": "./dist/ui/component/divider/index.js"
+    },
+    "./ui/menu": {
+      "source": "./ui/component/menu/index.ts",
+      "types": "./dist/ui/component/menu/index.d.ts",
+      "browser": "./dist/ui/component/menu/index.js",
+      "default": "./dist/ui/component/menu/index.js"
+    },
+    "./ui/view": {
+      "source": "./ui/component/view/index.ts",
+      "types": "./dist/ui/component/view/index.d.ts",
+      "browser": "./dist/ui/component/view/index.js",
+      "default": "./dist/ui/component/view/index.js"
+    },
+    "./ui/typography": {
+      "source": "./ui/component/typography/index.tsx",
+      "types": "./dist/ui/component/typography/index.d.ts",
+      "browser": "./dist/ui/component/typography/index.js",
+      "default": "./dist/ui/component/typography/index.js"
+    },
+    "./ui/badge": {
+      "source": "./ui/component/badge/index.tsx",
+      "types": "./dist/ui/component/badge/index.d.ts",
+      "browser": "./dist/ui/component/badge/index.js",
+      "default": "./dist/ui/component/badge/index.js"
+    },
+    "./ui/view/code-editor": {
+      "source": "./ui/component/view/code-editor/index.tsx",
+      "types": "./dist/ui/component/view/code-editor/index.d.ts",
+      "browser": "./dist/ui/component/view/code-editor/index.js",
+      "default": "./dist/ui/component/view/code-editor/index.js"
+    },
+    "./ui/view/table": {
+      "source": "./ui/component/view/table/index.tsx",
+      "types": "./dist/ui/component/view/table/index.d.ts",
+      "browser": "./dist/ui/component/view/table/index.js",
+      "default": "./dist/ui/component/view/table/index.js"
+    },
+    "./ui/view/list": {
+      "source": "./ui/component/view/list/index.tsx",
+      "types": "./dist/ui/component/view/list/index.d.ts",
+      "browser": "./dist/ui/component/view/list/index.js",
+      "default": "./dist/ui/component/view/list/index.js"
+    },
+    "./ui/view/timeline": {
+      "source": "./ui/component/view/timeline/index.tsx",
+      "types": "./dist/ui/component/view/timeline/index.d.ts",
+      "browser": "./dist/ui/component/view/timeline/index.js",
+      "default": "./dist/ui/component/view/timeline/index.js"
+    },
+    "./ui/view/table/selection-after-click": {
+      "source": "./ui/component/view/table/selection-after-click/index.tsx",
+      "types": "./dist/ui/component/view/table/selection-after-click/index.d.ts",
+      "browser": "./dist/ui/component/view/table/selection-after-click/index.js",
+      "default": "./dist/ui/component/view/table/selection-after-click/index.js"
+    },
+    "./ui/view/code-editor/validate": {
+      "source": "./ui/component/view/code-editor/validate/index.ts",
+      "types": "./dist/ui/component/view/code-editor/validate/index.d.ts",
+      "browser": "./dist/ui/component/view/code-editor/validate/index.js",
+      "default": "./dist/ui/component/view/code-editor/validate/index.js"
+    },
+    "./ui/view/code-editor/highlighter": {
+      "source": "./ui/component/view/code-editor/highlighter/index.ts",
+      "types": "./dist/ui/component/view/code-editor/highlighter/index.d.ts",
+      "browser": "./dist/ui/component/view/code-editor/highlighter/index.js",
+      "default": "./dist/ui/component/view/code-editor/highlighter/index.js"
+    },
+    "./ui/view/code-editor/view-model": {
+      "source": "./ui/component/view/code-editor/view-model/index.ts",
+      "types": "./dist/ui/component/view/code-editor/view-model/index.d.ts",
+      "browser": "./dist/ui/component/view/code-editor/view-model/index.js",
+      "default": "./dist/ui/component/view/code-editor/view-model/index.js"
+    },
+    "./ui/view/code-editor/syntax-theme/resolve-scope-color-hex": {
+      "source": "./ui/component/view/code-editor/syntax-theme/resolve-scope-color-hex/index.ts",
+      "types": "./dist/ui/component/view/code-editor/syntax-theme/resolve-scope-color-hex/index.d.ts",
+      "browser": "./dist/ui/component/view/code-editor/syntax-theme/resolve-scope-color-hex/index.js",
+      "default": "./dist/ui/component/view/code-editor/syntax-theme/resolve-scope-color-hex/index.js"
+    },
+    "./ui/view/code-editor/syntax-theme/data": {
+      "source": "./ui/component/view/code-editor/syntax-theme/data/index.ts",
+      "types": "./dist/ui/component/view/code-editor/syntax-theme/data/index.d.ts",
+      "browser": "./dist/ui/component/view/code-editor/syntax-theme/data/index.js",
+      "default": "./dist/ui/component/view/code-editor/syntax-theme/data/index.js"
+    },
+    "./ui/menu/basic": {
+      "source": "./ui/component/menu/basic/index.tsx",
+      "types": "./dist/ui/component/menu/basic/index.d.ts",
+      "browser": "./dist/ui/component/menu/basic/index.js",
+      "default": "./dist/ui/component/menu/basic/index.js"
+    },
+    "./ui/menu/item": {
+      "source": "./ui/component/menu/item/index.tsx",
+      "types": "./dist/ui/component/menu/item/index.d.ts",
+      "browser": "./dist/ui/component/menu/item/index.js",
+      "default": "./dist/ui/component/menu/item/index.js"
+    },
+    "./ui/menu/clipboard": {
+      "source": "./ui/component/menu/clipboard/index.tsx",
+      "types": "./dist/ui/component/menu/clipboard/index.d.ts",
+      "browser": "./dist/ui/component/menu/clipboard/index.js",
+      "default": "./dist/ui/component/menu/clipboard/index.js"
+    },
+    "./ui/button/basic": {
+      "source": "./ui/component/button/basic/index.tsx",
+      "types": "./dist/ui/component/button/basic/index.d.ts",
+      "browser": "./dist/ui/component/button/basic/index.js",
+      "default": "./dist/ui/component/button/basic/index.js"
+    },
+    "./ui/button/toggle-group": {
+      "source": "./ui/component/button/toggle-group/index.tsx",
+      "types": "./dist/ui/component/button/toggle-group/index.d.ts",
+      "browser": "./dist/ui/component/button/toggle-group/index.js",
+      "default": "./dist/ui/component/button/toggle-group/index.js"
+    },
+    "./ui/button/icon": {
+      "source": "./ui/component/button/icon/index.tsx",
+      "types": "./dist/ui/component/button/icon/index.d.ts",
+      "browser": "./dist/ui/component/button/icon/index.js",
+      "default": "./dist/ui/component/button/icon/index.js"
+    },
+    "./ui/feedback/notification": {
+      "source": "./ui/component/feedback/notification/index.tsx",
+      "types": "./dist/ui/component/feedback/notification/index.d.ts",
+      "browser": "./dist/ui/component/feedback/notification/index.js",
+      "default": "./dist/ui/component/feedback/notification/index.js"
+    },
+    "./ui/feedback/status-bar": {
+      "source": "./ui/component/feedback/status-bar/index.tsx",
+      "types": "./dist/ui/component/feedback/status-bar/index.d.ts",
+      "browser": "./dist/ui/component/feedback/status-bar/index.js",
+      "default": "./dist/ui/component/feedback/status-bar/index.js"
+    },
+    "./ui/field/collection": {
+      "source": "./ui/component/field/collection/index.tsx",
+      "types": "./dist/ui/component/field/collection/index.d.ts",
+      "browser": "./dist/ui/component/field/collection/index.js",
+      "default": "./dist/ui/component/field/collection/index.js"
+    },
+    "./ui/field/group": {
+      "source": "./ui/component/field/group/index.tsx",
+      "types": "./dist/ui/component/field/group/index.d.ts",
+      "browser": "./dist/ui/component/field/group/index.js",
+      "default": "./dist/ui/component/field/group/index.js"
+    },
+    "./ui/field/color": {
+      "source": "./ui/component/field/color/index.tsx",
+      "types": "./dist/ui/component/field/color/index.d.ts",
+      "browser": "./dist/ui/component/field/color/index.js",
+      "default": "./dist/ui/component/field/color/index.js"
+    },
+    "./ui/field/path": {
+      "source": "./ui/component/field/path/index.tsx",
+      "types": "./dist/ui/component/field/path/index.d.ts",
+      "browser": "./dist/ui/component/field/path/index.js",
+      "default": "./dist/ui/component/field/path/index.js"
+    },
+    "./ui/field/cycle": {
+      "source": "./ui/component/field/cycle/index.tsx",
+      "types": "./dist/ui/component/field/cycle/index.d.ts",
+      "browser": "./dist/ui/component/field/cycle/index.js",
+      "default": "./dist/ui/component/field/cycle/index.js"
+    },
+    "./ui/field/checkbox": {
+      "source": "./ui/component/field/checkbox/index.tsx",
+      "types": "./dist/ui/component/field/checkbox/index.d.ts",
+      "browser": "./dist/ui/component/field/checkbox/index.js",
+      "default": "./dist/ui/component/field/checkbox/index.js"
+    },
+    "./ui/field/slider": {
+      "source": "./ui/component/field/slider/index.tsx",
+      "types": "./dist/ui/component/field/slider/index.d.ts",
+      "browser": "./dist/ui/component/field/slider/index.js",
+      "default": "./dist/ui/component/field/slider/index.js"
+    },
+    "./ui/field/number": {
+      "source": "./ui/component/field/number/index.tsx",
+      "types": "./dist/ui/component/field/number/index.d.ts",
+      "browser": "./dist/ui/component/field/number/index.js",
+      "default": "./dist/ui/component/field/number/index.js"
+    },
+    "./ui/field/switch": {
+      "source": "./ui/component/field/switch/index.tsx",
+      "types": "./dist/ui/component/field/switch/index.d.ts",
+      "browser": "./dist/ui/component/field/switch/index.js",
+      "default": "./dist/ui/component/field/switch/index.js"
+    },
+    "./ui/field/text": {
+      "source": "./ui/component/field/text/index.tsx",
+      "types": "./dist/ui/component/field/text/index.d.ts",
+      "browser": "./dist/ui/component/field/text/index.js",
+      "default": "./dist/ui/component/field/text/index.js"
+    },
+    "./ui/field/select": {
+      "source": "./ui/component/field/select/index.tsx",
+      "types": "./dist/ui/component/field/select/index.d.ts",
+      "browser": "./dist/ui/component/field/select/index.js",
+      "default": "./dist/ui/component/field/select/index.js"
+    },
+    "./ui/field/color-picker": {
+      "source": "./ui/component/field/color-picker/index.tsx",
+      "types": "./dist/ui/component/field/color-picker/index.d.ts",
+      "browser": "./dist/ui/component/field/color-picker/index.js",
+      "default": "./dist/ui/component/field/color-picker/index.js"
+    },
+    "./ui/field/vector": {
+      "source": "./ui/component/field/vector/index.tsx",
+      "types": "./dist/ui/component/field/vector/index.d.ts",
+      "browser": "./dist/ui/component/field/vector/index.js",
+      "default": "./dist/ui/component/field/vector/index.js"
+    },
+    "./ui/field/matrix": {
+      "source": "./ui/component/field/matrix/index.tsx",
+      "types": "./dist/ui/component/field/matrix/index.d.ts",
+      "browser": "./dist/ui/component/field/matrix/index.js",
+      "default": "./dist/ui/component/field/matrix/index.js"
+    },
+    "./ui/field/reference": {
+      "source": "./ui/component/field/reference/index.tsx",
+      "types": "./dist/ui/component/field/reference/index.d.ts",
+      "browser": "./dist/ui/component/field/reference/index.js",
+      "default": "./dist/ui/component/field/reference/index.js"
+    },
+    "./ui/surface/pane": {
+      "source": "./ui/component/surface/pane/index.tsx",
+      "types": "./dist/ui/component/surface/pane/index.d.ts",
+      "browser": "./dist/ui/component/surface/pane/index.js",
+      "default": "./dist/ui/component/surface/pane/index.js"
+    },
+    "./ui/surface/window-control": {
+      "source": "./ui/component/surface/window-control/index.tsx",
+      "types": "./dist/ui/component/surface/window-control/index.d.ts",
+      "browser": "./dist/ui/component/surface/window-control/index.js",
+      "default": "./dist/ui/component/surface/window-control/index.js"
+    },
+    "./ui/surface/panel": {
+      "source": "./ui/component/surface/panel/index.tsx",
+      "types": "./dist/ui/component/surface/panel/index.d.ts",
+      "browser": "./dist/ui/component/surface/panel/index.js",
+      "default": "./dist/ui/component/surface/panel/index.js"
+    },
+    "./ui/surface/frame": {
+      "source": "./ui/component/surface/frame/index.tsx",
+      "types": "./dist/ui/component/surface/frame/index.d.ts",
+      "browser": "./dist/ui/component/surface/frame/index.js",
+      "default": "./dist/ui/component/surface/frame/index.js"
+    },
+    "./ui/surface/tab": {
+      "source": "./ui/component/surface/tab/index.tsx",
+      "types": "./dist/ui/component/surface/tab/index.d.ts",
+      "browser": "./dist/ui/component/surface/tab/index.js",
+      "default": "./dist/ui/component/surface/tab/index.js"
+    },
+    "./ui/surface/window": {
+      "source": "./ui/component/surface/window/index.tsx",
+      "types": "./dist/ui/component/surface/window/index.d.ts",
+      "browser": "./dist/ui/component/surface/window/index.js",
+      "default": "./dist/ui/component/surface/window/index.js"
+    },
+    "./ui/surface/chrome": {
+      "source": "./ui/component/surface/chrome/index.ts",
+      "types": "./dist/ui/component/surface/chrome/index.d.ts",
+      "browser": "./dist/ui/component/surface/chrome/index.js",
+      "default": "./dist/ui/component/surface/chrome/index.js"
+    },
+    "./ui/surface/chrome/owner": {
+      "source": "./ui/component/surface/chrome/owner/index.tsx",
+      "types": "./dist/ui/component/surface/chrome/owner/index.d.ts",
+      "browser": "./dist/ui/component/surface/chrome/owner/index.js",
+      "default": "./dist/ui/component/surface/chrome/owner/index.js"
+    },
+    "./ui/surface/chrome/title": {
+      "source": "./ui/component/surface/chrome/title/index.tsx",
+      "types": "./dist/ui/component/surface/chrome/title/index.d.ts",
+      "browser": "./dist/ui/component/surface/chrome/title/index.js",
+      "default": "./dist/ui/component/surface/chrome/title/index.js"
+    },
+    "./ui/surface/chrome/body": {
+      "source": "./ui/component/surface/chrome/body/index.tsx",
+      "types": "./dist/ui/component/surface/chrome/body/index.d.ts",
+      "browser": "./dist/ui/component/surface/chrome/body/index.js",
+      "default": "./dist/ui/component/surface/chrome/body/index.js"
+    },
+    "./ui/surface/chrome/navigation": {
+      "source": "./ui/component/surface/chrome/navigation/index.tsx",
+      "types": "./dist/ui/component/surface/chrome/navigation/index.d.ts",
+      "browser": "./dist/ui/component/surface/chrome/navigation/index.js",
+      "default": "./dist/ui/component/surface/chrome/navigation/index.js"
+    },
+    "./ui/surface/chrome/button": {
+      "source": "./ui/component/surface/chrome/button/index.tsx",
+      "types": "./dist/ui/component/surface/chrome/button/index.d.ts",
+      "browser": "./dist/ui/component/surface/chrome/button/index.js",
+      "default": "./dist/ui/component/surface/chrome/button/index.js"
+    },
+    "./ui/surface/chrome/header": {
+      "source": "./ui/component/surface/chrome/header/index.tsx",
+      "types": "./dist/ui/component/surface/chrome/header/index.d.ts",
+      "browser": "./dist/ui/component/surface/chrome/header/index.js",
+      "default": "./dist/ui/component/surface/chrome/header/index.js"
+    },
+    "./ui/navigation/breadcrumb": {
+      "source": "./ui/component/navigation/breadcrumb/index.tsx",
+      "types": "./dist/ui/component/navigation/breadcrumb/index.d.ts",
+      "browser": "./dist/ui/component/navigation/breadcrumb/index.js",
+      "default": "./dist/ui/component/navigation/breadcrumb/index.js"
+    },
+    "./ui/widget/tree": {
+      "source": "./ui/component/widget/tree/index.tsx",
+      "types": "./dist/ui/component/widget/tree/index.d.ts",
+      "browser": "./dist/ui/component/widget/tree/index.js",
+      "default": "./dist/ui/component/widget/tree/index.js"
+    },
+    "./ui/widget/settings": {
+      "source": "./ui/component/widget/settings/index.tsx",
+      "types": "./dist/ui/component/widget/settings/index.d.ts",
+      "browser": "./dist/ui/component/widget/settings/index.js",
+      "default": "./dist/ui/component/widget/settings/index.js"
+    },
+    "./ui/widget/inspector": {
+      "source": "./ui/component/widget/inspector/index.tsx",
+      "types": "./dist/ui/component/widget/inspector/index.d.ts",
+      "browser": "./dist/ui/component/widget/inspector/index.js",
+      "default": "./dist/ui/component/widget/inspector/index.js"
+    },
+    "./ui/widget/terminal": {
+      "source": "./ui/component/widget/terminal/index.tsx",
+      "types": "./dist/ui/component/widget/terminal/index.d.ts",
+      "browser": "./dist/ui/component/widget/terminal/index.js",
+      "default": "./dist/ui/component/widget/terminal/index.js"
+    },
+    "./ui/widget/header": {
+      "source": "./ui/component/widget/header/index.tsx",
+      "types": "./dist/ui/component/widget/header/index.d.ts",
+      "browser": "./dist/ui/component/widget/header/index.js",
+      "default": "./dist/ui/component/widget/header/index.js"
+    },
+    "./ui/widget/editor": {
+      "source": "./ui/component/widget/editor/index.tsx",
+      "types": "./dist/ui/component/widget/editor/index.d.ts",
+      "browser": "./dist/ui/component/widget/editor/index.js",
+      "default": "./dist/ui/component/widget/editor/index.js"
+    },
+    "./ui/widget/header/action": {
+      "source": "./ui/component/widget/header/action/index.tsx",
+      "types": "./dist/ui/component/widget/header/action/index.d.ts",
+      "browser": "./dist/ui/component/widget/header/action/index.js",
+      "default": "./dist/ui/component/widget/header/action/index.js"
+    }
+  },
+  "dependencies": {
+    "@zavx0z/immersive-dom": "workspace:*",
+    "@zavx0z/immersive-browser": "workspace:*",
+    "@zavx0z/immersive-component": "workspace:*",
+    "@zavx0z/immersive-space": "workspace:*",
+    "@zavx0z/immersive-template": "workspace:*",
+    "@zavx0z/immersive-ui-component": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
+    "@zavx0z/immersive-jsx-runtime": "workspace:*",
+    "@zavx0z/immersive-jsx-development": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+    "@zavx0z/immersive-engine": "workspace:*",
+    "@zavx0z/immersive-renderer-html": "workspace:*",
+    "@zavx0z/immersive-webgpu": "workspace:*",
+    "@zavx0z/immersive-devtool": "workspace:*",
+    "@zavx0z/immersive-headless": "workspace:*",
+    "@zavx0z/immersive-markdown": "workspace:*",
+    "@zavx0z/immersive-typedoc": "workspace:*",
+    "@zavx0z/immersive-nodes": "workspace:*",
+    "@zavx0z/immersive-nodes-node": "workspace:*",
+    "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
+    "@zavx0z/immersive-nodes-parameter": "workspace:*",
+    "@zavx0z/immersive-nodes-socket": "workspace:*",
+    "@zavx0z/immersive-nodes-layout": "workspace:*",
+    "@zavx0z/immersive-nodes-tree": "workspace:*",
+    "@zavx0z/immersive-tech-svg-encode": "workspace:*",
+    "@zavx0z/immersive-ui-theme-icon": "workspace:*",
+    "@zavx0z/immersive-jsx-slot-child": "workspace:*",
+    "@zavx0z/immersive-jsx-compiler-error": "workspace:*",
+    "bun-webgpu": "^0.1.7",
+    "typescript": "^7.0.2",
+    "@webgpu/types": "^0.1.74",
+    "@zavx0z/immersive-ui-theme-icon-set": "workspace:*"
   }
 }

@@ -8,6 +8,7 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "slot-contract"
+    "slot-contract",
+    "test/published"
   ]
 }

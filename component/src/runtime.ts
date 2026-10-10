@@ -4,18 +4,16 @@ import {
   Element,
   Event,
   HTMLElement,
-  HTMLInputElement,
-  HTMLOptionElement,
-  HTMLSelectElement,
-  HTMLTextAreaElement,
   Node,
   Text,
   Document,
-  type DocumentCompiledStyleSheetLease,
-  type EventListener
+  type DocumentCompiledStyleSheetLease
 } from "@zavx0z/immersive-dom"
 import {
   isCompiledTemplate,
+  DomContentRange, DomEventBinding,
+  createDomAnchor, propertyOperation, hasPropertySetter, textValue, prepareTextOperation, prepareDomOperation, applyDomOperation, attributeOperation, moveDomRange, removeDomRange,
+  type DomContentInstance, type DomNodes, type DomPatch,
   isHostBinding,
   slotContents,
   type CompiledStyleSheet,
@@ -33,7 +31,6 @@ import {
   type ComponentKey,
   type Context,
   type ContextProvision,
-  type EventHandler,
   type KeyedComponentsValue,
   type StyleBindingValue
 } from "./composition.ts"
@@ -41,6 +38,7 @@ import {
   resolveStyleValue,
   type ResolvedStyleValue
 } from "./style.ts"
+import {hasDomContent, retainComponentContent, withComponentContent, type ComponentContent} from "./content.ts"
 
 const unset = Symbol("@zavx0z/immersive-component/unset")
 const noContextProvisions = Object.freeze([]) as readonly ContextProvision[]
@@ -70,6 +68,7 @@ export type RootOptions = Readonly<{
 
 export type RenderOptions = Readonly<{
   key?: ComponentKey
+  content?: ComponentContent
 }>
 
 export interface ComponentRoot {
@@ -258,9 +257,8 @@ type RuntimeStyleBinding = {
 
 type RuntimeEventBinding = {
   definition: Extract<HostBinding, {kind: "event"}>
-  handler: EventHandler | null
+  connection: DomEventBinding
   kind: "event"
-  listener: EventListener
   value: unknown
 }
 
@@ -303,7 +301,17 @@ type RuntimeKeyedBinding = {
   validatedVersion: number
 }
 
+type RuntimeNodeBinding = {
+  definition: Extract<HostBinding, {kind: "node"}>
+  kind: "node"
+  range: DomContentRange
+  value: unknown
+  pending: DomPatch | null
+  initialPatch: DomPatch | null
+}
+
 type RuntimeBinding =
+  | RuntimeNodeBinding
   | RuntimeTextBinding
   | RuntimePropertyBinding
   | RuntimeStyleBinding
@@ -345,6 +353,7 @@ type PreparedKeyedRange = {
 type PreparedRange = PreparedSingleRange | PreparedKeyedRange
 
 type PreparedComponentUpdate = {
+  hasDomNodes: boolean
   hostPatches: PreparedPatch[]
   instance: ComponentInstance<unknown>
   nextContextFrame: ContextFrame | null
@@ -355,11 +364,6 @@ type PreparedComponentUpdate = {
   workHooks: HookSlot[]
 }
 
-type PropertyOperation = {
-  current(): unknown
-  next: unknown
-  write(value: unknown): void
-}
 
 const noComponentInstances = Object.freeze([]) as readonly ComponentInstance<unknown>[]
 const noPreparedComponentUpdates = Object.freeze([]) as readonly PreparedComponentUpdate[]
@@ -553,6 +557,8 @@ class RootStyleSheetOwner {
 }
 
 class ComponentInstance<Props> {
+  hasDomNodes = false
+  private ownDomNodes = false
   declare keyedValidationEpoch: number | undefined
 
   readonly document: Document
@@ -578,6 +584,7 @@ class ComponentInstance<Props> {
   private key: ComponentKey
   private committed = false
   private pendingProps: Readonly<Props> | typeof unset = unset
+  private pendingContextProvisions: readonly ContextProvision[] | typeof unset = unset
   private props: Readonly<Props>
   private readonly rootIdentifierPrefix: string
   private readonly staging: DocumentFragment
@@ -604,8 +611,8 @@ class ComponentInstance<Props> {
     this.key = key
     this.contextProvisions = contextProvisions
     this.contextFrame = applyContextProvisions(parentContextFrame, contextProvisions)
-    this.start = this.document.createComment(`component:${template.displayName}`)
-    this.end = this.document.createComment(`/component:${template.displayName}`)
+    this.start = createDomAnchor(this.document, `component:${template.displayName}`)
+    this.end = createDomAnchor(this.document, `/component:${template.displayName}`)
     this.staging = this.document.createDocumentFragment()
     this.values = Array.from({length: template.bindingCount}, () => unset)
     this.styleSheetOwner.stage(template as CompiledTemplate<unknown>)
@@ -652,23 +659,37 @@ class ComponentInstance<Props> {
     return this.committed
   }
 
-  scheduleProps(props: Readonly<Props>): void {
+  scheduleProps(props: Readonly<Props>, contexts: readonly ContextProvision[] = this.contextProvisions): void {
     this.assertActive()
     this.pendingProps = props
+    this.pendingContextProvisions = contexts === this.contextProvisions ? unset : contexts
     this.scheduler.enqueue(this as ComponentInstance<unknown>)
   }
 
   performScheduledRender(): void {
     const hasProps = this.pendingProps !== unset
     const props = hasProps ? this.pendingProps as Readonly<Props> : this.props
+    const contexts = this.pendingContextProvisions
+    const provisions = contexts === unset ? this.contextProvisions : contexts
+    const frame = contexts === unset ? this.contextFrame : applyContextProvisions(null, provisions)
     this.pendingProps = unset
+    this.pendingContextProvisions = unset
     this.renderAndCommit(
       props,
       hasProps ? "props" : "state",
-      this.contextFrame,
-      this.contextProvisions,
+      frame,
+      provisions,
       this.committed
     )
+    if (contexts !== unset) this.acceptContextFrame(frame, provisions)
+  }
+
+  private acceptContextFrame(frame: ContextFrame | null, provisions: readonly ContextProvision[]): void {
+    this.contextFrame = frame
+    this.contextProvisions = provisions
+    for (const child of this.childInstances()) {
+      child.acceptContextFrame(applyContextProvisions(frame, child.contextProvisions), child.contextProvisions)
+    }
   }
 
   stabilizeDetached(): void {
@@ -754,9 +775,22 @@ class ComponentInstance<Props> {
     if (firstError) throw firstError
   }
 
+  acceptedProps(props: unknown): boolean { return this.props === props }
+
   markCommitted(): void {
     this.committed = true
+    for (const binding of this.bindings) if (binding.kind === "node") binding.initialPatch = null
     this.markRangeBindingsValidated()
+  }
+
+  applyPendingNodeBindings(): void {
+    for (const binding of this.bindings) {
+      if (binding.kind !== "node" || !binding.pending) continue
+      if (!this.committed) binding.initialPatch = binding.pending
+      binding.pending.apply()
+      binding.pending = null
+    }
+    for (const child of this.childInstances()) child.applyPendingNodeBindings()
   }
 
   attachCommittedRefs(): void {
@@ -796,6 +830,7 @@ class ComponentInstance<Props> {
     if (!this.active) return
     this.active = false
     this.pendingProps = unset
+    this.pendingContextProvisions = unset
     let firstError: unknown = null
     for (const child of this.childInstances()) {
       try { child.dispose() } catch (error) { firstError ??= error }
@@ -808,11 +843,10 @@ class ComponentInstance<Props> {
     for (const binding of this.bindings) {
       try {
         if (binding.kind === "event") {
-          binding.definition.target.removeEventListener(
-            binding.definition.type,
-            binding.listener,
-            {capture: binding.definition.capture}
-          )
+          binding.connection.dispose()
+        } else if (binding.kind === "node") {
+          if (!this.committed) binding.initialPatch?.rollback()
+          binding.range.dispose(false)
         } else if (binding.kind === "ref") {
           detachRef(binding)
         }
@@ -872,11 +906,12 @@ class ComponentInstance<Props> {
     for (const node of topLevel) this.staging.appendChild(node)
     this.staging.appendChild(this.end)
     for (const binding of mounted.bindings) {
-      if (binding.kind === "child" || binding.kind === "conditional" || binding.kind === "keyed") {
+      if (binding.kind === "child" || binding.kind === "conditional" || binding.kind === "keyed" || binding.kind === "node") {
         validateEmptyRange(binding.start, binding.end, this.template.displayName)
       }
     }
     this.bindings = mounted.bindings.map(binding => this.createRuntimeBinding(binding))
+    this.ownDomNodes = this.bindings.some(binding => binding.kind === "node")
     this.hasCompositionBindings = this.bindings.some(binding =>
       binding.kind === "child" || binding.kind === "conditional" || binding.kind === "keyed"
     )
@@ -895,22 +930,15 @@ class ComponentInstance<Props> {
       }
     }
     if (definition.kind === "event") {
-      const state: RuntimeEventBinding = {
-        definition,
-        handler: null,
-        kind: "event",
-        listener: () => {},
-        value: unset
+      return {
+        definition, kind: "event", value: unset,
+        connection: new DomEventBinding(definition.target, definition.type, definition.capture, invoke => {
+          if (this.active) this.document.transaction(() => this.scheduler.batch(invoke))
+        }),
       }
-      state.listener = event => {
-        const handler = state.handler
-        if (!handler || !this.active) return
-        this.document.transaction(() => this.scheduler.batch(() => handler(event)))
-      }
-      definition.target.addEventListener(definition.type, state.listener, {
-        capture: definition.capture
-      })
-      return state
+    }
+    if (definition.kind === "node") {
+      return {definition, kind: "node", value: unset, pending: null, initialPatch: null, range: new DomContentRange(definition.end, [], undefined, definition.start)}
     }
     if (definition.kind === "ref") {
       return {
@@ -1062,7 +1090,7 @@ class ComponentInstance<Props> {
           ))
           continue
         }
-        const patch = prepareBindingPatch(binding, this.values[index])
+        const patch = prepareBindingPatch(binding, this.values[index], this.committed)
         if (patch) patches.push(patch)
       }
     } catch (error) {
@@ -1070,6 +1098,8 @@ class ComponentInstance<Props> {
       throw error
     }
     return {
+      hasDomNodes: this.hasDomNodes || this.ownDomNodes || (ranges.length > 0 && ranges.some(range =>
+        "next" in range ? range.next?.hasDomNodes === true : range.nextOrder.some(child => child.hasDomNodes))),
       hostPatches: patches,
       instance: this as ComponentInstance<unknown>,
       nextContextFrame,
@@ -1082,6 +1112,7 @@ class ComponentInstance<Props> {
   }
 
   finalizePreparedState(prepared: PreparedComponentUpdate): void {
+    this.hasDomNodes = prepared.hasDomNodes
     for (const patch of prepared.hostPatches) patch.commit()
     clearPendingHookQueues(prepared.workHooks)
     pendingHookUpdates.delete(this as ComponentInstance<unknown>)
@@ -1501,6 +1532,12 @@ function requireComponentValue(value: unknown, binding: "child" | "conditional")
 }
 
 function commitPreparedUpdate(prepared: PreparedComponentUpdate, connected: boolean): void {
+  if (connected && prepared.hasDomNodes) {
+    prepared.instance.document.transaction(() => commitPreparedUpdateNow(prepared, connected))
+  } else commitPreparedUpdateNow(prepared, connected)
+}
+
+function commitPreparedUpdateNow(prepared: PreparedComponentUpdate, connected: boolean): void {
   const applied: PreparedPatch[] = []
   try {
     validatePreparedRanges(prepared)
@@ -1512,6 +1549,7 @@ function commitPreparedUpdate(prepared: PreparedComponentUpdate, connected: bool
         validateExternalSnapshotsDeep(prepared)
         applyHostPatchesDeep(prepared, applied)
         applyRangeDomDeep(prepared)
+        if (connected) applyPendingNodesDeep(prepared)
       } catch (error) {
         styleSheetCommit.rollback()
         throw error
@@ -1560,6 +1598,14 @@ function applyRangeDomDeep(prepared: PreparedComponentUpdate): void {
   for (const range of prepared.ranges) {
     for (const child of existingPlans(range)) applyRangeDomDeep(child)
     applyRangeDom(range)
+  }
+}
+
+function applyPendingNodesDeep(prepared: PreparedComponentUpdate): void {
+  for (const range of prepared.ranges) {
+    for (const child of existingPlans(range)) applyPendingNodesDeep(child)
+    const staged = "existingPlan" in range ? range.staged ? [range.staged] : [] : range.staged
+    for (const child of staged) child.applyPendingNodeBindings()
   }
 }
 
@@ -1640,25 +1686,11 @@ function moveInstanceRegionBefore(
   parent: Node,
   anchor: Node,
 ): void {
-  let current: Node | null = instance.start
-  while (current) {
-    const following: Node | null = current.nextSibling
-    parent.insertBefore(current, anchor)
-    if (current === instance.end) break
-    current = following
-  }
+  moveDomRange(instance.start, instance.end, parent, anchor)
 }
 
 function removeInstanceRegion(instance: ComponentInstance<unknown>): void {
-  const parent = instance.start.parentNode
-  if (!parent) return
-  let current: Node | null = instance.start
-  while (current) {
-    const following: Node | null = current.nextSibling
-    parent.removeChild(current)
-    if (current === instance.end) break
-    current = following
-  }
+  removeDomRange(instance.start, instance.end)
 }
 
 function validatePreparedRanges(prepared: PreparedComponentUpdate): void {
@@ -1838,7 +1870,7 @@ function safeDispose(instance: ComponentInstance<unknown>): void {
 }
 
 function bindingTargets(binding: HostBinding): Node[] {
-  if (binding.kind === "child" || binding.kind === "conditional" || binding.kind === "keyed") {
+  if (binding.kind === "child" || binding.kind === "conditional" || binding.kind === "keyed" || binding.kind === "node") {
     return [binding.start, binding.end]
   }
   return [binding.target]
@@ -1876,6 +1908,10 @@ let renderPhaseUpdate = false
 let currentEffectPhase: EffectPhase | null = null
 
 export function createRoot(container: RootContainer, options: RootOptions = {}): ComponentRoot {
+  return createComponentRoot(container, options)
+}
+
+function createComponentRoot(container: RootContainer, options: RootOptions, deferCommit?: (commit: () => void) => void): ComponentRoot {
   if (!(container instanceof Element) && !(container instanceof DocumentFragment) && !(container instanceof Document)) {
     throw new TypeError("createRoot expects an @zavx0z/immersive-dom Document, Element or DocumentFragment")
   }
@@ -1888,6 +1924,8 @@ export function createRoot(container: RootContainer, options: RootOptions = {}):
   const prefix = options.identifierPrefix ?? ""
   let instance: ComponentInstance<unknown> | null = null
   let active = true
+  let contentInput: ComponentContent | undefined
+  let retainedContent: ComponentContent | undefined
 
   const root: ComponentRoot = {
     batch<Result>(callback: () => Result): Result {
@@ -1918,61 +1956,101 @@ export function createRoot(container: RootContainer, options: RootOptions = {}):
         )
       }
       const key = normalizeKey(renderOptions.key)
-      if (instance?.matches(template as CompiledTemplate<unknown>, key)) {
-        const current = instance as ComponentInstance<Props>
-        current.scheduleProps(props as Readonly<Props>)
-        return
-      }
-
-      const staged = new ComponentInstance(
-        scheduler,
-        styleSheetOwner,
-        rootId,
-        prefix,
-        template,
-        props as Readonly<Props>,
-        key,
-        null,
-        application?.contexts ?? noContextProvisions
-      )
-      const previous = instance
+      const previousContentInput = contentInput
+      const previousRetainedContent = retainedContent
       try {
-        let attempts = 0
-        while (true) {
-          attempts += 1
-          if (attempts > MAX_RENDER_PHASE_UPDATES) {
-            throw new HookContractError(
-              `${template.displayName} received an unstable external-store snapshot`
-            )
+        const authored = (props as Record<symbol, ComponentContent> | undefined)?.[slotContents]
+        const content = renderOptions.content ?? (hasDomContent(authored) ? authored : undefined)
+        if (content !== undefined) {
+          withComponentContent(template, props as Readonly<Props>, content, document, container)
+          if (content !== contentInput) {
+            retainedContent = retainComponentContent(content)
+            contentInput = content
           }
-          try {
-            document.transaction(() => {
-              const styleSheetCommit = styleSheetOwner.commitPending()
-              try {
-                staged.validateExternalSnapshots()
-                container.replaceChildren(staged.stagedRegion)
-              } catch (error) {
-                styleSheetCommit.rollback()
-                throw error
-              }
-            })
-            break
-          } catch (error) {
-            if (!(error instanceof ExternalStoreSnapshotChanged)) throw error
-            staged.stabilizeDetached()
-          }
+          props = withComponentContent(template, props as Readonly<Props>, retainedContent!, document, container)
         }
+        if (instance?.matches(template as CompiledTemplate<unknown>, key)) {
+          const current = instance as ComponentInstance<Props>
+          current.scheduleProps(props as Readonly<Props>, application?.contexts ?? noContextProvisions)
+          return
+        }
+
+        const staged = new ComponentInstance(
+          scheduler,
+          styleSheetOwner,
+          rootId,
+          prefix,
+          template,
+          props as Readonly<Props>,
+          key,
+          null,
+          application?.contexts ?? noContextProvisions
+        )
+        const previous = instance
+        try {
+          let attempts = 0
+          while (true) {
+            attempts += 1
+            if (attempts > MAX_RENDER_PHASE_UPDATES) {
+              throw new HookContractError(
+                `${template.displayName} received an unstable external-store snapshot`
+              )
+            }
+            try {
+              document.transaction(() => {
+                const styleSheetCommit = styleSheetOwner.commitPending()
+                const previousNodes = staged.hasDomNodes ? [...container.childNodes] : null
+                const parking = previousNodes ? document.createDocumentFragment() : null
+                const focus = parking ? document.activeElement : null
+                let replaced = false
+                try {
+                  staged.validateExternalSnapshots()
+                  if (parking) for (const node of previousNodes!) parking.appendChild(node)
+                  replaced = true
+                  container.replaceChildren(staged.stagedRegion)
+                  staged.applyPendingNodeBindings()
+                } catch (error) {
+                  styleSheetCommit.rollback()
+                  if (parking && replaced) {
+                    try { staged.dispose() } finally {
+                      container.replaceChildren(parking)
+                      if (focus instanceof HTMLElement) focus.focus()
+                    }
+                  }
+                  throw error
+                }
+                parking?.replaceChildren()
+              })
+              break
+            } catch (error) {
+              if (!(error instanceof ExternalStoreSnapshotChanged)) throw error
+              staged.stabilizeDetached()
+            }
+          }
+        } catch (error) {
+          staged.dispose()
+          throw error
+        }
+        instance = staged as ComponentInstance<unknown>
+        let commitError: unknown = null
+        scheduler.batch(() => {
+          try { previous?.dispose() } catch (error) { commitError = error }
+          try {
+            if (deferCommit) deferCommit(() => {
+              staged.applyPendingNodeBindings()
+              staged.commitToDocument()
+            })
+            else staged.commitToDocument()
+          } catch (error) { commitError ??= error }
+        })
+        if (commitError) throw commitError
       } catch (error) {
-        staged.dispose()
+        if (!instance?.acceptedProps(props)) {
+          contentInput = previousContentInput
+          retainedContent = previousRetainedContent
+        }
         throw error
       }
-      instance = staged as ComponentInstance<unknown>
-      let commitError: unknown = null
-      scheduler.batch(() => {
-        try { previous?.dispose() } catch (error) { commitError = error }
-        try { staged.commitToDocument() } catch (error) { commitError ??= error }
-      })
-      if (commitError) throw commitError
     },
 
     readStyleSheets(): ComponentRootStyleSheetSnapshot {
@@ -2012,6 +2090,41 @@ export function createRoot(container: RootContainer, options: RootOptions = {}):
 
 export function batch<Result>(document: Document, callback: () => Result): Result {
   return schedulerFor(document).batch(callback)
+}
+
+/** Template получает только этот callback; его HTML executor не импортирует Component. */
+export function mountDomComponent(parent: Element | DocumentFragment, before: Node, value: unknown): DomContentInstance {
+  const application = value as ComponentValue
+  const document = parent.ownerDocument!
+  const fragment = document.createDocumentFragment()
+  let pendingCommit: (() => void) | undefined
+  const root = createComponentRoot(fragment, {}, commit => { pendingCommit = commit })
+  try { root.render(application) }
+  catch (error) {
+    root.unmount()
+    throw error
+  }
+  const first = fragment.firstChild!
+  const last = fragment.lastChild!
+  parent.insertBefore(fragment, before)
+  return {
+    update(next) {
+      if (!isComponentValue(next) || next.template !== application.template || next.key !== application.key) return false
+      root.render(next)
+      return true
+    },
+    commit() {
+      const commit = pendingCommit
+      pendingCommit = undefined
+      commit?.()
+    },
+    dispose() {
+      document.transaction(() => {
+        removeDomRange(first, last)
+        root.unmount()
+      })
+    },
+  }
 }
 
 export function useState<Value>(initialState: Value | (() => Value)): [Value, StateDispatch<Value>] {
@@ -2632,12 +2745,20 @@ function sameDependencies(left: DependencyList, right: DependencyList): boolean 
   return left.length === right.length && left.every((value, index) => Object.is(value, right[index]))
 }
 
-function prepareBindingPatch(binding: RuntimeBinding, sourceValue: unknown): PreparedPatch | null {
+function prepareBindingPatch(binding: RuntimeBinding, sourceValue: unknown, connected: boolean): PreparedPatch | null {
   switch (binding.kind) {
     case "text": return prepareTextPatch(binding, sourceValue)
     case "property": return preparePropertyPatch(binding, sourceValue)
     case "style": return prepareStylePatch(binding, sourceValue)
     case "event": return prepareEventPatch(binding, sourceValue)
+    case "node": {
+      const patch = binding.range.prepareNodes(sourceValue as DomNodes | null | undefined)
+      if (!connected) return {apply() {}, rollback() {}, commit() {
+        binding.value = sourceValue
+        binding.pending = patch
+      }}
+      return {...patch, commit: () => { binding.value = sourceValue }}
+    }
     case "ref": throw new CompiledTemplateError("Ref bindings require the commit-ref phase")
     case "child": throw new CompiledTemplateError("Child bindings require the range phase")
     case "conditional": throw new CompiledTemplateError("Conditional bindings require the range phase")
@@ -2647,16 +2768,18 @@ function prepareBindingPatch(binding: RuntimeBinding, sourceValue: unknown): Pre
 
 function prepareTextPatch(binding: RuntimeTextBinding, sourceValue: unknown): PreparedPatch | null {
   const next = textValue(sourceValue)
-  const previous = binding.definition.target.data
-  if (Object.is(previous, next)) {
+  const patch = prepareTextOperation(binding.definition.target, next)
+  if (!patch) {
     binding.value = next
     return null
   }
-  return {
-    apply: () => { binding.definition.target.data = next },
-    rollback: () => { binding.definition.target.data = previous },
-    commit: () => { binding.value = next }
-  }
+  return committedDomPatch(patch, () => { binding.value = next })
+}
+
+function committedDomPatch(patch: DomPatch, commit: () => void): PreparedPatch {
+  const prepared = patch as PreparedPatch
+  prepared.commit = commit
+  return prepared
 }
 
 function preparePropertyPatch(
@@ -2664,39 +2787,24 @@ function preparePropertyPatch(
   sourceValue: unknown
 ): PreparedPatch | null {
   const {target, name} = binding.definition
+  if (name === "style") throw new CompiledTemplateError("Style values require a bindStyle binding")
   if (binding.reflected) {
     // Жесты и useFrame меняют сам Element. Неизменённый авторский prop не
     // читает и не переписывает его; новое значение вступает в силу при commit.
     if (Object.is(binding.value, sourceValue)) return null
     const next = sourceValue == null ? binding.reflected.initialValue : sourceValue
-    const previous = Reflect.get(target, name)
-    const changed = !Object.is(previous, next)
-    return {
-      apply: () => { if (changed) Reflect.set(target, name, next) },
-      rollback: () => { if (changed) Reflect.set(target, name, previous) },
-      commit: () => { binding.value = sourceValue }
-    }
+    const patch = prepareDomOperation(propertyOperation(target, name, next, true))
+    return {apply: () => patch?.apply(), rollback: () => patch?.rollback(), commit: () => { binding.value = sourceValue }}
   }
   const operation = propertyOperation(target, name, sourceValue)
-  const previous = operation.current()
-  if (Object.is(previous, operation.next)) {
+  const patch = prepareDomOperation(operation)
+  if (!patch) {
     binding.value = operation.next
     return null
   }
-  return {
-    apply: () => operation.write(operation.next),
-    rollback: () => operation.write(previous),
-    commit: () => { binding.value = operation.next }
-  }
+  return committedDomPatch(patch, () => { binding.value = operation.next })
 }
 
-function hasPropertySetter(target: Element, name: string): boolean {
-  for (let prototype: object | null = target; prototype !== null; prototype = Object.getPrototypeOf(prototype)) {
-    const descriptor = Object.getOwnPropertyDescriptor(prototype, name)
-    if (descriptor !== undefined) return typeof descriptor.set === "function"
-  }
-  return false
-}
 
 function prepareStylePatch(binding: RuntimeStyleBinding, sourceValue: unknown): PreparedPatch | null {
   const next = resolveStyleValue(sourceValue as StyleBindingValue)
@@ -2718,19 +2826,12 @@ function prepareStylePatch(binding: RuntimeStyleBinding, sourceValue: unknown): 
 }
 
 function prepareEventPatch(binding: RuntimeEventBinding, sourceValue: unknown): PreparedPatch | null {
-  const next = sourceValue === null || sourceValue === undefined
-    ? null
-    : eventHandler(sourceValue)
-  if (Object.is(binding.handler, next)) {
-    binding.value = next
+  const patch = binding.connection.prepare(sourceValue, false)
+  if (!patch) {
+    binding.value = sourceValue
     return null
   }
-  const previous = binding.handler
-  return {
-    apply: () => { binding.handler = next },
-    rollback: () => { binding.handler = previous },
-    commit: () => { binding.value = next }
-  }
+  return committedDomPatch(patch, () => { binding.value = sourceValue })
 }
 
 function prepareRefChange(
@@ -2758,18 +2859,6 @@ function transitionRef(binding: RuntimeRefBinding, next: Ref<unknown>): void {
   }
 }
 
-function textValue(value: unknown): string {
-  if (value === null || value === undefined || typeof value === "boolean") return ""
-  if (typeof value === "string" || typeof value === "number" || typeof value === "bigint") {
-    return String(value)
-  }
-  throw new TypeError("A compiled text binding requires a primitive value")
-}
-
-function eventHandler(value: unknown): EventHandler {
-  if (typeof value !== "function") throw new TypeError("An event binding requires a function or null")
-  return value as EventHandler
-}
 
 function hostRef(value: unknown): Ref<unknown> {
   if (value === null || value === undefined) return null
@@ -2792,69 +2881,6 @@ function detachRef(binding: RuntimeRefBinding): void {
   if (cleanup) cleanup()
 }
 
-function propertyOperation(target: Element, name: string, value: unknown): PropertyOperation {
-  if (name === "style") {
-    throw new CompiledTemplateError("Style values require a bindStyle binding")
-  }
-  if (name === "value" && (
-    target instanceof HTMLInputElement ||
-    target instanceof HTMLTextAreaElement ||
-    target instanceof HTMLSelectElement ||
-    target instanceof HTMLOptionElement
-  )) {
-    const next = value === null || value === undefined ? "" : String(value)
-    return {current: () => target.value, next, write: source => { target.value = source as string }}
-  }
-  if (name === "checked" && target instanceof HTMLInputElement) {
-    const next = Boolean(value)
-    return {current: () => target.checked, next, write: source => { target.checked = source as boolean }}
-  }
-  if (name === "indeterminate" && target instanceof HTMLInputElement) {
-    const next = Boolean(value)
-    return {
-      current: () => target.indeterminate,
-      next,
-      write: source => { target.indeterminate = source as boolean }
-    }
-  }
-  if (name === "selected" && target instanceof HTMLOptionElement) {
-    const next = Boolean(value)
-    return {current: () => target.selected, next, write: source => { target.selected = source as boolean }}
-  }
-  if (name === "selectedIndex" && target instanceof HTMLSelectElement) {
-    const next = Number(value)
-    if (!Number.isFinite(next)) throw new TypeError("selectedIndex must be a finite number")
-    return {
-      current: () => target.selectedIndex,
-      next,
-      write: source => { target.selectedIndex = source as number }
-    }
-  }
-  if (name === "tabIndex" && target instanceof HTMLElement) {
-    const next = Number(value)
-    if (!Number.isFinite(next)) throw new TypeError("tabIndex must be a finite number")
-    return {current: () => target.tabIndex, next, write: source => { target.tabIndex = source as number }}
-  }
-  const attributeName = name === "className" ? "class" : name
-  const next = attributeValue(value, name)
-  return {
-    current: () => target.getAttribute(attributeName),
-    next,
-    write: source => {
-      if (source === null) target.removeAttribute(attributeName)
-      else target.setAttribute(attributeName, source as string)
-    }
-  }
-}
-
-function attributeValue(value: unknown, name: string): string | null {
-  if (value === null || value === undefined || value === false) return null
-  if (value === true) return ""
-  if (
-    typeof value === "string" || typeof value === "number" || typeof value === "bigint"
-  ) return String(value)
-  throw new TypeError(`Host property ${name} requires a primitive value`)
-}
 
 function initialResolvedStyle(cssText: string | null): ResolvedStyleValue {
   return Object.freeze({
@@ -2868,8 +2894,7 @@ function writeResolvedStyle(
   _previous: ResolvedStyleValue,
   next: ResolvedStyleValue
 ): void {
-  if (next.cssText === null) target.removeAttribute("style")
-  else target.setAttribute("style", next.cssText)
+  applyDomOperation(attributeOperation(target, "style", next.cssText))
 }
 
 function unsupported(feature: string): never {

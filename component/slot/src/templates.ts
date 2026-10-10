@@ -1,10 +1,12 @@
 import {
   bindConditional,
   bindText,
+  bindNode,
   defineCompiledTemplate,
   writeBinding,
   type CompiledTemplate,
 } from "@zavx0z/immersive-template/compiled"
+import type {Node} from "@zavx0z/immersive-dom"
 import type {ComposeSlotOutput} from "../contract/output.ts"
 
 /**
@@ -15,6 +17,18 @@ import type {ComposeSlotOutput} from "../contract/output.ts"
 type SlotTextProps = Readonly<{value: string | number | bigint}>
 
 const fixedSlotTemplates = new Map<number, CompiledTemplate<readonly ComposeSlotOutput[]>>()
+
+/** Существующие узлы занимают обычную область Component без Element-обёртки. */
+export const slotNodeTemplate = defineCompiledTemplate<Readonly<{value: Node}>>({
+  displayName: "SlotNodes",
+  bindingCount: 1,
+  mount(document) {
+    const start = document.createComment("nodes:start")
+    const end = document.createComment("nodes:end")
+    return {nodes: [start, end], bindings: [bindNode(start, end)]}
+  },
+  render(props, values) { writeBinding(values, 0, props.value) },
+})
 
 export const slotTextTemplate = defineCompiledTemplate<SlotTextProps>({
   displayName: "SlotText",

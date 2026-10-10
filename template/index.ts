@@ -1,19 +1,21 @@
 /**
-HTML templates and scoped CSS authoring compiled to addressed DOM/style
-operations.
+HTML-шаблоны и scoped CSS преобразуются в адресованные DOM/style операции.
 
-The primary `html` and `compile` API creates real DOM nodes and preserves their
-identity across updates. The separate `parse` API reads
-`Function.prototype.toString()` without invoking the supplied callback and
-continues to own bounded syntax analysis for DSL consumers.
+`html/compile` создают реальные узлы переданного Document и сохраняют identity
+при обновлении. HTML grammar принадлежит DOM; blueprint cache учитывает
+фактический HTML context. Привязки и диапазоны исполняются теми же нижними
+операциями, которыми пользуется Component. Подготовленные значения подключаются
+через lifecycle callback их владельца; Template не зависит на Component.
 
-The `css` tag captures real scoped CSS template shapes and ordered primitive
-values for the JSX compiler. It is not a global stylesheet registration API.
+Отдельный `parse` читает Function.prototype.toString() без исполнения callback
+и сохраняет ограниченный разбор DSL. `css` передаёт реальные CSS shapes и
+упорядоченные primitives JSX-компилятору, не регистрируя глобальный stylesheet.
 
 @packageDocumentation
 */
 
 import type {} from "./css-global.d.ts"
+export type {CssCompilerIntrinsic} from "./css-global.d.ts"
 
 import { createNode } from "./node"
 import type { Node } from "./node/index.t"

@@ -6,6 +6,6 @@ Test host подключает этот entrypoint через `bun test --preloa
 
 @packageDocumentation
 */
-import {registerHeadlessCompiler, repositoryRoot} from "./compiler.ts"
+import {registerHeadlessCompiler, repositoryRoot} from "../compiler.ts"
 
 registerHeadlessCompiler(repositoryRoot(process.cwd()))

@@ -1,4 +1,5 @@
 import {EventTarget} from "./event-target.ts"
+import {customElementInserted, customElementRemoving, customElementAdopted, isCustomElementHost} from "./internal/custom-elements.ts"
 import {domError} from "./internal/errors.ts"
 import {clearFocusInSubtree} from "./internal/focus.ts"
 import {closePopoversInSubtree} from "./internal/popover.ts"
@@ -306,6 +307,22 @@ export abstract class Node extends EventTarget {
     _replacing: readonly Node[],
   ): void {}
 
+  protected validateDescendantInsertion(
+    _target: Node, _nodes: readonly Node[], _replacing: readonly Node[],
+  ): void {}
+
+  protected validateTextChange(value: string): void {
+    if (this.nodeType !== Node.TEXT_NODE) return
+    let owner = this.parentNode
+    while (owner !== null) {
+      owner.validateDescendantTextChange(this, value)
+      if (!isCustomElementHost(owner)) break
+      owner = owner.parentNode
+    }
+  }
+
+  protected validateDescendantTextChange(_target: Node, _value: string): void {}
+
   private canHaveChildren(): boolean {
     return this.nodeType === Node.DOCUMENT_NODE ||
       this.nodeType === Node.DOCUMENT_FRAGMENT_NODE ||
@@ -338,6 +355,12 @@ export abstract class Node extends EventTarget {
     }
 
     this.validateChildInsertion(nodes, replacing)
+    // Только custom hosts прозрачны для проверки пространственного владельца.
+    let host: Node = this
+    while (isCustomElementHost(host) && host.parentNode !== null) {
+      host.parentNode.validateDescendantInsertion(this, nodes, replacing)
+      host = host.parentNode
+    }
   }
 
   private convertNodes(nodes: readonly NodeOrString[]): readonly Node[] {
@@ -424,7 +447,11 @@ export abstract class Node extends EventTarget {
     const document = mutationDocument(this)
     if (!document || node.nodeDocument === document) return
     const visit = (current: Node): void => {
-      if (current.nodeType !== Node.DOCUMENT_NODE) current.nodeDocument = document
+      if (current.nodeType !== Node.DOCUMENT_NODE) {
+        const previous = current.nodeDocument
+        current.nodeDocument = document
+        customElementAdopted(current, previous, document)
+      }
       for (const child of current.childNodes) visit(child)
     }
     visit(node)
@@ -445,11 +472,13 @@ export abstract class Node extends EventTarget {
     this.childCount += 1
     invalidateTextPositionIndexes(this)
     if (tracksRanges) updateDocumentRanges(document, {type: "insert", parent: this, index})
+    customElementInserted(node)
   }
 
   private detach(record: boolean, destinationDocument: Document | null = null): void {
     const parent = this.parent
     if (!parent) return
+    customElementRemoving(this)
     invalidateTextPositionIndexes(parent)
     const document = mutationDocument(this)
     const preservesDocumentState = document !== null && document === destinationDocument

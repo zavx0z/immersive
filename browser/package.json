@@ -11,7 +11,8 @@
     "./clipboard": "./clipboard.ts",
     "./diagnostics": "./diagnostics.ts",
     "./integration": "./integration.ts",
-    "./audio": "./audio.ts"
+    "./audio": "./audio.ts",
+    "./document": "./document/index.ts"
   },
   "main": "./src/index.ts",
   "module": "./src/index.ts",

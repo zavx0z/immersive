@@ -124,3 +124,23 @@ opacity не зависит от камеры. Renderer разрешает об�
 Display. `disabledHitIds` исключает сущности с уже живыми Display, а
 `interactive: false` отключает picking ветви. Ввод, bubbling и capture обслуживает
 общий Browser SpatialHit; объём не ограничивает движение ViewPoint.
+
+## Custom Element host в пространственном дереве
+
+Пространственные компоненты следуют [договору DOM Space](../dom/space/README.md#custom-element-host-в-пространственном-дереве).
+Зарегистрированный custom host прозрачен для владения Object, Geometry, Material
+и Animation; ресурсы по-прежнему принадлежат ближайшему пространственному Object.
+Изменение детей host проверяет ограничения владельца до изменения DOM.
+Hosts сохраняются в едином Document для CSS и событий и не создают Engine objects.
+
+## HTML whitespace между пространственными детьми
+
+Object, Group, Mesh и Asset сохраняют whitespace Text между разрешёнными детьми
+по [общему DOM-закону Space](../dom/space/README.md#whitespace-в-декларативном-dom).
+Geometry, Material и Animation сохраняют собственную принадлежность Object;
+whitespace не становится ресурсом или Engine object. Значимый текст запрещён
+и при вставке, и при изменении data уже существующего Text. Текстовый интерфейс
+принадлежит Display/HUD, содержание пространственного Text задаётся его API.
+HTML spatial/custom nonvoid элементы закрываются явно; JSX self-closing grammar
+не переносится в innerHTML. Leaf Geometry/Material/ViewPoint по-прежнему не
+принимают детей.

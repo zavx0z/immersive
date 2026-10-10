@@ -8,7 +8,12 @@ import projectedSocketSide from "@zavx0z/immersive-nodes-geometry-node-socket-si
 @param authoredContent - Результат проверки наличия безымянного слота в получателе.
 Непустой слот и projected Parameters взаимно исключают друг друга.
 */
-export function prepareParameterNode(props: ParameterNodeProps, authoredContent: boolean) {
+export function prepareParameterNode(props: ParameterNodeProps, authoredContent: boolean): {
+  parameters: NonNullable<ParameterNodeProps["parameters"]>
+  sockets: NonNullable<ParameterNodeProps["sockets"]>
+  left: NonNullable<ParameterNodeProps["sockets"]>
+  right: NonNullable<ParameterNodeProps["sockets"]>
+} {
   validateParameterNodeProps(props)
   const parameters = props.parameters ?? []
   if (authoredContent && parameters.length > 0) {

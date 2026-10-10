@@ -1,4 +1,4 @@
-import {existsSync} from "node:fs"
+import {existsSync, readFileSync} from "node:fs"
 import {dirname, relative, resolve, sep} from "node:path"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
@@ -9,7 +9,7 @@ export function repositoryRoot(directory: string): string {
   let current = resolve(directory)
   while (!existsSync(resolve(current, ".git"))) {
     const parent = dirname(current)
-    if (parent === current) throw new Error("Для Headless нужно явно указать projectRoot")
+    if (parent === current) return resolve(directory)
     current = parent
   }
   return current
@@ -28,15 +28,19 @@ export function registerHeadlessCompiler(projectRoot: string): void {
   const root = resolve(projectRoot)
   if (registered.has(root)) return
   const session = new JsxCompilerSession({cwd: root, sourceRoots: [root]})
+  const manifest = resolve(root, "package.json")
+  const internal = existsSync(manifest) && JSON.parse(readFileSync(manifest, "utf8")).name === "@zavx0z/immersive"
+  const runtime = internal ? "@zavx0z/immersive-jsx" : "@zavx0z/immersive/XReact"
+  const slotChild = internal ? "@zavx0z/immersive-jsx-slot-child" : "@zavx0z/immersive/XReact/slot/child"
   Bun.plugin({
     name: `headless-jsx:${root}`,
     setup(builder) {
       builder.onLoad({filter: /\.(?:spec|test)\.tsx$/}, async ({path}) => {
         const local = relative(root, path)
         if (local.startsWith(`..${sep}`) || local === ".." || local.split(sep).includes("node_modules")) return undefined
-        const contents = await session.prepareSlotAuthoringFile(path, Bun.resolveSync("@zavx0z/immersive-jsx-slot-child", import.meta.dir))
+        const contents = await session.prepareSlotAuthoringFile(path, slotChild)
         return {
-          contents: `/** @jsxImportSource @zavx0z/immersive-jsx */\n${contents}`,
+          contents: `/** @jsxImportSource ${runtime} */\n${contents}`,
           loader: "tsx",
         }
       })

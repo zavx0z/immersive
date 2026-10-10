@@ -7,11 +7,11 @@
   "type": "module",
   "exports": {
     ".": "./index.ts",
-    "./preload": "./preload.ts"
+    "./preload": "./preload/index.ts"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload ./preload.ts --parallel tests",
+    "test": "bun test --preload ./preload/index.ts --parallel tests",
     "check": "bun run --parallel typecheck test"
   },
   "dependencies": {

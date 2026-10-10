@@ -1,4 +1,6 @@
 import {HUDElement} from "../hud/index.ts"
+import {CustomElementRegistry, associateCustomElementDocument, createCustomElement} from "./custom-elements.ts"
+import {beginCustomReactions, endCustomReactions, hasNativeElementFactory} from "./internal/custom-elements.ts"
 import {exitDocumentFullscreen, readDocumentFullscreenElement, readDocumentFullscreenEnabled} from "./fullscreen.ts"
 import {SpaceElement} from "../space/index.ts"
 import {ViewPointElement} from "../viewpoint/index.ts"
@@ -137,6 +139,7 @@ export type DocumentElementFactory = (
 
 export type DocumentOptions = Readonly<{
   elementFactories?: Readonly<Record<string, DocumentElementFactory>>
+  customElementRegistry?: CustomElementRegistry
 }>
 
 export interface HTMLElementTagNameMap {
@@ -189,6 +192,19 @@ export type DocumentTextControlSelection = Readonly<{
 }>
 
 export class Document extends Node {
+  private registry: CustomElementRegistry | null = null
+
+  get customElementRegistry(): CustomElementRegistry {
+    if (this.registry === null) {
+      this.registry = new CustomElementRegistry()
+      this.registry[associateCustomElementDocument](this)
+    }
+    return this.registry
+  }
+  [hasNativeElementFactory](name: string): boolean {
+    const normalized = name.toLowerCase()
+    return normalized === "vector-path" || this.elementFactories.has(normalized)
+  }
   get fullscreenElement(): Element | null { return readDocumentFullscreenElement(this) }
   get fullscreenEnabled(): boolean { return readDocumentFullscreenEnabled(this) }
   exitFullscreen(): Promise<void> { return exitDocumentFullscreen(this) }
@@ -208,6 +224,12 @@ export class Document extends Node {
   constructor(options: DocumentOptions = {}) {
     super(null, Node.DOCUMENT_NODE, "#document")
     this.elementFactories = normalizeDocumentElementFactories(options)
+    if (options.customElementRegistry !== undefined) {
+      if (!(options.customElementRegistry instanceof CustomElementRegistry))
+        throw new TypeError("customElementRegistry must be a CustomElementRegistry")
+      this.registry = options.customElementRegistry
+      this.registry[associateCustomElementDocument](this)
+    }
   }
 
   get documentElement(): Element | null {
@@ -278,7 +300,9 @@ export class Document extends Node {
 
     const extensionFactory = this.elementFactories.get(normalizedLocalName)
     if (extensionFactory === undefined) {
-      return new HTMLElement(this, normalizedLocalName)
+      return normalizedLocalName.includes("-")
+        ? this.customElementRegistry[createCustomElement](this, normalizedLocalName)
+        : new HTMLElement(this, normalizedLocalName)
     }
 
     const element = extensionFactory(this, normalizedLocalName)
@@ -390,10 +414,12 @@ export class Document extends Node {
   }
 
   transaction<Result>(callback: () => Result): Result {
+    beginCustomReactions()
     this.transactionDepth += 1
     try {
       return callback()
     } finally {
+      endCustomReactions()
       this.transactionDepth -= 1
       if (this.transactionDepth === 0) {
         this.flushAuthorStyleSheets()

@@ -14,6 +14,9 @@ import {validateSlotAuthoring, readSlotOutlets, readSlotChildName, slotAttribute
 export type {SlotAuthoringInput} from "./contract/input.ts"
 export type {SlotAuthoringOutput} from "./contract/output.ts"
 
+/** Поле default в типовом контракте обозначает безымянную JSX-точку вставки. */
+export function slotNameForField(name: string): string { return name === "default" ? "" : name }
+
 /** Привязывает операции слотов к одному неизменяемому AST. */
 export default class SlotAuthoring implements SlotAuthoringOutput {
   constructor(private readonly source: SlotAuthoringInput) {}

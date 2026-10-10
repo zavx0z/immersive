@@ -3,6 +3,7 @@ import type {FunctionDeclaration, Node, TypeNode} from "typescript/unstable/ast"
 import {isExpressionWithTypeArguments, isInterfaceDeclaration, isTypeAliasDeclaration, isTypeQueryNode, isTypeReferenceNode} from "typescript/unstable/ast/is"
 import {SlotContractError} from "./error.ts"
 import {componentAtom, resolveSymbol} from "./symbols.ts"
+import {slotNameForField} from "@zavx0z/immersive-jsx-slot-authoring"
 import type {SlotField, ValidationContext} from "./model.ts"
 
 const emptyTypeFlags = TypeFlags.Undefined | TypeFlags.Null | TypeFlags.Void | TypeFlags.Never
@@ -35,7 +36,7 @@ export async function readSlotSchema(
   }
   const fields = new Map<string, SlotField>()
   for (const property of await checker.getPropertiesOfType(schema)) {
-    const name = property.name === "default" ? "" : property.name
+    const name = slotNameForField(property.name)
     if (fields.has(name)) {
       throw new SlotContractError("JSX-SLOTS-NAME", "Поля default и пустое строковое имя обозначают одну область и не могут задаваться вместе", declaration.type)
     }

@@ -62,7 +62,7 @@ import {
   type TouchCameraPoint,
 } from "./touch-camera-gesture.ts"
 import {claimTouchCameraSurface} from "./touch-camera-surface.ts"
-import type {RootSize} from "./root-context.ts"
+import type {RootSize} from "./document-environment.ts"
 import type {DocumentClipboardController} from "../clipboard.ts"
 import {createDocumentSelectionInput} from "./document-selection-input.ts"
 

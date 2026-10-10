@@ -10,6 +10,8 @@
 */
 export {createRoot} from "../create-root.ts"
 export type {Root, RootOptions} from "../create-root.ts"
+export {createDocumentRoot} from "../document/index.ts"
+export type {DocumentRoot, DocumentRootOptions} from "../document/index.ts"
 
 export {useSpace, useFrame} from "./root-context.ts"
 export type {RootSize, RootState, FrameState, FrameCallback, FrameLoop} from "./root-context.ts"

@@ -33,24 +33,19 @@ import {
   type TrueTypeFont,
 } from "@zavx0z/immersive-engine"
 import {
-  createDocument,
   HTMLElement as SemanticHTMLElement,
   type Document,
   type Element,
   type Node,
 } from "@zavx0z/immersive-dom"
-import {createRoot, provideContext, type ComponentRoot, type ComponentValue} from "@zavx0z/immersive-component"
-import {createRootEnvironment, rootContext, type RootEnvironment, type RootSize, type FrameLoop} from "./root-context.ts"
-import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
-import {loadDocumentDefaultFont} from "@zavx0z/immersive-engine/default-font"
-import {claimBrowserPresentationHost, type PresentationHostClaim} from "./presentation-host.ts"
+import type {RootEnvironment, RootSize, FrameLoop} from "./document-environment.ts"
+import type {PresentationHostClaim} from "./presentation-host.ts"
 import type {
   PointerInput,
   RenderFrame,
   WheelInput,
 } from "@zavx0z/immersive-renderer-html"
 import {
-  createSpaceElementFactories,
   readSpaceTree,
   XRAnimationElement,
   XRAssetElement,
@@ -66,7 +61,7 @@ import {
   type SpaceTree,
 } from "@zavx0z/immersive-space"
 import {HUDElement} from "@zavx0z/immersive-dom/hud"
-import {SpaceElement} from "@zavx0z/immersive-dom/space"
+import {SpaceElement, isSpatialHost, spatialChildren, spatialParent} from "@zavx0z/immersive-dom/space"
 import {ViewPointElement} from "@zavx0z/immersive-dom/viewpoint"
 import {
   createBrowserLinkedAuthorStyleSheetHost,
@@ -84,7 +79,6 @@ import {readRenderedSelectionText} from "@zavx0z/immersive-renderer-html"
 
 export type PresentationOptions = Readonly<{
   canvas: HTMLCanvasElement
-  app: JSX.Element | ComponentValue
   font?: TrueTypeFont
   fontFaces?: readonly RendererFontFace[] | undefined
   fontSources?: readonly BrowserFontFaceSource[] | undefined
@@ -242,7 +236,7 @@ export type RootSeams = Readonly<{
   }>): BrowserLinkedAuthorStyleSheetHost
 }>
 
-const defaultRootSeams: RootSeams = Object.freeze({
+export const defaultRootSeams: RootSeams = Object.freeze({
   createLinkedAuthorStyleSheetHost: createBrowserLinkedAuthorStyleSheetHost,
 })
 
@@ -280,37 +274,10 @@ type AnimationProjection = {
   playing: boolean
 }
 
-/** Подмена GPU runtime для тестов владельца; из публичного Browser API не экспортируется. */
-export async function attachWithRuntimeFactory(
-  options: PresentationOptions,
-  createRuntime: RootRuntimeFactory,
-  seams: RootSeams = defaultRootSeams,
-): Promise<Root> {
-  validateOptions(options, createRuntime, seams)
-  const size = readRootSize(options)
-  const claim = claimBrowserPresentationHost(options.canvas)
-  const document = createDocument({
-    elementFactories: createSpaceElementFactories(),
-  })
-  const environment = createRootEnvironment(document, size, options.frameloop ?? "demand")
-  const appRoot = createRoot(document)
-  try {
-    appRoot.render(provideContext(rootContext, environment, options.app as ComponentValue))
-    appRoot.flush()
-    readSpaceTree(document)
-    const font = options.font ?? await loadDocumentDefaultFont(options.canvas.ownerDocument)
-    return await createAttachedRoot({...options, font}, document, appRoot, environment, claim, createRuntime, seams)
-  } catch (error) {
-    try { appRoot.unmount() } finally { environment.dispose()
-      claim.release() }
-    throw error
-  }
-}
-
 export const createAttachedRoot = async (
   options: PresentationOptions & {font: TrueTypeFont},
   document: Document,
-  appRoot: ComponentRoot,
+  content: Readonly<{flush(): number; unmount(): void}> | null,
   environment: RootEnvironment,
   claim: PresentationHostClaim,
   createRuntime: RootRuntimeFactory,
@@ -521,12 +488,12 @@ export const createAttachedRoot = async (
       synchronize()
       // Геометрия готова после регистрации проекций, до первого GPU-показа.
       // Изменения компонентов из callbacks должны попасть в тот же кадр.
-      appRoot.flush()
+      content?.flush()
       synchronize()
       let layoutPass = 0
       while (flushDocumentLayoutObservers(document)) {
         if (++layoutPass > 32) throw new Error("Layout observations did not stabilize before paint")
-        appRoot.flush()
+        content?.flush()
         synchronize()
       }
       for (const animation of animations.values()) {
@@ -546,7 +513,7 @@ export const createAttachedRoot = async (
   const synchronizeInputOwner = (): void => {
     let owner: Element | null = document.activeElement
     while (owner !== null) {
-      if ((owner instanceof DisplayElement || owner instanceof HUDElement) && owner.parentElement === space) break
+      if ((owner instanceof DisplayElement || owner instanceof HUDElement) && spatialParent(owner) === space) break
       owner = owner.parentElement
     }
     if (runtime.nativeInputHost.owner !== owner) runtime.nativeInputHost.setActiveRoot(owner)
@@ -567,7 +534,7 @@ export const createAttachedRoot = async (
       }
       if (target !== document && !space.contains(target) && !target.contains(space)) continue
       if (record.type === "childList") {
-        if (target === document || target instanceof SpaceElement || target instanceof XRObjectElement) structureDirty = true
+        if (target === document || target.contains(space) || target instanceof SpaceElement || target instanceof XRObjectElement || isSpatialHost(target)) structureDirty = true
         continue
       }
       if (record.type !== "attributes") continue
@@ -584,7 +551,8 @@ export const createAttachedRoot = async (
         if (record.attributeName === "factory-revision") animationDirty = true
       } else if (target instanceof XRAnimationElement) animationDirty = true
       else if (target instanceof XRGeometryElement || target instanceof XRMaterialElement) {
-        if (target.parentElement instanceof XRObjectElement) dirtyObjects.add(target.parentElement)
+        const owner = spatialParent(target)
+        if (owner instanceof XRObjectElement) dirtyObjects.add(owner)
         animationDirty = true
       }
     }
@@ -843,7 +811,7 @@ export const createAttachedRoot = async (
       releaseObjects(runtime, objects)
       releaseProjectionBindings(projectionBindings)
       try {
-        if (!lifecycle) appRoot.unmount()
+        if (!lifecycle) content?.unmount()
       } finally {
         try { runtime.dispose() } finally {
           try { linkedAuthorStyleSheetHost?.dispose() } finally {
@@ -1217,8 +1185,9 @@ const synchronizeObjects = (
   }
   for (const element of tree.objects) {
     const projection = projections.get(element)!
-    const parent = element.parentElement instanceof XRObjectElement
-      ? projections.get(element.parentElement)?.object
+    const owner = spatialParent(element)
+    const parent = owner instanceof XRObjectElement
+      ? projections.get(owner)?.object
       : runtime.space
     if (parent === undefined) throw new Error("Nested XRObjectElement parent is not projected")
     parent.add(projection.object)
@@ -1559,7 +1528,7 @@ const synchronizeAnimations = (
   objects: ReadonlyMap<XRObjectElement, ObjectProjection>,
   animations: Map<XRAnimationElement, AnimationProjection>,
 ): void => {
-  const elements = tree.objects.flatMap(object => object.children.filter(
+  const elements = tree.objects.flatMap(object => spatialChildren(object).filter(
     (child): child is XRAnimationElement => child instanceof XRAnimationElement,
   ))
   const live = new Set(elements)
@@ -1570,7 +1539,7 @@ const synchronizeAnimations = (
   }
 
   for (const element of elements) {
-    const ownerElement = element.parentElement
+    const ownerElement = spatialParent(element)
     if (!(ownerElement instanceof XRObjectElement)) {
       throw new TypeError("XRAnimationElement requires one XRObjectElement parent")
     }
@@ -1642,7 +1611,7 @@ const releaseObjects = (
   projections.clear()
 }
 
-const validateOptions = (
+export const validateOptions = (
   options: PresentationOptions,
   createRuntime: RootRuntimeFactory,
   seams: RootSeams,
@@ -1692,7 +1661,7 @@ const assertActive = (disposed: boolean): void => {
 }
 
 
-const readRootSize = (options: PresentationOptions): RootSize => {
+export const readRootSize = (options: PresentationOptions): RootSize => {
   const rect = options.canvas.getBoundingClientRect()
   const dimension = (value: number) => Number.isFinite(value) && value > 0 ? Math.max(1, Math.round(value)) : 1
   return {

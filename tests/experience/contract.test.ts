@@ -30,7 +30,7 @@ const createProjectionTree = () => {
 }
 
 test("[EXP-001] один Experience владеет ровно одним Document", async () => {
-  const experience = await source("browser/create-root.ts")
+  const experience = await source("browser/document/index.ts")
   expect(experience.match(/createDocument\(/gu)).toHaveLength(1)
   expect(experience).toContain("elementFactories: createSpaceElementFactories()")
   expect(experience).not.toContain("options.document")
@@ -41,7 +41,10 @@ test("[EXP-002] один Experience владеет ровно одним Canvas"
   const manifest = await Bun.file(join(root, "browser/package.json")).json() as {
     exports: Record<string, string>
   }
-  expect(Object.keys(manifest.exports)).toEqual([".", "./clipboard", "./diagnostics", "./integration"])
+  expect(Object.keys(manifest.exports)).toEqual([".", "./clipboard", "./diagnostics", "./integration", "./audio", "./document"])
+  const componentAdapter = await source("browser/create-root.ts")
+  expect(componentAdapter).toContain("createDocumentRootWithSeams")
+  expect(componentAdapter).not.toContain("createDocument(")
   expect(manifest.exports["./clipboard"]).toBe("./clipboard.ts")
   const clipboard = await source("browser/clipboard.ts")
   expect(clipboard).not.toContain('createElement("canvas")')

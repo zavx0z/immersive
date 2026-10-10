@@ -78,5 +78,8 @@
   "devDependencies": {
     "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
     "@zavx0z/immersive-jsx": "workspace:*"
+  },
+  "dependencies": {
+    "parse5": "^8.0.1"
   }
 }

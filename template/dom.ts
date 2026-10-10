@@ -3,9 +3,7 @@ import {
   DocumentFragment,
   Element,
   Node,
-  Text,
-  type Document,
-  type EventListener
+  type Document
 } from "@zavx0z/immersive-dom"
 import {
   containsTaggedTemplateMarker,
@@ -16,28 +14,13 @@ import {
   type TaggedTemplateSlotSegment,
 } from "./tagged-template.ts"
 
+import {DomContentRange, DomEventBinding, createDomAnchor, isDomAnchor, applyDomOperation, attributeOperation, propertyOperation, removeDomRange,
+  type DomContent, type DomContentAdapter} from "./compiled.ts"
+import {parseFragmentSource, type HTMLFragmentSyntaxNode} from "@zavx0z/immersive-dom"
+
 const templateResultType = Symbol("@zavx0z/immersive-template/result")
-const templateAnchors = new WeakSet<Comment>()
-const htmlBlueprintFrontend = Symbol("@zavx0z/immersive-template/html-blueprint")
+const htmlBlueprintFrontends = new Map<string, symbol>()
 
-const voidElements = new Set([
-  "area",
-  "base",
-  "br",
-  "col",
-  "embed",
-  "hr",
-  "img",
-  "input",
-  "link",
-  "meta",
-  "param",
-  "source",
-  "track",
-  "wbr"
-])
-
-const rawTextElements = new Set(["script", "style", "textarea", "title"])
 
 export type TemplateChild =
   | string
@@ -48,6 +31,7 @@ export type TemplateChild =
   | undefined
   | Node
   | TemplateResult
+  | DomContent
   | readonly TemplateChild[]
 
 export interface TemplateResult {
@@ -118,6 +102,11 @@ export function compile<State>(view: TemplateView<State>): TemplateProgram<State
       document.transaction(() => {
         internal = new InternalTemplateInstance(document, parentNode, before, expectTemplateResult(view(initialState)))
       })
+      try { internal!.commitMounted() }
+      catch (error) {
+        document.transaction(() => internal!.dispose())
+        throw error
+      }
 
       const instance: TemplateInstance<State> = {
         get parentNode() {
@@ -138,6 +127,7 @@ export function compile<State>(view: TemplateView<State>): TemplateProgram<State
             )
           }
           document.transaction(() => internal.update(result))
+          internal.commitMounted()
           currentState = state
         },
         dispose() {
@@ -177,19 +167,16 @@ type ElementBlueprint = {
   readonly children: readonly BlueprintNode[]
 }
 
-type BlueprintNode = TextBlueprint | ChildPartBlueprint | ElementBlueprint
+type BlueprintNode = TextBlueprint | {readonly type: "comment", readonly value: string} | ChildPartBlueprint | ElementBlueprint
 
 type TemplateBlueprint = {
   readonly children: readonly BlueprintNode[]
 }
 
-type ParseFrame = {
-  readonly tagName: string | null
-  readonly children: BlueprintNode[]
-}
 
 interface DynamicPart {
   update(values: readonly unknown[]): void
+  commit?(): void
   dispose(): void
 }
 
@@ -212,11 +199,20 @@ class InternalTemplateInstance {
 
     const fragment = document.createDocumentFragment()
     fragment.appendChild(this.start)
-    const blueprint = getBlueprint(result.strings)
+    const blueprint = getBlueprint(result.strings, parentNode instanceof Element ? parentNode.localName : "body")
     for (const child of blueprint.children) instantiateBlueprint(document, fragment, child, this.parts)
     fragment.appendChild(this.end)
-    for (const part of this.parts) part.update(result.values)
-    parentNode.insertBefore(fragment, before)
+    try {
+      for (const part of this.parts) part.update(result.values)
+      parentNode.insertBefore(fragment, before)
+    } catch (error) {
+      for (let index = this.parts.length - 1; index >= 0; index--) {
+        try { this.parts[index]!.dispose() } catch {}
+      }
+      removeDomRange(this.start, this.end)
+      this.disposed = true
+      throw error
+    }
   }
 
   get rootNodes(): readonly Node[] {
@@ -224,7 +220,7 @@ class InternalTemplateInstance {
     if (!parent || this.end.parentNode !== parent) return Object.freeze([])
     const result: Node[] = []
     for (let node: Node | null = this.start.nextSibling; node && node !== this.end; node = node.nextSibling) {
-      if (!(node instanceof Comment && templateAnchors.has(node))) result.push(node)
+      if (!isDomAnchor(node)) result.push(node)
     }
     return Object.freeze(result)
   }
@@ -235,9 +231,14 @@ class InternalTemplateInstance {
     for (const part of this.parts) part.update(result.values)
   }
 
+  commitMounted(): void { for (const part of this.parts) part.commit?.() }
+
   dispose(): void {
     if (this.disposed) return
-    for (const part of this.parts) part.dispose()
+    let firstError: unknown = null
+    for (const part of this.parts) {
+      try { part.dispose() } catch (error) { firstError ??= error }
+    }
     const parentNode = this.start.parentNode
     if (
       parentNode &&
@@ -247,6 +248,7 @@ class InternalTemplateInstance {
       removeInclusiveRange(parentNode, this.start, this.end)
     }
     this.disposed = true
+    if (firstError) throw firstError
   }
 }
 
@@ -268,198 +270,61 @@ class AttributePart implements DynamicPart {
     const isWholeDynamic = this.wholeDynamicIndex !== null
     const dynamicValue = isWholeDynamic ? values[this.wholeDynamicIndex!] : undefined
 
-    if (isWholeDynamic && (dynamicValue === false || dynamicValue === null || dynamicValue === undefined)) {
-      if (this.element.hasAttribute(this.attributeName)) this.element.removeAttribute(this.attributeName)
-      return
-    }
-
-    let nextValue = ""
+    let nextValue: unknown = isWholeDynamic ? dynamicValue : ""
     if (isWholeDynamic && dynamicValue === true) {
       nextValue = ""
-    } else {
-      for (const segment of this.segments) nextValue += segmentValue(segment, values)
+    } else if (!(isWholeDynamic && (dynamicValue == null || dynamicValue === false))) {
+      nextValue = this.segments.map(segment => segmentValue(segment, values)).join("")
     }
-
-    if (this.element.getAttribute(this.attributeName) !== nextValue) {
-      this.element.setAttribute(this.attributeName, nextValue)
-    }
+    const operation = attributeOperation(this.element, this.attributeName, nextValue)
+    applyDomOperation(operation)
   }
 
   dispose(): void {}
 }
 
 class EventPart implements DynamicPart {
-  private readonly element: Element
-  private readonly eventType: string
-  private readonly index: number
-  private listener: EventListener | null = null
-
-  constructor(element: Element, attributeName: string, index: number) {
-    this.element = element
-    this.eventType = attributeName.slice(2).toLowerCase()
-    this.index = index
+  private readonly binding: DomEventBinding
+  constructor(element: Element, attributeName: string, private readonly index: number) {
+    this.binding = new DomEventBinding(element, attributeName.startsWith("@") ? attributeName.slice(1) : attributeName.slice(2).toLowerCase())
   }
-
-  update(values: readonly unknown[]): void {
-    const nextValue = values[this.index]
-    const nextListener = nextValue === null || nextValue === undefined || nextValue === false
-      ? null
-      : expectEventListener(this.eventType, nextValue)
-
-    if (nextListener === this.listener) return
-    if (this.listener) this.element.removeEventListener(this.eventType, this.listener)
-    this.listener = nextListener
-    if (this.listener) this.element.addEventListener(this.eventType, this.listener)
-  }
-
-  dispose(): void {
-    if (!this.listener) return
-    this.element.removeEventListener(this.eventType, this.listener)
-    this.listener = null
-  }
+  update(values: readonly unknown[]): void { this.binding.prepare(values[this.index])?.apply() }
+  dispose(): void { this.binding.dispose() }
 }
 
-type RegionValue =
-  | {readonly type: "empty"}
-  | {readonly type: "text"; readonly node: Text}
-  | {readonly type: "node"; readonly node: Node}
-  | {readonly type: "template"; readonly instance: InternalTemplateInstance}
-  | {readonly type: "array"; readonly items: ChildRegion[]}
+class PropertyPart implements DynamicPart {
+  constructor(private readonly element: Element, private readonly name: string, private readonly index: number) {}
+  update(values: readonly unknown[]): void {
+    const operation = propertyOperation(this.element, this.name, values[this.index], true)
+    applyDomOperation(operation)
+  }
+  dispose(): void {}
+}
 
 class ChildPart implements DynamicPart {
-  private readonly region: ChildRegion
-  private readonly index: number
-
-  constructor(anchor: Comment, index: number) {
-    this.region = new ChildRegion(anchor)
-    this.index = index
+  private readonly region: DomContentRange
+  constructor(anchor: Comment, private readonly index: number) {
+    this.region = new DomContentRange(anchor, [htmlContentAdapter], document => createTemplateAnchor(document, "template:item"))
   }
-
-  update(values: readonly unknown[]): void {
-    this.region.commit(values[this.index])
-  }
-
-  dispose(): void {
-    this.region.dispose()
-  }
+  update(values: readonly unknown[]): void { this.region.commit(values[this.index]) }
+  commit(): void { this.region.commitMounted() }
+  dispose(): void { this.region.dispose() }
 }
 
-class ChildRegion {
-  private readonly anchor: Comment
-  private current: RegionValue = {type: "empty"}
-
-  constructor(anchor: Comment) {
-    this.anchor = anchor
-  }
-
-  commit(value: unknown, ancestors?: ReadonlySet<readonly unknown[]>): void {
-    if (value === null || value === undefined || value === false || value === true) {
-      if (this.current.type !== "empty") this.clear()
-      return
+const htmlContentAdapter: DomContentAdapter = {
+  accepts: isTemplateResult,
+  mount(parent, before, value) {
+    const instance = new InternalTemplateInstance(parent.ownerDocument!, parent, before, value as TemplateResult)
+    return {
+      update(next) {
+        if (!isTemplateResult(next) || next.strings !== instance.strings) return false
+        instance.update(next)
+        return true
+      },
+      dispose: () => instance.dispose(),
+      commit: () => instance.commitMounted(),
     }
-
-    if (isTemplateResult(value)) {
-      if (this.current.type === "template" && this.current.instance.strings === value.strings) {
-        this.current.instance.update(value)
-        return
-      }
-      this.clear()
-      const {document, parentNode} = this.insertionContext()
-      this.current = {
-        type: "template",
-        instance: new InternalTemplateInstance(document, parentNode, this.anchor, value)
-      }
-      return
-    }
-
-    if (value instanceof Node) {
-      if (this.current.type === "node" && this.current.node === value) {
-        const parent = this.anchor.parentNode
-        if (parent && value.parentNode !== parent) parent.insertBefore(value, this.anchor)
-        return
-      }
-      this.clear()
-      const {parentNode} = this.insertionContext()
-      parentNode.insertBefore(value, this.anchor)
-      this.current = {type: "node", node: value}
-      return
-    }
-
-    if (Array.isArray(value)) {
-      if (ancestors?.has(value)) throw new TypeError("Template child arrays cannot contain themselves")
-      const nextAncestors = new Set(ancestors ?? [])
-      nextAncestors.add(value)
-      if (this.current.type !== "array") {
-        this.clear()
-        this.current = {type: "array", items: []}
-      }
-      const items = this.current.items
-      const {document, parentNode} = this.insertionContext()
-      for (let index = 0; index < value.length; index += 1) {
-        let item = items[index]
-        if (!item) {
-          const anchor = createTemplateAnchor(document, "template:item")
-          parentNode.insertBefore(anchor, this.anchor)
-          item = new ChildRegion(anchor)
-          items.push(item)
-        }
-        item.commit(value[index], nextAncestors)
-      }
-      while (items.length > value.length) items.pop()!.dispose()
-      return
-    }
-
-    if (typeof value === "string" || typeof value === "number" || typeof value === "bigint") {
-      const nextText = String(value)
-      if (this.current.type === "text") {
-        if (this.current.node.data !== nextText) this.current.node.data = nextText
-        return
-      }
-      this.clear()
-      const {document, parentNode} = this.insertionContext()
-      const node = document.createTextNode(nextText)
-      parentNode.insertBefore(node, this.anchor)
-      this.current = {type: "text", node}
-      return
-    }
-
-    throw new TypeError(`Unsupported template child value: ${describeValue(value)}`)
-  }
-
-  dispose(): void {
-    this.clear()
-    const parent = this.anchor.parentNode
-    if (parent) parent.removeChild(this.anchor)
-  }
-
-  private clear(): void {
-    switch (this.current.type) {
-      case "empty":
-        return
-      case "text":
-      case "node": {
-        const parent = this.anchor.parentNode
-        if (parent && this.current.node.parentNode === parent) parent.removeChild(this.current.node)
-        break
-      }
-      case "template":
-        this.current.instance.dispose()
-        break
-      case "array":
-        for (const item of this.current.items) item.dispose()
-        break
-    }
-    this.current = {type: "empty"}
-  }
-
-  private insertionContext(): {document: Document; parentNode: Element | DocumentFragment} {
-    const parentNode = this.anchor.parentNode
-    const document = this.anchor.ownerDocument
-    if (!parentNode || !(parentNode instanceof Element || parentNode instanceof DocumentFragment) || !document) {
-      throw new Error("A template child region is detached")
-    }
-    return {document, parentNode}
-  }
+  },
 }
 
 function instantiateBlueprint(
@@ -471,6 +336,9 @@ function instantiateBlueprint(
   switch (blueprint.type) {
     case "text":
       parentNode.appendChild(document.createTextNode(blueprint.value))
+      return
+    case "comment":
+      parentNode.appendChild(document.createComment(blueprint.value))
       return
     case "part": {
       const anchor = createTemplateAnchor(document, "template:part")
@@ -503,7 +371,7 @@ function instantiateAttributes(
     )
 
     if (dynamicSegments.length === 0) {
-      if (attribute.name.startsWith("on")) {
+      if (attribute.name.startsWith("on") || attribute.name.startsWith("@") || attribute.name.startsWith(".")) {
         throw new Error(`Static event attribute ${attribute.name} cannot be executed`)
       }
       element.setAttribute(
@@ -513,7 +381,14 @@ function instantiateAttributes(
       continue
     }
 
-    if (attribute.name.startsWith("on")) {
+    if (attribute.name.startsWith(".")) {
+      if (attribute.segments.length !== 1 || dynamicSegments.length !== 1 || attribute.name.length === 1) {
+        throw new Error("DOM property bindings require one dynamic value")
+      }
+      parts.push(new PropertyPart(element, attribute.name.slice(1), dynamicSegments[0]!.index))
+      continue
+    }
+    if (attribute.name.startsWith("on") || attribute.name.startsWith("@")) {
       if (attribute.segments.length !== 1 || dynamicSegments.length !== 1 || attribute.name.length === 2) {
         throw new Error(`Event binding ${attribute.name} must contain exactly one JavaScript listener`)
       }
@@ -525,185 +400,48 @@ function instantiateAttributes(
   }
 }
 
-function getBlueprint(strings: TemplateStringsArray): TemplateBlueprint {
-  return getTaggedTemplateShape(strings, htmlBlueprintFrontend, parseBlueprint)
+function getBlueprint(strings: TemplateStringsArray, context: string): TemplateBlueprint {
+  let frontend = htmlBlueprintFrontends.get(context)
+  if (!frontend) htmlBlueprintFrontends.set(context, frontend = Symbol(`HTML:${context}`))
+  return getTaggedTemplateShape(strings, frontend, strings => parseBlueprint(strings, context))
 }
 
-function parseBlueprint(strings: TemplateStringsArray): TemplateBlueprint {
+function parseBlueprint(strings: TemplateStringsArray, context: string): TemplateBlueprint {
   const source = joinTaggedTemplateSource(strings)
-
-  const root: ParseFrame = {tagName: null, children: []}
-  const stack: ParseFrame[] = [root]
-  let index = 0
-
-  while (index < source.length) {
-    if (source[index] !== "<") {
-      const nextTag = source.indexOf("<", index)
-      const end = nextTag === -1 ? source.length : nextTag
-      appendTextBlueprints(currentFrame(stack).children, source.slice(index, end), strings.length - 1)
-      index = end
-      continue
+  const convert = (node: HTMLFragmentSyntaxNode): BlueprintNode[] => {
+    if (node.type === "comment") {
+      if (containsTaggedTemplateMarker(node.value)) throw new Error("HTML comment interpolations are unsupported")
+      return [{type: "comment", value: node.value}]
     }
-
-    if (source.startsWith("<!--", index) || source.startsWith("<!", index)) {
-      throw new Error("HTML comments and declarations are not supported by the direct DOM compiler yet")
+    if (node.type === "text") {
+      return parseTaggedTemplateSegments(node.value, strings.length - 1).map(segment =>
+        segment.type === "static" ? {type: "text", value: segment.value} : {type: "part", index: segment.index})
     }
-
-    const tagEnd = findTagEnd(source, index)
-    const token = source.slice(index + 1, tagEnd - 1)
-    index = tagEnd
-
-    if (token.startsWith("/")) {
-      const closingName = token.slice(1).trim().toLowerCase()
-      if (!isStaticName(closingName)) throw new Error(`Invalid closing tag: ${token}`)
-      const frame = stack.pop()
-      if (!frame || frame.tagName !== closingName) {
-        throw new Error(`Unexpected closing tag </${closingName}>`)
-      }
-      continue
-    }
-
-    const parsed = parseOpeningTag(token, strings.length - 1)
-    const element: ElementBlueprint = {
-      type: "element",
-      tagName: parsed.tagName,
-      attributes: Object.freeze(parsed.attributes),
-      children: parsed.children
-    }
-    currentFrame(stack).children.push(element)
-
-    if (!parsed.selfClosing && !voidElements.has(parsed.tagName)) {
-      if (rawTextElements.has(parsed.tagName)) {
-        throw new Error(`<${parsed.tagName}> raw-text parsing is not supported yet`)
-      }
-      stack.push({tagName: parsed.tagName, children: parsed.children})
-    }
+    if (containsTaggedTemplateMarker(node.name)) throw new Error("Element names must be static")
+    return [{type: "element", tagName: node.name,
+      attributes: node.attrs.map(attribute => {
+        if (containsTaggedTemplateMarker(attribute.name)) throw new Error("Attribute names must be static")
+        const segments = parseTaggedTemplateSegments(attribute.value, strings.length - 1)
+        return {name: authoredDirectiveName(strings, attribute.name, segments), segments}
+      }),
+      children: node.children.flatMap(convert),
+    }]
   }
-
-  if (stack.length !== 1) {
-    throw new Error(`Unclosed tag <${currentFrame(stack).tagName}>`)
-  }
-
-  return Object.freeze({children: Object.freeze(root.children)})
+  return Object.freeze({children: Object.freeze(parseFragmentSource(source, context).flatMap(convert))})
 }
 
-function parseOpeningTag(
-  source: string,
-  slotCount: number
-): {tagName: string; attributes: AttributeBlueprint[]; children: BlueprintNode[]; selfClosing: boolean} {
-  let cursor = 0
-  while (cursor < source.length && /\s/.test(source[cursor]!)) cursor += 1
-  const nameStart = cursor
-  while (cursor < source.length && !/[\s/>]/.test(source[cursor]!)) cursor += 1
-  const tagName = source.slice(nameStart, cursor).toLowerCase()
-  if (!isStaticName(tagName) || containsTaggedTemplateMarker(tagName)) {
-    throw new Error("Element names must be static valid HTML names")
-  }
-
-  let selfClosing = false
-  const attributes: AttributeBlueprint[] = []
-  const attributeNames = new Set<string>()
-
-  while (cursor < source.length) {
-    while (cursor < source.length && /\s/.test(source[cursor]!)) cursor += 1
-    if (cursor >= source.length) break
-    if (source[cursor] === "/") {
-      selfClosing = true
-      cursor += 1
-      while (cursor < source.length && /\s/.test(source[cursor]!)) cursor += 1
-      if (cursor !== source.length) throw new Error(`Unexpected content after / in <${tagName}>`)
-      break
-    }
-
-    const attributeStart = cursor
-    while (cursor < source.length && !/[\s=/]/.test(source[cursor]!)) cursor += 1
-    const attributeName = source.slice(attributeStart, cursor).toLowerCase()
-    if (!isStaticName(attributeName) || containsTaggedTemplateMarker(attributeName)) {
-      throw new Error(`Attribute names in <${tagName}> must be static`)
-    }
-    if (attributeName.startsWith(".") || attributeName.startsWith("?") || attributeName.startsWith("@")) {
-      throw new Error(`Non-HTML attribute directive ${attributeName} is not supported`)
-    }
-    if (attributeNames.has(attributeName)) throw new Error(`Duplicate attribute ${attributeName} in <${tagName}>`)
-    attributeNames.add(attributeName)
-
-    while (cursor < source.length && /\s/.test(source[cursor]!)) cursor += 1
-    if (source[cursor] !== "=") {
-      if (attributeName.startsWith("on")) {
-        throw new Error(`Static event attribute ${attributeName} cannot be executed`)
-      }
-      attributes.push({name: attributeName, segments: null})
-      continue
-    }
-
-    cursor += 1
-    while (cursor < source.length && /\s/.test(source[cursor]!)) cursor += 1
-    if (cursor >= source.length) throw new Error(`Missing value for ${attributeName} in <${tagName}>`)
-
-    const quote = source[cursor]
-    let value: string
-    if (quote === '"' || quote === "'") {
-      cursor += 1
-      const valueStart = cursor
-      while (cursor < source.length && source[cursor] !== quote) cursor += 1
-      if (cursor >= source.length) throw new Error(`Unclosed quoted value for ${attributeName}`)
-      value = source.slice(valueStart, cursor)
-      cursor += 1
-    } else {
-      const valueStart = cursor
-      while (cursor < source.length && !/\s/.test(source[cursor]!)) cursor += 1
-      value = source.slice(valueStart, cursor)
-    }
-
-    attributes.push({name: attributeName, segments: Object.freeze(parseSegments(value, slotCount))})
-  }
-
-  return {tagName, attributes, children: [], selfClosing}
-}
-
-function appendTextBlueprints(target: BlueprintNode[], source: string, slotCount: number): void {
-  for (const segment of parseSegments(source, slotCount)) {
-    if (segment.type === "slot") target.push({type: "part", index: segment.index})
-    else if (segment.value !== "") target.push({type: "text", value: segment.value})
-  }
-}
-
-function parseSegments(source: string, slotCount: number): Segment[] {
-  return parseTaggedTemplateSegments(source, slotCount, decodeEntities)
-}
-
-function findTagEnd(source: string, start: number): number {
-  let quote: '"' | "'" | null = null
-  for (let cursor = start + 1; cursor < source.length; cursor += 1) {
-    const character = source[cursor]
-    if (quote) {
-      if (character === quote) quote = null
-      continue
-    }
-    if (character === '"' || character === "'") {
-      quote = character
-      continue
-    }
-    if (character === ">") return cursor + 1
-  }
-  throw new Error("Unclosed HTML tag")
-}
-
-function currentFrame(stack: readonly ParseFrame[]): ParseFrame {
-  const frame = stack.at(-1)
-  if (!frame) throw new Error("Invalid template parser state")
-  return frame
+/** DOM уже установил границы атрибута; индекс единственного placeholder сохраняет case JS-директивы. */
+function authoredDirectiveName(strings: TemplateStringsArray, name: string, segments: readonly Segment[]): string {
+  if (!name.startsWith(".") && !name.startsWith("@")) return name
+  const only = segments[0]
+  if (segments.length !== 1 || only?.type !== "slot") return name
+  return strings[only.index]?.match(/(?:^|\s)([.@][^\s=<>]+)\s*=\s*["']?$/u)?.[1] ?? name
 }
 
 function createTemplateAnchor(document: Document, data: string): Comment {
-  const anchor = document.createComment(data)
-  templateAnchors.add(anchor)
-  return anchor
+  return createDomAnchor(document, data)
 }
 
-function isStaticName(value: string): boolean {
-  return /^[A-Za-z][A-Za-z0-9:._-]*$/.test(value)
-}
 
 function segmentValue(segment: Segment, values: readonly unknown[]): string {
   if (segment.type === "static") return segment.value
@@ -715,14 +453,6 @@ function segmentValue(segment: Segment, values: readonly unknown[]): string {
   throw new TypeError(`Attribute interpolation requires a primitive value, received ${describeValue(value)}`)
 }
 
-function expectEventListener(eventType: string, value: unknown): EventListener {
-  if (typeof value === "function") return value as EventListener
-  if (typeof value === "object" && value !== null && "handleEvent" in value) {
-    const candidate = value as {handleEvent?: unknown}
-    if (typeof candidate.handleEvent === "function") return value as EventListener
-  }
-  throw new TypeError(`on${eventType} requires a function or EventListener object`)
-}
 
 function expectTemplateResult(value: unknown): TemplateResult {
   if (!isTemplateResult(value)) throw new TypeError("A template view must return html`...`")
@@ -739,39 +469,8 @@ function assertContainer(value: unknown): asserts value is Element | DocumentFra
   }
 }
 
-function removeInclusiveRange(
-  expectedParent: Element | DocumentFragment,
-  start: Node,
-  end: Node
-): void {
-  if (start.parentNode !== expectedParent || end.parentNode !== expectedParent) return
-  let current: Node | null = start
-  while (current) {
-    const nextNode: Node | null = current.nextSibling
-    expectedParent.removeChild(current)
-    if (current === end) return
-    current = nextNode
-  }
-}
-
-function decodeEntities(value: string): string {
-  return value.replace(/&(#(?:x[0-9a-f]+|\d+)|amp|lt|gt|quot|apos);/gi, (match, entity: string) => {
-    switch (entity.toLowerCase()) {
-      case "amp": return "&"
-      case "lt": return "<"
-      case "gt": return ">"
-      case "quot": return '"'
-      case "apos": return "'"
-      default: {
-        const numeric = entity[1]?.toLowerCase() === "x"
-          ? Number.parseInt(entity.slice(2), 16)
-          : Number.parseInt(entity.slice(1), 10)
-        return Number.isFinite(numeric) && numeric >= 0 && numeric <= 0x10ffff
-          ? String.fromCodePoint(numeric)
-          : match
-      }
-    }
-  })
+function removeInclusiveRange(expectedParent: Element | DocumentFragment, start: Node, end: Node): void {
+  if (start.parentNode === expectedParent && end.parentNode === expectedParent) removeDomRange(start, end)
 }
 
 function describeValue(value: unknown): string {

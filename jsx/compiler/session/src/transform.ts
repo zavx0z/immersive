@@ -245,6 +245,7 @@ export type JsxChildrenExpressionKind =
 
 export type JsxTransformOptions = Readonly<{
   styleSourceModuleId?: string
+  jsxImportSource?: string
 }>
 
 /** Lowers the bounded component TSX profile into the shared compiled-template ABI. */
@@ -255,6 +256,10 @@ export function transformJsxSourceFile(
 ): string {
   const source = sourceFile.text
   const sourcePath = sourceFile.fileName
+  const publicRuntime = options.jsxImportSource === "@zavx0z/immersive/XReact"
+  const componentRuntime = publicRuntime ? "@zavx0z/immersive/XReact" : "@zavx0z/immersive-component"
+  const compiledRuntime = publicRuntime ? "@zavx0z/immersive/XReact/compiled" : "@zavx0z/immersive-template/compiled"
+  const slotRuntime = publicRuntime ? "@zavx0z/immersive/XReact/slot" : "@zavx0z/immersive-component/slot"
   const styleSourceModuleId = normalizedStyleSourceModuleId(options.styleSourceModuleId)
   const helper = uniqueHelperPrefix(source)
   const edits: Edit[] = []
@@ -307,7 +312,7 @@ export function transformJsxSourceFile(
     edits.push({
       start: importInsertionOffset(source),
       end: importInsertionOffset(source),
-      text: `import {useDocument as ${helper}Document} from "@zavx0z/immersive-component"\n`,
+      text: `import {useDocument as ${helper}Document} from "${componentRuntime}"\n`,
     })
     for (const declaration of customHookDeclarations) {
       if (!documentOwners.has(declaration)) continue
@@ -521,14 +526,14 @@ export function transformJsxSourceFile(
         `  encodeCompiledStyleText as ${helper}EncodeStyle,`,
         `  slotContents as ${helper}SlotsKey,`,
         `  writeBinding as ${helper}Write`,
-        `} from "@zavx0z/immersive-template/compiled"`,
+        `} from "${compiledRuntime}"`,
         `import {`,
         `  component as ${helper}Component,`,
         `  fixedChildren as ${helper}FixedChildren,`,
         `  normalizeChildren as ${helper}Children,`,
         `  keyedComponents as ${helper}Keyed`,
-        `} from "@zavx0z/immersive-component"`,
-        ...(componentSlots.size > 0 || [...symbols.childrenExpressionKinds.values()].includes("prepared-content") ? [`import {composeSlot as ${helper}Slot} from "@zavx0z/immersive-component/slot"`] : []),
+        `} from "${componentRuntime}"`,
+        ...(componentSlots.size > 0 || [...symbols.childrenExpressionKinds.values()].includes("prepared-content") ? [`import {composeSlot as ${helper}Slot} from "${slotRuntime}"`] : []),
         "",
       ].join("\n"),
     })
@@ -1557,7 +1562,8 @@ function runtimeImportBindings(
   for (const statement of sourceFile.statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier)) continue
     if (statement.moduleSpecifier.text === "@zavx0z/immersive-browser" ||
-      statement.moduleSpecifier.text === "@zavx0z/immersive-browser/integration") {
+      statement.moduleSpecifier.text === "@zavx0z/immersive-browser/integration" ||
+      statement.moduleSpecifier.text === "@zavx0z/immersive/XReact/browser") {
       const named = statement.importClause?.namedBindings
       if (named && isNamedImports(named)) {
         for (const specifier of named.elements) {
@@ -1588,13 +1594,14 @@ function runtimeImportBindings(
       }
       continue
     }
-    if (statement.moduleSpecifier.text !== "@zavx0z/immersive-component") continue
+    if (statement.moduleSpecifier.text !== "@zavx0z/immersive-component" &&
+      statement.moduleSpecifier.text !== "@zavx0z/immersive/XReact") continue
     if (statement.importClause?.name) {
-      throw compileError(sourcePath, "@zavx0z/immersive-component has no default compiler import")
+      throw compileError(sourcePath, `${statement.moduleSpecifier.text} has no default compiler import`)
     }
     const named = statement.importClause?.namedBindings
     if (named && !isNamedImports(named)) {
-      throw compileError(sourcePath, "@zavx0z/immersive-component namespace imports are unsupported")
+      throw compileError(sourcePath, `${statement.moduleSpecifier.text} namespace imports are unsupported`)
     }
     if (!named) continue
     for (const specifier of named.elements) {

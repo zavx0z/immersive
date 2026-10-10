@@ -65,10 +65,14 @@ export {
   when
 } from "./composition.ts"
 export {reactCompatibility} from "./compatibility.ts"
+export {componentElement} from "./custom-element.ts"
+export type {ComponentContent} from "./content.ts"
+export type {ComponentElement, ComponentElementConstructor, ComponentElementOptions} from "./custom-element.ts"
 export type {ReactCompatibilityManifest} from "./compatibility.ts"
 export type {
   ComponentKey,
   ComponentValue,
+  CompiledComponent,
   Context,
   ContextConsumer,
   FC,

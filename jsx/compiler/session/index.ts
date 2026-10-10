@@ -15,7 +15,8 @@
 */
 import {API, type Snapshot} from "typescript/unstable/async"
 import {readFile} from "node:fs/promises"
-import {resolve} from "node:path"
+import {existsSync, lstatSync, readFileSync, realpathSync} from "node:fs"
+import {dirname, join, resolve} from "node:path"
 import JsxCompileError from "@zavx0z/immersive-jsx-compiler-error"
 import {GovernedFiles, selectGovernedCompilerSource} from "./src/governed-paths.ts"
 import {transformJsxSourceFile} from "./src/transform.ts"
@@ -190,7 +191,10 @@ export default class JsxCompilerSession {
     const code = transformJsxSourceFile(
       sourceFile,
       symbols,
-      styleSourceModuleId === undefined ? {} : {styleSourceModuleId},
+      {
+        ...(styleSourceModuleId === undefined ? {} : {styleSourceModuleId}),
+        ...(project.compilerOptions.jsxImportSource === undefined ? {} : {jsxImportSource: project.compilerOptions.jsxImportSource}),
+      },
     )
     const dependencies = await this.fingerprintDependencies(symbols.dependencyPaths)
     const result = Object.freeze({capabilityUsages, code})
@@ -287,11 +291,12 @@ export default class JsxCompilerSession {
     dependencies: readonly DependencyFingerprint[],
   ): Promise<readonly string[]> {
     const changed: string[] = []
+    const manifests = new Map<string, string>()
     for (const dependency of dependencies) {
       const text = await readFile(dependency.path, "utf8")
       const hash = sourceHash(text)
       this.hashes.set(dependency.path, hash)
-      const authorization = this.governedFiles.authorizationKey(dependency.path)
+      const authorization = this.dependencyAuthorization(dependency.path, manifests)
       if (hash !== dependency.hash || authorization !== dependency.authorization) {
         changed.push(dependency.path)
       }
@@ -303,10 +308,11 @@ export default class JsxCompilerSession {
     dependencyPaths: ReadonlySet<string>,
   ): Promise<readonly DependencyFingerprint[]> {
     const dependencies: DependencyFingerprint[] = []
+    const manifests = new Map<string, string>()
     for (const path of [...dependencyPaths].sort()) {
       const text = await readFile(path, "utf8")
       const hash = sourceHash(text)
-      const authorization = this.governedFiles.authorizationKey(path)
+      const authorization = this.dependencyAuthorization(path, manifests)
       if (authorization === null) {
         throw new JsxCompileError("dependency is outside the governed JSX roots", path)
       }
@@ -314,6 +320,32 @@ export default class JsxCompilerSession {
       dependencies.push(Object.freeze({authorization, hash, path}))
     }
     return Object.freeze(dependencies)
+  }
+
+  /** Декларация является read-only входом типов и не получает разрешения на компиляцию JSX. */
+  private dependencyAuthorization(path: string, manifests: Map<string, string>): string | null {
+    if (!/\.d\.[cm]?ts$/u.test(path)) return this.governedFiles.authorizationKey(path)
+    const canonical = realpathSync(path)
+    const file = lstatSync(canonical)
+    if (!file.isFile()) return null
+    let directory = dirname(canonical)
+    const visited: string[] = []
+    let manifest = ""
+    while (true) {
+      const cached = manifests.get(directory)
+      if (cached !== undefined) { manifest = cached; break }
+      visited.push(directory)
+      const candidate = join(directory, "package.json")
+      if (existsSync(candidate)) {
+        manifest = `${candidate}:${sourceHash(readFileSync(candidate, "utf8"))}`
+        break
+      }
+      const parent = dirname(directory)
+      if (parent === directory) break
+      directory = parent
+    }
+    for (const path of visited) manifests.set(path, manifest)
+    return JSON.stringify(["declaration", canonical, file.dev, file.ino, manifest])
   }
 
   private requireGoverned(sourcePath: string): string {
