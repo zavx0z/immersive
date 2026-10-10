@@ -1,13 +1,25 @@
 import type {JsxSourceRange} from "../contract/output.ts"
 
-/** Отображает только сохранённый текст; вставки и замены намеренно не получают координат. */
-export function sourceRangesForEdits(length: number, edits: readonly Readonly<{start: number; end: number; text: string}>[]): readonly JsxSourceRange[] {
+export type SourceRangeEdit = Readonly<{
+  start: number
+  end: number
+  text: string
+  /** Точные копии исходного текста; generated offsets отсчитываются от начала text. */
+  copies?: readonly JsxSourceRange[]
+}>
+
+/** Отображает сохранённый текст и явные копии внутри замены; новый текст остаётся без координат. */
+export function sourceRangesForEdits(length: number, edits: readonly SourceRangeEdit[]): readonly JsxSourceRange[] {
   const ranges: JsxSourceRange[] = []
   let source = 0
   let generated = 0
   for (const edit of [...edits].sort((left, right) => left.start - right.start || left.end - right.end)) {
     if (source < edit.start) ranges.push({generatedStart: generated, generatedEnd: generated + edit.start - source, sourceStart: source})
-    generated += edit.start - source + edit.text.length
+    generated += edit.start - source
+    for (const copy of edit.copies ?? []) {
+      ranges.push({generatedStart: generated + copy.generatedStart, generatedEnd: generated + copy.generatedEnd, sourceStart: copy.sourceStart})
+    }
+    generated += edit.text.length
     source = edit.end
   }
   if (source < length) ranges.push({generatedStart: generated, generatedEnd: generated + length - source, sourceStart: source})

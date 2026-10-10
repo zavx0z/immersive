@@ -93,9 +93,9 @@ import {emitDomImports, pruneDomImports} from "./dom-imports.ts"
 import {emitCustomHook} from "./hook-codegen.ts"
 import {componentReturn, getAuthoringDeclarations} from "./source-profile.ts"
 import type {JsxSourceRange} from "../contract/output.ts"
-import {composeSourceRanges, sourceRangesForEdits} from "./source-ranges.ts"
+import {composeSourceRanges, sourceRangesForEdits, type SourceRangeEdit} from "./source-ranges.ts"
 
-type Edit = Readonly<{start: number; end: number; text: string}>
+type Edit = SourceRangeEdit
 
 type PropsBindings = Readonly<{
   object: number | null
@@ -482,9 +482,18 @@ export function transformJsxSourceFile(
       symbols: symbols.byNode,
     })
     needsCompiledRuntime = true
+    const receiver = node.expression.expression
+    const receiverText = receiver.getText(sourceFile)
+    const calleeText = `${receiverText}.render`
     edits.push({
       start,
       end: node.getEnd(),
+      copies: node.expression.getText(sourceFile) === calleeText ? [
+        {generatedStart: 0, generatedEnd: calleeText.length, sourceStart: node.expression.getStart(sourceFile)},
+      ] : [
+        {generatedStart: 0, generatedEnd: receiverText.length, sourceStart: receiver.getStart(sourceFile)},
+        {generatedStart: receiverText.length + 1, generatedEnd: calleeText.length, sourceStart: node.expression.name.getStart(sourceFile)},
+      ],
       text: compiled.mergedProps || isComponentRootExpression(node.expression.expression, browserRoots, runtimeBindings.browserCreateRoot, symbols.byNode)
         ? `${node.expression.expression.getText(sourceFile)}.render(${compiled.expression})`
         : `${node.expression.expression.getText(sourceFile)}.render(${compiled.template}, ${compiled.props}${compiled.key === "null" && compiled.content === "undefined" ? "" : `, {key: ${compiled.key}, content: ${compiled.content}}`})`,
