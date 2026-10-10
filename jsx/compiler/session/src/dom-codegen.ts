@@ -4,6 +4,7 @@ import {emitRange} from "./range-codegen.ts"
 import {emitStaticChild} from "./static-child-codegen.ts"
 import {nativeElementClasses} from "../contract/native-elements.ts"
 import {ownHookFields} from "./hook-fields.ts"
+import {emitPropsFacade} from "./props-codegen.ts"
 import {SyntaxKind} from "typescript/unstable/ast"
 import {createScanner} from "typescript/unstable/ast/scanner"
 
@@ -63,9 +64,7 @@ export function emitDomComponent(plan: DirectComponentPlan): string {
   const nativeInputs = rootInputs.filter(binding => rootInputs.every(other => other.input !== binding.input || other.name === binding.name))
   const hasNativeInputs = nativeInputs.length > 0
   const usesSlotScope = plan.slots.length > 0 || plan.presenceAliases.length > 0 || hooks.fields.some(line => line.includes(`${p}SlotContent`) || line.includes(`${p}SlotNames`))
-  const snapshotInputs = hasNativeInputs
-    ? `Object.fromEntries([...new Set([...Reflect.ownKeys(${p}Props), ...${p}NativeInputs.keys()])].map(name => [name, ${p}Props[name]]))`
-    : `Object.fromEntries(Reflect.ownKeys(${p}Props).map(name => [name, ${p}Props[name]]))`
+  const propsFacade = emitPropsFacade(p, plan.name, hasNativeInputs)
   const identity = createHash("sha256").update(`${plan.sourceIdentity}\0${plan.name}`).digest("hex").slice(0, 12)
   const fields: string[] = [...plan.presenceAliases.map(name => `const ${name} = (name = "") => ${p}HasSlot(${p}SlotContent, name, ${p}SlotNames)`), ...hooks.fields]
   const prepare: string[] = []
@@ -132,6 +131,8 @@ export function emitDomComponent(plan: DirectComponentPlan): string {
       cleanup.push(`${b}Range.dispose()`)
     }
   }
+  // Все пользовательские getters остаются в откатываемой apply-фазе, до первого commit.
+  apply.push("inputs?.prepare()")
   const mount = [...plan.mount]
   if (intrinsic && plan.roots[0]) {
     const target = plan.roots[0]
@@ -169,7 +170,8 @@ export function emitDomComponent(plan: DirectComponentPlan): string {
     ...hooks.fieldNames.map(name => `  static #${name} = Symbol()`),
     ...(hooks.fieldNames.length ? [`  static #${p}HookFields = [${hooks.fieldNames.map(name => `this.#${name}`).join(", ")}]`] : []),
     ...inputNames.map((_, index) => `  static #${p}Input${index}Field = Symbol()`),
-    ...(inputNames.length ? [`  static #${p}InputFields = new Map([${inputNames.map((name, index) => `[${JSON.stringify(name)}, this.#${p}Input${index}Field]`).join(", ")}])`] : []),
+    `  static #${p}InputFields = new Map([${inputNames.map((name, index) => `[${JSON.stringify(name)}, this.#${p}Input${index}Field]`).join(", ")}])`,
+    ...propsFacade.classFields,
     `  static slots = Object.freeze(${JSON.stringify(plan.slots)} as const)`,
     `  static displayName = ${JSON.stringify(plan.name)}`,
     `  static nativeTag = ${intrinsic && !factoryRoot ? JSON.stringify(plan.rootTag) + " as const" : "null"}`,
@@ -202,7 +204,7 @@ export function emitDomComponent(plan: DirectComponentPlan): string {
     `  ${p}Initialize(document, initialProps, initialContent, initialContext, ${p}Type) {`,
     `    let ${p}OwnerDocument = document`,
     `    const ${p}Owner = this`,
-    ...(hooks.fieldNames.length || inputNames.length ? [`    const ${p}FieldClass = ${plan.name}`] : []),
+    `    const ${p}FieldClass = ${plan.name}`,
     ...(intrinsic && plan.slots.length ? [
       `    if (this.childNodes.length) {`,
       `      if (initialContent !== undefined) throw new TypeError("Cannot combine initial DOM children with explicit content")`,
@@ -215,28 +217,16 @@ export function emitDomComponent(plan: DirectComponentPlan): string {
     `    let ${p}Disposed = false, ${p}Rendering = false, ${p}Dirty = false, ${p}Connected = false, ${p}Updating = false`,
     `    let ${p}Initialized = false, ${p}Forced = false`,
     `    let ${p}PendingUpdate = null`,
-    `    let ${p}InputFields = ${inputNames.length ? `${p}FieldClass.#${p}InputFields` : "new Map()"}`,
+    `    let ${p}InputFields = ${p}FieldClass.#${p}InputFields`,
     ...(hasNativeInputs ? [
-      `    let ${p}MissingInputs = null`,
+      `    this[${p}FieldClass.#${p}MissingInputField] = null`,
       `    const ${p}NativeInputs = new Map([${nativeInputs.map(binding => `[${JSON.stringify(binding.input)}, ${p}NativeProperty(this, ${JSON.stringify(binding.name)})]`).join(", ")}].filter(([, name]) => name !== null))`,
       `    const ${p}NativeCommands = ${p}NativeInputs.size && !(this instanceof ${p}HTMLElement) ? new Map() : null`,
-      `    const ${p}ReadInput = name => { if (!${p}NativeInputs.has(name)) return this[${p}InputFields.get(name)]; const value = Reflect.get(this, ${p}NativeInputs.get(name)); if (!${p}MissingInputs?.has(name)) return value; if (Object.is(value, ${p}MissingInputs.get(name))) return undefined; ${p}MissingInputs.delete(name); return value }`,
+      `    const ${p}ReadInput = name => { if (!${p}NativeInputs.has(name)) return this[${p}InputFields.get(name)]; const value = Reflect.get(this, ${p}NativeInputs.get(name)), missing = this[${p}FieldClass.#${p}MissingInputField]; if (!missing?.has(name)) return value; if (Object.is(value, missing.get(name))) return undefined; missing.delete(name); return value }`,
     ] : [`    const ${p}ReadInput = name => this[${p}InputFields.get(name)]`]),
-    `    const ${p}DraftInputs = input => {`,
-    `      const keys = input == null ? [] : Reflect.ownKeys(input)`,
-    `      for (const name of keys) if (!${p}InputFields.has(name)) { ${inputNames.length ? `if (${p}InputFields === ${p}FieldClass.#${p}InputFields) ${p}InputFields = new Map(${p}InputFields); ` : ""}${p}InputFields.set(name, Symbol(typeof name === "string" ? name : undefined)) }`,
-    `      let accepted = false, history = null`,
-    `      const value = new Proxy(Object.create(null), {`,
-    `        get: (_, name) => history !== null ? history[name] : accepted ? ${p}ReadInput(name) : ${hasNativeInputs ? `${p}NativeInputs.has(name) && ${p}NativeCommands?.has(name) && Object.is(${p}NativeCommands.get(name), input?.[name]) ? ${p}ReadInput(name) : ` : ""}Object.prototype.hasOwnProperty.call(input ?? {}, name) ? input[name] : ${hasNativeInputs ? `(${p}Initialized || input === undefined) && ${p}NativeInputs.has(name) ? ${p}ReadInput(name) : ` : ""}undefined,`,
-    `        has: (_, name) => keys.includes(name),`,
-    `        ownKeys: () => keys,`,
-    `        getOwnPropertyDescriptor: (_, name) => keys.includes(name) ? {configurable: true, enumerable: true, value: value[name], writable: false} : undefined,`,
-    `        set: () => false, deleteProperty: () => false, defineProperty: () => false,`,
-    `      })`,
-    `      return {value, ${hasNativeInputs ? `changed: name => !${p}NativeCommands?.has(name) || !Object.is(${p}NativeCommands.get(name), input?.[name]), ` : ""}retire: snapshot => { history = snapshot }, commit: () => { ${hasNativeInputs ? `let missing = null; for (const [name, native] of ${p}NativeInputs) if (value[name] === undefined) (missing ??= new Map()).set(name, Reflect.get(this, native)); ` : ""}for (const [name, field] of ${p}InputFields) ${hasNativeInputs ? `if (!${p}NativeInputs.has(name)) ` : ""}this[field] = input?.[name]; ${hasNativeInputs ? `for (const name of ${p}NativeInputs.keys()) ${p}NativeCommands?.set(name, input?.[name]); ${p}MissingInputs = missing; ` : ""}accepted = true; input = null }}`,
-    `    }`,
+    ...propsFacade.draftFactory,
     `    let ${p}Props, ${p}Content = initialContent, ${p}Context = initialContext`,
-    `    let ${p}RetireInputs = null`,
+    `    let ${p}AcceptedInputs = null`,
     `    let ${p}MemoInputs`,
     ...(hasStyles ? [`    let ${p}StyleLease = null`] : []),
     ...(usesSlotScope ? [
@@ -260,7 +250,9 @@ export function emitDomComponent(plan: DirectComponentPlan): string {
     `      if (${p}Disposed) throw new Error("Cannot update a disposed DOM component")`,
     `      if (${p}Initialized && !${p}Forced && nextContext === ${p}Context && nextContent === ${p}Content && ${hooks.memoChecks.map(value => `(${value})`).join(" && ") || "true"} && ${p}Type.memoCompare?.(${p}MemoInputs, nextProps)) {`,
     `        const inputs = ${p}Initialized && nextProps === ${p}Props ? null : ${p}DraftInputs(${plan.parameterDefault ? `nextProps === undefined ? (${authoredDefault}) : nextProps` : "nextProps"})`,
-    `        return {check: () => true, apply() {}, rollback() {}, commit: () => { if (inputs) { ${p}RetireInputs?.(${snapshotInputs}); const snapshot = {...inputs.value}; inputs.commit(); ${p}Props = inputs.value; ${p}RetireInputs = inputs.retire; ${p}MemoInputs = snapshot } }, refs() {}, insertion() {}, layout() {}, passive() {}}`,
+    `        const previousInputs = inputs && ${p}AcceptedInputs ? ${p}AcceptedInputs.snapshot() : null`,
+    `        let snapshot`,
+    `        return {check: () => true, apply() { if (inputs) { snapshot = {...inputs.value}; inputs.prepare() } }, rollback() {}, commit: () => { if (inputs) { ${p}AcceptedInputs?.retire(previousInputs); inputs.commit(); ${p}Props = inputs.value; ${p}AcceptedInputs = inputs; ${p}MemoInputs = snapshot } }, refs() {}, insertion() {}, layout() {}, passive() {}}`,
     `      }`,
     `      const previousContext = ${p}Context${usesSlotScope ? `, previousSlotContent = ${p}SlotContent` : ""}`,
     `      const previousFocus = ${p}OwnerDocument.activeElement`,
@@ -270,7 +262,7 @@ export function emitDomComponent(plan: DirectComponentPlan): string {
     `      try {`,
     `        const inputs = ${p}Initialized && nextProps === ${p}Props ? null : ${p}DraftInputs(${plan.parameterDefault ? `nextProps === undefined ? (${authoredDefault}) : nextProps` : "nextProps"})`,
     `        const authoredProps = inputs?.value ?? ${p}Props`,
-    `        const previousInputs = inputs && ${p}Props ? ${snapshotInputs} : null`,
+    `        const previousInputs = inputs && ${p}AcceptedInputs ? ${p}AcceptedInputs.snapshot() : null`,
     `        const memoInputs = ${p}Type.memoCompare ? {...authoredProps} : undefined`,
     `        const nextContentInput = nextContent ?? nextProps?.[${p}SlotsKey]`,
     ...(usesSlotScope ? [`        const nextRetainedContent = nextContentInput === ${p}ContentInput ? ${p}RetainedContent : nextContentInput === undefined ? undefined : ${p}RetainContent(${p}OwnerDocument, nextContentInput, ${p}SlotNames)`]
@@ -304,7 +296,7 @@ export function emitDomComponent(plan: DirectComponentPlan): string {
     ...(rangeCommits.size ? [`let ${p}CommitFailed = false, ${p}CommitFailure`] : []),
     ...commit.map(line => rangeCommits.has(line) ? `try { ${line} } catch (${p}CommitError) { if (!${p}CommitFailed) { ${p}CommitFailed = true; ${p}CommitFailure = ${p}CommitError } }` : line),
     `            ${p}Applied = 0`,
-    `            if (inputs) { if (previousInputs) ${p}RetireInputs?.(previousInputs); inputs.commit(); ${p}RetireInputs = inputs.retire }`,
+    `            if (inputs) { if (previousInputs) ${p}AcceptedInputs.retire(previousInputs); inputs.commit(); ${p}AcceptedInputs = inputs }`,
     `            ${p}Props = authoredProps; ${p}Content = nextContent; ${p}Context = nextContext${usesSlotScope ? `; ${p}SlotContent = nextRetainedContent` : ""}`,
     `            ${p}MemoInputs = memoInputs`,
     ...(usesSlotScope ? [`            ${p}ContentInput = nextContentInput; ${p}RetainedContent = nextRetainedContent`] : []),

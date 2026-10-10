@@ -548,6 +548,82 @@ test("[props] видит external input revision и сохраняет identity 
   node.dispose()
 }))
 
+test("shared props handler сохраняет getter evaluations, ownKeys, readonly и historical snapshots", () => withCompiled(({PropsObservation}) => {
+  const document = createDocument(), host = document.createElement("div")
+  document.append(host)
+  let reads = 0
+  const marker = Symbol("input")
+  const input = Object.create(null)
+  Object.defineProperties(input, {
+    label: {enumerable: true, get() { reads++; return "first" }},
+    ["__proto__"]: {enumerable: true, value: "data"},
+    [marker]: {enumerable: true, value: "symbol"},
+  })
+  const node = new PropsObservation(document, input)
+  host.append(node)
+  const first = node.props
+  expect(reads).toBe(3)
+  expect(Object.getPrototypeOf(first)).toBeNull()
+  expect(Reflect.ownKeys(first)).toEqual(["label", "__proto__", marker])
+  expect(first[marker]).toBe("symbol")
+  expect(first.__proto__).toBe("data")
+  expect(Reflect.set(first, "label", "rejected")).toBeFalse()
+  expect(Reflect.deleteProperty(first, "label")).toBeFalse()
+  expect(Reflect.defineProperty(first, "added", {value: true})).toBeFalse()
+  node.update({get label() { reads++; return "next" }})
+  expect(reads).toBe(6)
+  expect(first.label).toBe("first")
+  expect(first[marker]).toBe("symbol")
+  expect(first.__proto__).toBe("data")
+  expect(node.props.label).toBe("next")
+  expect(host.textContent).toBe("next:next")
+  expect(Reflect.ownKeys(node.props)).toEqual(["label"])
+  expect(reads).toBe(6)
+  node.dispose()
+}))
+
+test("shared props handler не кеширует native значение через авторский callback с DOM write", () => withCompiled(({LiveNativeReads}) => {
+  const document = createDocument(), host = document.createElement("div")
+  document.append(host)
+  const node = new LiveNativeReads(document, {})
+  host.append(node)
+  const reads: string[][] = []
+  node.update({mutate: (element: HTMLButtonElement | null) => { if (element) element.disabled = true }, report: (before: string, after: string) => { reads.push([before, after]) }})
+  expect(reads[0]).toEqual(["undefined", "true"])
+  expect(node.props.disabled).toBeTrue()
+  expect(node.disabled).toBeTrue()
+  expect(node.textContent).toBe("true")
+  node.dispose()
+}))
+
+test("input getter failure откатывает native DOM и сохраняет accepted props/state для следующего retry", () => withCompiled(({GetterAtomic}) => {
+  const document = createDocument(), host = document.createElement("div")
+  document.append(host)
+  const node = new GetterAtomic(document, {value: 0, title: "old", extra: "kept"})
+  host.append(node)
+  node.dispatchEvent(new Event("click"))
+  const accepted = node.props
+  let reads = 0
+  expect(() => node.update({get value() { if (++reads === 2) throw new Error("Rejected input getter"); return 1 }, title: "rejected"})).toThrow("Rejected input getter")
+  expect(reads).toBe(2)
+  expect(node.props).toBe(accepted)
+  expect(node.props.value).toBe(0)
+  expect(node.props.extra).toBe("kept")
+  expect(node.title).toBe("old")
+  expect(host.textContent).toBe("0:1")
+  node.dispatchEvent(new Event("click"))
+  expect(host.textContent).toBe("0:2")
+  node.update({value: 2, title: "next", extra: "accepted"})
+  expect(host.firstElementChild).toBe(node)
+  expect(node.title).toBe("next")
+  expect(host.textContent).toBe("2:2")
+  expect(node.props.value).toBe(2)
+  expect(node.props.extra).toBe("accepted")
+  expect(accepted.value).toBe(0)
+  expect(accepted.title).toBe("old")
+  node.dispose()
+}), 30000)
+
 test("непринятый child draft возвращает raw slot origins, даже если apply ещё не начался", () => withCompiled(({RawAtomic}) => {
   const document = createDocument()
   const origin = document.createElement("div")

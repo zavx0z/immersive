@@ -1,0 +1,76 @@
+/** Readonly props views используют общий handler класса; текущие значения остаются у DOM owner. */
+export function emitPropsFacade(prefix: string, component: string, native: boolean): {classFields: readonly string[]; draftFactory: readonly string[]} {
+  const p = prefix
+  const views = `${component}.#${p}InputViews`
+  const read = `${component}.#${p}ReadView`
+  return {
+    classFields: [
+      `  static #${p}InputViews = new WeakMap()`,
+      ...(native ? [`  static #${p}MissingInputField = Symbol()`] : []),
+      `  static #${p}ReadView(view, name) {`,
+      `    if (view.history !== null) return view.history[name]`,
+      `    if (view.accepted) return view.read(name)`,
+      ...(native ? [`    if (view.native.has(name) && view.commands?.has(name) && Object.is(view.commands.get(name), view.input?.[name])) return view.read(name)`] : []),
+      `    if (Object.prototype.hasOwnProperty.call(view.input ?? {}, name)) return view.input[name]`,
+      ...(native ? [`    if (view.initialized && view.native.has(name)) return view.read(name)`] : []),
+      `    return (void 0)`,
+      `  }`,
+      `  static #${p}InputHandler = {`,
+      `    get(target, name) { return ${read}(${views}.get(target), name) },`,
+      `    has(target, name) { return ${views}.get(target).keys.includes(name) },`,
+      `    ownKeys(target) { return ${views}.get(target).keys },`,
+      `    getOwnPropertyDescriptor(target, name) { const view = ${views}.get(target); return view.keys.includes(name) ? {configurable: true, enumerable: true, value: ${read}(view, name), writable: false} : (void 0) },`,
+      `    set() { return false }, deleteProperty() { return false }, defineProperty() { return false },`,
+      `  }`,
+      `  static #${p}InputDraft = {`,
+      ...(native ? [`    changed(name) { return !this.commands?.has(name) || !Object.is(this.commands.get(name), this.input?.[name]) },`] : []),
+      `    snapshot() {`,
+      `      if (this.history !== null) return this.history`,
+      `      const entries = this.keys.map(name => [name, this.read(name)])`,
+      ...(native ? [`      for (const name of this.native.keys()) if (!this.keys.includes(name)) entries.push([name, this.read(name)])`] : []),
+      `      return Object.fromEntries(entries)`,
+      `    },`,
+      `    retire(snapshot) { this.history = snapshot; this.read = null; ${native ? "this.native = null; this.commands = null; " : ""} },`,
+      `    prepare() {`,
+      `      if (this.values !== null) return`,
+      `      const {owner, input, fields} = this`,
+      ...(native ? [
+        `      let missing = null`,
+        `      for (const [name, property] of this.native) if (${read}(this, name) === (void 0)) (missing ??= new Map()).set(name, Reflect.get(owner, property))`,
+      ] : []),
+      `      const values = []`,
+      `      for (const [name, field] of fields) ${native ? "if (!this.native.has(name)) " : ""}values.push(field, input?.[name])`,
+      ...(native ? [
+        `      const commandValues = this.commands ? [] : null`,
+        `      if (commandValues) for (const name of this.native.keys()) commandValues.push(name, input?.[name])`,
+        `      this.missing = missing; this.commandValues = commandValues`,
+      ] : []),
+      `      this.values = values`,
+      `    },`,
+      `    commit() {`,
+      `      const {owner, values} = this`,
+      `      for (let index = 0; index < values.length; index += 2) owner[values[index]] = values[index + 1]`,
+      ...(native ? [
+        `      if (this.commandValues) for (let index = 0; index < this.commandValues.length; index += 2) this.commands.set(this.commandValues[index], this.commandValues[index + 1])`,
+        `      owner[${component}.#${p}MissingInputField] = this.missing`,
+        `      this.commands = null; this.commandValues = null; this.missing = null`,
+      ] : []),
+      `      this.values = null`,
+      `      this.accepted = true; this.input = null; this.owner = null; this.fields = null`,
+      `    },`,
+      `  }`,
+    ],
+    draftFactory: [
+      `    const ${p}DraftInputs = input => {`,
+      `      const keys = input == null ? [] : Reflect.ownKeys(input)`,
+      // Чужие дополнительные keys не попадают в общую metadata карту класса.
+      `      for (const name of keys) if (!${p}InputFields.has(name)) { if (${p}InputFields === ${p}FieldClass.#${p}InputFields) ${p}InputFields = new Map(${p}InputFields); ${p}InputFields.set(name, Symbol(typeof name === "string" ? name : (void 0))) }`,
+      `      const view = {__proto__: ${p}FieldClass.#${p}InputDraft, keys, input, owner: this, fields: ${p}InputFields, read: ${p}ReadInput, history: null, accepted: false, value: null, values: null${native ? `, native: ${p}NativeInputs, commands: ${p}NativeCommands, initialized: ${p}Initialized || input === (void 0), missing: null, commandValues: null` : ""}}`,
+      `      const target = Object.create(null)`,
+      `      ${p}FieldClass.#${p}InputViews.set(target, view)`,
+      `      view.value = new Proxy(target, ${p}FieldClass.#${p}InputHandler)`,
+      `      return view`,
+      `    }`,
+    ],
+  }
+}

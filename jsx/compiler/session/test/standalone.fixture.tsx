@@ -253,3 +253,33 @@ export function spreadAssigned(input: Record<string, unknown>) {
     </SpreadPane>
   )
 }
+
+export function PropsObservation(props: {label: string, [name: string]: unknown, [name: symbol]: unknown}) {
+  const first = props.label
+  const second = props.label
+  return (
+    <span>{first}:{second}</span>
+  )
+}
+
+export function LiveNativeReads(props: {disabled?: boolean, mutate?: (node: HTMLButtonElement | null) => void, report?: (before: string, after: string) => void}) {
+  const element = useRef<HTMLButtonElement | null>(null)
+  const before = String(props.disabled)
+  props.mutate?.(element.current)
+  const after = String(props.disabled)
+  props.report?.(before, after)
+  return (
+    <button ref={element} disabled={props.disabled === true}>
+      {after}
+    </button>
+  )
+}
+
+export function GetterAtomic(props: {value: number, title: string, extra?: string}) {
+  const [count, setCount] = useState(0)
+  return (
+    <span title={props.title} onClick={() => setCount(value => value + 1)}>
+      {props.value}:{count}
+    </span>
+  )
+}

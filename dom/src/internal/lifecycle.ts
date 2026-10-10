@@ -195,9 +195,11 @@ export function lifecycleInserted(root: Node): void {
   const record = records.get(root)
   if (!record?.count) return
   const document = root.ownerDocument!
-  const stableMove = record.movingTo === document && root.isConnected
+  const connected = root.isConnected
+  const stableMove = record.movingTo === document && connected
   delete record.movingTo
   adjust(root.parentNode, record.count, record.customCount)
+  if (!connected) return
   walk(root, (node, current) => {
     if (node.isConnected && current.custom) {
       if (current.custom.status === "undefined") current.custom.upgrade()
@@ -210,7 +212,8 @@ export function lifecycleRemoving(root: Node, destination: Document | null, movi
   const record = records.get(root)
   if (!record?.count) return
   const document = root.ownerDocument!
-  let stableMove = root.isConnected && document === destination
+  const connected = root.isConnected
+  let stableMove = connected && document === destination
   // Отдельное перемещение одной границы не является перемещением всей группы.
   if (stableMove && record.connections) {
     for (const connection of record.connections) {
@@ -219,9 +222,10 @@ export function lifecycleRemoving(root: Node, destination: Document | null, movi
   }
   if (stableMove) record.movingTo = document
   else delete record.movingTo
-  const connected = root.isConnected
-  walk(root, (node, current) => {
-    if (connected && current.custom) enqueueCustomLifecycle(node as HTMLElement, "disconnectedCallback")
+  // Node.detach вызывает этот hook до unlink: внешнее отключение всё ещё connected.
+  // Последующий teardown уже detached потомков не создаёт нового перехода.
+  if (connected) walk(root, (node, current) => {
+    if (current.custom) enqueueCustomLifecycle(node as HTMLElement, "disconnectedCallback")
     if (!stableMove) for (const connection of current.connections ?? []) schedule(connection, document)
   }, stableMove)
   adjust(root.parentNode, -record.count, -record.customCount)
