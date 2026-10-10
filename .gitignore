@@ -11,3 +11,4 @@ coverage/
 /projects/
 **/meta/data/
 **/tmp/
+/.local/
