@@ -14,20 +14,18 @@
       "model": "gpt-6-astra",
       "thoughtLevel": "medium"
     },
-    "sessionId": "01a11204-6788-79d2-bd5a-1a040d2c231e",
-    "connectionId": "codex",
     "cwd": "."
   },
   "history": {
-    "revision": 4,
+    "revision": 5,
     "total": 1,
     "lastSequence": 1
   },
   "journal": "e47840f301f0f4cb6fbaff1d85c9e5e65947c64b1463782a932405b798664b49.json.journal.ab554f45-1908-45f2-a2d1-e0d1551f0129.ndjson",
-  "committedBytes": 6904,
-  "hash": "21bef1101faac7cd5f93fe428111937adbded6cc156c9a345b587c4318d5a3d5",
+  "committedBytes": 7390,
+  "hash": "9f1cc37e361c36e6147db915d41167549256f5b8ae28780c06045f23846eec19",
   "displayHistory": {
-    "revision": 4,
+    "revision": 5,
     "total": 1,
     "lastSequence": 1
   }
