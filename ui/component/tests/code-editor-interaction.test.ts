@@ -389,7 +389,7 @@ test("public root ref and delegated line number click retain standard same-Docum
   try {
     expect(refs).toHaveLength(1)
     expect(refs[0] as unknown).toBe(f.container.querySelector("section"))
-    const second = f.container.querySelector('li[data-line-index="1"]')!
+    const second = f.container.querySelector('button[data-line-number="1"]')!
     second.dispatchEvent(new MouseEvent("click", {bubbles: true, cancelable: true}))
     expect(lines).toEqual([1])
     f.code.dispatchEvent(new MouseEvent("click", {bubbles: true}))

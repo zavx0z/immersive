@@ -47,7 +47,8 @@ test("Editor fills its structural parent, owns generic annotations and exposes s
     lineDecorations: [{line: 1, lineTone: "warning", markerTone: "info", gutterTone: "error", title: "Generic annotation"}],
     onReady(handle) { handles.push(handle) }, onSave: text => { saves.push(text) }, onLineNumberClick: line => { rows.push(line) }}
   f.component.render(Editor as unknown as CompiledTemplate<EditorProps>, props)
-  const renderer = createDocumentRenderer({document: f.document, root: f.root, viewport: {width: 720, height: 300}})
+  const renderer = createDocumentRenderer({document: f.document, root: f.root, viewport: {width: 720, height: 300},
+    styleSheets: [await Bun.file(Bun.resolveSync("@zavx0z/immersive-ui-component/theme/theme.css", import.meta.dir)).text()]})
   try {
     const handle = handles.at(-1)!
     handle.focus()
@@ -63,7 +64,7 @@ test("Editor fills its structural parent, owns generic annotations and exposes s
     expect(line.getAttribute("data-line-tone")).toBe("warning")
     const number = f.root.querySelector('li[data-line-index="1"]')!
     expect(number.getAttribute("data-tone")).toBe("error")
-    number.dispatchEvent(new MouseEvent("click", {bubbles: true}))
+    number.querySelector('button[data-line-number="1"]')!.dispatchEvent(new MouseEvent("click", {bubbles: true}))
     expect(rows).toEqual([1])
     const frame = renderer.flush()
     expect(frame.boxByNode.get(f.root.querySelector('[data-widget="editor"]')!)?.width).toBe(720)
