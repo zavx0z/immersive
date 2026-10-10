@@ -3,7 +3,7 @@
 
 @packageDocumentation
 */
-import {useMemo, useRef, useState, useLayoutEffect, useSyncExternalStore} from "@zavx0z/immersive-component"
+import {useMemo, useRef, useState, useLayoutEffect, useSyncExternalStore} from "@zavx0z/immersive-component/authoring"
 import {observeElementLayout, readElementLayoutRect} from "@zavx0z/immersive-dom/geometry"
 import {GraphControls} from "../shared/graph/control/index.tsx"
 import {GridPoint} from "../shared/graph/grid-point/index.tsx"

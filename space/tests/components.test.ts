@@ -35,7 +35,7 @@ describe("Публичные пространственные компонент
       for (const [file, tagName] of owners) {
         const result = await compiler.compileFile(resolve(spaceRoot, file))
         expect(result.code).toContain(`document.createElement("${tagName}")`)
-        expect(result.code).toContain('from "@zavx0z/immersive-component"')
+        expect(result.code).not.toMatch(/from ["']@zavx0z\/immersive(?:-component|\/XReact)/u)
       }
     } finally {
       await compiler.close()

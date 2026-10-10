@@ -2,12 +2,12 @@ import {afterAll, beforeAll, describe, expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, MouseEvent as SemanticMouseEvent} from "@zavx0z/immersive-dom"
 import {bindSpatialHit, createSpaceElementFactories, XRLineSegmentsElement} from "@zavx0z/immersive-space"
 import type {BufferGeometry} from "@zavx0z/immersive-engine"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {SpatialEdgesProps} from "../shape/edges/contract/input.ts"
 import type {SpatialEdge} from "../shape/edges/contract/edge.ts"
 import {cacheSpatialRoutes, createSpatialBatch} from "../shape/edges/src/batch.ts"
@@ -15,7 +15,7 @@ import {hitSpatialBatch} from "../shape/edges/src/hit.ts"
 import {spatialEdgeBounds, tessellateSpatialEdge} from "../shape/edges/src/geometry.ts"
 
 let directory = ""
-let edgesTemplate: CompiledTemplate<SpatialEdgesProps>
+let edgesTemplate: DOMComponentConstructor<SpatialEdgesProps>
 
 beforeAll(async () => {
   const space = resolve(import.meta.dir, "..")

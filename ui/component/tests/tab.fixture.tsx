@@ -1,4 +1,4 @@
-import {useState} from "@zavx0z/immersive-component"
+import {useState} from "@zavx0z/immersive-component/authoring"
 import {TabContent} from "../surface/tab/spec/fixture/src/content.tsx"
 import Tab from "@zavx0z/immersive-ui-component-surface-tab"
 import type {ImmersiveUiComponentSurfaceTab} from "@zavx0z/immersive-ui-component-surface-tab"

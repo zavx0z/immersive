@@ -2,6 +2,29 @@ import {describe, expect, test} from "bun:test"
 import {Event, createDocument} from "@zavx0z/immersive-dom"
 
 describe("Semantic DOM contract", () => {
+  test("Имена атрибутов нормализуют только ASCII-регистр", () => {
+    const element = createDocument().createElement("div")
+    element.setAttribute("data-lower", "first")
+    element.setAttribute("DATA-MiXeD", "second")
+    element.setAttribute("data-Ä-Я-İ-AZ", "third")
+
+    expect(element.getAttributeNames()).toEqual(["data-lower", "data-mixed", "data-Ä-Я-İ-az"])
+    expect(element.getAttribute("DATA-LOWER")).toBe("first")
+    expect(element.getAttribute("data-mixed")).toBe("second")
+    expect(element.getAttribute("DATA-Ä-Я-İ-AZ")).toBe("third")
+    expect(element.getAttribute("data-ä-я-i-az")).toBeNull()
+    expect(element.hasAttribute("DaTa-MiXeD")).toBe(true)
+    expect(element.hasAttribute("data-Ä-Я-İ-az")).toBe(true)
+
+    element.setAttribute("Data-Lower", "updated")
+    expect(element.getAttributeNames()).toHaveLength(3)
+    expect(element.getAttribute("data-lower")).toBe("updated")
+    element.removeAttribute("DATA-MIXED")
+    expect(element.hasAttribute("data-mixed")).toBe(false)
+    expect(element.toggleAttribute("DATA-Ä-Я-İ-AZ", false)).toBe(false)
+    expect(element.getAttributeNames()).toEqual(["data-lower"])
+  })
+
   test("[DOM-001] Каждый Element принадлежит ровно одному Document", () => {
     const firstDocument = createDocument()
     const secondDocument = createDocument()

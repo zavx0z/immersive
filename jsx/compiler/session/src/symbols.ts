@@ -41,7 +41,7 @@ import {
 } from "typescript/unstable/ast/is"
 import {skipOuterExpressions, SyntaxKind} from "typescript/unstable/ast"
 import JsxCompileError from "@zavx0z/immersive-jsx-compiler-error"
-import SlotAuthoring, {slotNameForField} from "@zavx0z/immersive-jsx-slot-authoring"
+import SlotAuthoring, {slotNameForField, type JsxOrigin} from "@zavx0z/immersive-jsx-slot-authoring"
 import {GovernedFiles, sameRegularFile} from "./governed-paths.ts"
 import type {
   JsxChildrenExpressionKind,
@@ -135,6 +135,8 @@ export async function buildJsxTransformSymbols(
   const childTypes = await project.checker.getTypeAtLocation(dynamicChildren)
   const arrayExpressions = new Set<Node>()
   const childrenExpressionKinds = new Map<Node, JsxChildrenExpressionKind>()
+  const jsxOrigins = new Map<Node, readonly JsxOrigin[]>()
+  const authoring = new SlotAuthoring(sourceFile)
   const classifiedTypes = new Map<number, Promise<JsxChildrenExpressionKind>>()
   for (let index = 0; index < dynamicChildren.length; index += 1) {
     const expression = skipParentheses(dynamicChildren[index]!)
@@ -151,7 +153,15 @@ export async function buildJsxTransformSymbols(
       classified = classifyChildrenExpressionType(type, project)
       classifiedTypes.set(type.id, classified)
     }
-    childrenExpressionKinds.set(expression, await classified)
+    const kind = await classified
+    childrenExpressionKinds.set(expression, kind)
+    if (kind === "component" || kind === "nullable-component" || kind === "component-children" || kind === "keyed-components") {
+      const child = dynamicChildren[index]!.parent
+      if (isJsxExpression(child) && isJsxElement(child.parent) && /^[A-Z]/.test(child.parent.openingElement.tagName.getText(sourceFile))) {
+        const origins = await authoring.origins(expression, project)
+        if (origins?.length) jsxOrigins.set(expression, origins)
+      }
+    }
   }
   const styleTypes = await project.checker.getTypeAtLocation(styleExpressions)
   const stylePrimitiveKinds = new Map<Node, JsxStylePrimitiveKind>()
@@ -180,7 +190,7 @@ export async function buildJsxTransformSymbols(
   for (const statement of sourceFile.statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier)) continue
     const moduleName = statement.moduleSpecifier.text
-    if (moduleName === "@zavx0z/immersive-component" || moduleName === "@zavx0z/immersive/XReact" || isReactRuntimeModule(moduleName)) continue
+    if (moduleName === "@zavx0z/immersive-component" || moduleName === "@zavx0z/immersive-component/authoring" || moduleName === "@zavx0z/immersive/XReact" || isReactRuntimeModule(moduleName)) continue
     const clause = statement.importClause
     if (!clause) continue
     const specifiers = [
@@ -188,7 +198,7 @@ export async function buildJsxTransformSymbols(
       ...(clause.namedBindings && isNamedImports(clause.namedBindings) ? clause.namedBindings.elements : []),
     ]
     for (const specifier of specifiers) {
-      if ((moduleName === "@zavx0z/immersive-browser" || moduleName === "@zavx0z/immersive/XReact/browser") &&
+      if ((moduleName === "@zavx0z/immersive-browser" || moduleName === "@zavx0z/immersive-browser/authoring" || moduleName === "@zavx0z/immersive/XReact/browser") &&
         ["useSpace", "useFrame"].includes(specifier.propertyName?.text ?? specifier.name.text)) continue
       const componentCandidate = /^[A-Z]/.test(specifier.name.text)
       const hookCandidate = /^use[A-Z0-9]/.test(specifier.name.text)
@@ -266,6 +276,7 @@ export async function buildJsxTransformSymbols(
     arrayExpressions,
     byNode,
     childrenExpressionKinds,
+    jsxOrigins,
     componentSlots,
     cssIntrinsicSymbols,
     dependencyPaths,
@@ -422,6 +433,20 @@ async function classifyChildrenExpressionType(
       text = true
       continue
     }
+    if (await isDOMContentType(part, project)) {
+      compiled = true
+      continue
+    }
+    const construction = await checker.getPropertyOfType(part, "type")
+    const constructionProps = construction && await checker.getPropertyOfType(part, "props")
+    if (construction && constructionProps) {
+      if (((construction.flags | constructionProps.flags) & SymbolFlags.Optional) !== 0) return "invalid-compiled-component"
+      const constructor = await checker.getTypeOfSymbol(construction)
+      if (constructor && await isNominalDOMConstructor(constructor, project)) {
+        compiled = true
+        continue
+      }
+    }
     if (await checker.getPropertyOfType(part, "@zavx0z/immersive-component/value")) {
       if (!await isPreparedComponentType(part, project)) return "invalid-compiled-component"
       compiled = true
@@ -433,6 +458,10 @@ async function classifyChildrenExpressionType(
     }
     if (await isJsxElementArrayType(part, checker)) {
       keyed = true
+      continue
+    }
+    if (await isDOMContentArrayType(part, project)) {
+      compiled = true
       continue
     }
     return "unsupported"
@@ -450,6 +479,83 @@ async function classifyChildrenExpressionType(
 /** Phantom-метка не заменяет обязательный nominal Symbol исходного ComponentValue. */
 async function isPreparedComponentType(type: Type, project: Project): Promise<boolean> {
   return isNominalComponentType(type, project, "@zavx0z/immersive-component/value")
+}
+
+async function isDOMContentType(type: Type, project: Project): Promise<boolean> {
+  for (const name of ["nodeType", "insertionNodes"]) {
+    const marker = await project.checker.getPropertyOfType(type, name)
+    if (!marker) continue
+    const value = await project.checker.getTypeOfSymbol(marker)
+    if (!value || (value.flags & TypeFlags.Undefined) !== 0 || value.isUnionType() && (await value.getTypes()).some(part => (part.flags & TypeFlags.Undefined) !== 0)) continue
+    for (const handle of marker.declarations) {
+      const metadata = await project.program.getSourceFileMetadata(handle.path)
+      if (name === "nodeType" && basename(handle.path) === "lib.dom.d.ts" && metadata?.isDefaultLibrary) return true
+      if (!metadata?.packageJsonDirectory) continue
+      try {
+        const owner = JSON.parse(readFileSync(resolve(metadata.packageJsonDirectory, "package.json"), "utf8")).name
+        if ((owner === "@zavx0z/immersive-dom" || owner === "@zavx0z/immersive") && /(?:^|[\\/])(?:node|dom-group)\.(?:d\.)?ts$/.test(handle.path)) return true
+      } catch { /* Обычный structural object не становится готовым DOM содержимым. */ }
+    }
+  }
+  return false
+}
+
+async function isDOMContentArrayType(type: Type, project: Project): Promise<boolean> {
+  const array = await project.checker.isArrayType(type) || await project.checker.isTupleType(type) || await isReadonlyArrayType(type)
+  if (!array) return false
+  const inspect = async (current: Type, seen: Set<number>): Promise<{valid: boolean, dom: boolean}> => {
+    if (seen.has(current.id)) return {valid: true, dom: false}
+    seen.add(current.id)
+    if (current.isErrorType() || (current.flags & (TypeFlags.Any | TypeFlags.Unknown)) !== 0) return {valid: false, dom: false}
+    if (current.isUnionType()) {
+      let dom = false
+      for (const part of await current.getTypes()) {
+        const result = await inspect(part, seen)
+        if (!result.valid) return result
+        dom ||= result.dom
+      }
+      return {valid: true, dom}
+    }
+    if (isTextChildType(current) || (current.flags & (TypeFlags.Null | TypeFlags.Undefined | TypeFlags.Void)) !== 0) return {valid: true, dom: false}
+    if (await isDOMContentType(current, project)) return {valid: true, dom: true}
+    const construction = await project.checker.getPropertyOfType(current, "type")
+    const constructionProps = construction && await project.checker.getPropertyOfType(current, "props")
+    if (construction && constructionProps) {
+      if (((construction.flags | constructionProps.flags) & SymbolFlags.Optional) !== 0) return {valid: false, dom: false}
+      const constructor = await project.checker.getTypeOfSymbol(construction)
+      if (constructor && await isNominalDOMConstructor(constructor, project)) return {valid: true, dom: true}
+    }
+    if (current.isTypeReference() && (await project.checker.isArrayType(current) || await project.checker.isTupleType(current) || await isReadonlyArrayType(current))) {
+      let dom = false
+      for (const argument of await project.checker.getTypeArguments(current)) {
+        const result = await inspect(argument, seen)
+        if (!result.valid) return result
+        dom ||= result.dom
+      }
+      return {valid: true, dom}
+    }
+    return {valid: false, dom: false}
+  }
+  const result = await inspect(type, new Set())
+  return result.valid && result.dom
+}
+
+async function isNominalDOMConstructor(type: Type, project: Project): Promise<boolean> {
+  for (const property of await project.checker.getPropertiesOfType(type)) {
+    if (!property.name.startsWith("__@domComponentConstructorBrand@")) continue
+    const value = await project.checker.getTypeOfSymbol(property)
+    if (!value?.isBooleanLiteralType() || value.value !== true) continue
+    for (const handle of property.declarations) {
+      const metadata = await project.program.getSourceFileMetadata(handle.path)
+      const directory = metadata?.packageJsonDirectory
+      if (!directory) continue
+      try {
+        const name = JSON.parse(readFileSync(resolve(directory, "package.json"), "utf8")).name
+        if (name === "@zavx0z/immersive-dom" || name === "@zavx0z/immersive") return true
+      } catch { /* Чужой либо нечитаемый owner не подтверждает constructor ABI. */ }
+    }
+  }
+  return false
 }
 
 async function isNominalComponentType(type: Type, project: Project, markerName: string): Promise<boolean> {
@@ -551,11 +657,18 @@ async function publishedComponentType(
 ): Promise<Type | null> {
   if (symbol.declarations.length === 0 || symbol.declarations.some(handle => !/\.d\.[cm]?ts$/u.test(handle.path))) return null
   const type = await project.checker.getTypeOfSymbol(symbol)
-  if (!type || !await isNominalComponentType(type, project, "@zavx0z/immersive-component/compiled")) return null
+  if (!type || !await isNominalDOMConstructor(type, project)) return null
+  const constructors = await project.checker.getSignaturesOfType(type, SignatureKind.Construct)
+  if (constructors.length !== 1) return null
   const signatures = await project.checker.getSignaturesOfType(type, SignatureKind.Call)
   if (signatures.length !== 1) return null
   const result = await project.checker.getReturnTypeOfSignature(signatures[0]!)
   if (!result || !await isJsxElementType(result, project.checker)) return null
+  await collectDeclarationDependencies(symbol, project, dependencies)
+  return type
+}
+
+async function collectDeclarationDependencies(symbol: TypeScriptSymbol, project: Project, dependencies: Set<string>): Promise<void> {
   const visited = new Set<string>()
   const pending = symbol.declarations.map(handle => resolve(handle.path))
   let imports = declarationImports.get(project)
@@ -579,7 +692,7 @@ async function publishedComponentType(
     }
     pending.push(...await referenced)
   }
-  return type
+
 }
 
 async function isGovernedMemoComponent(
@@ -617,6 +730,7 @@ async function isExactRuntimeMemo(identifier: Identifier, project: Project): Pro
   for (const statement of sourceFile.statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier) ||
       (statement.moduleSpecifier.text !== "@zavx0z/immersive-component" &&
+        statement.moduleSpecifier.text !== "@zavx0z/immersive-component/authoring" &&
         statement.moduleSpecifier.text !== "@zavx0z/immersive/XReact")) continue
     const named = statement.importClause?.namedBindings
     if (!named || !isNamedImports(named)) continue
@@ -638,6 +752,25 @@ async function hasGovernedCustomHookDeclaration(
   governedFiles: GovernedFiles,
   dependencyPaths: Set<string>,
 ): Promise<boolean> {
+  if (symbol.declarations.length > 0 && symbol.declarations.every(handle => /\.d\.[cm]?ts$/u.test(handle.path))) {
+    const type = await project.checker.getTypeOfSymbol(symbol)
+    if (type) for (const property of await project.checker.getPropertiesOfType(type)) {
+      if (!property.name.startsWith("__@compiledHookFactoryBrand@")) continue
+      const value = await project.checker.getTypeOfSymbol(property)
+      if (!value?.isBooleanLiteralType() || value.value !== true) continue
+      for (const handle of property.declarations) {
+        const metadata = await project.program.getSourceFileMetadata(handle.path)
+        const directory = metadata?.packageJsonDirectory
+        if (!directory || !/[\\/]contract[\\/]compiled\.(?:d\.)?ts$/.test(handle.path)) continue
+        try {
+          const name = JSON.parse(readFileSync(resolve(directory, "package.json"), "utf8")).name
+          if (name !== "@zavx0z/immersive-jsx-compiler-session" && name !== "@zavx0z/immersive") continue
+          await collectDeclarationDependencies(symbol, project, dependencyPaths)
+          return true
+        } catch { /* Только nominal contract compiler разрешает внешний готовый hook. */ }
+      }
+    }
+  }
   for (const handle of symbol.declarations) {
     if (governedFiles.matchFile(handle.path) === null) continue
     dependencyPaths.add(resolve(handle.path))

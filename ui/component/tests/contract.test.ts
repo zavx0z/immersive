@@ -12,6 +12,12 @@ import Tree from "@zavx0z/immersive-ui-component-widget-tree"
 
 const packageRoot = resolve(import.meta.dir, "..")
 
+function sourceTarget(target: unknown): string {
+  if (typeof target === "string") return target
+  if (target !== null && typeof target === "object" && "source" in target && typeof target.source === "string") return target.source
+  throw new TypeError("Public owner export must expose its source entry")
+}
+
 async function manifests() {
   const result: Array<{directory: string; manifest: Record<string, any>}> = []
   for await (const file of new Bun.Glob("**/package.json").scan({cwd: packageRoot})) {
@@ -24,7 +30,7 @@ async function manifests() {
 test("UI публикует именованные компоненты, типовой протокол и ресурсы", async () => {
   const manifest = await Bun.file(resolve(packageRoot, "package.json")).json()
   expect(manifest.name).toBe("@zavx0z/immersive-ui-component")
-  expect(manifest.exports).toEqual({
+  expect(Object.fromEntries(Object.entries(manifest.exports).map(([name, target]) => [name, sourceTarget(target)]))).toEqual({
     ".": "./index.ts",
     "./contract": "./contract/index.ts",
     "./theme/theme.css": "./theme/theme.css",
@@ -48,7 +54,7 @@ test("пакеты UI имеют собственные публичные вх�
     expect(manifest.packageManager, directory).toBeUndefined()
     expect(manifest.engines, directory).toBeUndefined()
     expect(manifest.description, directory).toMatch(/\S/u)
-    const entry = manifest.exports["."]
+    const entry = sourceTarget(manifest.exports["."])
     expect(entry, directory).toMatch(/^\.\/index\.tsx?$/u)
     const source = await Bun.file(resolve(packageRoot, directory, entry)).text()
     expect(source, directory).toContain("@packageDocumentation")
@@ -60,8 +66,9 @@ test("пакеты UI имеют собственные публичные вх�
       expect(source, directory).not.toMatch(/^(?:export )?(?:function|class|const|let|var)\b/mu)
     }
     for (const target of Object.values(manifest.exports)) {
-      expect(typeof target, directory).toBe("string")
-      expect(await Bun.file(resolve(packageRoot, directory, target as string)).exists(), `${directory}: ${target}`).toBe(true)
+      const source = sourceTarget(target)
+      expect(source, directory).toMatch(/^\.\//u)
+      expect(await Bun.file(resolve(packageRoot, directory, source)).exists(), `${directory}: ${source}`).toBe(true)
     }
   }
 })

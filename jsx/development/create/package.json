@@ -7,19 +7,21 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel spec test",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel spec test",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@zavx0z/immersive-jsx-runtime-create": "workspace:*",
-    "@zavx0z/immersive-component": "workspace:*",
-    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
+    "@zavx0z/immersive-jsx-runtime-create": "workspace:*"
   },
   "devDependencies": {
-    "@zavx0z/immersive-template": "workspace:*"
+    "@zavx0z/immersive-jsx": "workspace:*"
   }
 }

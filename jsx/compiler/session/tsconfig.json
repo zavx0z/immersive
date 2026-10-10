@@ -1,6 +1,12 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
+    "customConditions": ["source", "bun"],
+    "paths": {
+      "@zavx0z/immersive": ["../../../index.ts"],
+      "@zavx0z/immersive/XReact": ["../../../XReact/index.ts"],
+      "@zavx0z/immersive/XReact/*": ["../../../XReact/*/index.ts"]
+    },
     "exactOptionalPropertyTypes": false
   },
   "include": [

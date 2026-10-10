@@ -1,9 +1,9 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument} from "@zavx0z/immersive-dom"
 import {registerLanguageHighlighter} from "@zavx0z/highlighter"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import type {MarkdownProps} from "../contract/input.ts"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
@@ -16,7 +16,7 @@ Bun.plugin(createJsxBunPlugin({
 }))
 
 const {Markdown} = await import("../index.tsx")
-const template = Markdown as unknown as CompiledTemplate<MarkdownProps>
+const template = Markdown as unknown as DOMComponentConstructor<MarkdownProps>
 
 function mount(props: MarkdownProps) {
   const document = createDocument()
@@ -98,7 +98,7 @@ describe("Markdown production owner", () => {
     const host = document.createElement("div")
     document.append(host)
     const component = createRoot(host)
-    const editor = CodeEditor as unknown as CompiledTemplate<import("@zavx0z/immersive-ui-component-view-code-editor").ImmersiveUiComponentViewCodeEditor.Input>
+    const editor = CodeEditor as unknown as DOMComponentConstructor<import("@zavx0z/immersive-ui-component-view-code-editor").ImmersiveUiComponentViewCodeEditor.Input>
     try {
       component.render(editor, {value: "code", readOnly: true, languageId, title: "First"})
       const line = host.querySelector('code [data-line-index="0"]')
@@ -294,7 +294,7 @@ describe("Markdown production owner", () => {
     document.append(container)
     const component = createRoot(container)
     const value = Array.from({length: 30}, () => "long line ".repeat(20)).join("\n")
-    component.render(CodeEditor as unknown as CompiledTemplate<import("@zavx0z/immersive-ui-component-view-code-editor").ImmersiveUiComponentViewCodeEditor.Input>, {
+    component.render(CodeEditor as unknown as DOMComponentConstructor<import("@zavx0z/immersive-ui-component-view-code-editor").ImmersiveUiComponentViewCodeEditor.Input>, {
       value,
       readOnly: true,
     })

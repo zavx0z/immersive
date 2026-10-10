@@ -1,10 +1,8 @@
+import {nativeComponents} from "./native-components.ts"
 import {attachWithRuntimeFactory} from "../src/component-attachment.ts"
 import {attachFixture, createFakeRuntime, createFakeRuntimeState, presentFakeFrame, testApp} from "./experience.fixture.ts"
 import {expect, test} from "bun:test"
-import {component} from "@zavx0z/immersive-component"
-import {useFrame, useSpace, type RootSize} from "../src/root-context.ts"
-import {defineCompiledTemplate} from "@zavx0z/immersive-template/compiled"
-import {bindRef, writeBinding} from "@zavx0z/immersive-template/compiled"
+import type {RootSize} from "../src/document-environment.ts"
 import {acquireDocumentAuthorStyleSheetOwner, HTMLElement as SemanticHTMLElement, type Element as SemanticElement, type Node as SemanticNode} from "@zavx0z/immersive-dom"
 import {DisplayElement} from "@zavx0z/immersive-dom/display"
 import type {
@@ -64,20 +62,7 @@ import type {
 import type {DocumentOverlayRuntime} from "../src/overlay-runtime.ts"
 import type {DocumentPlaneRuntime} from "../src/plane-runtime.ts"
 
-const authoredApplication = (onMount: (space: SpaceElement) => () => void) => component(defineCompiledTemplate({
-  displayName: "AuthoredApplication",
-  bindingCount: 1,
-  mount(document) {
-    const space = document.createElement("space") as SpaceElement
-    const camera = document.createElement("viewpoint") as ViewPointElement
-    space.id = "authored-space"
-    camera.x = 42
-    camera.z = 300
-    space.append(camera)
-    return {nodes: [space], bindings: [bindRef(space)]}
-  },
-  render(_props, values) { writeBinding(values, 0, onMount) },
-}), {})
+const authoredApplication = (onMount: (space: SpaceElement) => () => void) => ({type: nativeComponents.AuthoredApp!, props: {onMount}})
 
 test("проекции без id сохраняют runtime, подписки и фокус при смене атрибутов и переносе UI", async () => {
   const state = createFakeRuntimeState()
@@ -193,7 +178,7 @@ test("[BRW-004] attach монтирует один Document и синхрони�
 })
 
 test("[BRW-005] DOM и компонентный вход используют одно подключение Browser", () => {
-  expect(Object.keys(publicApi)).toEqual(["createDocumentRoot", "createRoot", "useFrame", "useSpace"])
+  expect(Object.keys(publicApi)).toEqual(["createDocumentRoot", "createRoot", "documentEnvironment"])
 })
 
 test("[BRW-006] ViewPoint синхронизируется перед кадром в exact semantic Element без петли", async () => {
@@ -737,12 +722,7 @@ test("[BRW-ATTACH-003] ошибка первого кадра освобожда
 test("[BRW-ATTACH-004] невалидный App не создаёт GPU runtime и не оставляет claim", async () => {
   const canvas = {getContext: () => null, getBoundingClientRect: () => ({width: 800, height: 600, left: 0, top: 0})} as unknown as HTMLCanvasElement
   let created = 0
-  const invalid = component(defineCompiledTemplate({
-    displayName: "MissingCamera",
-    bindingCount: 0,
-    mount(document) { return {nodes: [document.createElement("space")], bindings: []} },
-    render() {},
-  }), {})
+  const invalid = {type: nativeComponents.MissingCamera!, props: {}}
   await expect(attachWithRuntimeFactory({canvas, font: {} as TrueTypeFont, app: invalid}, async options => {
     created++
     return createFakeRuntime(options, createFakeRuntimeState())
@@ -757,20 +737,10 @@ test("[BRW-ROOT-001] контекст доступен при монтирова
   const widths: number[] = []
   const frames: Array<{width: number; delta: number; x: number}> = []
   let resize: (size: RootSize) => void = () => {}
-  const app = component(defineCompiledTemplate({
-    displayName: "ResizeApp",
-    bindingCount: 0,
-    mount(document) {
-      const space = document.createElement("space") as SpaceElement
-      space.append(document.createElement("viewpoint"))
-      return {nodes: [space], bindings: []}
-    },
-    render() {
-      const size = useSpace(state => state.size)
-      widths.push(size.width)
-      useFrame((frame, delta) => { frames.push({width: frame.size.width, delta, x: frame.viewPoint.x}) })
-    },
-  }), {})
+  const app = {type: nativeComponents.ResizeApp!, props: {
+    width: (width: number) => widths.push(width),
+    frame: (frame: {size: {width: number}, viewPoint: {x: number}}, delta: number) => frames.push({width: frame.size.width, delta, x: frame.viewPoint.x}),
+  }}
   const root = await attachWithRuntimeFactory({
     canvas: {getContext: () => null, getBoundingClientRect: () => ({width: 800, height: 600, left: 0, top: 0})} as unknown as HTMLCanvasElement,
     font: {} as TrueTypeFont,
@@ -783,12 +753,14 @@ test("[BRW-ROOT-001] контекст доступен при монтирова
   expect(frames).toEqual([{width: 800, delta: 0, x: root.viewPoint.x}])
   state.snapshot = {...state.snapshot, position: {x: 125, y: -1000, z: 0}}
   resize({width: 1200, height: 900, left: 0, top: 0, dpr: 2})
+  root.document.flushTasks()
   expect(widths).toEqual([800, 1200])
   expect(root.viewPoint.x).toBe(125)
   expect(frames).toHaveLength(1)
   root.render()
   expect(frames[1]).toMatchObject({width: 1200, x: 125})
   resize({width: 1200, height: 900, left: 0, top: 0, dpr: 2})
+  root.document.flushTasks()
   expect(widths).toHaveLength(2)
   root.unmount()
   expect(state.beforeRender.size).toBe(0)
@@ -800,16 +772,7 @@ test("[BRW-ROOT-002] selector без изменения результата н�
   let renders = 0
   let resize: (size: RootSize) => void = () => {}
   const state = createFakeRuntimeState()
-  const app = component(defineCompiledTemplate({
-    displayName: "StableSelection",
-    bindingCount: 0,
-    mount(document) {
-      const space = document.createElement("space")
-      space.append(document.createElement("viewpoint"))
-      return {nodes: [space], bindings: []}
-    },
-    render() { useSpace(state => state.frameloop); renders++ },
-  }), {})
+  const app = {type: nativeComponents.StableSelection!, props: {rendered: () => { renders++ }}}
   const root = await attachWithRuntimeFactory({
     canvas: {getContext: () => null, getBoundingClientRect: () => ({width: 800, height: 600, left: 0, top: 0})} as unknown as HTMLCanvasElement,
     font: {} as TrueTypeFont,
@@ -941,8 +904,6 @@ test("default URL link is inserted before an existing borrowed stylesheet", asyn
 // Browser author API: these use the same runtime seam as the projection evidence above.
 import {createRootWithSeams} from "../create-root.ts"
 import {inspectRoot} from "../diagnostics.ts"
-import {useState, useLayoutEffect} from "@zavx0z/immersive-component"
-import {bindText} from "@zavx0z/immersive-template/compiled"
 
 const browserRootFixture = (state = createFakeRuntimeState(), changes: Partial<Parameters<typeof createRootWithSeams>[2]> = {}) => {
   const canvas = {getContext: () => null, getBoundingClientRect: () => ({width: 800, height: 600, left: 0, top: 0})} as unknown as HTMLCanvasElement
@@ -958,44 +919,24 @@ const browserRootFixture = (state = createFakeRuntimeState(), changes: Partial<P
 
 test("Browser createRoot: render preserves component state, Element identity and one runtime", async () => {
   let increment = () => {}
-  const template = defineCompiledTemplate<{label: string; frameloop: "demand" | "always"}>({
-    displayName: "BrowserCounter",
-    bindingCount: 2,
-    mount(document) {
-      const link = document.createElement("link")
-      link.setAttribute("rel", "stylesheet")
-      link.setAttribute("href", "/dark.css")
-      const space = document.createElement("space") as SpaceElement
-      space.append(document.createElement("viewpoint"))
-      const text = document.createTextNode("")
-      const hud = document.createElement("hud")
-      hud.append(text)
-      space.append(hud)
-      return {nodes: [link, space], bindings: [bindText(text), bindRef(space)]}
-    },
-    render(props, values) {
-      const [count, setCount] = useState(0)
-      increment = () => setCount(count + 1)
-      writeBinding(values, 0, `${props.label}:${count}`)
-      writeBinding(values, 1, (element: SpaceElement) => { if (element) element.frameloop = props.frameloop })
-    },
-  })
+  const template = nativeComponents.BrowserCounter!
+  const bindIncrement = (callback: () => void) => { increment = callback }
   const {root, state, errors} = browserRootFixture()
-  expect(root.render(component(template, {label: "first", frameloop: "demand"}))).toBeUndefined()
+  expect(root.render({type: template, props: {label: "first", frameloop: "demand", increment: bindIncrement}})).toBeUndefined()
   const first = await inspectRoot(root).whenReady()
   const space = first.space
   const document = first.document
   expect(document.documentElement?.localName).toBe("html")
   expect(document.querySelector("body")?.children[1]).toBe(space)
   increment()
-  root.render(component(template, {label: "second", frameloop: "always"}))
+  root.render({type: template, props: {label: "second", frameloop: "always", increment: bindIncrement}})
   const second = await inspectRoot(root).whenReady()
   expect(second.document).toBe(document)
   expect(second.space).toBe(space)
   expect(space.textContent).toBe("second:1")
   expect(state.factoryCalls).toBe(1)
   expect(state.requestedFrame).not.toBeNull()
-  root.render(component(template, {label: "third", frameloop: "demand"}))
+  root.render({type: template, props: {label: "third", frameloop: "demand", increment: bindIncrement}})
   await inspectRoot(root).whenReady()
   expect(space.textContent).toBe("third:1")
   expect(errors).toEqual([])
@@ -1009,7 +950,7 @@ test("Browser createRoot: unmount cancels pending startup and releases the Canva
   const {root, canvas, seams, state, errors} = browserRootFixture(undefined, {
     loadFont: () => new Promise(resolve => { finish = resolve }),
   })
-  root.render(component(testApp, {}))
+  root.render({type: testApp, props: {}})
   const readiness = inspectRoot(root).whenReady()
   await new Promise(resolve => setTimeout(resolve, 0))
   root.unmount()
@@ -1024,12 +965,12 @@ test("Browser createRoot: unmount cancels pending startup and releases the Canva
 
 test("Browser createRoot: null clears content and render mounts again in the same Document", async () => {
   const {root, state, errors, canvas, seams} = browserRootFixture()
-  root.render(component(testApp, {}))
+  root.render({type: testApp, props: {}})
   const first = await inspectRoot(root).whenReady()
   root.render(null)
   await expect(inspectRoot(root).whenReady()).rejects.toThrow("no rendered application")
   expect(() => createRootWithSeams(canvas, {}, seams)).toThrow("already owns")
-  root.render(component(testApp, {}))
+  root.render({type: testApp, props: {}})
   const second = await inspectRoot(root).whenReady()
   expect(second.document).toBe(first.document)
   expect(second.space).not.toBe(first.space)
@@ -1042,7 +983,7 @@ test("Browser createRoot: null clears content and render mounts again in the sam
 test("Browser createRoot: startup failure reaches the error handler and readiness", async () => {
   const failure = new Error("font unavailable")
   const {root, errors} = browserRootFixture(undefined, {loadFont: async () => { throw failure }})
-  root.render(component(testApp, {}))
+  root.render({type: testApp, props: {}})
   await expect(inspectRoot(root).whenReady()).rejects.toThrow("font unavailable")
   expect(errors).toEqual([failure])
   root.unmount()
@@ -1062,7 +1003,7 @@ test("Browser createRoot: a cancelled GPU initialization cannot overlap a replac
       return oldRuntime
     },
   })
-  fixture.root.render(component(testApp, {}))
+  fixture.root.render({type: testApp, props: {}})
   const waiting = inspectRoot(fixture.root).whenReady()
   await new Promise(resolve => setTimeout(resolve, 0))
   expect(entered).toBe(true)
@@ -1080,25 +1021,12 @@ test("Browser createRoot: a cancelled GPU initialization cannot overlap a replac
 
 test("Browser createRoot: renders queued during loading present the latest props", async () => {
   let finish!: (font: TrueTypeFont) => void
-  const template = defineCompiledTemplate<{label: string}>({
-    displayName: "PendingLabel",
-    bindingCount: 1,
-    mount(document) {
-      const space = document.createElement("space")
-      space.append(document.createElement("viewpoint"))
-      const text = document.createTextNode("")
-      const hud = document.createElement("hud")
-      hud.append(text)
-      space.append(hud)
-      return {nodes: [space], bindings: [bindText(text)]}
-    },
-    render(props, values) { writeBinding(values, 0, props.label) },
-  })
+  const template = nativeComponents.PendingLabel!
   const {root, state} = browserRootFixture(undefined, {loadFont: () => new Promise(resolve => { finish = resolve })})
-  root.render(component(template, {label: "old"}))
+  root.render({type: template, props: {label: "old"}})
   const waiting = inspectRoot(root).whenReady()
   await new Promise(resolve => setTimeout(resolve, 0))
-  root.render(component(template, {label: "latest"}))
+  root.render({type: template, props: {label: "latest"}})
   finish({} as TrueTypeFont)
   const presentation = await waiting
   expect(presentation.space.textContent).toBe("latest")
@@ -1109,15 +1037,8 @@ test("Browser createRoot: renders queued during loading present the latest props
 test("Browser createRoot: component effect cleanup runs before presentation resources are disposed", async () => {
   const {root, state} = browserRootFixture()
   const cleanupObservation: {disposed: boolean | null} = {disposed: null}
-  const template = defineCompiledTemplate({
-    displayName: "CleanupOrder",
-    bindingCount: 0,
-    mount: testApp.mount,
-    render() {
-      useLayoutEffect(() => () => { cleanupObservation.disposed = state.disposed }, [])
-    },
-  })
-  root.render(component(template, {}))
+  const template = nativeComponents.CleanupOrder!
+  root.render({type: template, props: {cleanup: () => { cleanupObservation.disposed = state.disposed }}})
   await inspectRoot(root).whenReady()
   root.unmount()
   expect(cleanupObservation.disposed).toBe(false)
@@ -1148,7 +1069,7 @@ test("Browser integration options do not acquire the stylesheet registry a secon
       }
     },
   })
-  root.render(component(testApp, {}))
+  root.render({type: testApp, props: {}})
   const presentation = await inspectRoot(root).whenReady()
   expect(presentation.presentedFrame).toBeGreaterThan(0)
   expect(fixture.state.factoryCalls).toBe(1)

@@ -1,4 +1,4 @@
-import type {ComponentValue} from "@zavx0z/immersive-component"
+import type {DOMConstruction, DOMGroup, Node as SemanticNode} from "@zavx0z/immersive-dom"
 import type {IntrinsicProperties} from "../contract/intrinsic.ts"
 import type {HUDElement} from "@zavx0z/immersive-dom/hud"
 import type {SpaceElement} from "@zavx0z/immersive-dom/space"
@@ -52,7 +52,10 @@ export type Ref<Target extends EventTargetValue> = (
 /** Вложенное содержимое JSX: Element, текст, пустые значения и readonly группы. */
 export type Child =
   | AuthoredElement<object>
-  | ComponentValue
+  | DOMConstruction<any>
+  | Node
+  | SemanticNode
+  | DOMGroup
   | string
   | number
   | bigint

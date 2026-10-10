@@ -7,8 +7,18 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.ts",
-    "./default-font": "./src/text/default-font.ts",
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/src/index.d.ts",
+      "browser": "./dist/src/index.js",
+      "default": "./dist/src/index.js"
+    },
+    "./default-font": {
+      "source": "./src/text/default-font.ts",
+      "types": "./dist/src/text/default-font.d.ts",
+      "browser": "./dist/src/text/default-font.js",
+      "default": "./dist/src/text/default-font.js"
+    },
     "./fonts/inter-regular.ttf": "./static/font/inter-regular.ttf",
     "./fonts/inter-bold.ttf": "./static/font/inter-bold.ttf",
     "./fonts/inter-italic.ttf": "./static/font/inter-italic.ttf",
@@ -23,8 +33,8 @@
   "types": "./src/index.ts",
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "license": "MIT"
 }

@@ -1,9 +1,8 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {component, createRoot} from "@zavx0z/immersive-component"
-import {createDocument, type HTMLElement, textOffsetAtPosition} from "@zavx0z/immersive-dom"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom/root"
+import {createDocument, type DOMComponentConstructor, type HTMLElement, textOffsetAtPosition} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engine"
 import type {Renderer} from "@zavx0z/immersive-webgpu"
 import {caretPositionAtPoint} from "@zavx0z/immersive-renderer-html"
@@ -64,7 +63,7 @@ test.each([
   const value = 'const label = "Alpha"\nlet tick = 0\n'
   const model = new CodeEditorModel({value, selections: [{anchor: value.length, head: value.length}]})
   const component = createRoot(root)
-  component.render((widget ? Editor : CodeEditor) as unknown as CompiledTemplate<CodeEditorProps>, {value: model.snapshot.value, readOnly: false, model, languageId: "typescript"})
+  component.render((widget ? Editor : CodeEditor), {title: "Alpha", value: model.snapshot.value, readOnly: false, model, languageId: "typescript"})
   const code = root.querySelector("code") as HTMLElement
   const betaRoot = document.createElement("section") as HTMLElement
   betaRoot.setAttribute("style", "display:block;width:600px;height:280px;background:#222")
@@ -72,7 +71,7 @@ test.each([
   const betaComponent = createRoot(betaRoot)
   if (dual) {
     container.append(betaRoot)
-    betaComponent.render(Editor as unknown as CompiledTemplate<CodeEditorProps>, {value: betaModel.snapshot.value, readOnly: false, model: betaModel, languageId: "typescript"})
+    betaComponent.render(Editor, {title: "Beta", value: betaModel.snapshot.value, readOnly: false, model: betaModel, languageId: "typescript"})
   }
   const proxies = {input: new NativeProxy(), select: new NativeProxy(), textarea: new NativeProxy()}
   const rect = {left: 0, top: 0, width: 600, height: 280}
@@ -211,7 +210,7 @@ test("real createRoot App keeps two Editor projections isolated across every sel
     getBoundingClientRect: () => rect, addEventListener() {}, removeEventListener() {},
     setPointerCapture(id: number) { captures.add(id) }, releasePointerCapture(id: number) { captures.delete(id) }, hasPointerCapture: (id: number) => captures.has(id),
   } as unknown as HTMLCanvasElement
-  const app = component(NativeEditorSelectionFixture as unknown as CompiledTemplate<{alpha: typeof alpha; beta: typeof beta}>, {alpha, beta})
+  const app = {type: NativeEditorSelectionFixture, props: {alpha, beta}}
   const root = createRootWithSeams(canvas, {pixelRatio: 2}, {
     loadFont: async () => font,
     createStyleSheets: () => ({refresh() {}, async whenReady() {}, dispose() {}}),

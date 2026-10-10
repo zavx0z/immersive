@@ -1,4 +1,4 @@
-import {useLayoutEffect, useRef, useState} from "@zavx0z/immersive-component"
+import {useLayoutEffect, useRef, useState} from "@zavx0z/immersive-component/authoring"
 import {observeElementLayout, readElementLayoutRect} from "@zavx0z/immersive-dom/geometry"
 import type {ImmersiveUiComponentSurfaceWindow} from "../contract/index"
 type WindowProps = ImmersiveUiComponentSurfaceWindow.Input

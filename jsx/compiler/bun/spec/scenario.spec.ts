@@ -10,11 +10,13 @@ describe.each([
     entrypoints: [resolve(import.meta.dir, "fixture/plain.tsx")],
     plugins: [plugin],
     target: "bun",
-    external: ["@zavx0z/immersive-template/compiled", "@zavx0z/immersive-component"],
+    external: ["@zavx0z/immersive-dom"],
   })
   const output = await actual.outputs[0]?.text()
   test("Результат сборки", () => {
     expect(actual.success, "Штатный Bun build получает скомпилированный компонент через публичный плагин").toBeTrue()
-    expect(output, "Итоговая программа содержит готовый шаблон вместо авторского JSX").toContain("defineCompiledTemplate")
+    expect(output, "Итоговая программа содержит конкретный DOM constructor вместо авторского JSX").toContain("class Caption extends")
+    expect(output).toContain("domComponentConstructorBrand")
+    expect(output).not.toContain("defineCompiledTemplate")
   })
 })

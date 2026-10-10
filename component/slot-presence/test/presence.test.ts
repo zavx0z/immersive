@@ -1,58 +1,33 @@
 import {expect, test} from "bun:test"
-import {createDocument} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
-import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
-import {composeSlot, type ComposeSlotInput} from "@zavx0z/immersive-component/slot"
-import {bindConditional, bindText, defineCompiledTemplate, slotContents, writeBinding} from "@zavx0z/immersive-template/compiled"
+import {createDocument, createDomRoot} from "@zavx0z/immersive-dom"
+import {hasSlot} from "@zavx0z/immersive-component/authoring"
+import {components} from "../../tests/fixture.ts"
 
-/** Данные настоящего скомпилированного шаблона для проверки текущего render. */
-interface PresenceProps {
-  [slotContents]?: Readonly<Record<string, ComposeSlotInput["content"]>>
-  selected?: string
-}
-
-const template = defineCompiledTemplate<PresenceProps>({
-  displayName: "SlotPresence",
-  slots: ["", "header"],
-  bindingCount: 2,
-  mount(document) {
-    const article = document.createElement("article")
-    const result = document.createTextNode("")
-    const start = document.createComment("slot:start")
-    const end = document.createComment("slot:end")
-    article.append(result, start, end)
-    return {nodes: [article], bindings: [bindText(result), bindConditional(start, end)]}
-  },
-  render(props, values) {
-    writeBinding(values, 0, JSON.stringify({body: hasSlot(), header: hasSlot(props.selected ?? "header")}))
-    writeBinding(values, 1, composeSlot({content: props[slotContents]?.[""]}) ?? composeSlot({content: "fallback"}))
-  },
-})
-
-test("presence читает nextProps и не принимает fallback за назначенное содержимое", () => {
+test("presence читает next content и не принимает fallback за назначенное содержимое", () => {
   const document = createDocument()
   const host = document.createElement("div")
   document.append(host)
-  const root = createRoot(host)
+  const root = createDomRoot(host)
   try {
-    root.render(template, {})
+    root.render(components.Presence, {})
     const article = host.firstElementChild
     expect(host.textContent).toBe('{"body":false,"header":false}fallback')
-    root.render(template, {[slotContents]: {"": [0], header: ["заголовок"]}})
+    root.render(components.Presence, {}, {content: {"": [0], header: ["заголовок"]}})
     expect(host.firstElementChild).toBe(article)
-    expect(host.textContent).toBe('{"body":true,"header":true}0')
-    root.render(template, {[slotContents]: {"": [null, false, "", []], header: []}})
+    expect(host.textContent).toBe('{"body":true,"header":true}0заголовок')
+    root.render(components.Presence, {}, {content: {"": [null, false, "", []], header: []}})
     expect(host.textContent).toBe('{"body":false,"header":false}fallback')
-    expect(() => root.render(template, {selected: "missing"})).toThrow('Unknown slot "missing"')
+    expect(() => root.render(components.Presence, {selected: "missing"})).toThrow("Unknown slot missing")
     expect(host.textContent).toBe('{"body":false,"header":false}fallback')
-    expect(() => hasSlot()).toThrow("outside component render")
-  } finally {
-    root.unmount()
-  }
+  } finally { root.unmount() }
 })
 
-test("presence вне render и неверное имя отклоняются явно", () => {
-  expect(() => hasSlot()).toThrow("outside component render")
-  // @ts-expect-error Проверяется JavaScript-граница публичного API.
-  expect(() => hasSlot(1)).toThrow("Slot name must be a string")
+test("presence — compile-only API; неверное имя отвергается concrete compiled code", () => {
+  expect(() => hasSlot()).toThrow("authoring API")
+  const document = createDocument()
+  const host = document.createElement("div")
+  document.append(host)
+  const root = createDomRoot(host)
+  try { expect(() => root.render(components.Presence, {selected: 1})).toThrow("Slot name must be a string") }
+  finally { root.unmount() }
 })

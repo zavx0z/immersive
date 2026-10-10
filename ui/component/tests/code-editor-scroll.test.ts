@@ -1,8 +1,8 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, MouseEvent, type HTMLElement} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
@@ -20,7 +20,7 @@ for (const [compact, height, tooltip] of [
     const document = createDocument()
     const owner = document.createElement("div") as HTMLElement
     const component = createRoot(owner)
-    component.render(CodeEditorScrollFixture as unknown as CompiledTemplate<{compact: boolean}>, {compact})
+    component.render(CodeEditorScrollFixture as unknown as DOMComponentConstructor<{compact: boolean}>, {compact})
     document.append(owner)
     const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 1000, height: 700}, styleSheets: [theme]})
     const settle = () => {
@@ -47,7 +47,7 @@ for (const [compact, height, tooltip] of [
       expect(code.textContent).toBe(codeEditorScrollSource)
       expect(lines.length).toBeLessThan(60)
       for (const line of lines) {
-        expect(line.textContent).toBe(codeEditorScrollSource.split("\n")[Number(line.getAttribute("data-line-index"))])
+        expect(line.textContent).toBe(codeEditorScrollSource.split("\n")[Number(line.getAttribute("data-line-index"))]!)
       }
       expect(editor.getAttribute("title")).toBe(tooltip)
       expect(initial.boxByNode.get(editor)?.height).toBe(height)
@@ -67,7 +67,7 @@ for (const [compact, height, tooltip] of [
       const shiftedLines = [...code.querySelectorAll("[data-line-index]")]
       const overlap = shiftedLines.filter(line => retained.has(line.getAttribute("data-line-index")))
       expect(overlap.length).toBeGreaterThan(0)
-      for (const line of overlap) expect(line).toBe(retained.get(line.getAttribute("data-line-index")))
+      for (const line of overlap) expect(line).toBe(retained.get(line.getAttribute("data-line-index"))!)
       expect(shiftedLines.some(line => Number(line.getAttribute("data-line-index")) >= 30)).toBe(true)
       expect(shiftedLines.length).toBeLessThan(60)
       expect(code.textContent).toBe(codeEditorScrollSource)

@@ -6,9 +6,9 @@
 */
 import type {ImmersiveUiComponentFieldCycle as Contract} from "./contract"
 import {CycleOption} from "./src/helpers.tsx"
-import {useCallback} from "@zavx0z/immersive-component"
-import {useId} from "@zavx0z/immersive-component"
-import {useState} from "@zavx0z/immersive-component"
+import {useCallback} from "@zavx0z/immersive-component/authoring"
+import {useId} from "@zavx0z/immersive-component/authoring"
+import {useState} from "@zavx0z/immersive-component/authoring"
 import Button from "@zavx0z/immersive-ui-component-button-basic"
 import chevronDownIcon from "@zavx0z/immersive-ui-theme-icon-chevron-down"
 import findSelectionOption from "@zavx0z/immersive-ui-selection-find-option"

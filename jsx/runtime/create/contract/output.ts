@@ -1,8 +1,2 @@
-import type {ComponentValue} from "@zavx0z/immersive-component"
-
-/**
-Подготовленное значение Component, возвращаемое native JSX protocol.
-Brand, template, props, key и context принадлежат контракту Component;
-JSX protocol сохраняет этот формат без дополнительной обёртки.
-*/
-export type RuntimeOutput = ComponentValue
+/** Automatic JSX не имеет runtime-результата: компиляция обязательна. */
+export type RuntimeOutput = never

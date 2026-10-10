@@ -1,5 +1,6 @@
 import {ModelGraphView} from "./model-view.fixture.tsx"
-import {createRoot, useMemo, useSyncExternalStore} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import {useMemo, useSyncExternalStore} from "@zavx0z/immersive-component/authoring"
 import type {Document, Element} from "@zavx0z/immersive-dom"
 import {layoutFixed} from "@zavx0z/immersive-nodes-layout/fixed"
 import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"

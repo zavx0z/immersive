@@ -7,7 +7,7 @@ import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 
 import socketMetrics from "@zavx0z/immersive-nodes-model-socket-metrics"
 const {NODE_BORDER_WIDTH} = socketMetrics
-import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import {hasSlot} from "@zavx0z/immersive-component/authoring"
 import Button from "@zavx0z/immersive-ui-component-button-basic"
 import IconButton from "@zavx0z/immersive-ui-component-button-icon"
 import chevronDownIcon from "@zavx0z/immersive-ui-theme-icon-chevron-down"

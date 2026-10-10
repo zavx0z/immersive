@@ -2,7 +2,7 @@
   "name": "@zavx0z/immersive",
   "label": "Immersive",
   "version": "0.0.0",
-  "description": "Императивный и декларативный DOM, пространственный движок и готовые компоненты XReact",
+  "description": "Императивный и декларативный DOM, пространственный движок и готовые DOM-компоненты",
   "private": true,
   "type": "module",
   "engines": {
@@ -17,12 +17,12 @@
     "typecheck": "bun run --parallel typecheck:root typecheck:packages",
     "typecheck:root": "tsc --project tsconfig.json --pretty false",
     "typecheck:packages": "bun run --workspaces --sequential typecheck",
-    "test": "bun run --parallel test:architecture test:packages",
-    "test:architecture": "bun test --parallel --timeout 30000 tests/architecture/packages.test.ts tests/architecture/dependencies.test.ts tests/experience/contract.test.ts",
-    "test:packages": "bun run --workspaces --sequential test",
-    "check": "bun run --parallel typecheck test",
-    "build": "bun ./build.ts",
-    "test:distribution": "bun test ./tests/distribution.test.ts"
+    "test": "BUN_OPTIONS=--conditions=source bun run --parallel test:architecture test:packages",
+    "test:architecture": "BUN_OPTIONS=--conditions=source bun test --parallel --timeout 30000 tests/architecture/packages.test.ts tests/architecture/dependencies.test.ts tests/experience",
+    "test:packages": "BUN_OPTIONS=--conditions=source bun run --workspaces --sequential test",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test",
+    "build": "bun --conditions=source ./build.ts",
+    "test:distribution": "BUN_OPTIONS= bun test ./tests/distribution.test.ts"
   },
   "devDependencies": {
     "@types/bun": "^1.4.2",
@@ -43,56 +43,38 @@
     "./XReact": {
       "source": "./XReact/index.ts",
       "types": "./dist/XReact/index.d.ts",
-      "browser": "./dist/XReact/index.js",
-      "default": "./dist/XReact/index.js"
-    },
-    "./XReact/compiled": {
-      "source": "./XReact/compiled/index.ts",
-      "types": "./dist/XReact/compiled/index.d.ts",
-      "browser": "./dist/XReact/compiled/index.js",
-      "default": "./dist/XReact/compiled/index.js"
+      "default": "./dist/XReact/index.js",
+      "bun": "./dist/XReact/index.js"
     },
     "./XReact/browser": {
       "source": "./XReact/browser/index.ts",
       "types": "./dist/XReact/browser/index.d.ts",
-      "browser": "./dist/XReact/browser/index.js",
-      "default": "./dist/XReact/browser/index.js"
-    },
-    "./XReact/browser/diagnostics": {
-      "source": "./XReact/browser/diagnostics/index.ts",
-      "types": "./dist/XReact/browser/diagnostics/index.d.ts",
-      "browser": "./dist/XReact/browser/diagnostics/index.js",
-      "default": "./dist/XReact/browser/diagnostics/index.js"
-    },
-    "./XReact/browser/integration": {
-      "source": "./XReact/browser/integration/index.ts",
-      "types": "./dist/XReact/browser/integration/index.d.ts",
-      "browser": "./dist/XReact/browser/integration/index.js",
-      "default": "./dist/XReact/browser/integration/index.js"
+      "default": "./dist/XReact/browser/index.js",
+      "bun": "./dist/XReact/browser/index.js"
     },
     "./XReact/jsx-runtime": {
       "source": "./XReact/jsx-runtime/index.ts",
       "types": "./dist/XReact/jsx-runtime/index.d.ts",
-      "browser": "./dist/XReact/jsx-runtime/index.js",
-      "default": "./dist/XReact/jsx-runtime/index.js"
+      "default": "./dist/XReact/jsx-runtime/index.js",
+      "bun": "./dist/XReact/jsx-runtime/index.js"
     },
     "./XReact/jsx-dev-runtime": {
       "source": "./XReact/jsx-dev-runtime/index.ts",
       "types": "./dist/XReact/jsx-dev-runtime/index.d.ts",
-      "browser": "./dist/XReact/jsx-dev-runtime/index.js",
-      "default": "./dist/XReact/jsx-dev-runtime/index.js"
+      "default": "./dist/XReact/jsx-dev-runtime/index.js",
+      "bun": "./dist/XReact/jsx-dev-runtime/index.js"
     },
     "./XReact/slot": {
       "source": "./XReact/slot/index.ts",
       "types": "./dist/XReact/slot/index.d.ts",
-      "browser": "./dist/XReact/slot/index.js",
-      "default": "./dist/XReact/slot/index.js"
+      "default": "./dist/XReact/slot/index.js",
+      "bun": "./dist/XReact/slot/index.js"
     },
     "./XReact/slot/child": {
       "source": "./jsx/slot/child/index.ts",
       "types": "./dist/jsx/slot/child/index.d.ts",
-      "browser": "./dist/jsx/slot/child/index.js",
-      "default": "./dist/jsx/slot/child/index.js"
+      "default": "./dist/jsx/slot/child/index.js",
+      "bun": "./dist/jsx/slot/child/index.js"
     },
     "./ui": {
       "source": "./ui/index.ts",
@@ -302,10 +284,10 @@
       "default": "./dist/ui/theme/icon-set/index.js"
     },
     "./XReact/slot-presence": {
-      "source": "./component/slot-presence/index.ts",
-      "types": "./dist/component/slot-presence/index.d.ts",
-      "browser": "./dist/component/slot-presence/index.js",
-      "default": "./dist/component/slot-presence/index.js"
+      "source": "./XReact/slot/index.ts",
+      "types": "./dist/XReact/slot/index.d.ts",
+      "default": "./dist/XReact/slot/index.js",
+      "bun": "./dist/XReact/slot/index.js"
     },
     "./ui/widget": {
       "source": "./ui/component/widget/index.ts",

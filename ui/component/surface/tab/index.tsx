@@ -6,12 +6,12 @@ Display и вложенных контейнерах; окон, камер и о
 
 @packageDocumentation
 */
-import {useLayoutEffect} from "@zavx0z/immersive-component"
-import {useRef} from "@zavx0z/immersive-component"
-import {useState} from "@zavx0z/immersive-component"
+import {useLayoutEffect} from "@zavx0z/immersive-component/authoring"
+import {useRef} from "@zavx0z/immersive-component/authoring"
+import {useState} from "@zavx0z/immersive-component/authoring"
 import {observeElementLayout} from "@zavx0z/immersive-dom/geometry"
 import {readElementLayoutRect} from "@zavx0z/immersive-dom/geometry"
-import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import {hasSlot} from "@zavx0z/immersive-component/authoring"
 import type {ImmersiveUiComponentSurfaceTab as Contract} from "./contract"
 import {dockTab} from "./src/placement.ts"
 import {readTabPosition} from "./src/placement.ts"

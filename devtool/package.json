@@ -7,15 +7,20 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./inspector.ts"
+    ".": {
+      "source": "./inspector.ts",
+      "types": "./dist/inspector.d.ts",
+      "browser": "./dist/inspector.js",
+      "default": "./dist/inspector.js"
+    }
   },
   "main": "./inspector.ts",
   "module": "./inspector.ts",
   "types": "./inspector.ts",
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependencies": {
     "@zavx0z/immersive-dom": "workspace:*",

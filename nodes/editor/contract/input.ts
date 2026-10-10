@@ -10,14 +10,14 @@ import type {
   GraphSelection,
   GraphTransform,
   GraphViewport,
-} from "../../shared/graph/contracts.ts"
+} from "@zavx0z/immersive-nodes/view"
 import type {
   NodeTreeLayout,
   NodeTreeLayoutComputer,
   NodeTreeStore,
   NodeView,
-} from "../../shared/node-tree/contracts.ts"
-import type {MeasuredNodeTreeComputer} from "../../shared/node-tree/measured.ts"
+} from "@zavx0z/immersive-nodes/view/tree"
+import type {MeasuredNodeTreeComputer} from "@zavx0z/immersive-nodes/view/tree"
 
 /**
 Входные данные редактора, который составляет модель {@link NodeTreeStore} и

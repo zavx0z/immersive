@@ -1,5 +1,5 @@
-import {component, provideContext} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {component, provideContext} from "@zavx0z/immersive-component/authoring"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import {GraphView, type GraphViewProps} from "@zavx0z/immersive-nodes/view"
 import {MermaidHorizontal} from "./graph-context.ts"
@@ -33,7 +33,7 @@ export function MermaidGraphView(props: GraphViewProps & Readonly<{horizontal: b
 */
 function renderMermaidGraph(props: GraphViewProps & Readonly<{horizontal: boolean}>): GraphContent {
   return provideContext(MermaidHorizontal, props.horizontal,
-    component(GraphView as unknown as CompiledTemplate<GraphViewProps>, props, "graph")) as unknown as JSX.Element
+    component(GraphView as unknown as DOMComponentConstructor<GraphViewProps>, props, "graph")) as unknown as JSX.Element
 }
 
 /**

@@ -1,8 +1,6 @@
 /// <reference path="./assets.d.ts" />
 import {createGPUInstance, globalConstructors} from "bun-webgpu"
-import {createDocument, HTMLImageElement, type Element, type Node} from "@zavx0z/immersive-dom"
-import {component, createRoot, normalizeChildren, type ComponentValue} from "@zavx0z/immersive-component"
-import {isCompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDocument, createDomRoot, isDOMComponentConstructor, HTMLImageElement, type DOMConstruction, type Element, Node} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import {Space, ViewPoint, TrueTypeFont} from "@zavx0z/immersive-engine"
 import {Renderer, RendererWebGpuBackend, RendererWebGpuScreenOverlay, TextureLoader} from "@zavx0z/immersive-webgpu"
@@ -31,7 +29,7 @@ function exclusive<Result>(operation: () => Promise<Result>): Promise<Result> {
 Создаёт один нативный host для компонентов любых пакетов выбранного проекта.
 
 Test host заранее подключает `@zavx0z/immersive-headless/preload`, чтобы статические
-TSX-импорты и JSX сценария компилировались Template. `createHeadless` идемпотентно
+TSX-импорты и JSX сценария компилировались в самостоятельные DOM constructors. `createHeadless` идемпотентно
 регистрирует тот же compiler и создаёт отдельный host. GPU-операции разных host выполняются последовательно;
 глобальные WebGPU-объекты восстанавливаются после каждой операции.
 Браузерные ImageBitmap API предоставляет тот же host; снимок ожидает текстуры
@@ -63,7 +61,7 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
   const host = document.createElement("div")
   host.setAttribute("style", `width: ${width}px; height: ${height}px`)
   document.append(host)
-  const componentRoot = createRoot(host)
+  const domRoot = createDomRoot(host)
   const renderer = new Renderer()
   let gpu: ReturnType<typeof createGPUInstance> | undefined
   let backend: RendererWebGpuBackend | undefined
@@ -136,7 +134,7 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
     do {
       if (lifetime.signal.aborted) throw lifetime.signal.reason
       presentationRequested = false
-      componentRoot.flush()
+      domRoot.flush()
       const frame = layout!.flush()
       backend!.applyFrame(frame)
       const device = canvas.getContext("webgpu")!.getConfiguration()!.device
@@ -198,22 +196,23 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
 
   async function render(value: unknown): Promise<Element> {
     if (arguments.length !== 1) throw new TypeError("Headless.render принимает один JSX-аргумент")
-    const child = normalizeChildren(value as ComponentValue)
-    if (child === null) throw new TypeError("Headless.render принимает JSX скомпилированного компонента")
+    if (value === null || typeof value !== "object" || !isDOMComponentConstructor((value as Partial<DOMConstruction>).type))
+      throw new TypeError("Headless.render принимает construction готового DOM-компонента")
+    const child = value as DOMConstruction
     return exclusive(() => withGpu(async () => {
       await initialize()
-      componentRoot.render(child)
+      domRoot.render(child)
       await draw()
-      if (host.children.length !== 1) throw new Error("Компонент должен вернуть один внешний элемент")
-      return host.firstElementChild!
+      const hasRootText = host.childNodes.some(node => node.nodeType === Node.TEXT_NODE && node.textContent !== "")
+      return host.children.length === 1 && !hasRootText ? host.firstElementChild! : host
     }))
   }
 
   return {
     render,
     async renderComponent(type, props) {
-      if (!isCompiledTemplate(type)) throw new TypeError("Headless.renderComponent принимает скомпилированный компонент и props")
-      return render(component(type, props))
+      if (!isDOMComponentConstructor(type)) throw new TypeError("Headless.renderComponent принимает готовый DOM constructor и props")
+      return render({type, props})
     },
     capture,
     screenshot,
@@ -221,7 +220,7 @@ export function createHeadless(options: HeadlessOptions = {}): Headless {
       lifetime.abort(new DOMException("Headless освобождён", "AbortError"))
       return exclusive(async () => {
         if (disposed) return
-        componentRoot.unmount()
+        domRoot.unmount()
         layout?.dispose()
         backend?.dispose()
         renderer.dispose()

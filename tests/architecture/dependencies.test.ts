@@ -1,7 +1,7 @@
 import {describe, test} from "bun:test"
 import {dirname, extname, isAbsolute, join, relative, resolve, sep} from "node:path"
 import {assertRequirement} from "../assert.ts"
-import {readUiWorkspaces} from "./ui-workspaces"
+import {readUiWorkspaces, readWorkspaceDirectories} from "./ui-workspaces"
 
 const root = join(import.meta.dir, "../..")
 
@@ -33,7 +33,7 @@ const basePackageDirectories = Object.freeze({
   "@zavx0z/immersive-webgpu": "webgpu",
   "@zavx0z/immersive-browser": "browser",
   "@zavx0z/immersive-space": "space",
-  "@zavx0z/immersive-ui-component": "ui",
+  "@zavx0z/immersive-ui-component": "ui/component",
   "@zavx0z/immersive-nodes-node": "nodes/node",
   "@zavx0z/immersive-headless": "headless",
   "@zavx0z/immersive-nodes-parameter": "nodes/parameter",
@@ -45,6 +45,7 @@ const basePackageDirectories = Object.freeze({
 } as const)
 
 const uiWorkspaces = await readUiWorkspaces(root)
+const packageBoundaries = await readWorkspaceDirectories(root)
 const uiNames = ["@zavx0z/immersive-ui-component", ...uiWorkspaces.map(([, name]) => name)]
 const packageDirectories: Readonly<Record<string, string>> = Object.freeze({
   ...basePackageDirectories,
@@ -105,11 +106,14 @@ const baseAllowedInternalDependencies: Readonly<Record<StorybookPackageName, rea
     "@zavx0z/immersive-ui-component": ["@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template", "@zavx0z/immersive-jsx"],
     "@zavx0z/immersive-nodes-node": ["@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-nodes-parameter", "@zavx0z/immersive-nodes-socket", "@zavx0z/immersive-component", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-jsx", "@zavx0z/immersive-jsx-compiler-session"],
     "@zavx0z/immersive-headless": ["@zavx0z/immersive-renderer-html", "@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-engine", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-webgpu", "@zavx0z/immersive-jsx", "@zavx0z/immersive-jsx-compiler-session", "@zavx0z/immersive-jsx-slot-child", "@zavx0z/immersive-jsx-compiler-bun"],
-    "@zavx0z/immersive-nodes-parameter": ["@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-nodes-socket", "@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-jsx"],
-    "@zavx0z/immersive-nodes-socket": ["@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-component", "@zavx0z/immersive-template", "@zavx0z/immersive-jsx"],
+    "@zavx0z/immersive-nodes-parameter": ["@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-nodes-socket", "@zavx0z/immersive-component", "@zavx0z/immersive-dom", "@zavx0z/immersive-template", "@zavx0z/immersive-ui-component", "@zavx0z/immersive-jsx", "@zavx0z/immersive-jsx-compiler-session"],
+    "@zavx0z/immersive-nodes-socket": ["@zavx0z/immersive-nodes-tree", "@zavx0z/immersive-component", "@zavx0z/immersive-template", "@zavx0z/immersive-jsx", "@zavx0z/immersive-jsx-compiler-session"],
     "@zavx0z/immersive-nodes-tree": [],
     "@zavx0z/immersive-nodes-layout": [],
     "@zavx0z/immersive-nodes": [
+      "@zavx0z/immersive-space",
+      "@zavx0z/immersive-engine",
+      "@zavx0z/immersive-browser",
       "@zavx0z/immersive-nodes-node",
       "@zavx0z/immersive-nodes-parameter",
       "@zavx0z/immersive-nodes-socket",
@@ -149,6 +153,8 @@ const excludedSourceSegments = new Set([
   "bench",
   "coverage",
   "dist",
+  "fixture",
+  "fixtures",
   "node_modules",
   "test",
   "tests",
@@ -157,6 +163,11 @@ const sourceImportCache = new Map<StorybookPackageName, Promise<readonly SourceI
 
 async function readManifest(packageName: StorybookPackageName): Promise<PackageManifest> {
   return Bun.file(join(root, packageDirectories[packageName]!, "package.json")).json()
+}
+
+/** Source tests явно выбирают native export condition и передают его дочернему Bun. */
+function sourceCommand(command: string): string {
+  return command.replace(/^BUN_OPTIONS=(?:--conditions=source)?\s+/u, "")
 }
 
 function declaredDependencies(manifest: PackageManifest): ReadonlySet<string> {
@@ -200,7 +211,7 @@ function scanPackageImports(packageName: StorybookPackageName): Promise<readonly
 
 function belongsToPackage(packageName: StorybookPackageName, file: string): boolean {
   const packageRoot = resolve(root, packageDirectories[packageName]!)
-  return !Object.values(packageDirectories).some(directory =>
+  return !packageBoundaries.some(directory =>
     directory !== packageDirectories[packageName]! && resolve(packageRoot, file).startsWith(resolve(root, directory) + sep))
 }
 
@@ -359,7 +370,8 @@ describe("Направление производственных зависим
 
     for (const [owner, manifest] of manifests) {
       const scripts = (manifest as {scripts?: Readonly<Record<string, string>>}).scripts ?? {}
-      for (const [name, command] of Object.entries(scripts)) {
+      for (const [name, configuredCommand] of Object.entries(scripts)) {
+        const command = sourceCommand(configuredCommand)
         if (/^(?:build|check|test)(?::|$)/u.test(name)) {
           assertRequirement(
             command.startsWith("bun "),
@@ -381,7 +393,7 @@ describe("Направление производственных зависим
     assertRequirement(
       rootScripts.typecheck?.includes("bun run --parallel") === true &&
       rootScripts.test?.includes("bun run --parallel") === true &&
-      rootScripts["test:packages"] === "bun run --workspaces --sequential test",
+      sourceCommand(rootScripts["test:packages"] ?? "") === "bun run --workspaces --sequential test",
       "PKG-008",
       "Bun параллелит общие phases и тесты внутри пакета; package suites запускаются последовательно без двойной CPU-нагрузки",
     )
@@ -395,14 +407,14 @@ describe("Направление производственных зависим
           "PKG-008", `${packageName} без scripts должен объединять пакеты из корневого workspace`)
         continue
       }
-      const testPhases = (manifest.scripts.test ?? "").split(" && ")
+      const testPhases = (manifest.scripts.test ?? "").split(" && ").map(sourceCommand)
       assertRequirement(
         testPhases.every(phase => phase.startsWith("bun test ") && phase.includes("--parallel")),
         "PKG-008",
         `${packageName} должен запускать каждую группу package tests нативным параллельным Bun test`,
       )
       assertRequirement(
-        manifest.scripts.check === "bun run --parallel typecheck test",
+        sourceCommand(manifest.scripts.check ?? "") === "bun run --parallel typecheck test",
         "PKG-008",
         `${packageName} должен параллельно запускать typecheck и test через Bun`,
       )

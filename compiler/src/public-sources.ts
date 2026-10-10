@@ -6,7 +6,7 @@ import {API} from "typescript/unstable/async"
 import {isExportDeclaration, isNamedExports, isStringLiteral} from "typescript/unstable/ast/is"
 
 /** Происхождение готового входа: точный публичный export исходного владельца. */
-type SourceExport = Readonly<{specifier: string; source: string; manifest: string; digest: string; file: string}>
+export type SourceExport = Readonly<{specifier: string; source: string; manifest: string; digest: string; file: string}>
 
 /**
 Связывает готовые входы с владельцами исходников для разработки самой платформы.
@@ -48,7 +48,7 @@ export async function publicSourceExports(root: string, entries: readonly (reado
   }
 }
 
-async function ownerExports(root: string, source: string): Promise<SourceExport[]> {
+export async function ownerExports(root: string, source: string): Promise<SourceExport[]> {
   let directory = dirname(source)
   while (directory.startsWith(`${root}${sep}`)) {
     const manifest = resolve(directory, "package.json")

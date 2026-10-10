@@ -8,8 +8,10 @@ import {
   getOptionSelectedness,
   normalizeSelectSelection,
   selectOption,
-  setOptionSelectedness
+  setOptionSelectedness,
+  selectionChanged
 } from "./internal/select.ts"
+import {lifecyclePropertyChanged} from "./internal/lifecycle.ts"
 import {parseHTMLInteger, toLong} from "./internal/web-idl.ts"
 import {createStaticNodeList} from "./node-list.ts"
 import type {NodeList} from "./node-list.ts"
@@ -169,6 +171,11 @@ export class HTMLSelectElement extends HTMLElement {
     const state = this.synchronizeOptions(options)
     if (resetFallback) state.allowEmpty = false
     this.normalizeOptions(options, publish)
+  }
+
+  [selectionChanged](): void {
+    lifecyclePropertyChanged(this, "value")
+    lifecyclePropertyChanged(this, "selectedIndex")
   }
 
   [selectOption](option: HTMLOptionElement, selected: boolean): void {

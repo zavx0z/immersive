@@ -148,3 +148,147 @@ Shadow DOM, загрузку ресурсов или исполнение script
 Состояние прохождения тестов относится к конкретному запуску и версии кода.
 
 Общее устройство приложения описано в [требованиях Immersive](../PROJECT.md).
+
+## Сгенерированные DOM-компоненты
+
+Целевой договор авторства и единого состояния принадлежит
+[PROJECT.md](../PROJECT.md#авторство-и-подключение-приложения). Ниже описаны
+реализованные операции этого DOM-владельца.
+
+DOMGroup — отдельное insertion value, не Node и не подмена DocumentFragment.
+Его фактический диапазон ограничен двумя Comment. parent.childNodes содержит
+только настоящие Nodes; group.nodes читает узлы между границами, insertionNodes —
+весь диапазон вместе с Comments. nextSibling/previousSibling читают внешних соседей
+диапазона. append,
+insertBefore и replaceChildren принимают группу целиком; moveTo переносит её,
+remove отсоединяет, сохраняя содержимое для повторной вставки. Граничные Comments
+не являются wrapper Elements, layout или event-bubbling parent. Удаление
+отдельной границы вручную нарушает диапазон и не восстанавливается скрытым деревом.
+`replaceDomRangeContent(start,end,content)` меняет только содержимое между реальными
+границами после единого native preflight; окружающие siblings и границы сохраняются.
+Он принимает Nodes/Groups/строки, не construction descriptors и не component state.
+
+observeConnection(Node|DOMGroup, callbacks) возвращает disposable connection scope.
+При завершении внешней Document.transaction он сравнивает окончательные Document
+и connectedness. Same-Document reparent не вызывает disconnect/connect; настоящее
+отсоединение вызывает disconnected, повторная вставка connected. При adoption
+порядок — disconnected старого подключения, adopted(oldDoc,newDoc), connected нового.
+Регистрация на уже подключённом объекте доставляется на следующем commit.
+Scope.dispose прекращает наблюдение и завершает действующее подключение один раз.
+Scopes обходят только отмеченные ветви; отдельного mutation subscriber на компонент нет.
+Custom Element reactions и scopes используют один индекс интересов дерева и одну
+очередь lifecycle. Нативные CE callbacks сохраняют порядок DOM-операций; scopes
+сравнивают итоговое подключение после этих callbacks. Перенос подключённого
+поддерева внутри Document сохраняет scopes без обхода всех наблюдаемых потомков.
+Тот же scope принимает точные списки `attributes` и `properties` для Node и
+`changed()` callback. Он наблюдает native attribute writes и записываемые DOM
+property changes, включая dirty input value/checked, без обхода потомков или
+mutation subscriber. Изменения объединяются одной transaction и доставляются
+до Document tasks; они наблюдаются и у отсоединённого Node. `suppressChanges(fn)`
+исключает записи внутри fn только для этого scope, сохраняя внешние наблюдения
+и уже ожидающее уведомление. DOMGroup не имеет native attributes/properties.
+Нативные projections раскрываются у DOM-владельца: input value уведомляет
+valueAsNumber/valueAsDate, selection — selectionStart/End/Direction. Select
+уведомляет value/selectedIndex при собственных setters, изменении selectedness
+и состава options. Reflected имена, scroll, media и текстовые descendants
+используют те же индекс и очередь; только наблюдение textContent/innerHTML
+требует проверки цепочки фактических ancestors. Отдельного дерева зависимостей нет.
+Уведомление projection не добавляет отсутствующий native accessor: набор
+реализованных полей по-прежнему задаёт сам класс Element.
+
+`nativePropertyForBinding(element,bindingName)` возвращает имя native поля только
+когда существующий `propertyOperation` действительно пишет именно это поле
+или его отражаемый атрибут; иначе возвращает null. Наличие произвольного setter
+не доказывает этот транспорт. Например, imperative input.valueAsNumber
+наблюдается как native property, но обычный author binding этого имени пока
+не является native valueAsNumber binding. Compiler использует этот договор
+вместо собственной копии DOM reflection/channel maps.
+Внешний native owner объявляет зависимости своих полей через
+`defineDOMPropertyAttributes(ConstructorOrPrototype, declarations)`. Metadata
+копируется immutably, наследуется по настоящему prototype chain и используется
+при создании точного индекса scope. Она не создаёт поля или setters.
+После неатрибутной записи owner вызывает `notifyDOMPropertyChange(node,name)`
+внутри своей Document.transaction. Произвольный сторонний setter без metadata
+или такого уведомления автоматически наблюдаемым не становится. Имена и
+semantics полей расширения остаются у его владельца.
+
+Document.enqueueTask(callback) объединяет callbacks по identity. cancelTask снимает
+ожидающий callback; flushTasks синхронно завершает общую очередь. Внешняя transaction
+завершает tasks и connection reactions до публикации stylesheet/mutation/state
+снимков. Вне transaction используется одна microtask на Document. Повторные
+callbacks обслуживаются до устойчивости с ограничением числа проходов; ошибка
+одного callback не пропускает cleanup остальных. Это очередь DOM work, а не
+component renderer. Browser использует её перед своим существующим кадром.
+`flushTasks` внутри открытой transaction сохраняет её границу: reactions и
+tasks завершаются при внешнем commit. Он не запускает layout до подключения
+новых узлов и не пытается опустошить ещё открытый CE reaction stack.
+Node.dispatchEvent объединяет DOM tasks и публикацию изменений до возврата из
+dispatch, включая императивные beforeinput listeners. При этом отдельные
+setAttribute и другие CEReactions доставляют нативные callbacks до следующей
+инструкции listener. После общего connection drain tasks могут читать refs всех
+подключённых потомков; отдельной lifecycle-фазы для layout в DOM нет.
+
+`validateDomNodes(document,nodes,receivingNode?)` проверяет принадлежность,
+повторы и цикл фактических узлов до размещения. `captureDomOrigins(document,values)`
+запоминает родителей, соседей и фокус raw Nodes, Fragment и полных DOMGroup
+диапазонов; restore возвращает их в исходное дерево, restoreFocus повторяет
+восстановление фокуса после размещения прежнего диапазона. В construction data
+обходится только content; props/context и constructors не исполняются.
+Template и сгенерированный код используют эти же физические операции.
+Неизменившийся диапазон не переподключается и не публикует childList mutation.
+
+Существующие compiled stylesheet leases сохраняют одного владельца в Document
+и immutable optional source `{kind:"authored-css",moduleId,componentName,cssText}`.
+Один id обязан иметь одинаковые CSS и provenance во всех действующих leases.
+Чтение stylesheet snapshot внутри transaction возвращает уже действующий набор:
+layout effects не ждут публикации подписчикам. Snapshot immutable и сохраняет
+identity между изменениями. Подписчики получают итоговый изменившийся набор
+после commit; промежуточные reads не публикуют события. Revision отражает
+прочитанные состояния, поэтому уведомления могут пропускать промежуточные revisions.
+Nominal DOMComponentConstructor описывает только готовый constructor и generated
+methods; marker не запускает lifecycle и не является runtime adapter. Group не
+регистрируется как Custom Element; optional CE относится к самому фактическому
+Element, без дополнительного host.
+
+`createDomRoot(container)` допускает один живой root каждого Document, Element
+или DocumentFragment; разные контейнеры одного Document независимы. unmount
+снимает владение даже при ошибке cleanup. readonly `root.current` возвращает
+сам фактический Element или DOMGroup, а не описание или снимок. Его можно
+переносить обычными DOM-операциями. `root.moveTo(parent,before?)` переносит тот
+же объект целиком внутри Document; новый render с другим constructor/key
+заменяет его в фактическом текущем месте, сохраняя окружающих siblings.
+Projection не становится новым root container. При staging необходимо
+перенести весь Fragment или `root.current`: извлечение одного выбранного
+Element из DOMGroup оставляет границы и соседей на прежнем месте.
+
+### Custom Elements с фактическим HTML root
+
+Один и тот же HTML subclass можно использовать императивно и зарегистрировать
+`registry.define("x-counter", Counter, {extends:"button"})`. Тогда
+`document.createElement("button", {is:"x-counter"})` и HTML
+`<button is="x-counter"></button>` создают тот же класс и фактический button,
+без автономного wrapper. `is` фиксируется при создании: изменение атрибута после
+создания не превращает обычный button в custom element. Имя `x-counter` само
+по себе не создаёт customized button. Registry сохраняет изоляцию Document. Creation option хранит внутренний is value,
+не создаёт DOM-атрибут; HTML serialization отражает его при отсутствии атрибута,
+согласно [DOM create element](https://dom.spec.whatwg.org/#concept-create-element)
+и [HTML custom element](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-core-concepts).
+
+Customized built-ins ограничены поддержанными HTML elements; Space, HUD,
+примитивы внешней factory и DOMGroup не являются HTML built-ins. Constructor
+получает Document; native HTMLElement использует текущий construction context.
+Как и у автономных CE, constructor при createElement не добавляет attrs/children;
+сгенерированный класс откладывает построение до явных props/content или connection.
+Поздний upgrade сохраняет Node, native input/selection/option/media state, фокус
+и дочерние Nodes. Новый пользовательский class state инициализируется один раз;
+core не исполняет props, hooks или component bindings.
+
+`retainDOMContent(document, content, allowedSlotNames?)` создаёт immutable snapshot
+конкретного slot map. Fragment раскрывается в readonly Node array в момент
+назначения; новый map с уже consumed Fragment получает пустой массив. Nodes и
+DOMGroup не клонируются; nested fixed arrays и construction content получают
+свои снимки. Проверяются Document, повторные Nodes, циклы и разрешённые имена
+слотов. Construction сохраняется данными `{type,props,key,content,context}`;
+helper не вызывает constructor, update, hooks или bindings. Props/context
+остаются теми же значениями, без обхода пользовательских данных. Кэша Fragment
+между назначениями или получателями нет; retained snapshot хранит сам получатель.

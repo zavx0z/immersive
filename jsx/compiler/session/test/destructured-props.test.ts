@@ -3,8 +3,8 @@ import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
 import {createDocument, HTMLButtonElement, MouseEvent} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import type {DOMComponentConstructor as CompiledTemplate} from "@zavx0z/immersive-dom"
 import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 test("слоты и деструктурированный style сохраняют DOM identity, focus, state и cleanup", async () => {

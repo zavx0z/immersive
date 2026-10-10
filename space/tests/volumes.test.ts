@@ -2,19 +2,19 @@ import {afterAll, beforeAll, expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument} from "@zavx0z/immersive-dom"
 import {createSpaceElementFactories, XRMeshElement, type XRMaterialElement} from "@zavx0z/immersive-space"
 import {GlassMaterial, HolographicMaterial, LineGlowMaterial} from "@zavx0z/immersive-engine"
 import {readElementStyle} from "../../renderer/html/src/index.ts"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import type {SpatialVolumesProps} from "../shape/volumes/contract/input.ts"
 import {cacheSpatialVolumes, createVolumeBatches, spatialVolumeCorners} from "../shape/volumes/src/geometry.ts"
 import {resolveVolumeMaterialDefaults, volumeMaterial, volumeOutlineMaterial} from "../shape/volumes/src/material.ts"
 
 let directory = ""
-let template: CompiledTemplate<SpatialVolumesProps>
+let template: DOMComponentConstructor<SpatialVolumesProps>
 beforeAll(async () => {
   const space = resolve(import.meta.dir, "..")
   directory = await mkdtemp(join(import.meta.dir, ".volumes-"))

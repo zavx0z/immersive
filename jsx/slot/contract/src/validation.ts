@@ -1,5 +1,5 @@
 import type {JsxElement, JsxSelfClosingElement, Node} from "typescript/unstable/ast"
-import {isJsxElement} from "typescript/unstable/ast/is"
+import {isJsxElement, isJsxExpression} from "typescript/unstable/ast/is"
 import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
 import {contentProof, emptyProof, joinedProof} from "./content.ts"
 import {SlotContractError} from "./error.ts"
@@ -19,7 +19,8 @@ export async function validateAssignments(
   for (const child of isJsxElement(element) ? element.children : []) {
     const proof = await contentProof(child, owner, context)
     if (!proof.assigned && proof.max === 0) continue
-    const name = authoring.childName(child)
+    const origins = isJsxExpression(child) && child.expression ? await authoring.origins(child.expression, context.project) : null
+    const name = origins?.length ? authoring.originName(origins) : authoring.childName(child)
     if (!receiver.schema.has(name)) {
       throw new SlotContractError("JSX-SLOTS-NAME", `Компонент ${receiver.symbol.name} не объявляет слот ${name || "default"}`, child)
     }

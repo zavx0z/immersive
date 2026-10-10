@@ -7,39 +7,159 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts",
-    "./fixed": "./algorithm/fixed/index.ts",
-    "./fixed/contract/input": "./algorithm/fixed/contract/input.ts",
-    "./fixed/contract/output": "./algorithm/fixed/contract/output.ts",
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./fixed": {
+      "source": "./algorithm/fixed/index.ts",
+      "types": "./dist/algorithm/fixed/index.d.ts",
+      "browser": "./dist/algorithm/fixed/index.js",
+      "default": "./dist/algorithm/fixed/index.js"
+    },
+    "./fixed/contract/input": {
+      "source": "./algorithm/fixed/contract/input.ts",
+      "types": "./dist/algorithm/fixed/contract/input.d.ts",
+      "browser": "./dist/algorithm/fixed/contract/input.js",
+      "default": "./dist/algorithm/fixed/contract/input.js"
+    },
+    "./fixed/contract/output": {
+      "source": "./algorithm/fixed/contract/output.ts",
+      "types": "./dist/algorithm/fixed/contract/output.d.ts",
+      "browser": "./dist/algorithm/fixed/contract/output.js",
+      "default": "./dist/algorithm/fixed/contract/output.js"
+    },
     "./adaptive": "./algorithm/adaptive/index.ts",
-    "./adaptive/contract/input": "./algorithm/adaptive/contract/input.ts",
-    "./adaptive/contract/output": "./algorithm/adaptive/contract/output.ts",
+    "./adaptive/contract/input": {
+      "source": "./algorithm/adaptive/contract/input.ts",
+      "types": "./dist/algorithm/adaptive/contract/input.d.ts",
+      "browser": "./dist/algorithm/adaptive/contract/input.js",
+      "default": "./dist/algorithm/adaptive/contract/input.js"
+    },
+    "./adaptive/contract/output": {
+      "source": "./algorithm/adaptive/contract/output.ts",
+      "types": "./dist/algorithm/adaptive/contract/output.d.ts",
+      "browser": "./dist/algorithm/adaptive/contract/output.js",
+      "default": "./dist/algorithm/adaptive/contract/output.js"
+    },
     "./adaptive/diagnostics": "./algorithm/adaptive/diagnostic/index.ts",
-    "./adaptive/diagnostics/contract/input": "./algorithm/adaptive/diagnostic/contract/input.ts",
-    "./adaptive/diagnostics/contract/output": "./algorithm/adaptive/diagnostic/contract/output.ts",
+    "./adaptive/diagnostics/contract/input": {
+      "source": "./algorithm/adaptive/diagnostic/contract/input.ts",
+      "types": "./dist/algorithm/adaptive/diagnostic/contract/input.d.ts",
+      "browser": "./dist/algorithm/adaptive/diagnostic/contract/input.js",
+      "default": "./dist/algorithm/adaptive/diagnostic/contract/input.js"
+    },
+    "./adaptive/diagnostics/contract/output": {
+      "source": "./algorithm/adaptive/diagnostic/contract/output.ts",
+      "types": "./dist/algorithm/adaptive/diagnostic/contract/output.d.ts",
+      "browser": "./dist/algorithm/adaptive/diagnostic/contract/output.js",
+      "default": "./dist/algorithm/adaptive/diagnostic/contract/output.js"
+    },
     "./adaptive/error": "./algorithm/adaptive/src/error.ts",
-    "./adaptive/types": "./algorithm/adaptive/types/adaptive.ts",
-    "./top-down": "./algorithm/top-down/index.ts",
-    "./top-down/contract/input": "./algorithm/top-down/contract/input.ts",
-    "./top-down/contract/output": "./algorithm/top-down/contract/output.ts",
-    "./top-down/error": "./algorithm/top-down/src/error.ts",
+    "./adaptive/types": {
+      "source": "./algorithm/adaptive/types/adaptive.ts",
+      "types": "./dist/algorithm/adaptive/types/adaptive.d.ts",
+      "browser": "./dist/algorithm/adaptive/types/adaptive.js",
+      "default": "./dist/algorithm/adaptive/types/adaptive.js"
+    },
+    "./top-down": {
+      "source": "./algorithm/top-down/index.ts",
+      "types": "./dist/algorithm/top-down/index.d.ts",
+      "browser": "./dist/algorithm/top-down/index.js",
+      "default": "./dist/algorithm/top-down/index.js"
+    },
+    "./top-down/contract/input": {
+      "source": "./algorithm/top-down/contract/input.ts",
+      "types": "./dist/algorithm/top-down/contract/input.d.ts",
+      "browser": "./dist/algorithm/top-down/contract/input.js",
+      "default": "./dist/algorithm/top-down/contract/input.js"
+    },
+    "./top-down/contract/output": {
+      "source": "./algorithm/top-down/contract/output.ts",
+      "types": "./dist/algorithm/top-down/contract/output.d.ts",
+      "browser": "./dist/algorithm/top-down/contract/output.js",
+      "default": "./dist/algorithm/top-down/contract/output.js"
+    },
+    "./top-down/error": {
+      "source": "./algorithm/top-down/src/error.ts",
+      "types": "./dist/algorithm/top-down/src/error.d.ts",
+      "browser": "./dist/algorithm/top-down/src/error.js",
+      "default": "./dist/algorithm/top-down/src/error.js"
+    },
     "./hierarchy": "./algorithm/hierarchy/index.ts",
-    "./hierarchy/contract/input": "./algorithm/hierarchy/contract/input.ts",
-    "./hierarchy/contract/output": "./algorithm/hierarchy/contract/output.ts",
-    "./compound": "./algorithm/compound/index.ts",
-    "./compound/contract/input": "./algorithm/compound/contract/input.ts",
-    "./compound/contract/output": "./algorithm/compound/contract/output.ts",
+    "./hierarchy/contract/input": {
+      "source": "./algorithm/hierarchy/contract/input.ts",
+      "types": "./dist/algorithm/hierarchy/contract/input.d.ts",
+      "browser": "./dist/algorithm/hierarchy/contract/input.js",
+      "default": "./dist/algorithm/hierarchy/contract/input.js"
+    },
+    "./hierarchy/contract/output": {
+      "source": "./algorithm/hierarchy/contract/output.ts",
+      "types": "./dist/algorithm/hierarchy/contract/output.d.ts",
+      "browser": "./dist/algorithm/hierarchy/contract/output.js",
+      "default": "./dist/algorithm/hierarchy/contract/output.js"
+    },
+    "./compound": {
+      "source": "./algorithm/compound/index.ts",
+      "types": "./dist/algorithm/compound/index.d.ts",
+      "browser": "./dist/algorithm/compound/index.js",
+      "default": "./dist/algorithm/compound/index.js"
+    },
+    "./compound/contract/input": {
+      "source": "./algorithm/compound/contract/input.ts",
+      "types": "./dist/algorithm/compound/contract/input.d.ts",
+      "browser": "./dist/algorithm/compound/contract/input.js",
+      "default": "./dist/algorithm/compound/contract/input.js"
+    },
+    "./compound/contract/output": {
+      "source": "./algorithm/compound/contract/output.ts",
+      "types": "./dist/algorithm/compound/contract/output.d.ts",
+      "browser": "./dist/algorithm/compound/contract/output.js",
+      "default": "./dist/algorithm/compound/contract/output.js"
+    },
     "./rectangle-index": "./rectangle-index/index.ts",
     "./orthogonal": "./orthogonal/index.ts",
-    "./orthogonal/contract/input": "./orthogonal/contract/input.ts",
-    "./orthogonal/contract/output": "./orthogonal/contract/output.ts",
+    "./orthogonal/contract/input": {
+      "source": "./orthogonal/contract/input.ts",
+      "types": "./dist/orthogonal/contract/input.d.ts",
+      "browser": "./dist/orthogonal/contract/input.js",
+      "default": "./dist/orthogonal/contract/input.js"
+    },
+    "./orthogonal/contract/output": {
+      "source": "./orthogonal/contract/output.ts",
+      "types": "./dist/orthogonal/contract/output.d.ts",
+      "browser": "./dist/orthogonal/contract/output.js",
+      "default": "./dist/orthogonal/contract/output.js"
+    },
     "./coffman-graham": "./algorithm/coffman-graham/index.ts",
-    "./coffman-graham/contract/input": "./algorithm/coffman-graham/contract/input.ts",
-    "./coffman-graham/contract/output": "./algorithm/coffman-graham/contract/output.ts",
+    "./coffman-graham/contract/input": {
+      "source": "./algorithm/coffman-graham/contract/input.ts",
+      "types": "./dist/algorithm/coffman-graham/contract/input.d.ts",
+      "browser": "./dist/algorithm/coffman-graham/contract/input.js",
+      "default": "./dist/algorithm/coffman-graham/contract/input.js"
+    },
+    "./coffman-graham/contract/output": {
+      "source": "./algorithm/coffman-graham/contract/output.ts",
+      "types": "./dist/algorithm/coffman-graham/contract/output.d.ts",
+      "browser": "./dist/algorithm/coffman-graham/contract/output.js",
+      "default": "./dist/algorithm/coffman-graham/contract/output.js"
+    },
     "./coffman-graham/error": "./algorithm/coffman-graham/src/error.ts",
-    "./types": "./protocol/types/index.ts",
+    "./types": {
+      "source": "./protocol/types/index.ts",
+      "types": "./dist/protocol/types/index.d.ts",
+      "browser": "./dist/protocol/types/index.js",
+      "default": "./dist/protocol/types/index.js"
+    },
     "./worker": "./execution/worker/index.ts",
-    "./worker/types": "./execution/worker/src/types/worker.ts",
+    "./worker/types": {
+      "source": "./execution/worker/src/types/worker.ts",
+      "types": "./dist/execution/worker/src/types/worker.d.ts",
+      "browser": "./dist/execution/worker/src/types/worker.js",
+      "default": "./dist/execution/worker/src/types/worker.js"
+    },
     "./worker/transport": "./execution/worker/src/transport.ts",
     "./worker/fixed/client": "./algorithm/fixed/src/worker/client.ts",
     "./worker/fixed/executor": "./algorithm/fixed/src/worker/executor.ts",
@@ -49,12 +169,17 @@
     "./worker/top-down/executor": "./algorithm/top-down/src/worker/executor.ts",
     "./worker/coffman-graham/client": "./algorithm/coffman-graham/src/worker/client.ts",
     "./worker/coffman-graham/executor": "./algorithm/coffman-graham/src/worker/executor.ts",
-    "./contract": "./contract/index.ts"
+    "./contract": {
+      "source": "./contract/index.ts",
+      "types": "./dist/contract/index.d.ts",
+      "browser": "./dist/contract/index.js",
+      "default": "./dist/contract/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests algorithm/hierarchy/tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests algorithm/hierarchy/tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
     "@dagrejs/dagre": "^3.1.1",

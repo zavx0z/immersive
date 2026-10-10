@@ -52,7 +52,12 @@ export function acquireDocumentAuthorStyleSheetOwner(
   ]()
 }
 
-/** Reads the exact ordered author/theme stylesheet set currently owned by a Document. */
+/**
+Читает актуальный ordered immutable набор, включая изменения внутри transaction.
+Чтение не публикует уведомления; подписчики получают итоговый набор при commit.
+Revision отражает прочитанные состояния и может пропускать промежуточные значения
+в уведомлениях одной transaction.
+*/
 export function readDocumentAuthorStyleSheets(
   document: Document
 ): DocumentAuthorStyleSheetSnapshot {

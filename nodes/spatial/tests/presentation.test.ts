@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, MouseEvent} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, readDisplayStyle} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {SpatialGraphProps} from "../contract/input.ts"
 
 const repo = resolve(import.meta.dir, "../../..")
@@ -26,7 +26,7 @@ function fixture() {
     links: [{id: "parent-child", title: "Принадлежит", route: {kind: "orthogonal", points: [{x: 40, y: 96}, {x: 40, y: 256}]}}],
     onSelect(id) { selections.push(id) },
   }
-  const render = (next: SpatialGraphProps = props) => root.render(SpatialGraph as unknown as CompiledTemplate<SpatialGraphProps>, next)
+  const render = (next: SpatialGraphProps = props) => root.render(SpatialGraph as unknown as DOMComponentConstructor<SpatialGraphProps>, next)
   render()
   return {document, space, root, props, selections, render}
 }

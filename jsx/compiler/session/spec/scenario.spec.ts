@@ -13,7 +13,8 @@ describe.each([
   const actual = await session.compileFile(resolve(import.meta.dir, "fixture", file))
 
   test("Готовый шаблон", () => {
-    expect(actual.code, "Авторский компонент компилируется в общий исполняемый формат Template").toContain("defineCompiledTemplate")
+    expect(actual.code, "Авторский компонент компилируется в конкретный DOM constructor").toContain("ConstructorBrand")
+    expect(actual.code, "Готовый код не исполняет программу Template/Component").not.toContain("defineCompiledTemplate")
     expect(actual.code, "Точка вставки компилируется в привязку и не создаёт DOM slot").not.toContain('createElement("slot")')
   })
   test("Разделение сборки и проверки", () => {

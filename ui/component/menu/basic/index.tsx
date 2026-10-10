@@ -5,8 +5,8 @@
 @packageDocumentation
 */
 import type {ImmersiveUiComponentMenuBasic} from "./contract"
-import {useLayoutEffect} from "@zavx0z/immersive-component"
-import {useRef} from "@zavx0z/immersive-component"
+import {useLayoutEffect} from "@zavx0z/immersive-component/authoring"
+import {useRef} from "@zavx0z/immersive-component/authoring"
 import MenuItem from "@zavx0z/immersive-ui-component-menu-item"
 
 

@@ -7,20 +7,55 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.ts",
-    "./clipboard": "./clipboard.ts",
-    "./diagnostics": "./diagnostics.ts",
-    "./integration": "./integration.ts",
-    "./audio": "./audio.ts",
-    "./document": "./document/index.ts"
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/src/index.d.ts",
+      "browser": "./dist/src/index.js",
+      "default": "./dist/src/index.js"
+    },
+    "./authoring": {
+      "source": "./authoring.ts",
+      "types": "./dist/authoring.d.ts",
+      "default": "./dist/authoring.js"
+    },
+    "./clipboard": {
+      "source": "./clipboard.ts",
+      "types": "./dist/clipboard.d.ts",
+      "browser": "./dist/clipboard.js",
+      "default": "./dist/clipboard.js"
+    },
+    "./diagnostics": {
+      "source": "./diagnostics.ts",
+      "types": "./dist/diagnostics.d.ts",
+      "browser": "./dist/diagnostics.js",
+      "default": "./dist/diagnostics.js"
+    },
+    "./integration": {
+      "source": "./integration.ts",
+      "types": "./dist/integration.d.ts",
+      "browser": "./dist/integration.js",
+      "default": "./dist/integration.js"
+    },
+    "./audio": {
+      "source": "./audio.ts",
+      "types": "./dist/audio.d.ts",
+      "browser": "./dist/audio.js",
+      "default": "./dist/audio.js"
+    },
+    "./document": {
+      "source": "./document/index.ts",
+      "types": "./dist/document/index.d.ts",
+      "browser": "./dist/document/index.js",
+      "default": "./dist/document/index.js"
+    }
   },
   "main": "./src/index.ts",
   "module": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependencies": {
     "@zavx0z/immersive-component": "workspace:*",

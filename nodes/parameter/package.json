@@ -7,12 +7,23 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts",
-    "./contract": "./contract/index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./contract": {
+      "source": "./contract/index.ts",
+      "types": "./dist/contract/index.d.ts",
+      "browser": "./dist/contract/index.js",
+      "default": "./dist/contract/index.js"
+    }
   },
   "scripts": {
-    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec",
-    "typecheck": "tsc --project tsconfig.json --pretty false"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel --preload @zavx0z/immersive-headless/preload ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "devDependencies": {
     "@zavx0z/immersive-nodes-node-parameter": "workspace:*",

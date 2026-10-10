@@ -1,97 +1,15 @@
-/**
-Операции над существующим DOM для HTML-шаблонов и готовых привязок.
-Состояние компонентов, hooks, сопоставление ключей и планировщик сюда не входят.
-*/
-import {Comment, DocumentFragment, Element, HTMLElement, HTMLInputElement, HTMLOptionElement,
-  HTMLSelectElement, HTMLTextAreaElement, Node, Text, type Document, type EventListener} from "@zavx0z/immersive-dom"
-
-export type PropertyOperation = {current(): unknown, next: unknown, write(value: unknown): void}
-export type DomPatch = {apply(): void, rollback(): void}
-const domAnchors = new WeakSet<Node>()
-export function markDomAnchor(node: Node): void { domAnchors.add(node) }
-export function isDomAnchor(node: Node): boolean { return domAnchors.has(node) }
-export function createDomAnchor(document: Document, data: string): Comment {
-  const anchor = document.createComment(data)
-  markDomAnchor(anchor)
-  return anchor
-}
-
-/** Один prepare/apply/rollback путь изменения существующего DOM-значения. */
-export function prepareDomOperation(operation: PropertyOperation): DomPatch | null {
-  const previous = operation.current()
-  if (Object.is(previous, operation.next)) return null
-  return {apply: () => operation.write(operation.next), rollback: () => operation.write(previous)}
-}
-export function applyDomOperation(operation: PropertyOperation): void { prepareDomOperation(operation)?.apply() }
-export function prepareTextOperation(target: Text, next: string): DomPatch | null {
-  const previous = target.data
-  if (previous === next) return null
-  return {apply: () => { target.data = next }, rollback: () => { target.data = previous }}
-}
-
-/** Существующий DOM либо фиксированная группа существующих узлов. Fragment раскрывается один раз. */
-export type DomNodes = Node | readonly Node[]
-/** Читает текущие узлы Fragment; retention принадлежит конкретному получателю. */
-export function snapshotDomNodes(value: DomNodes): readonly Node[] {
-  if (Array.isArray(value)) return Object.freeze(value.flatMap(node => [...snapshotDomNodes(node)]))
-  if (!(value instanceof Node)) throw new TypeError("DOM content requires real Nodes")
-  if (value instanceof DocumentFragment) {
-    return Object.freeze([...value.childNodes])
-  }
-  if (value.nodeType === Node.DOCUMENT_NODE) throw new TypeError("A Document cannot be child content")
-  return [value]
-}
-
-export function attributeOperation(target: Element, name: string, value: unknown): PropertyOperation {
-  return {current: () => target.getAttribute(name), next: attributeValue(value, name),
-    write(next) {
-      if (next === null) target.removeAttribute(name)
-      else target.setAttribute(name, next as string)
-    },
-  }
-}
-
-/** Один стабильный listener; замена значения не перевешивает DOM-подписку. */
-export class DomEventBinding {
-  private handler: EventListener | null = null
-  private readonly listener: EventListener
-  constructor(
-    private readonly target: Element,
-    private readonly type: string,
-    private readonly capture = false,
-    dispatch: (invoke: () => void) => void = invoke => invoke(),
-  ) {
-    this.listener = event => {
-      const handler = this.handler
-      if (!handler) return
-      dispatch(() => {
-        if (typeof handler === "function") handler.call(this.target, event)
-        else handler.handleEvent(event)
-      })
-    }
-    target.addEventListener(type, this.listener, {capture})
-  }
-  prepare(value: unknown, allowObject = true): DomPatch | null {
-    const next = value == null || (allowObject && value === false) ? null : value
-    if (next !== null && typeof next !== "function" && !(allowObject && typeof next === "object" &&
-      "handleEvent" in next && typeof next.handleEvent === "function")) {
-      throw new TypeError("An event binding requires a listener or null")
-    }
-    if (next === this.handler) return null
-    const previous = this.handler
-    return {apply: () => { this.handler = next as EventListener | null }, rollback: () => { this.handler = previous }}
-  }
-  dispose(): void {
-    this.target.removeEventListener(this.type, this.listener, {capture: this.capture})
-    this.handler = null
-  }
-}
+/** Исполнение дочерних HTML-значений; простые операции принадлежат DOM. */
+import {Comment, DocumentFragment, DOMGroup, Element, HTMLElement, Node, Text, isDOMComponentConstructor, replaceDomRangeContent, captureDomOrigins, validateDomNodes, type DOMComponent, type DOMConstruction, type Document} from "@zavx0z/immersive-dom"
+import {createDomAnchor, snapshotDomNodes, textValue, prepareTextOperation,
+  type DomNodes, type DomPatch} from "@zavx0z/immersive-dom/bindings"
+export * from "@zavx0z/immersive-dom/bindings"
 
 /** Lifecycle подготовленного содержимого; реализация может принадлежать верхнему владельцу. */
 export const domContent = Symbol.for("@zavx0z/immersive-template/dom-content")
 export interface DomContentInstance {
   update(value: unknown): boolean
   commit?(): void
+  prepareDispose?(): () => void
   dispose(): void
 }
 export interface DomContent {
@@ -114,12 +32,19 @@ export function registerDomContentAdapter(adapter: DomContentAdapter): () => voi
   contentAdapters.add(adapter)
   return () => { contentAdapters.delete(adapter) }
 }
+type NativeContent = DomNodes | DOMGroup
 type RegionValue =
   | {type: "empty"}
   | {type: "text", node: Text}
-  | {type: "nodes", nodes: readonly Node[], source?: DomNodes | null | undefined}
+  | {type: "nodes", nodes: readonly Node[], source?: NativeContent | null | undefined}
+  | {type: "construction", instance: DOMComponent<unknown>, constructor: DOMConstruction["type"], key: string | number | null}
   | {type: "content", adapter: DomContentAdapter, instance: DomContentInstance}
   | {type: "array", items: DomContentRange[]}
+
+type OwnershipSnapshot = {
+  instances: Set<DOMComponent<unknown>>
+  content: Map<DomContentInstance, () => void>
+}
 
 /** Один исполнитель дочерней DOM-области; он не создаёт Document или scheduler. */
 export class DomContentRange {
@@ -143,7 +68,7 @@ export class DomContentRange {
     const restoreFocus = focus instanceof HTMLElement && previous.some(node => node.contains(focus))
     const origins = nodes.map(node => ({node, parent: node.parentNode, before: node.nextSibling}))
     return {apply: () => this.commitNodes(nodes, value), rollback: () => {
-      for (const {node, parent, before} of origins.reverse()) {
+      for (const {node, parent, before} of [...origins].reverse()) {
         if (parent && !previous.includes(node)) parent.insertBefore(node, before?.parentNode === parent ? before : null)
         else if (!parent && this.owns(node)) node.parentNode!.removeChild(node)
       }
@@ -157,16 +82,20 @@ export class DomContentRange {
       this.clear()
       return
     }
+    if (value instanceof DOMGroup || value instanceof Node) {
+      this.commitNodes(this.retainedNodes(value), value)
+      return
+    }
+    if (isConstruction(value)) {
+      this.commitConstruction(value)
+      return
+    }
     const adapter = [...contentAdapters, ...this.adapters].find(candidate => candidate.accepts(value))
     if (adapter) {
       if (this.current.type === "content" && this.current.adapter === adapter && this.current.instance.update(value)) return
       this.clear()
       const {parent} = this.context()
       this.current = {type: "content", adapter, instance: adapter.mount(parent, this.anchor, value)}
-      return
-    }
-    if (value instanceof Node) {
-      this.commitNodes(this.retainedNodes(value), value)
       return
     }
     if (Array.isArray(value)) {
@@ -197,11 +126,12 @@ export class DomContentRange {
       prepareTextOperation(this.current.node, next)?.apply()
       return
     }
-    this.clear()
-    const {document, parent} = this.context()
-    const node = document.createTextNode(next)
-    parent.insertBefore(node, this.anchor)
+    const node = this.context().document.createTextNode(next)
+    const previous = this.current
+    const owned = this.ownedInstances()
+    replaceDomRangeContent(this.start, this.anchor, [node])
     this.current = {type: "text", node}
+    this.release(previous, owned)
   }
 
   dispose(removeAnchor = true): void {
@@ -219,17 +149,10 @@ export class DomContentRange {
   }
 
   private validateNodes(nodes: readonly Node[]): void {
-    const document = this.anchor.ownerDocument
-    const seen = new Set<Node>()
-    for (const node of nodes) {
-      if (node.ownerDocument !== document) throw new TypeError("DOM content must belong to the receiving Document")
-      if (seen.has(node)) throw new TypeError("DOM content cannot repeat a Node")
-      if (node.contains(this.anchor)) throw new TypeError("DOM content cannot contain its receiving range")
-      seen.add(node)
-    }
+    validateDomNodes(this.anchor.ownerDocument!, nodes, this.anchor)
   }
 
-  private retainedNodes(value: DomNodes): readonly Node[] {
+  private retainedNodes(value: NativeContent): readonly Node[] {
     if (value instanceof DocumentFragment && value.childNodes.length === 0 &&
       this.current.type === "nodes" && this.current.source === value) return this.current.nodes
     return snapshotDomNodes(value)
@@ -241,37 +164,104 @@ export class DomContentRange {
     return false
   }
 
-  private commitNodes(nodes: readonly Node[], source?: DomNodes | null): void {
-    this.validateNodes(nodes)
-    const {parent} = this.context()
-    if (this.current.type === "nodes") {
-      const next = new Set(nodes)
-      for (const previous of this.current.nodes) {
-        if (!next.has(previous) && this.owns(previous)) parent.removeChild(previous)
+  private ownsInstance(instance: DOMComponent<unknown>): boolean {
+    const nodes = instance instanceof DOMGroup ? instance.insertionNodes : [instance]
+    return nodes.every(node => this.owns(node))
+  }
+
+  private ownedInstances(result: OwnershipSnapshot = {instances: new Set(), content: new Map()}): OwnershipSnapshot {
+    if (this.current.type === "construction" && this.ownsInstance(this.current.instance)) result.instances.add(this.current.instance)
+    else if (this.current.type === "content" && this.current.instance.prepareDispose) result.content.set(this.current.instance, this.current.instance.prepareDispose())
+    else if (this.current.type === "array") for (const item of this.current.items) item.ownedInstances(result)
+    return result
+  }
+
+  prepareDispose(): () => void {
+    const previous = this.current
+    const owned = this.ownedInstances()
+    let active = true
+    return () => {
+      if (!active) return
+      active = false
+      if (this.start.parentNode && this.start.parentNode === this.anchor.parentNode) replaceDomRangeContent(this.start, this.anchor, [])
+      this.current = {type: "empty"}
+      try { this.release(previous, owned) } finally {
+        this.start.parentNode?.removeChild(this.start)
+        this.anchor.parentNode?.removeChild(this.anchor)
       }
-    } else this.clear()
-    for (let index = nodes.length - 1; index >= 0; index--) {
-      const node = nodes[index]!
-      const before = nodes[index + 1] ?? this.anchor
-      if (node.parentNode !== parent || node.nextSibling !== before) parent.insertBefore(node, before)
     }
+  }
+
+  private matchesNodes(nodes: readonly Node[]): boolean {
+    let cursor = this.start.nextSibling
+    for (const node of nodes) {
+      if (cursor !== node) return false
+      cursor = cursor.nextSibling
+    }
+    return cursor === this.anchor
+  }
+
+  private commitNodes(nodes: readonly Node[], source?: NativeContent | null): void {
+    this.validateNodes(nodes)
+    const previous = this.current
+    const owned = this.ownedInstances()
+    if (!this.matchesNodes(nodes)) replaceDomRangeContent(this.start, this.anchor, nodes)
     this.current = {type: "nodes", nodes, source}
+    this.release(previous, owned)
+  }
+
+  private commitConstruction(value: DOMConstruction): void {
+    const key = value.key ?? null
+    if (key !== null && typeof key !== "string" && typeof key !== "number") throw new TypeError("DOM component key must be a string or number")
+    if (this.current.type === "construction" && this.current.constructor === value.type && Object.is(this.current.key, key) && this.ownsInstance(this.current.instance)) {
+      this.current.instance.update(value.props, value.content, value.context)
+      return
+    }
+    const {document} = this.context()
+    const restore = captureDomOrigins(document, value.content)
+    const previous = this.current
+    const owned = this.ownedInstances()
+    let instance: DOMComponent<unknown> | undefined
+    try {
+      instance = new value.type(document, value.props, value.content, value.context)
+      if (!(instance instanceof Element || instance instanceof DOMGroup)) throw new TypeError("DOM constructor must return an actual Element or DOMGroup")
+      const nodes = instance instanceof DOMGroup ? instance.insertionNodes : [instance]
+      this.validateNodes(nodes)
+      replaceDomRangeContent(this.start, this.anchor, [instance])
+    } catch (error) {
+      const errors = [error]
+      try { restore.restore() } catch (rollback) { errors.push(rollback) }
+      try { instance?.dispose() } catch (cleanup) { errors.push(cleanup) }
+      if (errors.length > 1) throw new AggregateError(errors, "DOM construction rollback failed")
+      throw error
+    }
+    restore.restoreFocus()
+    this.current = {type: "construction", instance, constructor: value.type, key}
+    this.release(previous, owned)
   }
 
   private clear(): void {
-    const current = this.current
+    const previous = this.current
+    const owned = this.ownedInstances()
+    if (this.start.parentNode && this.start.parentNode === this.anchor.parentNode) replaceDomRangeContent(this.start, this.anchor, [])
     this.current = {type: "empty"}
-    if (current.type === "content") current.instance.dispose()
+    this.release(previous, owned)
+  }
+
+  private release(current: RegionValue, owned: OwnershipSnapshot): void {
+    if (current.type === "construction") {
+      if (owned.instances.has(current.instance) && current.instance.parentNode === null) current.instance.dispose()
+    } else if (current.type === "content") (owned.content.get(current.instance) ?? (() => current.instance.dispose()))()
     else if (current.type === "array") {
-      let firstError: unknown = null
+      const errors: unknown[] = []
       for (const item of current.items) {
-        try { item.dispose() } catch (error) { firstError ??= error }
+        const previous = item.current
+        item.current = {type: "empty"}
+        try { item.release(previous, owned) } catch (error) { errors.push(error) }
+        item.start.parentNode?.removeChild(item.start)
+        item.anchor.parentNode?.removeChild(item.anchor)
       }
-      if (firstError) throw firstError
-    }
-    else {
-      const nodes = current.type === "nodes" ? current.nodes : current.type === "text" ? [current.node] : []
-      for (const node of nodes) if (this.owns(node)) node.parentNode?.removeChild(node)
+      if (errors.length) throw errors[0]
     }
   }
 
@@ -283,97 +273,6 @@ export class DomContentRange {
   }
 }
 
-/** Переносит либо удаляет тот же включительный диапазон, не копируя его узлы. */
-export function moveDomRange(start: Node, end: Node, parent: Node, before: Node | null): void {
-  let current: Node | null = start
-  while (current) {
-    const next: Node | null = current.nextSibling
-    parent.insertBefore(current, before)
-    if (current === end) return
-    current = next
-  }
-}
-export function removeDomRange(start: Node, end: Node): void {
-  const parent = start.parentNode
-  if (!parent || end.parentNode !== parent) return
-  let current: Node | null = start
-  while (current) {
-    const next: Node | null = current.nextSibling
-    parent.removeChild(current)
-    if (current === end) return
-    current = next
-  }
-}
-
-export function propertyOperation(target: Element, name: string, value: unknown, explicit = false): PropertyOperation {
-  if (explicit) return {current: () => Reflect.get(target, name), next: value, write: next => { Reflect.set(target, name, next) }}
-  if (name === "style") {
-    throw new TypeError("Style values require a bindStyle binding")
-  }
-  if (name === "value" && (
-    target instanceof HTMLInputElement ||
-    target instanceof HTMLTextAreaElement ||
-    target instanceof HTMLSelectElement ||
-    target instanceof HTMLOptionElement
-  )) {
-    const next = value === null || value === undefined ? "" : String(value)
-    return {current: () => target.value, next, write: source => { target.value = source as string }}
-  }
-  if (name === "checked" && target instanceof HTMLInputElement) {
-    const next = Boolean(value)
-    return {current: () => target.checked, next, write: source => { target.checked = source as boolean }}
-  }
-  if (name === "indeterminate" && target instanceof HTMLInputElement) {
-    const next = Boolean(value)
-    return {
-      current: () => target.indeterminate,
-      next,
-      write: source => { target.indeterminate = source as boolean }
-    }
-  }
-  if (name === "selected" && target instanceof HTMLOptionElement) {
-    const next = Boolean(value)
-    return {current: () => target.selected, next, write: source => { target.selected = source as boolean }}
-  }
-  if (name === "selectedIndex" && target instanceof HTMLSelectElement) {
-    const next = Number(value)
-    if (!Number.isFinite(next)) throw new TypeError("selectedIndex must be a finite number")
-    return {
-      current: () => target.selectedIndex,
-      next,
-      write: source => { target.selectedIndex = source as number }
-    }
-  }
-  if (name === "tabIndex" && target instanceof HTMLElement) {
-    const next = Number(value)
-    if (!Number.isFinite(next)) throw new TypeError("tabIndex must be a finite number")
-    return {current: () => target.tabIndex, next, write: source => { target.tabIndex = source as number }}
-  }
-  const attributeName = name === "className" ? "class" : name
-  return attributeOperation(target, attributeName, value)
-}
-
-export function attributeValue(value: unknown, name: string): string | null {
-  if (value === null || value === undefined || value === false) return null
-  if (value === true) return ""
-  if (
-    typeof value === "string" || typeof value === "number" || typeof value === "bigint"
-  ) return String(value)
-  throw new TypeError(`Host property ${name} requires a primitive value`)
-}
-
-export function hasPropertySetter(target: Element, name: string): boolean {
-  for (let prototype: object | null = target; prototype !== null; prototype = Object.getPrototypeOf(prototype)) {
-    const descriptor = Object.getOwnPropertyDescriptor(prototype, name)
-    if (descriptor !== undefined) return typeof descriptor.set === "function"
-  }
-  return false
-}
-
-export function textValue(value: unknown): string {
-  if (value === null || value === undefined || typeof value === "boolean") return ""
-  if (typeof value === "string" || typeof value === "number" || typeof value === "bigint") {
-    return String(value)
-  }
-  throw new TypeError("A compiled text binding requires a primitive value")
+function isConstruction(value: unknown): value is DOMConstruction {
+  return typeof value === "object" && value !== null && isDOMComponentConstructor((value as Partial<DOMConstruction>).type)
 }

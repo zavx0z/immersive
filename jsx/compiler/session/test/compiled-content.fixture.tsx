@@ -1,14 +1,10 @@
-import type {ComposeSlotInput} from "@zavx0z/immersive-component/slot"
-import {composeSlot} from "@zavx0z/immersive-component/slot"
+import type {DOMSlotContent} from "@zavx0z/immersive-dom"
 
-export function PreparedContent(props: ComposeSlotInput) {
-  const content = composeSlot({content: props.content})
-  return <section>{content}</section>
+export function PreparedContent(props: {content?: DOMSlotContent}) {
+  return <section>{props.content}</section>
 }
 
-import type {ComponentValue} from "@zavx0z/immersive-component"
-
-type MixedContent = ComponentValue | string | number | bigint | boolean | null | undefined
+type MixedContent = DOMSlotContent
 
 export function MixedPreparedContent(props: {content: MixedContent}) {
   return <section>{props.content}</section>

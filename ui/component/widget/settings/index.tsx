@@ -5,7 +5,7 @@
 
 @packageDocumentation
 */
-import {useId} from "@zavx0z/immersive-component"
+import {useId} from "@zavx0z/immersive-component/authoring"
 import Button from "@zavx0z/immersive-ui-component-button-basic"
 import type {ImmersiveUiComponentWidgetSettings as Contract} from "./contract"
 

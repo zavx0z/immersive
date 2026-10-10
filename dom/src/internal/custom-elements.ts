@@ -1,3 +1,8 @@
+import {
+  readCustomState, trackCustomState, failCustomState, visitCustomLifecycle,
+  enqueueCustomLifecycle, beginDOMReactions, endDOMReactions, flushDOMReactions,
+  reportLifecycleError
+} from "./lifecycle.ts"
 import type {Document} from "../document.ts"
 import type {Element} from "../element.ts"
 import type {HTMLElement} from "../html-element.ts"
@@ -5,7 +10,20 @@ import type {Node} from "../node.ts"
 
 export const hasNativeElementFactory = Symbol("hasNativeElementFactory")
 
-export type CustomConstructor = new () => HTMLElement
+export const nativeHTMLElementNames = new Set([
+  "button", "div", "fieldset", "h1", "h2", "h3", "h4", "h5", "h6", "input", "img", "video", "label", "li", "legend", "meter", "option",
+  "p", "progress", "select", "span", "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "tr", "ul"
+])
+export const customizedBuiltinNames = new Set([
+  "a", "abbr", "address", "area", "article", "aside", "audio", "b", "base", "bdi", "bdo", "blockquote", "body", "br", "button",
+  "canvas", "caption", "cite", "code", "col", "colgroup", "data", "datalist", "dd", "del", "details", "dfn", "dialog", "div", "dl", "dt",
+  "em", "embed", "fieldset", "figcaption", "figure", "footer", "form", "h1", "h2", "h3", "h4", "h5", "h6", "head", "header", "hgroup",
+  "hr", "html", "i", "iframe", "img", "input", "ins", "kbd", "label", "legend", "li", "link", "main", "map", "mark", "menu", "meta",
+  "meter", "nav", "noscript", "object", "ol", "optgroup", "option", "output", "p", "picture", "pre", "progress", "q", "rp", "rt", "ruby",
+  "s", "samp", "script", "search", "section", "select", "slot", "small", "source", "span", "strong", "style", "sub", "summary", "sup",
+  "table", "tbody", "td", "textarea", "tfoot", "th", "thead", "time", "title", "tr", "track", "u", "ul", "var", "video", "wbr"
+])
+export type CustomConstructor = new (document: Document) => HTMLElement
 export type CustomCallbacks = Readonly<{
   connectedCallback?: (this: HTMLElement) => void
   disconnectedCallback?: (this: HTMLElement) => void
@@ -16,6 +34,7 @@ export type CustomCallbacks = Readonly<{
 export interface CustomDefinition {
   readonly registry: object
   readonly name: string
+  readonly localName: string
   readonly constructor: CustomConstructor
   readonly observed: ReadonlySet<string>
   readonly callbacks: CustomCallbacks
@@ -28,20 +47,8 @@ export interface CustomConstruction {
   element?: HTMLElement
 }
 
-type CustomState = {
-  registry: object
-  definition?: CustomDefinition
-  status: "undefined" | "precustomized" | "custom" | "failed"
-  upgrade(): void
-}
-
-const states = new WeakMap<Element, CustomState>()
-const counts = new WeakMap<Node, number>()
 const constructors = new WeakMap<Function, () => CustomConstruction>()
 const constructionStack: CustomConstruction[] = []
-const reactions: Array<() => void> = []
-let reactionDepth = 0
-let invoking = false
 
 export function registerCustomConstructor(constructor: CustomConstructor, resolve: () => CustomConstruction) {
   if (!constructors.has(constructor)) constructors.set(constructor, resolve)
@@ -58,14 +65,23 @@ export function customConstruction(constructor: Function): CustomConstruction {
   return resolve()
 }
 
+export function activeCustomConstruction(constructor: Function): CustomConstruction | undefined {
+  const context = constructionStack.at(-1)
+  return context?.definition.constructor === constructor ? context : undefined
+}
+export function customElementIsValue(element: Element): string | null { return readCustomState(element)?.is ?? null }
+export function customElementDefinitionName(element: Element): string {
+  return readCustomState(element)?.is ?? element.localName
+}
+
 export function constructCustomElement(context: CustomConstruction): HTMLElement {
   constructionStack.push(context)
   try {
-    const element = new context.definition.constructor()
+    const element = new context.definition.constructor(context.document)
     if (element !== context.element) throw new TypeError("Custom element constructor returned another object")
     if (!context.existing && (element.parentNode !== null || element.hasChildNodes() || element.hasAttributes()))
       throw new TypeError("Custom element constructor must not create attributes or children")
-    const state = states.get(element)!
+    const state = readCustomState(element)!
     state.status = "custom"
     return element
   } catch (error) {
@@ -80,109 +96,42 @@ export function constructCustomElement(context: CustomConstruction): HTMLElement
 export function initializeCustomElement(element: HTMLElement, context: CustomConstruction): HTMLElement {
   const target = context.existing ?? element
   context.element = target
-  trackCustomElement(target, context.definition.registry, () => {})
-  const state = states.get(target)!
+  trackCustomElement(target, context.definition.registry, () => {}, context.definition.localName === context.definition.name ? null : context.definition.name)
+  const state = readCustomState(target)!
   state.definition = context.definition
   state.status = constructionStack.at(-1) === context ? "precustomized" : "custom"
   return target
 }
 
-export function trackCustomElement(element: Element, registry: object, upgrade: () => void) {
-  if (states.has(element)) return
-  states.set(element, {registry, status: "undefined", upgrade})
-  for (let node: Node | null = element; node !== null; node = node.parentNode)
-    counts.set(node, (counts.get(node) ?? 0) + 1)
+export function trackCustomElement(element: Element, registry: object, upgrade: () => void, is: string | null = null) {
+  trackCustomState(element, {registry, status: "undefined", upgrade, is})
 }
 
-export function failCustomElementUpgrade(element: Element) {
-  const state = states.get(element)
-  if (state) state.status = "failed"
-}
+export const failCustomElementUpgrade = failCustomState
 
 export function canUpgradeCustomElement(element: Element, registry: object) {
-  const state = states.get(element)
+  const state = readCustomState(element)
   return state?.status === "undefined" && state.registry === registry
 }
 
 export function isCustomElementHost(node: Node): node is HTMLElement {
-  const state = states.get(node as Element)
+  const state = readCustomState(node as Element)
   return state?.status === "custom" || state?.status === "precustomized"
 }
 
-export function customRegistryFor(element: Element): object | null { return states.get(element)?.registry ?? null }
+export function customRegistryFor(element: Element): object | null { return readCustomState(element)?.registry ?? null }
 
-/** Посещает только ветви, в которых есть custom elements или ожидающие определения кандидаты. */
-export function visitCustomElements(root: Node, visit: (element: HTMLElement) => void) {
-  if (!counts.has(root)) return
-  if (states.has(root as Element)) visit(root as HTMLElement)
-  for (let child = root.firstChild; child !== null; child = child.nextSibling)
-    if (counts.has(child)) visitCustomElements(child, visit)
-}
-
-export function customElementInserted(root: Node) {
-  const count = counts.get(root)
-  if (count === undefined) return
-  adjustAncestors(root.parentNode, count)
-  if (!root.isConnected) return
-  visitCustomElements(root, element => {
-    const state = states.get(element)!
-    if (state.status === "undefined") state.upgrade()
-    else if (state.status === "custom") enqueueCustomReaction(element, "connectedCallback")
-  })
-}
-
-export function customElementRemoving(root: Node) {
-  const count = counts.get(root)
-  if (count === undefined) return
-  if (root.isConnected) visitCustomElements(root, element => enqueueCustomReaction(element, "disconnectedCallback"))
-  adjustAncestors(root.parentNode, -count)
-}
-
-export function customElementAdopted(element: Node, previous: Document | null, next: Document) {
-  if (previous !== null && previous !== next && states.has(element as Element))
-    enqueueCustomReaction(element as HTMLElement, "adoptedCallback", previous, next)
-}
+export const visitCustomElements = visitCustomLifecycle
 
 export function customElementAttributeChanged(element: Element, name: string, previous: string | null, next: string | null) {
-  const state = states.get(element)
+  const state = readCustomState(element)
   if (state?.status !== "custom" || !state.definition?.observed.has(name)) return
   enqueueCustomReaction(element as HTMLElement, "attributeChangedCallback", name, previous, next, null)
   flushCustomReactions()
 }
 
-export function enqueueCustomReaction(element: HTMLElement, name: keyof CustomCallbacks, ...args: unknown[]) {
-  const state = states.get(element)
-  if (state?.status !== "custom") return
-  const callback = state.definition?.callbacks[name]
-  if (callback) reactions.push(() => Reflect.apply(callback, element, args))
-}
-
-export function beginCustomReactions() { reactionDepth++ }
-export function endCustomReactions() { reactionDepth--; flushCustomReactions() }
-
-export function flushCustomReactions() {
-  if (reactionDepth > 0 || invoking || reactions.length === 0) return
-  invoking = true
-  try {
-    for (let index = 0; index < reactions.length; index++) {
-      try { reactions[index]!() }
-      catch (error) { reportCustomElementError(error) }
-    }
-  } finally {
-    reactions.length = 0
-    invoking = false
-  }
-}
-
-export function reportCustomElementError(error: unknown) {
-  if (typeof globalThis.reportError === "function") globalThis.reportError(error)
-  else queueMicrotask(() => { throw error })
-}
-
-function adjustAncestors(parent: Node | null, difference: number) {
-  for (let node = parent; node !== null; node = node.parentNode) {
-    const count = (counts.get(node) ?? 0) + difference
-    if (count === 0) counts.delete(node)
-    else counts.set(node, count)
-  }
-}
+export const enqueueCustomReaction = enqueueCustomLifecycle
+export const beginCustomReactions = beginDOMReactions
+export const endCustomReactions = endDOMReactions
+export const flushCustomReactions = flushDOMReactions
+export const reportCustomElementError = reportLifecycleError

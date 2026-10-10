@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
 import {createDocument} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {ParameterSlotFixtureProps} from "./slot-content.fixture.tsx"
 import "./compiler.ts"
 
@@ -12,7 +12,7 @@ test("ParameterNode отвергает непустой авторский сл�
   const container = document.createElement("div")
   document.append(container)
   const root = createRoot(container)
-  const template = ParameterSlotFixture as unknown as CompiledTemplate<ParameterSlotFixtureProps>
+  const template = ParameterSlotFixture as unknown as DOMComponentConstructor<ParameterSlotFixtureProps>
   try {
     root.render(template, {authored: false})
     const field = container.querySelector("input")

@@ -1,7 +1,7 @@
 import type {ImmersiveTechTerminal} from "@zavx0z/immersive-tech-terminal"
 type TerminalLine = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]
 type TerminalRun = ImmersiveTechTerminal.Output["snapshot"]["lines"][number]["runs"][number]
-import {memo} from "@zavx0z/immersive-component"
+import {memo} from "@zavx0z/immersive-component/authoring"
 
 /** Частная подготовка представление терминального вывода и ввода команд. */
 export function TerminalTextRun(props: Readonly<{run: TerminalRun}>) {

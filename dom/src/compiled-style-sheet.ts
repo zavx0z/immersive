@@ -1,8 +1,16 @@
 import type {Document} from "./document.ts"
 
+export type DocumentCompiledStyleSheetSource = Readonly<{
+  kind: "authored-css"
+  moduleId: string
+  componentName: string
+  cssText: string
+}>
+
 export type DocumentCompiledStyleSheet = Readonly<{
   id: string
   cssText: string
+  source?: DocumentCompiledStyleSheetSource
 }>
 
 export type DocumentCompiledStyleSheetSnapshot = Readonly<{
@@ -54,7 +62,12 @@ export function acquireDocumentCompiledStyleSheets(
   ](styleSheets)
 }
 
-/** Reads the exact immutable compiled stylesheet set currently owned by a Document. */
+/**
+Читает актуальный immutable набор, включая изменения внутри transaction.
+Чтение не публикует уведомления; подписчики получают итоговый набор при commit.
+Revision отражает прочитанные состояния и может пропускать промежуточные значения
+в уведомлениях одной transaction.
+*/
 export function readDocumentCompiledStyleSheets(
   document: Document
 ): DocumentCompiledStyleSheetSnapshot {

@@ -1,10 +1,11 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot, component, provideContext} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import {component, provideContext} from "@zavx0z/immersive-component/authoring"
 import {createDocument, Event} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import {MarkdownMediaContext, type MarkdownMediaHost, type MarkdownImageSource} from "../src/media.ts"
 import type {MarkdownProps} from "../contract/input.ts"
@@ -24,7 +25,7 @@ function fixture(host: MarkdownMediaHost) {
   document.append(container)
   const root = createRoot(container)
   const props: MarkdownProps = {source: 'Слева **жирный** ![Фото](./image.png "Титул") справа [ссылка](/ok)', baseUrl: "https://example.test/docs/"}
-  root.render(provideContext(MarkdownMediaContext, host, component(Markdown as unknown as CompiledTemplate<MarkdownProps>, props)))
+  root.render(provideContext(MarkdownMediaContext, host, component(Markdown as unknown as DOMComponentConstructor<MarkdownProps>, props)))
   const renderer = createDocumentRenderer({document, root: container, viewport: {width: 360, height: 320}})
   return {container, root, renderer,
     async settle() {for (let round = 0; round < 5; round++) {root.flush(); renderer.flush(); await Bun.sleep(0)}},
@@ -44,7 +45,7 @@ test("caller image компонуется штатным component/slot: parser 
     renderImage(image) {
       images.push(image)
       const props: CallerImageProps = {image, store, mounted() {mounted++}, disposed() {disposed++}}
-      return component(CallerImage as unknown as CompiledTemplate<CallerImageProps>, props) as unknown as JSX.Element
+      return component(CallerImage as unknown as DOMComponentConstructor<CallerImageProps>, props) as unknown as JSX.Element
     },
     async loadImage() {loads++; throw new Error("Caller renderer не использует стандартный loader")},
   }

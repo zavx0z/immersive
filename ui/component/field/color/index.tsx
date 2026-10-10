@@ -5,8 +5,8 @@
 @packageDocumentation
 */
 import type {ImmersiveUiComponentFieldColor as Contract} from "./contract"
-import {useCallback} from "@zavx0z/immersive-component"
-import {useState} from "@zavx0z/immersive-component"
+import {useCallback} from "@zavx0z/immersive-component/authoring"
+import {useState} from "@zavx0z/immersive-component/authoring"
 import Button from "@zavx0z/immersive-ui-component-button-basic"
 import formatColorValue from "@zavx0z/immersive-ui-field-color-value-format"
 import normalizeColorValue from "@zavx0z/immersive-ui-field-color-value-normalize"

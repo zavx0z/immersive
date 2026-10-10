@@ -2,10 +2,10 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, acquireDocumentAuthorStyleSheetOwner, MouseEvent} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {GraphViewProps, GraphMeasuredLayout, GraphMeasurement} from "@zavx0z/immersive-nodes/view"
 import type {NodeTreeStore} from "@zavx0z/immersive-nodes/view/tree"
 import {createNodeTree, createNodeTreeExternalStore, Parameter} from "@zavx0z/immersive-nodes-tree"
@@ -30,7 +30,7 @@ test("[GRAPH-MEASURED-001] реальные размеры, async поколен
     computations += 1
     return deferred ? new Promise(resolve => requests.push({nodes, finish: resolve})) : measuredLayout(nodes)
   }
-  const template = GraphView as unknown as CompiledTemplate<GraphViewProps>
+  const template = GraphView as unknown as DOMComponentConstructor<GraphViewProps>
   const props: GraphViewProps = {input: graphInput(), layout, width: 1000, height: 700, navigation: "pan-zoom"}
   const flush = () => {
     for (let pass = 0; pass < 20; pass += 1) {
@@ -102,7 +102,7 @@ test("[GRAPH-MEASURED-MODEL] редактор измеряет настоящи�
     throw new Error("Модельная геометрия не стабилизировалась")
   }
   try {
-    component.render(MeasuredEditor as unknown as CompiledTemplate<{store: NodeTreeStore}>, {store: createNodeTreeExternalStore(tree)})
+    component.render(MeasuredEditor as unknown as DOMComponentConstructor<{store: NodeTreeStore}>, {store: createNodeTreeExternalStore(tree)})
     const source = owner.querySelector('[data-node-id="source"]')!
     const socket = source.querySelector('[data-socket-glyph]')!
     flush()
@@ -147,7 +147,7 @@ test("[GRAPH-MEASURED-SHAPE] круг получает диаметр от из�
   const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 1000, height: 700}, styleSheets: [theme]})
   const input = graphInput("Результат")
   try {
-    component.render(GraphView as unknown as CompiledTemplate<GraphViewProps>, {
+    component.render(GraphView as unknown as DOMComponentConstructor<GraphViewProps>, {
       input: {nodes: input.nodes.map(node => node.id === "a" ? {...node, view: MeasuredCircle} : node)},
       layout: measuredLayout,
     })

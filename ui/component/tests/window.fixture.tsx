@@ -1,4 +1,4 @@
-import {useState} from "@zavx0z/immersive-component"
+import {useState} from "@zavx0z/immersive-component/authoring"
 import Window from "@zavx0z/immersive-ui-component-surface-window"
 import WindowControl from "@zavx0z/immersive-ui-component-surface-window-control"
 

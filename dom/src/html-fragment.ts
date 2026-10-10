@@ -1,3 +1,4 @@
+import {customElementIsValue} from "./internal/custom-elements.ts"
 import type {DefaultTreeAdapterTypes as HTMLTree} from "parse5"
 import type {Document} from "./document.ts"
 import type {DocumentFragment} from "./document-fragment.ts"
@@ -83,7 +84,8 @@ function syntaxNode(node: HTMLTree.ChildNode): HTMLFragmentSyntaxNode {
 function materialize(document: Document, syntax: HTMLFragmentSyntaxNode): Node {
   if (syntax.type === "text") return document.createTextNode(syntax.value)
   if (syntax.type === "comment") return document.createComment(syntax.value)
-  const element = document.createElement(syntax.name)
+  const is = syntax.attrs.find(attribute => attribute.name === "is")?.value
+  const element = document.createElement(syntax.name, is === undefined ? undefined : {is})
   for (const {name, value} of syntax.attrs) element.setAttribute(name, value)
   for (const child of syntax.children) element.appendChild(materialize(document, child))
   return element
@@ -96,8 +98,10 @@ function serializationNode(node: Node): HTMLTree.ChildNode {
   if (node.nodeType !== 1) throw domError("NotSupportedError", "HTML serialization supports only elements, text and comments")
   const element = node as Element
   supportedElement(element.localName)
-  const tree = adapter.createElement(element.localName, html.NS.HTML,
-    element.getAttributeNames().map(name => ({name, value: element.getAttribute(name)!})))
+  const attrs = element.getAttributeNames().map(name => ({name, value: element.getAttribute(name)!}))
+  const is = customElementIsValue(element)
+  if (is !== null && !element.hasAttribute("is")) attrs.unshift({name: "is", value: is})
+  const tree = adapter.createElement(element.localName, html.NS.HTML, attrs)
   for (const child of element.childNodes) adapter.appendChild(tree, serializationNode(child))
   return tree
 }

@@ -1,9 +1,9 @@
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, type HTMLElement} from "@zavx0z/immersive-dom"
 import {Text, TrueTypeFont} from "@zavx0z/immersive-engine"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, readCanonicalRenderFrameChanges} from "@zavx0z/immersive-renderer-html"
 import {RendererWebGpuBackend} from "../src/webgpu-backend.ts"
 import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
@@ -27,7 +27,7 @@ for (const tooltip of [false, true]) {
   panel.setAttribute("style", "width:540px;height:220px;overflow:hidden;border-radius:8px")
   root.append(panel)
   const component = createRoot(panel)
-  component.render(CodeEditor as unknown as CompiledTemplate<ImmersiveUiComponentViewCodeEditor.Input>, {
+  component.render(CodeEditor as unknown as DOMComponentConstructor<ImmersiveUiComponentViewCodeEditor.Input>, {
     value: source, languageId: "html", title: tooltip ? "HTML source" : undefined, readOnly: true,
   })
   const editor = panel.querySelector("section") as HTMLElement

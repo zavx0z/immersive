@@ -3,9 +3,9 @@ import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
 import {createDocument} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createSpaceElementFactories, readSpaceTree} from "@zavx0z/immersive-space"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor as CompiledTemplate} from "@zavx0z/immersive-dom"
 import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 test("Browser createRoot компилирует App, фиксированные соседи обходятся без key и сохраняют состояние", async () => {
@@ -15,7 +15,7 @@ test("Browser createRoot компилирует App, фиксированные 
     await compiler.prepareFiles([join(import.meta.dir, "application.fixture.tsx"), join(import.meta.dir, "browser-hook-invalid.fixture.tsx")])
     const result = await compiler.compileFile(join(import.meta.dir, "application.fixture.tsx"))
     expect(result.code).not.toContain("<TestApp")
-    expect(result.code).toContain("fixedChildren as")
+    expect(result.code).not.toContain("HostBinding")
     expect(result.code).toContain("root.render(")
     expect(result.code).toContain("createHostRoot(canvas).render(")
     const invalidPath = join(import.meta.dir, "browser-hook-invalid.fixture.tsx")
@@ -24,12 +24,10 @@ test("Browser createRoot компилирует App, фиксированные 
     expect(invalid.message).toContain("useSpace must be called unconditionally")
     const path = join(directory, "application.ts")
     await Bun.write(join(directory, "browser.ts"), `
-      import {createContext, provideContext} from "@zavx0z/immersive-component"
-      export {useSpace, useFrame} from "@zavx0z/immersive-browser"
-      const context = createContext(null)
+      export const documentEnvironment = () => null
       export const calls = []
       export function createRoot() {
-        return {render(value) { calls.push(provideContext(context, null, value)) }}
+        return {render(value) { calls.push(value) }}
       }
     `)
     await Bun.write(path, result.code.replaceAll('"@zavx0z/immersive-browser"', '"./browser.ts"')
@@ -39,7 +37,7 @@ test("Browser createRoot компилирует App, фиксированные 
     module.connectHost({} as HTMLCanvasElement)
     const boundary = await import(pathToFileURL(join(directory, "browser.ts")).href)
     expect(boundary.calls).toHaveLength(2)
-    expect(boundary.calls[0].template).toBe(module.TestApp)
+    expect(boundary.calls[0].type).toBe(module.TestApp)
     expect(boundary.calls[0].props).toEqual({label: "Первый"})
     expect(boundary.calls[1].props).toEqual({label: "Host"})
     const document = createDocument()

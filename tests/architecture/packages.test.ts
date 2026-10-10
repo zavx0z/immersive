@@ -1,7 +1,7 @@
 import {describe, test} from "bun:test"
 import {join} from "node:path"
 import {assertRequirement} from "../assert.ts"
-import {readUiWorkspaces} from "./ui-workspaces"
+import {readUiWorkspaces, readWorkspaceDirectories} from "./ui-workspaces"
 
 const root = join(import.meta.dir, "../..")
 
@@ -9,7 +9,7 @@ const basePackages = Object.freeze([
   ["engine", "@zavx0z/immersive-engine", "Объекты сцены, геометрия, материалы, математика и анимация без WebGPU"],
   ["dom", "@zavx0z/immersive-dom", "Семантический документ, элементы, атрибуты, события, фокус и состояние полей"],
   ["template", "@zavx0z/immersive-template", "HTML, CSS и общий формат готового шаблона"],
-  ["component", "@zavx0z/immersive-component", "Состояние компонентов, хуки, контекст, эффекты и освобождение ресурсов"],
+  ["component", "@zavx0z/immersive-component", "Авторские JSX hooks и композиция, компилируемые в конкретные DOM компоненты"],
   ["renderer", "@zavx0z/immersive-renderer", "Независимые пакеты рендеринга документов"],
   ["renderer/html", "@zavx0z/immersive-renderer-html", "CSS, размеры, раскладка, прокрутка, список рисования и проверка попаданий без GPU"],
   ["markdown", "@zavx0z/immersive-markdown", "Разбор и отображение Markdown через готовые UI-компоненты"],
@@ -17,26 +17,25 @@ const basePackages = Object.freeze([
   ["webgpu", "@zavx0z/immersive-webgpu", "Шейдеры, буферы, текстуры, загрузка данных и рисование"],
   ["browser", "@zavx0z/immersive-browser", "Canvas, обработка изменения размеров и ввода, общий цикл кадров браузера"],
   ["space", "@zavx0z/immersive-space", "Объекты сцены, ресурсы, группы, сетки, линии, текст, свет, анимация, геометрия и материалы"],
-  ["ui", "@zavx0z/immersive-ui-component", "Универсальные компоненты интерфейса, тема и значки"],
   ["nodes", "@zavx0z/immersive-nodes", "Общее представление GraphView, GraphEditor, Frame и Link"],
   ["nodes/tree", "@zavx0z/immersive-nodes-tree", "Живая модель NodeTree, хранилища параметров, снимки и сохранение"],
   ["nodes/layout", "@zavx0z/immersive-nodes-layout", "Алгоритмы расположения нод и Worker"],
-  ["nodes/parameter", "@zavx0z/immersive-nodes-parameter", "Представления параметров нод и проекция Parameter Store"],
-  ["nodes/socket", "@zavx0z/immersive-nodes-socket", "Адресуемый Socket и его визуальные предустановки"],
-  ["nodes/node", "@zavx0z/immersive-nodes-node", "Ноды диаграмм, параметров и произвольного содержимого"],
+  ["nodes/parameter", "@zavx0z/immersive-nodes-parameter", "Самостоятельные параметры с общим адресом, подписью, сокетами и внешним состоянием"],
+  ["nodes/socket", "@zavx0z/immersive-nodes-socket", "Адресуемый визуальный сокет с внешним состоянием и обработчиком активации"],
+  ["nodes/node", "@zavx0z/immersive-nodes-node", "Представления нод с общим протоколом адреса, выбора, видимости и активации"],
   ["headless", "@zavx0z/immersive-headless", "Без браузера: нативная отрисовка компонентов в живой DOM и PNG"],
   ["devtool", "@zavx0z/immersive-devtool", "Диагностика Document, состояния элементов и результатов Renderer"],
   ["jsx", "@zavx0z/immersive-jsx", "Авторский JSX, автоматический protocol, слоты и компиляция"],
   ["jsx/runtime", "@zavx0z/immersive-jsx-runtime", "Автоматический JSX protocol и identity фрагментов"],
   ["jsx/runtime/fragment", "@zavx0z/immersive-jsx-runtime-fragment", "Единая identity группы соседних JSX-значений"],
-  ["jsx/runtime/create", "@zavx0z/immersive-jsx-runtime-create", "Автоматический JSX protocol для подготовленных компонентов"],
+  ["jsx/runtime/create", "@zavx0z/immersive-jsx-runtime-create", "Типовой automatic JSX protocol и диагностика пропущенной компиляции"],
   ["jsx/development", "@zavx0z/immersive-jsx-development", "Отладочный automatic JSX protocol"],
   ["jsx/development/create", "@zavx0z/immersive-jsx-development-create", "Development protocol JSX с общей Fragment identity"],
   ["jsx/slot", "@zavx0z/immersive-jsx-slot", "Авторство, контракты и распределение содержимого JSX-слотов"],
   ["jsx/slot/plan", "@zavx0z/immersive-jsx-slot-plan", "Распределение JSX содержимого по точкам вставки"],
   ["jsx/event", "@zavx0z/immersive-jsx-event", "Соответствие JSX event props и нативных DOM событий"],
   ["jsx/compiler", "@zavx0z/immersive-jsx-compiler", "Сессия компиляции, интеграция Bun и диагностика JSX"],
-  ["jsx/compiler/session", "@zavx0z/immersive-jsx-compiler-session", "Семантическая компиляция JSX в готовые шаблоны"],
+  ["jsx/compiler/session", "@zavx0z/immersive-jsx-compiler-session", "Семантическая компиляция JSX в самостоятельные DOM constructors"],
   ["jsx/compiler/bun", "@zavx0z/immersive-jsx-compiler-bun", "Интеграция компилятора JSX со сборкой Bun"],
   ["jsx/slot/contract", "@zavx0z/immersive-jsx-slot-contract", "Статическая проверка типов, наличия и количества содержимого слотов"],
   ["jsx/slot/authoring", "@zavx0z/immersive-jsx-slot-authoring", "Синтаксис точек вставки и назначений JSX-слотов"],
@@ -135,12 +134,12 @@ describe("Конечный состав пакетов", () => {
 
 
   test("[PKG-010] зависимости различают собственные пакеты Repo и внешних владельцев", async () => {
-    const localNames = new Set(await Promise.all(packages.map(async ([directory]) => {
-      const manifest = await Bun.file(join(root, directory, "package.json")).json() as {name: string}
-      return manifest.name
-    })))
     const rootManifest = await Bun.file(join(root, "package.json")).json() as {name: string}
-    localNames.add(rootManifest.name)
+    const localNames = new Set([rootManifest.name])
+    for (const directory of await readWorkspaceDirectories(root)) {
+      const manifest = await Bun.file(join(root, directory, "package.json")).json() as {name: string}
+      localNames.add(manifest.name)
+    }
     for (const directory of ["", ...packages.map(([directory]) => directory)]) {
       const manifest = await Bun.file(join(root, directory, "package.json")).json() as {
         name: string

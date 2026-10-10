@@ -113,7 +113,9 @@ test("[NODETREE-004] NodeTree остаётся headless и предметно-н
     "@zavx0z/immersive-webgpu",
   ]
   for (const specifier of importSpecifiers(source)) {
-    expect(forbiddenImports.some(prefix => specifier.startsWith(prefix))).toBe(false)
+    expect(forbiddenImports.some(prefix => prefix.endsWith("/")
+      ? specifier.startsWith(prefix)
+      : specifier === prefix || specifier.startsWith(`${prefix}/`)), specifier).toBe(false)
   }
   expect(source).not.toContain("HTMLCanvasElement")
   expect(source).not.toContain("requestAnimationFrame")

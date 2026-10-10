@@ -1,5 +1,5 @@
-import type {XRLineSegmentsElement} from "../../../src/elements.ts"
-import type {SpaceRef} from "../../../src/jsx.ts"
+import type {XRLineSegmentsElement} from "@zavx0z/immersive-space"
+import type {SpaceRef} from "@zavx0z/immersive-space"
 import type {SpatialEdge} from "./edge.ts"
 
 /** Один общий batch мировых рёбер внутри существующего Space. */

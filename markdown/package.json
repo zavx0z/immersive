@@ -7,22 +7,77 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./markdown/index.tsx",
-    "./contract/input": "./markdown/contract/input.ts",
-    "./parser": "./parser/index.ts",
-    "./mermaid": "./mermaid/index.tsx",
-    "./mermaid/contract/input": "./mermaid/contract/input.ts",
-    "./parser/contract/input": "./parser/contract/input.ts",
-    "./parser/contract/output": "./parser/contract/output.ts",
-    "./destination": "./destination/index.ts",
-    "./destination/contract/input": "./destination/contract/input.ts",
-    "./destination/contract/output": "./destination/contract/output.ts",
-    "./types": "./shared/types/model.ts"
+    ".": {
+      "source": "./markdown/index.tsx",
+      "types": "./dist/markdown/index.d.ts",
+      "browser": "./dist/markdown/index.js",
+      "default": "./dist/markdown/index.js"
+    },
+    "./contract/input": {
+      "source": "./markdown/contract/input.ts",
+      "types": "./dist/markdown/contract/input.d.ts",
+      "browser": "./dist/markdown/contract/input.js",
+      "default": "./dist/markdown/contract/input.js"
+    },
+    "./parser": {
+      "source": "./parser/index.ts",
+      "types": "./dist/parser/index.d.ts",
+      "browser": "./dist/parser/index.js",
+      "default": "./dist/parser/index.js"
+    },
+    "./mermaid": {
+      "source": "./mermaid/index.tsx",
+      "types": "./dist/mermaid/index.d.ts",
+      "browser": "./dist/mermaid/index.js",
+      "default": "./dist/mermaid/index.js"
+    },
+    "./mermaid/contract/input": {
+      "source": "./mermaid/contract/input.ts",
+      "types": "./dist/mermaid/contract/input.d.ts",
+      "browser": "./dist/mermaid/contract/input.js",
+      "default": "./dist/mermaid/contract/input.js"
+    },
+    "./parser/contract/input": {
+      "source": "./parser/contract/input.ts",
+      "types": "./dist/parser/contract/input.d.ts",
+      "browser": "./dist/parser/contract/input.js",
+      "default": "./dist/parser/contract/input.js"
+    },
+    "./parser/contract/output": {
+      "source": "./parser/contract/output.ts",
+      "types": "./dist/parser/contract/output.d.ts",
+      "browser": "./dist/parser/contract/output.js",
+      "default": "./dist/parser/contract/output.js"
+    },
+    "./destination": {
+      "source": "./destination/index.ts",
+      "types": "./dist/destination/index.d.ts",
+      "browser": "./dist/destination/index.js",
+      "default": "./dist/destination/index.js"
+    },
+    "./destination/contract/input": {
+      "source": "./destination/contract/input.ts",
+      "types": "./dist/destination/contract/input.d.ts",
+      "browser": "./dist/destination/contract/input.js",
+      "default": "./dist/destination/contract/input.js"
+    },
+    "./destination/contract/output": {
+      "source": "./destination/contract/output.ts",
+      "types": "./dist/destination/contract/output.d.ts",
+      "browser": "./dist/destination/contract/output.js",
+      "default": "./dist/destination/contract/output.js"
+    },
+    "./types": {
+      "source": "./shared/types/model.ts",
+      "types": "./dist/shared/types/model.d.ts",
+      "browser": "./dist/shared/types/model.js",
+      "default": "./dist/shared/types/model.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel parser/tests destination/tests markdown/tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel parser/tests destination/tests markdown/tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
     "markdown-it": "^15.0.1",

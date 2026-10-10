@@ -4,8 +4,8 @@ import {createSpaceElementFactories, type XRMeshElement, type XRMaterialElement}
 import {readElementStyle} from "../../../../renderer/html/src/index.ts"
 import {GlassMaterial} from "@zavx0z/immersive-engine"
 import {createDocument} from "@zavx0z/immersive-dom"
-import {component, createRoot} from "@zavx0z/immersive-component"
-import {defineCompiledTemplate, type CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {createSpatialTreeScene} from "../src/scene.ts"
 import {createSpatialTreeState} from "../src/controller.ts"
@@ -14,16 +14,7 @@ import type {SpatialTreeSnapshot} from "../contract/controller.ts"
 const repo = resolve(import.meta.dir, "../../../..")
 Bun.plugin(createJsxBunPlugin({cwd: repo, persistent: true, sourceRoots: [resolve(repo, "nodes"), resolve(repo, "space"), resolve(repo, "ui")]}))
 const {SpatialTree} = await import("../src/view.tsx")
-const content = defineCompiledTemplate({
-  displayName: "EntityContent",
-  bindingCount: 0,
-  mount(document) {
-    const button = document.createElement("button")
-    button.textContent = "Содержимое"
-    return {nodes: [button], bindings: []}
-  },
-  render() {},
-})
+
 
 test("объёмное дерево создаёт независимые Display в одном Space и сохраняет содержимое при выборе", () => {
   const document = createDocument({elementFactories: createSpaceElementFactories()})
@@ -37,13 +28,13 @@ test("объёмное дерево создаёт независимые Displa
     nodes: scene.nodes, volumes: scene.volumes, geometryRevision: 1,
     visibleVolumeIds: new Set(scene.volumes.map(v => v.id)), disabledHitIds: new Set(),
     selectedId: "p", selectedVolumeId: scene.bodyIdByNode.get("p")!, floor: scene.floor,
-    contentById: new Map([["p", component(content, {}, "p")]]),
+    contentById: new Map([["p", Object.assign(document.createElement("button"), {textContent: "Содержимое"})]]),
     onHost: (id, host) => { if (host) hosts.set(id, host); else hosts.delete(id) },
     onActivate() {}, onVolumeActivate() {},
   }
   source.publish(snapshot)
   try {
-    root.render(SpatialTree as unknown as CompiledTemplate<{source: typeof source}>, {source})
+    root.render(SpatialTree as unknown as DOMComponentConstructor<{source: typeof source}>, {source})
     expect(space.querySelectorAll("display")).toHaveLength(2)
     expect(space.querySelectorAll("space")).toHaveLength(0)
     expect(space.querySelectorAll("viewpoint")).toHaveLength(0)
@@ -52,7 +43,7 @@ test("объёмное дерево создаёт независимые Displa
     expect(button.textContent).toBe("Содержимое")
     expect(button.closest("display")).toBe(hosts.get("p"))
     source.publish({...snapshot, selectedId: "c"})
-    root.render(SpatialTree as unknown as CompiledTemplate<{source: typeof source}>, {source})
+    root.render(SpatialTree as unknown as DOMComponentConstructor<{source: typeof source}>, {source})
     expect(space.querySelector("button")).toBe(button)
     expect(space.querySelector('[data-frame-id="c"]')?.getAttribute("aria-selected")).toBe("true")
   } finally { root.unmount() }
@@ -71,7 +62,7 @@ test("Tree кеширует role streams и XYZ при subset; inherited CSS с�
     selectedId: null, selectedVolumeId: null, floor: scene.floor, contentById: new Map(), onHost() {}, onActivate() {}, onVolumeActivate() {}}
   source.publish(snapshot)
   try {
-    root.render(SpatialTree as unknown as CompiledTemplate<{source: typeof source}>, {source})
+    root.render(SpatialTree as unknown as DOMComponentConstructor<{source: typeof source}>, {source})
     const bodies = space.querySelector('[name="spatial-tree-bodies"]')!
     const branches = space.querySelector('[name="spatial-tree-branches"]')!
     const bodyMesh = bodies.querySelector("xr-mesh") as XRMeshElement
@@ -87,7 +78,7 @@ test("Tree кеширует role streams и XYZ при subset; inherited CSS с�
     Object.defineProperty(scene.bodyVolumes, "map", {value() {throw new Error("Полный role stream не сканируется при ViewPoint/subset обновлении")}})
     Object.defineProperty(scene.bodyVolumes[0]!, "from", {get() {throw new Error("Готовые XYZ торцы не читаются при subset обновлении")}})
     source.publish({...snapshot, visibleVolumeIds: new Set([scene.bodyIdByNode.get("p")!, scene.branchVolumes[0]!.id])})
-    root.render(SpatialTree as unknown as CompiledTemplate<{source: typeof source}>, {source})
+    root.render(SpatialTree as unknown as DOMComponentConstructor<{source: typeof source}>, {source})
     expect(bodies.querySelector("xr-mesh")).toBe(bodyMesh)
     const heldGeometry = bodyMesh.geometry!.factory
     space.setAttribute("style", "--spatial-volume-opacity: .27; --spatial-volume-outline-opacity: .32")

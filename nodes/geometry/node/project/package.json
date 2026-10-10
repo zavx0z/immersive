@@ -7,7 +7,12 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "dependencies": {
     "@zavx0z/immersive-nodes-projection-parameter-presentation": "workspace:*",
@@ -22,8 +27,9 @@
     "@zavx0z/immersive-nodes-model-socket-metrics": "workspace:*"
   },
   "scripts": {
-    "test": "bun test ./spec",
-    "typecheck": "tsc --project tsconfig.json --pretty false"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "devDependencies": {
     "@zavx0z/immersive-nodes-tree": "workspace:*"

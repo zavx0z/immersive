@@ -95,6 +95,16 @@ export function Application() {
     {[]}
   </RememberedPanel>
 }`,
+  "stored.tsx": `
+import {Panel} from "./receiver"
+import {Button, IconButton} from "./children"
+const variants = ["first", "next"].map(label => ({
+  slots: {arbitraryAlias: <Button slot="header" label={label} />},
+  body: <IconButton label={label} />,
+}))
+variants.forEach(({slots, body}) => consume(<Panel>{slots.arbitraryAlias}{body}</Panel>))
+export function consume(value: unknown) {}
+`,
   "untyped.tsx": `
 export function PlainPanel() {return <slot />}
 export function Ordinary() {return <button />}
@@ -118,6 +128,7 @@ describe.each([
   {name: "Явный текстовый тип", props: {file: "text.tsx"}, warning: false},
   {name: "Необязательный динамический текст", props: {file: "optional-text.tsx"}, warning: false},
   {name: "Получатель memo", props: {file: "memo.tsx"}, warning: false},
+  {name: "JSX из Storybook object variants", props: {file: "stored.tsx"}, warning: false},
   {name: "Получатель без схемы", props: {file: "untyped.tsx"}, warning: true},
 ])("$name", async ({name, props, warning}) => {
   const input = await fixture.input(props.file)

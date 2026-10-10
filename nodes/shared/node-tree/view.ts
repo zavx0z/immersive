@@ -15,7 +15,7 @@ import {
 } from "../projection/geometry.ts"
 import type {NodeTreeLayoutState} from "../projection/layout-state.ts"
 import {getNodeTreeLayoutStore} from "../projection/layout-state.ts"
-import {projectLinkRoute, type LinkRoute} from "../routing/link-path.ts"
+import {projectLinkRoute, type LinkRoute} from "@zavx0z/immersive-nodes/routing/link-path"
 import type {NodePreview} from "../node/preview.ts"
 import type {
   NodeTreeActions,

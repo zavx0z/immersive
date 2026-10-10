@@ -1,4 +1,5 @@
 import type JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
+import type {JsxCompileResult} from "@zavx0z/immersive-jsx-compiler-session"
 
 /**
 Подключение JSX к штатному циклу сборки Bun.
@@ -22,4 +23,10 @@ export type CreateJsxPluginOptions = Readonly<{
   session?: JsxCompilerSession
   sourceRoots: readonly string[]
   styleSourceRootIds?: readonly string[]
+  customConditions?: readonly string[]
+  sourceFiles?: readonly string[]
+  /** Преобразование governed текста перед native JSX lowering; исходный файл не записывается. */
+  sourceTransform?: (path: string, source: string) => string | Promise<string>
+  /** Наблюдение результата и позиций относительно effective входного текста. */
+  onCompiled?: (path: string, source: string, result: JsxCompileResult) => void | Promise<void>
 }>

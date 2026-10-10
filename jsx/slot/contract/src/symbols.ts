@@ -99,7 +99,7 @@ async function isRuntimeMemo(node: Node, context: ValidationContext): Promise<bo
   if (!symbol) return false
   for (const statement of node.getSourceFile().statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier) ||
-      statement.moduleSpecifier.text !== "@zavx0z/immersive-component") continue
+      !["@zavx0z/immersive-component", "@zavx0z/immersive-component/authoring", "@zavx0z/immersive/XReact"].includes(statement.moduleSpecifier.text)) continue
     const clause = statement.importClause
     if (!clause || clause.phaseModifier === SyntaxKind.TypeKeyword ||
       !clause.namedBindings || !isNamedImports(clause.namedBindings)) continue

@@ -2,6 +2,7 @@ import type {Document} from "./document.ts"
 import {HTMLElement} from "./html-element.ts"
 import {Event} from "./event.ts"
 import {parseHTMLInteger, toLong} from "./internal/web-idl.ts"
+import {observesDOMProperty, lifecyclePropertyChanged} from "./internal/lifecycle.ts"
 
 export type VideoPlaybackState = Readonly<{
   paused: boolean
@@ -27,14 +28,20 @@ const activePlays = new WeakMap<HTMLVideoElement, Set<PendingPlay>>()
 
 /** Семантика видео. Декодер и общий цикл кадров принадлежат Browser. */
 export class HTMLVideoElement extends HTMLElement {
-  private mediaSource: object | null = null
-  private mediaMuted: boolean | null = null
-  private requestedTime = 0
-  private wantsPlayback = false
+  declare private mediaSource: object | null
+  declare private mediaMuted: boolean | null
+  declare private requestedTime: number
+  declare private wantsPlayback: boolean
 
   constructor(document: Document) {
     super(document, "video")
-    states.set(this, emptyState())
+    if (!Object.hasOwn(this, "mediaSource")) {
+      this.mediaSource = null
+      this.mediaMuted = null
+      this.requestedTime = 0
+      this.wantsPlayback = false
+    }
+    if (!states.has(this)) states.set(this, emptyState())
   }
 
   get src(): string { return this.getAttribute("src") ?? "" }
@@ -43,9 +50,13 @@ export class HTMLVideoElement extends HTMLElement {
   set srcObject(value: object | null) {
     if (value !== null && typeof value !== "object") throw new TypeError("srcObject must be a media object or null")
     if (this.mediaSource === value) return
-    this.mediaSource = value
-    states.set(this, emptyState())
-    notify(this)
+    this.ownerDocument!.transaction(() => {
+      this.mediaSource = value
+      states.set(this, emptyState())
+      lifecyclePropertyChanged(this, "srcObject")
+      lifecyclePropertyChanged(this, "currentTime")
+      notify(this)
+    })
   }
   get autoplay(): boolean { return this.hasAttribute("autoplay") }
   set autoplay(value: boolean) { this.toggleAttribute("autoplay", Boolean(value)) }
@@ -53,8 +64,12 @@ export class HTMLVideoElement extends HTMLElement {
   set defaultMuted(value: boolean) { this.toggleAttribute("muted", Boolean(value)) }
   get muted(): boolean { return this.mediaMuted ?? this.defaultMuted }
   set muted(value: boolean) {
-    this.mediaMuted = Boolean(value)
-    notify(this)
+    this.ownerDocument!.transaction(() => {
+      const previous = this.muted
+      this.mediaMuted = Boolean(value)
+      if (previous !== this.muted) lifecyclePropertyChanged(this, "muted")
+      notify(this)
+    })
   }
   get playsInline(): boolean { return this.hasAttribute("playsinline") }
   set playsInline(value: boolean) { this.toggleAttribute("playsinline", Boolean(value)) }
@@ -72,9 +87,13 @@ export class HTMLVideoElement extends HTMLElement {
   get currentTime(): number { return states.get(this)!.currentTime }
   set currentTime(value: number) {
     if (!Number.isFinite(value) || value < 0) throw new TypeError("currentTime must be finite and non-negative")
-    this.requestedTime = value
-    states.set(this, {...states.get(this)!, currentTime: value})
-    notify(this)
+    this.ownerDocument!.transaction(() => {
+      const previous = this.currentTime
+      this.requestedTime = value
+      states.set(this, {...states.get(this)!, currentTime: value})
+      if (previous !== value) lifecyclePropertyChanged(this, "currentTime")
+      notify(this)
+    })
   }
 
   play(): Promise<void> {
@@ -132,8 +151,14 @@ export function bindVideoPlayback(video: HTMLVideoElement, controller: VideoPlay
 export function readVideoPlaybackState(video: HTMLVideoElement): VideoPlaybackState { return states.get(video)! }
 
 export function publishVideoPlaybackState(video: HTMLVideoElement, state: VideoPlaybackState): void {
+  if (observesDOMProperty(video, "currentTime")) video.ownerDocument!.transaction(() => applyVideoPlaybackState(video, state))
+  else applyVideoPlaybackState(video, state)
+}
+
+function applyVideoPlaybackState(video: HTMLVideoElement, state: VideoPlaybackState): void {
   const previous = states.get(video)!
   states.set(video, Object.freeze({...state}))
+  if (previous.currentTime !== state.currentTime) lifecyclePropertyChanged(video, "currentTime")
   // Время и paused читаются синхронно; только метрики/ресурс требуют новой раскладки.
   if (previous.videoWidth !== state.videoWidth || previous.videoHeight !== state.videoHeight || previous.resource !== state.resource) notify(video)
 }

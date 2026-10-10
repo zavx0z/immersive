@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, Event, InputEvent, KeyboardEvent, MouseEvent, CompositionEvent, readDocumentScrollIntoViewRequests, type HTMLInputElement, type HTMLElement} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
 import TerminalModel from "@zavx0z/immersive-tech-terminal"
@@ -46,7 +46,7 @@ test("Editor fills its structural parent, owns generic annotations and exposes s
   const props: EditorProps = {title: "Source", value: model.snapshot.value, readOnly: false, model,
     lineDecorations: [{line: 1, lineTone: "warning", markerTone: "info", gutterTone: "error", title: "Generic annotation"}],
     onReady(handle) { handles.push(handle) }, onSave: text => { saves.push(text) }, onLineNumberClick: line => { rows.push(line) }}
-  f.component.render(Editor as unknown as CompiledTemplate<EditorProps>, props)
+  f.component.render(Editor as unknown as DOMComponentConstructor<EditorProps>, props)
   const renderer = createDocumentRenderer({document: f.document, root: f.root, viewport: {width: 720, height: 300},
     styleSheets: [await Bun.file(Bun.resolveSync("@zavx0z/immersive-ui-component/theme/theme.css", import.meta.dir)).text()]})
   try {
@@ -74,7 +74,7 @@ test("Editor fills its structural parent, owns generic annotations and exposes s
     expect(frame.displayList.find(item => item.kind === "text" && item.text === "first")).toMatchObject({fontSize: 13, lineHeight: 18})
     handle.scrollToLine(1, {block: "center"})
     expect(readDocumentScrollIntoViewRequests(f.document).at(-1)?.target).toBe(line)
-    f.component.render(Editor as unknown as CompiledTemplate<EditorProps>, {...props, readOnly: true})
+    f.component.render(Editor as unknown as DOMComponentConstructor<EditorProps>, {...props, readOnly: true})
     handle.setSelections([{anchor: 10, head: 2}])
     expect(f.document.getSelection().toString()).toBe("rst\nseco")
     expect(handle.getSelection().selections).toEqual([{anchor: 10, head: 2}])
@@ -86,7 +86,7 @@ test("Editor fills its structural parent, owns generic annotations and exposes s
 test("Editor line markers emit a real border while marked and unmarked text remain aligned", () => {
   const f = fixture()
   f.root.setAttribute("style", "display:flex;width:720px;height:300px;--state-info:#3366ff")
-  f.component.render(Editor as unknown as CompiledTemplate<EditorProps>, {
+  f.component.render(Editor as unknown as DOMComponentConstructor<EditorProps>, {
     title: "Source", value: "same\nsame", readOnly: true,
     lineDecorations: [{line: 0, markerTone: "info"}],
   })
@@ -112,7 +112,7 @@ test("Terminal stream input resets controlled field, sends IME once, retains out
   model.write("plain\r\n\x1b[31mred\x1b[0m")
   let handle: TerminalHandle | null = null
   const data: Array<[string, string]> = []
-  f.component.render(Terminal as unknown as CompiledTemplate<TerminalProps>, {title: "Output", model, input: "", inputMode: "stream",
+  f.component.render(Terminal as unknown as DOMComponentConstructor<TerminalProps>, {title: "Output", model, input: "", inputMode: "stream",
     onData: (value, source) => { data.push([value, source]) }, onReady: value => { handle = value }})
   try {
     const input = f.root.querySelector("input") as HTMLInputElement
@@ -148,7 +148,7 @@ test("Terminal handle projects directional ANSI text and cross-block selections 
   const model = new TerminalModel({maxLines: 3})
   model.write("a\x1b[31mbc\x1b[0m\r\ndef")
   let ready: TerminalHandle | null = null
-  f.component.render(Terminal as unknown as CompiledTemplate<TerminalProps>, {
+  f.component.render(Terminal as unknown as DOMComponentConstructor<TerminalProps>, {
     title: "Output", model, input: "", showInput: false, followOutput: false,
     onReady: handle => { ready = handle },
   })
@@ -200,7 +200,7 @@ test("Tree controls disclosure, lazy expansion, multiple selection and keyboard 
     onSelectionChange(keys) { selections.push([...keys]); props = {...props, selectedKeys: keys}; render() },
     onActivate(id) { activated.push(id) },
   }
-  const render = () => f.component.render(Tree as unknown as CompiledTemplate<TreeProps>, props)
+  const render = () => f.component.render(Tree as unknown as DOMComponentConstructor<TreeProps>, props)
   render()
   try {
     const group = f.root.querySelector('[data-tree-id="group"]')!
@@ -238,7 +238,7 @@ test("embedded Tree keeps focus separate from selection and bounds a large hiera
     selectable: false,
     children: Array.from({length: 1000}, (_, index) => ({id: `item-${index}`, label: `Item ${index}`})),
   }]
-  f.component.render(Tree as unknown as CompiledTemplate<TreeProps>, {
+  f.component.render(Tree as unknown as DOMComponentConstructor<TreeProps>, {
     title: "Large hierarchy",
     items,
     expandedKeys: ["group"],
@@ -278,10 +278,10 @@ test("Window fill is structural while floating defaults remain unchanged", () =>
   const renderer = createDocumentRenderer({document: f.document, root: f.root, viewport: {width: 720, height: 300}})
   const props: WindowProps = {id: "test-window", title: "Window", open: true, onOpenChange() {}}
   try {
-    f.component.render(Window as unknown as CompiledTemplate<WindowProps>, props)
+    f.component.render(Window as unknown as DOMComponentConstructor<WindowProps>, props)
     const owner = f.root.firstElementChild!
     expect(renderer.flush().boxByNode.get(owner.querySelector("[data-window]")!)?.width).toBe(320)
-    f.component.render(Window as unknown as CompiledTemplate<WindowProps>, {...props, layout: "fill"})
+    f.component.render(Window as unknown as DOMComponentConstructor<WindowProps>, {...props, layout: "fill"})
     expect(f.root.firstElementChild).toBe(owner)
     expect(renderer.flush().boxByNode.get(owner)?.width).toBe(720)
     expect(renderer.flush().boxByNode.get(owner)?.height).toBe(300)
@@ -291,7 +291,7 @@ test("Window fill is structural while floating defaults remain unchanged", () =>
 test("Terminal accepts a real paste equal to an IME commit instead of treating it as a duplicate commit", async () => {
   const f = fixture()
   const received: Array<[string, string]> = []
-  f.component.render(Terminal as unknown as CompiledTemplate<TerminalProps>, {title: "Output", input: "", inputMode: "stream",
+  f.component.render(Terminal as unknown as DOMComponentConstructor<TerminalProps>, {title: "Output", input: "", inputMode: "stream",
     onData: (text, source) => { received.push([text, source]) }})
   const controller = createDocumentClipboardController(f.document, {access: {
     readText: async () => "日本", writeText: async () => {},

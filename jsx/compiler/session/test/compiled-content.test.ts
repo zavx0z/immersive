@@ -2,22 +2,27 @@ import {expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createDocument} from "@zavx0z/immersive-dom"
-import {component, createRoot} from "@zavx0z/immersive-component"
-import {bindText, defineCompiledTemplate, writeBinding} from "@zavx0z/immersive-template/compiled"
+import {createDocument, createDomRoot as createRoot, domComponentConstructorBrand, HTMLButtonElement, type Document, type DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
-const child = defineCompiledTemplate<{label: string}>({
-  displayName: "PreparedChild",
-  bindingCount: 1,
-  mount(document) {
-    const element = document.createElement("button")
-    const text = document.createTextNode("")
-    element.append(text)
-    return {nodes: [element], bindings: [bindText(text)]}
-  },
-  render(props, values) { writeBinding(values, 0, props.label) },
-})
+class PreparedChild extends HTMLButtonElement {
+  static readonly [domComponentConstructorBrand] = true as const
+  props: Readonly<{label: string}>
+  content = {}
+  constructor(document: Document, props: Readonly<{label: string}>) {
+    super(document)
+    this.props = props
+    this.textContent = props.label
+  }
+  prepareUpdate(props: Readonly<{label: string}>) {
+    const previous = this.textContent
+    return {check: () => true, apply: () => { this.textContent = props.label }, rollback: () => { this.textContent = previous }, commit: () => { this.props = props }, insertion() {}, layout() {}, passive() {}}
+  }
+  update(props: Readonly<{label: string}>) { const plan = this.prepareUpdate(props); plan.apply(); plan.commit() }
+  dispose() { this.remove() }
+}
+const child = PreparedChild
+const component = <Props>(type: DOMComponentConstructor<Props>, props: Props, key: string | null = null) => ({type, props, key})
 
 test("готовое содержимое в JSX сохраняет semantic identity и освобождает обычную область", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".compiled-"))

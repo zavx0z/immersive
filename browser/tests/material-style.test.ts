@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
 import {Color, HolographicMaterial, Mesh, type TrueTypeFont} from "@zavx0z/immersive-engine"
 import {acquireDocumentAuthorStyleSheetOwner} from "@zavx0z/immersive-dom"
-import type {XRMaterialProjectionContext} from "@zavx0z/immersive-space"
+import {XRMaterialElement, type XRMaterialProjectionContext} from "@zavx0z/immersive-space"
 import {attachFixture, createFakeRuntime, createFakeRuntimeState} from "./experience.fixture.ts"
 
 /** Реальны semantic элементы и CSS каскад; seam заменяет только GPU presentation. */
@@ -14,6 +14,7 @@ test("материал получает inherited CSS variables и смену ap
     const mesh = root.document.createElement("xr-mesh")
     const geometry = root.document.createElement("xr-geometry")
     const material = root.document.createElement("xr-material")
+    if (!(material instanceof XRMaterialElement)) throw new Error("Expected native XR material")
     let seen: XRMaterialProjectionContext | undefined
     material.styleProperties = ["--material-appearance"]
     material.factory = (_element, context) => {
@@ -55,7 +56,6 @@ test("compiled SpatialVolumes передаёт реальные CSS opacity и t
   const {mkdtemp, rm} = await import("node:fs/promises")
   const {join, resolve} = await import("node:path")
   const {pathToFileURL} = await import("node:url")
-  const {component} = await import("@zavx0z/immersive-component")
   const {attachWithRuntimeFactory} = await import("../src/component-attachment.ts")
   const {default: createJsxBunPlugin} = await import("@zavx0z/immersive-jsx-compiler-bun")
   const repository = resolve(import.meta.dir, "../..")
@@ -81,7 +81,7 @@ export function VolumeApp() {
       plugins: [createJsxBunPlugin({cwd: repository, sourceRoots: [join(repository, "space"), directory]})]})
     if (!result.success) throw new AggregateError(result.logs, "Volume CSS compilation failed")
     const template = (await import(pathToFileURL(result.outputs.find(output => output.kind === "entry-point")!.path).href)).VolumeApp
-    root = await attachWithRuntimeFactory({app: component(template, {}), canvas: {getContext: () => null, getBoundingClientRect: () => ({width: 800, height: 600, left: 0, top: 0})} as unknown as HTMLCanvasElement, font: {} as TrueTypeFont}, async options => createFakeRuntime(options, state))
+    root = await attachWithRuntimeFactory({app: {type: template, props: {}}, canvas: {getContext: () => null, getBoundingClientRect: () => ({width: 800, height: 600, left: 0, top: 0})} as unknown as HTMLCanvasElement, font: {} as TrueTypeFont}, async options => createFakeRuntime(options, state))
     const mesh = state.space!.children[0]!.children[0]!.children[0] as Mesh
     expect(mesh.material).toBeInstanceOf(HolographicMaterial)
     expect(mesh.material).toHaveProperty("opacity", .12)

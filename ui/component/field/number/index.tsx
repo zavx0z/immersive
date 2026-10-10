@@ -7,7 +7,7 @@
 import type {ActiveScrub} from "./src/types.ts"
 import type {ImmersiveUiComponentFieldNumber as Contract} from "./contract"
 import {releaseScrubCapture} from "./src/helpers.tsx"
-import {useRef} from "@zavx0z/immersive-component"
+import {useRef} from "@zavx0z/immersive-component/authoring"
 import resolveNumberDragRange from "@zavx0z/immersive-ui-field-number-scrub-range"
 import scrubNumberRawValue from "@zavx0z/immersive-ui-field-number-scrub-raw"
 import snapNumberValue from "@zavx0z/immersive-ui-field-number-scrub-snap"

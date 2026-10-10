@@ -1,4 +1,4 @@
-import {useMemo, useRef, useLayoutEffect, useSyncExternalStore} from "@zavx0z/immersive-component"
+import {useMemo, useRef, useLayoutEffect, useSyncExternalStore} from "@zavx0z/immersive-component/authoring"
 import {createNodeTreeLayout} from "../shared/projection/layout.ts"
 import {getNodeTreeLayoutStore} from "../shared/projection/layout-state.ts"
 import {createActions, createNodeTreeViewSelector, linkKind} from "../shared/node-tree/view.ts"

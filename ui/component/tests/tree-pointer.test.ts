@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, HTMLElement, KeyboardEvent, readDocumentScrollIntoViewRequests} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@zavx0z/immersive-renderer-html"
 import type {ImmersiveUiComponentWidgetTree} from "@zavx0z/immersive-ui-component-widget-tree"
 type TreeProps = ImmersiveUiComponentWidgetTree.Input
@@ -13,7 +13,7 @@ const workspace = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 
 const {default: Tree} = await import("@zavx0z/immersive-ui-component-widget-tree")
-const template = Tree as unknown as CompiledTemplate<TreeProps>
+const template = Tree as unknown as DOMComponentConstructor<TreeProps>
 
 function mount(
   items: TreeProps["items"],

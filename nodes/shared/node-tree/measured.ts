@@ -1,4 +1,4 @@
-import {useMemo, useRef, useSyncExternalStore} from "@zavx0z/immersive-component"
+import {useMemo, useRef, useSyncExternalStore} from "@zavx0z/immersive-component/authoring"
 import type {NodeTreeSnapshot} from "@zavx0z/immersive-nodes-tree"
 import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
 import {metadataBoolean, metadataString} from "@zavx0z/immersive-tech-json-metadata"

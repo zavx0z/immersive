@@ -73,7 +73,7 @@ test("[NODES-PROJECTED-GEOMETRY-003] Collection читает visibleRows, а pro
   }
 })
 
-test("[NODES-PROJECTED-GEOMETRY-004] связанный сложный Parameter схлопывается в одну Node-строку", () => {
+test("[NODES-PROJECTED-GEOMETRY-004] подключение сокета сохраняет видимые строки сложного Parameter", () => {
   const snapshot = matrix(4)
   const socket = projectedSocket("matrix-input", "input", snapshot.id)
   const projected = node([snapshot], [socket])
@@ -83,7 +83,7 @@ test("[NODES-PROJECTED-GEOMETRY-004] связанный сложный Parameter
     projected,
     undefined,
     new Set([socketKey("node", "matrix-input")]),
-  ).height).toBe(60)
+  ).height).toBe(132)
 })
 
 test("[NODES-PROJECTED-GEOMETRY-005] spacingBefore входит в числовую геометрию отдельно от межстрочного зазора", () => {

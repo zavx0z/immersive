@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 import type {ImmersiveUiComponentSurfacePanel as Contract} from "./contract"
-import {useId} from "@zavx0z/immersive-component"
+import {useId} from "@zavx0z/immersive-component/authoring"
 import Button from "@zavx0z/immersive-ui-component-button-basic"
 import CheckboxField from "@zavx0z/immersive-ui-component-field-checkbox"
 import IconButton from "@zavx0z/immersive-ui-component-button-icon"

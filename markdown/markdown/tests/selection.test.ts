@@ -1,7 +1,7 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, type HTMLElement} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {createDocumentRenderer, readRenderedSelectionText} from "@zavx0z/immersive-renderer-html"
 

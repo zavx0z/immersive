@@ -1,13 +1,13 @@
 import {describe, expect, test} from "bun:test"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, MouseEvent, PointerEvent, type HTMLElement, type HTMLInputElement} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, hitTestProjection, createDocumentInteractionController} from "@zavx0z/immersive-renderer-html"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import Windows from "./activity.fixture.tsx"
 
 const theme = await Bun.file(new URL("../../../theme/theme.css", import.meta.url)).text()
-const template = Windows as unknown as CompiledTemplate<Parameters<typeof Windows>[0]>
+const template = Windows as unknown as DOMComponentConstructor<Parameters<typeof Windows>[0]>
 
 function fixture() {
   const document = createDocument()

@@ -5,6 +5,7 @@ import type {NodeOrString} from "./node.ts"
 import {domError} from "./internal/errors.ts"
 import {updateDocumentRanges} from "./internal/live-ranges.ts"
 import {invalidateTextPositionIndexes} from "./internal/text-position-index.ts"
+import {observesDOMProperty, observesDOMContent, lifecyclePropertyChanged, lifecycleContentChanged} from "./internal/lifecycle.ts"
 
 export class CharacterData extends Node {
   private value: string
@@ -23,6 +24,12 @@ export class CharacterData extends Node {
   }
 
   replaceData(offset: number, count: number, data: string): void {
+    if (this.ownerDocument && (observesDOMContent() || observesDOMProperty(this, "data") || observesDOMProperty(this, "nodeValue"))) {
+      this.ownerDocument.transaction(() => this.applyReplacement(offset, count, data))
+    } else this.applyReplacement(offset, count, data)
+  }
+
+  private applyReplacement(offset: number, count: number, data: string): void {
     offset = unsignedOffset(offset)
     count = unsignedOffset(count)
     if (offset > this.length) throw domError("IndexSizeError", "CharacterData offset exceeds its length")
@@ -32,16 +39,21 @@ export class CharacterData extends Node {
     this.validateTextChange(next)
     const oldValue = this.value
     this.value = next
+    if (oldValue !== next) {
+      lifecyclePropertyChanged(this, "data")
+      lifecyclePropertyChanged(this, "nodeValue")
+      lifecycleContentChanged(this)
+    }
     invalidateTextPositionIndexes(this)
     const document = this.ownerDocument
     updateDocumentRanges(document, {type: "data", node: this, offset, removed, added: replacement.length})
     if (!document || !this.isConnected) return
-    const mutation: CharacterDataMutation = Object.freeze({
+    const mutation: CharacterDataMutation = {
       type: "characterData",
       target: this,
       oldValue,
       newValue: next
-    })
+    }
     document.recordMutation(mutation)
   }
 

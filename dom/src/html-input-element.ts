@@ -9,6 +9,7 @@ import {
   serializeHTMLNumber
 } from "./internal/html-number.ts"
 import {recordInputStateChange} from "./internal/state-change.ts"
+import {lifecyclePropertyChanged} from "./internal/lifecycle.ts"
 import {
   EMPTY_TEXT_SELECTION,
   assertSelectionApplies,
@@ -92,10 +93,11 @@ function nearestStepValue(
 }
 
 export class HTMLInputElement extends HTMLElement {
-  private inputState: InputState | null = null
+  declare private inputState: InputState | null
 
   constructor(ownerDocument: Document) {
     super(ownerDocument, "input")
+    if (!Object.hasOwn(this, "inputState")) this.inputState = null
   }
 
   get type(): string {
@@ -486,7 +488,11 @@ export class HTMLInputElement extends HTMLElement {
   }
 
   private recordValueChange(oldValue: string, newValue: string): void {
-    if (oldValue === newValue || !this.isConnected) return
+    if (oldValue === newValue) return
+    if (!this.isConnected) {
+      lifecyclePropertyChanged(this, "value")
+      return
+    }
     this.ownerDocument![recordInputStateChange](Object.freeze({
       type: "input",
       target: this,
@@ -497,7 +503,11 @@ export class HTMLInputElement extends HTMLElement {
   }
 
   private recordCheckedChange(oldValue: boolean, newValue: boolean): void {
-    if (oldValue === newValue || !this.isConnected) return
+    if (oldValue === newValue) return
+    if (!this.isConnected) {
+      lifecyclePropertyChanged(this, "checked")
+      return
+    }
     this.ownerDocument![recordInputStateChange](Object.freeze({
       type: "input",
       target: this,
@@ -508,7 +518,11 @@ export class HTMLInputElement extends HTMLElement {
   }
 
   private recordIndeterminateChange(oldValue: boolean, newValue: boolean): void {
-    if (oldValue === newValue || !this.isConnected) return
+    if (oldValue === newValue) return
+    if (!this.isConnected) {
+      lifecyclePropertyChanged(this, "indeterminate")
+      return
+    }
     this.ownerDocument![recordInputStateChange](Object.freeze({
       type: "input",
       target: this,
@@ -525,9 +539,12 @@ export class HTMLInputElement extends HTMLElement {
     if (
       oldValue === null ||
       newValue === null ||
-      sameTextSelection(oldValue, newValue) ||
-      !this.isConnected
+      sameTextSelection(oldValue, newValue)
     ) return
+    if (!this.isConnected) {
+      lifecyclePropertyChanged(this, "selection")
+      return
+    }
     this.ownerDocument![recordInputStateChange](Object.freeze({
       type: "input",
       target: this,

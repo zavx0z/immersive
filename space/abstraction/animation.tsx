@@ -2,9 +2,9 @@ import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {
   XRAnimationElement,
   XRAnimationProjectionFactory,
-} from "../src/elements.ts"
-import type {SpaceRef} from "../src/jsx.ts"
-import "../src/jsx.ts"
+} from "@zavx0z/immersive-space"
+import type {SpaceRef} from "@zavx0z/immersive-space"
+import "@zavx0z/immersive-space"
 
 export type AnimationProps = Readonly<{
   factory: XRAnimationProjectionFactory

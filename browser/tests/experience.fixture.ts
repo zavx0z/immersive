@@ -1,5 +1,4 @@
-import {component} from "../../component/src/index.ts"
-import {defineCompiledTemplate} from "../../template/compiled.ts"
+import {nativeComponents} from "./native-components.ts"
 import {HTMLElement as SemanticHTMLElement, type Element as SemanticElement, type Node as SemanticNode} from "../../dom/src/index.ts"
 import {BufferGeometry, Space, Vector3, ViewPoint} from "../../engine/src/index.ts"
 import type {PointerInput, RenderFrame, WheelInput} from "../../renderer/html/src/index.ts"
@@ -8,22 +7,13 @@ import type {CreateDocumentSpaceRuntimeOptions, DocumentSpaceOverlayRegistration
 import type {DocumentOverlayRuntime} from "../src/overlay-runtime.ts"
 import type {DocumentPlaneRuntime} from "../src/plane-runtime.ts"
 
-export const testApp = defineCompiledTemplate({
-  displayName: "TestApp",
-  bindingCount: 0,
-  mount(document) {
-    const space = document.createElement("space")
-    space.append(document.createElement("viewpoint"))
-    return {nodes: [space], bindings: []}
-  },
-  render() {},
-})
+export const testApp = nativeComponents.TestApp!
 
 export const attachFixture = (
   options: Omit<PresentationOptions, "app">,
   factory: Parameters<typeof attachWithRuntimeFactory>[1],
   seams?: Parameters<typeof attachWithRuntimeFactory>[2],
-) => attachWithRuntimeFactory({...options, app: component(testApp, {})}, factory, seams)
+) => attachWithRuntimeFactory({...options, app: {type: testApp, props: {}}}, factory, seams)
 
 type FakeRuntimeState = {
   factoryCalls: number

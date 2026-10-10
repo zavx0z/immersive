@@ -2,10 +2,8 @@ import {expect, test} from "bun:test"
 import {resolve, join} from "node:path"
 import {mkdtemp, rm} from "node:fs/promises"
 import {pathToFileURL} from "node:url"
-import {component} from "@zavx0z/immersive-component"
 import {acquireDocumentAuthorStyleSheetOwner, Element as SemanticElement} from "@zavx0z/immersive-dom"
 import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engine"
 import type {Renderer} from "@zavx0z/immersive-webgpu"
 import type {DocumentNativeInputHost} from "../src/native-input-host.ts"
@@ -96,8 +94,8 @@ test.each([
     }),
   })
   let runtime: Awaited<ReturnType<typeof createDocumentSpaceRuntimeWithSeams>> | null = null
-  const template = MeasurementApp as unknown as CompiledTemplate<{controls: MeasurementControls; kind: "hud" | "display"}>
-  root.render(component(template, {controls, kind}))
+  const template = MeasurementApp
+  root.render({type: template, props: {controls, kind}})
   const presentation = await inspectRoot(root).whenReady()
   const styleOwner = acquireDocumentAuthorStyleSheetOwner(presentation.document)
   try {

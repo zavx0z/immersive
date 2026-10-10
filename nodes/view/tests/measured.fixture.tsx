@@ -1,3 +1,4 @@
+import nodeSocketLayoutPortId from "@zavx0z/immersive-nodes-geometry-node-port-id"
 import DiagramNode from "@zavx0z/immersive-nodes-node-diagram"
 import type {GraphNodeProps, GraphInput, GraphLayoutComputer} from "@zavx0z/immersive-nodes/view"
 import {layoutTopDown} from "@zavx0z/immersive-nodes-layout/top-down"
@@ -52,8 +53,8 @@ export const measuredLayout: GraphLayoutComputer = nodes => {
 export const measuredTreeLayout: NonNullable<GraphEditorProps["measureLayout"]> = (snapshot, _presentation, nodes) => layoutFixed({
   viewport: {width: 900, height: 600},
   nodes,
-  ports: nodes.flatMap(node => node.anchors.map(anchor => ({id: `${node.id}/${anchor.id}`, nodeId: node.id, y: anchor.y}))),
-  edges: snapshot.links.map(link => ({id: link.id, sourcePortId: `${link.from.nodeId}/${link.from.socketId}`, targetPortId: `${link.to.nodeId}/${link.to.socketId}`})),
+  ports: nodes.flatMap(node => node.anchors.map(anchor => ({id: nodeSocketLayoutPortId(node.id, anchor.id), nodeId: node.id, y: anchor.y}))),
+  edges: snapshot.links.map(link => ({id: link.id, sourcePortId: nodeSocketLayoutPortId(link.from.nodeId, link.from.socketId), targetPortId: nodeSocketLayoutPortId(link.to.nodeId, link.to.socketId)})),
 })
 
 export function MeasuredEditor(props: Readonly<{store: NodeTreeStore}>) {

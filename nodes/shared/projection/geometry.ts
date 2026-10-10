@@ -10,7 +10,7 @@ import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
 import {
   projectLinkRoute,
   type LinkRoute,
-} from "../routing/link-path.ts"
+} from "@zavx0z/immersive-nodes/routing/link-path"
 
 export type NodePoint = Readonly<{x: number; y: number}>
 import nodeSocketLayoutPortId from "@zavx0z/immersive-nodes-geometry-node-port-id"

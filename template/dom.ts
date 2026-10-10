@@ -1,6 +1,9 @@
 import {
   Comment,
+  captureDomOrigins,
   DocumentFragment,
+  DOMGroup,
+  type DOMConstruction,
   Element,
   Node,
   type Document
@@ -30,6 +33,8 @@ export type TemplateChild =
   | null
   | undefined
   | Node
+  | DOMGroup
+  | DOMConstruction<any>
   | TemplateResult
   | DomContent
   | readonly TemplateChild[]
@@ -177,6 +182,7 @@ type TemplateBlueprint = {
 interface DynamicPart {
   update(values: readonly unknown[]): void
   commit?(): void
+  prepareDispose?(): () => void
   dispose(): void
 }
 
@@ -202,15 +208,20 @@ class InternalTemplateInstance {
     const blueprint = getBlueprint(result.strings, parentNode instanceof Element ? parentNode.localName : "body")
     for (const child of blueprint.children) instantiateBlueprint(document, fragment, child, this.parts)
     fragment.appendChild(this.end)
+    const restore = captureDomOrigins(document, result.values)
     try {
-      for (const part of this.parts) part.update(result.values)
+      // Сначала подключаем статическую область: raw Nodes не проходят detached staging.
       parentNode.insertBefore(fragment, before)
+      for (const part of this.parts) part.update(result.values)
     } catch (error) {
+      const errors = [error]
+      try { restore.restore() } catch (rollback) { errors.push(rollback) }
       for (let index = this.parts.length - 1; index >= 0; index--) {
-        try { this.parts[index]!.dispose() } catch {}
+        try { this.parts[index]!.dispose() } catch (cleanup) { errors.push(cleanup) }
       }
       removeDomRange(this.start, this.end)
       this.disposed = true
+      if (errors.length > 1) throw new AggregateError(errors, "HTML mount rollback failed")
       throw error
     }
   }
@@ -233,11 +244,16 @@ class InternalTemplateInstance {
 
   commitMounted(): void { for (const part of this.parts) part.commit?.() }
 
-  dispose(): void {
+  prepareDispose(): () => void {
+    const cleanups = this.parts.map(part => part.prepareDispose?.() ?? (() => part.dispose()))
+    return () => this.dispose(cleanups)
+  }
+
+  dispose(cleanups?: readonly (() => void)[]): void {
     if (this.disposed) return
-    let firstError: unknown = null
-    for (const part of this.parts) {
-      try { part.dispose() } catch (error) { firstError ??= error }
+    const errors: unknown[] = []
+    for (let index = 0; index < this.parts.length; index++) {
+      try { if (cleanups) cleanups[index]!(); else this.parts[index]!.dispose() } catch (error) { errors.push(error) }
     }
     const parentNode = this.start.parentNode
     if (
@@ -248,7 +264,7 @@ class InternalTemplateInstance {
       removeInclusiveRange(parentNode, this.start, this.end)
     }
     this.disposed = true
-    if (firstError) throw firstError
+    if (errors.length) throw errors[0]
   }
 }
 
@@ -308,6 +324,7 @@ class ChildPart implements DynamicPart {
   }
   update(values: readonly unknown[]): void { this.region.commit(values[this.index]) }
   commit(): void { this.region.commitMounted() }
+  prepareDispose(): () => void { return this.region.prepareDispose() }
   dispose(): void { this.region.dispose() }
 }
 
@@ -322,6 +339,7 @@ const htmlContentAdapter: DomContentAdapter = {
         return true
       },
       dispose: () => instance.dispose(),
+      prepareDispose: () => instance.prepareDispose(),
       commit: () => instance.commitMounted(),
     }
   },
@@ -347,7 +365,10 @@ function instantiateBlueprint(
       return
     }
     case "element": {
-      const element = document.createElement(blueprint.tagName)
+      const isAttribute = blueprint.attributes.find(attribute => attribute.name === "is")
+      const is = isAttribute?.segments?.every(segment => segment.type === "static")
+        ? isAttribute.segments.map(segment => segment.type === "static" ? segment.value : "").join("") : undefined
+      const element = document.createElement(blueprint.tagName, is === undefined ? undefined : {is})
       instantiateAttributes(element, blueprint.attributes, parts)
       for (const child of blueprint.children) instantiateBlueprint(document, element, child, parts)
       parentNode.appendChild(element)

@@ -7,11 +7,17 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
-    "test": "bun test ./spec",
-    "typecheck": "tsc --project tsconfig.json --pretty false"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "devDependencies": {
     "@zavx0z/immersive-tech-json-metadata": "workspace:*"

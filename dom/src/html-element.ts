@@ -1,5 +1,5 @@
 import type {Document} from "./document.ts"
-import {customConstruction, initializeCustomElement} from "./internal/custom-elements.ts"
+import {activeCustomConstruction, customConstruction, initializeCustomElement} from "./internal/custom-elements.ts"
 import {Element} from "./element.ts"
 import {domError} from "./internal/errors.ts"
 import {changeFocus, isProgrammaticallyFocusable} from "./internal/focus.ts"
@@ -13,6 +13,7 @@ import {
   togglePopover
 } from "./internal/popover.ts"
 import {recordScrollStateChange} from "./internal/state-change.ts"
+import {observesDOMProperty, lifecyclePropertyChanged} from "./internal/lifecycle.ts"
 import {parseHTMLInteger, toLong} from "./internal/web-idl.ts"
 import {
   getPopoverVisibilityState
@@ -72,8 +73,13 @@ export type TogglePopoverOptions = ShowPopoverOptions & Readonly<{
 
 export class HTMLElement extends Element {
   constructor(ownerDocument?: Document, localName = "unknown") {
-    const construction = ownerDocument === undefined ? customConstruction(new.target) : undefined
-    super(construction?.document ?? ownerDocument!, construction?.definition.name ?? localName)
+    const construction = activeCustomConstruction(new.target) ?? (ownerDocument === undefined ? customConstruction(new.target) : undefined)
+    if (construction && (localName === "unknown"
+      ? construction.definition.localName !== construction.definition.name
+      : localName !== construction.definition.localName)) {
+      throw new TypeError("Custom element constructor does not match its native HTML localName")
+    }
+    super(construction?.document ?? ownerDocument!, construction?.definition.localName ?? localName)
     if (construction) return initializeCustomElement(this, construction)
   }
 
@@ -272,6 +278,13 @@ export class HTMLElement extends Element {
   }
 
   private setRequestedScroll(left: number, top: number): void {
+    const document = this.ownerDocument
+    if (document && (observesDOMProperty(this, "scrollLeft") || observesDOMProperty(this, "scrollTop"))) {
+      document.transaction(() => this.applyRequestedScroll(left, top))
+    } else this.applyRequestedScroll(left, top)
+  }
+
+  private applyRequestedScroll(left: number, top: number): void {
     const oldScrollLeft = this.scrollLeft
     const oldScrollTop = this.scrollTop
     if (left === oldScrollLeft && top === oldScrollTop) return
@@ -279,7 +292,11 @@ export class HTMLElement extends Element {
     else scrollOffsets.set(this, Object.freeze({left, top}))
 
     const document = this.ownerDocument
-    if (!document || !this.isConnected) return
+    if (!document || !this.isConnected) {
+      if (left !== oldScrollLeft) lifecyclePropertyChanged(this, "scrollLeft")
+      if (top !== oldScrollTop) lifecyclePropertyChanged(this, "scrollTop")
+      return
+    }
     document[recordScrollStateChange](Object.freeze({
       type: "scroll",
       target: this,

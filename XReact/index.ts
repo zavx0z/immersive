@@ -1,13 +1,12 @@
 /**
-Состояние, композиция и исполнение готовых компонентов поверх DOM Immersive.
-
-Компонентный корень использует переданный DOM-контейнер. Автономный DOM-элемент
-и прямое монтирование исполняют один и тот же готовый компонент и разделяют
-планировщик его Document. JSX-компилятор не входит в этот runtime.
+JSX, hooks и compiler Immersive для авторинга и сборки.
+Готовые компоненты исполняются в DOM и не импортируют этот модуль.
 
 @packageDocumentation
 */
-export * from "@zavx0z/immersive-component"
-export {useSpace, useFrame} from "@zavx0z/immersive-browser"
+export * from "@zavx0z/immersive-component/authoring"
+export {default as createJsxBunPlugin} from "@zavx0z/immersive-jsx-compiler-bun"
+export {default as JsxCompilerSession} from "@zavx0z/immersive-jsx-compiler-session"
+
+export {useSpace, useFrame} from "@zavx0z/immersive-browser/authoring"
 export type {RootState, RootSize, FrameState, FrameCallback, FrameLoop} from "@zavx0z/immersive-browser"
-export type {JSX} from "@zavx0z/immersive-jsx-compiler-session"

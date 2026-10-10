@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 import type {ImmersiveUiComponentFieldGroup as Contract} from "./contract"
-import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import {hasSlot} from "@zavx0z/immersive-component/authoring"
 import resolveFieldDensity from "@zavx0z/immersive-ui-field-metric-resolve-density"
 
 

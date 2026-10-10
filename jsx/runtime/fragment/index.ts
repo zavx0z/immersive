@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 
-/** Маркер группы; содержимое обрабатывает runtime JSX. */
+/** Маркер группы; содержимое обрабатывает JSX compiler. */
 const Fragment = Symbol("JSX.Fragment")
 
 export default Fragment

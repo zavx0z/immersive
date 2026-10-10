@@ -7,70 +7,383 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./src/index.ts",
-    "./hud": "./hud/index.ts",
-    "./space": "./space/index.ts",
-    "./viewpoint": "./viewpoint/index.ts",
-    "./display": "./display/index.ts",
-    "./range": "./range.ts",
-    "./selection": "./selection.ts",
-    "./text-highlights": "./text-highlights.ts",
-    "./text-position": "./text-position.ts",
-    "./text-source": "./text-source.ts",
-    "./scroll-into-view": "./scroll-into-view.ts",
-    "./data-transfer": "./data-transfer.ts",
-    "./clipboard-event": "./clipboard-event.ts",
-    "./drag-event": "./drag-event.ts",
-    "./event": "./src/event.ts",
-    "./toggle-event": "./src/toggle-event.ts",
-    "./ui-event": "./src/ui-event.ts",
-    "./focus-event": "./src/focus-event.ts",
-    "./input-event": "./src/input-event.ts",
-    "./keyboard-event": "./src/keyboard-event.ts",
-    "./composition-event": "./src/composition-event.ts",
-    "./mouse-event": "./src/mouse-event.ts",
-    "./wheel-event": "./src/wheel-event.ts",
-    "./pointer-event": "./src/pointer-event.ts",
-    "./event-target": "./src/event-target.ts",
-    "./mutation": "./src/mutation.ts",
-    "./state-change": "./src/state-change.ts",
-    "./popover-state": "./src/popover-state.ts",
-    "./node": "./src/node.ts",
-    "./document": "./src/document.ts",
-    "./document-fragment": "./src/document-fragment.ts",
-    "./character-data": "./src/character-data.ts",
-    "./text": "./src/text.ts",
-    "./comment": "./src/comment.ts",
-    "./element": "./src/element.ts",
-    "./html-element": "./src/html-element.ts",
-    "./html/div-element": "./src/html-div-element.ts",
-    "./html/field-set-element": "./src/html-field-set-element.ts",
-    "./html/heading-element": "./src/html-heading-element.ts",
-    "./html/span-element": "./src/html-span-element.ts",
-    "./html/button-element": "./src/html-button-element.ts",
-    "./html/input-element": "./src/html-input-element.ts",
-    "./html/image-element": "./src/html-image-element.ts",
-    "./html/label-element": "./src/html-label-element.ts",
-    "./html/li-element": "./src/html-li-element.ts",
-    "./html/legend-element": "./src/html-legend-element.ts",
-    "./html/meter-element": "./src/html-meter-element.ts",
-    "./html/option-element": "./src/html-option-element.ts",
-    "./html/paragraph-element": "./src/html-paragraph-element.ts",
-    "./html/progress-element": "./src/html-progress-element.ts",
-    "./html/select-element": "./src/html-select-element.ts",
-    "./html/table-cell-element": "./src/html-table-cell-element.ts",
-    "./html/table-element": "./src/html-table-element.ts",
-    "./html/table-row-element": "./src/html-table-row-element.ts",
-    "./html/table-section-element": "./src/html-table-section-element.ts",
-    "./html/text-area-element": "./src/html-text-area-element.ts",
-    "./html/u-list-element": "./src/html-u-list-element.ts",
-    "./html/vector-path-element": "./src/html-vector-path-element.ts",
-    "./geometry": "./geometry.ts"
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/src/index.d.ts",
+      "browser": "./dist/src/index.js",
+      "default": "./dist/src/index.js"
+    },
+    "./root": {
+      "source": "./root/index.ts",
+      "types": "./dist/root/index.d.ts",
+      "browser": "./dist/root/index.js",
+      "default": "./dist/root/index.js"
+    },
+    "./bindings": {
+      "source": "./bindings/index.ts",
+      "types": "./dist/bindings/index.d.ts",
+      "browser": "./dist/bindings/index.js",
+      "default": "./dist/bindings/index.js"
+    },
+    "./style-codec": {
+      "source": "./style-codec.ts",
+      "types": "./dist/style-codec.d.ts",
+      "browser": "./dist/style-codec.js",
+      "default": "./dist/style-codec.js"
+    },
+    "./hud": {
+      "source": "./hud/index.ts",
+      "types": "./dist/hud/index.d.ts",
+      "browser": "./dist/hud/index.js",
+      "default": "./dist/hud/index.js"
+    },
+    "./space": {
+      "source": "./space/index.ts",
+      "types": "./dist/space/index.d.ts",
+      "browser": "./dist/space/index.js",
+      "default": "./dist/space/index.js"
+    },
+    "./viewpoint": {
+      "source": "./viewpoint/index.ts",
+      "types": "./dist/viewpoint/index.d.ts",
+      "browser": "./dist/viewpoint/index.js",
+      "default": "./dist/viewpoint/index.js"
+    },
+    "./display": {
+      "source": "./display/index.ts",
+      "types": "./dist/display/index.d.ts",
+      "browser": "./dist/display/index.js",
+      "default": "./dist/display/index.js"
+    },
+    "./range": {
+      "source": "./range.ts",
+      "types": "./dist/range.d.ts",
+      "browser": "./dist/range.js",
+      "default": "./dist/range.js"
+    },
+    "./selection": {
+      "source": "./selection.ts",
+      "types": "./dist/selection.d.ts",
+      "browser": "./dist/selection.js",
+      "default": "./dist/selection.js"
+    },
+    "./text-highlights": {
+      "source": "./text-highlights.ts",
+      "types": "./dist/text-highlights.d.ts",
+      "browser": "./dist/text-highlights.js",
+      "default": "./dist/text-highlights.js"
+    },
+    "./text-position": {
+      "source": "./text-position.ts",
+      "types": "./dist/text-position.d.ts",
+      "browser": "./dist/text-position.js",
+      "default": "./dist/text-position.js"
+    },
+    "./text-source": {
+      "source": "./text-source.ts",
+      "types": "./dist/text-source.d.ts",
+      "browser": "./dist/text-source.js",
+      "default": "./dist/text-source.js"
+    },
+    "./scroll-into-view": {
+      "source": "./scroll-into-view.ts",
+      "types": "./dist/scroll-into-view.d.ts",
+      "browser": "./dist/scroll-into-view.js",
+      "default": "./dist/scroll-into-view.js"
+    },
+    "./data-transfer": {
+      "source": "./data-transfer.ts",
+      "types": "./dist/data-transfer.d.ts",
+      "browser": "./dist/data-transfer.js",
+      "default": "./dist/data-transfer.js"
+    },
+    "./clipboard-event": {
+      "source": "./clipboard-event.ts",
+      "types": "./dist/clipboard-event.d.ts",
+      "browser": "./dist/clipboard-event.js",
+      "default": "./dist/clipboard-event.js"
+    },
+    "./drag-event": {
+      "source": "./drag-event.ts",
+      "types": "./dist/drag-event.d.ts",
+      "browser": "./dist/drag-event.js",
+      "default": "./dist/drag-event.js"
+    },
+    "./event": {
+      "source": "./src/event.ts",
+      "types": "./dist/src/event.d.ts",
+      "browser": "./dist/src/event.js",
+      "default": "./dist/src/event.js"
+    },
+    "./toggle-event": {
+      "source": "./src/toggle-event.ts",
+      "types": "./dist/src/toggle-event.d.ts",
+      "browser": "./dist/src/toggle-event.js",
+      "default": "./dist/src/toggle-event.js"
+    },
+    "./ui-event": {
+      "source": "./src/ui-event.ts",
+      "types": "./dist/src/ui-event.d.ts",
+      "browser": "./dist/src/ui-event.js",
+      "default": "./dist/src/ui-event.js"
+    },
+    "./focus-event": {
+      "source": "./src/focus-event.ts",
+      "types": "./dist/src/focus-event.d.ts",
+      "browser": "./dist/src/focus-event.js",
+      "default": "./dist/src/focus-event.js"
+    },
+    "./input-event": {
+      "source": "./src/input-event.ts",
+      "types": "./dist/src/input-event.d.ts",
+      "browser": "./dist/src/input-event.js",
+      "default": "./dist/src/input-event.js"
+    },
+    "./keyboard-event": {
+      "source": "./src/keyboard-event.ts",
+      "types": "./dist/src/keyboard-event.d.ts",
+      "browser": "./dist/src/keyboard-event.js",
+      "default": "./dist/src/keyboard-event.js"
+    },
+    "./composition-event": {
+      "source": "./src/composition-event.ts",
+      "types": "./dist/src/composition-event.d.ts",
+      "browser": "./dist/src/composition-event.js",
+      "default": "./dist/src/composition-event.js"
+    },
+    "./mouse-event": {
+      "source": "./src/mouse-event.ts",
+      "types": "./dist/src/mouse-event.d.ts",
+      "browser": "./dist/src/mouse-event.js",
+      "default": "./dist/src/mouse-event.js"
+    },
+    "./wheel-event": {
+      "source": "./src/wheel-event.ts",
+      "types": "./dist/src/wheel-event.d.ts",
+      "browser": "./dist/src/wheel-event.js",
+      "default": "./dist/src/wheel-event.js"
+    },
+    "./pointer-event": {
+      "source": "./src/pointer-event.ts",
+      "types": "./dist/src/pointer-event.d.ts",
+      "browser": "./dist/src/pointer-event.js",
+      "default": "./dist/src/pointer-event.js"
+    },
+    "./event-target": {
+      "source": "./src/event-target.ts",
+      "types": "./dist/src/event-target.d.ts",
+      "browser": "./dist/src/event-target.js",
+      "default": "./dist/src/event-target.js"
+    },
+    "./mutation": {
+      "source": "./src/mutation.ts",
+      "types": "./dist/src/mutation.d.ts",
+      "browser": "./dist/src/mutation.js",
+      "default": "./dist/src/mutation.js"
+    },
+    "./state-change": {
+      "source": "./src/state-change.ts",
+      "types": "./dist/src/state-change.d.ts",
+      "browser": "./dist/src/state-change.js",
+      "default": "./dist/src/state-change.js"
+    },
+    "./popover-state": {
+      "source": "./src/popover-state.ts",
+      "types": "./dist/src/popover-state.d.ts",
+      "browser": "./dist/src/popover-state.js",
+      "default": "./dist/src/popover-state.js"
+    },
+    "./node": {
+      "source": "./src/node.ts",
+      "types": "./dist/src/node.d.ts",
+      "browser": "./dist/src/node.js",
+      "default": "./dist/src/node.js"
+    },
+    "./document": {
+      "source": "./src/document.ts",
+      "types": "./dist/src/document.d.ts",
+      "browser": "./dist/src/document.js",
+      "default": "./dist/src/document.js"
+    },
+    "./document-fragment": {
+      "source": "./src/document-fragment.ts",
+      "types": "./dist/src/document-fragment.d.ts",
+      "browser": "./dist/src/document-fragment.js",
+      "default": "./dist/src/document-fragment.js"
+    },
+    "./character-data": {
+      "source": "./src/character-data.ts",
+      "types": "./dist/src/character-data.d.ts",
+      "browser": "./dist/src/character-data.js",
+      "default": "./dist/src/character-data.js"
+    },
+    "./text": {
+      "source": "./src/text.ts",
+      "types": "./dist/src/text.d.ts",
+      "browser": "./dist/src/text.js",
+      "default": "./dist/src/text.js"
+    },
+    "./comment": {
+      "source": "./src/comment.ts",
+      "types": "./dist/src/comment.d.ts",
+      "browser": "./dist/src/comment.js",
+      "default": "./dist/src/comment.js"
+    },
+    "./element": {
+      "source": "./src/element.ts",
+      "types": "./dist/src/element.d.ts",
+      "browser": "./dist/src/element.js",
+      "default": "./dist/src/element.js"
+    },
+    "./html-element": {
+      "source": "./src/html-element.ts",
+      "types": "./dist/src/html-element.d.ts",
+      "browser": "./dist/src/html-element.js",
+      "default": "./dist/src/html-element.js"
+    },
+    "./html/div-element": {
+      "source": "./src/html-div-element.ts",
+      "types": "./dist/src/html-div-element.d.ts",
+      "browser": "./dist/src/html-div-element.js",
+      "default": "./dist/src/html-div-element.js"
+    },
+    "./html/field-set-element": {
+      "source": "./src/html-field-set-element.ts",
+      "types": "./dist/src/html-field-set-element.d.ts",
+      "browser": "./dist/src/html-field-set-element.js",
+      "default": "./dist/src/html-field-set-element.js"
+    },
+    "./html/heading-element": {
+      "source": "./src/html-heading-element.ts",
+      "types": "./dist/src/html-heading-element.d.ts",
+      "browser": "./dist/src/html-heading-element.js",
+      "default": "./dist/src/html-heading-element.js"
+    },
+    "./html/span-element": {
+      "source": "./src/html-span-element.ts",
+      "types": "./dist/src/html-span-element.d.ts",
+      "browser": "./dist/src/html-span-element.js",
+      "default": "./dist/src/html-span-element.js"
+    },
+    "./html/button-element": {
+      "source": "./src/html-button-element.ts",
+      "types": "./dist/src/html-button-element.d.ts",
+      "browser": "./dist/src/html-button-element.js",
+      "default": "./dist/src/html-button-element.js"
+    },
+    "./html/input-element": {
+      "source": "./src/html-input-element.ts",
+      "types": "./dist/src/html-input-element.d.ts",
+      "browser": "./dist/src/html-input-element.js",
+      "default": "./dist/src/html-input-element.js"
+    },
+    "./html/image-element": {
+      "source": "./src/html-image-element.ts",
+      "types": "./dist/src/html-image-element.d.ts",
+      "browser": "./dist/src/html-image-element.js",
+      "default": "./dist/src/html-image-element.js"
+    },
+    "./html/label-element": {
+      "source": "./src/html-label-element.ts",
+      "types": "./dist/src/html-label-element.d.ts",
+      "browser": "./dist/src/html-label-element.js",
+      "default": "./dist/src/html-label-element.js"
+    },
+    "./html/li-element": {
+      "source": "./src/html-li-element.ts",
+      "types": "./dist/src/html-li-element.d.ts",
+      "browser": "./dist/src/html-li-element.js",
+      "default": "./dist/src/html-li-element.js"
+    },
+    "./html/legend-element": {
+      "source": "./src/html-legend-element.ts",
+      "types": "./dist/src/html-legend-element.d.ts",
+      "browser": "./dist/src/html-legend-element.js",
+      "default": "./dist/src/html-legend-element.js"
+    },
+    "./html/meter-element": {
+      "source": "./src/html-meter-element.ts",
+      "types": "./dist/src/html-meter-element.d.ts",
+      "browser": "./dist/src/html-meter-element.js",
+      "default": "./dist/src/html-meter-element.js"
+    },
+    "./html/option-element": {
+      "source": "./src/html-option-element.ts",
+      "types": "./dist/src/html-option-element.d.ts",
+      "browser": "./dist/src/html-option-element.js",
+      "default": "./dist/src/html-option-element.js"
+    },
+    "./html/paragraph-element": {
+      "source": "./src/html-paragraph-element.ts",
+      "types": "./dist/src/html-paragraph-element.d.ts",
+      "browser": "./dist/src/html-paragraph-element.js",
+      "default": "./dist/src/html-paragraph-element.js"
+    },
+    "./html/progress-element": {
+      "source": "./src/html-progress-element.ts",
+      "types": "./dist/src/html-progress-element.d.ts",
+      "browser": "./dist/src/html-progress-element.js",
+      "default": "./dist/src/html-progress-element.js"
+    },
+    "./html/select-element": {
+      "source": "./src/html-select-element.ts",
+      "types": "./dist/src/html-select-element.d.ts",
+      "browser": "./dist/src/html-select-element.js",
+      "default": "./dist/src/html-select-element.js"
+    },
+    "./html/table-cell-element": {
+      "source": "./src/html-table-cell-element.ts",
+      "types": "./dist/src/html-table-cell-element.d.ts",
+      "browser": "./dist/src/html-table-cell-element.js",
+      "default": "./dist/src/html-table-cell-element.js"
+    },
+    "./html/table-element": {
+      "source": "./src/html-table-element.ts",
+      "types": "./dist/src/html-table-element.d.ts",
+      "browser": "./dist/src/html-table-element.js",
+      "default": "./dist/src/html-table-element.js"
+    },
+    "./html/table-row-element": {
+      "source": "./src/html-table-row-element.ts",
+      "types": "./dist/src/html-table-row-element.d.ts",
+      "browser": "./dist/src/html-table-row-element.js",
+      "default": "./dist/src/html-table-row-element.js"
+    },
+    "./html/table-section-element": {
+      "source": "./src/html-table-section-element.ts",
+      "types": "./dist/src/html-table-section-element.d.ts",
+      "browser": "./dist/src/html-table-section-element.js",
+      "default": "./dist/src/html-table-section-element.js"
+    },
+    "./html/text-area-element": {
+      "source": "./src/html-text-area-element.ts",
+      "types": "./dist/src/html-text-area-element.d.ts",
+      "browser": "./dist/src/html-text-area-element.js",
+      "default": "./dist/src/html-text-area-element.js"
+    },
+    "./html/u-list-element": {
+      "source": "./src/html-u-list-element.ts",
+      "types": "./dist/src/html-u-list-element.d.ts",
+      "browser": "./dist/src/html-u-list-element.js",
+      "default": "./dist/src/html-u-list-element.js"
+    },
+    "./html/vector-path-element": {
+      "source": "./src/html-vector-path-element.ts",
+      "types": "./dist/src/html-vector-path-element.d.ts",
+      "browser": "./dist/src/html-vector-path-element.js",
+      "default": "./dist/src/html-vector-path-element.js"
+    },
+    "./geometry": {
+      "source": "./geometry.ts",
+      "types": "./dist/geometry.d.ts",
+      "browser": "./dist/geometry.js",
+      "default": "./dist/geometry.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false && tsc --project display/tests/tsconfig.test.json --pretty false && tsc --project space/tests/tsconfig.test.json --pretty false && tsc --project viewpoint/tests/tsconfig.test.json --pretty false && tsc --project hud/tests/tsconfig.test.json --pretty false",
-    "test": "bun test --parallel tests display/tests space/tests viewpoint/tests hud/tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests spec display/tests space/tests viewpoint/tests hud/tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependencies": {
     "typescript": "7.0.2"

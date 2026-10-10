@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import {useEffect, useMemo, useState} from "@zavx0z/immersive-component"
+import {useEffect, useMemo, useState} from "@zavx0z/immersive-component/authoring"
 import {parseMermaidFlowchart} from "./src/parser.ts"
 import {layoutMermaidGraph} from "./src/layout.ts"
 import type {GraphInput, GraphLayoutComputer} from "@zavx0z/immersive-nodes/view"

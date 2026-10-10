@@ -1,4 +1,4 @@
-import type {ComposeSlotInput} from "@zavx0z/immersive-component/slot"
+import type {DOMSlotContent} from "@zavx0z/immersive-dom"
 import type {DisplayElement} from "@zavx0z/immersive-dom/display"
 import {ViewPoint, type ViewPointPose} from "@zavx0z/immersive-engine"
 import type {SpatialTreeController, SpatialTreeControllerOptions, SpatialTreeSnapshot, SpatialTreeState} from "../contract/controller.ts"
@@ -29,7 +29,7 @@ export function createSpatialTreeController(options: SpatialTreeControllerOption
   const root = options.root
   const state = options.state ?? createSpatialTreeState()
   const hosts = new Map<string, DisplayElement>()
-  const content = new Map<string, ComposeSlotInput["content"]>()
+  const content = new Map<string, DOMSlotContent>()
   const forced = new Set<string>()
   const demanded = new Set<string>()
   const projection = root.getProjection(root.space)

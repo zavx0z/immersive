@@ -2,16 +2,16 @@ import {afterAll, beforeAll, expect, test} from "bun:test"
 import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument} from "@zavx0z/immersive-dom"
 import {Object3D, Quaternion, Vector3} from "@zavx0z/immersive-engine"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createSpaceElementFactories, type XRObjectElement} from "../src/index.ts"
 import type {GroupProps} from "../abstraction/group.tsx"
 
 let directory = ""
-const templates = new Map<string, CompiledTemplate<any>>()
+const templates = new Map<string, DOMComponentConstructor<any>>()
 const entries = [
   ["abstraction/asset", "Asset"], ["abstraction/group", "Group"],
   ["abstraction/text", "Text"], ["shape/mesh", "Mesh"],

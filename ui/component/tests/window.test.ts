@@ -1,11 +1,11 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, MouseEvent, KeyboardEvent, type HTMLInputElement, type Element} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection, type RenderCursor} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {ImmersiveUiComponentSurfaceWindow} from "@zavx0z/immersive-ui-component-surface-window"
 type WindowProps = ImmersiveUiComponentSurfaceWindow.Input
 
@@ -29,8 +29,8 @@ function mount(projection: "hud" | "display", pair = false) {
   const changes: Array<{phase: string; x: number; y: number; width: number; height: number}> = []
   const props: WindowProps = {id: "window", title: "Окно", open: true, onOpenChange() {}, movable: true, resizable: true,
     onGeometryChange: (box, phase) => { changes.push({...box, phase}) }}
-  if (pair) component.render(WindowPairFixture as unknown as CompiledTemplate<{}>, {})
-  else component.render(Window as unknown as CompiledTemplate<WindowProps>, props)
+  if (pair) component.render(WindowPairFixture as unknown as DOMComponentConstructor<{}>, {})
+  else component.render(Window as unknown as DOMComponentConstructor<WindowProps>, props)
   const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 640, height: 480}, styleSheets: [theme],
     ...(projection === "display" ? {projectClientPoint: (point: {x: number; y: number}) => ({x: point.x * .5 + 40, y: point.y * .5 + 20})} : {}),
   })
@@ -111,7 +111,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
   test("текст заголовка центрирован относительно всего окна при разных группах кнопок", () => {
     const f = mount(projection)
     try {
-      f.component.render(Window as unknown as CompiledTemplate<WindowProps>, {...f.props, actions: [{key: "refresh", label: "Обновить"}]})
+      f.component.render(Window as unknown as DOMComponentConstructor<WindowProps>, {...f.props, actions: [{key: "refresh", label: "Обновить"}]})
       const frame = f.flush()
       const text = frame.displayList.find(item => item.kind === "text" && item.text === "Окно")
       if (text?.kind !== "text") throw new Error("Нет текста заголовка")
@@ -139,7 +139,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
   test("кнопки шапки не наследуют ладонь и не запускают перемещение", () => {
     const f = mount(projection)
     try {
-      f.component.render(Window as unknown as CompiledTemplate<WindowProps>, {...f.props, actions: [{key: "refresh", label: "Обновить"}, {key: "locked", label: "Недоступно", disabled: true}]})
+      f.component.render(Window as unknown as DOMComponentConstructor<WindowProps>, {...f.props, actions: [{key: "refresh", label: "Обновить"}, {key: "locked", label: "Недоступно", disabled: true}]})
       let frame = f.flush()
       const before = f.box()
       const header = f.owner.querySelector("[data-window-header]")!
@@ -179,7 +179,7 @@ describe.each(["hud", "display"] as const)("Window в %s", projection => {
       f.input.pointerDown(frame, point)
       f.input.pointerMove(frame, {...point, clientX: point.clientX + 40})
       f.flush()
-      f.component.render(Window as unknown as CompiledTemplate<WindowProps>, {...f.props, open: false})
+      f.component.render(Window as unknown as DOMComponentConstructor<WindowProps>, {...f.props, open: false})
       f.flush()
       expect(f.shell.hasPointerCapture(9)).toBeFalse()
       expect(f.changes.at(-1)).toEqual({x: 24, y: 24, width: 320, height: 240, phase: "cancel"})

@@ -23,15 +23,19 @@ import {transformJsxSourceFile} from "./src/transform.ts"
 import {buildJsxTransformSymbols} from "./src/symbols.ts"
 import {normalizeStyleSourceRootIds, sourceHash, assertConfiguredProject} from "./src/session-support.ts"
 import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
+import {createCompilerFileSystem} from "./src/configuration.ts"
 import {
   collectCapabilityUsages,
 } from "./src/capability-usage.ts"
 
 import type {JsxCompilerSessionOptions} from "./contract/input.ts"
-import type {JsxCompileResult} from "./contract/output.ts"
+import type {JsxCompileResult, JsxSourceRange} from "./contract/output.ts"
 import type {JsxCompilerStats} from "./src/stats.ts"
 export type {JsxCompilerSessionOptions} from "./contract/input.ts"
-export type {JsxCompileResult} from "./contract/output.ts"
+export type {CompiledDOMComponent, CompiledHookFactory, DOMIntrinsicTarget} from "./contract/compiled.ts"
+export {getAuthoringDeclarations} from "./src/source-profile.ts"
+export {createCompilerFileSystem} from "./src/configuration.ts"
+export type {JsxCompileResult, JsxSourceRange} from "./contract/output.ts"
 
 type DependencyFingerprint = Readonly<{
   authorization: string | null
@@ -49,6 +53,7 @@ export default class JsxCompilerSession {
   private readonly cache = new Map<string, CachedTransform>()
   private readonly governedFiles: GovernedFiles
   private readonly hashes = new Map<string, string>()
+  private readonly sourceTexts = new Map<string, string>()
   private readonly opened = new Set<string>()
   private snapshot: Snapshot | null = null
   private pending: Promise<void> = Promise.resolve()
@@ -56,6 +61,8 @@ export default class JsxCompilerSession {
   private cacheMisses = 0
   private snapshots = 0
   private closed = false
+  private readonly customConditions: readonly string[] | undefined
+  private readonly sourceFiles: readonly string[] | undefined
   readonly cwd: string
   readonly sourceRoots: readonly string[]
   readonly styleSourceRootIds: readonly string[] | null
@@ -71,7 +78,14 @@ export default class JsxCompilerSession {
       this.sourceRoots.length,
     )
     this.governedFiles = new GovernedFiles(this.sourceRoots)
-    this.api = new API({cwd: this.cwd})
+    this.customConditions = options.customConditions === undefined ? undefined : Object.freeze([...options.customConditions])
+    this.sourceFiles = options.sourceFiles === undefined ? undefined : Object.freeze(options.sourceFiles.map(path => this.requireGoverned(resolve(path))))
+    this.api = this.createAPI()
+  }
+
+  private createAPI(): API {
+    const fs = createCompilerFileSystem(this.customConditions, this.sourceFiles, this.sourceTexts)
+    return new API({cwd: this.cwd, ...(fs === undefined ? {} : {fs})})
   }
 
   /** Проверяет принадлежность файла заданным корням компиляции. */
@@ -96,7 +110,7 @@ export default class JsxCompilerSession {
   }
 
   async transformFile(sourcePath: string): Promise<string> {
-    const result = await this.exclusive(() => this.compileFileLocked(sourcePath))
+    const result = await this.compileFile(sourcePath)
     return result.code
   }
 
@@ -110,12 +124,21 @@ export default class JsxCompilerSession {
   Проверки авторства, типов и контрактов выполняются сценариями разработки.
 
   @param sourcePath - File inside one configured governed source root.
+  @param sourceText - Необязательный текст того же файла в памяти. Native project,
+  разрешение импортов и file identity сохраняются; текст входит в ключ кеша.
+  Без аргумента следующий вызов снова использует файл на диске.
   @returns Transformed code and source-located capability usages.
   @throws {@link JsxCompileError} при недоступном исходнике или конструкции,
   которую невозможно выразить поддерживаемым форматом шаблона.
   */
-  async compileFile(sourcePath: string): Promise<JsxCompileResult> {
-    return this.exclusive(() => this.compileFileLocked(sourcePath))
+  async compileFile(sourcePath: string, sourceText?: string): Promise<JsxCompileResult> {
+    return this.exclusive(async () => {
+      if (this.closed) throw new Error("JSX compiler session is closed")
+      const absolute = this.requireGoverned(resolve(sourcePath))
+      if (sourceText !== undefined && typeof sourceText !== "string") throw new TypeError("Compiler source text must be a string")
+      await this.updateSourceText(absolute, sourceText)
+      return this.compileFileLocked(absolute)
+    })
   }
 
   /**
@@ -131,6 +154,7 @@ export default class JsxCompilerSession {
     return this.exclusive(async () => {
       if (this.closed) throw new Error("JSX compiler session is closed")
       const absolute = this.requireGoverned(resolve(sourcePath))
+      await this.updateSourceText(absolute, undefined)
       await this.refreshFilesLocked([absolute])
       const project = await this.snapshot!.getDefaultProjectForFile(absolute)
       if (!project) throw new JsxCompileError("TypeScript 7 found no project", absolute)
@@ -144,7 +168,7 @@ export default class JsxCompilerSession {
   private async compileFileLocked(sourcePath: string): Promise<JsxCompileResult> {
     if (this.closed) throw new Error("JSX compiler session is closed")
     const absolute = this.requireGoverned(resolve(sourcePath))
-    const text = await readFile(absolute, "utf8")
+    const text = await this.readSource(absolute)
     const hash = sourceHash(text)
     const previousHash = this.hashes.get(absolute)
     if (previousHash !== undefined && previousHash !== hash) {
@@ -182,22 +206,24 @@ export default class JsxCompilerSession {
       assertConfiguredProject(project, absolute)
       sourceFile = await project.program.getSourceFile(absolute)
       if (!sourceFile || sourceFile.text !== text) {
-        throw new JsxCompileError("on-disk source differs from compiler input", absolute)
+        throw new JsxCompileError("TypeScript source differs from compiler input", absolute)
       }
     }
     const symbols = await buildJsxTransformSymbols(sourceFile, project, this.governedFiles)
     const capabilityUsages = await collectCapabilityUsages(sourceFile, project, symbols)
     const styleSourceModuleId = this.styleSourceModuleId(absolute)
+    let sourceRanges: readonly JsxSourceRange[] = []
     const code = transformJsxSourceFile(
       sourceFile,
       symbols,
       {
+        onSourceRanges: ranges => { sourceRanges = ranges },
         ...(styleSourceModuleId === undefined ? {} : {styleSourceModuleId}),
         ...(project.compilerOptions.jsxImportSource === undefined ? {} : {jsxImportSource: project.compilerOptions.jsxImportSource}),
       },
     )
     const dependencies = await this.fingerprintDependencies(symbols.dependencyPaths)
-    const result = Object.freeze({capabilityUsages, code})
+    const result = Object.freeze({capabilityUsages, code, sourceRanges})
     this.cache.set(absolute, Object.freeze({hash, result, dependencies}))
     this.cacheMisses += 1
     return result
@@ -241,11 +267,25 @@ export default class JsxCompilerSession {
     this.snapshot = null
     await previous?.dispose()
     await this.api.close()
-    this.api = new API({cwd: this.cwd})
+    this.api = this.createAPI()
     this.opened.clear()
     const files = [...new Set(sourcePaths)]
     await this.updateSnapshot({openFiles: files})
     for (const sourcePath of files) this.opened.add(sourcePath)
+  }
+
+  /** Меняется только текст governed файла; native resolver использует прежний путь. */
+  private async updateSourceText(path: string, text: string | undefined): Promise<void> {
+    if (this.sourceTexts.get(path) === text) return
+    if (text === undefined) this.sourceTexts.delete(path)
+    else this.sourceTexts.set(path, text)
+    this.cache.clear()
+    this.hashes.delete(path)
+    await this.restartTypeScript([...this.opened, path])
+  }
+
+  private async readSource(path: string): Promise<string> {
+    return this.sourceTexts.get(path) ?? readFile(path, "utf8")
   }
 
   /** Disk notifications не заменяют текст открытого буфера TypeScript: закрываем и открываем его раздельно. */
@@ -268,7 +308,7 @@ export default class JsxCompilerSession {
     this.governedFiles.refresh()
     const files = [...new Set(sourcePaths.map(sourcePath => this.requireGoverned(resolve(sourcePath))))]
     const hashes = await Promise.all(files.map(async sourcePath => {
-      const text = await readFile(sourcePath, "utf8")
+      const text = await this.readSource(sourcePath)
       return sourceHash(text)
     }))
     const openFiles: string[] = []
@@ -293,7 +333,7 @@ export default class JsxCompilerSession {
     const changed: string[] = []
     const manifests = new Map<string, string>()
     for (const dependency of dependencies) {
-      const text = await readFile(dependency.path, "utf8")
+      const text = await this.readSource(dependency.path)
       const hash = sourceHash(text)
       this.hashes.set(dependency.path, hash)
       const authorization = this.dependencyAuthorization(dependency.path, manifests)
@@ -310,7 +350,7 @@ export default class JsxCompilerSession {
     const dependencies: DependencyFingerprint[] = []
     const manifests = new Map<string, string>()
     for (const path of [...dependencyPaths].sort()) {
-      const text = await readFile(path, "utf8")
+      const text = await this.readSource(path)
       const hash = sourceHash(text)
       const authorization = this.dependencyAuthorization(path, manifests)
       if (authorization === null) {

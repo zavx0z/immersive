@@ -1,7 +1,6 @@
 import {expect, test} from "bun:test"
-import {createDocument, Element, type Document, type Node} from "@zavx0z/immersive-dom"
-import {createRoot, type Ref} from "@zavx0z/immersive-component"
-import {bindProperty, bindRef, bindText, defineCompiledTemplate, writeBinding} from "@zavx0z/immersive-template/compiled"
+import {createDocument, createDomRoot, type HTMLInputElement, Element, type Document, type Node} from "@zavx0z/immersive-dom"
+import {components} from "./fixture.ts"
 
 class TestObject extends Element {
   reads = 0
@@ -25,21 +24,13 @@ class TestObject extends Element {
 }
 
 function fixture() {
-  const document = createDocument()
+  const document = createDocument({elementFactories: {"test-object": owner => new TestObject(owner)}})
   const container = document.createElement("div")
   document.append(container)
-  const target = new TestObject(document)
-  const text = document.createTextNode("")
-  const template = defineCompiledTemplate<{x?: number; text: unknown; ref?: Ref<Node>}>({
-    bindingCount: 3,
-    mount: () => ({nodes: [target, text], bindings: [bindProperty(target, "x"), bindText(text), bindRef(target)]}),
-    render(props, values) {
-      writeBinding(values, 0, props.x)
-      writeBinding(values, 1, props.text)
-      writeBinding(values, 2, props.ref)
-    },
-  })
-  return {document, target, template, root: createRoot(container)}
+  const root = createDomRoot(container)
+  root.render(components.SpatialHost, {text: ""})
+  const target = container.querySelector("test-object") as TestObject
+  return {document, target, template: components.SpatialHost, root}
 }
 
 test("неизменённые spatial props не читают и не сбрасывают прямое движение элемента", () => {
@@ -113,18 +104,14 @@ test("unmount прежнего root не очищает ref, уже переда
   expect(ref.current).toBeNull()
 })
 
-test("controlled HTML input продолжает восстанавливать value после нативного редактирования", () => {
+test("controlled HTML input восстанавливает value только после явного incoming props", () => {
   const document = createDocument()
-  const input = document.createElement("input")
-  const template = defineCompiledTemplate<{value: string}>({
-    bindingCount: 1,
-    mount: () => ({nodes: [input], bindings: [bindProperty(input, "value")]}),
-    render(props, values) { writeBinding(values, 0, props.value) },
-  })
-  const root = createRoot(document)
-  root.render(template, {value: "authored"})
+  const root = createDomRoot(document)
+  root.render(components.NativeInput, {value: "authored"})
+  const input = document.documentElement as HTMLInputElement
   input.value = "edited"
-  root.render(template, {value: "authored"})
+  expect((input as HTMLInputElement & {props: {value: string}}).props.value).toBe("edited")
+  root.render(components.NativeInput, {value: "authored"})
   expect(input.value).toBe("authored")
   root.unmount()
 })

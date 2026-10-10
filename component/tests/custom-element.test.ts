@@ -1,108 +1,86 @@
 import {expect, test} from "bun:test"
-import {createDocument, Event, HTMLElement} from "@zavx0z/immersive-dom"
-import {bindText, bindEvent, defineCompiledTemplate, writeBinding} from "@zavx0z/immersive-template/compiled"
-import {componentElement, createRoot, useEffect, useState} from "../src/index.ts"
+import {createDocument, Event, HTMLElement, type HTMLButtonElement} from "@zavx0z/immersive-dom"
+import {components} from "./fixture.ts"
 
-test("один готовый компонент работает через ComponentRoot и Custom Element без второй реализации", () => {
+test("один готовый constructor работает императивно и как customized builtin без адаптера", () => {
   const document = createDocument()
-  let effects = 0, cleanups = 0, renders = 0
-  const template = defineCompiledTemplate<{label: string}>({
-    bindingCount: 2,
-    mount(document) {
-      const button = document.createElement("button")
-      const text = document.createTextNode("")
-      button.append(text)
-      return {nodes: [button], bindings: [bindText(text), bindEvent(button, "click")]}
-    },
-    render(props, values) {
-      renders++
-      const [count, setCount] = useState(0)
-      useEffect(() => { effects++; return () => { cleanups++ } }, [])
-      writeBinding(values, 0, `${props.label}:${count}`)
-      writeBinding(values, 1, () => setCount(count + 1))
-    },
-  })
-  const main = document.createElement("main")
-  const direct = document.createElement("section")
-  const destination = document.createElement("section")
-  document.append(main)
-  main.append(direct, destination)
-  const directRoot = createRoot(direct)
-  const Element = componentElement(template, {attributes: {label: value => value ?? ""}})
-  document.customElementRegistry.define("test-counter", Element)
-  const custom = document.createElement("test-counter") as InstanceType<typeof Element>
-  custom.setAttribute("label", "Первый")
-  directRoot.render(template, {label: "Первый"})
-  main.append(custom)
-  expect(custom.textContent).toBe(direct.textContent)
-  const button = custom.querySelector("button")!
-  button.dispatchEvent(new Event("click", {bubbles: true}))
-  expect(custom.textContent).toBe("Первый:1")
-  custom.props = {label: "Второй"}
-  expect(custom.querySelector("button")).toBe(button)
-  expect(custom.textContent).toBe("Второй:1")
-  const beforeMove = renders
-  destination.append(custom)
-  expect(custom.querySelector("button")).toBe(button)
-  expect(custom.textContent).toBe("Второй:1")
-  expect(renders, "Перенос не рендерит компонент заново").toBe(beforeMove)
-  expect(effects).toBe(2)
-  expect(cleanups).toBe(0)
-  custom.remove()
-  expect(cleanups).toBe(1)
-  expect(custom.childNodes).toHaveLength(0)
-  directRoot.unmount()
-  expect(cleanups).toBe(2)
+  const host = document.createElement("div")
+  const destination = document.createElement("aside")
+  document.append(host)
+  host.append(destination)
+  document.customElementRegistry.define("ready-counter", components.Counter, {extends: "button"})
+  const lifecycle = {setups: 0, cleanups: 0}
+  const direct = new components.Counter(document, {label: "first", lifecycle})
+  const registered = document.createElement("button", {is: "ready-counter"}) as HTMLButtonElement & {props: unknown, dispose(): void}
+  registered.props = {label: "first", lifecycle}
+  host.append(direct, registered)
+  expect(registered).toBeInstanceOf(components.Counter)
+  expect(registered.textContent).toBe(direct.textContent)
+  registered.dispatchEvent(new Event("click"))
+  registered.props = {label: "next", lifecycle}
+  expect(registered.textContent).toBe("next:1")
+  destination.append(registered)
+  expect(destination.firstElementChild).toBe(registered)
+  expect([lifecycle.setups, lifecycle.cleanups]).toEqual([2, 0])
+  registered.remove()
+  expect(lifecycle.cleanups).toBe(1)
+  destination.append(registered)
+  expect(registered.textContent).toBe("next:1")
+  expect(lifecycle.setups).toBe(3)
+  registered.dispose()
+  direct.dispose()
+  expect(lifecycle.cleanups).toBe(3)
 })
 
-test("отсоединённый компонент накапливает props без исполнения, позднее определение использует атрибуты", () => {
+test("innerHTML принимает actual default/named DOM children до подключения, без Shadow DOM", () => {
   const document = createDocument()
-  let renders = 0
-  const template = defineCompiledTemplate<{label: string}>({
-    bindingCount: 1,
-    mount(document) {
-      const text = document.createTextNode("")
-      return {nodes: [text], bindings: [bindText(text)]}
-    },
-    render(props, values) { renders++; writeBinding(values, 0, props.label) },
-  })
-  const pending = document.createElement("late-label")
-  pending.setAttribute("label", "Готово")
-  document.append(pending)
-  document.customElementRegistry.define("late-label", componentElement(template, {
-    attributes: {label: value => value ?? ""},
-  }))
-  expect(pending.textContent).toBe("Готово")
-  expect(renders).toBe(1)
-  const Element = componentElement(template)
-  document.customElementRegistry.define("direct-label", Element)
-  const detached = document.createElement("direct-label") as InstanceType<typeof Element>
-  detached.props = {label: "Один"}
-  detached.props = {label: "Два"}
-  expect(renders).toBe(1)
-  pending.append(detached)
-  expect(detached.textContent).toBe("Два")
-  expect(renders).toBe(2)
+  const host = document.createElement("div")
+  document.customElementRegistry.define("ready-pane", components.Pane, {extends: "div"})
+  host.innerHTML = '<div is="ready-pane"><h2 slot="header">Heading</h2><p>Body</p></div>'
+  const pane = host.firstElementChild!
+  const header = pane.querySelector("h2")!
+  const body = pane.querySelector("p")!
+  document.append(host)
+  expect(pane).toBeInstanceOf(components.Pane)
+  expect(pane.querySelector("header h2")).toBe(header)
+  expect(pane.querySelector("main p")).toBe(body)
+  expect(header.parentElement?.parentElement).toBe(pane)
+  expect(pane).not.toHaveProperty("shadowRoot")
+  pane.remove()
+  host.append(pane)
+  expect(pane.querySelector("header h2")).toBe(header)
+  expect(pane.querySelector("main p")).toBe(body)
+  const component = pane as unknown as {dispose(): void}
+  component.dispose()
 })
 
-test("удалённый соседним callback компонент не исполняется по устаревшей connected reaction", () => {
+test("удалённый соседом uninitialized builtin не выполняет устаревшую connected reaction", () => {
   const document = createDocument()
-  let renders = 0
-  const template = defineCompiledTemplate({
-    bindingCount: 0,
-    mount() { return {nodes: [], bindings: []} },
-    render() { renders++ },
-  })
-  const root = document.createElement("main")
-  document.append(root)
-  document.customElementRegistry.define("removed-component", componentElement(template))
-  const removed = document.createElement("removed-component")
+  const host = document.createElement("div")
+  document.append(host)
+  document.customElementRegistry.define("ready-plain", components.Plain, {extends: "span"})
+  const removed = document.createElement("span", {is: "ready-plain"})
   class Remover extends HTMLElement {
     connectedCallback() { removed.remove() }
   }
   document.customElementRegistry.define("remover-element", Remover)
-  root.append(document.createElement("remover-element"), removed)
-  expect(removed.isConnected).toBe(false)
-  expect(renders).toBe(0)
+  host.append(document.createElement("remover-element"), removed)
+  expect(removed.isConnected).toBeFalse()
   expect(removed.childNodes).toHaveLength(0)
+})
+
+test("initial connected failure сохраняет existing Node и разрешает props retry", () => {
+  const document = createDocument()
+  const host = document.createElement("div")
+  document.append(host)
+  document.customElementRegistry.define("ready-failure", components.Failure, {extends: "button"})
+  const pending = document.createElement("button", {is: "ready-failure"}) as HTMLButtonElement & {props: unknown, dispose(): void}
+  pending.textContent = "initial"
+  expect(() => host.append(pending)).toThrow("rejected input")
+  expect(host.firstElementChild).toBe(pending)
+  expect(pending.textContent).toBe("initial")
+  pending.props = {reject: false, value: "ready"}
+  expect(host.firstElementChild).toBe(pending)
+  expect(pending.textContent).toBe("ready")
+  pending.dispose()
 })

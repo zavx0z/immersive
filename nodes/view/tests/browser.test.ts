@@ -1,6 +1,7 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {component, createRoot as createComponentRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createComponentRoot} from "@zavx0z/immersive-dom"
+import {component} from "@zavx0z/immersive-component/authoring"
 import {Element as SemanticElement, acquireDocumentAuthorStyleSheetOwner} from "@zavx0z/immersive-dom"
 import {Raycaster, Space, TrueTypeFont, ViewPoint} from "@zavx0z/immersive-engine"
 import type {Renderer} from "@zavx0z/immersive-webgpu"
@@ -11,7 +12,7 @@ import {createDocumentOverlayRuntime} from "../../../browser/src/overlay-runtime
 import {createRootWithSeams} from "../../../browser/create-root.ts"
 import {inspectRoot} from "../../../browser/diagnostics.ts"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {GraphMeasuredLayout, GraphMeasurement, GraphViewProps} from "@zavx0z/immersive-nodes/view"
 import type {BrowserGraphControls} from "./browser.fixture.tsx"
 
@@ -56,10 +57,10 @@ test.each(([
       const staging = target.ownerDocument!.createElement("div")
       if (!(staging instanceof SemanticElement)) throw new Error("Некорректный staging тестового host")
       const nested = createComponentRoot(staging)
-      if (controls.markdown !== undefined) nested.render(Markdown as unknown as CompiledTemplate<{source: string}>, {source: controls.markdown})
-      else nested.render(GraphView as unknown as CompiledTemplate<GraphViewProps>, {input: controls.input, layout: controls.layout, navigation: "scroll"})
+      if (controls.markdown !== undefined) nested.render(Markdown as unknown as DOMComponentConstructor<{source: string}>, {source: controls.markdown})
+      else nested.render(GraphView as unknown as DOMComponentConstructor<GraphViewProps>, {input: controls.input, layout: controls.layout, navigation: "scroll"})
       const content = staging.firstElementChild!
-      target.append(content)
+      target.append(nested.current!)
       return () => {
         nested.unmount()
         content.remove()
@@ -73,6 +74,7 @@ test.each(([
   const pendingFrames = new Map<number, () => void>()
   let nextFrame = 0
   let submissions = 0
+  let rendererDisposals = 0
   let runtime: Awaited<ReturnType<typeof createDocumentSpaceRuntimeWithSeams>> | null = null
   const observations: Array<{visible: boolean; coherent: boolean; pending: boolean; generation: string | null; nodes: SemanticElement[]}> = []
   const errors: Error[] = []
@@ -83,6 +85,7 @@ test.each(([
     createRuntime: async (options, claim) => createDocumentSpaceRuntimeWithSeams(options, {
       createEngineRenderer: () => ({
         setPixelRatio() {}, setSize() {}, invalidateGeometry() {}, releaseDisplay() {},
+        dispose() { rendererDisposals++ },
         renderComposition() {
           submissions += 1
           if (!(element instanceof SemanticElement)) throw new Error("GPU oracle не получил semantic root")
@@ -124,7 +127,7 @@ test.each(([
       now: () => 0,
     }, claim).then(value => { runtime = value; return value }),
   })
-  const template = BrowserMeasuredGraph as unknown as CompiledTemplate<{controls: BrowserGraphControls; kind: "hud" | "display"}>
+  const template = BrowserMeasuredGraph as unknown as DOMComponentConstructor<{controls: BrowserGraphControls; kind: "hud" | "display"}>
   root.render(component(template, {controls, kind}))
   const host = await inspectRoot(root).whenReady()
   const styles = acquireDocumentAuthorStyleSheetOwner(host.document)
@@ -181,5 +184,6 @@ test.each(([
   } finally {
     styles.release()
     root.unmount()
+    expect(rendererDisposals, "Единственный renderer освобождается ровно один раз").toBe(1)
   }
 })

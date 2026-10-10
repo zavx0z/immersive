@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, type HTMLElement} from "@zavx0z/immersive-dom"
 import {DataTransfer} from "@zavx0z/immersive-dom/data-transfer"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 import {createDocumentNativeInputHostWithSeams} from "../../../browser/src/native-input-host.ts"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
@@ -47,7 +47,7 @@ function fixture() {
   document.append(root)
   const model = new CodeEditorModel({value: "a b", selections: [{anchor: 0, head: 1}, {anchor: 2, head: 3}], primary: 1})
   const editor = createRoot(editorHost)
-  editor.render(CodeEditor as unknown as CompiledTemplate<CodeEditorProps>, {value: "a b", readOnly: false, model})
+  editor.render(CodeEditor as unknown as DOMComponentConstructor<CodeEditorProps>, {value: "a b", readOnly: false, model})
   const code = editorHost.querySelector("code") as HTMLElement
   code.focus()
   return {document, root, menuHost, code, model, dispose() { editor.unmount() }}
@@ -65,7 +65,7 @@ test("global production menu preserves multicursor paste target across focus and
     },
   }})
   const menu = createRoot(f.menuHost)
-  menu.render(ClipboardMenu as unknown as CompiledTemplate<{controller: ImmersiveUiComponentMenuClipboard.Input["controller"]}>, {controller: clipboard})
+  menu.render(ClipboardMenu as unknown as DOMComponentConstructor<{controller: ImmersiveUiComponentMenuClipboard.Input["controller"]}>, {controller: clipboard})
   try {
     expect(clipboard.openContextMenu(f.code, {x: 30, y: 40})).toBe(true)
     const paste = f.menuHost.querySelectorAll('[role="menuitem"]')[1] as HTMLElement
@@ -152,7 +152,7 @@ test("readonly CodeEditor blocks inherited editing and clipboard paste but keeps
   parent.contentEditable = "plaintext-only"
   document.append(parent)
   const component = createRoot(parent)
-  component.render(CodeEditor as unknown as CompiledTemplate<CodeEditorProps>, {value: "readonly text", readOnly: true})
+  component.render(CodeEditor as unknown as DOMComponentConstructor<CodeEditorProps>, {value: "readonly text", readOnly: true})
   const code = parent.querySelector("code") as HTMLElement
   const controller = createDocumentClipboardController(document, {access: {
     readText: async () => "must not insert", writeText: async () => {},

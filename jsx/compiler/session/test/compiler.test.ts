@@ -3,7 +3,7 @@ import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
 import {createDocument, HTMLButtonElement, MouseEvent} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 /** Проверяет общий путь компиляции и lifecycle, не подменяя размещение ручным DOM. */

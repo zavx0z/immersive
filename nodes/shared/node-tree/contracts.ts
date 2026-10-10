@@ -1,4 +1,4 @@
-import type {FunctionComponent} from "@zavx0z/immersive-component"
+import type {FunctionComponent} from "@zavx0z/immersive-component/authoring"
 import type {ImmersiveNodesNodeParameter} from "@zavx0z/immersive-nodes-node-parameter"
 type ParameterNodeProps = ImmersiveNodesNodeParameter.Input
 import type {ImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
@@ -11,7 +11,7 @@ import type {LayoutResult} from "@zavx0z/immersive-nodes-layout/types"
 import type {ImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
 type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
 import type {NodeGeometryIndex, NodeRect, NodeTreeTransform, NodeTreeViewport} from "../projection/geometry.ts"
-import type {LinkRoute} from "../routing/link-path.ts"
+import type {LinkRoute} from "@zavx0z/immersive-nodes/routing/link-path"
 
 export type NodeTreeStore = NodeTreeExternalStore<NodeTreeSnapshot, ParameterSnapshot>
 export const nodeTreeLayoutBrand: unique symbol = Symbol("NodeTreeLayout")

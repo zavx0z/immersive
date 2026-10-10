@@ -5,9 +5,9 @@ import {
   createDocument,
   Event,
   HTMLButtonElement,
-} from "../../dom/src/index.ts"
-import {createSpaceElementFactories, readSpaceTree} from "../../space/src/index.ts"
-import {HUDElement} from "../../dom/hud/index.ts"
+} from "@zavx0z/immersive-dom"
+import {createSpaceElementFactories, readSpaceTree} from "@zavx0z/immersive-space"
+import {HUDElement} from "@zavx0z/immersive-dom/hud"
 import {SpaceElement} from "@zavx0z/immersive-dom/space"
 import {ViewPointElement} from "@zavx0z/immersive-dom/viewpoint"
 
@@ -39,13 +39,14 @@ test("[EXP-001] один Experience владеет ровно одним Documen
 test("[EXP-002] один Experience владеет ровно одним Canvas", async () => {
   const index = await source("browser/src/index.ts")
   const manifest = await Bun.file(join(root, "browser/package.json")).json() as {
-    exports: Record<string, string>
+    exports: Record<string, string | {source: string}>
   }
-  expect(Object.keys(manifest.exports)).toEqual([".", "./clipboard", "./diagnostics", "./integration", "./audio", "./document"])
+  expect(Object.keys(manifest.exports)).toEqual([".", "./authoring", "./clipboard", "./diagnostics", "./integration", "./audio", "./document"])
   const componentAdapter = await source("browser/create-root.ts")
   expect(componentAdapter).toContain("createDocumentRootWithSeams")
   expect(componentAdapter).not.toContain("createDocument(")
-  expect(manifest.exports["./clipboard"]).toBe("./clipboard.ts")
+  const clipboardExport = manifest.exports["./clipboard"]!
+  expect(typeof clipboardExport === "string" ? clipboardExport : clipboardExport.source).toBe("./clipboard.ts")
   const clipboard = await source("browser/clipboard.ts")
   expect(clipboard).not.toContain('createElement("canvas")')
   expect(clipboard).not.toContain("createDocument(")

@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, MouseEvent, KeyboardEvent, HTMLElement, getPopoverVisibilityState} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 
 const workspace = resolve(import.meta.dir, "../../..")
@@ -25,7 +25,7 @@ test("global clipboard menu uses existing commands and retains the original sele
     readText: async () => "inserted", writeText: async text => { written.push(text) },
   }})
   const component = createRoot(host)
-  component.render(ClipboardMenu as unknown as CompiledTemplate<{controller: typeof commands}>, {controller: commands})
+  component.render(ClipboardMenu as unknown as DOMComponentConstructor<{controller: typeof commands}>, {controller: commands})
   try {
     const menu = host.querySelector('[role="menu"]')!
     if (!(menu instanceof HTMLElement)) throw new Error("Expected an HTML menu")

@@ -1,26 +1,5 @@
 import {expect, test} from "bun:test"
-import {defineCompiledTemplate} from "@zavx0z/immersive-template/compiled"
 import {createHeadless} from "../../headless/index.ts"
-
-// Публичный compiled-template transport позволяет проверить CSS→DOM→GPU
-// без прикладного компонента и без доступа теста к приватному GPU устройству.
-function boxes(count: number) {
-  return defineCompiledTemplate<Record<string, never>>({
-    displayName: "MulticolorRoundedBorderPixels",
-    bindingCount: 0,
-    mount(document) {
-      const root = document.createElement("section")
-      root.setAttribute("style", `display:flex;gap:8px;width:${count * 104 - 8}px;height:80px`)
-      for (let index = 0; index < count; index += 1) {
-        const box = document.createElement("div")
-        box.setAttribute("style", "display:block;box-sizing:border-box;width:96px;height:80px;background:white;border:8px solid red;border-right-color:lime;border-bottom-color:blue;border-left-color:yellow;border-radius:24px")
-        root.append(box)
-      }
-      return {nodes: [root], bindings: []}
-    },
-    render() {},
-  })
-}
 
 const probes = [
   [48, 3, [255, 0, 0]], [92, 40, [0, 255, 0]],
@@ -37,7 +16,8 @@ for (const count of [1, 2]) {
     const width = count * 104 - 8
     const headless = createHeadless({width, height: 80, styleSheetSources: []})
     try {
-      const root = await headless.renderComponent(boxes(count), {})
+      const {Boxes} = await import("./multicolor-rounded-border.fixture.tsx")
+      const root = await headless.renderComponent(Boxes, {count})
       const frame = await headless.capture(root)
       expect([frame.width, frame.height]).toEqual([width, 80])
       const pixel = (x: number, y: number) => [...frame.rgba.slice((y * width + x) * 4, (y * width + x + 1) * 4)]

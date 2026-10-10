@@ -1,7 +1,7 @@
 import type {XRMaterialProjectionContext} from "../contract/material-context.ts"
 export type {XRMaterialProjectionContext} from "../contract/material-context.ts"
 import type {SpatialHitTest} from "../contract/spatial-hit-test.ts"
-import {Comment, Element, isHTMLWhitespace, isHTMLWhitespaceNode, type Document, type Node} from "@zavx0z/immersive-dom"
+import {Comment, Element, defineDOMPropertyAttributes, notifyDOMPropertyChange, isHTMLWhitespace, isHTMLWhitespaceNode, type Document, type Node} from "@zavx0z/immersive-dom"
 import {SpatialElement, spatialChildren, spatialChildrenAfterInsertion} from "@zavx0z/immersive-dom/space"
 import type {
   AnimationClip,
@@ -88,11 +88,14 @@ const writeFactory = (
     throw new TypeError(`${label} factory must be a function`)
   }
   if (factories.get(element) === value) return
-  if (value === null) factories.delete(element)
-  else factories.set(element, value)
-  const revision = (factoryRevisions.get(element) ?? 0) + 1
-  factoryRevisions.set(element, revision)
-  element.setAttribute("factory-revision", String(revision))
+  element.ownerDocument!.transaction(() => {
+    if (value === null) factories.delete(element)
+    else factories.set(element, value)
+    const revision = (factoryRevisions.get(element) ?? 0) + 1
+    factoryRevisions.set(element, revision)
+    notifyDOMPropertyChange(element, "factory")
+    element.setAttribute("factory-revision", String(revision))
+  })
 }
 
 const readFactoryRevision = (element: XRElement): number =>
@@ -143,9 +146,12 @@ export abstract class XRObjectElement extends XRElement {
   set hitTest(value: SpatialHitTest | null) {
     if (value !== null && typeof value !== "function") throw new TypeError("Spatial hitTest должен быть функцией")
     if (this.hitTest === value) return
-    if (value === null) hitTests.delete(this)
-    else hitTests.set(this, value)
-    this.setAttribute("hit-test-revision", String(Number(this.getAttribute("hit-test-revision") ?? 0) + 1))
+    this.ownerDocument!.transaction(() => {
+      if (value === null) hitTests.delete(this)
+      else hitTests.set(this, value)
+      notifyDOMPropertyChange(this, "hitTest")
+      this.setAttribute("hit-test-revision", String(Number(this.getAttribute("hit-test-revision") ?? 0) + 1))
+    })
   }
 
   protected override validateChildInsertion(nodes: readonly Node[], replacing: readonly Node[]): void {
@@ -389,3 +395,20 @@ export class XRMaterialElement extends XRElement {
     throw new TypeError("Material cannot contain children")
   }
 }
+
+defineDOMPropertyAttributes(XRObjectElement, {
+  x: "x", y: "y", z: "z", quaternionX: "quaternion-x", quaternionY: "quaternion-y",
+  quaternionZ: "quaternion-z", quaternionW: "quaternion-w", scaleX: "scale-x", scaleY: "scale-y",
+  scaleZ: "scale-z", visible: "visible", name: "name",
+})
+defineDOMPropertyAttributes(XRTextElement, {text: "text", fontSize: "font-size", letterSpacing: ["letter-spacing", "font-size"]})
+defineDOMPropertyAttributes(XRLightElement, {
+  kind: "kind", color: "color", intensity: "intensity", targetX: "target-x", targetY: "target-y", targetZ: "target-z",
+})
+defineDOMPropertyAttributes(XRAnimationElement, {playing: "playing", loop: "loop", timeScale: "time-scale"})
+defineDOMPropertyAttributes(XRGeometryElement, {
+  kind: "kind", width: "width", height: "height", depth: "depth", radius: ["radius", "kind"], tube: "tube",
+  widthSegments: "width-segments", heightSegments: "height-segments", depthSegments: "depth-segments",
+  radialSegments: "radial-segments", tubularSegments: "tubular-segments",
+})
+defineDOMPropertyAttributes(XRMaterialElement, {kind: "kind", color: "color", styleProperties: "material-style-properties"})

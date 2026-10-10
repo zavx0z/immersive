@@ -1,9 +1,9 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, MouseEvent} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {ImmersiveUiComponentSurfacePane} from "@zavx0z/immersive-ui-component-surface-pane"
 type PaneTextContent = ImmersiveUiComponentSurfacePane.Input["content"]
 import type {ImmersiveUiComponentSurfaceTab} from "@zavx0z/immersive-ui-component-surface-tab"
@@ -35,7 +35,7 @@ function mount() {
 describe("UI композиция через slot", () => {
   test("Pane сохраняет primitive fallback и переключается на вложенный компонент", () => {
     const {container, root} = mount()
-    const template = PaneSlotFixture as unknown as CompiledTemplate<{supplied: boolean; content?: PaneTextContent}>
+    const template = PaneSlotFixture as unknown as DOMComponentConstructor<{supplied: boolean; content?: PaneTextContent}>
     try {
       root.render(template, {supplied: false, content: 0})
       const fallback = container.textContent
@@ -55,7 +55,7 @@ describe("UI композиция через slot", () => {
     const {root} = mount()
     try {
       expect(() => root.render(
-        PaneSlotFixture as unknown as CompiledTemplate<{supplied: boolean; content?: PaneTextContent}>,
+        PaneSlotFixture as unknown as DOMComponentConstructor<{supplied: boolean; content?: PaneTextContent}>,
         {supplied: true, content: "Конфликт"},
       )).toThrow("either slot content or primitive content")
     } finally {
@@ -67,7 +67,7 @@ describe("UI композиция через slot", () => {
     const {root} = mount()
     try {
       expect(() => root.render(
-        FieldGroupSlotFixture as unknown as CompiledTemplate<{supplied: boolean}>,
+        FieldGroupSlotFixture as unknown as DOMComponentConstructor<{supplied: boolean}>,
         {supplied: false},
       )).toThrow("non-empty slot content")
     } finally {
@@ -78,7 +78,7 @@ describe("UI композиция через slot", () => {
   test("FieldGroup принимает непустой slot", () => {
     const {container, root} = mount()
     try {
-      root.render(FieldGroupSlotFixture as unknown as CompiledTemplate<{supplied: boolean}>, {supplied: true})
+      root.render(FieldGroupSlotFixture as unknown as DOMComponentConstructor<{supplied: boolean}>, {supplied: true})
       expect(container.querySelector("[data-field-group]")?.textContent).toBe("Поле")
     } finally {
       root.unmount()
@@ -89,7 +89,7 @@ describe("UI композиция через slot", () => {
     const {root} = mount()
     try {
       expect(() => root.render(
-        TabSlotFixture as unknown as CompiledTemplate<{supplied: boolean; label?: string}>,
+        TabSlotFixture as unknown as DOMComponentConstructor<{supplied: boolean; label?: string}>,
         {supplied: false},
       )).toThrow("label or slot content")
     } finally {
@@ -100,7 +100,7 @@ describe("UI композиция через slot", () => {
   test("Tab принимает вложенную кнопку без label", () => {
     const {container, root} = mount()
     try {
-      root.render(TabSlotFixture as unknown as CompiledTemplate<{supplied: boolean; label?: string}>, {supplied: true})
+      root.render(TabSlotFixture as unknown as DOMComponentConstructor<{supplied: boolean; label?: string}>, {supplied: true})
       expect(container.querySelector("[data-tab] button")?.textContent).toBe("Вложенная кнопка")
     } finally {
       root.unmount()
@@ -109,7 +109,7 @@ describe("UI композиция через slot", () => {
 
   test("вложенная кнопка Tab сохраняет клик, DOM и состояние после смены стороны", () => {
     const {container, root} = mount()
-    const template = TabChildrenFixture as unknown as CompiledTemplate<Pick<TabProps, "position">>
+    const template = TabChildrenFixture as unknown as DOMComponentConstructor<Pick<TabProps, "position">>
     try {
       root.render(template, {position: {edge: "top", offset: .5}})
       const button = container.querySelector("button")!
@@ -128,7 +128,7 @@ describe("UI композиция через slot", () => {
 
   test("StatusBar сохраняет приоритет custom content и возвращает стартовую строку при опустошении", () => {
     const {container, root} = mount()
-    const template = StatusBarSlotFixture as unknown as CompiledTemplate<{supplied: boolean}>
+    const template = StatusBarSlotFixture as unknown as DOMComponentConstructor<{supplied: boolean}>
     try {
       root.render(template, {supplied: true})
       const start = container.querySelector('[data-alignment="start"]')!
@@ -148,7 +148,7 @@ describe("UI композиция через slot", () => {
   test("Window и Frame передают один компонент дальше через Panel и Pane", () => {
     const {container, root} = mount()
     try {
-      root.render(SurfaceSlotFixture as unknown as CompiledTemplate<Record<string, never>>, {})
+      root.render(SurfaceSlotFixture as unknown as DOMComponentConstructor<Record<string, never>>, {})
       expect([...container.querySelectorAll("button")].filter(button => button.textContent === "Сквозной контент")).toHaveLength(1)
     } finally {
       root.unmount()

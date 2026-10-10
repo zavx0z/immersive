@@ -1,11 +1,11 @@
 import type {GraphNodeProps} from "../graph/contracts.ts"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {ImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
 type NodeChildren = ImmersiveNodesNode.Output | readonly ImmersiveNodesNode.Output[] | null | undefined
 import type {NodeView, NodeViewProps} from "../node-tree/contracts.ts"
 import {CustomNodeView} from "./custom/index.tsx"
-import {component} from "@zavx0z/immersive-component"
+import {component} from "@zavx0z/immersive-component/authoring"
 import ParameterNode from "@zavx0z/immersive-nodes-node-parameter"
 import ContentNode from "@zavx0z/immersive-nodes-node-content"
 import DiagramNode from "@zavx0z/immersive-nodes-node-diagram"
@@ -126,5 +126,5 @@ export function ModelNode(input: GraphNodeProps) {
 }
 
 function renderNodeView(view: NodeView, props: NodeViewProps): NodeChildren {
-  return component(view as unknown as CompiledTemplate<NodeViewProps>, props, props.id) as unknown as JSX.Element
+  return component(view as unknown as DOMComponentConstructor<NodeViewProps>, props, props.id) as unknown as JSX.Element
 }

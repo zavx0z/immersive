@@ -7,16 +7,26 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts",
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
     "./tech/json/patch": "./persistence/tech/json/patch/index.ts",
     "./parameter": "./model/parameter/index.ts",
     "./node-tree": "./model/node-tree/index.ts",
-    "./projection-types": "./model/projection/index.ts"
+    "./projection-types": {
+      "source": "./model/projection/index.ts",
+      "types": "./dist/model/projection/index.d.ts",
+      "browser": "./dist/model/projection/index.js",
+      "default": "./dist/model/projection/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
     "@zavx0z/immersive-tech-json-value-own": "workspace:*",

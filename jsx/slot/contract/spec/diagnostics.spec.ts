@@ -3,6 +3,34 @@ import validateSlotContracts from "@zavx0z/immersive-jsx-slot-contract"
 import {barrelSource, childSource, contractSource, createSlotContractFixture, receiverSource} from "./fixture/index.ts"
 
 const cases = [
+  {name: "Запись после initializer не доказывает прежнюю JSX identity", code: "JSX-SLOTS-UNPROVABLE", detail: "identity", source: `
+import {Panel} from "./receiver"
+import {Button, TwinButton} from "./children"
+let child = <Button slot="header" />
+child = <TwinButton slot="header" />
+export function Application() {return <Panel>{child}<Button /></Panel>}
+`},
+  {name: "Сохранённый JSX не теряет identity другого объявления", code: "JSX-SLOTS-TYPE", detail: "TwinButton", source: `
+import {Panel} from "./receiver"
+import {Button, TwinButton} from "./children"
+const variants = [0].map(() => ({slots: {alias: <TwinButton slot="header" />}}))
+variants.forEach(({slots}) => consume(<Panel>{slots.alias}<Button /></Panel>))
+function consume(value: unknown) {}
+`},
+  {name: "Сохранённый nullable JSX не доказывает обязательность", code: "JSX-SLOTS-REQUIRED", detail: "header", source: `
+import {Panel} from "./receiver"
+import {Button} from "./children"
+export function Application(props: {visible: boolean}) {
+  const child = props.visible ? <Button slot="header" /> : null
+  return <Panel>{child}<Button /></Panel>
+}
+`},
+  {name: "Сохранённый fragment не становится одиночным ребёнком", code: "JSX-SLOTS-CARDINALITY", detail: "header", source: `
+import {Panel} from "./receiver"
+import {Button} from "./children"
+const fragment = <><Button slot="header" /><Button slot="header" /></>
+export function Application() {return <Panel>{fragment}<Button /></Panel>}
+`},
   {name: "Одинаковая сигнатура другого объявления", code: "JSX-SLOTS-TYPE", detail: "TwinButton", source: `
 import {Panel} from "./receiver"
 import {Button, TwinButton} from "./children"

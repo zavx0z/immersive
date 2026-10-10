@@ -1,4 +1,5 @@
-import {createRoot, useState} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import {useState} from "@zavx0z/immersive-component/authoring"
 import type {Document} from "@zavx0z/immersive-dom"
 import Socket from "@zavx0z/immersive-nodes-socket"
 import SOCKET_SHAPES from "@zavx0z/immersive-nodes-model-socket-shapes"

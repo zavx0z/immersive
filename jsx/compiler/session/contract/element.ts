@@ -1,5 +1,5 @@
 /**
-Авторское JSX-значение до компиляции в готовый ComponentValue.
+Авторское JSX-значение до компиляции в DOM constructor или construction data.
 
 Поле slots является необязательным type-only marker: оно сохраняет контракт
 принимающего компонента для анализа TypeScript, без runtime-регистрации.

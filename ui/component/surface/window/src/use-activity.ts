@@ -1,4 +1,4 @@
-import {useLayoutEffect, useRef, useState} from "@zavx0z/immersive-component"
+import {useLayoutEffect, useRef, useState} from "@zavx0z/immersive-component/authoring"
 import {registerWindow, type WindowActivity} from "./activity.ts"
 
 /** Связывает controlled open с независимой активностью проекции, не пересоздавая содержимое. */

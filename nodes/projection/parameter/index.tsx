@@ -17,7 +17,7 @@ import type {
 import {
   useMemo,
   useSyncExternalStore,
-} from "@zavx0z/immersive-component"
+} from "@zavx0z/immersive-component/authoring"
 import {metadataBoolean, metadataString} from "@zavx0z/immersive-tech-json-metadata"
 import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 import socketSide from "@zavx0z/immersive-nodes-model-socket-side"

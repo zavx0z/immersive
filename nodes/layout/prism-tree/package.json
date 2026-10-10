@@ -7,14 +7,19 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "dependencies": {
     "@zavx0z/immersive-nodes-layout": "workspace:*"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test test spec",
-    "check": "bun run typecheck && bun run test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel test spec",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   }
 }

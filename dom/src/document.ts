@@ -1,6 +1,8 @@
+import {flushDOMReactions, hasDOMReactions, isFlushingDOMReactions, isDOMReactionBatchOpen, clearDOMChanges, lifecyclePropertyChanged} from "./internal/lifecycle.ts"
+import {requestDOMWork, eventTransaction, connectionCommitAllowed} from "./internal/dom-work.ts"
 import {HUDElement} from "../hud/index.ts"
-import {CustomElementRegistry, associateCustomElementDocument, createCustomElement} from "./custom-elements.ts"
-import {beginCustomReactions, endCustomReactions, hasNativeElementFactory} from "./internal/custom-elements.ts"
+import {CustomElementRegistry, associateCustomElementDocument, createCustomElement, createCustomizedElement} from "./custom-elements.ts"
+import {beginCustomReactions, endCustomReactions, hasNativeElementFactory, nativeHTMLElementNames} from "./internal/custom-elements.ts"
 import {exitDocumentFullscreen, readDocumentFullscreenElement, readDocumentFullscreenEnabled} from "./fullscreen.ts"
 import {SpaceElement} from "../space/index.ts"
 import {ViewPointElement} from "../viewpoint/index.ts"
@@ -119,16 +121,20 @@ type CompiledStyleSheetEntry = {
 
 type CompiledStyleSheetState = {
   dirty: boolean
+  flushing: boolean
   entries: Map<string, CompiledStyleSheetEntry>
   snapshot: DocumentCompiledStyleSheetSnapshot
+  committed: DocumentCompiledStyleSheetSnapshot
   subscribers: Set<DocumentCompiledStyleSheetSubscriber>
 }
 
 type AuthorStyleSheetState = {
   dirty: boolean
+  flushing: boolean
   owner: symbol | null
   pending: readonly DocumentAuthorStyleSheet[]
   snapshot: DocumentAuthorStyleSheetSnapshot
+  committed: DocumentAuthorStyleSheetSnapshot
   subscribers: Set<DocumentAuthorStyleSheetSubscriber>
 }
 
@@ -136,6 +142,8 @@ export type DocumentElementFactory = (
   document: Document,
   localName: string,
 ) => Element
+
+export type ElementCreationOptions = Readonly<{is?: string}>
 
 export type DocumentOptions = Readonly<{
   elementFactories?: Readonly<Record<string, DocumentElementFactory>>
@@ -203,7 +211,7 @@ export class Document extends Node {
   }
   [hasNativeElementFactory](name: string): boolean {
     const normalized = name.toLowerCase()
-    return normalized === "vector-path" || this.elementFactories.has(normalized)
+    return normalized === "vector-path" || !nativeHTMLElementNames.has(normalized) && this.elementFactories.has(normalized)
   }
   get fullscreenElement(): Element | null { return readDocumentFullscreenElement(this) }
   get fullscreenEnabled(): boolean { return readDocumentFullscreenEnabled(this) }
@@ -211,6 +219,9 @@ export class Document extends Node {
 
   private readonly elementFactories: ReadonlyMap<string, DocumentElementFactory>
   private transactionDepth = 0
+  private readonly tasks = new Set<() => void>()
+  private taskFlushScheduled = false
+  private flushingTasks = false
   private pendingMutations: DocumentMutation[] = []
   private readonly mutationSubscribers = new Set<MutationSubscriber>()
   private flushingMutations = false
@@ -256,10 +267,13 @@ export class Document extends Node {
     return activeElement
   }
 
-  createElement<K extends keyof HTMLElementTagNameMap>(localName: K): HTMLElementTagNameMap[K]
-  createElement(localName: string): Element
-  createElement(localName: string): Element {
+  createElement<K extends keyof HTMLElementTagNameMap>(localName: K, options?: ElementCreationOptions): HTMLElementTagNameMap[K]
+  createElement(localName: string, options?: ElementCreationOptions): Element
+  createElement(localName: string, options?: ElementCreationOptions): Element {
     const normalizedLocalName = String(localName).toLowerCase()
+    if (options !== undefined && (options === null || typeof options !== "object")) throw new TypeError("Element creation options must be an object")
+    if (options?.is !== undefined && !normalizedLocalName.includes("-"))
+      return this.customElementRegistry[createCustomizedElement](this, normalizedLocalName, String(options.is))
     switch (normalizedLocalName) {
       case "hud": return new HUDElement(this)
       case "space": return new SpaceElement(this)
@@ -413,19 +427,89 @@ export class Document extends Node {
     return dismissTopmostAutoPopover(this)
   }
 
+  /** Одна очередь прямых callbacks; повторная постановка той же функции объединяется. */
+  enqueueTask(task: () => void): void {
+    if (typeof task !== "function") throw new TypeError("Document task must be a function")
+    this.tasks.add(task)
+    this[requestDOMWork]()
+  }
+
+  cancelTask(task: () => void): void { this.tasks.delete(task) }
+
+  flushTasks(): void {
+    if (this.transactionDepth === 0) this.transaction(() => {})
+    else this.drainDOMWork()
+  }
+
+  [requestDOMWork](): void {
+    if (this.transactionDepth !== 0 || this.taskFlushScheduled || this.flushingTasks) return
+    this.taskFlushScheduled = true
+    queueMicrotask(() => {
+      this.taskFlushScheduled = false
+      if (!this.tasks.size && !hasDOMReactions(this)) return
+      try { this.flushTasks() }
+      catch (error) {
+        const report = (globalThis as {reportError?: (error: unknown) => void}).reportError
+        if (report) report(error)
+        else queueMicrotask(() => { throw error })
+      }
+    })
+  }
+
+  private drainDOMWork(): void {
+    if (this.flushingTasks || isFlushingDOMReactions() || isDOMReactionBatchOpen()) return
+    this.flushingTasks = true
+    let failed = false
+    let firstError: unknown
+    const capture = (callback: () => void) => {
+      try { callback() } catch (error) { if (!failed) { failed = true; firstError = error } }
+    }
+    try {
+      let passes = 0
+      while (this.tasks.size || hasDOMReactions(this)) {
+        if (++passes > 100) {
+          this.tasks.clear()
+          clearDOMChanges(this)
+          throw new RangeError("Document tasks did not settle after 100 passes")
+        }
+        capture(() => flushDOMReactions())
+        const queued = [...this.tasks]
+        for (const task of queued) if (this.tasks.delete(task)) capture(task)
+        capture(() => flushDOMReactions())
+      }
+    } finally { this.flushingTasks = false }
+    if (failed) throw firstError
+  }
+
   transaction<Result>(callback: () => Result): Result {
-    beginCustomReactions()
+    return this.executeTransaction(callback, true)
+  }
+
+  [eventTransaction]<Result>(callback: () => Result): Result {
+    return this.executeTransaction(callback, false)
+  }
+
+  [connectionCommitAllowed](): boolean { return this.transactionDepth <= 1 }
+
+  private executeTransaction<Result>(callback: () => Result, customReactions: boolean): Result {
+    if (customReactions) beginCustomReactions()
     this.transactionDepth += 1
     try {
       return callback()
     } finally {
-      endCustomReactions()
-      this.transactionDepth -= 1
-      if (this.transactionDepth === 0) {
-        this.flushAuthorStyleSheets()
-        this.flushCompiledStyleSheets()
-        this.flushMutations()
-        this.flushStateChanges()
+      try {
+        if (customReactions) endCustomReactions()
+        else flushDOMReactions()
+        if (this.transactionDepth === 1 && (this.tasks.size || hasDOMReactions(this))) this.drainDOMWork()
+      } finally {
+        this.transactionDepth -= 1
+        if (this.transactionDepth === 0) {
+          this.flushAuthorStyleSheets()
+          this.flushCompiledStyleSheets()
+          this.flushMutations()
+          this.flushStateChanges()
+          if (this.tasks.size || hasDOMReactions(this)) this[requestDOMWork]()
+        }
       }
     }
   }
@@ -468,7 +552,14 @@ export class Document extends Node {
   }
 
   [readDocumentAuthorStyleSheetsInternal](): DocumentAuthorStyleSheetSnapshot {
-    return this.ensureAuthorStyleSheetState().snapshot
+    const state = this.ensureAuthorStyleSheetState()
+    if (state.dirty) {
+      state.dirty = false
+      if (!sameAuthorStyleSheets(state.snapshot.styleSheets, state.pending)) {
+        state.snapshot = Object.freeze({revision: state.snapshot.revision + 1, styleSheets: state.pending})
+      }
+    }
+    return state.snapshot
   }
 
   [subscribeDocumentAuthorStyleSheetsInternal](
@@ -500,16 +591,18 @@ export class Document extends Node {
       const {cssText} = source
       if (id.length === 0) throw new TypeError("A compiled stylesheet id cannot be empty")
       const previous = unique.get(id)
-      if (previous !== undefined && previous.cssText !== cssText) {
+      const provenance = normalizeCompiledStyleSource(source.source)
+      const normalized = Object.freeze(provenance ? {id, cssText, source: provenance} : {id, cssText})
+      if (previous !== undefined && !sameCompiledStyleSheet(previous, normalized)) {
         throw new Error(`Compiled stylesheet id collision: ${id}`)
       }
-      if (previous === undefined) unique.set(id, Object.freeze({id, cssText}))
+      if (previous === undefined) unique.set(id, normalized)
     }
 
     const state = this.ensureCompiledStyleSheetState()
     for (const [id, source] of unique) {
       const current = state.entries.get(id)
-      if (current !== undefined && current.styleSheet.cssText !== source.cssText) {
+      if (current !== undefined && !sameCompiledStyleSheet(current.styleSheet, source)) {
         throw new Error(`Compiled stylesheet id collision: ${id}`)
       }
       if (current?.references === Number.MAX_SAFE_INTEGER) {
@@ -546,7 +639,16 @@ export class Document extends Node {
   }
 
   [readDocumentCompiledStyleSheetsInternal](): DocumentCompiledStyleSheetSnapshot {
-    return this.ensureCompiledStyleSheetState().snapshot
+    const state = this.ensureCompiledStyleSheetState()
+    if (state.dirty) {
+      state.dirty = false
+      const styleSheets = Object.freeze([...state.entries.values()].map(entry => entry.styleSheet))
+      if (styleSheets.length !== state.snapshot.styleSheets.length ||
+        !styleSheets.every((styleSheet, index) => styleSheet === state.snapshot.styleSheets[index])) {
+        state.snapshot = Object.freeze({revision: state.snapshot.revision + 1, styleSheets})
+      }
+    }
+    return state.snapshot
   }
 
   [subscribeDocumentCompiledStyleSheetsInternal](
@@ -572,6 +674,8 @@ export class Document extends Node {
   }
 
   [recordScrollStateChange](change: ScrollStateChange): void {
+    if (change.oldScrollLeft !== change.scrollLeft) lifecyclePropertyChanged(change.target, "scrollLeft")
+    if (change.oldScrollTop !== change.scrollTop) lifecyclePropertyChanged(change.target, "scrollTop")
     const state = this.ensureStateChangeState()
     const targetChanges = state.pending.get(change.target) ?? new Map<string, DocumentStateChange>()
     const current = targetChanges.get("scroll") as ScrollStateChange | undefined
@@ -611,6 +715,8 @@ export class Document extends Node {
   }
 
   [recordInputStateChange](change: InputStateChange): void {
+    lifecyclePropertyChanged(change.target, change.property)
+    if (!change.target.isConnected) return
     const state = this.ensureStateChangeState()
     const targetChanges = state.pending.get(change.target) ?? new Map<string, DocumentStateChange>()
     const key = `input:${change.property}`
@@ -629,6 +735,8 @@ export class Document extends Node {
   }
 
   [recordOptionStateChange](change: OptionSelectedStateChange): void {
+    lifecyclePropertyChanged(change.target, change.property)
+    if (!change.target.isConnected) return
     const state = this.ensureStateChangeState()
     const targetChanges = state.pending.get(change.target) ?? new Map<string, DocumentStateChange>()
     const key = "option:selected"
@@ -683,6 +791,8 @@ export class Document extends Node {
   }
 
   [recordTextAreaStateChange](change: TextAreaStateChange): void {
+    lifecyclePropertyChanged(change.target, change.property)
+    if (!change.target.isConnected) return
     const state = this.ensureStateChangeState()
     const targetChanges = state.pending.get(change.target) ?? new Map<string, DocumentStateChange>()
     const key = `textarea:${change.property}`
@@ -808,12 +918,24 @@ export class Document extends Node {
     this.flushingMutations = true
     try {
       while (this.pendingMutations.length > 0) {
-        const records = Object.freeze(this.pendingMutations.splice(0))
         this.mutationVersion += 1
+        if (this.mutationSubscribers.size === 0) {
+          this.pendingMutations.length = 0
+          continue
+        }
+        const records = this.pendingMutations
+        this.pendingMutations = []
+        for (const record of records) {
+          if (record.type === "childList") {
+            Object.freeze(record.addedNodes)
+            Object.freeze(record.removedNodes)
+          }
+          Object.freeze(record)
+        }
         const batch: MutationBatch = Object.freeze({
           document: this,
           version: this.mutationVersion,
-          records
+          records: Object.freeze(records)
         })
         for (const subscriber of [...this.mutationSubscribers]) subscriber(batch)
       }
@@ -832,49 +954,63 @@ export class Document extends Node {
   }
 
   private ensureCompiledStyleSheetState(): CompiledStyleSheetState {
+    if (this.compiledStyleSheetState) return this.compiledStyleSheetState
+    const snapshot = Object.freeze({revision: 0, styleSheets: Object.freeze([])})
     return this.compiledStyleSheetState ??= {
       dirty: false,
+      flushing: false,
       entries: new Map(),
-      snapshot: Object.freeze({revision: 0, styleSheets: Object.freeze([])}),
+      snapshot,
+      committed: snapshot,
       subscribers: new Set()
     }
   }
 
   private ensureAuthorStyleSheetState(): AuthorStyleSheetState {
+    if (this.authorStyleSheetState) return this.authorStyleSheetState
+    const snapshot = Object.freeze({revision: 0, styleSheets: Object.freeze([])})
     return this.authorStyleSheetState ??= {
       dirty: false,
+      flushing: false,
       owner: null,
       pending: Object.freeze([]),
-      snapshot: Object.freeze({revision: 0, styleSheets: Object.freeze([])}),
+      snapshot,
+      committed: snapshot,
       subscribers: new Set()
     }
   }
 
   private flushAuthorStyleSheets(): void {
     const state = this.authorStyleSheetState
-    if (!state?.dirty) return
-    state.dirty = false
-    if (sameAuthorStyleSheets(state.snapshot.styleSheets, state.pending)) return
-    const revision = state.snapshot.revision + 1
-    const styleSheets = state.pending
-    state.snapshot = Object.freeze({revision, styleSheets})
-    const change = Object.freeze({document: this, revision, styleSheets})
-    for (const subscriber of [...state.subscribers]) subscriber(change)
+    if (!state || state.flushing) return
+    state.flushing = true
+    try {
+      while (true) {
+        const snapshot = this[readDocumentAuthorStyleSheetsInternal]()
+        const changed = !sameAuthorStyleSheets(state.committed.styleSheets, snapshot.styleSheets)
+        state.committed = snapshot
+        if (!changed) return
+        const change = Object.freeze({document: this, ...snapshot})
+        for (const subscriber of [...state.subscribers]) subscriber(change)
+      }
+    } finally { state.flushing = false }
   }
 
   private flushCompiledStyleSheets(): void {
     const state = this.compiledStyleSheetState
-    if (!state?.dirty) return
-    state.dirty = false
-    const styleSheets = Object.freeze([...state.entries.values()].map(entry => entry.styleSheet))
-    if (
-      styleSheets.length === state.snapshot.styleSheets.length &&
-      styleSheets.every((styleSheet, index) => styleSheet === state.snapshot.styleSheets[index])
-    ) return
-    const revision = state.snapshot.revision + 1
-    state.snapshot = Object.freeze({revision, styleSheets})
-    const change = Object.freeze({document: this, revision, styleSheets})
-    for (const subscriber of [...state.subscribers]) subscriber(change)
+    if (!state || state.flushing) return
+    state.flushing = true
+    try {
+      while (true) {
+        const snapshot = this[readDocumentCompiledStyleSheetsInternal]()
+        const changed = snapshot.styleSheets.length !== state.committed.styleSheets.length ||
+          !snapshot.styleSheets.every((styleSheet, index) => styleSheet === state.committed.styleSheets[index])
+        state.committed = snapshot
+        if (!changed) return
+        const change = Object.freeze({document: this, ...snapshot})
+        for (const subscriber of [...state.subscribers]) subscriber(change)
+      }
+    } finally { state.flushing = false }
   }
 
   private updatePendingTarget(
@@ -1026,4 +1162,18 @@ function normalizeDocumentElementFactories(
 
 export function createDocument(options: DocumentOptions = {}): Document {
   return new Document(options)
+}
+
+function normalizeCompiledStyleSource(source: DocumentCompiledStyleSheet["source"]): DocumentCompiledStyleSheet["source"] {
+  if (source === undefined) return undefined
+  if (source === null || typeof source !== "object" || source.kind !== "authored-css" ||
+      typeof source.moduleId !== "string" || typeof source.componentName !== "string" || typeof source.cssText !== "string") {
+    throw new TypeError("Compiled stylesheet source requires authored-css provenance")
+  }
+  return Object.freeze({kind: source.kind, moduleId: source.moduleId, componentName: source.componentName, cssText: source.cssText})
+}
+function sameCompiledStyleSheet(left: DocumentCompiledStyleSheet, right: DocumentCompiledStyleSheet): boolean {
+  return left.cssText === right.cssText && left.source?.kind === right.source?.kind &&
+    left.source?.moduleId === right.source?.moduleId && left.source?.componentName === right.source?.componentName &&
+    left.source?.cssText === right.source?.cssText
 }

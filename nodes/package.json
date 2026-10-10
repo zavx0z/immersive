@@ -7,28 +7,113 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    "./spatial": "./spatial/index.ts",
-    "./spatial/contract/input": "./spatial/contract/input.ts",
-    "./view": "./view/index.tsx",
-    "./view/contract/input": "./view/contract/input.ts",
-    "./view/tree": "./view/tree.ts",
-    "./editor": "./editor/index.tsx",
-    "./editor/contract/input": "./editor/contract/input.ts",
-    "./frame": "./frame/index.tsx",
-    "./frame/contract/input": "./frame/contract/input.ts",
-    "./link": "./link/index.tsx",
-    "./link/contract/input": "./link/contract/input.ts",
-    "./link/types": "./link/types/link.ts",
-    "./routing/link-path": "./shared/routing/link-path.ts",
-    "./marker": "./marker/index.ts",
-    "./marker/arrow": "./marker/arrow/index.tsx",
-    "./marker/arrow/contract/input": "./marker/arrow/contract/input.ts",
-    "./spatial/tree": "./spatial/tree/index.ts"
+    "./spatial": {
+      "source": "./spatial/index.ts",
+      "types": "./dist/spatial/index.d.ts",
+      "browser": "./dist/spatial/index.js",
+      "default": "./dist/spatial/index.js"
+    },
+    "./spatial/contract/input": {
+      "source": "./spatial/contract/input.ts",
+      "types": "./dist/spatial/contract/input.d.ts",
+      "browser": "./dist/spatial/contract/input.js",
+      "default": "./dist/spatial/contract/input.js"
+    },
+    "./view": {
+      "source": "./view/index.tsx",
+      "types": "./dist/view/index.d.ts",
+      "browser": "./dist/view/index.js",
+      "default": "./dist/view/index.js"
+    },
+    "./view/contract/input": {
+      "source": "./view/contract/input.ts",
+      "types": "./dist/view/contract/input.d.ts",
+      "browser": "./dist/view/contract/input.js",
+      "default": "./dist/view/contract/input.js"
+    },
+    "./view/tree": {
+      "source": "./view/tree.ts",
+      "types": "./dist/view/tree.d.ts",
+      "browser": "./dist/view/tree.js",
+      "default": "./dist/view/tree.js"
+    },
+    "./editor": {
+      "source": "./editor/index.tsx",
+      "types": "./dist/editor/index.d.ts",
+      "browser": "./dist/editor/index.js",
+      "default": "./dist/editor/index.js"
+    },
+    "./editor/contract/input": {
+      "source": "./editor/contract/input.ts",
+      "types": "./dist/editor/contract/input.d.ts",
+      "browser": "./dist/editor/contract/input.js",
+      "default": "./dist/editor/contract/input.js"
+    },
+    "./frame": {
+      "source": "./frame/index.tsx",
+      "types": "./dist/frame/index.d.ts",
+      "browser": "./dist/frame/index.js",
+      "default": "./dist/frame/index.js"
+    },
+    "./frame/contract/input": {
+      "source": "./frame/contract/input.ts",
+      "types": "./dist/frame/contract/input.d.ts",
+      "browser": "./dist/frame/contract/input.js",
+      "default": "./dist/frame/contract/input.js"
+    },
+    "./link": {
+      "source": "./link/index.tsx",
+      "types": "./dist/link/index.d.ts",
+      "browser": "./dist/link/index.js",
+      "default": "./dist/link/index.js"
+    },
+    "./link/contract/input": {
+      "source": "./link/contract/input.ts",
+      "types": "./dist/link/contract/input.d.ts",
+      "browser": "./dist/link/contract/input.js",
+      "default": "./dist/link/contract/input.js"
+    },
+    "./link/types": {
+      "source": "./link/types/link.ts",
+      "types": "./dist/link/types/link.d.ts",
+      "browser": "./dist/link/types/link.js",
+      "default": "./dist/link/types/link.js"
+    },
+    "./routing/link-path": {
+      "source": "./shared/routing/link-path.ts",
+      "types": "./dist/shared/routing/link-path.d.ts",
+      "browser": "./dist/shared/routing/link-path.js",
+      "default": "./dist/shared/routing/link-path.js"
+    },
+    "./marker": {
+      "source": "./marker/index.ts",
+      "types": "./dist/marker/index.d.ts",
+      "browser": "./dist/marker/index.js",
+      "default": "./dist/marker/index.js"
+    },
+    "./marker/arrow": {
+      "source": "./marker/arrow/index.tsx",
+      "types": "./dist/marker/arrow/index.d.ts",
+      "browser": "./dist/marker/arrow/index.js",
+      "default": "./dist/marker/arrow/index.js"
+    },
+    "./marker/arrow/contract/input": {
+      "source": "./marker/arrow/contract/input.ts",
+      "types": "./dist/marker/arrow/contract/input.d.ts",
+      "browser": "./dist/marker/arrow/contract/input.js",
+      "default": "./dist/marker/arrow/contract/input.js"
+    },
+    "./spatial/tree": {
+      "source": "./spatial/tree/index.ts",
+      "types": "./dist/spatial/tree/index.d.ts",
+      "browser": "./dist/spatial/tree/index.js",
+      "default": "./dist/spatial/tree/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel ./tests ./spatial/tests ./frame/tests ./view/tests ./frame/spec ./marker/arrow/spec && bun test ./spatial/tree/tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel ./tests ./spatial/tests ./frame/tests ./view/tests ./frame/spec ./marker/arrow/spec && BUN_OPTIONS=--conditions=source bun test --parallel ./spatial/tree/tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependencies": {
     "@zavx0z/immersive-component": "workspace:*",

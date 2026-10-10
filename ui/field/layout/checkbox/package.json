@@ -7,12 +7,17 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test ./spec ./test",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel ./spec ./test",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
     "@zavx0z/immersive-ui-field-metric-read": "workspace:*",

@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 import type {ImmersiveUiComponentWidgetEditor as Contract} from "./contract"
-import {useMemo} from "@zavx0z/immersive-component"
+import {useMemo} from "@zavx0z/immersive-component/authoring"
 import CodeEditor from "@zavx0z/immersive-ui-component-view-code-editor"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
 import WidgetHeader from "@zavx0z/immersive-ui-component-widget-header"

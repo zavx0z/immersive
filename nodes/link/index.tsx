@@ -1,5 +1,5 @@
 import {MarkerSlot} from "../shared/marker/slot/index.tsx"
-import {Arrow} from "../marker/arrow/index.tsx"
+import {Arrow} from "@zavx0z/immersive-nodes/marker/arrow"
 import type {MarkerContext} from "../shared/marker/contracts.ts"
 /**
 Link отображает маршрут владельца Layout через семантический vector-path.
@@ -11,11 +11,11 @@ Link отображает маршрут владельца Layout через с
 import {
   useMemo,
   useSyncExternalStore,
-} from "@zavx0z/immersive-component"
+} from "@zavx0z/immersive-component/authoring"
 import {
   projectLinkRoute,
   projectLinkEndpoints,
-} from "../shared/routing/link-path.ts"
+} from "@zavx0z/immersive-nodes/routing/link-path"
 import socketPreset from "@zavx0z/immersive-nodes-model-socket-preset"
 import type {LinkProps} from "./contract/input.ts"
 import type {LinkDefinition} from "./types/link.ts"

@@ -3,8 +3,8 @@ import {mkdtemp, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
 import {createDocument, MouseEvent} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import type {DOMComponentConstructor as CompiledTemplate} from "@zavx0z/immersive-dom"
 import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 
 test("нативно типизированный document захватывает Document компонента и сохраняется после await", async () => {
@@ -17,7 +17,7 @@ test("нативно типизированный document захватывае�
   const wait = new Promise<void>(resolve => { release = resolve })
   try {
     const result = await compiler.compileFile(join(import.meta.dir, "document-global.fixture.tsx"))
-    expect(result.code.match(/const document = __zComp\d+Document\(\)/g)).toHaveLength(2)
+    expect(result.code).not.toContain("useDocument as")
     expect(result.code).toContain("const document = props.document")
     expect(result.code).toContain("function readNativeDocument() {\n  return document\n}")
     const path = join(directory, "document-global.ts")

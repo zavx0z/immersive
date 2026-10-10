@@ -34,3 +34,18 @@ export type {SpatialRay} from "../contract/spatial-ray.ts"
 export type {SpatialHit} from "../contract/spatial-hit.ts"
 export type {SpatialHitTest} from "../contract/spatial-hit-test.ts"
 export {bindSpatialHit, readSpatialHit} from "./spatial-event.ts"
+
+export type {
+  SpaceRef,
+  XRAnimationIntrinsicProperties,
+  XRAssetIntrinsicProperties,
+  XRGeometryIntrinsicProperties,
+  XRGroupIntrinsicProperties,
+  XRLightIntrinsicProperties,
+  XRLineIntrinsicProperties,
+  XRLineSegmentsIntrinsicProperties,
+  XRMaterialIntrinsicProperties,
+  XRMeshIntrinsicProperties,
+  XRObjectIntrinsicProperties,
+  XRTextIntrinsicProperties,
+} from "./jsx.ts"

@@ -1,3 +1,27 @@
+/**
+Semantic Document, реальные DOM nodes, Custom Elements и адресованные операции.
+Единый договор авторства и состояния принадлежит PROJECT.md; DOM не исполняет
+JSX, hooks или Component bindings.
+
+@packageDocumentation
+*/
+export {captureDomOrigins, validateDomNodes} from "./dom-placement.ts"
+export type {DomOriginSnapshot} from "../contract/placement.ts"
+
+export {retainDOMContent} from "./content.ts"
+export {replaceDomRangeContent} from "./dom-range.ts"
+export {createDomRoot, isDOMComponentConstructor} from "../root/index.ts"
+export type {DOMRoot, DOMRenderOptions} from "../root/index.ts"
+export * from "../bindings/index.ts"
+export {encodeCompiledStyleText, decodeCompiledStyleText} from "../style-codec.ts"
+export {DOMGroup} from "./dom-group.ts"
+export type {DOMInsertion} from "./dom-group.ts"
+export {observeConnection} from "./connection.ts"
+export {defineDOMPropertyAttributes, notifyDOMPropertyChange} from "./native-properties.ts"
+export type {DOMPropertyAttributes} from "./native-properties.ts"
+export type {ConnectionTarget, ConnectionCallbacks, ConnectionScope} from "./connection.ts"
+export {domComponentConstructorBrand} from "./dom-component.ts"
+export type {DOMComponentConstructor, DOMComponent, DOMComponentContent, DOMSlotContent, DOMConstruction} from "./dom-component.ts"
 export {isHTMLWhitespace, isHTMLWhitespaceNode} from "./internal/html-whitespace.ts"
 export {parseFragment, parseFragmentSource, serializeFragment} from "./html-fragment.ts"
 export type {HTMLFragmentSyntaxNode} from "./html-fragment.ts"
@@ -65,6 +89,7 @@ export type {CustomElementConstructor} from "./custom-elements.ts"
 export type {
   DocumentElementFactory,
   DocumentOptions,
+  ElementCreationOptions,
   DocumentTextControlSelection,
   HTMLElementTagNameMap,
   TextControlSelectionTarget
@@ -88,6 +113,7 @@ export {
 } from "./compiled-style-sheet.ts"
 export type {
   DocumentCompiledStyleSheet,
+  DocumentCompiledStyleSheetSource,
   DocumentCompiledStyleSheetChange,
   DocumentCompiledStyleSheetLease,
   DocumentCompiledStyleSheetSnapshot,

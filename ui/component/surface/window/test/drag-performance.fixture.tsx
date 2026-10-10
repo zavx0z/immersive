@@ -1,8 +1,8 @@
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@zavx0z/immersive-renderer-html"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import Window from "@zavx0z/immersive-ui-component-surface-window"
 
 function Row(props: {index: number}) {
@@ -57,7 +57,7 @@ for (const rows of [10, 100, 500]) {
     return renderer.flush()
   }
   try {
-    root.render(Example as unknown as CompiledTemplate<{rows: number}>, {rows})
+    root.render(Example as unknown as DOMComponentConstructor<{rows: number}>, {rows})
     flush()
     const window = document.getElementById("drag-window")!
     const header = window.querySelector("[data-window-header]")!.getBoundingClientRect()

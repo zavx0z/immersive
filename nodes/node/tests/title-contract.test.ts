@@ -1,8 +1,8 @@
 import {expect, test} from "bun:test"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument} from "@zavx0z/immersive-dom"
 import "./compiler.ts"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 
 
 const {default: ParameterNode} = await import("@zavx0z/immersive-nodes-node-parameter")
@@ -30,7 +30,7 @@ function mount<Props extends Readonly<Record<string, unknown>>>(component: unkno
   const element = document.createElement("div")
   document.append(element)
   const componentRoot = createRoot(element)
-  componentRoot.render(component as CompiledTemplate<Props>, props)
+  componentRoot.render(component as DOMComponentConstructor<Props>, props)
   return {
     element,
     dispose() {

@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {LinkProps} from "@zavx0z/immersive-nodes/link"
 import type {LinkRoute} from "@zavx0z/immersive-nodes/routing/link-path"
 
@@ -23,7 +23,7 @@ test("[MARKER-SLOTS] смешанные компоненты, исходные �
   document.append(owner)
   const root = createRoot(owner)
   const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 400, height: 200}})
-  const render = (extra: Partial<LinkProps>) => root.render(Link as unknown as CompiledTemplate<LinkProps>, {id: "edge", title: "Связь", route: route(20), ...extra})
+  const render = (extra: Partial<LinkProps>) => root.render(Link as unknown as DOMComponentConstructor<LinkProps>, {id: "edge", title: "Связь", route: route(20), ...extra})
   try {
     render({startMarker: Arrow, endMarker: FilledMarker})
     const link = owner.querySelector("[data-link-id]")!

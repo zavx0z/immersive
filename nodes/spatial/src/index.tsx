@@ -1,4 +1,4 @@
-import {Link} from "../../link/index.tsx"
+import {Link} from "@zavx0z/immersive-nodes/link"
 import type {SpatialGraphProps} from "../contract/input.ts"
 import type {SpatialGraphNode} from "../contract/node.ts"
 import {

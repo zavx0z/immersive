@@ -4,9 +4,11 @@ import {
   getOptionSelectedness,
   normalizeSelectSelection,
   selectOption,
-  setOptionSelectedness
+  setOptionSelectedness,
+  selectionChanged
 } from "./internal/select.ts"
 import {recordOptionStateChange} from "./internal/state-change.ts"
+import {lifecyclePropertyChanged} from "./internal/lifecycle.ts"
 
 type OptionState = {
   dirty: boolean
@@ -16,6 +18,7 @@ type OptionState = {
 type SelectionOwner = HTMLElement & {
   [normalizeSelectSelection](publish: boolean, resetFallback?: boolean): void
   [selectOption](option: HTMLOptionElement, selected: boolean): void
+  [selectionChanged](): void
 }
 
 function normalizeAttributeName(name: string): string {
@@ -27,10 +30,11 @@ function optionText(option: HTMLOptionElement): string {
 }
 
 export class HTMLOptionElement extends HTMLElement {
-  private optionState: OptionState | null = null
+  declare private optionState: OptionState | null
 
   constructor(ownerDocument: Document) {
     super(ownerDocument, "option")
+    if (!Object.hasOwn(this, "optionState")) this.optionState = null
   }
 
   get disabled(): boolean {
@@ -131,7 +135,15 @@ export class HTMLOptionElement extends HTMLElement {
     state.selected = selected
     if (dirty) state.dirty = true
     if (!state.dirty && state.selected === defaultSelected) this.optionState = null
-    if (!publish || oldValue === selected || !this.isConnected) return
+    if (oldValue !== selected) {
+      lifecyclePropertyChanged(this, "selected")
+      this.selectionOwner()?.[selectionChanged]()
+    }
+    if (!publish || oldValue === selected) return
+    if (!this.isConnected) {
+      lifecyclePropertyChanged(this, "selected")
+      return
+    }
     this.ownerDocument![recordOptionStateChange](Object.freeze({
       type: "option",
       target: this,

@@ -7,12 +7,17 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.tsx"
+    ".": {
+      "source": "./index.tsx",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests spec/deps.spec.ts && bun test --preload @zavx0z/immersive-headless/preload spec/scenario.spec.tsx",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests spec/deps.spec.ts && BUN_OPTIONS=--conditions=source bun test --parallel --preload @zavx0z/immersive-headless/preload spec/scenario.spec.tsx",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependenciesMeta": {
     "@zavx0z/immersive-nodes-tree": {

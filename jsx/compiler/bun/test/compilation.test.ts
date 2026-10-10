@@ -14,7 +14,7 @@ test("Bun компилирует повторно без проверки кон
       entrypoints: [resolve(directory, "untyped.tsx")],
       plugins: [plugin],
       target: "bun" as const,
-      external: ["@zavx0z/immersive-template/compiled", "@zavx0z/immersive-component", "@zavx0z/immersive-component/slot"],
+      external: ["@zavx0z/immersive-dom"],
     }
     expect((await Bun.build(config)).success).toBeTrue()
     expect((await Bun.build(config)).success).toBeTrue()

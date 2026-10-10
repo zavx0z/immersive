@@ -7,7 +7,7 @@
 import {StatusBarItems} from "./src/helpers.tsx"
 import type {ImmersiveUiComponentFeedbackStatusBar as Contract} from "./contract"
 import {normalizeStatusBarItems} from "./src/helpers.tsx"
-import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import {hasSlot} from "@zavx0z/immersive-component/authoring"
 
 
 export type {ImmersiveUiComponentFeedbackStatusBar} from "./contract"

@@ -6,26 +6,101 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts",
-    "./components": "./index.ts",
-    "./abstraction/animation": "./abstraction/animation.tsx",
-    "./abstraction/asset": "./abstraction/asset.tsx",
-    "./abstraction/group": "./abstraction/group.tsx",
-    "./abstraction/text": "./abstraction/text.tsx",
-    "./gizmo/grid": "./gizmo/grid.tsx",
-    "./shader/material": "./shader/material.tsx",
-    "./shape/geometry": "./shape/geometry.tsx",
-    "./shape/line": "./shape/line.tsx",
-    "./shape/line-segments": "./shape/line-segments.tsx",
-    "./shape/mesh": "./shape/mesh.tsx",
-    "./staging/light": "./staging/light.tsx",
-    "./shape/edges": "./shape/edges.tsx",
-    "./shape/volumes": "./shape/volumes.tsx"
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/src/index.d.ts",
+      "browser": "./dist/src/index.js",
+      "default": "./dist/src/index.js"
+    },
+    "./components": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./abstraction/animation": {
+      "source": "./abstraction/animation.tsx",
+      "types": "./dist/abstraction/animation.d.ts",
+      "browser": "./dist/abstraction/animation.js",
+      "default": "./dist/abstraction/animation.js"
+    },
+    "./abstraction/asset": {
+      "source": "./abstraction/asset.tsx",
+      "types": "./dist/abstraction/asset.d.ts",
+      "browser": "./dist/abstraction/asset.js",
+      "default": "./dist/abstraction/asset.js"
+    },
+    "./abstraction/group": {
+      "source": "./abstraction/group.tsx",
+      "types": "./dist/abstraction/group.d.ts",
+      "browser": "./dist/abstraction/group.js",
+      "default": "./dist/abstraction/group.js"
+    },
+    "./abstraction/text": {
+      "source": "./abstraction/text.tsx",
+      "types": "./dist/abstraction/text.d.ts",
+      "browser": "./dist/abstraction/text.js",
+      "default": "./dist/abstraction/text.js"
+    },
+    "./gizmo/grid": {
+      "source": "./gizmo/grid.tsx",
+      "types": "./dist/gizmo/grid.d.ts",
+      "browser": "./dist/gizmo/grid.js",
+      "default": "./dist/gizmo/grid.js"
+    },
+    "./shader/material": {
+      "source": "./shader/material.tsx",
+      "types": "./dist/shader/material.d.ts",
+      "browser": "./dist/shader/material.js",
+      "default": "./dist/shader/material.js"
+    },
+    "./shape/geometry": {
+      "source": "./shape/geometry.tsx",
+      "types": "./dist/shape/geometry.d.ts",
+      "browser": "./dist/shape/geometry.js",
+      "default": "./dist/shape/geometry.js"
+    },
+    "./shape/line": {
+      "source": "./shape/line.tsx",
+      "types": "./dist/shape/line.d.ts",
+      "browser": "./dist/shape/line.js",
+      "default": "./dist/shape/line.js"
+    },
+    "./shape/line-segments": {
+      "source": "./shape/line-segments.tsx",
+      "types": "./dist/shape/line-segments.d.ts",
+      "browser": "./dist/shape/line-segments.js",
+      "default": "./dist/shape/line-segments.js"
+    },
+    "./shape/mesh": {
+      "source": "./shape/mesh.tsx",
+      "types": "./dist/shape/mesh.d.ts",
+      "browser": "./dist/shape/mesh.js",
+      "default": "./dist/shape/mesh.js"
+    },
+    "./staging/light": {
+      "source": "./staging/light.tsx",
+      "types": "./dist/staging/light.d.ts",
+      "browser": "./dist/staging/light.js",
+      "default": "./dist/staging/light.js"
+    },
+    "./shape/edges": {
+      "source": "./shape/edges.tsx",
+      "types": "./dist/shape/edges.d.ts",
+      "browser": "./dist/shape/edges.js",
+      "default": "./dist/shape/edges.js"
+    },
+    "./shape/volumes": {
+      "source": "./shape/volumes.tsx",
+      "types": "./dist/shape/volumes.d.ts",
+      "browser": "./dist/shape/volumes.js",
+      "default": "./dist/shape/volumes.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependencies": {
     "@zavx0z/immersive-component": "workspace:*",

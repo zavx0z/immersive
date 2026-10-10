@@ -2,8 +2,8 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, PointerEvent, isTextSourceRoot, textPositionAtOffset, textOffsetAtPosition, type HTMLElement} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
-import {createRoot} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, createDocumentInteractionController, readRenderedSelectionText} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {createDocumentClipboardController} from "../../../../../browser/clipboard.ts"
@@ -14,7 +14,7 @@ import type {WindowingFixtureProps} from "./windowing.fixture.tsx"
 const workspace = resolve(import.meta.dir, "../../../../..")
 Bun.plugin(createJsxBunPlugin({cwd: workspace, persistent: true, sourceRoots: [resolve(workspace, "ui")]}))
 const {WindowingFixture} = await import("./windowing.fixture.tsx")
-const template = WindowingFixture as unknown as CompiledTemplate<WindowingFixtureProps>
+const template = WindowingFixture as unknown as DOMComponentConstructor<WindowingFixtureProps>
 const theme = await Bun.file(resolve(workspace, "ui/component/theme/theme.css")).text()
 
 function setup(props: WindowingFixtureProps) {

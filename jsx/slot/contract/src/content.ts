@@ -141,7 +141,13 @@ async function expressionProof(
     }
   }
   const type = await context.project.checker.getTypeAtLocation(original)
-  return type ? nativeTypeProof(type, context) : unknownProof()
+  const native = type ? await nativeTypeProof(type, context) : unknownProof()
+  const origins = await new SlotAuthoring(expression.getSourceFile()).origins(expression, context.project)
+  if (origins === null || native.unknown) return native
+  if (origins.length === 0) return emptyProof(native.assigned)
+  const proofs = await Promise.all(origins.map(origin => expressionProof(origin, owner, context)))
+  const proof = proofs.slice(1).reduce(alternativeProof, proofs[0]!)
+  return {...native, atoms: proof.atoms, min: Math.min(native.min, proof.min), max: Math.max(native.max, proof.max), unknown: proof.unknown}
 }
 
 /**

@@ -9,6 +9,7 @@ native интерфейсом TypeScript JSX и дополняется объя�
 элементов, свойств и расширений; сборочный проход не повторяет эту проверку.
 */
 import type {} from "@zavx0z/immersive-template"
+export type {CssCompilerIntrinsic} from "@zavx0z/immersive-template"
 import type {Element as AuthoredElement} from "./element.ts"
 import type {IntrinsicProperties as AuthoredProperties} from "./intrinsic.ts"
 import type {
@@ -59,7 +60,8 @@ export namespace JSX {
   }
 
   /** Вложенность проверяется сценарием по контракту получателя. */
-  export type LibraryManagedAttributes<Component, Props> = Props & {children?: Child}
+  export type LibraryManagedAttributes<Component, Props> =
+    (Component extends (props: infer Input) => unknown ? Input : Props) & {children?: Child}
 
   /** Custom tags добавляются у владельца через стандартное module augmentation. */
   export interface IntrinsicElements extends BuiltinElements {}

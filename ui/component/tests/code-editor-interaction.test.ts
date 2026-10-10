@@ -1,6 +1,6 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, type HTMLElement, readDocumentTextHighlights} from "@zavx0z/immersive-dom"
 import {InputEvent} from "@zavx0z/immersive-dom/input-event"
 import {CompositionEvent} from "@zavx0z/immersive-dom/composition-event"
@@ -11,7 +11,7 @@ import {ClipboardEvent} from "@zavx0z/immersive-dom/clipboard-event"
 import {DataTransfer} from "@zavx0z/immersive-dom/data-transfer"
 import {textPositionAtOffset} from "@zavx0z/immersive-dom/text-position"
 import {registerLanguageHighlighter} from "@zavx0z/highlighter"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {createDocumentInteractionController, createDocumentRenderer, getRangeClientRects} from "@zavx0z/immersive-renderer-html"
 import CodeEditorModel from "@zavx0z/immersive-tech-text-editor"
@@ -22,7 +22,7 @@ import {createDocumentClipboardController} from "../../../browser/clipboard.ts"
 const root = resolve(import.meta.dir, "../../..")
 Bun.plugin(createJsxBunPlugin({cwd: root, persistent: true, sourceRoots: [resolve(root, "ui")]}))
 const {default: CodeEditor} = await import("@zavx0z/immersive-ui-component-view-code-editor")
-const template = CodeEditor as unknown as CompiledTemplate<CodeEditorProps>
+const template = CodeEditor as unknown as DOMComponentConstructor<CodeEditorProps>
 
 function mount(value: string, options: Partial<CodeEditorProps> = {}) {
   const document = createDocument()
@@ -111,7 +111,7 @@ test("DOM primary selection mirrors offsets across styled runs and Alt adds inde
   } finally { f.dispose() }
 })
 
-test("selection changes do not rerender TSX, retokenize or replace code text nodes", () => {
+test("selection changes do not mutate DOM, retokenize or replace code text nodes", () => {
   let calls = 0
   registerLanguageHighlighter({id: "editor-selection-no-tokenize", name: "test", tokenize(lines) {
     calls++
@@ -120,12 +120,14 @@ test("selection changes do not rerender TSX, retokenize or replace code text nod
   const f = mount("alpha\nbeta", {languageId: "editor-selection-no-tokenize"})
   try {
     f.code.focus()
-    const stats = f.component.stats()
+    let mutations = 0
+    const stop = f.document.subscribeMutations(batch => { mutations += batch.records.length })
     const first = f.code.querySelector('[data-line-index="0"]')
     const second = f.code.querySelector('[data-line-index="1"]')
     const text = second?.textContent
     for (let index = 0; index < 20; index++) f.model.setSelections([{anchor: 0, head: index % 5}])
-    expect(f.component.stats()).toEqual(stats)
+    stop()
+    expect(mutations).toBe(0)
     expect(calls).toBe(1)
     f.model.setSelections([{anchor: 5, head: 5}])
     input(f, "insertText", "!")
@@ -290,15 +292,23 @@ test("readonly toggling preserves local text, and external value changes explici
   } finally { f.dispose() }
 })
 
-test("only the changed line renders and supplied tokens never apply to a different local value", () => {
+test("only the changed line mutates and supplied tokens never apply to a different local value", () => {
   const value = Array.from({length: 100}, (_value, index) => `line${index}`).join("\n")
   const f = mount(value)
   try {
     f.code.focus()
     f.model.setSelections([{anchor: 0, head: 0}])
-    const before = f.component.stats().renders
+    const changedLines = new Set<string>()
+    const stop = f.document.subscribeMutations(batch => {
+      for (const record of batch.records) {
+        const element = record.target.nodeType === 1 ? record.target as HTMLElement : record.target.parentElement
+        const line = element?.closest("[data-line-index]")
+        if (line && f.code.contains(line)) changedLines.add(line.getAttribute("data-line-index")!)
+      }
+    })
     input(f, "insertText", "x")
-    expect(f.component.stats().renders - before).toBeLessThan(8)
+    stop()
+    expect([...changedLines]).toEqual(["0"])
     f.component.render(template, {value: "abc", readOnly: false, model: f.model, tokens: [[{s: 0, e: 3, c: "k", fg: "#ff0000"}]]})
     f.model.setSelections([{anchor: 0, head: 3}])
     expect(() => input(f, "insertText", "z")).not.toThrow()

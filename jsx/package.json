@@ -11,8 +11,16 @@
       "bun": "./index.ts",
       "node": "./index.ts"
     },
-    "./jsx-runtime": "./runtime/index.ts",
-    "./jsx-dev-runtime": "./development/index.ts"
+    "./jsx-runtime": {
+      "source": "./runtime/index.ts",
+      "types": "./runtime/dist/index.d.ts",
+      "default": "./runtime/dist/index.js"
+    },
+    "./jsx-dev-runtime": {
+      "source": "./development/index.ts",
+      "types": "./development/dist/index.d.ts",
+      "default": "./development/dist/index.js"
+    }
   },
   "dependencies": {
     "@zavx0z/immersive-jsx-runtime": "workspace:*",
@@ -23,8 +31,8 @@
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel ./test",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel ./test",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "devDependencies": {
     "@zavx0z/immersive-jsx-runtime-create": "workspace:*",

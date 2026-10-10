@@ -10,3 +10,18 @@ export async function readUiWorkspaces(root: string): Promise<readonly (readonly
   }
   return result.sort(([a], [b]) => a.localeCompare(b))
 }
+
+/** Физические границы всех владельцев берутся из workspace Repo, включая вложенные Nodes. */
+export async function readWorkspaceDirectories(root: string): Promise<readonly string[]> {
+  const manifest = await Bun.file(join(root, "package.json")).json() as {workspaces: string[]}
+  const includes = manifest.workspaces.filter(pattern => !pattern.startsWith("!")).map(pattern => new Bun.Glob(pattern))
+  const excludes = manifest.workspaces.filter(pattern => pattern.startsWith("!")).map(pattern => new Bun.Glob(pattern.slice(1)))
+  const directories: string[] = []
+  for await (const path of new Bun.Glob("**/package.json").scan({cwd: root})) {
+    const directory = dirname(path)
+    if (directory === "." || !includes.some(pattern => pattern.match(directory))) continue
+    if (excludes.some(pattern => pattern.match(directory) || pattern.match(`${directory}/`))) continue
+    directories.push(directory)
+  }
+  return directories.sort()
+}

@@ -9,8 +9,8 @@ import type {
 export {
   decodeCompiledStyleText,
   encodeCompiledStyleText
-} from "./style-codec.ts"
-import {decodeCompiledStyleText} from "./style-codec.ts"
+} from "@zavx0z/immersive-dom/style-codec"
+import {decodeCompiledStyleText} from "@zavx0z/immersive-dom/style-codec"
 import {markDomAnchor} from "./dom-operations.ts"
 export {DomContentRange, DomEventBinding, domContent, isDomContent, registerDomContentAdapter, snapshotDomNodes,
   createDomAnchor, isDomAnchor, textValue, prepareTextOperation, prepareDomOperation, applyDomOperation, propertyOperation, attributeOperation, attributeValue, hasPropertySetter, moveDomRange, removeDomRange} from "./dom-operations.ts"

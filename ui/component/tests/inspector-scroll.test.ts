@@ -1,8 +1,8 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, type HTMLElement} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
@@ -15,7 +15,7 @@ test("Inspector ограничивает стек панелей доступн�
   const document = createDocument()
   const staging = document.createElement("div")
   const component = createRoot(staging)
-  component.render(InspectorFixture as unknown as CompiledTemplate<{}>, {})
+  component.render(InspectorFixture as unknown as DOMComponentConstructor<{}>, {})
   const owner = staging.querySelector("aside") as HTMLElement
   staging.removeChild(owner)
   const container = document.createElement("div")

@@ -1,5 +1,10 @@
+import {eventTransaction} from "./internal/dom-work.ts"
+import type {Event} from "./event.ts"
+import {replaceDOMRangeContent} from "./dom-range.ts"
+import {DOMGroup, groupRange, groupParking, groupStartingAt, replaceGroupContent, insertGroupContent} from "./dom-group.ts"
+import {lifecycleInserted, lifecycleRemoving, lifecycleAdopted, lifecycleContentChanged} from "./internal/lifecycle.ts"
 import {EventTarget} from "./event-target.ts"
-import {customElementInserted, customElementRemoving, customElementAdopted, isCustomElementHost} from "./internal/custom-elements.ts"
+import {isCustomElementHost} from "./internal/custom-elements.ts"
 import {domError} from "./internal/errors.ts"
 import {clearFocusInSubtree} from "./internal/focus.ts"
 import {closePopoversInSubtree} from "./internal/popover.ts"
@@ -19,7 +24,7 @@ function mutationDocument(node: Node): Document | null {
   return node.nodeType === Node.DOCUMENT_NODE ? node as unknown as Document : node.ownerDocument
 }
 
-export type NodeOrString = Node | string
+export type NodeOrString = Node | DOMGroup | string
 
 export abstract class Node extends EventTarget {
   static readonly ELEMENT_NODE = 1
@@ -102,6 +107,12 @@ export abstract class Node extends EventTarget {
 
   set textContent(_value: string | null) {}
 
+  /** Событие и все его listeners завершают одну транзакцию того же Document. */
+  override dispatchEvent(event: Event): boolean {
+    const document = mutationDocument(this)
+    return document ? document[eventTransaction](() => super.dispatchEvent(event)) : super.dispatchEvent(event)
+  }
+
   hasChildNodes(): boolean {
     return this.first !== null
   }
@@ -119,7 +130,7 @@ export abstract class Node extends EventTarget {
     return false
   }
 
-  appendChild<T extends Node>(node: T): T {
+  appendChild<T extends Node | DOMGroup>(node: T): T {
     return this.insertBefore(node, null)
   }
 
@@ -130,7 +141,8 @@ export abstract class Node extends EventTarget {
     this.validateInsertion(nodes, [])
   }
 
-  insertBefore<T extends Node>(node: T, child: Node | null): T {
+  insertBefore<T extends Node | DOMGroup>(node: T, child: Node | DOMGroup | null): T {
+    if (child instanceof DOMGroup) child = child[groupRange]()[0]!
     if (!this.canHaveChildren()) {
       throw domError("HierarchyRequestError", `${this.nodeName} cannot contain child nodes`)
     }
@@ -138,11 +150,11 @@ export abstract class Node extends EventTarget {
       throw domError("NotFoundError", "The reference child does not belong to this parent")
     }
     if (node === child) return node
-    if ((node as Node) === this || node.contains(this)) {
+    if ((node as Node | DOMGroup) === this || node instanceof Node && node.contains(this)) {
       throw domError("HierarchyRequestError", "The insertion would create a tree cycle")
     }
 
-    const inserted = node.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? [...node.childNodes] : [node]
+    const inserted = node instanceof DOMGroup ? [...node[groupRange]()] : node.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? [...node.childNodes] : [node as Node]
     this.validateInsertion(inserted, [])
     const document = mutationDocument(this)
     const mutate = () => this.insertNodes(inserted, child)
@@ -151,7 +163,12 @@ export abstract class Node extends EventTarget {
     return node
   }
 
-  removeChild<T extends Node>(child: T): T {
+  removeChild<T extends Node | DOMGroup>(child: T): T {
+    if (child instanceof DOMGroup) {
+      if (child.parentNode !== this) throw domError("NotFoundError", "The group does not belong to this parent")
+      child.remove()
+      return child
+    }
     if (child.parent !== this) throw domError("NotFoundError", "The child does not belong to this parent")
     const document = mutationDocument(this)
     const mutate = () => child.detach(true)
@@ -160,14 +177,14 @@ export abstract class Node extends EventTarget {
     return child
   }
 
-  replaceChild<T extends Node>(node: Node, child: T): T {
+  replaceChild<T extends Node>(node: Node | DOMGroup, child: T): T {
     if (child.parent !== this) throw domError("NotFoundError", "The child does not belong to this parent")
     if (node === child) return child
-    if (node === this || node.contains(this)) {
+    if (node === this || node instanceof Node && node.contains(this)) {
       throw domError("HierarchyRequestError", "The replacement would create a tree cycle")
     }
 
-    const inserted = node.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? [...node.childNodes] : [node]
+    const inserted = node instanceof DOMGroup ? [...node[groupRange]()] : node.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? [...node.childNodes] : [node as Node]
     this.validateInsertion(inserted, [child])
     const document = mutationDocument(this)
     const mutate = () => this.replaceNodeWithNodes(inserted, child)
@@ -199,10 +216,11 @@ export abstract class Node extends EventTarget {
       const removed = [...this.childNodes]
       const insertedSet = new Set(inserted)
       const document = connectedMutationDocument(this)
+      this.parkRemovedGroups(removed, insertedSet)
       for (const child of removed) {
-        child.detach(false, insertedSet.has(child) ? document : null)
+        if (child.parent === this) child.detach(false, insertedSet.has(child) ? document : null, insertedSet)
       }
-      for (const child of inserted) child.detach(true, document)
+      for (const child of inserted) child.detach(true, document, insertedSet)
       for (const child of inserted) {
         this.adopt(child)
         this.linkBefore(child, null)
@@ -288,7 +306,8 @@ export abstract class Node extends EventTarget {
       const normalized = value === null ? "" : String(value)
       const added = normalized === "" || !document ? [] : [document.createTextNode(normalized)]
       this.validateInsertion(added, removed)
-      for (const child of removed) child.detach(false)
+      this.parkRemovedGroups(removed, new Set())
+      for (const child of removed) if (child.parent === this) child.detach(false)
       for (const child of added) this.linkBefore(child, null)
       if (removed.length > 0 || added.length > 0) {
         this.recordChildMutation(added, removed, null, null)
@@ -366,7 +385,11 @@ export abstract class Node extends EventTarget {
   private convertNodes(nodes: readonly NodeOrString[]): readonly Node[] {
     const document = mutationDocument(this)
     if (!document) throw domError("InvalidStateError", "The node has no associated Document")
-    const converted = nodes.map(node => node instanceof Node ? node : document.createTextNode(String(node)))
+    const converted: Node[] = []
+    for (const node of nodes) {
+      if (node instanceof DOMGroup) converted.push(...node[groupRange]())
+      else converted.push(node instanceof Node ? node : document.createTextNode(String(node)))
+    }
     const result: Node[] = []
     const fragmentChildren = new Map<Node, Node[]>()
     const childrenOf = (fragment: Node): Node[] => {
@@ -408,6 +431,79 @@ export abstract class Node extends EventTarget {
     return document ? document.transaction(callback) : callback()
   }
 
+  [insertGroupContent](group: DOMGroup, content: readonly NodeOrString[], before: Node): void {
+    this.withMutationTransaction(() => {
+      const range = group[groupRange]()
+      if (range[0]!.parentNode !== this) throw domError("NotFoundError", "DOMGroup does not belong to this parent")
+      const inserted = this.convertNodes(content)
+      if (inserted.includes(range[0]!) || inserted.includes(range.at(-1)!)) throw domError("HierarchyRequestError", "DOMGroup cannot contain its boundaries")
+      this.validateInsertion(inserted, [])
+      this.insertNodes(inserted, before)
+    })
+  }
+
+  [replaceGroupContent](group: DOMGroup, content: readonly NodeOrString[]): void {
+    const range = group[groupRange]()
+    this[replaceDOMRangeContent](range[0]!, range.at(-1)!, content)
+  }
+
+  [replaceDOMRangeContent](start: Node, end: Node, content: readonly NodeOrString[]): void {
+    this.withMutationTransaction(() => {
+      if (start === end || start.parentNode !== this || end.parentNode !== this) throw domError("InvalidStateError", "DOM range boundaries must share one parent")
+      const removed: Node[] = []
+      let cursor = start.nextSibling
+      while (cursor && cursor !== end) {
+        removed.push(cursor)
+        cursor = cursor.nextSibling
+      }
+      if (cursor !== end) throw domError("InvalidStateError", "DOM range boundaries must preserve their order")
+      const inserted = this.convertNodes(content)
+      if (inserted.includes(start) || inserted.includes(end)) throw domError("HierarchyRequestError", "DOM range cannot contain its boundaries")
+      this.validateInsertion(inserted, removed)
+      const retained = new Set(inserted)
+      this.parkRemovedGroups(removed, retained)
+      const document = connectedMutationDocument(this)
+      const detached: Node[] = []
+      for (const node of removed) if (!retained.has(node) && node.parent === this) {
+        detached.push(node)
+        node.detach(false)
+      }
+      const added: Node[] = []
+      let before = end
+      for (let index = inserted.length - 1; index >= 0; index--) {
+        const node = inserted[index]!
+        if (node.parent !== this || node.next !== before) {
+          if (node.parent === this) detached.push(node)
+          node.detach(node.parent !== this, document, retained)
+          this.adopt(node)
+          this.linkBefore(node, before)
+          added.push(node)
+        }
+        before = node
+      }
+      if (added.length || detached.length || removed.some(node => !retained.has(node))) {
+        this.recordChildMutation(added.reverse(), removed.filter(node => !retained.has(node)).concat(detached.filter(node => retained.has(node))), start, end)
+      }
+    })
+  }
+
+  private parkRemovedGroups(removed: readonly Node[], retained: ReadonlySet<Node>): void {
+    const removing = new Set(removed)
+    for (const node of removed) {
+      const group = groupStartingAt(node)
+      if (!group || node.parentNode !== this) continue
+      const range = group[groupRange]()
+      if (!range.every(node => removing.has(node))) continue
+      const parking = group[groupParking]()
+      for (const child of range) {
+        if (retained.has(child)) continue
+        child.detach(false)
+        parking.adopt(child)
+        parking.linkBefore(child, null)
+      }
+    }
+  }
+
   private insertNodes(nodes: readonly Node[], reference: Node | null): void {
     if (nodes.length === 0) return
     const moving = new Set(nodes)
@@ -416,7 +512,7 @@ export abstract class Node extends EventTarget {
       viableReference = viableReference.next
     }
     const document = connectedMutationDocument(this)
-    for (const node of nodes) node.detach(true, document)
+    for (const node of nodes) node.detach(true, document, moving)
     const previousSibling = viableReference ? viableReference.previous : this.last
     for (const node of nodes) {
       this.adopt(node)
@@ -437,7 +533,7 @@ export abstract class Node extends EventTarget {
 
     child.detach(true)
     const stateDocument = connectedMutationDocument(this)
-    for (const candidate of nodes) candidate.detach(true, stateDocument)
+    for (const candidate of nodes) candidate.detach(true, stateDocument, insertedSet)
     const remaining = [...this.childNodes]
     const reference = remaining[insertionIndex] ?? null
     this.insertNodes(nodes, reference)
@@ -450,7 +546,7 @@ export abstract class Node extends EventTarget {
       if (current.nodeType !== Node.DOCUMENT_NODE) {
         const previous = current.nodeDocument
         current.nodeDocument = document
-        customElementAdopted(current, previous, document)
+        lifecycleAdopted(current, previous, document)
       }
       for (const child of current.childNodes) visit(child)
     }
@@ -472,13 +568,13 @@ export abstract class Node extends EventTarget {
     this.childCount += 1
     invalidateTextPositionIndexes(this)
     if (tracksRanges) updateDocumentRanges(document, {type: "insert", parent: this, index})
-    customElementInserted(node)
+    lifecycleInserted(node)
   }
 
-  private detach(record: boolean, destinationDocument: Document | null = null): void {
+  private detach(record: boolean, destinationDocument: Document | null = null, moving?: ReadonlySet<Node>): void {
     const parent = this.parent
     if (!parent) return
-    customElementRemoving(this)
+    lifecycleRemoving(this, destinationDocument, moving)
     invalidateTextPositionIndexes(parent)
     const document = mutationDocument(this)
     const preservesDocumentState = document !== null && document === destinationDocument
@@ -515,16 +611,17 @@ export abstract class Node extends EventTarget {
     previousSibling: Node | null,
     nextSibling: Node | null
   ): void {
+    lifecycleContentChanged(this)
     const document = mutationDocument(this)
     if (!document || !this.isConnected) return
-    const mutation: ChildListMutation = Object.freeze({
+    const mutation: ChildListMutation = {
       type: "childList",
       target: this,
-      addedNodes: Object.freeze([...addedNodes]),
-      removedNodes: Object.freeze([...removedNodes]),
+      addedNodes: [...addedNodes],
+      removedNodes: [...removedNodes],
       previousSibling,
       nextSibling
-    })
+    }
     document.recordMutation(mutation)
   }
 }

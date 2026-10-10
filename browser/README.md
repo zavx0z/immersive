@@ -12,7 +12,7 @@
 Browser подключает один DOM к Canvas независимо от способа построения дерева.
 Императивный код создаёт элементы через Document и запускает DocumentRoot.
 Компонентный вход createRoot/render/unmount использует то же подключение,
-добавляя только исполнение компонентов. Ввод, стили, ресурсы и кадры сохраняют
+вызывая generated constructor/update/dispose фактического DOM-компонента. Ввод, стили, ресурсы и кадры сохраняют
 одного владельца и одну реализацию.
 
 ```tsx
@@ -23,12 +23,12 @@ const root = createRoot(canvas)
 root.render(<App />)
 ```
 
-Повторный render обновляет существующее дерево и сохраняет состояние по template/key.
+Повторный render обновляет существующее дерево и сохраняет состояние по constructor/key.
 render(null) очищает содержимое; после unmount нужен новый createRoot.
-Template compiler компилирует JSX в ComponentValue. Component монтирует App
-в body одного semantic Document. App объявляет единственные Space и ViewPoint.
+JSX compiler заменяет JSX аргумент данными construction, а сам App —
+самостоятельным DOM constructor. DOM root вставляет App в body одного semantic Document. App объявляет единственные Space и ViewPoint.
 
-В компоненте свободное имя `document` привязано Template к тому же semantic
+В компоненте свободное имя `document` привязано компилятором к тому же semantic
 Document; window.document и код подключения страницы остаются native.
 
 App может вернуть Fragment со stylesheet links и единственным Space:

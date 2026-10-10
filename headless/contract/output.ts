@@ -1,6 +1,4 @@
-import type {Element} from "@zavx0z/immersive-dom"
-import type {ComponentValue} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMConstruction, DOMComponentConstructor, Element} from "@zavx0z/immersive-dom"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {CapturedFrame} from "../native-canvas.ts"
 
@@ -10,8 +8,11 @@ import type {CapturedFrame} from "../native-canvas.ts"
 Все GPU-операции host сериализуются. Методы принимают только элементы его
 собственного `Document`; после `dispose` новые операции завершаются ошибкой.
 
-@property render - Монтирует скомпилированный JSX и возвращает единственный внешний Element.
-Рабочая область имеет размеры Canvas. Отрисовка ожидает загрузку текстур;
+@property render - Монтирует скомпилированный JSX и возвращает Element для чтения и снимка.
+Для единственного Element это сам узел компонента, включая фрагмент вокруг него.
+Для нескольких корней, отдельного текста или пустого
+результата возвращается уже существующий host рабочей области; дополнительная
+обёртка вокруг компонента не создаётся. Рабочая область имеет размеры Canvas. Отрисовка ожидает загрузку текстур;
 ошибка загрузки отклоняет операцию, не выдавая прозрачную заглушку за готовый кадр.
 
 @property renderComponent - Программно монтирует компонент с отдельно переданными props.
@@ -23,7 +24,7 @@ import type {CapturedFrame} from "../native-canvas.ts"
 @property capture - Возвращает RGBA8 и PNG одного кадра по границам элемента.
 Перед снимком применяет изменения компонента и ожидает ресурсы нового кадра.
 
-@property dispose - Освобождает component root, layout, GPU-поверхность и устройство; повторный вызов безопасен.
+@property dispose - Освобождает DOM root, layout, GPU-поверхность и устройство; повторный вызов безопасен.
 
 @example
 ```tsx
@@ -39,8 +40,8 @@ await headless.dispose()
 ```
 */
 export interface Headless {
-  render(value: JSX.Element | ComponentValue): Promise<Element>
-  renderComponent<Props>(type: ((props: Props) => JSX.Element) | CompiledTemplate<Props>, props: Props): Promise<Element>
+  render(value: JSX.Element | DOMConstruction<any>): Promise<Element>
+  renderComponent<Props>(type: ((props: Props) => JSX.Element) | DOMComponentConstructor<Props>, props: Props): Promise<Element>
   screenshot(element: Element): Promise<Buffer>
   screenshot(element: Element, format: "image"): Promise<Bun.Image>
   capture(element: Element): Promise<CapturedFrame>

@@ -7,8 +7,18 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts",
-    "./contract": "./contract/index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./contract": {
+      "source": "./contract/index.ts",
+      "types": "./dist/contract/index.d.ts",
+      "browser": "./dist/contract/index.js",
+      "default": "./dist/contract/index.js"
+    }
   },
   "dependencies": {
     "@zavx0z/immersive-nodes-node-diagram": "workspace:*",
@@ -34,7 +44,8 @@
     "@zavx0z/immersive-nodes-geometry-node-port-id": "workspace:*"
   },
   "scripts": {
-    "test": "bun test --preload @zavx0z/immersive-headless/preload ./spec ./tests",
-    "typecheck": "tsc --project tsconfig.json --pretty false"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel --preload @zavx0z/immersive-headless/preload ./spec ./tests",
+    "typecheck": "tsc --project tsconfig.json --pretty false",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   }
 }

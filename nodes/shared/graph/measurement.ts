@@ -1,5 +1,5 @@
 import {observeElementLayout, readElementLayoutRect} from "@zavx0z/immersive-dom/geometry"
-import {normalizeLinkRoute} from "../routing/link-path.ts"
+import {normalizeLinkRoute} from "@zavx0z/immersive-nodes/routing/link-path"
 import type {GraphInput, GraphLayoutComputer, GraphMeasuredLayout, GraphMeasurement, GraphScene} from "./contracts.ts"
 
 export type MeasuredGraphState = Readonly<{scene: GraphScene | null; pending: boolean; error: Error | null; generation: number}>

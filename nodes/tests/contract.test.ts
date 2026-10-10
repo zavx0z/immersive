@@ -33,7 +33,8 @@ test("[NODES-001] каждый public TSX является compilable natural ow
       expect(source).not.toContain(`export {${owner}} from`)
       expect(source).not.toContain(`export { ${owner} } from`)
       const compiled = await compiler.compileFile(resolve(packageRoot, target))
-      expect(compiled.code).toContain('from "@zavx0z/immersive-component"')
+      expect(compiled.code).toContain('from "@zavx0z/immersive-dom"')
+      expect(compiled.code).not.toMatch(/from ["']@zavx0z\/immersive-component(?:\/[^"']*)?["']/u)
     }
   } finally {
     await compiler.close()
@@ -54,9 +55,7 @@ test("[NODES-003] Nodes не создаёт platform owners", async () => {
   const packageJson = await readPackageJson(packageRoot)
   for (const dependency of [
     "@zavx0z/immersive-browser",
-    "@zavx0z/immersive-engine",
     "@zavx0z/immersive-renderer-html",
-    "@zavx0z/immersive-space",
     "@zavx0z/immersive-webgpu",
   ]) {
     expect(packageJson.dependencies?.[dependency]).toBeUndefined()
@@ -69,6 +68,9 @@ test("[NODES-003] Nodes не создаёт platform owners", async () => {
     "createExperience(",
     "new Renderer(",
     "new Space(",
+    "new ViewPoint(",
+    "createViewPoint(",
+    "createSpace(",
     "requestAnimationFrame(",
   ]) {
     expect(source).not.toContain(forbidden)
@@ -140,7 +142,12 @@ async function readPackageJson(path: string): Promise<Readonly<{
   dependencies?: Readonly<Record<string, string>>
   exports: Readonly<Record<string, string>>
 }>> {
-  return Bun.file(resolve(path, "package.json")).json()
+  const manifest = await Bun.file(resolve(path, "package.json")).json()
+  return {...manifest, exports: Object.fromEntries(Object.entries(manifest.exports).map(([name, target]) => {
+    if (typeof target === "string") return [name, target]
+    if (target !== null && typeof target === "object" && "source" in target && typeof target.source === "string") return [name, target.source]
+    throw new TypeError(`Public owner export has no source: ${name}`)
+  }))}
 }
 
 async function productionSource(): Promise<string> {

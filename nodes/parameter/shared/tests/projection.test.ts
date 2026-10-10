@@ -1,11 +1,11 @@
 import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, InputEvent, MouseEvent, type Element, type HTMLInputElement} from "@zavx0z/immersive-dom"
 import {Parameter as ParameterModel, type ParameterSnapshot} from "@zavx0z/immersive-nodes-tree"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {ParameterEndpoint} from "./parameter-endpoint"
 import type {ImmersiveNodesProjectionParameter} from "@zavx0z/immersive-nodes-projection-parameter"
 type ParameterInput = Parameters<NonNullable<ImmersiveNodesProjectionParameter.Input["onInput"]>>[0]
@@ -243,7 +243,7 @@ function mount(component: unknown, props: Readonly<Record<string, unknown>>) {
   const element = document.createElement("div")
   document.append(element)
   const root = createRoot(element)
-  const render = (next: Readonly<Record<string, unknown>>) => root.render(component as CompiledTemplate<typeof next>, next)
+  const render = (next: Readonly<Record<string, unknown>>) => root.render(component as DOMComponentConstructor<typeof next>, next)
   try {
     render(props)
   } catch (error) {

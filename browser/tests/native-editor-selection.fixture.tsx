@@ -1,4 +1,4 @@
-import {useSpace} from "@zavx0z/immersive-browser"
+import {useSpace} from "@zavx0z/immersive-browser/authoring"
 import ClipboardMenu from "@zavx0z/immersive-ui-component-menu-clipboard"
 import Editor from "@zavx0z/immersive-ui-component-widget-editor"
 import type CodeEditorModel from "@zavx0z/immersive-tech-text-editor"

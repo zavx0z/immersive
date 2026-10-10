@@ -2,22 +2,28 @@ import {mkdir, mkdtemp, readFile, readdir, realpath, rm, writeFile} from "node:f
 import {dirname, extname, relative, resolve, sep} from "node:path"
 import {API, SignatureKind} from "typescript/unstable/async"
 import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
-import {isFunctionDeclaration, isIdentifier, isImportTypeNode, isLiteralTypeNode, isModuleDeclaration, isStringLiteral, isTypeReferenceNode, isVariableStatement} from "typescript/unstable/ast/is"
+import {createCompilerFileSystem, getAuthoringDeclarations} from "@zavx0z/immersive-jsx-compiler-session"
+import {isCallExpression, isReturnStatement, isJsxElement, isJsxSelfClosingElement, isParenthesizedExpression, isFunctionDeclaration, isIdentifier, isImportTypeNode, isLiteralTypeNode, isModuleDeclaration, isStringLiteral, isTypeReferenceNode, isVariableStatement} from "typescript/unstable/ast/is"
 import type {Node, SourceFile} from "typescript/unstable/ast"
 
 /**
 Получает обычные declarations штатным TypeScript и связывает их с готовой
 поставкой. Импорты указывают на тот же граф объявлений; JSX-функции описываются
-публичным CompiledComponent, который действительно исполняет собранный модуль.
+публичным CompiledDOMComponent, который действительно исполняет собранный модуль.
 Исходники владельцев не копируются и не изменяются.
 */
-export async function buildDeclarations(root: string, outdir: string, inputs: readonly string[]) {
+export async function buildDeclarations(root: string, outdir: string, inputs: readonly string[], options: {
+  customConditions?: readonly string[]
+  preserve?: boolean
+  authoringFiles?: readonly string[]
+} = {}) {
   await mkdir(resolve(root, "tmp"), {recursive: true})
   const temporary = await mkdtemp(resolve(root, "tmp/declarations-"))
   const configPath = resolve(temporary, "tsconfig.json")
   const destination = resolve(outdir, "types")
-  const files = await filesIn(root)
-  const globals = files.filter(path => path.endsWith(".d.ts"))
+  const emission = options.preserve ? resolve(temporary, "emitted") : destination
+  const files = options.preserve ? [] : await filesIn(root)
+  const globals = files.filter(path => /\.d\.[cm]?ts$/u.test(path))
   const owners = new Map<string, string>()
   for (const path of files.filter(path => path.endsWith(`${sep}package.json`))) {
     const manifest = JSON.parse(await readFile(path, "utf8"))
@@ -28,33 +34,47 @@ export async function buildDeclarations(root: string, outdir: string, inputs: re
     extends: resolve(root, "tsconfig.json"),
     compilerOptions: {
       noEmit: false, declaration: true, emitDeclarationOnly: true,
-      declarationMap: false, rootDir: dirname(root), outDir: destination,
-      customConditions: ["source"], typeRoots: [resolve(root, "node_modules/@types")],
+      declarationMap: false, rootDir: dirname(root), outDir: emission,
+      customConditions: [...options.customConditions ?? ["source"]], typeRoots: [resolve(root, "node_modules/@types")],
     },
     files: entries, include: [], exclude: [],
   }
   try {
     await writeFile(configPath, JSON.stringify(config))
     const listed = await tsc(root, configPath, ["--listFilesOnly"])
-    const sourceFiles = listed.split(/\r?\n/u).filter(path => path.startsWith("/") && /\.[cm]?tsx?$/u.test(path) && !path.endsWith(".d.ts"))
-    const common = commonDirectory([root, ...sourceFiles.map(dirname)])
+    const sourceFiles = listed.split(/\r?\n/u).filter(path => path.startsWith("/") && /\.[cm]?tsx?$/u.test(path) && !/\.d\.[cm]?ts$/u.test(path))
+    const common = dirname(root)
+    if (sourceFiles.some(path => !path.startsWith(`${common}${sep}`))) {
+      throw new Error("Declaration source is outside the repository ownership contour")
+    }
     config.compilerOptions.rootDir = common
     config.files = [...new Set([...entries, ...sourceFiles])]
     await writeFile(configPath, JSON.stringify(config))
-    await rm(destination, {recursive: true, force: true})
+    if (!options.preserve) await rm(destination, {recursive: true, force: true})
     await tsc(root, configPath)
+    // Ready siblings могут ссылаться на декларацию собственного contract.
+    // Native tsc пишет во временное дерево той же структуры, чтобы output не
+    // перезаписал его input; перемещаются только успешно выпущенные own файлы.
+    if (options.preserve) for (const source of sourceFiles) {
+      const path = relative(common, declarationPath(source))
+      const target = resolve(destination, path)
+      await mkdir(dirname(target), {recursive: true})
+      await writeFile(target, await readFile(resolve(emission, path)))
+    }
     for (const path of listed.split(/\r?\n/u)) {
-      if (!path.startsWith("/") || !path.endsWith(".d.ts") || path.includes(`${sep}node_modules${sep}`)) continue
+      if (!globals.includes(path)) continue
       const target = resolve(destination, relative(common, path))
       await mkdir(dirname(target), {recursive: true})
       await writeFile(target, await readFile(path))
     }
-    const declarations = (await filesIn(destination)).filter(path => path.endsWith(".d.ts"))
     const sourceFor = (path: string) => {
-      const base = resolve(common, relative(destination, path).replace(/\.d\.ts$/u, ""))
-      return sourceFiles.find(source => source === `${base}.tsx` || source === `${base}.ts`) ?? `${base}.d.ts`
+      const base = resolve(common, relative(destination, path).replace(/\.d\.[cm]?ts$/u, ""))
+      return sourceFiles.find(source => ["tsx", "ts", "mts", "cts"].some(extension => source === `${base}.${extension}`)) ?? `${base}.d.ts`
     }
-    const declarationFor = (path: string) => resolve(destination, relative(common, path.endsWith(".d.ts") ? path : path.replace(/\.[cm]?tsx?$/u, ".d.ts")))
+    const declarationFor = (path: string) => resolve(destination, relative(common, declarationPath(path)))
+    const declarations = options.preserve
+      ? [...new Set([...sourceFiles, ...globals].map(declarationFor))]
+      : (await filesIn(destination)).filter(path => /\.d\.[cm]?ts$/u.test(path))
     await withDeclarations(root, destination, declarations, async (project, source) => {
       const edits: Edit[] = []
       // TypeScript сохраняет reference относительно исходного .d.ts даже после
@@ -100,17 +120,20 @@ export async function buildDeclarations(root: string, outdir: string, inputs: re
           edits.push({start: specifier.getStart(source), end: specifier.end, text: JSON.stringify(modulePath(dirname(source.fileName), jsonPath))})
           continue
         }
-        if (!sourceFiles.includes(target) && !globals.includes(target)) continue
+        if (!sourceFiles.includes(target) && !globals.includes(target) &&
+          (!target.startsWith(`${root}${sep}`) || !await Bun.file(declarationFor(target)).exists())) continue
         edits.push({start: specifier.getStart(source), end: specifier.end, text: JSON.stringify(modulePath(dirname(source.fileName), declarationFor(target)))})
       }
       await applyEdits(source, edits)
     })
-    const componentTypes = declarationFor(resolve(root, "component/src/index.ts"))
-    const sourceSlots = await componentSlots(root, sourceFiles)
+    const componentTypes = declarationFor(resolve(root, "jsx/compiler/session/contract/compiled.ts"))
+    const domTypes = declarationFor(resolve(root, "dom/src/index.ts"))
+    const sourceInfo = await componentInfo(root, options.authoringFiles ?? sourceFiles, options.customConditions)
     await withDeclarations(root, destination, declarations, async (project, source) => {
-      if (!sourceFor(source.fileName).endsWith(".tsx")) return
+      const info = sourceInfo.get(sourceFor(source.fileName))
+      if (!info) return
       const edits: Edit[] = []
-      const compiled = `import(${JSON.stringify(modulePath(dirname(source.fileName), componentTypes))}).CompiledComponent`
+      const compiled = `import(${JSON.stringify(modulePath(dirname(source.fileName), componentTypes))}).CompiledDOMComponent`
       const compiledResult = async (node: Node) => {
         const type = await project.checker.getTypeAtLocation(node)
         if (!type || Array.isArray(type)) return false
@@ -124,18 +147,32 @@ export async function buildDeclarations(root: string, outdir: string, inputs: re
           const modifiers = statement.modifiers?.map(node => node.getText(source)) ?? []
           const input = statement.parameters[0]?.type?.getText(source) ?? "Record<string, never>"
           const name = statement.name.text
-          const slots = sourceSlots.get(sourceFor(source.fileName))?.get(name) ?? []
-          const signature = `${compiled}<${input}, ${statement.type.getText(source)}>${slots.length ? ` & {readonly slots: readonly ${JSON.stringify(slots)}}` : ""}`
+          const author = info.get(name)
+          const slots = author?.slots ?? []
+          const target = author?.tag ? `, import(${JSON.stringify(modulePath(dirname(source.fileName), componentTypes))}).DOMIntrinsicTarget<${JSON.stringify(author.tag)}> & import(${JSON.stringify(modulePath(dirname(source.fileName), domTypes))}).DOMComponent<${input}>` : ""
+          const signature = `${compiled}<${input}, ${statement.type.getText(source)}${target}>${slots.length ? ` & {readonly slots: readonly ${JSON.stringify(slots)}}` : ""}`
           const text = modifiers.includes("default")
             ? `declare const ${name}: ${signature}\nexport default ${name}`
             : `${modifiers.includes("export") ? "export " : ""}declare const ${name}: ${signature}`
+          edits.push({start: statement.getStart(source), end: statement.end, text})
+        } else if (isFunctionDeclaration(statement) && statement.name && statement.type && info.get(statement.name.text)?.hook) {
+          const name = statement.name.text
+          const generics = statement.typeParameters?.length ? `<${statement.typeParameters.map(value => value.getText(source)).join(", ")}>` : ""
+          const signature = `${generics}(${statement.parameters.map(value => value.getText(source)).join(", ")}) => ${statement.type.getText(source)}`
+          const type = `import(${JSON.stringify(modulePath(dirname(source.fileName), componentTypes))}).CompiledHookFactory<${signature}>`
+          const modifiers = statement.modifiers?.map(node => node.getText(source)) ?? []
+          const text = modifiers.includes("default") ? `declare const ${name}: ${type}\nexport default ${name}` : `${modifiers.includes("export") ? "export " : ""}declare const ${name}: ${type}`
           edits.push({start: statement.getStart(source), end: statement.end, text})
         } else if (isVariableStatement(statement)) {
           for (const declaration of statement.declarationList.declarations) {
             if (!isIdentifier(declaration.name) || !declaration.type || !await compiledResult(declaration.name)) continue
             const type = declaration.type.getText(source)
+            const author = info.get(declaration.name.text)
+            const input = `Parameters<${type}>[0]`
+            const target = author?.tag ? `, import(${JSON.stringify(modulePath(dirname(source.fileName), componentTypes))}).DOMIntrinsicTarget<${JSON.stringify(author.tag)}> & import(${JSON.stringify(modulePath(dirname(source.fileName), domTypes))}).DOMComponent<${input}>` : ""
+            const slots = author?.slots ?? []
             edits.push({start: declaration.type.getStart(source), end: declaration.type.end,
-              text: `${compiled}<Parameters<${type}>[0], ReturnType<${type}>>`})
+              text: `${compiled}<${input}, ReturnType<${type}>${target}>${slots.length ? ` & {readonly slots: readonly ${JSON.stringify(slots)}}` : ""}`})
           }
         }
       }
@@ -146,10 +183,12 @@ export async function buildDeclarations(root: string, outdir: string, inputs: re
 }
 
 /** Публикует реальные outlets тем же анализатором, который использует JSX compiler. */
-async function componentSlots(root: string, sourceFiles: readonly string[]) {
-  const files = sourceFiles.filter(path => path.endsWith(".tsx"))
-  const result = new Map<string, Map<string, readonly string[]>>()
-  const api = new API({cwd: root})
+async function componentInfo(root: string, sourceFiles: readonly string[], customConditions?: readonly string[]) {
+  const files = sourceFiles.filter(path => path.startsWith(`${root}/`) && /\.tsx?$/u.test(path))
+  type Info = {slots: readonly string[]; tag: string | null; hook: boolean}
+  const result = new Map<string, Map<string, Info>>()
+  const fs = createCompilerFileSystem(customConditions, customConditions === undefined ? undefined : files)
+  const api = new API({cwd: root, ...(fs ? {fs} : {})})
   const snapshot = await api.updateSnapshot({openFiles: files})
   try {
     for (const file of files) {
@@ -157,9 +196,32 @@ async function componentSlots(root: string, sourceFiles: readonly string[]) {
       const source = await project?.program.getSourceFile(file)
       if (!source) continue
       const authoring = new SlotAuthoring(source)
-      const names = new Map<string, readonly string[]>()
+      const names = new Map<string, Info>()
+      const profile = getAuthoringDeclarations(source)
+      const hooks = new Set(profile.hooks)
+      for (const statement of [...profile.components, ...profile.hooks]) {
+        if (!statement.name || !statement.body) continue
+        let tag: string | null = null
+        for (const child of statement.body.statements) {
+          if (!isReturnStatement(child) || !child.expression) continue
+          let value = child.expression
+          while (isParenthesizedExpression(value)) value = value.expression
+          const root = isJsxElement(value) ? value.openingElement : isJsxSelfClosingElement(value) ? value : null
+          const text = root?.tagName.getText(source)
+          if (text && text !== "slot" && /^[a-z]/u.test(text)) tag = text
+        }
+        const hook = hooks.has(statement)
+        names.set(statement.name.text, {slots: authoring.outlets(statement), tag, hook})
+      }
       for (const statement of source.statements) {
-        if (isFunctionDeclaration(statement) && statement.name) names.set(statement.name.text, authoring.outlets(statement))
+        if (!isVariableStatement(statement)) continue
+        for (const declaration of statement.declarationList.declarations) {
+          if (!isIdentifier(declaration.name) || !declaration.initializer || !isCallExpression(declaration.initializer)) continue
+          const argument = declaration.initializer.arguments[0]
+          if (!argument || !isIdentifier(argument)) continue
+          const info = names.get(argument.text)
+          if (info) names.set(declaration.name.text, info)
+        }
       }
       result.set(file, names)
     }
@@ -221,13 +283,13 @@ async function filesIn(root: string): Promise<string[]> {
   return result
 }
 
-function commonDirectory(paths: string[]) {
-  let common = paths[0]!
-  while (paths.some(path => path !== common && !path.startsWith(`${common}${sep}`))) common = dirname(common)
-  return common
+function modulePath(parent: string, target: string) {
+  const path = relative(parent, target).replaceAll(sep, "/")
+    .replace(/\.d\.mts$/u, ".mjs").replace(/\.d\.cts$/u, ".cjs").replace(/\.d\.ts$/u, ".js")
+  return path.startsWith(".") ? path : `./${path}`
 }
 
-function modulePath(parent: string, target: string) {
-  const path = relative(parent, target).replaceAll(sep, "/").replace(/\.d\.ts$/u, ".js")
-  return path.startsWith(".") ? path : `./${path}`
+function declarationPath(path: string) {
+  if (/\.d\.[cm]?ts$/u.test(path)) return path
+  return path.replace(/\.mts$/u, ".d.mts").replace(/\.cts$/u, ".d.cts").replace(/\.tsx?$/u, ".d.ts")
 }

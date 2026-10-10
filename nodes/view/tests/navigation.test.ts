@@ -2,10 +2,10 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, MouseEvent, WheelEvent} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, createDocumentInteractionController} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {GraphScene, GraphTransform, GraphViewProps} from "@zavx0z/immersive-nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")
@@ -30,7 +30,7 @@ function mount(extra: Partial<GraphViewProps> = {}) {
   const changes: GraphTransform[] = []
   const props: GraphViewProps = {scene, autoSize: true, navigation: "pan-zoom", minScale: 0, materializeCulled: true, overscan: 1000000,
     onTransformChange: value => changes.push(value), ...extra}
-  component.render(GraphView as unknown as CompiledTemplate<GraphViewProps>, props)
+  component.render(GraphView as unknown as DOMComponentConstructor<GraphViewProps>, props)
   const viewport = owner.querySelector("[data-graph-viewport]")!
   const first = owner.querySelector('[data-node-id="first"]')!
   const last = owner.querySelector('[data-node-id="last"]')!

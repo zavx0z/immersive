@@ -4,7 +4,7 @@ import {join, resolve} from "node:path"
 import {pathToFileURL} from "node:url"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {createDocument} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 
 test("default компонента и именованный API домена сохраняют template, слоты и состояние", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".imports-"))

@@ -1,9 +1,9 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {ImmersiveNodesNodeDiagram} from "@zavx0z/immersive-nodes-node-diagram"
 type DiagramNodeProps = ImmersiveNodesNodeDiagram.Input
 import "./compiler.ts"
@@ -20,11 +20,11 @@ for (const shape of ["rectangle", "oval", "circle"] as const) {
     const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 800, height: 800}, styleSheets: [theme]})
     try {
       const props: DiagramNodeProps = {id: "node", description: "Пример", shape, intrinsic: true}
-      root.render(DiagramNode as unknown as CompiledTemplate<DiagramNodeProps>, props)
+      root.render(DiagramNode as unknown as DOMComponentConstructor<DiagramNodeProps>, props)
       const node = owner.querySelector("article")!
       if (shape === "circle") {
         const rect = node.getLayoutRect()!
-        root.render(DiagramNode as unknown as CompiledTemplate<DiagramNodeProps>, {...props, rect: {x: 0, y: 0, width: rect.width, height: rect.height}})
+        root.render(DiagramNode as unknown as DOMComponentConstructor<DiagramNodeProps>, {...props, rect: {x: 0, y: 0, width: rect.width, height: rect.height}})
         expect(owner.querySelector("article")).toBe(node)
       }
       const rect = node.getLayoutRect()!

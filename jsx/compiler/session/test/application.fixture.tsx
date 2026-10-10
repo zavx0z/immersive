@@ -1,5 +1,6 @@
 import type {} from "@zavx0z/immersive-space"
-import {createRoot, useFrame, useSpace} from "@zavx0z/immersive-browser"
+import {createRoot} from "@zavx0z/immersive-browser"
+import {useFrame, useSpace} from "@zavx0z/immersive/XReact"
 import {createRoot as createHostRoot} from "@zavx0z/immersive-browser/integration"
 import {useDocument, useLayoutEffect, useRef, useState} from "@zavx0z/immersive-component"
 

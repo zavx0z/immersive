@@ -1,5 +1,6 @@
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
-import {memo, createRoot} from "@zavx0z/immersive-component"
+import {memo} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument} from "@zavx0z/immersive-dom"
 
 /** Native semantic fixture проверяет типы автора; этот TSX не исполняется без compiler. */

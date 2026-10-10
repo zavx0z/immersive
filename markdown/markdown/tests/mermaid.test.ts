@@ -1,11 +1,11 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
 import {createDocument, type Element} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {parseMermaidFlowchart} from "../../mermaid/src/parser.ts"
 import type {MermaidGraph} from "../../mermaid/types/graph.ts"
 import type {MarkdownProps} from "../contract/input.ts"
@@ -41,7 +41,7 @@ test("[MARKDOWN-MERMAID-VIEW] a Markdown fence becomes native nodes and arrows a
   const owner = document.createElement("div")
   document.append(owner)
   const component = createRoot(owner)
-  const template = Markdown as unknown as CompiledTemplate<MarkdownProps>
+  const template = Markdown as unknown as DOMComponentConstructor<MarkdownProps>
   const source = (target: string) => `# Diagram\n\nBefore\n\n\`\`\`mermaid\nflowchart LR\nA --> ${target}\n\`\`\`\n\nAfter`
   const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 1000, height: 900}})
   try {
@@ -125,7 +125,7 @@ test("[MARKDOWN-MEASURED-REFERENCE] семь нод исходного обсу�
     styleSheets: [await Bun.file(Bun.resolveSync("@zavx0z/immersive-ui-component/theme/theme.css", import.meta.dir)).text()],
   })
   try {
-    component.render(Markdown as unknown as CompiledTemplate<MarkdownProps>, {source: "```mermaid\n" + source + "\n```"})
+    component.render(Markdown as unknown as DOMComponentConstructor<MarkdownProps>, {source: "```mermaid\n" + source + "\n```"})
     await settled(owner, renderer, component)
     const surface = owner.querySelector("[data-graph-scene]")!
     const elements = graph.nodes.map(node => owner.querySelector(`article[data-node-id="${node.id}"]`)!)
@@ -186,7 +186,7 @@ test("[MARKDOWN-CONTOUR-CIRCLE] intrinsic круг становится квад
   const component = createRoot(owner)
   const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 800, height: 800}})
   try {
-    component.render(Markdown as unknown as CompiledTemplate<MarkdownProps>, {source: "```mermaid\nflowchart TD\nA --> B\nB@{ shape: circle }\n```"})
+    component.render(Markdown as unknown as DOMComponentConstructor<MarkdownProps>, {source: "```mermaid\nflowchart TD\nA --> B\nB@{ shape: circle }\n```"})
     await settled(owner, renderer, component)
     const circle = owner.querySelector('[data-node-id="B"]')!
     const rect = circle.getLayoutRect()!

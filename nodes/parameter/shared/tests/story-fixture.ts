@@ -1,11 +1,11 @@
 import socketKey from "@zavx0z/immersive-nodes-model-socket-key"
 import {expect} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, MouseEvent} from "@zavx0z/immersive-dom"
 import {createSpaceElementFactories} from "@zavx0z/immersive-space"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import {PARAMETER_EXAMPLES, parameterFixture, type ParameterMechanism} from "./parameter.fixture.ts"
 
 const workspace = resolve(import.meta.dir, "../../../..")
@@ -43,7 +43,7 @@ export async function mountParameterStory(mechanism: ParameterMechanism, variant
         {id: "in", direction: "input" as const, side: "left" as const, parameterId: "value"},
         {id: "out", direction: "output" as const, side: "right" as const, parameterId: "value"},
       ] : []
-  const render = () => root.render(Parameter as unknown as CompiledTemplate<Props>, {
+  const render = () => root.render(Parameter as unknown as DOMComponentConstructor<Props>, {
     nodeId: "parameter-example",
     snapshot: parameter.snapshot(),
     sockets: endpoints,

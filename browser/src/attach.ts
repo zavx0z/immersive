@@ -277,7 +277,7 @@ type AnimationProjection = {
 export const createAttachedRoot = async (
   options: PresentationOptions & {font: TrueTypeFont},
   document: Document,
-  content: Readonly<{flush(): number; unmount(): void}> | null,
+  content: Readonly<{flush(): void; unmount(): void}> | null,
   environment: RootEnvironment,
   claim: PresentationHostClaim,
   createRuntime: RootRuntimeFactory,

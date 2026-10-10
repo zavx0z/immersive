@@ -1,4 +1,4 @@
-import {useEffect, useSyncExternalStore} from "@zavx0z/immersive-component"
+import {useEffect, useSyncExternalStore} from "@zavx0z/immersive-component/authoring"
 import type {MarkdownImageSource} from "../src/media.ts"
 
 export type CallerImageProps = Readonly<{

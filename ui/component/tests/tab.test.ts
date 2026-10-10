@@ -1,11 +1,11 @@
 import {describe, expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
 import {createDocumentInteractionController, createDocumentRenderer, hitTestProjection} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {ImmersiveUiComponentSurfaceTab} from "@zavx0z/immersive-ui-component-surface-tab"
 type TabProps = ImmersiveUiComponentSurfaceTab.Input
 
@@ -28,7 +28,7 @@ function mount(projection: "hud" | "display") {
   const changes: Array<{edge: string; offset: number; phase: string}> = []
   const props: TabProps = {label: "Tab", length: 96, thickness: 28, onPositionChange(position, phase) { changes.push({...position, phase}) }}
   const component = createRoot(owner)
-  const render = (patch: Partial<TabProps> = {}) => component.render(Tab as unknown as CompiledTemplate<TabProps>, {...props, ...patch})
+  const render = (patch: Partial<TabProps> = {}) => component.render(Tab as unknown as DOMComponentConstructor<TabProps>, {...props, ...patch})
   render()
   const renderer = createDocumentRenderer({document, root: owner, viewport: {width: 640, height: 360}, styleSheets: [theme],
     ...(projection === "display" ? {projectClientPoint: (point: {x: number; y: number}) => ({x: point.x * .5 + 40, y: point.y * .5 + 20})} : {}),
@@ -65,7 +65,7 @@ describe.each(["hud", "display"] as const)("Tab в %s", projection => {
   test("боковая подпись идёт вдоль вертикального края", () => {
     const f = mount(projection)
     try {
-      f.component.render(TabVerticalLabelFixture as unknown as CompiledTemplate<Record<string, never>>, {})
+      f.component.render(TabVerticalLabelFixture as unknown as DOMComponentConstructor<Record<string, never>>, {})
       const caption = f.owner.querySelector("[data-tab] span")!
       const box = f.flush().boxByNode.get(caption)!
       expect(box.height, "Вертикальная строка должна быть выше своей ширины").toBeGreaterThan(box.width)
@@ -93,7 +93,7 @@ describe.each(["hud", "display"] as const)("Tab в %s", projection => {
   test("children сохраняет клик кнопки и позволяет перетаскивание за кнопку", () => {
     const f = mount(projection)
     try {
-      f.component.render(TabChildrenFixture as unknown as CompiledTemplate<Pick<TabProps, "position">>, {position: {edge: "top", offset: .5}})
+      f.component.render(TabChildrenFixture as unknown as DOMComponentConstructor<Pick<TabProps, "position">>, {position: {edge: "top", offset: .5}})
       f.flush()
       const tab = f.owner.querySelector("[data-tab]")!
       const child = tab.querySelector("button")!

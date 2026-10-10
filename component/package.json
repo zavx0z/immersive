@@ -2,7 +2,7 @@
   "name": "@zavx0z/immersive-component",
   "label": "Компоненты",
   "version": "0.0.0",
-  "description": "Состояние компонентов, хуки, контекст, эффекты и освобождение ресурсов",
+  "description": "Авторские JSX hooks и композиция, компилируемые в конкретные DOM компоненты",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -11,24 +11,28 @@
     "./slot": "./slot/index.ts",
     "./slot-presence": "./slot-presence/index.ts",
     "./compatibility": "./src/compatibility.ts",
-    "./compatibility.json": "./compatibility.json"
+    "./compatibility.json": "./compatibility.json",
+    "./authoring": {
+      "source": "./authoring.ts",
+      "types": "./dist/authoring.d.ts",
+      "default": "./dist/authoring.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests slot/test slot-presence/test",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests slot/test slot-presence/test",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependencies": {
     "@zavx0z/immersive-dom": "workspace:*",
-    "@zavx0z/immersive-template": "workspace:*",
     "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "peerDependenciesMeta": {
     "@zavx0z/immersive-dom": {
       "optional": true
-    },
-    "@zavx0z/immersive-template": {
-      "optional": true
     }
+  },
+  "devDependencies": {
+    "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   }
 }

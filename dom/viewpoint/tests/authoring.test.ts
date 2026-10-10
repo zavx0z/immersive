@@ -4,12 +4,12 @@ import {resolve, join} from "node:path"
 import {pathToFileURL} from "node:url"
 import {createDocument} from "../../src/index.ts"
 import type {ViewPointElement} from "../index.ts"
-import {createRoot} from "../../../component/src/index.ts"
+import {createDomRoot} from "../../root/index.ts"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 
 test("Повторный JSX render сохраняет команды камеры и ref, изменение атрибута обновляет тот же элемент", async () => {
   const output = await mkdtemp(join(import.meta.dir, ".authoring-"))
-  const root = createRoot(createDocument())
+  const root = createDomRoot(createDocument())
   try {
     const result = await Bun.build({
       entrypoints: [resolve(import.meta.dir, "authoring.fixture.tsx")],
@@ -20,13 +20,8 @@ test("Повторный JSX render сохраняет команды камер
         {
           name: "canonical-owner-test-runtime",
           setup(build) {
-            const owners: Record<string, string> = {
-              "@zavx0z/immersive-component": resolve(import.meta.dir, "../../../component/src/index.ts"),
-              "@zavx0z/immersive-dom": resolve(import.meta.dir, "../../src/index.ts"),
-              "@zavx0z/immersive-template/compiled": resolve(import.meta.dir, "../../../template/compiled.ts"),
-            }
-            build.onResolve({filter: /^@zavx0z\/immersive-(?:component|dom|template\/compiled)$/}, args => ({
-              path: owners[args.path]!, external: true,
+            build.onResolve({filter: /^@zavx0z\/immersive-dom(?:\/.*)?$/}, args => ({
+              path: Bun.resolveSync(args.path, resolve(import.meta.dir, "../../..")), external: true,
             }))
           },
         },

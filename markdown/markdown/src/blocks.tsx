@@ -1,7 +1,7 @@
-import {useContext, useEffect, useState} from "@zavx0z/immersive-component"
+import {useContext, useEffect, useState} from "@zavx0z/immersive-component/authoring"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import {MarkdownMediaContext, type MarkdownImageLease} from "./media.ts"
-import {Mermaid} from "../../mermaid/index.tsx"
+import {Mermaid} from "@zavx0z/immersive-markdown/mermaid"
 import type {
   MarkdownBlock,
   MarkdownInline,

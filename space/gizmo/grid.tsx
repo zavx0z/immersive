@@ -1,9 +1,9 @@
 import {resolveTransform, type TransformProps} from "../src/props.ts"
-import {useMemo} from "@zavx0z/immersive-component"
+import {useMemo} from "@zavx0z/immersive-component/authoring"
 import {GridHelper, LineBasicMaterial} from "@zavx0z/immersive-engine"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
-import type {LineSegmentsProps} from "../shape/line-segments.tsx"
-import "../src/jsx.ts"
+import type {LineSegmentsProps} from "@zavx0z/immersive-space/shape/line-segments"
+import "@zavx0z/immersive-space"
 
 export type GridProps = TransformProps & Omit<LineSegmentsProps, "factory"> & Readonly<{
   /** Сторона квадратной сетки в мм; конечное число строго больше нуля. */

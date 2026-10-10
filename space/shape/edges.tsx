@@ -1,11 +1,11 @@
-import {useMemo} from "@zavx0z/immersive-component"
+import {useMemo} from "@zavx0z/immersive-component/authoring"
 import {LineBasicMaterial} from "@zavx0z/immersive-engine"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {SpatialEdgesProps} from "./edges/contract/input.ts"
 import {cacheSpatialRoutes, createSpatialBatch, spatialStyleSignature, updateSpatialColors} from "./edges/src/batch.ts"
 import {readSpatialHit} from "@zavx0z/immersive-space"
 import {hitSpatialBatch} from "./edges/src/hit.ts"
-import "../src/jsx.ts"
+import "@zavx0z/immersive-space"
 
 export type {SpatialEdgesProps} from "./edges/contract/input.ts"
 export type {SpatialEdge} from "./edges/contract/edge.ts"

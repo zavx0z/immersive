@@ -65,7 +65,7 @@ test.each(["@zavx0z/immersive-jsx-compiler-session", "@zavx0z/immersive-jsx"])("
   try {
     const result = await compiler.compileFile(sourcePath)
     expect(result.code).toContain('document.createElement("test-scene")')
-    expect(result.code).toContain('from "@zavx0z/immersive-component"')
+    expect(result.code).toContain('from "@zavx0z/immersive-dom"')
     expect(result.capabilityUsages).toContainEqual(expect.objectContaining({
       kind: "intrinsic-element",
       profile: "template-extension",

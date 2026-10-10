@@ -20,7 +20,9 @@ test("[UI-COMPILED-SURFACE-001] shared surface chrome is governed TSX rather tha
       "view/timeline/index.tsx",
     ]) {
       const result = await compiler.compileFile(resolve(uiRoot, relativePath))
-      expect(result.code).toContain('from "@zavx0z/immersive-component"')
+      expect(result.code).toContain('from "@zavx0z/immersive-dom"')
+      expect(result.code).not.toMatch(/from ["']@zavx0z\/immersive-component(?:\/[^"']*)?["']/u)
+      expect(result.code).not.toContain("defineCompiledTemplate")
     }
   } finally {
     await compiler.close()

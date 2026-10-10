@@ -6,13 +6,21 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./index.ts",
-    "./preload": "./preload/index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./preload": {
+      "source": "./preload/index.ts",
+      "types": "./dist/preload/index.d.ts",
+      "default": "./dist/preload/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --preload ./preload/index.ts --parallel tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --preload ./preload/index.ts --parallel tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
     "bun-webgpu": "^0.1.7"

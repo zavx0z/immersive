@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocument, readDocumentScrollIntoViewRequests} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {TypeDocProps} from "../typedoc/index.tsx"
 import type {TypeDocNavigationHandle} from "../typedoc/types/navigation.ts"
 import {analyzeTypeDoc} from "../parser/index.ts"
@@ -25,7 +25,7 @@ test("реальная вёрстка выбирает examples после ух�
   document.append(container)
   const ready: {handle: TypeDocNavigationHandle | null} = {handle: null}
   const component = createRoot(container)
-  component.render(TypeDoc as unknown as CompiledTemplate<TypeDocProps>, {
+  component.render(TypeDoc as unknown as DOMComponentConstructor<TypeDocProps>, {
     document: parsed.document,
     onReady(value) { ready.handle = value },
   })

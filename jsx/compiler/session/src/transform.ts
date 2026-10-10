@@ -28,6 +28,7 @@ import {
   isBinaryExpression,
   isConditionalExpression,
   isDoStatement,
+  isElementAccessExpression,
   isExportDeclaration,
   isExternalModuleReference,
   isForInStatement,
@@ -57,8 +58,12 @@ import {
   isStringLiteral,
   isSwitchStatement,
   isTaggedTemplateExpression,
+  isTrueLiteral,
+  isFalseLiteral,
+  isNumericLiteral,
   isTemplateExpression,
   isTryStatement,
+  isTypeNode,
   isVariableDeclaration,
   isVariableDeclarationList,
   isVariableStatement,
@@ -82,6 +87,13 @@ import {
 import {parseCssTemplateShape} from "@zavx0z/immersive-template/css-shape"
 import planSlots from "@zavx0z/immersive-jsx-slot-plan"
 import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
+import {emitDomComponent, type DirectBinding} from "./dom-codegen.ts"
+import {lowerHooks} from "./hook-lowering.ts"
+import {emitDomImports, pruneDomImports} from "./dom-imports.ts"
+import {emitCustomHook} from "./hook-codegen.ts"
+import {componentReturn, getAuthoringDeclarations} from "./source-profile.ts"
+import type {JsxSourceRange} from "../contract/output.ts"
+import {composeSourceRanges, sourceRangesForEdits} from "./source-ranges.ts"
 
 type Edit = Readonly<{start: number; end: number; text: string}>
 
@@ -91,6 +103,7 @@ type PropsBindings = Readonly<{
 }>
 
 type CompileContext = {
+  readonly standalonePropsSpread?: boolean
   readonly componentSlots: ReadonlyMap<number, readonly string[]>
   readonly slotProps: string | null
   readonly componentName: string
@@ -102,6 +115,7 @@ type CompileContext = {
   readonly cssTemplateReferences: Map<number, Set<Node>>
   readonly cssTemplateSites: Map<number, Set<Node>>
   readonly childrenExpressionKinds: ReadonlyMap<Node, JsxChildrenExpressionKind>
+  readonly jsxOrigins: JsxTransformSymbols["jsxOrigins"]
   readonly helper: string
   readonly propsBindings: PropsBindings
   readonly source: string
@@ -114,7 +128,7 @@ type CompileContext = {
   readonly unstableStyleSymbols: ReadonlySet<number>
   readonly arrayExpressions: ReadonlySet<Node>
   readonly mount: string[]
-  readonly bindings: string[]
+  readonly bindings: DirectBinding[]
   readonly styleFragments: CompiledStyleFragment[]
   readonly writes: string[]
   nodeIndex: number
@@ -125,13 +139,17 @@ type ComponentExpression = Readonly<{
   key: string
   props: string
   template: string
+  content: string
+  mergedProps?: boolean
 }>
 
 type ComponentExpressionContext = Readonly<{
+  standalonePropsSpread?: boolean
   componentSlots: ReadonlyMap<number, readonly string[]>
   slotProps: string | null
   arrayExpressions: ReadonlySet<Node>
   childrenExpressionKinds: ReadonlyMap<Node, JsxChildrenExpressionKind>
+  jsxOrigins: ReadonlyMap<Node, readonly import("@zavx0z/immersive-jsx-slot-authoring").JsxOrigin[]>
   components: ReadonlySet<number>
   consumedCss: Set<Node>
   consumedJsx: Set<Node>
@@ -171,6 +189,8 @@ const supportedHooks = Object.freeze([
   "useRef",
   "useState",
   "useSyncExternalStore",
+  "useFrame",
+  "useSpace",
 ] as const)
 
 export const jsxAuthoringProfile = Object.freeze({
@@ -222,6 +242,7 @@ export type JsxTransformSymbols = Readonly<{
   arrayExpressions: ReadonlySet<Node>
   byNode: ReadonlyMap<Node, number>
   childrenExpressionKinds: ReadonlyMap<Node, JsxChildrenExpressionKind>
+  jsxOrigins: ReadonlyMap<Node, readonly import("@zavx0z/immersive-jsx-slot-authoring").JsxOrigin[]>
   cssIntrinsicSymbols: ReadonlySet<number>
   dependencyPaths: ReadonlySet<string>
   documentSymbols: ReadonlySet<number>
@@ -246,6 +267,7 @@ export type JsxChildrenExpressionKind =
 export type JsxTransformOptions = Readonly<{
   styleSourceModuleId?: string
   jsxImportSource?: string
+  onSourceRanges?: (ranges: readonly JsxSourceRange[]) => void
 }>
 
 /** Lowers the bounded component TSX profile into the shared compiled-template ABI. */
@@ -263,6 +285,14 @@ export function transformJsxSourceFile(
   const styleSourceModuleId = normalizedStyleSourceModuleId(options.styleSourceModuleId)
   const helper = uniqueHelperPrefix(source)
   const edits: Edit[] = []
+  const presenceAliases: string[] = []
+  for (const statement of sourceFile.statements) {
+    if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier) ||
+      !["@zavx0z/immersive-component/slot-presence", "@zavx0z/immersive/XReact/slot-presence", "@zavx0z/immersive-component/authoring", "@zavx0z/immersive/XReact"].includes(statement.moduleSpecifier.text)) continue
+    const named = statement.importClause?.namedBindings
+    if (statement.importClause?.phaseModifier !== SyntaxKind.TypeKeyword && statement.moduleSpecifier.text.endsWith("/slot-presence") && statement.importClause?.name) presenceAliases.push(statement.importClause.name.text)
+    if (named && isNamedImports(named)) for (const specifier of named.elements) if (!specifier.isTypeOnly && (specifier.propertyName?.text ?? specifier.name.text) === "hasSlot") presenceAliases.push(specifier.name.text)
+  }
   const runtimeBindings = runtimeImportBindings(
     sourceFile,
     symbols.byNode,
@@ -277,18 +307,7 @@ export function transformJsxSourceFile(
   )
   const cssTemplateReferences = new Map<number, Set<Node>>()
   const cssTemplateSites = new Map<number, Set<Node>>()
-  const componentDeclarations = sourceFile.statements.filter(
-    (statement): statement is FunctionDeclaration =>
-      isFunctionDeclaration(statement) &&
-      statement.name !== undefined &&
-      /^[A-Z]/.test(statement.name.text) &&
-      componentReturn(statement) !== null,
-  )
-  const customHookDeclarations = sourceFile.statements.filter(
-    (statement): statement is FunctionDeclaration =>
-      isFunctionDeclaration(statement) && statement.name !== undefined &&
-      /^use[A-Z0-9]/.test(statement.name.text),
-  )
+  const {components: componentDeclarations, hooks: customHookDeclarations} = getAuthoringDeclarations(sourceFile)
   const documentOwners = new Set([...componentDeclarations, ...customHookDeclarations].filter(declaration => {
     let usesDocument = false
     if (!declaration.body) return false
@@ -308,21 +327,6 @@ export function transformJsxSourceFile(
     })
     return usesDocument
   }))
-  if (documentOwners.size > 0) {
-    edits.push({
-      start: importInsertionOffset(source),
-      end: importInsertionOffset(source),
-      text: `import {useDocument as ${helper}Document} from "${componentRuntime}"\n`,
-    })
-    for (const declaration of customHookDeclarations) {
-      if (!documentOwners.has(declaration)) continue
-      edits.push({
-        start: declaration.body!.getStart(sourceFile) + 1,
-        end: declaration.body!.getStart(sourceFile) + 1,
-        text: `\n  const document = ${helper}Document()\n`,
-      })
-    }
-  }
   const consumedCss = new Set<Node>()
   const consumedJsx = new Set<Node>()
   let needsCompiledRuntime = false
@@ -402,6 +406,7 @@ export function transformJsxSourceFile(
         symbols.byNode,
         symbols.arrayExpressions,
         symbols.childrenExpressionKinds,
+        symbols.jsxOrigins,
         symbols.sourceIdentity,
         styleSourceModuleId,
         symbols.stylePrimitiveKinds,
@@ -413,11 +418,18 @@ export function transformJsxSourceFile(
         consumedJsx,
         documentOwners.has(declaration),
         componentSlots,
+        runtimeBindings.hooks,
+        customHookSymbols,
+        presenceAliases,
       ),
     })
   }
 
-  const componentRanges = componentDeclarations.map((declaration) => ({
+  for (const declaration of customHookDeclarations) {
+    edits.push({start: declaration.getStart(sourceFile), end: declaration.getEnd(), text: emitCustomHook(declaration, sourceFile, helper, runtimeBindings.hooks, customHookSymbols, symbols.byNode, presenceAliases)})
+  }
+
+  const componentRanges = [...componentDeclarations, ...customHookDeclarations].map((declaration) => ({
     start: declaration.getStart(sourceFile),
     end: declaration.getEnd(),
   }))
@@ -450,10 +462,11 @@ export function transformJsxSourceFile(
     const argument = skipParentheses(node.arguments[0]!)
     if (!isJsxElement(argument) && !isJsxSelfClosingElement(argument)) return
     const compiled = componentExpression(argument, {
+      standalonePropsSpread: true,
       componentSlots,
       slotProps: null,
       arrayExpressions: symbols.arrayExpressions,
-      childrenExpressionKinds: symbols.childrenExpressionKinds,
+      childrenExpressionKinds: symbols.childrenExpressionKinds, jsxOrigins: symbols.jsxOrigins,
       components: componentSymbols,
       consumedJsx,
       consumedCss,
@@ -472,19 +485,51 @@ export function transformJsxSourceFile(
     edits.push({
       start,
       end: node.getEnd(),
-      text: isComponentRootExpression(node.expression.expression, browserRoots, runtimeBindings.browserCreateRoot, symbols.byNode)
+      text: compiled.mergedProps || isComponentRootExpression(node.expression.expression, browserRoots, runtimeBindings.browserCreateRoot, symbols.byNode)
         ? `${node.expression.expression.getText(sourceFile)}.render(${compiled.expression})`
-        : `${node.expression.expression.getText(sourceFile)}.render(${compiled.template}, ${compiled.props}${compiled.key === "null" ? "" : `, {key: ${compiled.key}}`})`,
+        : `${node.expression.expression.getText(sourceFile)}.render(${compiled.template}, ${compiled.props}${compiled.key === "null" && compiled.content === "undefined" ? "" : `, {key: ${compiled.key}, content: ${compiled.content}}`})`,
     })
   })
 
-  visit(sourceFile, (node) => {
-    if (!isJsxElement(node) && !isJsxSelfClosingElement(node) && !isJsxFragment(node)) return
-    if (consumedJsx.has(node)) return
-    throw compileError(
-      sourcePath,
-      "JSX is outside a supported final-return function component, exact createRoot render",
-    )
+  visit(sourceFile, node => {
+    if ((!isJsxElement(node) && !isJsxSelfClosingElement(node) && !isJsxFragment(node)) || consumedJsx.has(node)) return
+    const expressionContext: ComponentExpressionContext = {
+      standalonePropsSpread: true,
+      componentSlots, slotProps: null, arrayExpressions: symbols.arrayExpressions,
+      childrenExpressionKinds: symbols.childrenExpressionKinds, jsxOrigins: symbols.jsxOrigins, components: componentSymbols,
+      consumedJsx, consumedCss, cssTagSymbols: runtimeBindings.css, cssTemplates,
+      cssTemplateReferences, cssTemplateSites, helper, propsBindings: {object: null, destructured: new Map()},
+      sourceFile, sourcePath, stylePrimitiveKinds: symbols.stylePrimitiveKinds, symbols: symbols.byNode,
+    }
+    const opening = isJsxElement(node) ? node.openingElement : isJsxSelfClosingElement(node) ? node : null
+    let output: string
+    if (opening && /^[A-Z]/.test(opening.tagName.getText(sourceFile))) output = componentExpression(node as JsxElement | JsxSelfClosingElement, expressionContext, [...symbols.jsxOrigins.values()].some(origins => origins.includes(node as never))).expression
+    else {
+      const name = `${helper}Expression${node.getStart(sourceFile)}`
+      const context: CompileContext = {
+        ...expressionContext, componentName: name, source, sourceIdentity: symbols.sourceIdentity,
+        styleSourceModuleId, unstableStyleSymbols: new Set(), mount: [], bindings: [], styleFragments: [], writes: [], nodeIndex: 0,
+      }
+      const roots = compileJsx(node, context)
+      const captures: string[] = []
+      const parameter = `${helper}ExpressionProps`
+      const writes = context.writes.map((write, index) => {
+        const assignment = write.indexOf(" = ")
+        const target = write.slice(0, assignment)
+        captures.push(`${JSON.stringify(`value${index}`)}: (${write.slice(assignment + 3)})`)
+        return `${target} = ${parameter}[${JSON.stringify(`value${index}`)}]`
+      })
+      const type = emitDomComponent({
+        name, exported: false, defaultExport: false, parameter, parameterDefault: null,
+        slotParameter: null, slotBinding: "", slots: [], rootTag: opening?.tagName.getText(sourceFile) ?? null,
+        sourceIdentity: symbols.sourceIdentity, helper, presenceAliases: [], mount: context.mount, roots,
+        bindings: context.bindings, writes, styleSheets: componentStyleSheets(context),
+        hooks: {source: "", fields: [], commit: [], refs: [], insertion: [], layout: [], passive: [], disconnect: [], checks: [], memoChecks: [], adopt: [], dispose: []},
+      })
+      output = `${helper}Component((${type}), {${captures.join(", ")}})`
+    }
+    needsCompiledRuntime = true
+    edits.push({start: node.getStart(sourceFile), end: node.getEnd(), text: output})
   })
 
   assertCanonicalCssTemplateReuse(
@@ -507,39 +552,72 @@ export function transformJsxSourceFile(
     )
   })
 
-  if (needsCompiledRuntime) {
-    edits.push({
-      start: importInsertionOffset(source),
-      end: importInsertionOffset(source),
-      text: [
-        `import {`,
-        `  bindChild as ${helper}BindChild,`,
-        `  bindConditional as ${helper}BindConditional,`,
-        `  bindEvent as ${helper}BindEvent,`,
-        `  bindKeyed as ${helper}BindKeyed,`,
-        `  bindProperty as ${helper}BindProperty,`,
-        `  bindRef as ${helper}BindRef,`,
-        `  bindStyle as ${helper}BindStyle,`,
-        `  bindText as ${helper}BindText,`,
-        `  compiledStyleSheet as ${helper}StyleSheet,`,
-        `  defineCompiledTemplate as ${helper}Define,`,
-        `  encodeCompiledStyleText as ${helper}EncodeStyle,`,
-        `  slotContents as ${helper}SlotsKey,`,
-        `  writeBinding as ${helper}Write`,
-        `} from "${compiledRuntime}"`,
-        `import {`,
-        `  component as ${helper}Component,`,
-        `  fixedChildren as ${helper}FixedChildren,`,
-        `  normalizeChildren as ${helper}Children,`,
-        `  keyedComponents as ${helper}Keyed`,
-        `} from "${componentRuntime}"`,
-        ...(componentSlots.size > 0 || [...symbols.childrenExpressionKinds.values()].includes("prepared-content") ? [`import {composeSlot as ${helper}Slot} from "${slotRuntime}"`] : []),
-        "",
-      ].join("\n"),
-    })
+  const helperAuthorImports = sourceFile.statements.some(statement => {
+    if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier) ||
+      !["@zavx0z/immersive-component", "@zavx0z/immersive-component/authoring", "@zavx0z/immersive/XReact", "@zavx0z/immersive-component/slot", "@zavx0z/immersive/XReact/slot"].includes(statement.moduleSpecifier.text) ||
+      statement.importClause?.phaseModifier === SyntaxKind.TypeKeyword) return false
+    const named = statement.importClause?.namedBindings
+    if (statement.moduleSpecifier.text.endsWith("/slot") && statement.importClause?.name) return true
+    return named && isNamedImports(named) && named.elements.some(specifier => !specifier.isTypeOnly &&
+      ["component", "createContext", "provideContext", "memo", "fixedChildren", "normalizeChildren", "keyedComponents", "when", "batch", "composeSlot"].includes(specifier.propertyName?.text ?? specifier.name.text))
+  })
+  if (needsCompiledRuntime || customHookDeclarations.length > 0 || helperAuthorImports) {
+    edits.push({start: importInsertionOffset(source), end: importInsertionOffset(source), text: emitDomImports(helper, publicRuntime, [...runtimeBindings.hooks.values()].some(hook => hook.name === "useFrame" || hook.name === "useSpace"))})
+  }
+  const authorNames = new Map<string, string>([["component", "Component"], ["createContext", "CreateContext"], ["provideContext", "ProvideContext"], ["memo", "Memo"], ["fixedChildren", "FixedChildren"], ["normalizeChildren", "Children"], ["keyedComponents", "Keyed"], ["when", "When"], ["batch", "Batch"], ["composeSlot", "Slot"]])
+  const authorModules = new Set(["@zavx0z/immersive-component", "@zavx0z/immersive-component/authoring", "@zavx0z/immersive/XReact"])
+  for (const statement of sourceFile.statements) {
+    if (isImportDeclaration(statement) && isStringLiteral(statement.moduleSpecifier) &&
+      ["@zavx0z/immersive/XReact/browser", "@zavx0z/immersive/XReact/browser/integration", "@zavx0z/immersive-browser", "@zavx0z/immersive-browser/integration", "@zavx0z/immersive-browser/authoring"].includes(statement.moduleSpecifier.text) && statement.importClause?.phaseModifier !== SyntaxKind.TypeKeyword) {
+      const named = statement.importClause?.namedBindings
+      if (named && isNamedImports(named)) {
+        const retained = named.elements.filter(specifier => specifier.isTypeOnly || !["useSpace", "useFrame"].includes(specifier.propertyName?.text ?? specifier.name.text))
+        const browserModule = publicRuntime ? "@zavx0z/immersive" : "@zavx0z/immersive-browser"
+        edits.push({start: statement.getStart(sourceFile), end: statement.getEnd(), text: retained.length ? `import {${retained.map(specifier => specifier.getText(sourceFile)).join(", ")}} from ${JSON.stringify(browserModule)}` : ""})
+      }
+      continue
+    }
+    if (isImportDeclaration(statement) && isStringLiteral(statement.moduleSpecifier) &&
+      ["@zavx0z/immersive-component/slot", "@zavx0z/immersive/XReact/slot", "@zavx0z/immersive-component/slot-presence", "@zavx0z/immersive/XReact/slot-presence"].includes(statement.moduleSpecifier.text) && statement.importClause?.phaseModifier !== SyntaxKind.TypeKeyword) {
+      const named = statement.importClause?.namedBindings
+      const defaultName = statement.importClause?.name
+      if (defaultName && statement.moduleSpecifier.text.endsWith("/slot")) edits.push({start: importInsertionOffset(source), end: importInsertionOffset(source), text: `const ${defaultName.text} = ${helper}Slot\n`})
+      if (defaultName || named && isNamedImports(named)) {
+        const retained = []
+        for (const specifier of named && isNamedImports(named) ? named.elements : []) {
+          const imported = specifier.propertyName?.text ?? specifier.name.text
+          if (specifier.isTypeOnly) retained.push(specifier.getText(sourceFile))
+          else if (imported === "composeSlot") edits.push({start: importInsertionOffset(source), end: importInsertionOffset(source), text: `const ${specifier.name.text} = ${helper}Slot\n`})
+          else if (imported !== "hasSlot") retained.push(specifier.getText(sourceFile))
+        }
+        edits.push({start: statement.getStart(sourceFile), end: statement.getEnd(), text: retained.length ? `import {${retained.join(", ")}} from ${statement.moduleSpecifier.getText(sourceFile)}` : ""})
+      }
+      continue
+    }
+    if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier) || !authorModules.has(statement.moduleSpecifier.text)) continue
+    const clause = statement.importClause
+    if (clause?.phaseModifier === SyntaxKind.TypeKeyword) continue
+    const named = clause?.namedBindings
+    if (!named || !isNamedImports(named)) continue
+    const retained = []
+    for (const specifier of named.elements) {
+      const imported = specifier.propertyName?.text ?? specifier.name.text
+      const replacement = authorNames.get(imported)
+      if (specifier.isTypeOnly) { retained.push(specifier.getText(sourceFile)); continue }
+      if (imported === "hasSlot") continue
+      if (imported === "createRoot") {
+        edits.push({start: importInsertionOffset(source), end: importInsertionOffset(source), text: `import {createDomRoot as ${specifier.name.text}} from ${JSON.stringify(publicRuntime ? "@zavx0z/immersive" : "@zavx0z/immersive-dom")}\n`})
+        continue
+      }
+      if (!replacement && !supportedHookNames.has(imported)) retained.push(specifier.getText(sourceFile))
+      if (replacement) edits.push({start: importInsertionOffset(source), end: importInsertionOffset(source), text: `const ${specifier.name.text} = ${helper}${replacement}\n`})
+    }
+    edits.push({start: statement.getStart(sourceFile), end: statement.getEnd(), text: retained.length ? `import {${retained.join(", ")}} from ${statement.moduleSpecifier.getText(sourceFile)}` : ""})
   }
 
-  return applyEdits(source, edits, sourcePath, helper)
+  const code = applyEdits(source, edits, sourcePath, helper)
+  const ranges = options.onSourceRanges === undefined ? undefined : sourceRangesForEdits(source.length, edits.map(edit => ({...edit, text: edit.text.replaceAll("__COMPONENT_HELPER__", `${helper}Component`)})))
+  return pruneDomImports(code, helper, ranges === undefined ? undefined : pruned => options.onSourceRanges!(composeSourceRanges(pruned, ranges)))
 }
 
 function compileComponent(
@@ -550,6 +628,7 @@ function compileComponent(
   symbols: ReadonlyMap<Node, number>,
   arrayExpressions: ReadonlySet<Node>,
   childrenExpressionKinds: ReadonlyMap<Node, JsxChildrenExpressionKind>,
+  jsxOrigins: JsxTransformSymbols["jsxOrigins"],
   sourceIdentity: string,
   styleSourceModuleId: string | null,
   stylePrimitiveKinds: ReadonlyMap<Node, JsxStylePrimitiveKind>,
@@ -561,6 +640,9 @@ function compileComponent(
   consumedJsx: Set<Node>,
   ownsDocument: boolean,
   componentSlots: ReadonlyMap<number, readonly string[]>,
+  hooks: RuntimeImportBindings["hooks"],
+  customHooks: ReadonlySet<number>,
+  presenceAliases: readonly string[],
 ): string {
   const name = declaration.name!.text
   const body = declaration.body
@@ -582,7 +664,8 @@ function compileComponent(
   const returned = componentReturn(declaration)
   if (!returned?.expression) throw compileError(sourceFile.fileName, `${name} requires one final JSX return`)
   assertSingleReturnPath(declaration, returned, sourceFile.fileName)
-  const parameter = declaration.parameters[0]?.getText(sourceFile) ?? "_props: Record<string, never>"
+  const parameterDeclaration = declaration.parameters[0]
+  const parameter = parameterDeclaration ? `${parameterDeclaration.name.getText(sourceFile)}${parameterDeclaration.type ? `: ${parameterDeclaration.type.getText(sourceFile)}` : ""}` : "_props: Record<string, never>"
   const slots = new SlotAuthoring(sourceFile).outlets(declaration)
   const slotProps = slots.length > 0 ? `${helper}SlotProps` : null
   const authoredParameter = declaration.parameters[0]
@@ -595,6 +678,7 @@ function compileComponent(
     slotProps,
     arrayExpressions,
     childrenExpressionKinds,
+    jsxOrigins,
     componentName: name,
     components,
     consumedCss,
@@ -622,28 +706,16 @@ function compileComponent(
   const rootNodes = compileJsx(skipParentheses(returned.expression), context)
   const styleSheets = componentStyleSheets(context)
   const defaultExport = modifiers.includes("default")
-  const exported = !defaultExport && modifiers.includes("export")
-    ? "export "
-    : ""
-  return [
-    `${exported}const ${name} = ${helper}Define({`,
-    `  displayName: ${JSON.stringify(name)},`,
-    `  bindingCount: ${context.bindings.length},`,
-    ...(slots.length > 0 ? [`  slots: ${JSON.stringify(slots)},`] : []),
-    `  styleSheets: ${styleSheets},`,
-    `  mount(document) {`,
-    ...context.mount.map((line) => `    ${line}`),
-    `    return {`,
-    `      nodes: [${rootNodes.join(", ")}],`,
-    `      bindings: [${context.bindings.join(", ")}]`,
-    `    }`,
-    `  },`,
-    `  render(${slotProps ?? parameter}, ${helper}Values) {${slotBinding}${ownsDocument ? `\n    const document = ${helper}Document()\n` : ""}${prelude}`,
-    ...context.writes.map((line) => `    ${line}`),
-    `  }`,
-    `})`,
-    ...(defaultExport ? [`export default ${name}`] : []),
-  ].join("\n")
+  const rootExpression = skipParentheses(returned.expression)
+  const opening = isJsxElement(rootExpression) ? rootExpression.openingElement : isJsxSelfClosingElement(rootExpression) ? rootExpression : null
+  const rootTag = opening && /^[a-z]/.test(opening.tagName.getText(sourceFile)) && opening.tagName.getText(sourceFile) !== "slot" ? opening.tagName.getText(sourceFile) : null
+  return emitDomComponent({
+    name, exported: !defaultExport && modifiers.includes("export"), defaultExport,
+    parameter, parameterDefault: parameterDeclaration?.initializer?.getText(sourceFile) ?? null, slotParameter: slotProps, slotBinding, slots, rootTag,
+    sourceIdentity, helper, presenceAliases, inputNames: componentInputNames(declaration, context.propsBindings, symbols), mount: context.mount, roots: rootNodes,
+    bindings: context.bindings, writes: context.writes, styleSheets,
+    hooks: lowerHooks(declaration, sourceFile, body.getStart(sourceFile) + 1, returned.getStart(sourceFile), helper, hooks, customHooks, symbols),
+  })
 }
 
 function compileJsx(expression: Expression, context: CompileContext): string[] {
@@ -712,19 +784,25 @@ function compileIntrinsic(
       throw compileError(context.sourcePath, `${name} requires a JSX expression`)
     }
     const slot = context.bindings.length
-    if (transport.kind === "style") context.bindings.push(`${context.helper}BindStyle(${variable})`)
-    else if (transport.kind === "ref") context.bindings.push(`${context.helper}BindRef(${variable})`)
+    if (transport.kind === "style") context.bindings.push({kind: "style", target: variable})
+    else if (transport.kind === "ref") context.bindings.push({kind: "ref", target: variable})
     else if (transport.kind === "event") {
-      const options = transport.capture ? ", {capture: true}" : ""
-      context.bindings.push(
-        `${context.helper}BindEvent(${variable}, ${JSON.stringify(transport.type)}${options})`,
-      )
+      context.bindings.push({kind: "event", target: variable, type: transport.type, capture: transport.capture})
     } else {
-      context.bindings.push(
-        `${context.helper}BindProperty(${variable}, ${JSON.stringify(attributeName(name))})`,
-      )
+      const initializer = attribute.initializer
+      let authored = initializer && isJsxExpression(initializer) && initializer.expression ? skipOuterExpressions(initializer.expression) : null
+      if (authored && isBinaryExpression(authored) && (
+        authored.operatorToken.kind === SyntaxKind.EqualsEqualsEqualsToken && isTrueLiteral(skipOuterExpressions(authored.right)) ||
+        authored.operatorToken.kind === SyntaxKind.QuestionQuestionToken && (
+          isTrueLiteral(authored.right) || isFalseLiteral(authored.right) || isNumericLiteral(authored.right) || isStringLiteral(authored.right) || isNullLiteral(authored.right)
+        )
+      )) authored = skipOuterExpressions(authored.left)
+      const input = authored && isPropertyAccessExpression(authored) && isIdentifier(authored.expression) &&
+        symbolId(context.symbols, authored.expression) === context.propsBindings.object ? authored.name.text
+        : authored && isIdentifier(authored) ? context.propsBindings.destructured.get(symbolId(context.symbols, authored) ?? -1) : undefined
+      context.bindings.push({kind: "property", target: variable, name: attributeName(name), ...(input === undefined ? {} : {input})})
     }
-    context.writes.push(`${context.helper}Write(${context.helper}Values, ${slot}, ${value.expression})`)
+    context.writes.push(`const ${context.helper}Next${slot} = ${value.expression}`)
   }
 
   const children = isJsxElement(expression) ? expression.children : []
@@ -776,18 +854,16 @@ function compileStaticStyle(
       continue
     }
     const slot = context.bindings.length
-    context.bindings.push(
-      `${context.helper}BindProperty(${target}, ${JSON.stringify(fragment.attributeName)})`,
-    )
+    context.bindings.push({kind: "property", target, name: fragment.attributeName})
     context.writes.push(
-      `${context.helper}Write(${context.helper}Values, ${slot}, Boolean(${fragment.condition}))`,
+      `const ${context.helper}Next${slot} = Boolean(${fragment.condition})`,
     )
   }
   if (extraction.residualExpression !== null) {
     const slot = context.bindings.length
-    context.bindings.push(`${context.helper}BindStyle(${target})`)
+    context.bindings.push({kind: "style", target})
     context.writes.push(
-      `${context.helper}Write(${context.helper}Values, ${slot}, ${extraction.residualExpression})`,
+      `const ${context.helper}Next${slot} = ${extraction.residualExpression}`,
     )
   }
   return extraction.fragments.length > 0 || extraction.residualExpression !== null
@@ -1125,8 +1201,8 @@ function compileChild(child: JsxChild, context: CompileContext): string[] {
   const variable = nextNode(context)
   context.mount.push(`const ${variable} = document.createTextNode("")`)
   const slot = context.bindings.length
-  context.bindings.push(`${context.helper}BindText(${variable})`)
-  context.writes.push(`${context.helper}Write(${context.helper}Values, ${slot}, ${expression.getText(context.sourceFile)})`)
+  context.bindings.push({kind: "text", target: variable})
+  context.writes.push(`const ${context.helper}Next${slot} = ${expression.getText(context.sourceFile)}`)
   return [variable]
 }
 
@@ -1143,17 +1219,14 @@ function compileValueRange(
   context.mount.push(`const ${start} = document.createComment(${JSON.stringify(`${kind}:start`)})`)
   context.mount.push(`const ${end} = document.createComment(${JSON.stringify(`${kind}:end`)})`)
   const slot = context.bindings.length
-  if (kind === "child") context.bindings.push(`${context.helper}BindChild(${start}, ${end})`)
-  else if (kind === "conditional") {
-    context.bindings.push(`${context.helper}BindConditional(${start}, ${end})`)
-  } else context.bindings.push(`${context.helper}BindKeyed(${start}, ${end})`)
+  context.bindings.push({kind: "range", start, end})
   const value = normalizePrepared
     ? `${context.helper}Slot({content: ${expression.getText(context.sourceFile)}})`
     : normalizeChildren
     ? `${context.helper}Children(${expression.getText(context.sourceFile)})`
     : expression.getText(context.sourceFile)
   context.writes.push(
-    `${context.helper}Write(${context.helper}Values, ${slot}, ${normalizeNullish ? `(${value} ?? null)` : value})`,
+    `const ${context.helper}Next${slot} = ${normalizeNullish ? `(${value} ?? null)` : value}`,
   )
   return [start, end]
 }
@@ -1168,13 +1241,14 @@ function compileComponentRange(
   context.mount.push(`const ${start} = document.createComment(${JSON.stringify(`${kind}:start`)})`)
   context.mount.push(`const ${end} = document.createComment(${JSON.stringify(`${kind}:end`)})`)
   const slot = context.bindings.length
-  context.bindings.push(
-    kind === "child"
-      ? `${context.helper}BindChild(${start}, ${end})`
-      : `${context.helper}BindConditional(${start}, ${end})`,
-  )
   const compiled = componentExpression(expression, context)
-  context.writes.push(`${context.helper}Write(${context.helper}Values, ${slot}, ${compiled.expression})`)
+  if (compiled.mergedProps) {
+    context.bindings.push({kind: "range", start, end})
+    context.writes.push(`const ${context.helper}Next${slot} = ${compiled.expression}`)
+  } else {
+    context.bindings.push({kind: "range", start, end, staticType: compiled.template})
+    context.writes.push(`const ${context.helper}Next${slot} = ${compiled.props}`, `const ${context.helper}Next${slot}Key = ${compiled.key}`, `const ${context.helper}Next${slot}Content = ${compiled.content}`)
+  }
   return [start, end]
 }
 
@@ -1184,9 +1258,9 @@ function compileConditional(expression: ReturnType<typeof asConditional>, contex
   context.mount.push(`const ${start} = document.createComment("conditional:start")`)
   context.mount.push(`const ${end} = document.createComment("conditional:end")`)
   const slot = context.bindings.length
-  context.bindings.push(`${context.helper}BindConditional(${start}, ${end})`)
+  context.bindings.push({kind: "range", start, end})
   context.writes.push(
-    `${context.helper}Write(${context.helper}Values, ${slot}, ${conditionalComponentValueExpression(expression, context)})`,
+    `const ${context.helper}Next${slot} = ${conditionalComponentValueExpression(expression, context)}`,
   )
   return [start, end]
 }
@@ -1218,8 +1292,8 @@ function keyedMapExpression(expression: Expression, context: CompileContext): st
   context.mount.push(`const ${start} = document.createComment("keyed:start")`)
   context.mount.push(`const ${end} = document.createComment("keyed:end")`)
   const slot = context.bindings.length
-  context.bindings.push(`${context.helper}BindKeyed(${start}, ${end})`)
-  context.writes.push(`${context.helper}Write(${context.helper}Values, ${slot}, ${value})`)
+  context.bindings.push({kind: "range", start, end})
+  context.writes.push(`const ${context.helper}Next${slot} = ${value}`)
   return [start, end]
 }
 
@@ -1262,12 +1336,23 @@ function componentExpression(
   if (!context.components.has(symbolId(context.symbols, opening.tagName) ?? -1)) {
     throw compileError(context.sourcePath, `unknown component ${template}`)
   }
-  const {props, key} = componentProps(expression, context, assigned)
+  const {props, key, content} = componentProps(expression, context, assigned)
+  if (opening.attributes.properties.some(isJsxSpreadAttribute)) {
+    const p = `${context.helper}Spread`
+    const slot = new SlotAuthoring(context.sourceFile).attribute(expression, "slot")
+    // Native object spread вычисляет все атрибуты один раз и в исходном порядке.
+    // Выражения детей следуют после атрибутов; reserved fields не становятся props.
+    return {
+      expression: `((${p}Type, ${p}Props, ${p}Content) => { const ${p}Key = ${p}Props.key ?? null; delete ${p}Props.key; if (${p}Key !== null && typeof ${p}Key !== "string" && typeof ${p}Key !== "number") throw new TypeError("DOM component key must be a string or number"); if (Object.prototype.hasOwnProperty.call(${p}Props, "children")) throw new TypeError("component children must be authored between component tags"); if (Object.prototype.hasOwnProperty.call(${p}Props, "class") || Object.prototype.hasOwnProperty.call(${p}Props, "className")) throw new TypeError("class-based component styling is unsupported; pass one style prop"); if (Object.prototype.hasOwnProperty.call(${p}Props, "slot")) { ${assigned && slot !== undefined ? `if (${p}Props.slot !== ${JSON.stringify(slot)}) throw new TypeError("Spread cannot override a static slot assignment");` : `throw new TypeError("slot requires a static authored assignment");`} delete ${p}Props.slot } return __COMPONENT_HELPER__(${p}Type, ${p}Props, ${p}Key, ${p}Content) })(${template}, ${props}, ${content})`,
+      props, key: "undefined", template, content, mergedProps: true,
+    }
+  }
   return {
-    expression: `__COMPONENT_HELPER__(${template}, ${props}, ${key})`,
+    expression: `__COMPONENT_HELPER__(${template}, ${props}, ${key}, ${content})`,
     key,
     props,
     template,
+    content,
   }
 }
 
@@ -1275,18 +1360,23 @@ function componentProps(
   expression: JsxElement | JsxSelfClosingElement,
   context: ComponentExpressionContext,
   assigned: boolean,
-): Readonly<{props: string; key: string}> {
+): Readonly<{props: string; key: string; content: string}> {
   const opening = isJsxElement(expression) ? expression.openingElement : expression
   const properties: string[] = []
+  const mergedProps = opening.attributes.properties.some(isJsxSpreadAttribute)
   let key = "null"
+  let content = "undefined"
   for (const attribute of opening.attributes.properties) {
     if (isJsxSpreadAttribute(attribute)) {
-      throw compileError(context.sourcePath, "component prop spreads are unsupported")
+      if (!context.standalonePropsSpread) throw compileError(context.sourcePath, "component prop spreads are unsupported")
+      properties.push(`...(${attribute.expression.getText(context.sourceFile)})`)
+      continue
     }
     if (!isJsxAttribute(attribute)) continue
     const name = attribute.name.getText(context.sourceFile)
     if (name === "slot") {
       if (!assigned) throw compileError(context.sourcePath, "Назначение slot допустимо только внутри компонента с объявленными слотами")
+      if (mergedProps) properties.push(`"slot": ${JSON.stringify(new SlotAuthoring(context.sourceFile).attribute(expression, "slot"))}`)
       continue
     }
     if (name === "children") {
@@ -1312,7 +1402,7 @@ function componentProps(
     const expressionValue = value.transport === "static"
       ? JSON.stringify(value.staticValue)
       : value.expression
-    if (name === "key") key = expressionValue
+    if (name === "key" && !mergedProps) key = expressionValue
     else properties.push(`${JSON.stringify(name)}: ${expressionValue}`)
   }
   const outlets = context.componentSlots.get(symbolId(context.symbols, opening.tagName) ?? -1)
@@ -1320,7 +1410,7 @@ function componentProps(
     const children = isJsxElement(expression) ? expression.children.filter(child => !isEmptyJsxChild(child, context)) : []
     let plan: ReturnType<typeof planSlots>
     try {
-      plan = planSlots({outlets, children: children.map(child => ({slot: new SlotAuthoring(context.sourceFile).childName(child)}))})
+      plan = planSlots({outlets, children: children.map(child => { const authoring = new SlotAuthoring(context.sourceFile); const origins = isJsxExpression(child) && child.expression ? context.jsxOrigins.get(skipParentheses(child.expression)) : undefined; return {slot: origins ? authoring.originName(origins) : authoring.childName(child)} })})
     } catch (error) {
       throw compileError(context.sourcePath, error instanceof Error ? error.message : String(error))
     }
@@ -1329,12 +1419,12 @@ function componentProps(
     const groups = plan.slots.map(group =>
       `[${JSON.stringify(group.name)}]: [${group.children.map(index => `${input}[${index}]`).join(", ")}]`)
     // Сначала вычисляются авторские выражения в исходном порядке, затем их адреса распределяются по областям.
-    properties.push(`[${context.helper}SlotsKey]: ((${input}) => ({${groups.join(", ")}}))([${values.join(", ")}])`)
+    content = `((${input}) => ({${groups.join(", ")}}))([${values.join(", ")}])`
   } else {
     const children = componentChildrenValue(expression, context)
     if (children !== null) properties.push(`${JSON.stringify("children")}: ${children}`)
   }
-  return Object.freeze({props: `{${properties.join(", ")}}`, key})
+  return Object.freeze({props: `{${properties.join(", ")}}`, key, content})
 }
 
 function componentStyleAttributeExpression(
@@ -1417,6 +1507,7 @@ function componentChildValue(child: JsxChild, context: ComponentExpressionContex
     if (kind === "text") return value.getText(context.sourceFile)
     return conditionalComponentValueExpression(asConditional(value), context, assigned)
   }
+  if (context.jsxOrigins.has(value)) return value.getText(context.sourceFile)
   if (context.arrayExpressions.has(value) || kind === "keyed-components") {
     if (isPropsFieldExpression(value, "children", context)) return value.getText(context.sourceFile)
     throw compileError(
@@ -1464,7 +1555,7 @@ function slotValueExpression(
   context.consumedJsx.add(element)
   if (!context.slotProps) throw compileError(context.sourcePath, "slot требует компонент-получатель")
   const name = new SlotAuthoring(context.sourceFile).attribute(element, "name") ?? ""
-  const content = `${context.slotProps}[${context.helper}SlotsKey]?.[${JSON.stringify(name)}]`
+  const content = `${context.helper}SlotContent?.[${JSON.stringify(name)}]`
   const value = `${context.helper}Slot({content: ${content}})`
   const fallback = isJsxElement(element) ? element.children.filter(child => !isEmptyJsxChild(child, context)) : []
   if (fallback.length === 0) return value
@@ -1482,23 +1573,11 @@ function compileSlotRange(element: JsxElement | JsxSelfClosingElement, context: 
   context.mount.push(`const ${start} = document.createComment("slot:start")`)
   context.mount.push(`const ${end} = document.createComment("slot:end")`)
   const index = context.bindings.length
-  context.bindings.push(`${context.helper}BindConditional(${start}, ${end})`)
-  context.writes.push(`${context.helper}Write(${context.helper}Values, ${index}, ${value})`)
+  context.bindings.push({kind: "range", start, end})
+  context.writes.push(`const ${context.helper}Next${index} = ${value}`)
   return [start, end]
 }
 
-function componentReturn(declaration: FunctionDeclaration): ReturnStatement | null {
-  const body = declaration.body
-  if (!body || !isBlock(body)) return null
-  const returns = body.statements.filter(isReturnStatement)
-  if (returns.length !== 1 || returns[0] !== body.statements.at(-1)) return null
-  const expression = returns[0]!.expression
-  if (!expression) return null
-  const unwrapped = skipParentheses(expression)
-  return isJsxElement(unwrapped) || isJsxSelfClosingElement(unwrapped) || isJsxFragment(unwrapped)
-    ? returns[0]!
-    : null
-}
 
 function assertSingleReturnPath(
   declaration: FunctionDeclaration,
@@ -1561,9 +1640,25 @@ function runtimeImportBindings(
   const memo = new Set<number>()
   for (const statement of sourceFile.statements) {
     if (!isImportDeclaration(statement) || !isStringLiteral(statement.moduleSpecifier)) continue
+    if (statement.moduleSpecifier.text === "@zavx0z/immersive") {
+      const named = statement.importClause?.namedBindings
+      if (named && isNamedImports(named)) for (const specifier of named.elements) {
+        const imported = specifier.propertyName?.text ?? specifier.name.text
+        if (!["createRoot", "createBrowserRoot", "createDomRoot"].includes(imported)) continue
+        if (statement.importClause?.phaseModifier === SyntaxKind.TypeKeyword || specifier.isTypeOnly) throw compileError(sourcePath, `${imported} must be imported as a runtime value`)
+        const id = symbolId(symbols, specifier.name)
+        if (id !== null) {
+          createRoot.add(id)
+          if (imported !== "createDomRoot") browserCreateRoot.add(id)
+        }
+      }
+      continue
+    }
     if (statement.moduleSpecifier.text === "@zavx0z/immersive-browser" ||
       statement.moduleSpecifier.text === "@zavx0z/immersive-browser/integration" ||
-      statement.moduleSpecifier.text === "@zavx0z/immersive/XReact/browser") {
+      statement.moduleSpecifier.text === "@zavx0z/immersive-browser/authoring" ||
+      statement.moduleSpecifier.text === "@zavx0z/immersive/XReact/browser" ||
+      statement.moduleSpecifier.text === "@zavx0z/immersive/XReact/browser/integration") {
       const named = statement.importClause?.namedBindings
       if (named && isNamedImports(named)) {
         for (const specifier of named.elements) {
@@ -1595,6 +1690,7 @@ function runtimeImportBindings(
       continue
     }
     if (statement.moduleSpecifier.text !== "@zavx0z/immersive-component" &&
+      statement.moduleSpecifier.text !== "@zavx0z/immersive-component/authoring" &&
       statement.moduleSpecifier.text !== "@zavx0z/immersive/XReact") continue
     if (statement.importClause?.name) {
       throw compileError(sourcePath, `${statement.moduleSpecifier.text} has no default compiler import`)
@@ -1641,6 +1737,11 @@ function validateHookCalls(
     owner: FunctionDeclaration | null,
     guarded: boolean,
   ): void => {
+    if (isImportDeclaration(node) || isExportDeclaration(node) || isTypeNode(node)) return
+    if (isIdentifier(node) && hooks.has(symbolId(symbols, node) ?? -1) &&
+      !(isCallExpression(node.parent) && node.parent.expression === node)) {
+      throw compileError(sourcePath, `${node.text} is a compile-time hook and cannot escape a direct call`)
+    }
     let nextOwner = owner
     let nextGuarded = guarded
     if (isFunctionLikeDeclaration(node)) {
@@ -1771,6 +1872,16 @@ function componentPropsBindings(
     }
   }
   return {object: null, destructured}
+}
+
+/** Только доказанные поля самого props получают общие private symbols; extra keys остаются локальными. */
+function componentInputNames(declaration: FunctionDeclaration, bindings: PropsBindings, symbols: ReadonlyMap<Node, number>): readonly string[] {
+  const names = new Set(bindings.destructured.values())
+  if (bindings.object !== null) visit(declaration, node => {
+    if (isPropertyAccessExpression(node) && isIdentifier(node.expression) && symbolId(symbols, node.expression) === bindings.object) names.add(node.name.text)
+    if (isElementAccessExpression(node) && isIdentifier(node.expression) && symbolId(symbols, node.expression) === bindings.object && isStringLiteral(node.argumentExpression)) names.add(node.argumentExpression.text)
+  })
+  return [...names]
 }
 
 function isPropsFieldExpression(

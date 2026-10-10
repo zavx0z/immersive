@@ -7,19 +7,57 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./typedoc/index.tsx",
-    "./parser": "./parser/index.ts",
-    "./batch": "./batch/index.ts",
-    "./contract/input": "./typedoc/contract/input.ts",
-    "./parser/contract/input": "./parser/contract/input.ts",
-    "./parser/contract/output": "./parser/contract/output.ts",
-    "./batch/contract/input": "./batch/contract/input.ts",
-    "./batch/contract/output": "./batch/contract/output.ts"
+    ".": {
+      "source": "./typedoc/index.tsx",
+      "types": "./dist/typedoc/index.d.ts",
+      "browser": "./dist/typedoc/index.js",
+      "default": "./dist/typedoc/index.js"
+    },
+    "./parser": {
+      "source": "./parser/index.ts",
+      "types": "./dist/parser/index.d.ts",
+      "default": "./dist/parser/index.js"
+    },
+    "./batch": {
+      "source": "./batch/index.ts",
+      "types": "./dist/batch/index.d.ts",
+      "default": "./dist/batch/index.js"
+    },
+    "./contract/input": {
+      "source": "./typedoc/contract/input.ts",
+      "types": "./dist/typedoc/contract/input.d.ts",
+      "browser": "./dist/typedoc/contract/input.js",
+      "default": "./dist/typedoc/contract/input.js"
+    },
+    "./parser/contract/input": {
+      "source": "./parser/contract/input.ts",
+      "types": "./dist/parser/contract/input.d.ts",
+      "browser": "./dist/parser/contract/input.js",
+      "default": "./dist/parser/contract/input.js"
+    },
+    "./parser/contract/output": {
+      "source": "./parser/contract/output.ts",
+      "types": "./dist/parser/contract/output.d.ts",
+      "browser": "./dist/parser/contract/output.js",
+      "default": "./dist/parser/contract/output.js"
+    },
+    "./batch/contract/input": {
+      "source": "./batch/contract/input.ts",
+      "types": "./dist/batch/contract/input.d.ts",
+      "browser": "./dist/batch/contract/input.js",
+      "default": "./dist/batch/contract/input.js"
+    },
+    "./batch/contract/output": {
+      "source": "./batch/contract/output.ts",
+      "types": "./dist/batch/contract/output.d.ts",
+      "browser": "./dist/batch/contract/output.js",
+      "default": "./dist/batch/contract/output.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
     "typescript": "^7.0.2"

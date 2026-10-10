@@ -1,5 +1,8 @@
+import {mkdtemp, rm} from "node:fs/promises"
+import {join, resolve} from "node:path"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 import {describe, expect, test} from "bun:test"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom/root"
 import {Document, Event} from "@zavx0z/immersive-dom"
 import {ContentReceiver, SlotCounter, SlotNamedPanel, SlotPanel, SlotText} from "./fixtures/slot-panel.tsx"
 
@@ -61,15 +64,18 @@ describe("Headless preload со скомпилированными слотам�
     root.unmount()
   })
 
-  test("неизвестный слот в spec JSX отклоняется до монтирования", () => {
-    expect(() => (
-      <SlotPanel>
-        <SlotText
-          slot="missing"
-          text="Неизвестный"
-        />
-      </SlotPanel>
-    )).toThrow("unknown slot")
+  test("неизвестный слот в spec JSX отклоняется compiler до монтирования", async () => {
+    const directory = await mkdtemp(join(import.meta.dir, ".invalid-slot-"))
+    const compiler = new JsxCompilerSession({cwd: resolve(import.meta.dir, "../.."), sourceRoots: [import.meta.dir]})
+    try {
+      const source = join(directory, "invalid.tsx")
+      await Bun.write(join(directory, "tsconfig.json"), JSON.stringify({extends: resolve(import.meta.dir, "../tsconfig.json"), files: ["invalid.tsx"], include: [], exclude: []}))
+      await Bun.write(source, 'import {SlotPanel, SlotText} from "../fixtures/slot-panel.tsx"\nexport function Invalid() { return <SlotPanel><SlotText slot="missing" text="Неизвестный" /></SlotPanel> }')
+      await expect(compiler.compileFile(source)).rejects.toThrow("unknown slot")
+    } finally {
+      await compiler.close()
+      await rm(directory, {recursive: true, force: true})
+    }
   })
 
   test("перестановка и добавление mapped children сохраняют DOM и состояние по key", () => {

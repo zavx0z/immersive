@@ -1,5 +1,5 @@
 import type {ImmersiveNodesLayoutPrismTree} from "@zavx0z/immersive-nodes-layout-prism-tree"
-import type {ComposeSlotInput} from "@zavx0z/immersive-component/slot"
+import type {DOMSlotContent} from "@zavx0z/immersive-dom"
 import type {DisplayElement} from "@zavx0z/immersive-dom/display"
 import type {Presentation} from "@zavx0z/immersive-browser/integration"
 import type {SpatialTreeDisplay, SpatialTreeScene} from "../src/scene.ts"
@@ -25,7 +25,7 @@ export interface SpatialTreeSnapshot {
   readonly geometryRevision: number
   readonly selectedId: string | null
   readonly selectedVolumeId: string | null
-  readonly contentById: ReadonlyMap<string, ComposeSlotInput["content"]>
+  readonly contentById: ReadonlyMap<string, DOMSlotContent>
   readonly floor: SpatialTreeScene["floor"]
   readonly showGrid?: boolean
   readonly onHost: (id: string, display: DisplayElement | null) => void
@@ -53,7 +53,7 @@ export interface SpatialTreeController {
   /** После idle onDemand запрашивает ближайший meaningful Display, если он холодный; загруженный ближайший не запускает подгрузку соседей. */
   configure(nodes: readonly SpatialTreeNode[], onSelect: (id: string, focus?: boolean) => void, onDemand?: (id: string) => void): void
   ensureDisplay(id: string): DisplayElement
-  setContent(id: string, content: ComposeSlotInput["content"]): void
+  setContent(id: string, content: DOMSlotContent): void
   release(id: string): void
   select(id: string, focus?: boolean): void
   /** Factor < 1 приближает: fly перемещает eye+target, orbit меняет radius. */

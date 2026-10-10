@@ -9,16 +9,26 @@
     "./theme/theme.css"
   ],
   "exports": {
-    ".": "./index.ts",
-    "./contract": "./contract/index.ts",
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./contract": {
+      "source": "./contract/index.ts",
+      "types": "./dist/contract/index.d.ts",
+      "browser": "./dist/contract/index.js",
+      "default": "./dist/contract/index.js"
+    },
     "./theme/theme.css": "./theme/theme.css",
     "./theme/field-metrics.json": "./theme/field-metrics.json",
     "./theme/islands-dark.color-theme.json": "./theme/islands-dark.color-theme.json"
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel --max-concurrency=2 --preload @zavx0z/immersive-headless/preload --timeout 30000 ./tests ./spec ./button ./field ./feedback ./menu ./navigation ./surface ./view ./widget ./badge ./divider ./typography",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel --max-concurrency=2 --preload @zavx0z/immersive-headless/preload --timeout 30000 ./tests ./spec ./button ./field ./feedback ./menu ./navigation ./surface ./view ./widget ./badge ./divider ./typography",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
     "@zavx0z/immersive-ui-component-badge": "workspace:*",

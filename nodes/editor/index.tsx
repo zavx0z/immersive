@@ -3,11 +3,11 @@
 
 @packageDocumentation
 */
-import {useMemo, useState} from "@zavx0z/immersive-component"
+import {useMemo, useState} from "@zavx0z/immersive-component/authoring"
 import {metadataBoolean} from "@zavx0z/immersive-tech-json-metadata"
-import {GraphView} from "../view/index.tsx"
-import {useNodeTreePresentation} from "../view/tree.ts"
-import {useMeasuredNodeTreePresentation} from "../shared/node-tree/measured.ts"
+import {GraphView} from "@zavx0z/immersive-nodes/view"
+import {useNodeTreePresentation} from "@zavx0z/immersive-nodes/view/tree"
+import {useMeasuredNodeTreePresentation} from "@zavx0z/immersive-nodes/view/tree"
 import type {GraphEditorProps} from "./contract/input.ts"
 
 export type {GraphEditorProps} from "./contract/input.ts"

@@ -5,7 +5,7 @@
 @packageDocumentation
 */
 import type {ImmersiveUiComponentSurfacePane as Contract} from "./contract"
-import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import {hasSlot} from "@zavx0z/immersive-component/authoring"
 
 
 export type {ImmersiveUiComponentSurfacePane} from "./contract"

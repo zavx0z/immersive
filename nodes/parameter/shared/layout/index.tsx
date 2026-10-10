@@ -13,7 +13,7 @@ import type {ImmersiveNodesParameterSharedLayout as Contract} from "./contract"
 import type {ImmersiveNodesParameter} from "@zavx0z/immersive-nodes-parameter/contract"
 type ParameterBaseProps = ImmersiveNodesParameter.Input
 export type {ImmersiveNodesParameterSharedLayout} from "./contract"
-import {hasSlot} from "@zavx0z/immersive-component/slot-presence"
+import {hasSlot} from "@zavx0z/immersive-component/authoring"
 import {ParameterEndpoints} from "./src/endpoint"
 
 /**

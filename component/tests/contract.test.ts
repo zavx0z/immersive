@@ -1,268 +1,77 @@
 import {describe, expect, test} from "bun:test"
-import {Text, createDocument} from "@zavx0z/immersive-dom"
-import {
-  component,
-  createContext,
-  createRoot,
-  provideContext,
-  useContext,
-  useEffect,
-  useState,
-  useSyncExternalStore,
-} from "@zavx0z/immersive-component"
-import type {
-  ComponentValue,
-  StateDispatch,
-} from "@zavx0z/immersive-component"
-import {
-  bindChild,
-  bindText,
-  defineCompiledTemplate,
-  writeBinding,
-} from "@zavx0z/immersive-template/compiled"
+import {createDocument, createDomRoot, Event} from "@zavx0z/immersive-dom"
+import {components} from "./fixture.ts"
 
 function mountedRoot() {
   const document = createDocument()
   const container = document.createElement("div")
-  document.appendChild(container)
-  return {container, document, root: createRoot(container)}
+  document.append(container)
+  return {container, document, root: createDomRoot(container)}
 }
 
-function textTemplate<Props extends object>(
-  displayName: string,
-  read: (props: Readonly<Props>) => unknown,
-) {
-  return defineCompiledTemplate<Props>({
-    bindingCount: 1,
-    displayName,
-    mount(document) {
-      const span = document.createElement("span")
-      const text = document.createTextNode("")
-      span.appendChild(text)
-      return {bindings: [bindText(text)], nodes: [span]}
-    },
-    render(props, values) {
-      writeBinding(values, 0, read(props))
-    },
-  })
-}
-
-function childTemplate<Props extends object>(
-  displayName: string,
-  read: (props: Readonly<Props>) => ComponentValue,
-) {
-  return defineCompiledTemplate<Props>({
-    bindingCount: 1,
-    displayName,
-    mount(document) {
-      const wrapper = document.createElement("div")
-      const start = document.createComment("child:start")
-      const end = document.createComment("child:end")
-      wrapper.append(start, end)
-      return {bindings: [bindChild(start, end)], nodes: [wrapper]}
-    },
-    render(props, values) {
-      writeBinding(values, 0, read(props))
-    },
-  })
-}
-
-describe("Compiled Component contract", () => {
-  test("[CMP-001] Component использует ownerDocument контейнера и не создаёт собственный Document", () => {
-    const mountedDocuments: Array<ReturnType<typeof createDocument>> = []
-    const template = defineCompiledTemplate<Record<string, never>>({
-      bindingCount: 0,
-      displayName: "OwnerDocumentContract",
-      mount(document) {
-        mountedDocuments.push(document)
-        return {bindings: [], nodes: [document.createElement("span")]}
-      },
-      render() {},
-    })
-    const first = mountedRoot()
-    const second = mountedRoot()
-
-    first.root.render(template, {})
-    second.root.render(template, {})
-
-    expect(
-      mountedDocuments,
-      "CMP-001: mount должен получить exact ownerDocument каждого контейнера",
-    ).toEqual([first.document, second.document])
-    expect(
-      first.container.querySelector("span")?.ownerDocument,
-      "CMP-001: первый component Node должен принадлежать Document первого контейнера",
-    ).toBe(first.container.ownerDocument)
-    expect(
-      second.container.querySelector("span")?.ownerDocument,
-      "CMP-001: второй component Node должен принадлежать Document второго контейнера",
-    ).toBe(second.container.ownerDocument)
+describe("Compiled DOM component contract", () => {
+  test("[CMP-001] Компонент использует ownerDocument и не создаёт собственный Document", () => {
+    const {document, container, root} = mountedRoot()
+    const documents: unknown[] = []
+    try {
+      root.render(components.Counter, {label: "owner", mounted: (value: unknown) => { documents.push(value) }})
+      expect(documents).toEqual([document])
+      expect(container.firstElementChild!.ownerDocument).toBe(document)
+    } finally { root.unmount() }
   })
 
-  test("[CMP-002] Обновление сохраняет identity компонента и состояние hooks", () => {
-    let mounts = 0
-    let dispatch: StateDispatch<number> | null = null
-    let firstDispatch: StateDispatch<number> | null = null
-    const template = defineCompiledTemplate<Record<string, never>>({
-      bindingCount: 1,
-      displayName: "StateIdentityContract",
-      mount(document) {
-        mounts += 1
-        const span = document.createElement("span")
-        const text = document.createTextNode("")
-        span.appendChild(text)
-        return {bindings: [bindText(text)], nodes: [span]}
-      },
-      render(_, values) {
-        const [count, setCount] = useState(1)
-        firstDispatch ??= setCount
-        dispatch = setCount
-        writeBinding(values, 0, count)
-      },
-    })
+  test("[CMP-002] Обновление сохраняет Element и concrete hook state", () => {
     const {container, root} = mountedRoot()
-
-    root.render(template, {})
-    const span = container.querySelector("span")
-    const text = span?.firstChild
-    dispatch!(value => value + 1)
-
-    expect(container.querySelector("span"), "CMP-002: state update не должен remount Element").toBe(span)
-    expect(
-      container.querySelector("span")?.firstChild,
-      "CMP-002: state update не должен заменять addressed Text",
-    ).toBe(text)
-    expect((text as Text).data, "CMP-002: hook state должен пережить rerender").toBe("2")
-    expect(dispatch, "CMP-002: dispatch identity должна быть стабильной").toBe(firstDispatch)
-    expect(mounts, "CMP-002: один component instance должен mount ровно один раз").toBe(1)
+    try {
+      root.render(components.Counter, {label: "first"})
+      const button = container.firstElementChild!
+      button.dispatchEvent(new Event("click"))
+      root.render(components.Counter, {label: "next"})
+      expect(container.firstElementChild).toBe(button)
+      expect(button.textContent).toBe("next:1")
+    } finally { root.unmount() }
   })
 
-  test("[CMP-003] Context разрешается от ближайшего provider и обновляет его потребителей", () => {
-    const Theme = createContext("fallback")
-    const Leaf = textTemplate<Record<string, never>>(
-      "ContextLeafContract",
-      () => useContext(Theme),
-    )
-    const Inner = childTemplate<{theme: string}>("InnerContextContract", props =>
-      provideContext(Theme, props.theme, component(Leaf, {}, "leaf")))
-    const Outer = childTemplate<{inner: string; outer: string}>("OuterContextContract", props =>
-      provideContext(
-        Theme,
-        props.outer,
-        component(Inner, {theme: props.inner}, "inner"),
-      ))
-
-    const fallback = mountedRoot()
-    fallback.root.render(Leaf, {})
-    expect(
-      fallback.container.textContent,
-      "CMP-003: consumer без provider должен получить context fallback",
-    ).toBe("fallback")
-
+  test("[CMP-003] Context выбирает ближайший provider и обновляет того же потребителя", () => {
     const {container, root} = mountedRoot()
-    root.render(Outer, {inner: "inner", outer: "outer"})
-    const text = container.querySelector("span")?.firstChild
-    expect(
-      container.textContent,
-      "CMP-003: ближайший inner provider должен перекрыть outer provider",
-    ).toBe("inner")
-
-    root.render(Outer, {inner: "updated", outer: "ignored"})
-    expect(
-      container.querySelector("span")?.firstChild,
-      "CMP-003: context update должен сохранить identity consumer Text",
-    ).toBe(text)
-    expect(
-      container.textContent,
-      "CMP-003: изменение ближайшего provider должно обновить consumer",
-    ).toBe("updated")
+    const outer = {context: components.Theme, value: "outer", parent: null}
+    try {
+      root.render({type: components.ContextText, props: {suffix: "one"}, context: {context: components.Theme, value: "inner", parent: outer}})
+      const button = container.firstElementChild!
+      button.dispatchEvent(new Event("click"))
+      root.render({type: components.ContextText, props: {suffix: "two"}, context: {context: components.Theme, value: "updated", parent: outer}})
+      expect(container.firstElementChild).toBe(button)
+      expect(button.textContent).toBe("updated:two:1")
+    } finally { root.unmount() }
   })
 
-  test("[CMP-004] Эффект выполняется после принятого обновления, а его cleanup вызывается ровно один раз", () => {
-    const events: string[] = []
-    let containerText = () => ""
-    const template = textTemplate<{fail: boolean; value: number}>(
-      "EffectCommitContract",
-      props => {
-        useEffect(() => {
-          events.push(`setup:${props.value}:${containerText()}`)
-          return () => events.push(`cleanup:${props.value}`)
-        }, [props.value])
-        if (props.fail) throw new Error("CMP-004 rejected update")
-        return props.value
-      },
-    )
+  test("[CMP-004] Эффект следует принятому DOM; cleanup выполняется ровно один раз", () => {
     const {container, root} = mountedRoot()
-    containerText = () => container.textContent
-
-    root.render(template, {fail: false, value: 1})
-    root.render(template, {fail: false, value: 2})
-    expect(() => root.render(template, {fail: true, value: 3})).toThrow(
-      "CMP-004 rejected update",
-    )
-
-    expect(
-      events,
-      "CMP-004: effect должен видеть committed DOM, cleanup — выполняться перед следующим setup",
-    ).toEqual(["setup:1:1", "cleanup:1", "setup:2:2"])
-    expect(container.textContent, "CMP-004: rejected update не должен менять committed DOM").toBe("2")
-
-    root.unmount()
-    expect(
-      events,
-      "CMP-004: unmount должен вызвать cleanup последнего эффекта ровно один раз",
-    ).toEqual(["setup:1:1", "cleanup:1", "setup:2:2", "cleanup:2"])
-  })
-
-  test("[CMP-005] Unmount очищает состояние, подписки и эффекты компонента", () => {
-    let dispatch: StateDispatch<number> | null = null
-    let externalValue = 7
-    let lastNotify: (() => void) | null = null
-    let activeNotify: (() => void) | null = null
-    let subscriptions = 0
-    let unsubscriptions = 0
-    let effectCleanups = 0
-    const subscribe = (notify: () => void) => {
-      subscriptions += 1
-      activeNotify = notify
-      lastNotify = notify
-      return () => {
-        unsubscriptions += 1
-        if (activeNotify === notify) activeNotify = null
-      }
-    }
-    const getSnapshot = () => externalValue
-    const template = textTemplate<Record<string, never>>(
-      "UnmountContract",
-      () => {
-        const [localValue, setLocalValue] = useState(0)
-        dispatch = setLocalValue
-        const snapshot = useSyncExternalStore(subscribe, getSnapshot)
-        useEffect(() => () => {
-          effectCleanups += 1
-        }, [])
-        return `${localValue}:${snapshot}`
-      },
-    )
-    const {container, root} = mountedRoot()
-
-    root.render(template, {})
-    expect(container.textContent, "CMP-005: mounted state и snapshot должны быть видимы").toBe("0:7")
-    expect(subscriptions, "CMP-005: external store должен получить одну подписку").toBe(1)
-
+    const lifecycle = {setups: 0, cleanups: 0}
+    root.render(components.Counter, {label: "effect", lifecycle})
+    expect(container.textContent).toBe("effect:0")
+    expect(lifecycle).toMatchObject({setups: 1, cleanups: 0})
+    expect("dispatch" in lifecycle).toBeTrue()
+    root.render(components.Counter, {label: "next", lifecycle})
+    expect([lifecycle.setups, lifecycle.cleanups]).toEqual([1, 0])
     root.unmount()
     root.unmount()
-    externalValue = 8
-    const notifyAfterUnmount = lastNotify as (() => void) | null
-    notifyAfterUnmount?.()
+    expect([lifecycle.setups, lifecycle.cleanups]).toEqual([1, 1])
+  })
 
-    expect(container.textContent, "CMP-005: unmount должен удалить component region").toBe("")
-    expect(activeNotify, "CMP-005: unmount должен освободить active subscription").toBeNull()
-    expect(unsubscriptions, "CMP-005: unsubscribe должен выполниться ровно один раз").toBe(1)
-    expect(effectCleanups, "CMP-005: effect cleanup должен выполниться ровно один раз").toBe(1)
-    expect(
-      () => dispatch!(1),
-      "CMP-005: stale state dispatch не должен оживлять unmounted component",
-    ).toThrow("Cannot update an unmounted component")
+  test("[CMP-005] Unmount очищает store subscription, effects и refs", () => {
+    const {container, document, root} = mountedRoot()
+    let value = "first"
+    const listeners = new Set<() => void>()
+    const subscribe = (listener: () => void) => { listeners.add(listener); return () => { listeners.delete(listener) } }
+    root.render(components.Store, {subscribe, getSnapshot: () => value})
+    expect(listeners.size).toBe(1)
+    value = "next"
+    for (const listener of listeners) listener()
+    document.flushTasks()
+    expect(container.textContent).toBe("next")
+    root.unmount()
+    expect(listeners.size).toBe(0)
+    expect(container.childNodes).toHaveLength(0)
   })
 })

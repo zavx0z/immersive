@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument, MouseEvent, type Element} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {LinkProps} from "@zavx0z/immersive-nodes/link"
 import type {LinkDefinition} from "@zavx0z/immersive-nodes/link/types"
 import SOCKET_KINDS from "@zavx0z/immersive-nodes-model-socket-kinds"
@@ -40,7 +40,7 @@ test("[LINK-DEFAULT] нейтральный цвет без kind, явный т�
     ]
     let first: Element | undefined
     for (const entry of cases) {
-      h.component.render(Link as unknown as CompiledTemplate<LinkProps>, {id: "link", title: "Связь", route, ...entry.props})
+      h.component.render(Link as unknown as DOMComponentConstructor<LinkProps>, {id: "link", title: "Связь", route, ...entry.props})
       const element = h.owner.querySelector('[data-link-id="link"]')!
       first ??= element
       expect(element).toBe(first)

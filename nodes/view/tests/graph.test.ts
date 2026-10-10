@@ -1,10 +1,10 @@
 import {expect, test} from "bun:test"
 import {dirname, resolve} from "node:path"
 import {createDocument, MouseEvent, PointerEvent, WheelEvent} from "@zavx0z/immersive-dom"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer} from "@zavx0z/immersive-renderer-html"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {GraphViewProps, GraphSelection} from "@zavx0z/immersive-nodes/view"
 
 const root = resolve(import.meta.dir, "../../..")
@@ -18,7 +18,7 @@ test("[GRAPH-VIEW-001] просмотр самостоятельно выпол�
   document.append(owner)
   const component = createRoot(owner)
   const selected: GraphSelection[] = []
-  const template = GraphView as unknown as CompiledTemplate<GraphViewProps>
+  const template = GraphView as unknown as DOMComponentConstructor<GraphViewProps>
   const props: GraphViewProps = {scene, width: 500, height: 300, navigation: "pan-zoom", onSelectionChange: value => selected.push(value)}
   try {
     component.render(template, props)
@@ -56,7 +56,7 @@ test("[GRAPH-MEASUREMENT-GAP-001] client rect до GPU уже доступен, 
   const owner = document.createElement("div")
   document.append(owner)
   const component = createRoot(owner)
-  component.render(MeasurementNode as unknown as CompiledTemplate<{}>, {})
+  component.render(MeasurementNode as unknown as DOMComponentConstructor<{}>, {})
   let scale = 1
   const renderer = createDocumentRenderer({
     document,

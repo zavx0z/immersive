@@ -4,8 +4,8 @@
 компоненты разных пакетов.
 
 `@zavx0z/immersive-headless` монтирует компоненты пакетов проекта через настоящий
-JSX compiler, Component, DOM, HTML Renderer и нативный WebGPU/Dawn.
-`render` возвращает живой внешний элемент компонента, `screenshot` — PNG
+JSX compiler, готовые DOM constructors, HTML Renderer и нативный WebGPU/Dawn.
+`render` возвращает живой элемент для чтения и снимка, `screenshot` — PNG
 по его актуальному border-box без внешних полей. По умолчанию `screenshot`
 возвращает `Buffer`; второй аргумент `"image"` возвращает `Bun.Image` того же снимка.
 
@@ -47,7 +47,7 @@ test("показывает переданный текст", async () => {
 
 Загрузчик компилирует production TSX через `@zavx0z/immersive-jsx-compiler-session` в пределах Git-корня test host.
 JSX в spec/test использует общий `@zavx0z/immersive-jsx` automatic protocol без авторской файловой
-pragma и создаёт инертный `ComponentValue`; Document, Canvas, Renderer и
+pragma и создаёт инертный `DOMConstruction`; Document, Canvas, Renderer и
 DOM-элемент появляются только после `createHeadless()` и `render()`.
 Headless не владеет отдельным JSX runtime. Штатный persistent plugin `@zavx0z/immersive-jsx-compiler-bun` сохраняет одну сессию компилятора на Git-корень
 в пределах тестового процесса. Production-модули используют её общий кэш и
@@ -56,10 +56,11 @@ Headless не владеет отдельным JSX runtime. Штатный pers
 [`renderComponent`](contract/output.ts). Сценарии компонентов следуют
 [правилу render](../../storybook/specs/scenarios/spec/scenario.spec.ts).
 
-Один host сохраняет Document, компонентный root, Canvas, Renderer, Space
-и ViewPoint до `dispose`. Повторный render того же template/key обновляет props
+Один host сохраняет Document, DOM root, Canvas, Renderer, Space
+и ViewPoint до `dispose`. Повторный render того же constructor/key обновляет props
 с сохранением элемента. Снимок можно запросить и для потомка возвращённого
-элемента. Компонент должен иметь один внешний Element, а снимаемая область —
+элемента. Для нескольких корней, отдельного текста и пустого результата используется существующий
+host Headless без дополнительного корня компонента; снимаемая область —
 полностью помещаться в настроенный viewport.
 
 [Браузерный контракт Headless](meta/notes/browser-api.md) определяет единое поведение

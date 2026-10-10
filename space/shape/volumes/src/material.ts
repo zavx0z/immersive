@@ -1,5 +1,5 @@
 import {Color, GlassMaterial, HolographicMaterial, LineGlowMaterial} from "@zavx0z/immersive-engine"
-import type {XRMaterialProjectionContext} from "../../../src/elements.ts"
+import type {XRMaterialProjectionContext} from "@zavx0z/immersive-space"
 import type {SpatialVolumeMaterialDefaults} from "../contract/material-defaults.ts"
 
 /** Проверяет только fallback; CSS продолжает разрешаться общим каскадом Browser. */

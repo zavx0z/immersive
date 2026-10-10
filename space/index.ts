@@ -4,9 +4,9 @@
 
 @packageDocumentation
 */
-export * from "./src/index.ts"
-export {Grid} from "./gizmo/grid.tsx"
-export type {GridProps} from "./gizmo/grid.tsx"
+export * from "@zavx0z/immersive-space"
+export {Grid} from "@zavx0z/immersive-space/gizmo/grid"
+export type {GridProps} from "@zavx0z/immersive-space/gizmo/grid"
 
 export type {
   SpaceRef,
@@ -21,4 +21,4 @@ export type {
   XRMeshIntrinsicProperties,
   XRObjectIntrinsicProperties,
   XRTextIntrinsicProperties,
-} from "./src/jsx.ts"
+} from "@zavx0z/immersive-space"

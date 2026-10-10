@@ -5,12 +5,16 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --pretty false",
-    "test": "bun test --parallel ./spec",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel ./spec",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {},
   "description": "Ошибки компиляции JSX с исходным файлом",

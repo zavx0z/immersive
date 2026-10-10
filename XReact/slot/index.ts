@@ -1,6 +1,3 @@
-/**
-Композиция готового содержимого через общий lifecycle компонентов XReact.
-
-@packageDocumentation
-*/
-export * from "@zavx0z/immersive-component/slot"
+/** Слоты являются входом compiler; готовый код использует обычный DOM. @packageDocumentation */
+export {hasSlot, composeSlot} from "@zavx0z/immersive-component/authoring"
+export type {DOMSlotContent, DOMComponentContent} from "@zavx0z/immersive-dom"

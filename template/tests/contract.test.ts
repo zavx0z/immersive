@@ -7,7 +7,11 @@ import {
   HTMLSpanElement,
   Text,
   createDocument,
+  DOMGroup,
+  Event,
+  isDOMComponentConstructor,
 } from "@zavx0z/immersive-dom"
+import {compile, html} from "../index.ts"
 import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
 import {
   bindEvent,
@@ -56,7 +60,7 @@ function interactiveTemplate() {
 }
 
 describe("Compiled Template contract", () => {
-  test("[TPL-001] Компилятор TSX создаёт публичный формат готового шаблона", async () => {
+  test("[TPL-001] HTML применяет готовые DOM constructors после динамического импорта TSX output", async () => {
     const sourceRoot = await mkdtemp(join(import.meta.dir, ".compiler-contract-"))
     const sourcePath = join(sourceRoot, "greeting.tsx")
     const outputPath = join(sourceRoot, "greeting.compiled.ts")
@@ -75,9 +79,13 @@ describe("Compiled Template contract", () => {
       files: ["greeting.tsx"],
     }))
     await Bun.write(sourcePath, [
-      "export function Greeting(props: {label: string}) {",
-      "  return <button title={props.label}>{props.label}</button>",
+      'import {useState, useLayoutEffect} from "@zavx0z/immersive-component"',
+      "export function Greeting(props: {label: string, mount: () => void, cleanup: () => void}) {",
+      "  const [count, setCount] = useState(0)",
+      "  useLayoutEffect(() => {props.mount(); return props.cleanup}, [])",
+      "  return <button title={props.label} onClick={() => setCount(value => value + 1)}>{props.label}:{count}</button>",
       "}",
+      "export function Pair() { return <><span>one</span><span>two</span></> }",
       "",
     ].join("\n"))
 
@@ -85,20 +93,46 @@ describe("Compiled Template contract", () => {
     try {
       const result = await compiler.compileFile(sourcePath)
       await Bun.write(outputPath, result.code)
-      const compiledModule = await import(pathToFileURL(outputPath).href) as Record<string, unknown>
-
-      expect(
-        result.code.includes("<button"),
-        "TPL-001: compiler output не должен содержать runtime JSX",
-      ).toBe(false)
-      expect(
-        result.code.includes('from "@zavx0z/immersive-template/compiled"'),
-        "TPL-001: compiler output должен использовать public compiled ABI",
-      ).toBe(true)
-      expect(
-        isCompiledTemplate(compiledModule.Greeting),
-        "TPL-001: экспорт скомпилированного компонента должен быть CompiledTemplate",
-      ).toBe(true)
+      const built = await Bun.build({
+        entrypoints: [outputPath], target: "bun", format: "esm", metafile: true,
+        plugins: [{name: "canonical-dom-owner", setup(build) {
+          build.onResolve({filter: /^@zavx0z\/immersive-dom(?:\/.*)?$/}, args => ({path: Bun.resolveSync(args.path, import.meta.dir), external: true}))
+        }}],
+      })
+      expect(built.success).toBe(true)
+      expect(Object.keys(built.metafile!.inputs).filter(path => /(?:^|\/)(?:component|jsx|template)\/(?:src|dom|compiled)/.test(path))).toEqual([])
+      const executablePath = join(sourceRoot, "ready.js")
+      await Bun.write(executablePath, await built.outputs[0]!.text())
+      const compiledModule = await import(pathToFileURL(executablePath).href)
+      expect(result.code.includes("<button"), "TPL-001: output не содержит runtime JSX").toBe(false)
+      expect(/from ["']@zavx0z\/immersive(?:\/XReact|-component|-template)/.test(result.code), "TPL-001: ready output зависит только на lower DOM").toBe(false)
+      expect(isDOMComponentConstructor(compiledModule.Greeting)).toBe(true)
+      expect(isCompiledTemplate(compiledModule.Greeting)).toBe(false)
+      const document = createDocument(), host = document.createElement("main")
+      document.append(host)
+      let mounts = 0, cleanups = 0
+      const props = {label: "one", mount: () => { mounts++ }, cleanup: () => { cleanups++ }}
+      const program = compile((label: string) => html`${{type: compiledModule.Greeting, props: {...props, label}}}`)
+      const instance = program.mount(host, "one")
+      const button = host.querySelector("button")!
+      expect(button).toBeInstanceOf(HTMLButtonElement)
+      expect(host.children).toEqual([button])
+      button.dispatchEvent(new Event("click"))
+      expect(button.textContent).toBe("one:1")
+      instance.update("two")
+      expect(host.querySelector("button") === button).toBe(true)
+      expect(button.textContent).toBe("two:1")
+      expect([mounts, cleanups]).toEqual([1, 0])
+      instance.dispose()
+      expect(cleanups).toBe(1)
+      const pair = new compiledModule.Pair(document, {})
+      expect(pair).toBeInstanceOf(DOMGroup)
+      const fragment = compile(() => html`${pair}`).mount(host, {})
+      expect(host.children.map(element => element.localName)).toEqual(["span", "span"])
+      expect(fragment.rootNodes).toEqual(host.children)
+      fragment.dispose()
+      expect(pair.nodes).toHaveLength(2)
+      pair.dispose()
     } finally {
       await compiler.close()
       await rm(sourceRoot, {force: true, recursive: true})

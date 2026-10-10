@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import {useSyncExternalStore} from "@zavx0z/immersive-component"
+import {useSyncExternalStore} from "@zavx0z/immersive-component/authoring"
 import Menu from "@zavx0z/immersive-ui-component-menu-basic"
 
 

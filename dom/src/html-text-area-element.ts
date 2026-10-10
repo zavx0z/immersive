@@ -4,6 +4,7 @@ import {domError} from "./internal/errors.ts"
 import {disabledByAncestorFieldSet} from "./internal/disabled.ts"
 import {isProgrammaticallyFocusable} from "./internal/focus.ts"
 import {recordTextAreaStateChange} from "./internal/state-change.ts"
+import {lifecyclePropertyChanged} from "./internal/lifecycle.ts"
 import {
   EMPTY_TEXT_SELECTION,
   sameTextSelection,
@@ -34,10 +35,11 @@ function reflectedNonNegativeInteger(value: string | null): number {
 }
 
 export class HTMLTextAreaElement extends HTMLElement {
-  private textAreaState: TextAreaState | null = null
+  declare private textAreaState: TextAreaState | null
 
   constructor(ownerDocument: Document) {
     super(ownerDocument, "textarea")
+    if (!Object.hasOwn(this, "textAreaState")) this.textAreaState = null
   }
 
   get placeholder(): string {
@@ -230,7 +232,11 @@ export class HTMLTextAreaElement extends HTMLElement {
   }
 
   private recordValueChange(oldValue: string, newValue: string): void {
-    if (oldValue === newValue || !this.isConnected) return
+    if (oldValue === newValue) return
+    if (!this.isConnected) {
+      lifecyclePropertyChanged(this, "value")
+      return
+    }
     this.ownerDocument![recordTextAreaStateChange](Object.freeze({
       type: "textarea",
       target: this,
@@ -241,7 +247,11 @@ export class HTMLTextAreaElement extends HTMLElement {
   }
 
   private recordSelectionChange(oldValue: TextSelection, newValue: TextSelection): void {
-    if (sameTextSelection(oldValue, newValue) || !this.isConnected) return
+    if (sameTextSelection(oldValue, newValue)) return
+    if (!this.isConnected) {
+      lifecyclePropertyChanged(this, "selection")
+      return
+    }
     this.ownerDocument![recordTextAreaStateChange](Object.freeze({
       type: "textarea",
       target: this,

@@ -6,8 +6,8 @@
 
 @packageDocumentation
 */
-import {useMemo} from "@zavx0z/immersive-component"
-import {parseMarkdown} from "../parser/index.ts"
+import {useMemo} from "@zavx0z/immersive-component/authoring"
+import {parseMarkdown} from "@zavx0z/immersive-markdown/parser"
 import type {MarkdownProps} from "./contract/input.ts"
 import {Block} from "./src/blocks.tsx"
 

@@ -38,7 +38,7 @@ export interface DocumentRootInspection {
 /** Внутреннее участие автора в общем lifecycle; DOM runtime не знает его реализацию. */
 export interface DocumentContent {
   commit(): boolean
-  flush(): number
+  flush(): void
   unmount(): void
 }
 

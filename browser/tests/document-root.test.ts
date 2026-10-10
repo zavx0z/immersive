@@ -1,3 +1,4 @@
+import {nativeComponents} from "./native-components.ts"
 import {expect, test} from "bun:test"
 import type {TrueTypeFont} from "@zavx0z/immersive-engine"
 import {createDocumentRootWithSeams, inspectDocumentRoot} from "../document/index.ts"
@@ -69,9 +70,6 @@ test("поставка императивного подключения не с
 
 test("готовый custom component использует один Document, runtime и frame hooks через пространственные hosts", async () => {
   const {HTMLElement, Event} = await import("@zavx0z/immersive-dom")
-  const {componentElement, useEffect, useState} = await import("@zavx0z/immersive-component")
-  const {bindText, bindEvent, defineCompiledTemplate, writeBinding} = await import("@zavx0z/immersive-template/compiled")
-  const {useFrame, useSpace} = await import("../src/root-context.ts")
   const state = createFakeRuntimeState()
   const errors: Error[] = []
   const canvas = {
@@ -87,57 +85,15 @@ test("готовый custom component использует один Document, ru
     createStyleSheets: () => ({refresh() {}, async whenReady() {}, dispose() {}}),
   })
   let effects = 0, cleanups = 0, frames = 0, renders = 0
-  const App = defineCompiledTemplate({
-    bindingCount: 2,
-    mount(document) {
-      const space = document.createElement("space")
-      const scene = document.createElement("scene-fragment")
-      const camera = document.createElement("scene-fragment")
-      camera.append(document.createElement("viewpoint"))
-      const first = document.createElement("xr-group")
-      const second = document.createElement("xr-group")
-      first.setAttribute("name", "first")
-      second.setAttribute("name", "second")
-      const meshHost = document.createElement("scene-fragment")
-      meshHost.id = "mesh-host"
-      const mesh = document.createElement("xr-mesh")
-      mesh.setAttribute("name", "cube")
-      const resources = document.createElement("scene-fragment")
-      resources.id = "resources"
-      resources.append(document.createElement("xr-geometry"), document.createElement("xr-material"))
-      mesh.append(resources)
-      meshHost.append(mesh)
-      first.append(meshHost)
-      const displayHost = document.createElement("scene-fragment")
-      displayHost.id = "display-host"
-      const display = document.createElement("display")
-      display.setAttribute("width", "254")
-      display.setAttribute("height", "254")
-      display.setAttribute("style", "width: 960px; height: 960px")
-      const button = document.createElement("button")
-      const text = document.createTextNode("")
-      button.append(text)
-      display.append(button)
-      displayHost.append(display)
-      scene.append(camera, first, second, displayHost)
-      space.append(scene)
-      return {nodes: [space], bindings: [bindText(text), bindEvent(button, "click")]}
-    },
-    render(_props, values) {
-      renders++
-      const [count, setCount] = useState(0)
-      const width = useSpace(value => value.size.width)
-      useFrame(() => { frames++ })
-      useEffect(() => { effects++; return () => { cleanups++ } }, [])
-      writeBinding(values, 0, `${width}:${count}`)
-      writeBinding(values, 1, () => setCount(count + 1))
-    },
-  })
+  const App = nativeComponents.NativeScene!
   try {
     const document = root.document
     document.customElementRegistry.define("scene-fragment", class extends HTMLElement {})
-    document.customElementRegistry.define("ready-scene", componentElement(App))
-    const app = document.createElement("ready-scene")
+    const app = new App(document, {
+      rendered: () => { renders++ }, mounted: () => { effects++ }, cleaned: () => { cleanups++ }, frame: () => { frames++ },
+    })
+    const {Element} = await import("@zavx0z/immersive-dom")
+    if (!(app instanceof Element)) throw new Error("NativeScene must be an actual Space Element")
     document.querySelector("body")!.append(app)
     root.render()
     const presentation = await root.whenReady()

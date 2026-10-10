@@ -2,6 +2,7 @@ import {readElementBoundingClientRect, readElementLayoutRect, type DOMRectReadOn
 import type {Document} from "./document.ts"
 import {parseFragment, serializeFragment} from "./html-fragment.ts"
 import {customElementAttributeChanged, customRegistryFor, isCustomElementHost} from "./internal/custom-elements.ts"
+import {observesDOMAttribute, observesDOMContent, lifecycleAttributeChanged, lifecycleContentChanged} from "./internal/lifecycle.ts"
 import type {CustomElementRegistry} from "./custom-elements.ts"
 import {requestElementFullscreen, type FullscreenOptions} from "./fullscreen.ts"
 import {getClassList} from "./dom-token-list.ts"
@@ -24,7 +25,12 @@ import {
 } from "./selectors.ts"
 
 function normalizeAttributeName(name: string): string {
-  return String(name).replace(/[A-Z]/g, character => character.toLowerCase())
+  const value = String(name)
+  for (let index = 0; index < value.length; index++) {
+    const code = value.charCodeAt(index)
+    if (code >= 65 && code <= 90) return value.replace(/[A-Z]/g, character => character.toLowerCase())
+  }
+  return value
 }
 
 export class Element extends Node {
@@ -236,10 +242,14 @@ export class Element extends Node {
     oldValue: string | null,
     newValue: string | null
   ): void {
-    if (isCustomElementHost(this)) {
+    if (isCustomElementHost(this) || observesDOMAttribute(this, attributeName) || observesDOMContent()) {
       const document = this.ownerDocument
       const record = () => {
         customElementAttributeChanged(this, attributeName, oldValue, newValue)
+        if (oldValue !== newValue) {
+          lifecycleAttributeChanged(this, attributeName)
+          if (this.parentNode) lifecycleContentChanged(this.parentNode)
+        }
         this.publishAttributeMutation(attributeName, oldValue, newValue)
       }
       if (document) document.transaction(record)
@@ -252,13 +262,13 @@ export class Element extends Node {
   private publishAttributeMutation(attributeName: string, oldValue: string | null, newValue: string | null): void {
     const document = this.ownerDocument
     if (!document || !this.isConnected) return
-    const mutation: AttributeMutation = Object.freeze({
+    const mutation: AttributeMutation = {
       type: "attributes",
       target: this,
       attributeName,
       oldValue,
       newValue
-    })
+    }
     document.recordMutation(mutation)
   }
 }

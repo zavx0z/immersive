@@ -1,5 +1,5 @@
-import {component, memo} from "@zavx0z/immersive-component"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import {component, memo} from "@zavx0z/immersive-component/authoring"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 import type {ImmersiveNodesNode} from "@zavx0z/immersive-nodes-node/contract"
 type NodeChildren = ImmersiveNodesNode.Output | readonly ImmersiveNodesNode.Output[] | null | undefined
@@ -33,5 +33,5 @@ export const MemoGraphNodeContent = memo(GraphNodeContent, (previous, next) =>
   previous.onActivate === next.onActivate && previous.intrinsic === next.intrinsic && previous.elementRef === next.elementRef)
 
 function renderNode(node: GraphRenderedNode, props: GraphNodeProps): NodeChildren {
-  return component(node.view as unknown as CompiledTemplate<GraphNodeProps>, props, node.id) as unknown as JSX.Element
+  return component(node.view as unknown as DOMComponentConstructor<GraphNodeProps>, props, node.id) as unknown as JSX.Element
 }

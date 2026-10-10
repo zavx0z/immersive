@@ -1,4 +1,5 @@
-import {createRoot, useState, useSyncExternalStore} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
+import {useState, useSyncExternalStore} from "@zavx0z/immersive-component/authoring"
 import type {Document} from "@zavx0z/immersive-dom"
 import {Parameter, createNodeTree, createNodeTreeExternalStore} from "@zavx0z/immersive-nodes-tree"
 import ParameterNode from "@zavx0z/immersive-nodes-node-parameter"
@@ -7,7 +8,7 @@ import DiagramNode from "@zavx0z/immersive-nodes-node-diagram"
 import planProjectedNodeGeometry from "@zavx0z/immersive-nodes-geometry-node-project"
 import Button from "@zavx0z/immersive-ui-component-button-basic"
 import Typography from "@zavx0z/immersive-ui-component-typography"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 
 export function InteractiveContent() {
   const [count, setCount] = useState(0)
@@ -46,7 +47,7 @@ export function createNodeFixture(document: Document, route: string, looseSocket
   const store = createNodeTreeExternalStore(tree)
   const element = document.createElement("div")
   const root = createRoot(element)
-  root.render(NodeFixture as unknown as CompiledTemplate<NodeStoryProps>, {route, store, value})
+  root.render(NodeFixture as unknown as DOMComponentConstructor<NodeStoryProps>, {route, store, value})
   return {element, dispose() {
     root.unmount()
     tree.dispose()

@@ -1,4 +1,4 @@
-import {createContext} from "@zavx0z/immersive-component"
+import {createContext} from "@zavx0z/immersive-component/authoring"
 import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 
 export type MarkdownImageSource = Readonly<{src: string, alt: string, title?: string}>

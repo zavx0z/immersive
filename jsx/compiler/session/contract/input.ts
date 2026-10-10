@@ -14,4 +14,8 @@ export type JsxCompilerSessionOptions = Readonly<{
   cwd: string
   sourceRoots: readonly string[]
   styleSourceRootIds?: readonly string[]
+  /** Native package exports conditions для отдельной сборки; исходные tsconfig не изменяются. */
+  customConditions?: readonly string[]
+  /** Точные owned root files отдельной сборки; зависимости читаются штатным resolver через imports. */
+  sourceFiles?: readonly string[]
 }>

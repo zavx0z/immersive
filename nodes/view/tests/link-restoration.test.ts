@@ -2,12 +2,12 @@ import {expect, test} from "bun:test"
 import {resolve} from "node:path"
 import {createDocument} from "@zavx0z/immersive-dom"
 import {flushDocumentLayoutObservers} from "@zavx0z/immersive-dom/geometry"
-import {createRoot} from "@zavx0z/immersive-component"
+import {createDomRoot as createRoot} from "@zavx0z/immersive-dom"
 import {createDocumentRenderer, type RenderFrame} from "@zavx0z/immersive-renderer-html"
 import {InstancedStrokedPath, TrueTypeFont} from "@zavx0z/immersive-engine"
 import {RendererWebGpuBackend} from "../../../webgpu/src/webgpu-backend.ts"
 import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
-import type {CompiledTemplate} from "@zavx0z/immersive-template/compiled"
+import type {DOMComponentConstructor} from "@zavx0z/immersive-dom"
 import type {GraphViewProps, GraphLayoutComputer} from "@zavx0z/immersive-nodes/view"
 
 const workspace = resolve(import.meta.dir, "../../..")
@@ -62,7 +62,7 @@ test("[GRAPH-LINK-RESTORATION] measured links возвращаются посл�
   }
   const props: GraphViewProps = {input: graphInput(), layout, width: 500, height: 300, controls: false, navigation: "pan-zoom", overscan: 0}
   const render = (x: number) => {
-    component.render(GraphView as unknown as CompiledTemplate<GraphViewProps>, {...props, transform: {x, y: 0, scale: .41}})
+    component.render(GraphView as unknown as DOMComponentConstructor<GraphViewProps>, {...props, transform: {x, y: 0, scale: .41}})
     for (let pass = 0; pass < 15; pass += 1) {
       component.flush()
       renderer.flush()

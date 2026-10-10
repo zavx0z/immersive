@@ -1,9 +1,9 @@
 import type {DisplayElement} from "@zavx0z/immersive-dom/display"
-import {useMemo, useSyncExternalStore} from "@zavx0z/immersive-component"
-import {composeSlot} from "@zavx0z/immersive-component/slot"
+import {useMemo, useSyncExternalStore} from "@zavx0z/immersive-component/authoring"
+import {composeSlot} from "@zavx0z/immersive-component/authoring"
 import {Grid} from "@zavx0z/immersive-space/gizmo/grid"
 import {SpatialVolumes, type SpatialVolumeMaterialDefaults} from "@zavx0z/immersive-space/shape/volumes"
-import {Frame} from "../../../frame/index.tsx"
+import {Frame} from "@zavx0z/immersive-nodes/frame"
 import type {SpatialTreeState, SpatialTreeSnapshot} from "../contract/controller.ts"
 import {SPATIAL_TREE_HEADER, type SpatialTreeDisplay} from "./scene.ts"
 

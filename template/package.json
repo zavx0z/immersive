@@ -7,14 +7,29 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": "./index.ts",
-    "./compiled": "./compiled.ts",
-    "./css-shape": "./css-shape/index.ts"
+    ".": {
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./compiled": {
+      "source": "./compiled.ts",
+      "types": "./dist/compiled.d.ts",
+      "browser": "./dist/compiled.js",
+      "default": "./dist/compiled.js"
+    },
+    "./css-shape": {
+      "source": "./css-shape/index.ts",
+      "types": "./dist/css-shape/index.d.ts",
+      "browser": "./dist/css-shape/index.js",
+      "default": "./dist/css-shape/index.js"
+    }
   },
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "bun test --parallel tests css-shape/spec",
-    "check": "bun run --parallel typecheck test"
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests css-shape/spec",
+    "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependencies": {
     "@zavx0z/immersive-dom": "workspace:*",

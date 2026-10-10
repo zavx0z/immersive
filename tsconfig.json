@@ -2,11 +2,17 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
     "target": "ESNext",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "Preserve",
     "moduleDetection": "force",
     "moduleResolution": "bundler",
-    "customConditions": ["source"],
+    "customConditions": [
+      "source"
+    ],
     "jsx": "preserve",
     "jsxImportSource": "@zavx0z/immersive-jsx",
     "allowImportingTsExtensions": true,
@@ -19,8 +25,21 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
     "exactOptionalPropertyTypes": true,
-    "types": ["bun"]
+    "types": [
+      "bun"
+    ]
   },
-  "include": ["tests/**/*.ts", "*/tests/**/*.ts", "index.ts", "XReact/**/*.ts", "ui/index.ts", "compiler/**/*.ts"],
-  "exclude": ["projects/**", "node_modules/**"]
+  "include": [
+    "tests/**/*.ts",
+    "tests/**/*.tsx",
+    "*/tests/**/*.ts",
+    "index.ts",
+    "XReact/**/*.ts",
+    "ui/index.ts",
+    "compiler/**/*.ts"
+  ],
+  "exclude": [
+    "projects/**",
+    "node_modules/**"
+  ]
 }

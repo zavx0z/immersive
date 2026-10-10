@@ -13,9 +13,8 @@ test.each([
   try {
     const result = await compiler.compileFile(source)
     expect(result.code).toContain(`./${library}/index.js`)
-    expect(result.code).toContain('from "@zavx0z/immersive/XReact"')
-    expect(result.code).toContain('from "@zavx0z/immersive/XReact/compiled"')
-    expect(result.code).toContain('from "@zavx0z/immersive/XReact/slot"')
+    expect(result.code).toContain('from "@zavx0z/immersive"')
+    expect(result.code).not.toMatch(/from ["\']@zavx0z\/immersive\/XReact(?:["\']|\/)/)
     expect(result.code).not.toContain('from "@zavx0z/immersive-component')
     expect(result.code).not.toContain('from "@zavx0z/immersive-template')
     expect(compiler.accepts(resolve(import.meta.dir, "published", library, "index.d.ts"))).toBeFalse()
@@ -25,13 +24,20 @@ test.each([
     await mkdir(join(temporary, "node_modules/@zavx0z"), {recursive: true})
     await symlink(resolve(import.meta.dir, "../../../.."), join(temporary, "node_modules/@zavx0z/immersive"))
     await Bun.write(join(temporary, "tsconfig.json"), JSON.stringify({compilerOptions: {paths: {}}}))
-    await Bun.write(join(temporary, library, "index.js"), await readFile(resolve(import.meta.dir, "published", library, "index.js"), "utf8"))
+    const readySource = resolve(import.meta.dir, "published/ready.fixture.tsx")
+    const producer = new JsxCompilerSession({cwd: resolve(import.meta.dir, "../../../.."), sourceRoots: [readySource]})
+    try {
+      const ready = await producer.compileFile(readySource)
+      const executable = new Bun.Transpiler({loader: "ts"}).transformSync(ready.code)
+      await Bun.write(join(temporary, library, "index.js"), executable + `\nexport default ${library === "library" ? "Prepared" : "PreparedDefault"}\n`)
+    } finally { await producer.close() }
+    expect(compiler.accepts(readySource)).toBeFalse()
     await Bun.write(output, result.code)
     const runtime = join(temporary, "runtime.ts")
     await Bun.write(runtime, `
 import assert from "node:assert/strict"
 import {createDocument} from "@zavx0z/immersive"
-import {createRoot} from "@zavx0z/immersive/XReact"
+import {createDomRoot as createRoot} from "@zavx0z/immersive"
 import {Consumer} from "./consumer.ts"
 const document = createDocument()
 const root = createRoot(document)
@@ -70,9 +76,8 @@ test("публичный XReact сохраняет распознавание ho
   try {
     const result = await compiler.compileFile(join(directory, "hooks.fixture.tsx"))
     expect(result.code).toContain('["header"]')
-    expect(result.code).toContain('from "@zavx0z/immersive/XReact"')
-    expect(result.code).toContain('from "@zavx0z/immersive/XReact/compiled"')
-    expect(result.code).toContain("useDocument as")
+    expect(result.code).toContain('from "@zavx0z/immersive"')
+    expect(result.code).not.toContain("useDocument as")
     expect(result.code).toContain("createCanvasRoot(canvas).render(")
     expect(result.code).not.toContain("<PublicApp")
     expect(result.code).not.toContain('from "@zavx0z/immersive-component')
@@ -91,7 +96,7 @@ test("транзитивная декларация слотов инвалид�
   try {
     await Bun.write(join(directory, "tsconfig.json"), JSON.stringify({extends: "../tsconfig.json", include: ["**/*.ts", "**/*.tsx"]}))
     await Bun.write(join(directory, "library/index.d.ts"), `
-import type {CompiledComponent, JSX} from "@zavx0z/immersive/XReact"
+import type {CompiledDOMComponent as CompiledComponent, JSX} from "@zavx0z/immersive/XReact"
 import type {Slots} from "./public.js"
 declare const Prepared: CompiledComponent<{value: string}, JSX.Element<Slots>>
 export default Prepared
@@ -131,10 +136,10 @@ test("публичная декларация без номинального б
     for (const type of [
       '((props: {}) => JSX.Element) & {readonly "@zavx0z/immersive-component/compiled"?: true}',
       '((props: {}) => JSX.Element) & {readonly "@zavx0z/immersive-component/compiled"?: true; readonly [compiledComponentBrand]: true}',
-      '((props: {}) => JSX.Element) & Partial<CompiledComponent<{}>>',
+      '((props: {}) => JSX.Element) & Partial<CompiledComponent<{}, JSX.Element>>',
     ]) {
       await Bun.write(join(directory, "library.d.ts"), `
-import type {CompiledComponent, JSX} from "@zavx0z/immersive/XReact"
+import type {CompiledDOMComponent as CompiledComponent, JSX} from "@zavx0z/immersive/XReact"
 declare const compiledComponentBrand: unique symbol
 declare const Fake: ${type}
 export default Fake
