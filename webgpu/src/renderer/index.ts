@@ -130,6 +130,7 @@ const INITIAL_RENDERABLE_CAPACITY = 512
 const MAX_LIGHTS = 4 // Максимальное количество источников света
 const WEBGPU_INIT_TIMEOUT_MS = 15000
 const MAX_CACHED_RENDER_LAYERS = 32
+const MAX_CACHED_BACKDROP_RUNS = 8
 const CAPACITY_TRIM_DELAY_MS = 1000
 const canvasConfigurationOwners = new WeakMap<GPUCanvasContext, GPUDevice>()
 
@@ -470,6 +471,7 @@ export class Renderer {
   private geometryCache: Map<BufferGeometry, GeometryBuffers> = new Map()
   private readonly renderBundleCaches = new Map<Object3D, RenderBundleCache>()
   private readonly glassRenderBundleCaches = new Map<Object3D, RenderBundleCache>()
+  private readonly backdropRenderBundleCaches = new Map<Object3D, RenderBundleCache[]>()
   private geometryAttributeSources: WeakMap<BufferGeometry, Map<string, GeometryAttributeBinding>> = new WeakMap()
   private depthTexture: GPUTexture | null = null
   private depthTextureView: GPUTextureView | null = null
@@ -2375,6 +2377,12 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         caches.delete(root)
       }
     }
+    const backdropRoots = new Set(layers.filter(({layer}) => layer.uiObjects.some(item => (readBackdrop(item.object)?.sigma ?? 0) > 0)).map(({root}) => root))
+    for (const [root, caches] of this.backdropRenderBundleCaches) {
+      if (backdropRoots.has(root)) continue
+      for (const cache of caches) cache.clear()
+      this.backdropRenderBundleCaches.delete(root)
+    }
   }
 
   private prepareRenderLayer(
@@ -2477,13 +2485,13 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       }
       encoder.setBindGroup(0, resources.globalBindGroup)
       // World scene lines выбирают ближайшую глубину до смешивания цвета.
-      this.renderObjectList(encoder, geometry, renderIndexByItem)
-      this.renderObjectList(encoder, legacy, renderIndexByItem)
+      this.renderObjectList(encoder, geometry, renderIndexByItem, false, undefined, resources.globalBindGroup)
+      this.renderObjectList(encoder, legacy, renderIndexByItem, false, undefined, resources.globalBindGroup)
       if (sceneLines.length > 0) {
         this.renderObjectList(encoder, sceneLines, renderIndexByItem, false, "depth")
         this.renderObjectList(encoder, sceneLines, renderIndexByItem, false, "color")
       }
-      if (glass === null) this.renderObjectList(encoder, initialUi, renderIndexByItem, true)
+      if (glass === null) this.renderObjectList(encoder, initialUi, renderIndexByItem, true, undefined, resources.globalBindGroup)
     }
     let cache = this.renderBundleCaches.get(root)
     if (cache === undefined && this.renderBundleCaches.size < MAX_CACHED_RENDER_LAYERS) {
@@ -2545,9 +2553,31 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const filter = this.backdropFilter!
     const source = raster?.multisample ?? this.multisampleTexture!
     let passResolves = false
+    let passAccess = {depthReadOnly: false, stencilReadOnly: false}
+    let caches = this.backdropRenderBundleCaches.get(prepared.root)
+    if (caches === undefined && this.backdropRenderBundleCaches.size < MAX_CACHED_RENDER_LAYERS) {
+      caches = []
+      this.backdropRenderBundleCaches.set(prepared.root, caches)
+    }
+    let runIndex = 0
+    const renderRun = (pass: GPURenderPassEncoder, draws: RenderItem[]): void => {
+      if (draws.length === 0) return
+      const record = (encoder: RenderCommandEncoder) => {
+        encoder.setBindGroup(0, prepared.resources.globalBindGroup)
+        this.renderObjectList(encoder, draws, indices, true, undefined, prepared.resources.globalBindGroup)
+      }
+      const cache = caches !== undefined && runIndex < MAX_CACHED_BACKDROP_RUNS
+        ? caches[runIndex++] ??= new RenderBundleCache(131072 / MAX_CACHED_BACKDROP_RUNS)
+        : undefined
+      if (cache === undefined) record(pass)
+      else cache.execute(this.device!, {
+        colorFormat: this.presentationFormat!, depthStencilFormat: "depth24plus-stencil8",
+        sampleCount: this.sampleCount, ...passAccess,
+      }, pass, record)
+    }
     const begin = (resolve: boolean, draws: readonly RenderItem[]) => {
       passResolves = resolve
-      const access = uiAttachmentAccess(draws)
+      const access = passAccess = uiAttachmentAccess(draws)
       const pass = command.beginRenderPass({label: "ui-backdrop-ordered", colorAttachments: [{
         view: raster?.multisample.createView() ?? this.multisampleTextureView!, ...(resolve ? {resolveTarget: view} : {}), loadOp: "load", storeOp: "store",
       }], depthStencilAttachment: {view: raster?.depth.createView() ?? this.depthTextureView!,
@@ -2566,7 +2596,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       if (!backdrop) continue
       if (index > start || pass !== null) {
         pass ??= begin(false, items.slice(start))
-        this.renderObjectList(pass, items.slice(start, index), indices, true)
+        renderRun(pass, items.slice(start, index))
       }
       start = index + 1
       if (backdrop.sigma === 0) continue
@@ -2626,6 +2656,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       // Готовые результаты можно последовательно смешать в одном UI pass.
       // Access учитывает весь остаток: cached blur больше не разрывает stencil.
       pass ??= begin(nextBlur === -1, items.slice(index))
+      // A cached run may have executed bundles, which clear all pass bindings.
+      pass.setBindGroup(0, prepared.resources.globalBindGroup)
       pass.setPipeline(this.backdropPipeline!)
       pass.setBindGroup(2, group)
       const renderIndex = indices.get(item)
@@ -2640,7 +2672,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.backdropFrame?.items.push(...items.slice(prefixStart))
     if (start < items.length || pass !== null) {
       pass ??= begin(true, items.slice(start))
-      this.renderObjectList(pass, items.slice(start), indices, true)
+      renderRun(pass, items.slice(start))
       pass.end()
       if (!passResolves) {
         // При слиянии cached draws финальный pass был открыт до последнего blur.
@@ -2651,6 +2683,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         }]}).end()
       }
     }
+    if (caches !== undefined) caches.length = runIndex
   }
 
   /** Создаётся лениво: отсутствие backdrop не добавляет текстуры или render passes. */
@@ -2776,6 +2809,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       for (const cache of caches.values()) cache.clear()
       caches.clear()
     }
+    for (const caches of this.backdropRenderBundleCaches.values()) for (const cache of caches) cache.clear()
+    this.backdropRenderBundleCaches.clear()
   }
 
   private createPerObjectResources(capacity: number): void {
@@ -3217,6 +3252,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     renderIndexByItem: ReadonlyMap<RenderItem, number>,
     isUiLayer = false,
     sceneLinePhase?: "depth" | "color",
+    globalBindGroup?: GPUBindGroup,
   ): void {
     let currentPipeline: GPURenderPipeline | null = null
 
@@ -3297,6 +3333,23 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         default:
           pipeline = null
           break
+      }
+
+      // External textures live for one submission. Preserve the surrounding
+      // command runs, including their paint order, without retaining the video.
+      if (pipeline && globalBindGroup && passEncoder instanceof RenderBundleCache && item.type === "static-mesh") {
+        const mesh = item.object as Mesh
+        const material = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material
+        if (material instanceof ImageMaterial && this.usesExternalImageTexture(material)) {
+          const externalPipeline = pipeline
+          passEncoder.transient(encoder => {
+            encoder.setBindGroup(0, globalBindGroup)
+            encoder.setPipeline(externalPipeline)
+            this.renderMesh(encoder, mesh, item.worldMatrix, renderIndex)
+          }, encoder => encoder.setBindGroup(0, globalBindGroup))
+          currentPipeline = null
+          continue
+        }
       }
 
       // Меняем конвейер только если он отличается от текущего

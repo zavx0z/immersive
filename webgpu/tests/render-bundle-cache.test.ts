@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {Object3D} from "@zavx0z/immersive-engine"
+import {BufferGeometry, ImageMaterial, Mesh, MeshBasicMaterial, Object3D} from "@zavx0z/immersive-engine"
 import {Renderer} from "../src/renderer/index.ts"
 import {
   RenderBundleCache,
@@ -434,4 +434,188 @@ test("a continuously changing layer creates zero bundles and promotes only after
   expect(fake.executions).toHaveLength(2)
   cache.execute(fake.device, layout, fake.pass, encoder => record(input, encoder))
   expect(fake.bundles).toHaveLength(2)
+})
+
+test("60 video frames retain both static runs and never retain submission-scoped resources", () => {
+  const fake = gpu()
+  const cache = new RenderBundleCache()
+  const input = inputs()
+  const global = {} as GPUBindGroup
+  const timeline: Command[] = []
+  const pass = {...commandEncoder(timeline), executeBundles(bundles: FakeBundle[]) {
+    fake.pass.executeBundles(bundles)
+    for (const bundle of bundles) timeline.push(...bundle.commands)
+  }} as unknown as GPURenderPassEncoder
+  const prefix = (encoder: RenderCommandEncoder, first: number) => {
+    encoder.setBindGroup(0, global)
+    encoder.setPipeline(input.pipeline)
+    for (let index = first; index < first + 637; index++) {
+      encoder.setBindGroup(1, input.group, [index * 256])
+      encoder.draw(3)
+    }
+  }
+  const videos: GPUBindGroup[] = []
+  let directDraws = 0
+  const directDraw = pass.draw.bind(pass)
+  pass.draw = (...args: Parameters<GPURenderPassEncoder["draw"]>) => {directDraws++; directDraw(...args)}
+  for (let frame = 0; frame < 60; frame++) {
+    const video = {} as GPUBindGroup
+    videos.push(video)
+    const transient = (encoder: RenderCommandEncoder) => {
+      encoder.setBindGroup(0, global)
+      encoder.setPipeline(input.pipeline)
+      encoder.setBindGroup(2, video)
+      encoder.draw(6)
+    }
+    timeline.length = 0
+    cache.execute(fake.device, layout, pass, encoder => {
+      prefix(encoder, 0)
+      cache.transient(transient, () => {})
+      prefix(encoder, 637)
+    })
+    const expected: Command[] = []
+    const direct = commandEncoder(expected)
+    prefix(direct, 0)
+    transient(direct)
+    prefix(direct, 637)
+    expect(timeline).toEqual(expected)
+  }
+  expect(fake.bundles).toHaveLength(2)
+  expect(fake.executions).toHaveLength(118)
+  expect(directDraws).toBe(1274 + 60)
+  for (const bundle of fake.bundles) {
+    expect(bundle.commands.some(command => command[0] === "bind" && videos.includes(command[2] as GPUBindGroup))).toBeFalse()
+  }
+})
+
+test("removing, inserting and failing a transient run cannot replay stale tails", () => {
+  const fake = gpu(), cache = new RenderBundleCache()
+  const timeline: Command[] = []
+  const pass = {...commandEncoder(timeline), executeBundles(bundles: FakeBundle[]) {
+    for (const bundle of bundles) timeline.push(...bundle.commands)
+  }} as unknown as GPURenderPassEncoder
+  for (const count of [2, 2, 0, 0, 1, 1]) {
+    timeline.length = 0
+    cache.execute(fake.device, layout, pass, encoder => {
+      encoder.draw(3)
+      for (let index = 0; index < count; index++) {
+        cache.transient(direct => direct.draw(10 + index), () => {})
+        encoder.draw(20 + index)
+      }
+    })
+    expect(timeline.map(command => command[1])).toEqual([3, ...Array.from({length: count}, (_, index) => [10 + index, 20 + index]).flat()])
+  }
+  expect(() => cache.execute(fake.device, layout, pass, encoder => {
+    encoder.draw(3)
+    cache.transient(() => {throw new Error("expired video")}, () => {})
+  })).toThrow("expired video")
+  timeline.length = 0
+  cache.execute(fake.device, layout, pass, encoder => encoder.draw(99))
+  expect(timeline).toEqual([["draw", 99, 1, 0, 0]])
+})
+
+test("transient segments share one bounded tape budget and preserve direct fallback order", () => {
+  const fake = gpu(), cache = new RenderBundleCache(10)
+  const paint = (encoder: RenderCommandEncoder) => {
+    encoder.draw(1)
+    cache.transient(direct => direct.draw(2), () => {})
+    encoder.draw(3)
+    cache.transient(direct => direct.draw(4), () => {})
+    encoder.draw(5)
+  }
+  for (let frame = 0; frame < 3; frame++) {
+    fake.direct.length = 0
+    cache.execute(fake.device, layout, fake.pass, paint)
+    expect(fake.direct.map(command => command[1])).toEqual([1, 2, 3, 4, 5])
+  }
+  expect(fake.bundles).toHaveLength(0)
+})
+
+test("read-only depth/stencil compatibility belongs to the cached bundle layout", () => {
+  const fake = gpu(), cache = new RenderBundleCache()
+  for (const access of [{depthReadOnly: true, stencilReadOnly: true}, {depthReadOnly: true, stencilReadOnly: false}]) {
+    for (let frame = 0; frame < 2; frame++) cache.execute(fake.device, {...layout, ...access}, fake.pass, encoder => encoder.draw(3))
+  }
+  expect(fake.descriptors.map(value => [value.depthReadOnly, value.stencilReadOnly])).toEqual([[true, true], [true, false]])
+})
+
+test("production mesh encoding isolates video and rebinds global/pipeline state around it", () => {
+  const fake = gpu(), cache = new RenderBundleCache()
+  const renderer = new Renderer() as unknown as {
+    uiBasicMeshPipeline: GPURenderPipeline
+    uiExternalImagePipeline: GPURenderPipeline
+    usesExternalImageTexture(material: ImageMaterial): boolean
+    renderMesh(encoder: RenderCommandEncoder, mesh: Mesh): void
+    renderObjectList(encoder: RenderCommandEncoder, items: unknown[], indices: Map<unknown, number>, ui: boolean, phase: undefined, global: GPUBindGroup): void
+  }
+  renderer.uiBasicMeshPipeline = {} as GPURenderPipeline
+  renderer.uiExternalImagePipeline = {} as GPURenderPipeline
+  renderer.usesExternalImageTexture = () => true
+  const global = {} as GPUBindGroup
+  const objects = [new MeshBasicMaterial(), new ImageMaterial({src: "video"}), new MeshBasicMaterial()].map((material, index) => {
+    const object = new Mesh(new BufferGeometry(), material)
+    object.name = String(index)
+    return {type: "static-mesh", object, worldMatrix: object.matrixWorld}
+  })
+  renderer.renderMesh = (encoder, mesh) => {
+    if (mesh.material instanceof ImageMaterial) encoder.setBindGroup(2, {} as GPUBindGroup)
+    encoder.draw(Number(mesh.name) + 3)
+  }
+  const indices = new Map(objects.map((item, index) => [item, index]))
+  for (let frame = 0; frame < 3; frame++) cache.execute(fake.device, layout, fake.pass, encoder => {
+    encoder.setBindGroup(0, global)
+    renderer.renderObjectList(encoder, objects, indices, true, undefined, global)
+  })
+  expect(fake.bundles).toHaveLength(2)
+  expect(fake.bundles.map(bundle => bundle.commands)).toEqual([3, 5].map(count => [
+    ["bind", 0, global, []], ["pipeline", renderer.uiBasicMeshPipeline], ["draw", count, 1, 0, 0],
+  ]))
+  expect(fake.direct.filter(command => command[0] === "draw").map(command => command[1])).toEqual([3, 4, 5, 4, 4])
+})
+
+test("backdrop UI retains static runs around video with the pass depth/stencil access and releases unused caches", () => {
+  const fake = gpu()
+  const renderer = new Renderer() as unknown as {
+    device: GPUDevice
+    canvas: {width: number, height: number}
+    presentationFormat: GPUTextureFormat
+    multisampleTexture: GPUTexture
+    depthTexture: GPUTexture
+    uiBasicMeshPipeline: GPURenderPipeline
+    uiExternalImagePipeline: GPURenderPipeline
+    backdropRenderBundleCaches: Map<Object3D, RenderBundleCache[]>
+    usesExternalImageTexture(material: ImageMaterial): boolean
+    renderMesh(encoder: RenderCommandEncoder, mesh: Mesh): void
+    renderBackdropUi(command: GPUCommandEncoder, view: GPUTextureView, prepared: unknown, items: unknown[], indices: Map<unknown, number>): void
+    pruneRenderBundleCaches(layers: unknown[]): void
+  }
+  renderer.device = fake.device
+  renderer.canvas = {width: 320, height: 180}
+  renderer.presentationFormat = layout.colorFormat
+  renderer.multisampleTexture = {width: 320, height: 180, createView: () => ({})} as unknown as GPUTexture
+  renderer.depthTexture = renderer.multisampleTexture
+  renderer.uiBasicMeshPipeline = {} as GPURenderPipeline
+  renderer.uiExternalImagePipeline = {} as GPURenderPipeline
+  renderer.usesExternalImageTexture = () => true
+  const objects = [new MeshBasicMaterial(), new ImageMaterial({src: "video"}), new MeshBasicMaterial()].map((material, index) => {
+    const object = new Mesh(new BufferGeometry(), material)
+    object.name = String(index)
+    return {type: "static-mesh", object, worldMatrix: object.matrixWorld}
+  })
+  renderer.renderMesh = (encoder, mesh) => {
+    if (mesh.material instanceof ImageMaterial) encoder.setBindGroup(2, {} as GPUBindGroup)
+    encoder.draw(Number(mesh.name) + 3)
+  }
+  const indices = new Map(objects.map((item, index) => [item, index]))
+  const root = new Object3D(), descriptors: GPURenderPassDescriptor[] = []
+  const command = {beginRenderPass(descriptor: GPURenderPassDescriptor) {descriptors.push(descriptor); return fake.pass}} as unknown as GPUCommandEncoder
+  const prepared = {root, resources: {globalBindGroup: {}}, viewport: {x: 0, y: 0, width: 320, height: 180}}
+  for (let frame = 0; frame < 4; frame++) renderer.renderBackdropUi(command, {} as GPUTextureView, prepared, objects, indices)
+  expect(fake.bundles).toHaveLength(2)
+  expect(fake.direct.filter(command => command[0] === "draw").map(command => command[1])).toEqual([3, 4, 5, 4, 4, 4])
+  expect(fake.descriptors.every(bundle => bundle.depthReadOnly && bundle.stencilReadOnly)).toBeTrue()
+  expect(descriptors.every(pass => pass.depthStencilAttachment?.depthReadOnly && pass.depthStencilAttachment.stencilReadOnly)).toBeTrue()
+  expect(renderer.backdropRenderBundleCaches.get(root)).toHaveLength(1)
+  renderer.pruneRenderBundleCaches([])
+  expect(renderer.backdropRenderBundleCaches.size).toBe(0)
 })

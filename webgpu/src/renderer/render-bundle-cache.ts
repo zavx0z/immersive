@@ -13,6 +13,8 @@ export type RenderBundleLayout = Readonly<{
   depthStencilFormat?: GPUTextureFormat
   additionalColorFormats?: readonly GPUTextureFormat[]
   sampleCount: number
+  depthReadOnly?: boolean
+  stencilReadOnly?: boolean
 }>
 
 type Token = number | string | GPUBuffer | GPUBindGroup | GPURenderPipeline | undefined
@@ -24,9 +26,13 @@ const INDEX_BUFFER = 3
 const DRAW = 4
 const DRAW_INDEXED = 5
 const MAX_RETAINED_TOKENS = 131072
+const MAX_RETAINED_SEGMENTS = 64
+
+type Segment = {tokens: Token[], cursor: number, changed: boolean, recorded: boolean, bundle: GPURenderBundle | null}
+const createSegment = (): Segment => ({tokens: [], cursor: 0, changed: false, recorded: false, bundle: null})
 
 /**
- * Retains one exact command sequence, never the pixels or resource contents.
+ * Retains exact static command runs, never pixels or transient resources.
  *
  * The caller still synchronizes resources and records every live draw. Numeric
  * arguments are copied into a reusable tape; GPU objects compare by identity.
@@ -34,13 +40,14 @@ const MAX_RETAINED_TOKENS = 131072
  * sequence is promoted to a bundle, so moving layers do not allocate throwaway
  * bundles. Buffer content writes keep a stable sequence reusable. A hard tape
  * limit switches to direct encoding without losing the recorded prefix.
+ * Transient draws split the sequence without changing paint order or adding
+ * render passes; every retained run has independent, complete GPU bindings.
  */
 export class RenderBundleCache implements RenderCommandEncoder {
-  private readonly tokens: Token[] = []
-  private cursor = 0
-  private changed = false
-  private recorded = false
-  private bundle: GPURenderBundle | null = null
+  private segments: Segment[] = [createSegment()]
+  private segment = this.segments[0]!
+  private segmentIndex = 0
+  private retainedTokens = 0
   private device: GPUDevice | null = null
   private layout: RenderBundleLayout | null = null
   private pass: GPURenderPassEncoder | null = null
@@ -61,38 +68,25 @@ export class RenderBundleCache implements RenderCommandEncoder {
       || this.layout.depthStencilFormat !== layout.depthStencilFormat
       || (this.layout.additionalColorFormats ?? []).join() !== (layout.additionalColorFormats ?? []).join()
       || this.layout.sampleCount !== layout.sampleCount
+      || this.layout.depthReadOnly !== layout.depthReadOnly
+      || this.layout.stencilReadOnly !== layout.stencilReadOnly
     ) {
       this.clear()
       this.device = device
       this.layout = {...layout, ...(layout.additionalColorFormats === undefined ? {} : {additionalColorFormats: [...layout.additionalColorFormats]})}
     }
-    this.cursor = 0
-    this.changed = false
+    this.segmentIndex = 0
+    this.retainedTokens = 0
+    this.segment = this.segments[0]!
+    this.segment.cursor = 0
+    this.segment.changed = false
     this.pass = pass
     this.direct = null
     try {
       record(this)
       if (this.direct !== null) return
-      if (this.tokens.length !== this.cursor) this.changed = true
-      this.tokens.length = this.cursor
-      if (!this.recorded || this.changed) {
-        this.bundle = null
-        this.recorded = true
-        this.replay(pass, this.cursor)
-        return
-      }
-      if (this.bundle === null) {
-        const encoder = device.createRenderBundleEncoder({
-          colorFormats: [layout.colorFormat, ...layout.additionalColorFormats ?? []],
-          ...(layout.depthStencilFormat === undefined ? {} : {depthStencilFormat: layout.depthStencilFormat}),
-          sampleCount: layout.sampleCount,
-          depthReadOnly: false,
-          stencilReadOnly: false,
-        })
-        this.replay(encoder, this.cursor)
-        this.bundle = encoder.finish()
-      }
-      pass.executeBundles([this.bundle])
+      this.finishSegment()
+      this.segments.length = this.segmentIndex + 1
     } catch (error) {
       // A failed recording may already have changed the tape. It must never
       // compare equal to the previously finished bundle on a later retry.
@@ -105,11 +99,59 @@ export class RenderBundleCache implements RenderCommandEncoder {
   }
 
   clear(): void {
-    this.tokens.length = 0
-    this.recorded = false
-    this.bundle = null
+    this.segments = [createSegment()]
+    this.segment = this.segments[0]!
     this.device = null
     this.layout = null
+  }
+
+  /**
+   * Encodes a draw using submission-scoped resources between retained runs.
+   * Both callbacks must establish their own required GPU state: executeBundles
+   * clears pass bindings. Transient resources never enter a retained tape.
+   */
+  transient(record: (encoder: RenderCommandEncoder) => void, resume: (encoder: RenderCommandEncoder) => void): void {
+    if (this.pass === null) throw new Error("Render bundle recording is not active")
+    if (this.direct === null) {
+      this.finishSegment()
+      this.retainedTokens += this.segment.cursor
+      if (this.retainedTokens >= this.maxTokens || this.segmentIndex + 1 >= MAX_RETAINED_SEGMENTS) {
+        this.direct = this.pass
+        this.clear()
+      } else {
+        this.segmentIndex++
+        this.segment = this.segments[this.segmentIndex] ??= createSegment()
+        this.segment.cursor = 0
+        this.segment.changed = false
+      }
+    }
+    record(this.pass)
+    resume(this)
+  }
+
+  private finishSegment(): void {
+    const segment = this.segment
+    if (segment.tokens.length !== segment.cursor) segment.changed = true
+    segment.tokens.length = segment.cursor
+    if (!segment.recorded || segment.changed) {
+      segment.bundle = null
+      segment.recorded = true
+      this.replay(this.pass!, segment.cursor)
+      return
+    }
+    if (segment.bundle === null) {
+      const layout = this.layout!
+      const encoder = this.device!.createRenderBundleEncoder({
+        colorFormats: [layout.colorFormat, ...layout.additionalColorFormats ?? []],
+        ...(layout.depthStencilFormat === undefined ? {} : {depthStencilFormat: layout.depthStencilFormat}),
+        sampleCount: layout.sampleCount,
+        depthReadOnly: layout.depthReadOnly ?? false,
+        stencilReadOnly: layout.stencilReadOnly ?? false,
+      })
+      this.replay(encoder, segment.cursor)
+      segment.bundle = encoder.finish()
+    }
+    this.pass!.executeBundles([segment.bundle])
   }
 
   setPipeline(pipeline: GPURenderPipeline): void {
@@ -168,20 +210,20 @@ export class RenderBundleCache implements RenderCommandEncoder {
 
   private reserve(count: number): boolean {
     if (this.direct !== null) return false
-    if (this.cursor + count <= this.maxTokens) return true
+    if (this.retainedTokens + this.segment.cursor + count <= this.maxTokens) return true
     this.direct = this.pass!
-    this.replay(this.direct, this.cursor)
+    this.replay(this.direct, this.segment.cursor)
     this.clear()
     return false
   }
 
   private write(value: Token): void {
-    if (!Object.is(this.tokens[this.cursor], value)) this.changed = true
-    this.tokens[this.cursor++] = value
+    if (!Object.is(this.segment.tokens[this.segment.cursor], value)) this.segment.changed = true
+    this.segment.tokens[this.segment.cursor++] = value
   }
 
   private replay(encoder: RenderCommandEncoder, length: number): void {
-    const tokens = this.tokens
+    const tokens = this.segment.tokens
     let cursor = 0
     while (cursor < length) {
       switch (tokens[cursor++]) {
