@@ -48,6 +48,7 @@ import {
   LINE_SCENE_BLEND_STATE,
   LINE_SCENE_DEPTH_STATE,
   LINE_SILHOUETTE_DEPTH_STATE,
+  LINE_NEAREST_COLOR_DEPTH_STATE,
 } from "./line-pipeline"
 import {classifyRenderItems, collectSpaceObjects, type LightItem, type RenderItem} from "./utils/render-list"
 import {GlassMaterial} from "@zavx0z/immersive-engine"
@@ -143,6 +144,7 @@ interface GeometryBuffers {
   uvBuffer?: GPUBuffer
   indexBuffer?: GPUBuffer
   colorBuffer?: GPUBuffer
+  defaultLineColorBuffer?: GPUBuffer
   skinIndexBuffer?: GPUBuffer
   skinWeightBuffer?: GPUBuffer
   instanceMatrixBuffer?: GPUBuffer // для инстансированных мешей
@@ -235,6 +237,11 @@ function isActivePhysicalGlass(item: RenderItem): boolean {
 function isSilhouetteLine(item: RenderItem): boolean {
   const material = (item.object as LineSegments | undefined)?.material
   return item.type === "line" && material instanceof LineGlowMaterial && material.visibilityMode === "silhouette"
+}
+
+function isSceneGlowLine(item: RenderItem): boolean {
+  const material = (item.object as LineSegments | undefined)?.material
+  return item.type === "line" && material instanceof LineGlowMaterial && material.visibilityMode === "scene"
 }
 
 /**
@@ -395,6 +402,8 @@ export class Renderer {
   private linePipeline: GPURenderPipeline | null = null
   private lineOverlayPipeline: GPURenderPipeline | null = null
   private lineSilhouettePipeline: GPURenderPipeline | null = null
+  private lineSceneDepthPipeline: GPURenderPipeline | null = null
+  private lineSceneColorPipeline: GPURenderPipeline | null = null
   private instancedLinePipeline: GPURenderPipeline | null = null
   private textStencilPipeline: GPURenderPipeline | null = null
   private textCoverPipeline: GPURenderPipeline | null = null
@@ -1486,6 +1495,8 @@ export class Renderer {
       blend: GPUBlendState,
       sampleCount: number,
       depthStencil?: GPUDepthStencilState,
+      fragmentEntryPoint = "fs_main",
+      writeMask?: GPUColorWriteFlags,
     ): Promise<GPURenderPipeline> => {
       const descriptor: GPURenderPipelineDescriptor = {
         label,
@@ -1500,11 +1511,12 @@ export class Renderer {
         },
         fragment: {
           module: lineShaderModule,
-          entryPoint: "fs_main",
+          entryPoint: fragmentEntryPoint,
           targets: [
             {
               format: linePresentationFormat,
               blend,
+              ...(writeMask === undefined ? {} : {writeMask}),
             },
           ],
         },
@@ -1530,6 +1542,21 @@ export class Renderer {
       LINE_SCENE_BLEND_STATE,
       this.sampleCount,
       LINE_SILHOUETTE_DEPTH_STATE,
+    )
+    this.lineSceneDepthPipeline = await createLinePipeline(
+      "scene line nearest depth pipeline",
+      LINE_SCENE_BLEND_STATE,
+      this.sampleCount,
+      LINE_SCENE_DEPTH_STATE,
+      "fs_scene",
+      0,
+    )
+    this.lineSceneColorPipeline = await createLinePipeline(
+      "scene line nearest color pipeline",
+      LINE_SCENE_BLEND_STATE,
+      this.sampleCount,
+      LINE_NEAREST_COLOR_DEPTH_STATE,
+      "fs_scene",
     )
 
     // --- Pipeline для Instanced Lines ---
@@ -1795,6 +1822,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.linePipeline &&
       this.lineOverlayPipeline &&
       this.lineSilhouettePipeline &&
+      this.lineSceneDepthPipeline &&
+      this.lineSceneColorPipeline &&
       this.instancedLinePipeline &&
       this.textStencilPipeline &&
       this.textCoverPipeline &&
@@ -2395,6 +2424,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     const initialUi = hasBackdrop ? ui.slice(0, blurStart) : ui
     const postGlassLines = glass === null ? [] : layer.regularObjects.filter(isSilhouetteLine)
     const regular = glass === null ? layer.regularObjects : layer.regularObjects.filter(item => !isSilhouetteLine(item))
+    const sceneLines = regular.filter(isSceneGlowLine)
+    const geometry = sceneLines.length === 0 ? regular : regular.filter(item => !isSceneGlowLine(item))
     this.backdropFrame?.items.push(...regular, ...physical, ...legacy, ...postGlassLines, ...layer.overlayLines, ...initialUi)
     const colorLoadOp: GPULoadOp = clearColor ? "clear" : "load"
     const renderPassDescriptor: GPURenderPassDescriptor = {
@@ -2445,9 +2476,13 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         encoder.draw(3)
       }
       encoder.setBindGroup(0, resources.globalBindGroup)
-      // Keep pass membership and transparency order exactly as collected.
-      this.renderObjectList(encoder, regular, renderIndexByItem)
+      // World scene lines выбирают ближайшую глубину до смешивания цвета.
+      this.renderObjectList(encoder, geometry, renderIndexByItem)
       this.renderObjectList(encoder, legacy, renderIndexByItem)
+      if (sceneLines.length > 0) {
+        this.renderObjectList(encoder, sceneLines, renderIndexByItem, false, "depth")
+        this.renderObjectList(encoder, sceneLines, renderIndexByItem, false, "color")
+      }
       if (glass === null) this.renderObjectList(encoder, initialUi, renderIndexByItem, true)
     }
     let cache = this.renderBundleCaches.get(root)
@@ -3181,6 +3216,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     objectsToRender: RenderItem[],
     renderIndexByItem: ReadonlyMap<RenderItem, number>,
     isUiLayer = false,
+    sceneLinePhase?: "depth" | "color",
   ): void {
     let currentPipeline: GPURenderPipeline | null = null
 
@@ -3238,7 +3274,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
           pipeline = this.instancedLinePipeline
           break
         case "line":
-          if ((item.object as LineSegments).material instanceof LineGlowMaterial) {
+          if (sceneLinePhase === "depth") pipeline = this.lineSceneDepthPipeline
+          else if (sceneLinePhase === "color") pipeline = this.lineSceneColorPipeline
+          else if ((item.object as LineSegments).material instanceof LineGlowMaterial) {
             const visibilityMode =
               ((item.object as LineSegments).material as LineGlowMaterial).visibilityMode
             pipeline = visibilityMode === "overlay"
@@ -3335,6 +3373,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     buffers.uvBuffer?.destroy()
     buffers.indexBuffer?.destroy()
     buffers.colorBuffer?.destroy()
+    buffers.defaultLineColorBuffer?.destroy()
     buffers.skinIndexBuffer?.destroy()
     buffers.skinWeightBuffer?.destroy()
     buffers.instanceMatrixBuffer?.destroy()
@@ -3710,10 +3749,16 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     if (buffers.colorBuffer) return buffers.colorBuffer
 
     const vertexCount = geometry.attributes.position!.count
+    // Запасной цвет не принадлежит geometry.attributes.color: синхронизация
+    // отсутствующего атрибута не должна уничтожать буфер предыдущего draw.
+    if (buffers.defaultLineColorBuffer && buffers.defaultLineColorBuffer.size >= vertexCount * 12) {
+      return buffers.defaultLineColorBuffer
+    }
     const defaultColors = new Float32Array(vertexCount * 3)
     defaultColors.fill(1)
     const colorBuffer = this.createAndUploadBuffer(defaultColors, GPUBufferUsage.VERTEX)
-    buffers.colorBuffer = colorBuffer
+    buffers.defaultLineColorBuffer?.destroy()
+    buffers.defaultLineColorBuffer = colorBuffer
     return colorBuffer
   }
 
@@ -4268,6 +4313,8 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.linePipeline = null
     this.lineOverlayPipeline = null
     this.lineSilhouettePipeline = null
+    this.lineSceneDepthPipeline = null
+    this.lineSceneColorPipeline = null
     this.instancedLinePipeline = null
     this.textStencilPipeline = null
     this.textCoverPipeline = null

@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import {BufferGeometry, Color, GlassMaterial, HolographicMaterial, InstancedMesh, LineGlowMaterial, LineSegments, Mesh, MeshBasicMaterial, Object3D} from "@zavx0z/immersive-engine"
+import {BufferGeometry, Color, GlassMaterial, HolographicMaterial, InstancedMesh, LineBasicMaterial, LineGlowMaterial, LineSegments, Mesh, MeshBasicMaterial, Object3D, WireframeInstancedMesh} from "@zavx0z/immersive-engine"
 import {Renderer} from "../src/renderer/index"
 import {classifyRenderItems, type RenderItem} from "../src/renderer/utils/render-list"
 import {createGlassTargets, glassTargetBytes, type GlassTargets} from "../src/renderer/glass-targets"
@@ -21,7 +21,7 @@ type State = {
   glassTargets: GlassTargets | null
   displayRasterTargets: Map<RendererWebGpuDisplayPlane, {width: number, height: number, depth: GPUTexture, multisample: GPUTexture, texture: GPUTexture, glassTargets?: GlassTargets}>
   renderPreparedLayer(command: GPUCommandEncoder, view: GPUTextureView, prepared: Prepared, indices: ReadonlyMap<RenderItem, number>, clear: boolean, color?: GPUColor, raster?: State["displayRasterTargets"] extends Map<unknown, infer T> ? T : never): void
-  renderObjectList(encoder: RenderCommandEncoder, items: RenderItem[], indices: ReadonlyMap<RenderItem, number>, ui?: boolean): void
+  renderObjectList(encoder: RenderCommandEncoder, items: RenderItem[], indices: ReadonlyMap<RenderItem, number>, ui?: boolean, sceneLinePhase?: "depth" | "color"): void
   updateTextures(): void
 }
 
@@ -37,6 +37,7 @@ function fixture() {
   const bundles: GPURenderBundleEncoderDescriptor[] = []
   const passes: GPURenderPassDescriptor[] = []
   const draws: string[][] = []
+  const linePhases: {items: string[], phase: "depth" | "color" | null, ui: boolean, pass: number}[] = []
   const makeTexture = (descriptor: GPUTextureDescriptor): Texture => {
     const size = descriptor.size as GPUExtent3DDict
     const [width, height] = Array.isArray(descriptor.size) ? descriptor.size : [size.width, size.height]
@@ -67,9 +68,13 @@ function fixture() {
     draws.push([])
     return {...commands(), setViewport() {}, setScissorRect() {}, setStencilReference() {}, executeBundles() {}, end() {}}
   }} as unknown as GPUCommandEncoder
-  state.renderObjectList = (_encoder, items) => {draws[current]!.push(...items.map(item => item.object.name))}
+  state.renderObjectList = (_encoder, items, _indices, ui = false, phase) => {
+    const names = items.map(item => item.object.name)
+    draws[current]!.push(...names)
+    if (names.length) linePhases.push({items: names, phase: phase ?? null, ui, pass: current})
+  }
   const view = {} as GPUTextureView
-  return {renderer, state, device, command, view, descriptors, textures, passes, draws, bundles}
+  return {renderer, state, device, command, view, descriptors, textures, passes, draws, bundles, linePhases}
 }
 
 function item(name: string, material: GlassMaterial | MeshBasicMaterial | HolographicMaterial): RenderItem {
@@ -81,6 +86,41 @@ function item(name: string, material: GlassMaterial | MeshBasicMaterial | Hologr
 function prepared(items: RenderItem[]): Prepared {
   return {root: new Object3D(), layer: classifyRenderItems(items), resources: {globalBindGroup: {} as GPUBindGroup}, viewport: {x: 0, y: 0, width: 2730, height: 2176}, paintBackground: false}
 }
+
+for (const withGlass of [false, true]) test(`scene LineGlow depth/color остаются в World pass, соседние paths сохраняются (${withGlass ? "glass" : "plain"})`, () => {
+  const restore = usage(), f = fixture()
+  try {
+    const line = (name: string, material: LineBasicMaterial): RenderItem => {
+      const object = new LineSegments(new BufferGeometry(), material)
+      object.name = name
+      return {type: "line", object, worldMatrix: object.matrixWorld}
+    }
+    const near = line("near", new LineGlowMaterial({visibilityMode: "scene", opacity: .65, distanceFade: 0}))
+    const far = line("far", new LineGlowMaterial({visibilityMode: "scene", opacity: .65}))
+    const basic = line("basic", new LineBasicMaterial())
+    const silhouette = line("silhouette", new LineGlowMaterial({visibilityMode: "silhouette"}))
+    const ui = line("ui", new LineGlowMaterial({visibilityMode: "scene"}))
+    ui.object.renderLayer = "ui"
+    const instancedObject = new WireframeInstancedMesh(new BufferGeometry(), new LineGlowMaterial({visibilityMode: "scene"}), 1)
+    instancedObject.name = "instanced"
+    const instanced: RenderItem = {type: "instanced-line", object: instancedObject, worldMatrix: instancedObject.matrixWorld}
+    const scene = prepared([near, basic, item("opaque", new MeshBasicMaterial()), far, instanced, silhouette, ui,
+      ...(withGlass ? [item("glass", new GlassMaterial()), item("hologram", new HolographicMaterial())] : [])])
+    f.state.renderPreparedLayer(f.command, f.view, scene, new Map(), true)
+    expect(f.passes).toHaveLength(withGlass ? 4 : 1)
+    expect(f.linePhases.filter(call => call.phase !== null)).toEqual([
+      {items: ["near", "far"], phase: "depth", ui: false, pass: 0},
+      {items: ["near", "far"], phase: "color", ui: false, pass: 0},
+    ])
+    expect(f.linePhases[0]!.items).toEqual(withGlass ? ["basic", "opaque", "instanced"] : ["silhouette", "basic", "opaque", "instanced"])
+    expect(f.linePhases.at(-1)).toEqual({items: ["ui"], phase: null, ui: true, pass: withGlass ? 3 : 0})
+    if (withGlass) {
+      expect(f.draws[0]).toEqual(["basic", "opaque", "instanced", "hologram", "near", "far", "near", "far"])
+      expect(f.draws[1]).toEqual(["glass"])
+      expect(f.draws[3]).toEqual(["silhouette", "ui"])
+    }
+  } finally {f.renderer.dispose(); restore()}
+})
 
 test("неподдерживаемый вид стеклянного меша отклоняется до GPU encoding", () => {
   const mesh = new InstancedMesh(new BufferGeometry(), new GlassMaterial(), 1)

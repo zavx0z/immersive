@@ -51,8 +51,7 @@ fn vs_main(
   return out;
 }
 
-@fragment
-fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
+fn lineColor(in: VertexOutput) -> vec4<f32> {
   let distanceMm = distance(in.worldPosition, sceneUniforms.cameraPosition);
   // Материал задаёт расстояние в мм; нулевой коэффициент отключает затухание.
   let normalizedDistance = distanceMm * perObject.inverseDistanceFade;
@@ -101,4 +100,16 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     finalColor * finalFade,
     in.vertexColor.a * finalFade * silhouette
   );
+}
+
+@fragment
+fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
+  return lineColor(in);
+}
+
+@fragment
+fn fs_scene(in: VertexOutput) -> @location(0) vec4<f32> {
+  let color = lineColor(in);
+  if (color.a <= 0.0) { discard; }
+  return color;
 }

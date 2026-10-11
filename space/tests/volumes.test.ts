@@ -168,10 +168,10 @@ test("material defaults отклоняют неконечную и выходя�
   }
 })
 
-test("прозрачный полный outline использует depth-tested nonwriting mode без усиления или затухания", () => {
+test("полный outline участвует в глубине сцены без усиления или затухания", () => {
   const outline = volumeOutlineMaterial(0x80ffff, {color: {r: .5, g: 1, b: 1, a: .8}, opacity: .125, customProperties: {}})
   expect(outline).toBeInstanceOf(LineGlowMaterial)
-  expect(outline).toMatchObject({visibilityMode: "silhouette", glowIntensity: 1, luminanceBoost: 1,
+  expect(outline).toMatchObject({visibilityMode: "scene", glowIntensity: 1, luminanceBoost: 1,
     shimmerAmount: 0, silhouetteAmount: 0, visualScale: 1, distanceFade: 0, opacity: .1})
   expect(outline.color.r).toBeCloseTo(128 / 255 * .5)
   expect(outline.color.g).toBe(1)

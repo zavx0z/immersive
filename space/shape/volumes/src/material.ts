@@ -25,10 +25,10 @@ export function volumeMaterial(color: number | string, context?: XRMaterialProje
 }
 
 export function volumeOutlineMaterial(color: number | string, context?: XRMaterialProjectionContext) {
-  // Прозрачные контуры проверяют depth, но не закрывают им последующие стеклянные грани.
+  // Ближний контур участвует в глубине сцены и закрывает дальние рёбра.
   // При distanceFade=0 нейтральная intensity=1 сохраняет fade=1 без деления 0/0.
   return new LineGlowMaterial({color: tinted(color, context), opacity: (context?.opacity ?? .65) * (context?.color.a ?? 1),
-    distanceFade: 0, visibilityMode: "silhouette", glowIntensity: 1, luminanceBoost: 1, shimmerAmount: 0, silhouetteAmount: 0})
+    distanceFade: 0, visibilityMode: "scene", glowIntensity: 1, luminanceBoost: 1, shimmerAmount: 0, silhouetteAmount: 0})
 }
 
 function tinted(color: number | string, context?: XRMaterialProjectionContext): Color {

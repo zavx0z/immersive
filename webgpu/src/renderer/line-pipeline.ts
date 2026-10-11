@@ -35,3 +35,9 @@ export const LINE_SILHOUETTE_DEPTH_STATE: GPUDepthStencilState = {
   depthCompare: "less",
   format: "depth24plus-stencil8",
 }
+
+export const LINE_NEAREST_COLOR_DEPTH_STATE: GPUDepthStencilState = {
+  depthWriteEnabled: false,
+  depthCompare: "equal",
+  format: "depth24plus-stencil8",
+}
