@@ -1,5 +1,5 @@
 import {createDocumentCaretBlink} from "./caret-blink.ts"
-import {createDocumentVideoHost} from "./video-host.ts"
+import {createDocumentVideoHost, readPresentedVideos} from "./video-host.ts"
 import {createDocumentFullscreenHost} from "./fullscreen-host.ts"
 import {subscribeDocumentFullscreen} from "@zavx0z/immersive-dom"
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
@@ -295,6 +295,7 @@ const createClaimedDocumentCanvasRuntime = async (
     const frame = interaction.composeFrame(documentRenderer.flush(), seams.now())
     backend.applyFrame(frame)
     viewPoint.update()
+    videoHost?.setPresentedVideos(overlay.visible && overlay.content.visible ? readPresentedVideos([frame]) : [])
     engineRenderer.renderFrame(space, overlay, viewPoint)
     currentFrame = frame
     for (const subscriber of [...subscribers]) subscriber(frame)
@@ -584,6 +585,7 @@ const createClaimedDocumentCanvasRuntime = async (
       nativeDocument: options.canvas.ownerDocument,
       requestFrame() { if (!disposed) requestRender() },
     })
+    videoHost.setPresentedVideos([])
     options.canvas.addEventListener("pointermove", onPointerMove)
     options.canvas.addEventListener("pointerdown", onPointerDown)
     options.canvas.addEventListener("pointerup", onPointerUp)

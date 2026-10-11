@@ -20,6 +20,14 @@ Browser сохраняет source lease до освобождения decoder, �
 этого API кадры запрашиваются по нативным media events, включая `timeupdate`.
 Canvas, Document, проекции и frame loop остаются общими.
 
+В скрытой native странице Browser отменяет ожидающие video frame callbacks и
+не запрашивает presentation по media events. Проекции передают video host
+актуальный набор показываемых video через `setPresentedVideos`; элементы вне
+этого набора также перестают запрашивать кадры. При возвращении видимости
+callback возобновляется на том же decoder и источнике. `play()`/`pause()`,
+события и semantic playback state сохраняют свой смысл; эта оптимизация не
+останавливает фоновый звук и не обещает прекращения нативного декодирования.
+
 HTML Renderer вычисляет обычный CSS layout, clipping и `object-fit`. До
 получения metadata intrinsic размер равен 300×150 px; после получения —
 `videoWidth`×`videoHeight`. CSS и атрибуты размеров работают так же, как у img,

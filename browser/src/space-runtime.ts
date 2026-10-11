@@ -2,7 +2,7 @@ import {createSpatialInput, type DocumentSpatialHit} from "./spatial-input.ts"
 import {bindSpatialHit, type SpatialRay} from "@zavx0z/immersive-space"
 export type {DocumentSpatialHit} from "./spatial-input.ts"
 import {createDocumentCaretBlink} from "./caret-blink.ts"
-import {createDocumentVideoHost} from "./video-host.ts"
+import {createDocumentVideoHost, readPresentedVideos} from "./video-host.ts"
 import {createDocumentFullscreenHost} from "./fullscreen-host.ts"
 import {subscribeDocumentFullscreen} from "@zavx0z/immersive-dom"
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
@@ -679,6 +679,15 @@ const createClaimedDocumentSpaceRuntime = async (
         synchronizeWorldGeometry(record)
         if (record.visible && record.logicalViewport !== null) record.runtime.viewPoint.update()
       }
+      const videoFrames: RenderFrame[] = []
+      if (fullscreenRoot === null) for (const {runtime} of records.values()) {
+        if (runtime.plane.visible && runtime.plane.content.visible) videoFrames.push(runtime.frame)
+      }
+      for (const record of overlays.values()) {
+        if (fullscreenRoot !== null && record.owner !== fullscreenRoot) continue
+        if (record.runtime.overlay.visible && record.runtime.overlay.content.visible) videoFrames.push(record.runtime.frame)
+      }
+      videoHost?.setPresentedVideos(readPresentedVideos(videoFrames))
       engineRenderer.renderComposition({
         space,
         viewPoint,
@@ -2342,6 +2351,7 @@ const createClaimedDocumentSpaceRuntime = async (
       nativeDocument: options.canvas.ownerDocument,
       requestFrame() { if (!disposed) requestRender() },
     })
+    videoHost.setPresentedVideos([])
     resizeObserver = seams.createResizeObserver(() => {
       if (!disposed) resize()
     })
