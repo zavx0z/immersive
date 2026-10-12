@@ -1,6 +1,7 @@
 import { Object3D } from "@zavx0z/immersive-engine"
 import { Mesh } from "@zavx0z/immersive-engine"
 import { InstancedMesh } from "@zavx0z/immersive-engine"
+import {InstancedSkinnedMesh, MeshBasicMaterial, MeshLambertMaterial} from "@zavx0z/immersive-engine"
 import {InstancedRoundedRect} from "@zavx0z/immersive-engine"
 import {InstancedStrokedPath} from "@zavx0z/immersive-engine"
 import { LineSegments } from "@zavx0z/immersive-engine"
@@ -16,7 +17,7 @@ import {RendererWebGpuDisplayPlane} from "../../display-plane.ts"
 const _sphere = new Sphere();
 
 export interface RenderItem {
-  type: "static-mesh" | "skinned-mesh" | "instanced-mesh" | "instanced-rounded-rect" | "instanced-stroked-path" | "instanced-line" | "line" | "text-stencil" | "text-cover"
+  type: "static-mesh" | "skinned-mesh" | "instanced-skinned-mesh" | "instanced-mesh" | "instanced-rounded-rect" | "instanced-stroked-path" | "instanced-line" | "line" | "text-stencil" | "text-cover"
   object: Mesh | InstancedMesh | InstancedRoundedRect | InstancedStrokedPath | SkinnedMesh | LineSegments | Text | WireframeInstancedMesh
   worldMatrix: Matrix4
   originalIndex?: number // для сохранения порядка при сортировке
@@ -55,6 +56,10 @@ export function classifyRenderItems(renderList: readonly RenderItem[], viewMatri
     // Отказ происходит до записи GPU-команд, а не внутри несовместимого прохода.
     if (material instanceof GlassMaterial && item.type !== "static-mesh") {
       throw new TypeError(`GlassMaterial поддерживает static-mesh; получен ${item.type}`)
+    }
+    if (item.type === "instanced-skinned-mesh"
+      && (Array.isArray(raw) || !(material instanceof MeshBasicMaterial || material instanceof MeshLambertMaterial))) {
+      throw new TypeError("InstancedSkinnedMesh supports one MeshBasicMaterial or MeshLambertMaterial per batch")
     }
     const glass = material?.isGlassMaterial
     const lineMode = item.type === "line" && material instanceof LineGlowMaterial
@@ -185,6 +190,8 @@ export function collectSpaceObjects(
     renderList.push({type: "instanced-rounded-rect", object, worldMatrix})
   } else if (object instanceof InstancedStrokedPath) {
     renderList.push({type: "instanced-stroked-path", object, worldMatrix})
+  } else if (object instanceof InstancedSkinnedMesh) {
+    if (object.count > 0) renderList.push({type: "instanced-skinned-mesh", object, worldMatrix})
   } else if (object instanceof InstancedMesh) {
     renderList.push({ type: "instanced-mesh", object, worldMatrix })
   } else if (object instanceof WireframeInstancedMesh) {

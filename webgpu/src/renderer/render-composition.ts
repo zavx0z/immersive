@@ -2,6 +2,7 @@ import {Matrix4, Object3D} from "@zavx0z/immersive-engine"
 import {ViewPoint} from "@zavx0z/immersive-engine"
 import {Space} from "@zavx0z/immersive-engine"
 import {SkinnedMesh} from "@zavx0z/immersive-engine"
+import {InstancedSkinnedMesh} from "@zavx0z/immersive-engine"
 import type {RenderItem} from "./utils/render-list"
 
 export const renderCompositionBackgroundShader = /* wgsl */ `
@@ -141,6 +142,13 @@ export function prepareHiddenRenderDependencies(
     visited.add(object)
     if (object instanceof SkinnedMesh) {
       for (const bone of object.skeleton.bones) syncHidden(bone)
+    }
+    if (object instanceof InstancedSkinnedMesh) {
+      for (let index = 0; index < object.count; index++) {
+        const pose = object.getPoseAt(index)
+        syncHidden(pose)
+        for (const bone of pose.skeleton.bones) syncHidden(bone)
+      }
     }
     try {
       const shapes = object.presentationClips

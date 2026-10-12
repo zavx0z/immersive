@@ -7,6 +7,7 @@ import {selectDisplayRaster} from "../display-render-mode.ts"
 import {Space} from "@zavx0z/immersive-engine"
 import {ViewPoint} from "@zavx0z/immersive-engine"
 import {Mesh} from "@zavx0z/immersive-engine"
+import {InstancedSkinnedMesh} from "@zavx0z/immersive-engine"
 import {InstancedMesh} from "@zavx0z/immersive-engine"
 import {InstancedRoundedRect, ROUNDED_RECT_INSTANCE_RECORD_BYTE_LENGTH} from "@zavx0z/immersive-engine"
 import {
@@ -28,6 +29,7 @@ import thinFilmWGSL from "./shader/thin-film.wgsl" with {type: "text"}
 import holographicWGSL from "./shader/holographic.wgsl" with {type: "text"}
 import meshStaticWGSL from "./shader/mesh-static.wgsl" with {type: "text"}
 import meshSkinnedWGSL from "./shader/mesh-skinned.wgsl" with {type: "text"}
+import meshInstancedSkinnedWGSL from "./shader/mesh-instanced-skinned.wgsl" with {type: "text"}
 import meshInstancedWGSL from "./shader/mesh-instanced.wgsl" with {type: "text"}
 
 import lineShaderCode from "./shader/line.wgsl" with {type: "text"}
@@ -112,6 +114,7 @@ if (import.meta.hot) {
     "./shader/mesh-static.wgsl",
     "./shader/mesh-skinned.wgsl",
     "./shader/mesh-instanced.wgsl",
+    "./shader/mesh-instanced-skinned.wgsl",
     "./shader/line.wgsl",
     "./shader/text.wgsl",
     "./shader/image.wgsl",
@@ -148,6 +151,7 @@ interface GeometryBuffers {
   defaultLineColorBuffer?: GPUBuffer
   skinIndexBuffer?: GPUBuffer
   skinWeightBuffer?: GPUBuffer
+  instanceBonesBuffer?: GPUBuffer
   instanceMatrixBuffer?: GPUBuffer // для инстансированных мешей
   instanceBuffer?: GPUBuffer // для WireframeInstancedMesh (матрица + параметры материала)
   roundedRectRecordBuffer?: GPUBuffer
@@ -399,6 +403,9 @@ export class Renderer {
   private holographicMeshPipeline: GPURenderPipeline | null = null
   private staticMeshPipeline: GPURenderPipeline | null = null
   private instancedMeshPipeline: GPURenderPipeline | null = null
+  private instancedSkinnedMeshPipeline: GPURenderPipeline | null = null
+  private instanceBonesBindGroupLayout: GPUBindGroupLayout | null = null
+  private instanceBonesBindGroups = new WeakMap<GPUBuffer, GPUBindGroup>()
   private skinnedMeshPipeline: GPURenderPipeline | null = null
   private linePipeline: GPURenderPipeline | null = null
   private lineOverlayPipeline: GPURenderPipeline | null = null
@@ -723,6 +730,13 @@ export class Renderer {
       bindGroupLayouts: [globalBindGroupLayout, perObjectBindGroupLayout],
     })
 
+    this.instanceBonesBindGroupLayout = this.device.createBindGroupLayout({
+      entries: [{binding: 0, visibility: GPUShaderStage.VERTEX, buffer: {type: "read-only-storage"}}],
+    })
+    const instancedSkinnedPipelineLayout = this.device.createPipelineLayout({
+      bindGroupLayouts: [globalBindGroupLayout, perObjectBindGroupLayout, this.instanceBonesBindGroupLayout],
+    })
+
     const roundedRectInstancePipelineLayout = this.device.createPipelineLayout({
       bindGroupLayouts: [
         globalBindGroupLayout,
@@ -774,6 +788,7 @@ export class Renderer {
     const instancedShaderModule = this.device.createShaderModule({
       code: meshInstancedWGSL,
     })
+    const instancedSkinnedShaderModule = this.device.createShaderModule({code: meshInstancedSkinnedWGSL})
     const skinnedShaderModule = this.device.createShaderModule({
       code: meshSkinnedWGSL,
     })
@@ -1490,6 +1505,38 @@ export class Renderer {
       multisample: {count: this.sampleCount},
     })
 
+    this.instancedSkinnedMeshPipeline = await this.device.createRenderPipelineAsync({
+      label: "instanced-skinned-mesh",
+      layout: instancedSkinnedPipelineLayout,
+      vertex: {
+        module: instancedSkinnedShaderModule,
+        entryPoint: "vs_main",
+        buffers: [
+          {arrayStride: 12, attributes: [{shaderLocation: 0, offset: 0, format: "float32x3"}]},
+          {arrayStride: 12, attributes: [{shaderLocation: 1, offset: 0, format: "float32x3"}]},
+          {arrayStride: 8, attributes: [{shaderLocation: 2, offset: 0, format: "uint16x4"}]},
+          {arrayStride: 16, attributes: [{shaderLocation: 3, offset: 0, format: "float32x4"}]},
+          {arrayStride: 64, stepMode: "instance", attributes: [
+            {shaderLocation: 4, offset: 0, format: "float32x4"},
+            {shaderLocation: 5, offset: 16, format: "float32x4"},
+            {shaderLocation: 6, offset: 32, format: "float32x4"},
+            {shaderLocation: 7, offset: 48, format: "float32x4"},
+          ]},
+        ],
+      },
+      fragment: {
+        module: instancedSkinnedShaderModule,
+        entryPoint: "fs_main",
+        targets: [{format: this.presentationFormat, blend: {
+          color: {srcFactor: "src-alpha", dstFactor: "one-minus-src-alpha", operation: "add"},
+          alpha: {srcFactor: "one", dstFactor: "one-minus-src-alpha", operation: "add"},
+        }}],
+      },
+      primitive: {topology: "triangle-list", cullMode: "none"},
+      depthStencil,
+      multisample: {count: this.sampleCount},
+    })
+
     // --- Pipelines для Lines ---
     const linePresentationFormat = this.presentationFormat
     const createLinePipeline = (
@@ -1821,6 +1868,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       this.uiBasicMeshPipeline &&
       this.instancedMeshPipeline &&
       this.skinnedMeshPipeline &&
+      this.instancedSkinnedMeshPipeline &&
       this.linePipeline &&
       this.lineOverlayPipeline &&
       this.lineSilhouettePipeline &&
@@ -2944,6 +2992,17 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
             boneSlot++ * (BONE_MATRICES_SIZE / 4),
           )
           break
+        case "instanced-skinned-mesh": {
+          const mesh = item.object as InstancedSkinnedMesh
+          mesh.updatePoseMatrices()
+          const bytes = mesh.instanceBones.byteLength
+          if (this.device && bytes > Math.min(this.device.limits.maxStorageBufferBindingSize, this.device.limits.maxBufferSize)) {
+            throw new RangeError("InstancedSkinnedMesh bone palettes exceed this GPU's storage buffer limit")
+          }
+          this.updateInstancedMeshData(mesh, item.worldMatrix, offsetFloats)
+          this.perObjectDataCPU[offsetFloats + 36] = mesh.boneCount
+          break
+        }
         case "instanced-mesh":
           this.updateInstancedMeshData(item.object as InstancedMesh, item.worldMatrix, offsetFloats)
           break
@@ -3295,6 +3354,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         case "skinned-mesh":
           pipeline = this.skinnedMeshPipeline
           break
+        case "instanced-skinned-mesh":
+          pipeline = this.instancedSkinnedMeshPipeline
+          break
         case "instanced-mesh":
           pipeline = this.instancedMeshPipeline
           break
@@ -3364,6 +3426,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
         case "skinned-mesh":
           this.renderMesh(passEncoder, item.object as Mesh, item.worldMatrix, renderIndex)
           break
+        case "instanced-skinned-mesh":
+          this.renderInstancedSkinnedMesh(passEncoder, item.object as InstancedSkinnedMesh, renderIndex)
+          break
         case "instanced-mesh":
           this.renderInstancedMesh(passEncoder, item.object as InstancedMesh, renderIndex)
           break
@@ -3429,6 +3494,7 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     buffers.defaultLineColorBuffer?.destroy()
     buffers.skinIndexBuffer?.destroy()
     buffers.skinWeightBuffer?.destroy()
+    buffers.instanceBonesBuffer?.destroy()
     buffers.instanceMatrixBuffer?.destroy()
     buffers.instanceBuffer?.destroy()
     buffers.roundedRectRecordBuffer?.destroy()
@@ -3608,6 +3674,14 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
       "skinWeightBuffer",
       geometry.attributes.skinWeight,
       GPUBufferUsage.VERTEX,
+    )
+    this.synchronizeOptionalGeometryAttribute(
+      buffers,
+      sources,
+      "instanceBones",
+      "instanceBonesBuffer",
+      geometry.attributes.instanceBones,
+      GPUBufferUsage.STORAGE,
     )
     this.synchronizeOptionalGeometryAttribute(
       buffers,
@@ -4033,6 +4107,40 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     }
   }
 
+  private renderInstancedSkinnedMesh(
+    encoder: RenderCommandEncoder,
+    mesh: InstancedSkinnedMesh,
+    renderIndex: number,
+  ): void {
+    if (!this.device || !this.perObjectBindGroup || !this.instanceBonesBindGroupLayout || mesh.count === 0) return
+    const material = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material
+    if (!material?.visible) return
+    const buffers = this.getOrCreateGeometryBuffers(mesh.geometry)
+    const {positionBuffer, normalBuffer, skinIndexBuffer, skinWeightBuffer, instanceMatrixBuffer, instanceBonesBuffer, indexBuffer} = buffers
+    if (!normalBuffer || !skinIndexBuffer || !skinWeightBuffer || !instanceMatrixBuffer || !instanceBonesBuffer) {
+      throw new Error("InstancedSkinnedMesh GPU buffers are incomplete")
+    }
+    let group = this.instanceBonesBindGroups.get(instanceBonesBuffer)
+    if (!group) {
+      group = this.device.createBindGroup({
+        layout: this.instanceBonesBindGroupLayout,
+        entries: [{binding: 0, resource: {buffer: instanceBonesBuffer}}],
+      })
+      this.instanceBonesBindGroups.set(instanceBonesBuffer, group)
+    }
+    encoder.setBindGroup(1, this.perObjectBindGroup, [renderIndex * PER_OBJECT_UNIFORM_SIZE, 0])
+    encoder.setBindGroup(2, group)
+    encoder.setVertexBuffer(0, positionBuffer)
+    encoder.setVertexBuffer(1, normalBuffer)
+    encoder.setVertexBuffer(2, skinIndexBuffer)
+    encoder.setVertexBuffer(3, skinWeightBuffer)
+    encoder.setVertexBuffer(4, instanceMatrixBuffer)
+    if (indexBuffer) {
+      encoder.setIndexBuffer(indexBuffer, mesh.geometry.index!.array instanceof Uint32Array ? "uint32" : "uint16")
+      encoder.drawIndexed(mesh.geometry.index!.count, mesh.count)
+    } else encoder.draw(mesh.geometry.attributes.position!.count, mesh.count)
+  }
+
   private renderInstancedMesh(
     passEncoder: RenderCommandEncoder | null,
     mesh: InstancedMesh,
@@ -4363,6 +4471,9 @@ fn fs_main(in: VertexOutput) -> @location(0) vec4<f32> {
     this.staticMeshPipeline = null
     this.instancedMeshPipeline = null
     this.skinnedMeshPipeline = null
+    this.instancedSkinnedMeshPipeline = null
+    this.instanceBonesBindGroupLayout = null
+    this.instanceBonesBindGroups = new WeakMap()
     this.linePipeline = null
     this.lineOverlayPipeline = null
     this.lineSilhouettePipeline = null

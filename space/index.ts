@@ -7,6 +7,8 @@
 export * from "@zavx0z/immersive-space"
 export {Grid} from "@zavx0z/immersive-space/gizmo/grid"
 export type {GridProps} from "@zavx0z/immersive-space/gizmo/grid"
+export {SpatialEdges, spatialEdgeBounds, tessellateSpatialEdge} from "@zavx0z/immersive-space/shape/edges"
+export type {SpatialEdgesProps, SpatialEdge, SpatialEdgeRoute, SpatialEdgeBounds} from "@zavx0z/immersive-space/shape/edges"
 
 export type {
   SpaceRef,

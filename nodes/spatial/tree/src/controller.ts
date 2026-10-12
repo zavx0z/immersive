@@ -34,6 +34,7 @@ export function createSpatialTreeController(options: SpatialTreeControllerOption
   const demanded = new Set<string>()
   const projection = root.getProjection(root.space)
   let scene: SpatialTreeScene | null = null
+  let geometryNodes: readonly SpatialTreeDisplay[] = Object.freeze([])
   let nodeIndex = createSpatialVisibilityIndex([])
   let volumeIndex = createSpatialVisibilityIndex([])
   let volumeBoundsById = new Map<string, SpatialTreeBounds>()
@@ -92,7 +93,7 @@ export function createSpatialTreeController(options: SpatialTreeControllerOption
       const body = scene!.bodyIdByNode.get(node.id)
       return body === undefined ? [] : [body]
     }))
-    state.publish({nodes, volumes: scene.volumes, bodyVolumes: scene.bodyVolumes, branchVolumes: scene.branchVolumes,
+    state.publish({nodes, geometryNodes, volumes: scene.volumes, bodyVolumes: scene.bodyVolumes, branchVolumes: scene.branchVolumes,
       visibleVolumeIds: visibleVolumes, disabledHitIds,
       geometryRevision: revision, selectedId, selectedVolumeId: selectedId === null ? null : scene.bodyIdByNode.get(selectedId) ?? null,
       contentById: new Map(content), floor: scene.floor, showGrid: options.showGrid === true, onHost, onActivate, onVolumeActivate})
@@ -275,6 +276,11 @@ export function createSpatialTreeController(options: SpatialTreeControllerOption
       const boundsById = new Map(next.volumes.map(volume => [volume.id, spatialVolumeBounds(volume.from, volume.to)]))
       const nextVolumes = createSpatialVisibilityIndex([...boundsById].map(([id, bounds]) => ({id, bounds})))
       const first = scene === null || scene.nodes.length === 0
+      geometryNodes = Object.freeze(next.nodes.map(node => Object.freeze({
+        id: node.id, label: node.label, depth: node.depth, color: node.color,
+        ...(node.parentId === undefined ? {} : {parentId: node.parentId}),
+        rect: Object.freeze({...node.rect}), viewport: Object.freeze({...node.viewport}),
+      })))
       scene = next
       nodeIndex = nextNodes
       volumeIndex = nextVolumes

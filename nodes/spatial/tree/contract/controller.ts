@@ -13,9 +13,12 @@ export interface SpatialTreeState {
   publish(snapshot: SpatialTreeSnapshot | null): void
 }
 
-/** Видимая часть сцены; полная числовая геометрия остаётся в общем cache. */
+/** Материализованные Display и неизменяемая числовая проекция общей сцены. */
 export interface SpatialTreeSnapshot {
   readonly nodes: readonly SpatialTreeDisplay[]
+  /** Полная неизменяемая числовая геометрия, независимая от Display/content LOD.
+  Ссылка сохраняется до следующей geometryRevision; нет DOM или native handles. */
+  readonly geometryNodes?: readonly SpatialTreeDisplay[]
   readonly volumes: SpatialTreeScene["volumes"]
   /** Неизменные role streams; старые авторские снимки могут использовать общий volumes. */
   readonly bodyVolumes?: SpatialTreeScene["bodyVolumes"]

@@ -445,3 +445,32 @@ test("HUD factor команды в fly проходят target, orbit сохра
   expect(Math.hypot(f.vp.x - f.vp.targetX, f.vp.y - f.vp.targetY, f.vp.z - f.vp.targetZ)).toBeCloseTo(radius * .5, 8)
   await settle()
 })
+
+
+test("geometryNodes сохраняет immutable layout при холодных Display и меняется только с конфигурацией", async () => {
+  const f = fixture({allVisible: true, projectPoint: () => ({x: 40, y: 20})})
+  const input: SpatialTreeNode[] = [{id: "root", label: "Root"}, ...Array.from({length: 300}, (_, index) => ({id: `cold-${index}`, parentId: "root", label: `Cold ${index}`}))]
+  f.controller.configure(input, () => {})
+  await settle()
+  const snapshot = f.state.getSnapshot()!
+  expect(snapshot.nodes).toHaveLength(0)
+  expect(snapshot.geometryNodes).toHaveLength(301)
+  expect(snapshot.contentById.size).toBe(0)
+  const geometry = snapshot.geometryNodes!
+  const expected = createSpatialTreeScene(input, f.viewport).nodes
+  expect(geometry.map(node => node.rect)).toEqual(expected.map(node => node.rect))
+  expect(Object.isFrozen(geometry)).toBe(true)
+  expect(Object.isFrozen(geometry[0]!.rect)).toBe(true)
+  expect(Reflect.set(geometry[0]!.rect, "x", 999)).toBe(false)
+  expect(geometry[0]!.rect.x).toBe(expected[0]!.rect.x)
+  const revision = snapshot.geometryRevision
+  f.vp.x += 100
+  f.pulse()
+  await settle()
+  expect(f.state.getSnapshot()!.geometryNodes).toBe(geometry)
+  expect(f.state.getSnapshot()!.geometryRevision).toBe(revision)
+  f.controller.configure(nodes, () => {})
+  await settle()
+  expect(f.state.getSnapshot()!.geometryNodes).not.toBe(geometry)
+  expect(f.state.getSnapshot()!.geometryNodes).toHaveLength(3)
+})
