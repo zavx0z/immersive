@@ -1,6 +1,17 @@
 import {loadSharedFont} from "@zavx0z/immersive-engine/default-font"
 import type {RendererFontFace} from "@zavx0z/immersive-webgpu"
 
+/**
+Файл шрифта, который браузерный рендерер загружает для отображения текста.
+
+@property family - Имя семейства, по которому стили интерфейса выбирают шрифт, например `sans-serif` или `monospace`.
+
+@property weight - Насыщенность шрифта по шкале CSS от 1 до 1000. Например, 400 соответствует обычному тексту, 700 — полужирному.
+
+@property style - Начертание текста: `normal` для прямого или `italic` для курсивного.
+
+@property src - Адрес файла шрифта. Относительный адрес разрешается с учётом базового URL загрузки.
+*/
 export type BrowserFontFaceSource = Readonly<{
   family: string
   weight: number
