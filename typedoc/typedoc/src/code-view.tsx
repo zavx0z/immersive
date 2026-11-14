@@ -9,12 +9,12 @@ import CodeEditor from "@zavx0z/immersive-ui-component-view-code-editor"
 Размеры текста и viewport принадлежат [контракту CodeEditor](../../../ui/view/code-editor.md).
 Границы CSS-переноса определяет [строчный поток Renderer](../../../renderer/html/inline-flow.md).
 
-@param props - TypeScript-текст value и подпись title для доступности/подсказки существующего {@link CodeEditor}.
+@param props - TypeScript-текст value и подпись title для доступного имени существующего {@link CodeEditor}.
 */
 export function CodeView(props: Readonly<{value: string; title: string}>) {
   return <CodeEditor
     value={props.value}
-    title={props.title}
+    ariaLabel={props.title}
     readOnly={true}
     languageId="typescript"
     showLineNumbers={false}

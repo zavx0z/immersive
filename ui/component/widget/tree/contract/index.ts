@@ -10,11 +10,14 @@ import type {JSX} from "@zavx0z/immersive-jsx-compiler-session"
 export declare namespace ImmersiveUiComponentWidgetTree {
   /**
   Входные данные Tree.
+
+  @property [showRowTooltips=true] - Показывать подсказки строк дерева и кнопок раскрытия при наведении.
   */
   type Input = WidgetHeaderProps & Readonly<{
     items: readonly TreeItem[]
     expandedKeys: readonly string[]
     selectedKeys: readonly string[]
+    showRowTooltips?: boolean | undefined
     selectionMode?: "single" | "multiple" | undefined
     emptyLabel?: string | undefined
     onExpandedChange?: ((keys: readonly string[], event: Event) => void) | undefined

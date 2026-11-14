@@ -187,6 +187,21 @@ test("Terminal handle projects directional ANSI text and cross-block selections 
   expect(ready).toBeNull()
 })
 
+test("дерево без подсказок сохраняет подпись кнопки раскрытия", () => {
+  const f = fixture()
+  try {
+    f.component.render(Tree as unknown as DOMComponentConstructor<TreeProps>, {
+      title: "Контракт", showRowTooltips: false, expandedKeys: ["root"], selectedKeys: [],
+      items: [{id: "root", label: "Output", children: [{id: "child", label: "clientSnapshot", title: "Тип поля"}]}],
+    })
+    f.component.flush()
+    for (const label of f.root.querySelectorAll("[data-tree-label]")) expect(label.hasAttribute("title")).toBe(false)
+    const toggle = f.root.querySelector('[data-tree-id="root"] button')!
+    expect(toggle.getAttribute("aria-label")).toBe("Свернуть")
+    expect(toggle.hasAttribute("title")).toBe(false)
+  } finally {f.component.unmount()}
+})
+
 test("Tree controls disclosure, lazy expansion, multiple selection and keyboard without filesystem semantics", () => {
   const f = fixture()
   const selections: string[][] = []

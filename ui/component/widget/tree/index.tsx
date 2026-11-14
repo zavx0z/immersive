@@ -169,6 +169,7 @@ export default function Tree(props: Contract.Input): Contract.Output {
     focus(id, event.type === "keydown")
   }
   const context: TreeContext = {
+    showRowTooltips: props.showRowTooltips ?? true,
     expanded, selected, focusKey, refs: refs.current, rowHeight: props.windowing?.rowHeight ?? 24,
     select, toggle,
     focusIn: id => { if (props.selectionFollowsFocus === false) setFocusedId(id) },

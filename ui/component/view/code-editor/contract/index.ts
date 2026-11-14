@@ -39,7 +39,9 @@ export declare namespace ImmersiveUiComponentViewCodeEditor {
 
   @property [showLineNumbers=true] - Показывать номера; поле меток может оставаться отдельно.
 
-  @property [title] - Доступная подпись области редактора.
+  @property [ariaLabel] - Имя области редактора для вспомогательных технологий.
+
+  @property [title] - Подсказка при наведении. Также служит доступным именем, если отсутствует `ariaLabel`.
 
   @property [style] - Дополнительный branded CSS принимающей композиции.
 
@@ -78,6 +80,7 @@ export declare namespace ImmersiveUiComponentViewCodeEditor {
     readonly showLineNumbers?: boolean | undefined
     readonly softBreaks?: readonly number[] | undefined
     readonly showFormattingCharacters?: boolean | undefined
+    readonly ariaLabel?: string | undefined
     readonly title?: string | undefined
     readonly style?: CssStyle | undefined
   }

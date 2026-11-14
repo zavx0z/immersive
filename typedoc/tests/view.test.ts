@@ -18,7 +18,7 @@ Bun.plugin(createJsxBunPlugin({
 const {TypeDoc} = await import("../typedoc/index.tsx")
 const template = TypeDoc as unknown as DOMComponentConstructor<TypeDocProps>
 const {default: codeEditorPalette} = await import("@zavx0z/immersive-ui-view-code-editor-palette")
-const theme = await Bun.file(resolve(root, "ui/theme/theme.css")).text()
+const theme = await Bun.file(resolve(root, "ui/component/theme/theme.css")).text()
 
 function mount(props: TypeDocProps = {document: contractDocument}) {
   const document = createDocument()
@@ -154,18 +154,20 @@ describe("TypeDoc production view", () => {
       ]) {
         const block = container.querySelector(selector)!
         const editor = block.querySelector('[aria-readonly="true"]')!
+        expect(editor.hasAttribute("title")).toBe(false)
+        expect(editor.getAttribute("aria-label")).toBeTruthy()
         expect(editor.getAttribute("data-language-id")).toBe("typescript")
         expect(editor.querySelector("pre code")?.getAttribute("contenteditable")).toBe("false")
         expect(editor.querySelector('[role="textbox"]')).toBeNull()
         expect(editor.querySelector("button")).toBeNull()
-        const gutter = editor.querySelector("ul")!
-        expect(gutter.hasAttribute("hidden")).toBe(true)
+        const gutters = [...editor.querySelectorAll("[data-code-gutter]")]
+        expect(gutters.every(gutter => gutter.hasAttribute("hidden"))).toBe(true)
         const tokens = [...editor.querySelectorAll("[data-token-category]")]
         expect(tokens.length).toBeGreaterThan(0)
         const paint = frame.displayList.filter(item => item.kind === "text" && tokens.some(token => token.contains(item.node)))
         expect(paint.length).toBeGreaterThan(0)
         expect(paint.some(item => item.kind === "text" && item.color.toLowerCase() !== codeEditorPalette.editorForeground)).toBe(true)
-        expect(frame.displayList.some(item => item.kind === "text" && gutter.contains(item.node))).toBe(false)
+        expect(frame.displayList.some(item => item.kind === "text" && gutters.some(gutter => gutter.contains(item.node)))).toBe(false)
       }
       const signature = container.querySelector("[data-typedoc-signature]")!
       const runs = frame.displayList.filter(item => item.kind === "text" && signature.contains(item.node))

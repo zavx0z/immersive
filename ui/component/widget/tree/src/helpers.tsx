@@ -127,7 +127,7 @@ export function TreeBranch(props: Readonly<{
           startIcon={expanded ? chevronDownIcon : chevronRightIcon}
           iconOnly={true}
           iconSize={12}
-          title={toggleLabel}
+          title={props.context.showRowTooltips ? toggleLabel : undefined}
           aria-label={toggleLabel}
           disabled={item.disabled === true}
           onClick={event => { event.stopPropagation(); props.context.toggle(item.id, event) }}
@@ -161,7 +161,7 @@ export function TreeBranch(props: Readonly<{
       />
       <span
         data-tree-label=""
-        title={item.title ?? item.label}
+        title={props.context.showRowTooltips ? item.title ?? item.label : undefined}
         style={css`
           flex-grow: 1;
           min-width: 0;

@@ -24,5 +24,6 @@ export type TreeContext = Readonly<{
   activate(id: string, event: Event): void
   key(id: string, event: KeyboardEvent): void
   focusIn(id: string): void
+  showRowTooltips: boolean
   rowHeight: number
 }>

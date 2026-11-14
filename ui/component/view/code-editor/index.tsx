@@ -160,7 +160,7 @@ export default function CodeEditor(props: Contract.Input): Contract.Output {
     }}
     contentEditable="false"
     role="region"
-    aria-label={props.title ?? "Code editor"}
+    aria-label={props.ariaLabel ?? props.title ?? "Code editor"}
     aria-readonly={String(props.readOnly)}
     data-language-id={view.resolvedLanguageId}
     data-path={props.path}
