@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "id": "29320da180194913192e41aa6e6d562c0b9845fb187863450b6039fea6f0ad06",
+  "executorId": "6d6ac3da-3110-5d15-af88-f778b434a53f",
+  "from": {
+    "address": "/immersive/ui/component/surface/window-control",
+    "cwd": "../.."
+  },
+  "to": {
+    "address": "/immersive/ui/component/surface/visibility",
+    "cwd": "../../../visibility"
+  }
+}
