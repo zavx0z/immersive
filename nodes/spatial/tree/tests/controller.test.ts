@@ -15,7 +15,7 @@ afterEach(() => { for (const controller of controllers.splice(0)) controller.dis
 const settle = async () => { for (let i = 0; i < 4; i++) await Promise.resolve() }
 const waitDemand = () => new Promise(resolve => setTimeout(resolve, 210))
 
-function fixture(settings: {allVisible?: boolean; preserve?: boolean; motion?: number
+function fixture(settings: {allVisible?: boolean; preserve?: boolean; motion?: number; minimumNear?: number
   projectPoint?: (point: {x: number; y: number; z: number}) => {x: number; y: number} | null} = {}) {
   const document = createDocument()
   const space = new SpaceElement(document)
@@ -99,13 +99,39 @@ function fixture(settings: {allVisible?: boolean; preserve?: boolean; motion?: n
     render() { counts.renders++; pulse() },
   } as unknown as Presentation
   const controller = createSpatialTreeController({root, state, getViewport: () => viewport,
-    preserveViewPoint: settings.preserve ?? false, motionDurationMs: settings.motion ?? 0})
+    preserveViewPoint: settings.preserve ?? false, motionDurationMs: settings.motion ?? 0,
+    ...(settings.minimumNear === undefined ? {} : {minimumNear: settings.minimumNear})})
   controllers.push(controller)
   return {controller, state, root, vp, viewport, hosts, counts, pulse, engine, sync}
 }
 const nodes: SpatialTreeNode[] = [{id: "root", label: "Root"},
   {id: "a", parentId: "root", label: "A"}, {id: "b", parentId: "root", label: "B"}]
 const pose = (vp: ViewPointElement) => [vp.x, vp.y, vp.z, vp.targetX, vp.targetY, vp.targetZ]
+
+test("minimumNear сохраняет выбранный мм-минимум внутри bounds и исходный диапазон без опции", async () => {
+  for (const minimumNear of [undefined, 1, 1_000_000]) {
+    const f = fixture({preserve: true, ...(minimumNear === undefined ? {} : {minimumNear})})
+    const scene = createSpatialTreeScene(nodes, f.viewport)
+    f.vp.x = (scene.bounds.min.x + scene.bounds.max.x) / 2
+    f.vp.y = (scene.bounds.min.y + scene.bounds.max.y) / 2
+    f.vp.z = (scene.bounds.min.z + scene.bounds.max.z) / 2
+    f.vp.targetX = f.vp.x
+    f.vp.targetY = f.vp.y + 1
+    f.vp.targetZ = f.vp.z
+    const before = pose(f.vp)
+    f.controller.configure(nodes, () => {})
+    await settle()
+    expect(f.vp.near).toBe(minimumNear ?? .001)
+    expect(f.vp.far).toBeGreaterThan(f.vp.near)
+    expect(pose(f.vp)).toEqual(before)
+    f.pulse()
+    await settle()
+    expect(f.vp.near).toBe(minimumNear ?? .001)
+  }
+  for (const minimumNear of [0, -1, NaN, Infinity, Number.MAX_VALUE]) {
+    expect(() => fixture({minimumNear})).toThrow(RangeError)
+  }
+})
 
 for (const viewport of [{width: 1920, height: 1088}, {width: 360, height: 800}]) {
   test(`overview реального дерева вписывает все тела и заполняет viewport ${viewport.width}×${viewport.height}`, async () => {

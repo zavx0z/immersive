@@ -26,6 +26,10 @@ export function createSpatialTreeState(): SpatialTreeState {
 
 /** Viewer владеет проекциями, visibility и navigation; источник передаёт только данные и content. */
 export function createSpatialTreeController(options: SpatialTreeControllerOptions): SpatialTreeController {
+  const minimumNear = options.minimumNear
+  if (minimumNear !== undefined && (!Number.isFinite(minimumNear) || minimumNear <= 0 || minimumNear > Number.MAX_VALUE / 2)) {
+    throw new RangeError("Minimum near must be positive and leave a finite far plane")
+  }
   const root = options.root
   const state = options.state ?? createSpatialTreeState()
   const hosts = new Map<string, DisplayElement>()
@@ -104,8 +108,9 @@ export function createSpatialTreeController(options: SpatialTreeControllerOption
     const current = pose()
     const range = ViewPoint.depthRangeForBounds(scene.bounds, current)
     const floorRange = options.showGrid === true ? ViewPoint.depthRangeForBounds(scene.floorBounds, current) : null
-    const near = range?.near ?? root.viewPoint.near
-    const far = Math.max(range?.far ?? root.viewPoint.far, floorRange?.far ?? 0)
+    const calculatedNear = range?.near ?? root.viewPoint.near
+    const near = minimumNear === undefined ? calculatedNear : Math.max(minimumNear, calculatedNear)
+    const far = Math.max(range?.far ?? root.viewPoint.far, floorRange?.far ?? 0, minimumNear === undefined ? 0 : near * 2)
     root.document.transaction(() => {
       if (root.viewPoint.near !== near) root.viewPoint.near = near
       if (root.viewPoint.far !== far) root.viewPoint.far = far

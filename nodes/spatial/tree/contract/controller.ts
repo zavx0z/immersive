@@ -42,6 +42,9 @@ export interface SpatialTreeControllerOptions {
   readonly state?: SpatialTreeState
   readonly getViewport: () => Readonly<{width: number; height: number}> | null
   readonly preserveViewPoint?: boolean
+  /** Минимальная ближняя плоскость в мм: положительное конечное число с запасом для дальней плоскости.
+  Без опции сохраняется рассчитанный диапазон; приложение выбирает минимум по масштабу своего мира. */
+  readonly minimumNear?: number
   /** Показывать опорную сетку Z=0; по умолчанию геометрический пол не рисуется. */
   readonly showGrid?: boolean
   /** Числовые размеры промежутков в мм; без значений выбираются по размеру Display. */
