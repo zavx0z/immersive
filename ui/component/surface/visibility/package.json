@@ -1,8 +1,8 @@
 {
-  "name": "@zavx0z/immersive-ui-component-surface-window-control",
+  "name": "@zavx0z/immersive-ui-component-surface-visibility",
   "label": "WindowControl",
   "version": "0.0.0",
-  "description": "Управление видимостью существующего окна",
+  "description": "Переключатель видимости окна с общим состоянием оболочки",
   "private": true,
   "type": "module",
   "sideEffects": false,

@@ -27,7 +27,7 @@
     "@zavx0z/immersive-ui-component-surface-panel": "workspace:*",
     "@zavx0z/immersive-ui-component-surface-tab": "workspace:*",
     "@zavx0z/immersive-ui-component-surface-window": "workspace:*",
-    "@zavx0z/immersive-ui-component-surface-window-control": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-visibility": "workspace:*",
     "@zavx0z/immersive-jsx-compiler-session": "workspace:*"
   },
   "devDependencies": {

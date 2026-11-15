@@ -556,10 +556,10 @@
       "default": "./dist/ui/component/surface/pane/index.js"
     },
     "./ui/surface/window-control": {
-      "source": "./ui/component/surface/window-control/index.tsx",
-      "types": "./dist/ui/component/surface/window-control/index.d.ts",
-      "browser": "./dist/ui/component/surface/window-control/index.js",
-      "default": "./dist/ui/component/surface/window-control/index.js"
+      "source": "./ui/component/surface/visibility/index.tsx",
+      "types": "./dist/ui/component/surface/visibility/index.d.ts",
+      "browser": "./dist/ui/component/surface/visibility/index.js",
+      "default": "./dist/ui/component/surface/visibility/index.js"
     },
     "./ui/surface/panel": {
       "source": "./ui/component/surface/panel/index.tsx",

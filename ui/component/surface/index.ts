@@ -15,6 +15,6 @@ export type {ImmersiveUiComponentSurfaceTab} from "@zavx0z/immersive-ui-componen
 export {default as Window} from "@zavx0z/immersive-ui-component-surface-window"
 export type {ImmersiveUiComponentSurfaceWindow} from "@zavx0z/immersive-ui-component-surface-window"
 export * from "@zavx0z/immersive-ui-component-surface-chrome"
-export {default as WindowControl} from "@zavx0z/immersive-ui-component-surface-window-control"
-export type {ImmersiveUiComponentSurfaceWindowControl} from "@zavx0z/immersive-ui-component-surface-window-control"
+export {default as WindowControl} from "@zavx0z/immersive-ui-component-surface-visibility"
+export type {ImmersiveUiComponentSurfaceVisibility} from "@zavx0z/immersive-ui-component-surface-visibility"
 export type {ImmersiveUiComponentSurface} from "./contract"

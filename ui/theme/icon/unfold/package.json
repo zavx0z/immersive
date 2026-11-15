@@ -1,8 +1,8 @@
 {
-  "name": "@zavx0z/immersive-ui-theme-icon-expand-all",
+  "name": "@zavx0z/immersive-ui-theme-icon-unfold",
   "label": "expandAllIcon",
   "version": "0.0.0",
-  "description": "SVG-значок expand-all в формате data URL",
+  "description": "Значок раскрытия всех ветвей дерева",
   "private": true,
   "type": "module",
   "sideEffects": false,

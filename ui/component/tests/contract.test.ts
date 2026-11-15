@@ -6,7 +6,7 @@ import TextField from "@zavx0z/immersive-ui-component-field-text"
 import MenuItem from "@zavx0z/immersive-ui-component-menu-item"
 import Notification from "@zavx0z/immersive-ui-component-feedback-notification"
 import Window from "@zavx0z/immersive-ui-component-surface-window"
-import WindowControl from "@zavx0z/immersive-ui-component-surface-window-control"
+import WindowControl from "@zavx0z/immersive-ui-component-surface-visibility"
 import List from "@zavx0z/immersive-ui-component-view-list"
 import Tree from "@zavx0z/immersive-ui-component-widget-tree"
 

@@ -69,7 +69,7 @@
     "@zavx0z/immersive-ui-component-field-group": "workspace:*",
     "@zavx0z/immersive-ui-component-menu-clipboard": "workspace:*",
     "@zavx0z/immersive-ui-component-navigation-breadcrumb": "workspace:*",
-    "@zavx0z/immersive-ui-component-surface-window-control": "workspace:*",
+    "@zavx0z/immersive-ui-component-surface-visibility": "workspace:*",
     "@zavx0z/immersive-ui-component-surface-frame": "workspace:*",
     "@zavx0z/immersive-ui-component-surface-pane": "workspace:*",
     "@zavx0z/immersive-ui-component-surface-panel": "workspace:*",

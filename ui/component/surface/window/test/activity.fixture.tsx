@@ -1,6 +1,6 @@
 import {useEffect, useState} from "@zavx0z/immersive-component/authoring"
 import Window from "@zavx0z/immersive-ui-component-surface-window"
-import WindowControl from "@zavx0z/immersive-ui-component-surface-window-control"
+import WindowControl from "@zavx0z/immersive-ui-component-surface-visibility"
 
 /** Изолированная композиция слоя окон и dock, общая для headless-проверок. */
 export default function Windows(props: {

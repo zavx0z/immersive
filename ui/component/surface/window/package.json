@@ -35,6 +35,6 @@
     "@zavx0z/immersive-ui-component-surface": "workspace:*",
     "@zavx0z/immersive-renderer-html": "workspace:*",
     "@zavx0z/immersive-template": "workspace:*",
-    "@zavx0z/immersive-ui-component-surface-window-control": "workspace:*"
+    "@zavx0z/immersive-ui-component-surface-visibility": "workspace:*"
   }
 }
