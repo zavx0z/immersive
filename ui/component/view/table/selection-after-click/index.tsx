@@ -6,7 +6,7 @@
 */
 import type {ImmersiveUiComponentViewTableSelectionAfterClick as Contract} from "./contract"
 export type {ImmersiveUiComponentViewTableSelectionAfterClick} from "./contract"
-import normalizeTableSelection from "@zavx0z/immersive-ui-view-table-normalize-table-selection"
+import normalizeTableSelection from "@zavx0z/immersive-ui-view-table-normalize"
 import {tableRangeKeys} from "./src/helpers.tsx"
 import {uniqueKeys} from "./src/helpers.tsx"
 

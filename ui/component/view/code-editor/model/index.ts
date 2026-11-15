@@ -4,7 +4,7 @@
 
 @packageDocumentation
 */
-import type {ImmersiveUiComponentViewCodeEditorViewModel as Contract} from "./contract"
+import type {ImmersiveUiComponentViewCodeEditorModel as Contract} from "./contract"
 import assertCodeEditorProps from "@zavx0z/immersive-ui-component-view-code-editor-validate"
 import {buildViewModel} from "./src/helpers.ts"
 
@@ -14,4 +14,4 @@ export default function buildCodeEditorViewModel(props: Contract.Input[0]): Cont
   return buildViewModel(props)
 }
 
-export type {ImmersiveUiComponentViewCodeEditorViewModel} from "./contract"
+export type {ImmersiveUiComponentViewCodeEditorModel} from "./contract"

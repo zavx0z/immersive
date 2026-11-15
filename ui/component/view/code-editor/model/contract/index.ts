@@ -2,7 +2,7 @@ import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-comp
 import type {CodeEditorSegment} from "./types"
 
 /** Подготовленные строки и токены одного состояния редактора. */
-export declare namespace ImmersiveUiComponentViewCodeEditorViewModel {
+export declare namespace ImmersiveUiComponentViewCodeEditorModel {
   type Input = readonly [props: ImmersiveUiComponentViewCodeEditor.Input]
 
   type Output = Readonly<{

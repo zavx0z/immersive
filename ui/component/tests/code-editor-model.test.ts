@@ -1,5 +1,5 @@
 import {expect, test} from "bun:test"
-import buildCodeEditorViewModel from "@zavx0z/immersive-ui-component-view-code-editor-view-model"
+import buildCodeEditorViewModel from "@zavx0z/immersive-ui-component-view-code-editor-model"
 import {codeEditorPaintRuns} from "../view/code-editor/src/paint-runs.ts"
 import {codeEditorVisualRows} from "../view/code-editor/src/visual-rows.ts"
 import codeEditorSyntaxTheme from "@zavx0z/immersive-ui-component-view-code-editor-syntax-theme-data"

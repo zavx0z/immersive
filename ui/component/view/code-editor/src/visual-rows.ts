@@ -1,6 +1,6 @@
-import type {ImmersiveUiComponentViewCodeEditorViewModel} from "@zavx0z/immersive-ui-component-view-code-editor-view-model"
-type CodeEditorSegment = ImmersiveUiComponentViewCodeEditorViewModel.Output["segments"][number][number]
-type CodeEditorViewModel = ImmersiveUiComponentViewCodeEditorViewModel.Output
+import type {ImmersiveUiComponentViewCodeEditorModel} from "@zavx0z/immersive-ui-component-view-code-editor-model"
+type CodeEditorSegment = ImmersiveUiComponentViewCodeEditorModel.Output["segments"][number][number]
+type CodeEditorViewModel = ImmersiveUiComponentViewCodeEditorModel.Output
 
 /** Визуальная строка сохраняет исходный номер, текст и диапазоны подсветки. */
 export interface CodeEditorVisualRow {

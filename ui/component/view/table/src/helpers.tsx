@@ -4,7 +4,7 @@ import type {TableCellContext} from "../contract/types.ts"
 import type {ImmersiveUiComponentViewTable} from "../contract/index"
 type TableProps = ImmersiveUiComponentViewTable.Input
 import type {TableRowViewProps} from "./types"
-import normalizeTableSelection from "@zavx0z/immersive-ui-view-table-normalize-table-selection"
+import normalizeTableSelection from "@zavx0z/immersive-ui-view-table-normalize"
 import tableSelectionAfterClick from "@zavx0z/immersive-ui-component-view-table-selection-after-click"
 
 /** Частная подготовка таблица строк и столбцов с управляемым выбором. */

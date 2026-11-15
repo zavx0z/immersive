@@ -1,8 +1,8 @@
 import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
 type CodeEditorProps = ImmersiveUiComponentViewCodeEditor.Input
 import type {CodeEditorSegment} from "../contract/types.ts"
-import type {ImmersiveUiComponentViewCodeEditorViewModel} from "../contract"
-type CodeEditorViewModel = ImmersiveUiComponentViewCodeEditorViewModel.Output
+import type {ImmersiveUiComponentViewCodeEditorModel} from "../contract"
+type CodeEditorViewModel = ImmersiveUiComponentViewCodeEditorModel.Output
 import type {NormalizedToken} from "./types"
 import assertNonEmpty from "@zavx0z/immersive-tech-text-assert-non-empty"
 import editorForeground from "@zavx0z/immersive-ui-view-code-editor-editor-foreground"

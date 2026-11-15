@@ -23,7 +23,7 @@
     "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
     "@zavx0z/immersive-ui-component-view-code-editor-highlighter": "workspace:*",
     "@zavx0z/immersive-ui-component-view-code-editor-validate": "workspace:*",
-    "@zavx0z/immersive-ui-component-view-code-editor-view-model": "workspace:*",
+    "@zavx0z/immersive-ui-component-view-code-editor-model": "workspace:*",
     "@zavx0z/immersive-ui-component-badge": "workspace:*",
     "@zavx0z/immersive-tech-text-editor": "workspace:*",
     "@zavx0z/highlighter": "^0.1.0"

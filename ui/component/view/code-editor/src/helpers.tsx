@@ -1,6 +1,6 @@
 import {memo} from "@zavx0z/immersive-component/authoring"
-import type {ImmersiveUiComponentViewCodeEditorViewModel} from "@zavx0z/immersive-ui-component-view-code-editor-view-model"
-type CodeEditorSegment = ImmersiveUiComponentViewCodeEditorViewModel.Output["segments"][number][number]
+import type {ImmersiveUiComponentViewCodeEditorModel} from "@zavx0z/immersive-ui-component-view-code-editor-model"
+type CodeEditorSegment = ImmersiveUiComponentViewCodeEditorModel.Output["segments"][number][number]
 import type {ImmersiveUiComponentViewCodeEditor} from "@zavx0z/immersive-ui-component-view-code-editor"
 type CodeEditorLineDecoration = NonNullable<ImmersiveUiComponentViewCodeEditor.Input["lineDecorations"]>[number]
 import {codeEditorPaintRuns} from "./paint-runs.ts"

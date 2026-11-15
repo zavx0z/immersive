@@ -246,21 +246,21 @@ test.each([
       "ui/component/field/color/index.tsx#ColorField": {
         "uses": [
           "ui/component/button/basic/index.tsx#Button",
-          "ui/component/field/color-picker/index.tsx#ColorPickerField",
+          "ui/component/field/color/picker/index.tsx#ColorPickerField",
         ],
         "elements": [
           "div",
           "span"
         ]
       },
-      "ui/component/field/color-picker/src/helpers.tsx#CheckerCell": {
+      "ui/component/field/color/picker/src/helpers.tsx#CheckerCell": {
         "uses": [
         ],
         "elements": [
           "span"
         ]
       },
-      "ui/component/field/color-picker/src/helpers.tsx#ColorChannelField": {
+      "ui/component/field/color/picker/src/helpers.tsx#ColorChannelField": {
         "uses": [
           "ui/component/field/number/index.tsx#NumberField",
           "ui/component/field/slider/index.tsx#SliderField",
@@ -270,10 +270,10 @@ test.each([
           "span"
         ]
       },
-      "ui/component/field/color-picker/index.tsx#ColorPickerField": {
+      "ui/component/field/color/picker/index.tsx#ColorPickerField": {
         "uses": [
-          "ui/component/field/color-picker/src/helpers.tsx#ColorChannelField",
-          "ui/component/field/color-picker/src/helpers.tsx#ColorSwatch",
+          "ui/component/field/color/picker/src/helpers.tsx#ColorChannelField",
+          "ui/component/field/color/picker/src/helpers.tsx#ColorSwatch",
           "ui/component/field/text/index.tsx#TextField",
         ],
         "elements": [
@@ -281,9 +281,9 @@ test.each([
           "span"
         ]
       },
-      "ui/component/field/color-picker/src/helpers.tsx#ColorSwatch": {
+      "ui/component/field/color/picker/src/helpers.tsx#ColorSwatch": {
         "uses": [
-          "ui/component/field/color-picker/src/helpers.tsx#CheckerCell",
+          "ui/component/field/color/picker/src/helpers.tsx#CheckerCell",
         ],
         "elements": [
           "div",

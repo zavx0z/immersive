@@ -391,11 +391,11 @@
       "browser": "./dist/ui/component/view/code-editor/highlighter/index.js",
       "default": "./dist/ui/component/view/code-editor/highlighter/index.js"
     },
-    "./ui/view/code-editor/view-model": {
-      "source": "./ui/component/view/code-editor/view-model/index.ts",
-      "types": "./dist/ui/component/view/code-editor/view-model/index.d.ts",
-      "browser": "./dist/ui/component/view/code-editor/view-model/index.js",
-      "default": "./dist/ui/component/view/code-editor/view-model/index.js"
+    "./ui/view/code-editor/model": {
+      "source": "./ui/component/view/code-editor/model/index.ts",
+      "types": "./dist/ui/component/view/code-editor/model/index.d.ts",
+      "browser": "./dist/ui/component/view/code-editor/model/index.js",
+      "default": "./dist/ui/component/view/code-editor/model/index.js"
     },
     "./ui/view/code-editor/syntax-theme/resolve-scope-color-hex": {
       "source": "./ui/component/view/code-editor/syntax-theme/resolve-scope-color-hex/index.ts",
@@ -524,10 +524,10 @@
       "default": "./dist/ui/component/field/select/index.js"
     },
     "./ui/field/color-picker": {
-      "source": "./ui/component/field/color-picker/index.tsx",
-      "types": "./dist/ui/component/field/color-picker/index.d.ts",
-      "browser": "./dist/ui/component/field/color-picker/index.js",
-      "default": "./dist/ui/component/field/color-picker/index.js"
+      "source": "./ui/component/field/color/picker/index.tsx",
+      "types": "./dist/ui/component/field/color/picker/index.d.ts",
+      "browser": "./dist/ui/component/field/color/picker/index.js",
+      "default": "./dist/ui/component/field/color/picker/index.js"
     },
     "./ui/field/vector": {
       "source": "./ui/component/field/vector/index.tsx",

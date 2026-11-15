@@ -20,7 +20,7 @@
     "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "dependencies": {
-    "@zavx0z/immersive-ui-view-table-normalize-table-selection": "workspace:*",
+    "@zavx0z/immersive-ui-view-table-normalize": "workspace:*",
     "@zavx0z/immersive-ui-component-view-table": "workspace:*"
   },
   "devDependencies": {
