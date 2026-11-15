@@ -79,14 +79,15 @@
     "component": {
       "name": "@zavx0z/immersive-component",
       "version": "0.0.0",
+      "devDependencies": {
+        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
+      },
       "peerDependencies": {
         "@zavx0z/immersive-dom": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-template": "workspace:*",
       },
       "optionalPeers": [
         "@zavx0z/immersive-dom",
-        "@zavx0z/immersive-template",
       ],
     },
     "devtool": {
@@ -209,9 +210,6 @@
         "@zavx0z/immersive-jsx-compiler-bun": "workspace:*",
         "@zavx0z/immersive-space": "workspace:*",
       },
-      "peerDependencies": {
-        "@zavx0z/immersive-component": "workspace:*",
-      },
     },
     "jsx/development": {
       "name": "@zavx0z/immersive-jsx-development",
@@ -225,12 +223,10 @@
       "name": "@zavx0z/immersive-jsx-development-create",
       "version": "0.0.0",
       "dependencies": {
-        "@zavx0z/immersive-component": "workspace:*",
-        "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
         "@zavx0z/immersive-jsx-runtime-create": "workspace:*",
       },
       "devDependencies": {
-        "@zavx0z/immersive-template": "workspace:*",
+        "@zavx0z/immersive-jsx": "workspace:*",
       },
     },
     "jsx/event": {
@@ -252,15 +248,12 @@
       "name": "@zavx0z/immersive-jsx-runtime-create",
       "version": "0.0.0",
       "dependencies": {
-        "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-jsx-compiler-session": "workspace:*",
-        "@zavx0z/immersive-jsx-runtime-fragment": "workspace:*",
-        "@zavx0z/immersive-jsx-slot-child": "workspace:*",
-        "@zavx0z/immersive-jsx-slot-plan": "workspace:*",
-        "@zavx0z/immersive-template": "workspace:*",
       },
       "devDependencies": {
+        "@zavx0z/immersive-component": "workspace:*",
         "@zavx0z/immersive-dom": "workspace:*",
+        "@zavx0z/immersive-jsx": "workspace:*",
       },
     },
     "jsx/runtime/fragment": {
@@ -1084,7 +1077,7 @@
         "@zavx0z/immersive-tech-json-metadata-object-array": "workspace:*",
         "@zavx0z/immersive-tech-json-metadata-read": "workspace:*",
         "@zavx0z/immersive-tech-json-metadata-string": "workspace:*",
-        "@zavx0z/immersive-tech-json-metadata-string-array": "workspace:*",
+        "@zavx0z/immersive-tech-json-metadata-strings": "workspace:*",
         "@zavx0z/immersive-tech-json-value-own": "workspace:*",
       },
     },
@@ -1135,8 +1128,8 @@
         "@zavx0z/immersive-tech-json-metadata": "workspace:*",
       },
     },
-    "tech/json/metadata/string-array": {
-      "name": "@zavx0z/immersive-tech-json-metadata-string-array",
+    "tech/json/metadata/strings": {
+      "name": "@zavx0z/immersive-tech-json-metadata-strings",
       "version": "0.0.0",
       "dependencies": {
         "@zavx0z/immersive-tech-json-metadata-read": "workspace:*",
@@ -1582,9 +1575,9 @@
         "@zavx0z/immersive-ui-field-number-value-fill-percentage": "workspace:*",
         "@zavx0z/immersive-ui-field-number-value-format": "workspace:*",
         "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
-        "@zavx0z/immersive-ui-field-number-value-pointer-step": "workspace:*",
         "@zavx0z/immersive-ui-field-number-value-soft-range": "workspace:*",
         "@zavx0z/immersive-ui-field-number-value-step": "workspace:*",
+        "@zavx0z/immersive-ui-field-number-value-step-pointer": "workspace:*",
       },
       "devDependencies": {
         "@zavx0z/immersive-headless": "workspace:*",
@@ -2594,7 +2587,7 @@
       "dependencies": {
         "@zavx0z/immersive-ui-field-number-value-finite-bound": "workspace:*",
         "@zavx0z/immersive-ui-field-number-value-round": "workspace:*",
-        "@zavx0z/immersive-ui-field-number-value-valid-step": "workspace:*",
+        "@zavx0z/immersive-ui-field-number-value-step-valid": "workspace:*",
       },
     },
     "ui/field/number/value/pointer-adaptive-span": {
@@ -2602,15 +2595,7 @@
       "version": "0.0.0",
       "dependencies": {
         "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
-        "@zavx0z/immersive-ui-field-number-value-pointer-step": "workspace:*",
-      },
-    },
-    "ui/field/number/value/pointer-step": {
-      "name": "@zavx0z/immersive-ui-field-number-value-pointer-step",
-      "version": "0.0.0",
-      "dependencies": {
-        "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
-        "@zavx0z/immersive-ui-field-number-value-valid-step": "workspace:*",
+        "@zavx0z/immersive-ui-field-number-value-step-pointer": "workspace:*",
       },
     },
     "ui/field/number/value/round": {
@@ -2624,7 +2609,7 @@
         "@zavx0z/immersive-ui-field-number-value-finite-bound": "workspace:*",
         "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
         "@zavx0z/immersive-ui-field-number-value-pointer-adaptive-span": "workspace:*",
-        "@zavx0z/immersive-ui-field-number-value-pointer-step": "workspace:*",
+        "@zavx0z/immersive-ui-field-number-value-step-pointer": "workspace:*",
       },
     },
     "ui/field/number/value/step": {
@@ -2632,12 +2617,20 @@
       "version": "0.0.0",
       "dependencies": {
         "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
-        "@zavx0z/immersive-ui-field-number-value-pointer-step": "workspace:*",
         "@zavx0z/immersive-ui-field-number-value-soft-range": "workspace:*",
+        "@zavx0z/immersive-ui-field-number-value-step-pointer": "workspace:*",
       },
     },
-    "ui/field/number/value/valid-step": {
-      "name": "@zavx0z/immersive-ui-field-number-value-valid-step",
+    "ui/field/number/value/step/pointer": {
+      "name": "@zavx0z/immersive-ui-field-number-value-step-pointer",
+      "version": "0.0.0",
+      "dependencies": {
+        "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
+        "@zavx0z/immersive-ui-field-number-value-step-valid": "workspace:*",
+      },
+    },
+    "ui/field/number/value/step/valid": {
+      "name": "@zavx0z/immersive-ui-field-number-value-step-valid",
       "version": "0.0.0",
     },
     "ui/field/vector/value/normalize": {
@@ -3407,7 +3400,7 @@
 
     "@zavx0z/immersive-tech-json-metadata-string": ["@zavx0z/immersive-tech-json-metadata-string@workspace:tech/json/metadata/string"],
 
-    "@zavx0z/immersive-tech-json-metadata-string-array": ["@zavx0z/immersive-tech-json-metadata-string-array@workspace:tech/json/metadata/string-array"],
+    "@zavx0z/immersive-tech-json-metadata-strings": ["@zavx0z/immersive-tech-json-metadata-strings@workspace:tech/json/metadata/strings"],
 
     "@zavx0z/immersive-tech-json-patch": ["@zavx0z/immersive-tech-json-patch@workspace:tech/json/patch"],
 
@@ -3663,15 +3656,15 @@
 
     "@zavx0z/immersive-ui-field-number-value-pointer-adaptive-span": ["@zavx0z/immersive-ui-field-number-value-pointer-adaptive-span@workspace:ui/field/number/value/pointer-adaptive-span"],
 
-    "@zavx0z/immersive-ui-field-number-value-pointer-step": ["@zavx0z/immersive-ui-field-number-value-pointer-step@workspace:ui/field/number/value/pointer-step"],
-
     "@zavx0z/immersive-ui-field-number-value-round": ["@zavx0z/immersive-ui-field-number-value-round@workspace:ui/field/number/value/round"],
 
     "@zavx0z/immersive-ui-field-number-value-soft-range": ["@zavx0z/immersive-ui-field-number-value-soft-range@workspace:ui/field/number/value/soft-range"],
 
     "@zavx0z/immersive-ui-field-number-value-step": ["@zavx0z/immersive-ui-field-number-value-step@workspace:ui/field/number/value/step"],
 
-    "@zavx0z/immersive-ui-field-number-value-valid-step": ["@zavx0z/immersive-ui-field-number-value-valid-step@workspace:ui/field/number/value/valid-step"],
+    "@zavx0z/immersive-ui-field-number-value-step-pointer": ["@zavx0z/immersive-ui-field-number-value-step-pointer@workspace:ui/field/number/value/step/pointer"],
+
+    "@zavx0z/immersive-ui-field-number-value-step-valid": ["@zavx0z/immersive-ui-field-number-value-step-valid@workspace:ui/field/number/value/step/valid"],
 
     "@zavx0z/immersive-ui-field-vector-value-normalize": ["@zavx0z/immersive-ui-field-vector-value-normalize@workspace:ui/field/vector/value/normalize"],
 

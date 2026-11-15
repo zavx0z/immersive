@@ -26,7 +26,7 @@
     "@zavx0z/immersive-tech-json-metadata-string": "workspace:*",
     "@zavx0z/immersive-tech-json-metadata-number": "workspace:*",
     "@zavx0z/immersive-tech-json-metadata-boolean": "workspace:*",
-    "@zavx0z/immersive-tech-json-metadata-string-array": "workspace:*",
+    "@zavx0z/immersive-tech-json-metadata-strings": "workspace:*",
     "@zavx0z/immersive-tech-json-metadata-object-array": "workspace:*"
   },
   "scripts": {

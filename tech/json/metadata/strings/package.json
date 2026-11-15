@@ -1,8 +1,8 @@
 {
-  "name": "@zavx0z/immersive-tech-json-metadata-string-array",
+  "name": "@zavx0z/immersive-tech-json-metadata-strings",
   "label": "metadataStringArray",
   "version": "0.0.0",
-  "description": "Заимствует массив строк, если каждый его элемент имеет подходящий тип",
+  "description": "Читатель строковых массивов в JSON-метаданных",
   "private": true,
   "type": "module",
   "sideEffects": false,

@@ -10,7 +10,7 @@ type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input
 import finiteBound from "@zavx0z/immersive-ui-field-number-value-finite-bound"
 import normalizeNumberValue from "@zavx0z/immersive-ui-field-number-value-normalize"
 import numberPointerAdaptiveSpan from "@zavx0z/immersive-ui-field-number-value-pointer-adaptive-span"
-import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-pointer-step"
+import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-step-pointer"
 
 export default function resolveNumberSoftRange(
   value: Contract.Input[0],

@@ -21,6 +21,6 @@
   },
   "dependencies": {
     "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
-    "@zavx0z/immersive-ui-field-number-value-pointer-step": "workspace:*"
+    "@zavx0z/immersive-ui-field-number-value-step-pointer": "workspace:*"
   }
 }

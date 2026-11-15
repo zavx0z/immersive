@@ -7,7 +7,7 @@
 import type {ImmersiveUiFieldNumberValuePointerAdaptiveSpan as Contract} from "./contract"
 import type {ImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-field-number-value-normalize"
 type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
-import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-pointer-step"
+import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-step-pointer"
 
 export default function numberPointerAdaptiveSpan(options: Contract.Input[0]): Contract.Output {
   return 20_000 * Math.min(numberPointerStep(options), 0.1)

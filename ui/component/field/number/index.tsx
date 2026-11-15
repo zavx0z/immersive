@@ -14,7 +14,7 @@ import snapNumberValue from "@zavx0z/immersive-ui-field-number-scrub-snap"
 import formatNumberValue from "@zavx0z/immersive-ui-field-number-value-format"
 import normalizeNumberValue from "@zavx0z/immersive-ui-field-number-value-normalize"
 import numberFillPercentage from "@zavx0z/immersive-ui-field-number-value-fill-percentage"
-import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-pointer-step"
+import numberPointerStep from "@zavx0z/immersive-ui-field-number-value-step-pointer"
 import stepNumberValue from "@zavx0z/immersive-ui-field-number-value-step"
 
 

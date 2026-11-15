@@ -1,8 +1,8 @@
 {
-  "name": "@zavx0z/immersive-ui-field-number-value-valid-step",
-  "label": "validNumberStep",
+  "name": "@zavx0z/immersive-ui-field-number-value-step-pointer",
+  "label": "numberPointerStep",
   "version": "0.0.0",
-  "description": "Обработка valid-number-step",
+  "description": "Шаг изменения числового значения при движении указателя",
   "private": true,
   "type": "module",
   "sideEffects": false,
@@ -18,5 +18,9 @@
     "typecheck": "tsc --project tsconfig.json --pretty false",
     "test": "BUN_OPTIONS=--conditions=source bun test --preload @zavx0z/immersive-headless/preload --parallel --max-concurrency=2 ./spec ./test",
     "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
+  },
+  "dependencies": {
+    "@zavx0z/immersive-ui-field-number-value-normalize": "workspace:*",
+    "@zavx0z/immersive-ui-field-number-value-step-valid": "workspace:*"
   }
 }

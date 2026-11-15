@@ -2,12 +2,12 @@ import type {ImmersiveUiFieldNumberValueNormalize} from "@zavx0z/immersive-ui-fi
 type NumberValueOptions = NonNullable<ImmersiveUiFieldNumberValueNormalize.Input[1]>
 
 /** Выбирает допустимый шаг числового указателя, используя 0.1 при отсутствии корректного шага. */
-export declare namespace ImmersiveUiFieldNumberValuePointerStep {
-  /** Аргументы публичной операции numberPointerStep; порядок сохраняет её форму вызова. */
+export declare namespace ImmersiveUiFieldNumberValueStepPointer {
+  /** Настройки числового поля. Из них читается положительный конечный step. */
   type Input = readonly [
     options: NumberValueOptions
   ]
 
-  /** Результат публичной операции. */
+  /** Заданный допустимый шаг либо 0.1. */
   type Output = number
 }

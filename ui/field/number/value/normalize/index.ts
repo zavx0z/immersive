@@ -8,7 +8,7 @@ import type {ImmersiveUiFieldNumberValueNormalize as Contract} from "./contract"
 import type {NumberValueOptions} from "./contract/types"
 import finiteBound from "@zavx0z/immersive-ui-field-number-value-finite-bound"
 import roundedNumber from "@zavx0z/immersive-ui-field-number-value-round"
-import validNumberStep from "@zavx0z/immersive-ui-field-number-value-valid-step"
+import validNumberStep from "@zavx0z/immersive-ui-field-number-value-step-valid"
 
 export default function normalizeNumberValue(
   value: Contract.Input[0],

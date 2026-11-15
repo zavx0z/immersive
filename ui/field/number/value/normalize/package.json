@@ -22,6 +22,6 @@
   "dependencies": {
     "@zavx0z/immersive-ui-field-number-value-finite-bound": "workspace:*",
     "@zavx0z/immersive-ui-field-number-value-round": "workspace:*",
-    "@zavx0z/immersive-ui-field-number-value-valid-step": "workspace:*"
+    "@zavx0z/immersive-ui-field-number-value-step-valid": "workspace:*"
   }
 }
