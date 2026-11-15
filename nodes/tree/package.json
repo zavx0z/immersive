@@ -13,7 +13,6 @@
       "browser": "./dist/index.js",
       "default": "./dist/index.js"
     },
-    "./tech/json/patch": "./persistence/tech/json/patch/index.ts",
     "./parameter": "./model/parameter/index.ts",
     "./node-tree": "./model/node-tree/index.ts",
     "./projection-types": {
