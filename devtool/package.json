@@ -8,18 +8,18 @@
   "sideEffects": false,
   "exports": {
     ".": {
-      "source": "./inspector.ts",
-      "types": "./dist/inspector.d.ts",
-      "browser": "./dist/inspector.js",
-      "default": "./dist/inspector.js"
+      "source": "./index.ts",
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
-  "main": "./inspector.ts",
-  "module": "./inspector.ts",
-  "types": "./inspector.ts",
+  "main": "./index.ts",
+  "module": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
     "typecheck": "tsc --project tsconfig.json --pretty false",
-    "test": "BUN_OPTIONS=--conditions=source bun test --parallel tests",
+    "test": "BUN_OPTIONS=--conditions=source bun test --parallel spec tests",
     "check": "BUN_OPTIONS=--conditions=source bun run --parallel typecheck test"
   },
   "peerDependencies": {

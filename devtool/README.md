@@ -1,5 +1,10 @@
 # `@zavx0z/immersive-devtool` requirements
 
+- [Публичный вход](index.ts).
+- [Контракт](contract/index.ts).
+- [Сценарий](spec/scenario.spec.ts).
+- [Проверки](tests/inspector.test.ts).
+
 `@zavx0z/immersive-devtool` exposes one serializable inspection boundary for the
 custom `@zavx0z/immersive-dom` realm. It is intended for a product-owned DevTools panel,
 debug transport or AI bridge. It does not pretend that the semantic tree is the
