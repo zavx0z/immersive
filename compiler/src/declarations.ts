@@ -2,7 +2,8 @@ import {mkdir, mkdtemp, readFile, readdir, realpath, rm, writeFile} from "node:f
 import {dirname, extname, relative, resolve, sep} from "node:path"
 import {API, SignatureKind} from "typescript/unstable/async"
 import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
-import {createCompilerFileSystem, getAuthoringDeclarations} from "@zavx0z/immersive-jsx-compiler-session"
+import getAuthoringDeclarations from "@zavx0z/immersive-jsx-compiler-authoring"
+import createCompilerFileSystem from "@zavx0z/immersive-jsx-compiler-filesystem"
 import {isCallExpression, isReturnStatement, isJsxElement, isJsxSelfClosingElement, isParenthesizedExpression, isFunctionDeclaration, isIdentifier, isImportTypeNode, isLiteralTypeNode, isModuleDeclaration, isStringLiteral, isTypeReferenceNode, isVariableStatement} from "typescript/unstable/ast/is"
 import type {Node, SourceFile} from "typescript/unstable/ast"
 

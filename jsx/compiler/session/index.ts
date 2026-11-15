@@ -23,7 +23,7 @@ import {transformJsxSourceFile} from "./src/transform.ts"
 import {buildJsxTransformSymbols} from "./src/symbols.ts"
 import {normalizeStyleSourceRootIds, sourceHash, assertConfiguredProject} from "./src/session-support.ts"
 import SlotAuthoring from "@zavx0z/immersive-jsx-slot-authoring"
-import {createCompilerFileSystem} from "./src/configuration.ts"
+import createCompilerFileSystem from "@zavx0z/immersive-jsx-compiler-filesystem"
 import {
   collectCapabilityUsages,
 } from "./src/capability-usage.ts"
@@ -33,8 +33,6 @@ import type {JsxCompileResult, JsxSourceRange} from "./contract/output.ts"
 import type {JsxCompilerStats} from "./src/stats.ts"
 export type {JsxCompilerSessionOptions} from "./contract/input.ts"
 export type {CompiledDOMComponent, CompiledHookFactory, DOMIntrinsicTarget} from "./contract/compiled.ts"
-export {getAuthoringDeclarations} from "./src/source-profile.ts"
-export {createCompilerFileSystem} from "./src/configuration.ts"
 export type {JsxCompileResult, JsxSourceRange} from "./contract/output.ts"
 
 type DependencyFingerprint = Readonly<{

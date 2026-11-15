@@ -1,0 +1,18 @@
+{
+  "name": "@zavx0z/immersive-jsx-compiler-authoring-return",
+  "label": "Завершающий JSX return авторского компонента",
+  "description": "Завершающий JSX return авторского компонента",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "BUN_OPTIONS=--conditions=source bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "dependencies": {
+    "typescript": "^7.0.2"
+  }
+}

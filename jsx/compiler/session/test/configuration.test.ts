@@ -2,7 +2,8 @@ import {expect, test} from "bun:test"
 import {mkdtemp, readFile, rm} from "node:fs/promises"
 import {join, resolve} from "node:path"
 import {API} from "typescript/unstable/async"
-import JsxCompilerSession, {createCompilerFileSystem} from "../index.ts"
+import JsxCompilerSession from "../index.ts"
+import createCompilerFileSystem from "@zavx0z/immersive-jsx-compiler-filesystem"
 
 test("native conditions profiles независимы: own source + ready sibling декларация без чтения sibling TSX", async () => {
   const directory = await mkdtemp(join(import.meta.dir, ".conditions-"))

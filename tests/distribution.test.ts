@@ -5,7 +5,7 @@ import {mkdir, mkdtemp, rm, symlink} from "node:fs/promises"
 import {createDocument, createDomRoot, HTMLButtonElement, Event, isDOMComponentConstructor} from "../dist/index.js"
 import {Button} from "../dist/ui/component/index.js"
 import createJsxBunPlugin from "@zavx0z/immersive/compiler"
-import {createCompilerFileSystem} from "@zavx0z/immersive/compiler/session"
+import createCompilerFileSystem from "@zavx0z/immersive-jsx-compiler-filesystem"
 import {API} from "typescript/unstable/async"
 import {isBuiltin} from "node:module"
 

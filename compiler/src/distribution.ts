@@ -7,7 +7,8 @@ import createJsxBunPlugin from "@zavx0z/immersive-jsx-compiler-bun"
 import {buildDeclarations} from "./declarations.ts"
 import {distributionGraph, selectedDistributionGraph, sourceOwner} from "./distribution-graph.ts"
 import {publicSourceExports, type SourceExport} from "./public-sources.ts"
-import JsxCompilerSession, {createCompilerFileSystem} from "@zavx0z/immersive-jsx-compiler-session"
+import JsxCompilerSession from "@zavx0z/immersive-jsx-compiler-session"
+import createCompilerFileSystem from "@zavx0z/immersive-jsx-compiler-filesystem"
 import {API} from "typescript/unstable/async"
 
 type Entry = Readonly<{source: string; browser?: string; bun?: string}>

@@ -1,0 +1,19 @@
+{
+  "name": "@zavx0z/immersive-jsx-compiler-authoring",
+  "label": "Профиль авторских компонентов, hooks и импортов JSX-модуля",
+  "description": "Профиль авторских компонентов, hooks и импортов JSX-модуля",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./index.ts"
+  },
+  "scripts": {
+    "test": "BUN_OPTIONS=--conditions=source bun test ./spec",
+    "typecheck": "tsc --project tsconfig.json --pretty false"
+  },
+  "dependencies": {
+    "typescript": "^7.0.2",
+    "@zavx0z/immersive-jsx-compiler-authoring-return": "workspace:*"
+  }
+}

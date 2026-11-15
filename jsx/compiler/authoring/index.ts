@@ -1,6 +1,18 @@
-import type {FunctionDeclaration, SourceFile} from "typescript/unstable/ast"
+/**
+Профиль объявлений авторского JSX-модуля.
+Находит компоненты, пользовательские hooks и исполняемые импорты авторской среды,
+чтобы преобразование кода и выпуск деклараций использовали одну классификацию.
+
+Исполняется сборщиком в Bun и использует AST/API TypeScript той же сессии.
+
+@packageDocumentation
+*/
+import type {FunctionDeclaration} from "typescript/unstable/ast"
+import type {ImmersiveJsxCompilerAuthoring as Contract} from "./contract"
+export type {ImmersiveJsxCompilerAuthoring} from "./contract"
+import componentReturn from "@zavx0z/immersive-jsx-compiler-authoring-return"
 import {SyntaxKind} from "typescript/unstable/ast"
-import {isBlock, isFunctionDeclaration, isImportDeclaration, isJsxElement, isJsxFragment, isJsxSelfClosingElement, isNamedImports, isReturnStatement, isStringLiteral, skipOuterExpressions} from "typescript/unstable/ast/is"
+import {isFunctionDeclaration, isImportDeclaration, isNamedImports, isStringLiteral} from "typescript/unstable/ast/is"
 
 const authoringModules = new Set([
   "@zavx0z/immersive-component", "@zavx0z/immersive-component/authoring",
@@ -10,7 +22,7 @@ const authoringModules = new Set([
 ])
 
 /** Одна классификация исходных деклараций для emit и генератора public types. */
-export function getAuthoringDeclarations(source: SourceFile) {
+export default function getAuthoringDeclarations(source: Contract.Input[0]): Contract.Output {
   const functions = source.statements.filter((statement): statement is FunctionDeclaration => isFunctionDeclaration(statement) && statement.name !== undefined)
   return {
     components: functions.filter(declaration => /^[A-Z]/.test(declaration.name!.text) && componentReturn(declaration) !== null),
@@ -21,13 +33,4 @@ export function getAuthoringDeclarations(source: SourceFile) {
       !(statement.importClause?.namedBindings && isNamedImports(statement.importClause.namedBindings) && statement.importClause.namedBindings.elements.every(binding => binding.isTypeOnly))
       ? [statement.moduleSpecifier.text] : []),
   }
-}
-
-export function componentReturn(declaration: FunctionDeclaration) {
-  const body = declaration.body
-  if (!body || !isBlock(body)) return null
-  const returns = body.statements.filter(isReturnStatement)
-  if (returns.length !== 1 || returns[0] !== body.statements.at(-1) || !returns[0]?.expression) return null
-  const expression = skipOuterExpressions(returns[0].expression)
-  return isJsxElement(expression) || isJsxSelfClosingElement(expression) || isJsxFragment(expression) ? returns[0] : null
 }

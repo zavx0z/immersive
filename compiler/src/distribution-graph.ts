@@ -2,7 +2,8 @@ import {readFile, realpath} from "node:fs/promises"
 import {dirname, relative, resolve, sep} from "node:path"
 import {API, SymbolFlags} from "typescript/unstable/async"
 import {isStringLiteral} from "typescript/unstable/ast/is"
-import {createCompilerFileSystem, getAuthoringDeclarations} from "@zavx0z/immersive-jsx-compiler-session"
+import getAuthoringDeclarations from "@zavx0z/immersive-jsx-compiler-authoring"
+import createCompilerFileSystem from "@zavx0z/immersive-jsx-compiler-filesystem"
 import {ownerExports, type SourceExport} from "./public-sources.ts"
 
 type Owner = Readonly<{root: string; manifest: string; name: string}>

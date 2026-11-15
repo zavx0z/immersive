@@ -1,11 +1,21 @@
+/**
+Файловое представление проекта TypeScript для конкретной компиляции.
+Подставляет выбранные условия exports, список корневых исходников и тексты
+редактируемых файлов. Физические tsconfig и исходники сохраняются.
+
+Исполняется сборщиком в Bun и использует AST/API TypeScript той же сессии.
+
+@packageDocumentation
+*/
 import {readFileSync} from "node:fs"
-import type {FileSystem} from "typescript/unstable/fs"
+import type {ImmersiveJsxCompilerFilesystem as Contract} from "./contract"
+export type {ImmersiveJsxCompilerFilesystem} from "./contract"
 import {SyntaxKind} from "typescript/unstable/ast"
 import {createScanner} from "typescript/unstable/ast/scanner"
 import {isAbsolute} from "node:path"
 
 /** Native project сохраняет пути/exports; изменяемый текст имеет исходную file identity. */
-export function createCompilerFileSystem(customConditions: readonly string[] | undefined, sourceFiles?: readonly string[], sourceTexts?: ReadonlyMap<string, string>): FileSystem | undefined {
+export default function createCompilerFileSystem(customConditions: Contract.Input[0], sourceFiles?: Contract.Input[1], sourceTexts?: Contract.Input[2]): Contract.Output {
   if (customConditions === undefined && sourceFiles === undefined && !sourceTexts?.size) return undefined
   if (customConditions !== undefined && !customConditions.every(value => typeof value === "string" && value.length > 0)) throw new TypeError("customConditions requires non-empty strings")
   if (sourceFiles !== undefined && (sourceFiles.length === 0 || !sourceFiles.every(path => typeof path === "string" && isAbsolute(path)))) throw new TypeError("sourceFiles requires non-empty absolute file paths")
